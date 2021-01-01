@@ -46,6 +46,8 @@ import { BankConst } from '../const/BankConst'
 import Button from '../../../public/views/tars/Button'
 import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
+import { Toast } from '../../../public/tools/ToastUtils'
+import { pop } from '../../../public/navigation/RootNavigation'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -112,8 +114,13 @@ const AddBankPage = ({ navigation, route }) => {
                                                                      resizeMode={'contain'}
                                                                      style={_styles.bank_name_icon}/>,
         }))
-    !anyEmpty(bankList) && setAccountItems(accountTypes)
-    !anyEmpty(bankList) && setCurAccountType(selectType > 0 ? selectType : accountTypes[0].value)
+    if(anyEmpty(accountTypes)) {
+      Toast('不能添加更多账户')
+      pop()
+    } else {
+      !anyEmpty(bankList) && setAccountItems(accountTypes)
+      !anyEmpty(bankList) && setCurAccountType(selectType > 0 ? selectType : accountTypes[0].value)
+    }
   }, [])
 
   /**
@@ -329,17 +336,17 @@ const AddBankPage = ({ navigation, route }) => {
                           { backgroundColor: Skin1.themeColor }]}
                         onPress={() => {
                           addBankAccount({
-                            curAccountType: curAccountType,
-                            curBankID: curBankID,
-                            curBtcID: curBtcID,
-                            curChainValue: curChainValue,
-                            bankAddr: bankAddr,
-                            bankNumber: bankNumber,
-                            bankPassword: bankPassword,
-                            btcAddr: btcAddr,
-                            wxAccount: wxAccount,
-                            wxPhone: wxPhone,
-                            aliAccount: aliAccount,
+                            curAccountType,
+                            curBankID,
+                            curBtcID,
+                            curChainValue,
+                            bankAddr,
+                            bankNumber,
+                            bankPassword,
+                            btcAddr,
+                            wxAccount,
+                            wxPhone,
+                            aliAccount,
                             callBack: (accountType) => {
                               refreshBankList(accountType)
                             },

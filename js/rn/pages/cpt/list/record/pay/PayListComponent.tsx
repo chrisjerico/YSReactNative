@@ -29,7 +29,6 @@ interface IRouteParams {
  */
 const PayListComponent = ({ navigation, route }) => {
 
-  // const { refreshTabPage }: IRouteParams = route?.params
   const { refreshTabPage } = useContext(CapitalContext)
 
   const {

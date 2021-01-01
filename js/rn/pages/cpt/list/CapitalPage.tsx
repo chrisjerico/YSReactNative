@@ -18,6 +18,7 @@ import CapitalContext from './CapitalContext'
 import { ugLog } from '../../../public/tools/UgLog'
 import FastImage from 'react-native-fast-image'
 import WebView from 'react-native-webview'
+import WithdrawPage from './record/wt/WithdrawPage'
 
 /**
  * 存款提现
@@ -27,8 +28,8 @@ import WebView from 'react-native-webview'
 const CapitalPage = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
-  const [tabIndex, setTabIndex] = useState<number>(0)
-  const [refreshCount, setRefreshCount] = useState(0)
+  const [tabIndex, setTabIndex] = useState<number>(0) //当前是哪个Tab
+  const [refreshCount, setRefreshCount] = useState(0) //更新界面
 
   // let tabController //tab选择器
 
@@ -75,7 +76,7 @@ const CapitalPage = ({ navigation, setProps }) => {
       case CapitalConst.DEPOSIT:
         return <PayListComponent tabLabel={item} key={item}/>
       case CapitalConst.WITHDRAWAL:
-        return <View tabLabel={item} key={item}/>
+        return <WithdrawPage tabLabel={item} key={item}/>
       case CapitalConst.DEPOSIT_RECORD:
         return <DepositRecordListComponent tabLabel={item}/>
       case CapitalConst.WITHDRAWAL_RECORD:
@@ -92,11 +93,12 @@ const CapitalPage = ({ navigation, setProps }) => {
     <FastImage source={{ uri: userInfo?.avatar }}
                resizeMode={'contain'}
                style={_styles.mine_info_avatar}/>
-    <View >
+    <View>
       <Text style={_styles.mine_info_name}>{userInfo?.usr}</Text>
       <Text style={_styles.mine_info_balance}>{'用户余额: ' + userInfo?.balance}</Text>
       {
-        yueBaoData && <Text style={_styles.mine_info_balance}>{yueBaoData?.yuebaoName + '余额: ' + yueBaoData?.balance}</Text>
+        yueBaoData &&
+        <Text style={_styles.mine_info_balance}>{yueBaoData?.yuebaoName + '余额: ' + yueBaoData?.balance}</Text>
       }
     </View>
   </View>
@@ -104,16 +106,16 @@ const CapitalPage = ({ navigation, setProps }) => {
   return (
     <CapitalContext.Provider value={{
       refreshTabPage,
-      getYueBaoInfo: () => yueBaoData
+      getYueBaoInfo: () => yueBaoData,
     }}>
       <BaseScreen style={_styles.container}
                   screenName={'资金管理'}>
         {
           [
             renderMineInfo(),
-            anyEmpty(categoryData)
-              ? <EmptyView style={{ flex: 1 }}/>
-              : <ScrollableTabView
+            anyEmpty(categoryData) ?
+              <EmptyView style={{ flex: 1 }}/> :
+              <ScrollableTabView
                 key={'ScrollableTabView' + refreshCount}
                 initialPage={tabIndex}
                 onChangeTab={value => {

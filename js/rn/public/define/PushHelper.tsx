@@ -400,7 +400,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
-            push(PageName.ManageBankListComponent, {})
+            push(PageName.ManageBankListPage, {})
             break
           }
           case UGUserCenterType.即时注单: {

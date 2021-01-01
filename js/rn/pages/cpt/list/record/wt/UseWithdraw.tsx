@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react'
-import APIRouter from '../../../public/network/APIRouter'
-import { ugLog } from '../../../public/tools/UgLog'
-import { anyEmpty, anyLength, arrayLength } from '../../../public/tools/Ext'
-import { ManageBankCardData } from '../../../public/network/Model/bank/ManageBankCardModel'
 import { RefreshControl } from 'react-native'
 import * as React from 'react'
-import { Res } from '../../../Res/icon/Res'
-import { BankDetailListData, BankDetailListModel } from '../../../public/network/Model/bank/BankDetailListModel'
-import { BankConst } from '../const/BankConst'
-import { UGStore } from '../../../redux/store/UGStore'
-import { Toast } from '../../../public/tools/ToastUtils'
-import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
 import md5 from 'blueimp-md5'
-import { pop } from '../../../public/navigation/RootNavigation'
+import { UGStore } from '../../../../../redux/store/UGStore'
+import { BankInfoParam, ManageBankCardData } from '../../../../../public/network/Model/bank/ManageBankCardModel'
+import APIRouter from '../../../../../public/network/APIRouter'
+import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
+import FastImage from 'react-native-fast-image'
+import { getBankIcon } from '../../../../bank/list/UseManageBankList'
+import { ugLog } from '../../../../../public/tools/UgLog'
+import { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
+import { BankConst } from '../../../../bank/const/BankConst'
+import { Toast } from '../../../../../public/tools/ToastUtils'
+import { BankDetailListData, BankDetailListModel } from '../../../../../public/network/Model/bank/BankDetailListModel'
+import { hideLoading, showLoading } from '../../../../../public/widget/UGLoadingCP'
+import { pop } from '../../../../../public/navigation/RootNavigation'
 
 /**
  * 银行卡管理
@@ -23,34 +25,50 @@ const UseWithdraw = () => {
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
 
-  /**
-   * 银行账户类似
-   */
-  const [bankDetailData, setBankDetailData] = useState<BankDetailListModel>(null)
+  const [bankCardData, setBankCardData] = useState<ManageBankCardData>(null) //所有数据
+  const [bankInfoParamList, setBankInfoParamList] = useState<Array<BankInfoParam>>(null) //所有数据组合的新列表
+  const [menuItem, setMenuItem] = useState<Array<IMiddleMenuItem>>(null) //所以菜单列表
+  const [curBank, setCurBank] = useState<BankInfoParam>(null) //选择了银行、微信、支付宝、虚拟币里面的哪个
+  const [btcDetailData, setBtcDetailData] = useState<Array<BankDetailListData>>(null) //虚拟币类型
+  const [withdrawType, setWithdrawType] = useState(0) //当前 余额取款 0 还是 余额宝取款 1
+  const [newRate, setNewRate] = useState(1) //新计算的汇率
+  const [newUsd, setNewUsd] = useState(1) //新计算的1比1美元
+  const [btcMoney, setBtcMoney] = useState(0) //btc金额
+  const [inputMoney, setInputMoney] = useState(null) //取款金额
+  const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
+  const [showAddBank, setShowAddBank] = useState(false) //是否显示添加银行卡等帐户
 
-  /**
-   * 虚拟币类型
-   */
-  const [btcDetailData, setBtcDetailData] = useState<BankDetailListModel>(null)
-
-  /**
-   * 银行有哪些
-   */
-  const [bankDetailItems, setBankDetailItems] = useState(null)
-
-  /**
-   * 虚拟币有哪些
-   */
-  const [btcDetailItems, setBtcDetailItems] = useState(null)
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestBankDetailData(BankConst.BANK)
-    requestBankDetailData(BankConst.BTC)
-    // requestLogData("0")
+    requestManageBankData()
   }, [])
+
+  /**
+   * 切换标签刷新汇率
+   */
+  useEffect(() =>{
+    requestBankDetailData(BankConst.BTC)
+  }, [withdrawType])
+
+  /**
+   * 根据当前选项计算汇率
+   */
+  useEffect(() =>{
+    rateMoney()
+  }, [btcDetailData, curBank])
+
+  useEffect(() => {
+    //只有虚拟币才计算
+    if(curBank?.type != BankConst.BTC) {
+      setBtcMoney(0)
+      return
+    }
+    const money = Math.round(inputMoney * 100 * newRate) / 100
+    setBtcMoney(money)
+  }, [inputMoney])
 
   /**
    * 请求增加银行和虚拟币类型数据
@@ -58,237 +76,134 @@ const UseWithdraw = () => {
    */
   const requestBankDetailData = async (category?: string) => {
     APIRouter.user_bankInfoList(category).then(({ data: res }) => {
+      //ugLog('requestBankDetailData=', JSON.stringify(res?.data))
       if (res?.code == 0) {
-        if (category == BankConst.BANK) {
-          setBankDetailData(res)
-          !anyEmpty(res?.data) && setBankDetailItems(res?.data?.map(
-            (item, index) =>
-              ({ label: item.name, value: item.id })))
-
-        } else if (category == BankConst.BTC) {
-          setBtcDetailData(res)
-          !anyEmpty(res?.data) && setBtcDetailItems(res?.data?.map(
-            (item, index) =>
-              ({ label: item.name, value: item.id })))
-
-        }
-
+        setBtcDetailData(res?.data)
       } else {
         Toast(res?.msg)
       }
-    }).finally(() => {
     })
   }
 
   /**
-   * 添加银行卡或者虚拟币账户
-   *
-   *  参数含义备注在 IAddAccount
-   *
-   * @param curAccountType
-   * @param curBankID
-   * @param curBtcID
-   * @param curChainValue
-   * @param bankAddr
-   * @param bankNumber
-   * @param bankPassword
-   * @param btcAddr
-   * @param wxAccount
-   * @param wxPhone
-   * @param aliAccount
+   * 计算当前的汇率
+   * 汇率 * ( 1 + 浮动汇率 / 100 ) = 结果
+   * 为保证精度不丢失，对数据放大 10000倍 再缩小
    */
-  const addBankAccount = ({
-                            curAccountType,
-                            curBankID,
-                            curBtcID,
-                            curChainValue,
-                            bankAddr,
-                            bankNumber,
-                            bankPassword,
-                            btcAddr,
-                            wxAccount,
-                            wxPhone,
-                            aliAccount,
-                            callBack,
-                          }: IAddAccount) => {
-    let params = null
+  const rateMoney = () => {
+    if(curBank?.type != BankConst.BTC) return
+    //当前是哪个币
+    //ugLog('rateMoney curBank=', JSON.stringify(curBank))
+    const curBtc = btcDetailData?.find((item) => item.code == curBank?.bankCode)
+    //ugLog('curbtc=', JSON.stringify(curBtc))
+    if (curBtc?.code == 'CGP') {
+      setNewRate(1)
+      setNewUsd(1)
+    } else {
 
-    switch (curAccountType.toString()) {
-      case BankConst.BANK:
-        if (anyEmpty(bankAddr)) {
-          Toast('请输入您的银行卡开户行地址')
-          return
-        } else if (anyEmpty(bankNumber)) {
-          Toast('请输入您的银行卡卡号')
-          return
-        } else if (systemInfo?.switchBindVerify == 1) {
-          if (anyEmpty(bankPassword)) {
-            Toast('请输入取款密码')
-            return
-          }
-        } else {
-          params = {
-            type: curAccountType,
-            bank_id: curBankID,
-            bank_card: bankNumber,
-            bank_addr: bankAddr,
-            pwd: anyEmpty(bankPassword) ? null : md5(bankPassword),
-            owner_name: userInfo?.fullName,
-          }
-        }
-        break
-      case BankConst.BTC:
-        if (anyEmpty(btcAddr)) {
-          Toast('请输入您的虚拟币收款钱包地址')
-          return
-        } else {
-          params = {
-            type: curAccountType,
-            bank_id: curBtcID,
-            bank_card: btcAddr,
-            bank_addr: curChainValue,
-          }
-        }
-        break
-      case BankConst.WX:
-        if (anyEmpty(wxAccount)) {
-          Toast('请输入微信号')
-          return
-        } else if (!anyEmpty(wxPhone) && anyLength(wxPhone) < 11) {
-          Toast('请输入11位手机号码')
-          return
-        } else {
-          params = {
-            type: curAccountType,
-            bank_card: wxAccount,
-            bank_addr: wxPhone,
-          }
-        }
-        break
-      case BankConst.ALI:
-        if (anyEmpty(aliAccount)) {
-          Toast('请输入您的支付宝账号')
-          return
-        } else {
-          params = {
-            type: curAccountType,
-            bank_card: aliAccount,
-          }
-        }
-        break
+      // const convertRate = Number(channel?.currencyRate) //原始汇率
+      const floatRate = Number(curBtc?.rate) //浮动汇率
+      let newRate = Math.round((Number(curBtc?.currencyRate) * 10000) * (100 + floatRate))
+      newRate /= 10000 * 100
+
+      if(newRate <= 0) return 1
+
+      setNewRate(newRate)
+
+      let usd = Math.round(100 / newRate)/100
+      //ugLog('1比1美元 汇率=', curBtc?.currencyRate, newRate, usd)
+      setNewUsd(usd)
     }
-
-    if (anyEmpty(params)) return
-
-    showLoading()
-    APIRouter.user_addBank(params).then((result) => {
-      if (result?.data?.code == 0) {
-        switch (curAccountType.toString()) {
-          case BankConst.BANK:
-            Toast('添加银行卡成功')
-            break
-          case BankConst.BTC:
-            Toast('添加虚拟币成功')
-            break
-          case BankConst.WX:
-            Toast('添加微信成功')
-            break
-          case BankConst.ALI:
-            Toast('添加支付宝成功')
-            break
-        }
-        callBack && callBack(curAccountType)
-        pop()
-      } else {
-        Toast(result?.data?.msg)
-      }
-    }).finally(() => {
-      hideLoading()
-    })
-
   }
 
+  /**
+   * 请求银行列表数据
+   */
+  const requestManageBankData = async () => {
+    APIRouter.user_bankCardList().then(({ data: res }) => {
+      let actData = res?.data
+      //ugLog('requestManageBankData data res=', JSON.stringify(res?.data))
+
+      if (anyEmpty(actData?.allAccountList)) return
+
+      //过滤不显示的
+      actData.allAccountList = actData?.allAccountList?.filter((item) => item.isshow)
+
+      let bankItems = new Array<BankInfoParam>()
+      actData?.allAccountList?.map(
+        (bkItem, index) =>
+          bkItem?.data?.map((item) => {
+            item.parentTypeName = bkItem?.name
+            return item
+          }),
+      ).map((item) =>
+        bankItems = [...bankItems, ...item],
+      )
+
+      setBankInfoParamList(bankItems)
+      setShowAddBank(anyEmpty(bankItems))
+
+      //缓存列表显示选项
+      const menu = bankItems?.map((item) => {
+        return (
+          ({
+            title: `${item.parentTypeName} (${item.bankName}, ${item.ownerName})`,
+            subTitle: `${item.bankCard}`,
+            icon: getBankIcon(item.type.toString())?.uri,
+          })
+        )
+      })
+      setMenuItem(menu)
+      setBankCardData(actData)
+
+    })
+  }
 
   /**
-   * 绑定密码
-   * @param fullName 真名
-   * @param callBack
+   * 请求提现
    */
-  const bindPassword = async ({
-                                login_pwd,
-                                fund_pwd,
-                                fund_pwd2,
-                                callBack,
-                              }: IBindPassword) => {
-    if (anyEmpty(login_pwd)) {
-      Toast('请填写密码(至少6位数字加字母组合)')
+  const confirmWithdraw = async () => {
+    if(anyEmpty(inputMoney)) {
+      Toast('请输入金额')
       return
-    } else if (anyEmpty(fund_pwd)) {
-      Toast('请输入您的4位数字提款密码')
-      return
-    } else if (fund_pwd != fund_pwd2) {
-      Toast('两次输入提款密码不一致')
+    } else if(anyEmpty(bankPassword)) {
+      Toast('请输入密码')
       return
     }
 
     showLoading()
-    APIRouter.user_bindPwd({
-      login_pwd: md5(login_pwd),
-      fund_pwd: md5(fund_pwd),
-    }).then((result) => {
-      if (result?.data?.code == 0) {
-        userInfo.hasFundPwd = true
-        UGStore.dispatch({ type: 'merge', userInfo: { hasFundPwd: true } })
-        UGStore.save()
-        callBack && callBack()
+    const res = await APIRouter.withdraw_apply({
+      money: inputMoney,
+      pwd: md5(bankPassword),
+      id: curBank?.id,
+      virtual_amount: curBank?.type != BankConst.BTC ? '' : btcMoney?.toString(),
+    }).then(({ data: res }) => res)
+    hideLoading()
+    Toast(res?.msg)
 
-      } else {
-        Toast(result?.data?.msg)
-      }
-    }).finally(() => {
-      hideLoading()
-    })
+    return res?.code
   }
 
   return {
     userInfo,
     systemInfo,
-    bankDetailData,
-    btcDetailData,
-    bankDetailItems,
-    btcDetailItems,
-    requestBankDetailData,
-    addBankAccount,
-    bindPassword,
+    bankCardData,
+    bankInfoParamList,
+    menuItem,
+    curBank,
+    setCurBank,
+    withdrawType,
+    setWithdrawType,
+    newUsd,
+    btcMoney,
+    inputMoney,
+    setInputMoney,
+    bankPassword,
+    setBankPassword,
+    showAddBank,
+    requestManageBankData,
+    confirmWithdraw,
   }
-}
-
-/**
- * 绑定密码
- */
-interface IBindPassword {
-  login_pwd?: string, //登录密码
-  fund_pwd?: string, //取款密码
-  fund_pwd2?: string, //取款密码
-  callBack?: () => void //成功回调
-}
-
-/**
- * 添加账户参数
- */
-interface IAddAccount {
-  curAccountType?: string, //账户类型 选择了银行、微信、支付宝、虚拟币
-  curBankID?: string, //选择了哪个银行
-  curBtcID?: string, //选择了哪个虚拟币
-  curChainValue?: string, //选择了哪个链
-  bankAddr?: string, //请输入您的银行卡开户地址
-  bankNumber?: string, //请输入您的银行卡卡号
-  bankPassword?: string, //请输入取款密码
-  btcAddr?: string, //请输入您的虚拟币收款钱包地址
-  wxAccount?: string, //请输入微信号
-  wxPhone?: string, //请输入微信所绑定手机号
-  aliAccount?: string, //请输入您的支付宝账号
-  callBack?: (accountType: string) => void //成功回调
 }
 
 export default UseWithdraw
