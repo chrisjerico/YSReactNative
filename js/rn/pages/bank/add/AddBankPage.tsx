@@ -329,17 +329,17 @@ const AddBankPage = ({ navigation, route }) => {
                           { backgroundColor: Skin1.themeColor }]}
                         onPress={() => {
                           addBankAccount({
-                            curAccountType: curAccountType,
-                            curBankID: curBankID,
-                            curBtcID: curBtcID,
-                            curChainValue: curChainValue,
-                            bankAddr: bankAddr,
-                            bankNumber: bankNumber,
-                            bankPassword: bankPassword,
-                            btcAddr: btcAddr,
-                            wxAccount: wxAccount,
-                            wxPhone: wxPhone,
-                            aliAccount: aliAccount,
+                            curAccountType,
+                            curBankID,
+                            curBtcID,
+                            curChainValue,
+                            bankAddr,
+                            bankNumber,
+                            bankPassword,
+                            btcAddr,
+                            wxAccount,
+                            wxPhone,
+                            aliAccount,
                             callBack: (accountType) => {
                               refreshBankList(accountType)
                             },
