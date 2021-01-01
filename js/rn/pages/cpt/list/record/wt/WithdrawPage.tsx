@@ -62,11 +62,11 @@ const WithdrawPage = ({ navigation, route }) => {
    */
   const renderSwitchButton = () => <View>
     <View style={_styles.forget_pwd_container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
         <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
       </TouchableOpacity>
     </View>
-    <View style={_styles.forget_pwd_container}>
+    <View style={[_styles.forget_pwd_container, { marginTop: 0 }]}>
       <TouchableOpacity onPress={() => setWithdrawType(0)}>
         <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
       </TouchableOpacity>
@@ -291,14 +291,14 @@ const WithdrawPage = ({ navigation, route }) => {
           renderInputAmount()
       }
 
-      <View style={_styles.forget_pwd_container}>
-        <TouchableOpacity>
+      <View style={[_styles.forget_pwd_container]}>
+        <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
           <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
         </TouchableOpacity>
       </View>
       {
         userInfo?.yuebaoSwitch &&
-        <View style={_styles.forget_pwd_container}>
+        <View style={[_styles.forget_pwd_container, { marginTop: 0 }]}>
           <TouchableOpacity onPress={() => setWithdrawType(1)}>
             <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{
               '切换到' + systemInfo?.yuebaoName + '取款'
@@ -414,9 +414,10 @@ const _styles = StyleSheet.create({
   forget_pwd_container: {
     height: scale(44),
     alignItems: 'flex-start',
+    justifyContent: 'center',
+    marginTop: scale(32),
   },
   forget_pwd: {
-    paddingVertical: scale(32),
     fontSize: scale(22),
   },
   submit_text: {
