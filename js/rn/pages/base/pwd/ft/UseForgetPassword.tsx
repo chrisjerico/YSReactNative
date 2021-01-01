@@ -17,49 +17,45 @@ const UseForgetPassword = () => {
   const systemInfo = UGStore.globalProps.sysConf //系统信息
 
   const [bankCard, setBankCard] = useState(null) //银行卡
+  const [phoneNumber, setPhoneNumber] = useState(null) //请输入手机号
   const [fundPassword, setFundPassword] = useState(null) //设置资金密码
+  const [firstImage, setFirstImage] = useState(null) //设置第一张图片
+  const [secondImage, setSecondImage] = useState(null) //设置第2张图片
 
   /**
    * 绑定密码
-   * @param fullName 真名
-   * @param callBack
    */
-  const bindPassword = async ({
-                                login_pwd,
-                                fund_pwd,
-                                fund_pwd2,
-                                callBack,
-                              }: IBindPassword) => {
-    if (anyEmpty(login_pwd)) {
-      Toast('请填写密码(至少6位数字加字母组合)')
+  const bindPassword = async () => {
+    if (anyEmpty(bankCard)) {
+      Toast('请填写银行卡号')
       return
-    } else if (anyEmpty(fund_pwd)) {
+    } else if (anyEmpty(fundPassword)) {
       Toast('请输入您的4位数字提款密码')
-      return
-    } else if (fund_pwd != fund_pwd2) {
-      Toast('两次输入提款密码不一致')
       return
     }
 
     showLoading()
-    APIRouter.user_bindPwd({
-      login_pwd: md5(login_pwd),
-      fund_pwd: md5(fund_pwd),
-    }).then((result) => {
-      if (result?.data?.code == 0) {
-        Toast('设置密码成功')
-
-        userInfo.hasFundPwd = true
-        UGStore.dispatch({ type: 'merge', userInfo: { hasFundPwd: true } })
-        UGStore.save()
-        callBack && callBack()
-
-      } else {
-        Toast(result?.data?.msg)
-      }
-    }).finally(() => {
-      hideLoading()
+    const result = await APIRouter.user_applyCoinPwd({
+      bankNo: bankCard,
+      coinpwd: fundPassword,
+      mobile: phoneNumber,
+      identityPathDot: ''
     })
+
+    hideLoading()
+
+    if (result?.data?.code == 0) {
+      Toast('设置密码成功')
+
+      userInfo.hasFundPwd = true
+      UGStore.dispatch({ type: 'merge', userInfo: { hasFundPwd: true } })
+      UGStore.save()
+
+    } else {
+      Toast(result?.data?.msg)
+    }
+
+    return result?.data?.code
   }
 
   return {
@@ -69,6 +65,10 @@ const UseForgetPassword = () => {
     setBankCard,
     fundPassword,
     setFundPassword,
+    firstImage,
+    setFirstImage,
+    secondImage,
+    setSecondImage,
     bindPassword,
   }
 }

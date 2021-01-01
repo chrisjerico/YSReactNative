@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
 import { BaseScreen } from '../../../乐橙/component/BaseScreen'
@@ -9,6 +9,12 @@ import Button from '../../../../public/views/tars/Button'
 import { pop } from '../../../../public/navigation/RootNavigation'
 import UseForgetPassword from './UseForgetPassword'
 import Icon from 'react-native-vector-icons/Entypo'
+import { ANHelper } from '../../../../public/define/ANHelper/ANHelper'
+import { CMD } from '../../../../public/define/ANHelper/hp/CmdDefine'
+import { NA_DATA } from '../../../../public/define/ANHelper/hp/DataDefine'
+import { ugLog } from '../../../../public/tools/UgLog'
+import FastImage from 'react-native-fast-image'
+import { anyEmpty } from '../../../../public/tools/Ext'
 
 interface IRouteParams {
   onCallback?: () => any, //设置密码成功
@@ -30,6 +36,10 @@ const ForgetPasswordPage = ({ navigation, route }) => {
     setBankCard,
     fundPassword,
     setFundPassword,
+    firstImage,
+    setFirstImage,
+    secondImage,
+    setSecondImage,
     bindPassword,
   } = UseForgetPassword()
 
@@ -54,16 +64,42 @@ const ForgetPasswordPage = ({ navigation, route }) => {
       <View style={_styles.add_img_container}>
         <Text style={_styles.add_img_text}>{'身份证正反面: '}</Text>
         <View style={_styles.add_img_bt_container}>
-          <View style={_styles.add_img}>
-            <Icon size={scale(72)}
-                  color={Skin1.themeColor}
-                  name={'plus'}/>
-          </View>
-          <View style={_styles.add_img}>
-            <Icon size={scale(72)}
-                  color={Skin1.themeColor}
-                  name={'plus'}/>
-          </View>
+          <TouchableOpacity onPress={() => {
+            ANHelper.callAsync(CMD.ASK_IMAGES, { value: '1' }).then((res) => {
+              // ugLog('res image 1 = ', JSON.parse(res)[0]?.compressPath)
+              setFirstImage(JSON.parse(res)[0]?.compressPath)
+            })
+          }}>
+            <View style={_styles.add_img}>
+              {
+                anyEmpty(firstImage) ?
+                  <Icon size={scale(72)}
+                        color={Skin1.themeColor}
+                        name={'plus'}/> :
+                  <Image source={{ uri: `file://${firstImage}` }}
+                         style={_styles.id_image}
+                         resizeMode={'stretch'}/>
+              }
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            ANHelper.callAsync(CMD.ASK_IMAGES, { value: '1' }).then((res) => {
+              ugLog('res image 2 = ', res)
+              setSecondImage(JSON.parse(res)[0]?.compressPath)
+            })
+          }}>
+            <View style={_styles.add_img}>
+              {
+                anyEmpty(secondImage) ?
+                  <Icon size={scale(72)}
+                        color={Skin1.themeColor}
+                        name={'plus'}/> :
+                  <Image source={{ uri: `file://${secondImage}` }}
+                         style={_styles.id_image}
+                         resizeMode={'stretch'}/>
+              }
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -143,12 +179,20 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor3,
   },
   add_img: {
+    width: scale(196),
+    aspectRatio: 1,
     borderWidth: scale(2),
     borderRadius: scale(8),
     borderStyle: 'dashed',
     borderColor: UGColor.LineColor2,
     marginHorizontal: scale(16),
-    padding: scale(58),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  id_image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: scale(8),
   },
   add_img_container: {
     padding: scale(16),

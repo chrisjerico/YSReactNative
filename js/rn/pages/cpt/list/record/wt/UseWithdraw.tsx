@@ -130,7 +130,7 @@ const UseWithdraw = () => {
       actData.allAccountList = actData?.allAccountList?.filter((item) => item.isshow)
 
 
-      ugLog('requestManageBankData actData.allAccountList=', JSON.stringify(actData.allAccountList))
+      //ugLog('requestManageBankData actData.allAccountList=', JSON.stringify(actData.allAccountList))
 
       let bankItems = new Array<BankInfoParam>()
       // actData?.allAccountList?.map(
@@ -165,7 +165,7 @@ const UseWithdraw = () => {
 
       setBankInfoParamList(bankItems)
 
-      ugLog('requestManageBankData 2 bankItems=', JSON.stringify(bankItems))
+      //ugLog('requestManageBankData 2 bankItems=', JSON.stringify(bankItems))
       setShowAddBank(anyEmpty(bankItems))
 
       //缓存列表显示选项

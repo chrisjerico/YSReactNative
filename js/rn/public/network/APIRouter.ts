@@ -386,6 +386,17 @@ class APIRouter {
   }
 
   /**
+   * 忘记密码
+   */
+  static user_applyCoinPwd = async (params: IForgetPasswordParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+    return httpClient.post<NormalModel>('c=user&a=applyCoinPwd', params)
+  }
+
+  /**
    * 存款记录
    * startDate 开始日期
    * endDate 结束日期
