@@ -122,7 +122,7 @@ const UseWithdraw = () => {
   const requestManageBankData = async () => {
     APIRouter.user_bankCardList().then(({ data: res }) => {
       let actData = res?.data
-      ugLog('requestManageBankData data 2 res=', JSON.stringify(actData))
+      // ugLog('requestManageBankData data 2 res=', JSON.stringify(actData))
 
       if (anyEmpty(actData?.allAccountList)) return
 
@@ -130,36 +130,55 @@ const UseWithdraw = () => {
       actData.allAccountList = actData?.allAccountList?.filter((item) => item.isshow)
 
 
-      ugLog('requestManageBankData actData.allAccountList=', JSON.stringify(actData.allAccountList))
+      //ugLog('requestManageBankData actData.allAccountList=', JSON.stringify(actData.allAccountList))
 
       let bankItems = new Array<BankInfoParam>()
-      actData?.allAccountList?.map(
-        (bkItem, index) =>
-          bkItem?.data == null ?
-            [] :
-            bkItem?.data?.map((item) => {
-              item.parentTypeName = bkItem?.name
-              return item
-            }),
-      )?.map((item) =>
-        bankItems = [...bankItems, ...item],
-      )
+      // actData?.allAccountList?.map(
+      //   (bkItem, index) =>
+      //     bkItem?.data == null ?
+      //       [] :
+      //       bkItem?.data?.map((item) => {
+      //         item.parentTypeName = bkItem?.name
+      //         return item
+      //       }),
+      // )?.map((item) =>
+      //   bankItems = [...bankItems, ...item],
+      // )
+
+      actData?.allAccountList?.map((item) => {
+        if (anyEmpty(item.data)) {
+          if (item?.isshow) {//如果需要显示，就补充一个默认值
+            bankItems = [...bankItems, {
+              parentTypeName: item.name,
+              bankName: '未绑定',
+              ownerName: '无',
+              bankCard: '无',
+              type: item?.type?.toString(),
+              unBind: true,
+            }]
+          }
+        } else {
+          item.data.map(res => res.parentTypeName = item.name)
+          bankItems = [...bankItems, ...item.data]
+        }
+      })
 
       setBankInfoParamList(bankItems)
 
-      ugLog('requestManageBankData bankItems=', JSON.stringify(bankItems))
+      ugLog('requestManageBankData 2 bankItems=', JSON.stringify(bankItems))
       setShowAddBank(anyEmpty(bankItems))
 
       //缓存列表显示选项
       const menu = bankItems?.map((item) => {
         return (
           ({
-            title: `${item.parentTypeName} (${item.bankName}, ${item.ownerName})`,
-            subTitle: `${item.bankCard}`,
+            title: `${item?.parentTypeName} (${item?.bankName}, ${item?.ownerName})`,
+            subTitle: `${item?.bankCard}`,
             icon: getBankIcon(item.type.toString())?.uri,
           })
         )
       })
+
       setMenuItem(menu)
       setBankCardData(actData)
 

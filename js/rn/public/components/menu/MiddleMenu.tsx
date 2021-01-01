@@ -5,7 +5,7 @@ import Modal from 'react-native-modal'
 import * as React from 'react'
 import { forwardRef, RefObject, useImperativeHandle, useState } from 'react'
 import { ugLog } from '../../tools/UgLog'
-import { arrayLength } from '../../tools/Ext'
+import { anyEmpty, arrayLength } from '../../tools/Ext'
 import { Skin1 } from '../../theme/UGSkinManagers'
 import { getBankIcon } from '../../../pages/bank/list/UseManageBankList'
 import FastImage from 'react-native-fast-image'
@@ -65,11 +65,11 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
                                style={_styles.bank_name_icon}/>
                     <View style={_styles.item_sub_content}>
                       <Text numberOfLines={1}
-                            style={_styles.item_name}>{item.title + item.title + item.title + item.title + item.title}</Text>
+                            style={_styles.item_name}>{item.title}</Text>
                       {
-                        item.subTitle && <Text numberOfLines={1}
-                                               style={[_styles.item_sub_name, { color: Skin1.themeColor }]}>
-                          {'( ' + item.subTitle + item.subTitle + item.subTitle + item.subTitle + item.subTitle + item.subTitle + item.subTitle + item.subTitle + item.subTitle + item.subTitle + ' )'}
+                        !anyEmpty(item.subTitle) && <Text numberOfLines={1}
+                                                          style={[_styles.item_sub_name, { color: Skin1.themeColor }]}>
+                          {'( ' + item.subTitle + ' )'}
                         </Text>
                       }
                     </View>
