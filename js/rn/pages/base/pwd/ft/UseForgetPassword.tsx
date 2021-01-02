@@ -7,6 +7,7 @@ import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import md5 from 'blueimp-md5'
 import { useState } from 'react'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { pop } from '../../../../public/navigation/RootNavigation'
 
 /**
  * 忘记密码
@@ -56,10 +57,11 @@ const UseForgetPassword = () => {
 
     hideLoading()
 
-    Toast(result?.data?.msg)
-    ugLog('result?.data = ', result?.data)
     if (result?.data?.code == 0) {
-
+      Toast('提交成功，请等待审核...')
+      pop()
+    } else {
+      Toast(result?.data?.msg)
     }
 
     return result?.data?.code
@@ -80,7 +82,7 @@ const UseForgetPassword = () => {
       ugLog('result?.data = ', res?.data)
       Toast(res?.data?.msg)
       if (res?.data?.code == 0) {
-
+        setSmsNumber(null)
       }
 
     }).finally(() => {

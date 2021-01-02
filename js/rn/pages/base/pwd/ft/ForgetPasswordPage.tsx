@@ -126,6 +126,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
     {
       systemInfo?.switchCoinPwdSms == '1' && <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
+                   value={smsNumber}
                    onChangeText={text => setSmsNumber(text)}
                    placeholder={'输入短信验证码'}/>
         <Button title={'获取短信验证码'}

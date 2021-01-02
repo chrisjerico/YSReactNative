@@ -408,7 +408,6 @@ class APIRouter {
       return null
     }
 
-    ugLog('xx=', JSON.stringify(params))
     return httpClient.post<NormalModel>('c=user&a=applyCoinPwd', params)
   }
 
