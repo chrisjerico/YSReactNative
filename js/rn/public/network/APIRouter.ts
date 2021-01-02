@@ -336,6 +336,20 @@ class APIRouter {
   }
 
   /**
+   * 利息宝提现申请
+   *
+   */
+  static yuebao_transferToBank = async (params: IRequestWithdrawParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+
+    ugLog('transferToBank=', JSON.stringify(params))
+    return httpClient.post<NormalModel>('c=yuebao&a=transferToBank', params)
+  }
+
+  /**
    * 利息宝转入转出
    *
    */
@@ -383,6 +397,18 @@ class APIRouter {
       return null
     }
     return httpClient.post<NormalModel>('c=user&a=addFundPwd', params)
+  }
+
+  /**
+   * 忘记密码
+   */
+  static user_applyCoinPwd = async (params: IForgetPasswordParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+
+    return httpClient.post<NormalModel>('c=user&a=applyCoinPwd', params)
   }
 
   /**
@@ -700,8 +726,12 @@ class APIRouter {
       },
     })
   }
-  static secure_smsCaptcha = async (phone) => {
-    return httpClient.post('c=secure&a=smsCaptcha', { phone: phone })
+
+  static secure_smsCaptcha = async (phone, action?) => {
+    return httpClient.post('c=secure&a=smsCaptcha', {
+      phone,
+      action,
+    })
   }
 
   static system_config = async () => {
@@ -728,7 +758,7 @@ class APIRouter {
         },
         {
           noToken: true,
-        } as any
+        } as any,
       )
     } catch (error) {
       throw error

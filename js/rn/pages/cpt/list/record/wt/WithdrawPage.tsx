@@ -46,6 +46,7 @@ const WithdrawPage = ({ navigation, route }) => {
     showAddBank,
     requestManageBankData,
     confirmWithdraw,
+    yuebaoWithdraw,
     yueBao2YuE,
   } = UseWithdraw()
 
@@ -61,12 +62,15 @@ const WithdrawPage = ({ navigation, route }) => {
    * 底部按钮
    */
   const renderSwitchButton = () => <View>
+    <View style={_styles.pwd_top_space}/>
+    {
+      systemInfo?.switchCoinPwd == '1' && <View style={_styles.forget_pwd_container}>
+        <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
+          <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
+        </TouchableOpacity>
+      </View>
+    }
     <View style={_styles.forget_pwd_container}>
-      <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
-        <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
-      </TouchableOpacity>
-    </View>
-    <View style={[_styles.forget_pwd_container, { marginTop: 0 }]}>
       <TouchableOpacity onPress={() => setWithdrawType(0)}>
         <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
       </TouchableOpacity>
@@ -74,9 +78,9 @@ const WithdrawPage = ({ navigation, route }) => {
   </View>
 
   /**
-   * 绘制取款到余额
+   * 利息宝绘制取款到余额
    */
-  const renderToYuE = () => <View style={_styles.item_pwd_container}>
+  const renderToYueBao = () => <View style={_styles.item_pwd_container}>
     <View style={_styles.input_container}>
       <TextInput style={_styles.input_name}
                  keyboardType={'numeric'}
@@ -114,7 +118,7 @@ const WithdrawPage = ({ navigation, route }) => {
   const renderBind = () => {
     return <TouchableOpacity onPress={() => {
       push(PageName.AddBankPage, {
-        refreshBankList: (accountType: string) => { //添加成功
+        refreshBankList: (accountType: string) => {
           requestManageBankData()
         },
         bankCardData: bankCardData,
@@ -136,9 +140,9 @@ const WithdrawPage = ({ navigation, route }) => {
   }
 
   /**
-   * 绘制输入金额和密码
+   * 利息宝绘制输入金额和密码
    */
-  const renderYuEInputAmount = () => {
+  const renderYueBaoInputAmount = () => {
     //找出当前是银行卡还是支付宝等等
     let tipsItem = bankCardData?.allAccountList?.find((item) => item?.type?.toString() == curBank?.type)
 
@@ -172,7 +176,7 @@ const WithdrawPage = ({ navigation, route }) => {
               containerStyle={[_styles.submit_bt,
                 { backgroundColor: Skin1.themeColor }]}
               onPress={() => {
-                confirmWithdraw().then(res => {
+                yuebaoWithdraw().then(res => {
                   if (res == 0) {
                     refreshTabPage(CapitalConst.WITHDRAWAL_RECORD)
                   }
@@ -184,7 +188,7 @@ const WithdrawPage = ({ navigation, route }) => {
   /**
    * 绘制取款到余额宝银行卡
    */
-  const renderToYuEBank = () => {
+  const renderToYueBaoBank = () => {
 
     return <View style={_styles.item_pwd_container}>
 
@@ -203,7 +207,7 @@ const WithdrawPage = ({ navigation, route }) => {
       {
         curBank?.notBind ?
           renderBind() :
-          renderYuEInputAmount()
+          renderYueBaoInputAmount()
       }
 
       {
@@ -291,14 +295,18 @@ const WithdrawPage = ({ navigation, route }) => {
           renderInputAmount()
       }
 
-      <View style={[_styles.forget_pwd_container]}>
-        <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
-          <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
-        </TouchableOpacity>
-      </View>
+      <View style={_styles.pwd_top_space}/>
+
+      {
+        systemInfo?.switchCoinPwd == '1' && <View style={_styles.forget_pwd_container}>
+          <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
+            <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
+          </TouchableOpacity>
+        </View>
+      }
       {
         userInfo?.yuebaoSwitch &&
-        <View style={[_styles.forget_pwd_container, { marginTop: 0 }]}>
+        <View style={_styles.forget_pwd_container}>
           <TouchableOpacity onPress={() => setWithdrawType(1)}>
             <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{
               '切换到' + systemInfo?.yuebaoName + '取款'
@@ -359,7 +367,7 @@ const WithdrawPage = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         {
-          tabIndex == 0 ? renderToYuEBank() : renderToYuE()
+          tabIndex == 0 ? renderToYueBaoBank() : renderToYueBao()
         }
       </View>
   }
@@ -415,7 +423,7 @@ const _styles = StyleSheet.create({
     height: scale(44),
     alignItems: 'flex-start',
     justifyContent: 'center',
-    marginTop: scale(32),
+    marginTop: scale(8),
   },
   forget_pwd: {
     fontSize: scale(22),
@@ -461,6 +469,9 @@ const _styles = StyleSheet.create({
   bind_text: {
     fontSize: scale(22),
     marginLeft: scale(8),
+  },
+  pwd_top_space: {
+    height: scale(32)
   },
 
 
