@@ -40,6 +40,8 @@ const ForgetPasswordPage = ({ navigation, route }) => {
     setBankCard,
     phoneNumber,
     setPhoneNumber,
+    smsNumber,
+    setSmsNumber,
     fundPassword,
     setFundPassword,
     firstImage,
@@ -47,6 +49,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
     secondImage,
     setSecondImage,
     bindPassword,
+    sendSmsCode,
   } = UseForgetPassword()
 
   /**
@@ -59,8 +62,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => {
           ANHelper.callAsync(CMD.ASK_IMAGES,
             { value: '1' }).then((res) => {
-              ugLog('res 2 =', JSON.stringify(res))
-              if(res == null) return
+            if (res == null) return
 
             showLoading()
             api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
@@ -87,9 +89,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => {
           ANHelper.callAsync(CMD.ASK_IMAGES,
             { value: '1' }).then((res) => {
-            ugLog('res 22 =', JSON.stringify(res))
-
-            if(res == null) return
+            if (res == null) return
 
             showLoading()
             api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
@@ -99,7 +99,8 @@ const ForgetPasswordPage = ({ navigation, route }) => {
               }, () => {
                 hideLoading()
               })
-          })          }}>
+          })
+        }}>
           <View style={_styles.add_img}>
             {
               anyEmpty(secondImage) ?
@@ -115,6 +116,31 @@ const ForgetPasswordPage = ({ navigation, route }) => {
       </View>
     </View>
   }
+
+  const renderPhone = () => <View>
+    <View style={_styles.bank_bank_name_2nd_container}>
+      <TextInput style={_styles.input_name}
+                 onChangeText={text => setPhoneNumber(text)}
+                 placeholder={'输入手机号'}/>
+    </View>
+    {
+      systemInfo?.switchCoinPwdSms == '1' && <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   onChangeText={text => setSmsNumber(text)}
+                   placeholder={'输入短信验证码'}/>
+        <Button title={'获取短信验证码'}
+                titleStyle={_styles.verify_code_text}
+                containerStyle={[_styles.verify_code_bt,
+                  { backgroundColor: Skin1.themeColor }]}
+                onPress={() => {
+                  sendSmsCode()
+
+                }}/>
+
+      </View>
+    }
+
+  </View>
 
   /**
    * 绘制绑定密码
@@ -132,11 +158,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
       }
       {
         systemInfo?.coinPwdAuditOptionAry?.includes('mobile') ?
-          <View style={_styles.bank_bank_name_2nd_container}>
-            <TextInput style={_styles.input_name}
-                       onChangeText={text => setPhoneNumber(text)}
-                       placeholder={'输入手机号'}/>
-          </View> :
+          renderPhone() :
           null
       }
       <View style={_styles.bank_bank_name_2nd_container}>
@@ -219,6 +241,16 @@ const _styles = StyleSheet.create({
     width: '100%',
     height: scale(66),
     borderRadius: scale(8),
+  },
+  verify_code_text: {
+    fontSize: scale(20),
+    color: 'white',
+  },
+  verify_code_bt: {
+    width: scale(200),
+    height: scale(44),
+    borderRadius: scale(8),
+    marginHorizontal: scale(8),
   },
   add_img_text: {
     fontSize: scale(24),

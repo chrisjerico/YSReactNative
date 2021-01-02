@@ -19,6 +19,7 @@ const UseForgetPassword = () => {
 
   const [bankCard, setBankCard] = useState(null) //银行卡
   const [phoneNumber, setPhoneNumber] = useState(null) //请输入手机号
+  const [smsNumber, setSmsNumber] = useState(null) //请输入手机号验证码
   const [fundPassword, setFundPassword] = useState(null) //设置资金密码
   const [firstImage, setFirstImage] = useState(null) //设置第一张图片
   const [secondImage, setSecondImage] = useState(null) //设置第2张图片
@@ -49,24 +50,42 @@ const UseForgetPassword = () => {
       bankNo: bankCard,
       coinpwd: fundPassword,
       mobile: phoneNumber,
+      smsCode: smsNumber,
       identityPathDot: `${firstImage},${secondImage}`
     })
 
     hideLoading()
 
+    Toast(result?.data?.msg)
     ugLog('result?.data = ', result?.data)
     if (result?.data?.code == 0) {
-      Toast('设置密码成功')
 
-      userInfo.hasFundPwd = true
-      UGStore.dispatch({ type: 'merge', userInfo: { hasFundPwd: true } })
-      UGStore.save()
-
-    } else {
-      Toast(result?.data?.msg)
     }
 
     return result?.data?.code
+  }
+
+  /**
+   * 发送短信验证码
+   */
+  const sendSmsCode = () => {
+    if (systemInfo?.coinPwdAuditOptionAry?.includes('mobile') &&
+      anyEmpty(phoneNumber)) {
+      Toast('请填写手机号')
+      return
+    }
+
+    showLoading()
+    APIRouter.secure_smsCaptcha(phoneNumber, 'changeCoinPwd').then(res => {
+      ugLog('result?.data = ', res?.data)
+      Toast(res?.data?.msg)
+      if (res?.data?.code == 0) {
+
+      }
+
+    }).finally(() => {
+      hideLoading()
+    })
   }
 
   return {
@@ -76,6 +95,8 @@ const UseForgetPassword = () => {
     setBankCard,
     phoneNumber,
     setPhoneNumber,
+    smsNumber,
+    setSmsNumber,
     fundPassword,
     setFundPassword,
     firstImage,
@@ -83,17 +104,8 @@ const UseForgetPassword = () => {
     secondImage,
     setSecondImage,
     bindPassword,
+    sendSmsCode,
   }
-}
-
-/**
- * 绑定密码
- */
-interface IBindPassword {
-  login_pwd?: string, //登录密码
-  fund_pwd?: string, //取款密码
-  fund_pwd2?: string, //取款密码
-  callBack?: () => void //成功回调
 }
 
 export default UseForgetPassword

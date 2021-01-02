@@ -393,6 +393,8 @@ class APIRouter {
       Toast('请登录')
       return null
     }
+
+    ugLog('xx=', JSON.stringify(params))
     return httpClient.post<NormalModel>('c=user&a=applyCoinPwd', params)
   }
 
@@ -711,8 +713,12 @@ class APIRouter {
       },
     })
   }
-  static secure_smsCaptcha = async (phone) => {
-    return httpClient.post('c=secure&a=smsCaptcha', { phone: phone })
+
+  static secure_smsCaptcha = async (phone, action?) => {
+    return httpClient.post('c=secure&a=smsCaptcha', {
+      phone,
+      action,
+    })
   }
 
   static system_config = async () => {
@@ -739,7 +745,7 @@ class APIRouter {
         },
         {
           noToken: true,
-        } as any
+        } as any,
       )
     } catch (error) {
       throw error
