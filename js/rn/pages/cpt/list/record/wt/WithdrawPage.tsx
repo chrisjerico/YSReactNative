@@ -46,6 +46,7 @@ const WithdrawPage = ({ navigation, route }) => {
     showAddBank,
     requestManageBankData,
     confirmWithdraw,
+    yuebaoWithdraw,
     yueBao2YuE,
   } = UseWithdraw()
 
@@ -77,9 +78,9 @@ const WithdrawPage = ({ navigation, route }) => {
   </View>
 
   /**
-   * 绘制取款到余额
+   * 利息宝绘制取款到余额
    */
-  const renderToYuE = () => <View style={_styles.item_pwd_container}>
+  const renderToYueBao = () => <View style={_styles.item_pwd_container}>
     <View style={_styles.input_container}>
       <TextInput style={_styles.input_name}
                  keyboardType={'numeric'}
@@ -139,9 +140,9 @@ const WithdrawPage = ({ navigation, route }) => {
   }
 
   /**
-   * 绘制输入金额和密码
+   * 利息宝绘制输入金额和密码
    */
-  const renderYuEInputAmount = () => {
+  const renderYueBaoInputAmount = () => {
     //找出当前是银行卡还是支付宝等等
     let tipsItem = bankCardData?.allAccountList?.find((item) => item?.type?.toString() == curBank?.type)
 
@@ -175,7 +176,7 @@ const WithdrawPage = ({ navigation, route }) => {
               containerStyle={[_styles.submit_bt,
                 { backgroundColor: Skin1.themeColor }]}
               onPress={() => {
-                confirmWithdraw().then(res => {
+                yuebaoWithdraw().then(res => {
                   if (res == 0) {
                     refreshTabPage(CapitalConst.WITHDRAWAL_RECORD)
                   }
@@ -187,7 +188,7 @@ const WithdrawPage = ({ navigation, route }) => {
   /**
    * 绘制取款到余额宝银行卡
    */
-  const renderToYuEBank = () => {
+  const renderToYueBaoBank = () => {
 
     return <View style={_styles.item_pwd_container}>
 
@@ -206,7 +207,7 @@ const WithdrawPage = ({ navigation, route }) => {
       {
         curBank?.notBind ?
           renderBind() :
-          renderYuEInputAmount()
+          renderYueBaoInputAmount()
       }
 
       {
@@ -366,7 +367,7 @@ const WithdrawPage = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         {
-          tabIndex == 0 ? renderToYuEBank() : renderToYuE()
+          tabIndex == 0 ? renderToYueBaoBank() : renderToYueBao()
         }
       </View>
   }

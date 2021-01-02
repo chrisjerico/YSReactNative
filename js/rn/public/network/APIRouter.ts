@@ -336,6 +336,20 @@ class APIRouter {
   }
 
   /**
+   * 利息宝提现申请
+   *
+   */
+  static yuebao_transferToBank = async (params: IRequestWithdrawParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+
+    ugLog('transferToBank=', JSON.stringify(params))
+    return httpClient.post<NormalModel>('c=yuebao&a=transferToBank', params)
+  }
+
+  /**
    * 利息宝转入转出
    *
    */
