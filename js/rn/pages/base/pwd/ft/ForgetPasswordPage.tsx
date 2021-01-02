@@ -15,6 +15,10 @@ import { NA_DATA } from '../../../../public/define/ANHelper/hp/DataDefine'
 import { ugLog } from '../../../../public/tools/UgLog'
 import FastImage from 'react-native-fast-image'
 import { anyEmpty } from '../../../../public/tools/Ext'
+import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
+import { hideLoading, showLoading, showSuccess } from '../../../../public/widget/UGLoadingCP'
+import { UGStore } from '../../../../redux/store/UGStore'
+import APIRouter from '../../../../public/network/APIRouter'
 
 interface IRouteParams {
   onCallback?: () => any, //设置密码成功
@@ -34,6 +38,8 @@ const ForgetPasswordPage = ({ navigation, route }) => {
     systemInfo,
     bankCard,
     setBankCard,
+    phoneNumber,
+    setPhoneNumber,
     fundPassword,
     setFundPassword,
     firstImage,
@@ -44,64 +50,108 @@ const ForgetPasswordPage = ({ navigation, route }) => {
   } = UseForgetPassword()
 
   /**
+   * 绘制提交身份证
+   */
+  const renderIdCard = () => {
+    return <View style={_styles.add_img_container}>
+      <Text style={_styles.add_img_text}>{'身份证正反面: '}</Text>
+      <View style={_styles.add_img_bt_container}>
+        <TouchableOpacity onPress={() => {
+          ANHelper.callAsync(CMD.ASK_IMAGES,
+            { value: '1' }).then((res) => {
+              ugLog('res 2 =', JSON.stringify(res))
+              if(res == null) return
+
+            showLoading()
+            api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
+              ({ data, msg }) => {
+                hideLoading()
+                setFirstImage(data?.url)
+              }, () => {
+                hideLoading()
+              })
+          })
+        }}>
+          <View style={_styles.add_img}>
+            {
+              anyEmpty(firstImage) ?
+                <Icon size={scale(72)}
+                      color={Skin1.themeColor}
+                      name={'plus'}/> :
+                <Image source={{ uri: firstImage }}
+                       style={_styles.id_image}
+                       resizeMode={'stretch'}/>
+            }
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          ANHelper.callAsync(CMD.ASK_IMAGES,
+            { value: '1' }).then((res) => {
+            ugLog('res 22 =', JSON.stringify(res))
+
+            if(res == null) return
+
+            showLoading()
+            api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
+              ({ data, msg }) => {
+                hideLoading()
+                setSecondImage(data?.url)
+              }, () => {
+                hideLoading()
+              })
+          })          }}>
+          <View style={_styles.add_img}>
+            {
+              anyEmpty(secondImage) ?
+                <Icon size={scale(72)}
+                      color={Skin1.themeColor}
+                      name={'plus'}/> :
+                <Image source={{ uri: secondImage }}
+                       style={_styles.id_image}
+                       resizeMode={'stretch'}/>
+            }
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  }
+
+  /**
    * 绘制绑定密码
    */
   const renderBindPwd = () => <View style={_styles.item_pwd_container}>
     <View style={_styles.item_pwd_content}>
-      <View style={_styles.bank_bank_name_2nd_container}>
-        <TextInput style={_styles.input_name}
-                   secureTextEntry={true}
-                   onChangeText={text => setBankCard(text)}
-                   placeholder={'输入提款银行卡号'}/>
-      </View>
+      {
+        systemInfo?.coinPwdAuditOptionAry?.includes('bank') ?
+          <View style={_styles.bank_bank_name_2nd_container}>
+            <TextInput style={_styles.input_name}
+                       onChangeText={text => setBankCard(text)}
+                       placeholder={'输入提款银行卡号'}/>
+          </View> :
+          null
+      }
+      {
+        systemInfo?.coinPwdAuditOptionAry?.includes('mobile') ?
+          <View style={_styles.bank_bank_name_2nd_container}>
+            <TextInput style={_styles.input_name}
+                       onChangeText={text => setPhoneNumber(text)}
+                       placeholder={'输入手机号'}/>
+          </View> :
+          null
+      }
       <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
                    maxLength={4}
                    secureTextEntry={true}
+                   keyboardType={'numeric'}
                    onChangeText={text => setFundPassword(text)}
                    placeholder={'新的四位取款密码'}/>
       </View>
-      <View style={_styles.add_img_container}>
-        <Text style={_styles.add_img_text}>{'身份证正反面: '}</Text>
-        <View style={_styles.add_img_bt_container}>
-          <TouchableOpacity onPress={() => {
-            ANHelper.callAsync(CMD.ASK_IMAGES, { value: '1' }).then((res) => {
-              // ugLog('res image 1 = ', JSON.parse(res)[0]?.compressPath)
-              setFirstImage(JSON.parse(res)[0]?.compressPath)
-            })
-          }}>
-            <View style={_styles.add_img}>
-              {
-                anyEmpty(firstImage) ?
-                  <Icon size={scale(72)}
-                        color={Skin1.themeColor}
-                        name={'plus'}/> :
-                  <Image source={{ uri: `file://${firstImage}` }}
-                         style={_styles.id_image}
-                         resizeMode={'stretch'}/>
-              }
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-            ANHelper.callAsync(CMD.ASK_IMAGES, { value: '1' }).then((res) => {
-              ugLog('res image 2 = ', res)
-              setSecondImage(JSON.parse(res)[0]?.compressPath)
-            })
-          }}>
-            <View style={_styles.add_img}>
-              {
-                anyEmpty(secondImage) ?
-                  <Icon size={scale(72)}
-                        color={Skin1.themeColor}
-                        name={'plus'}/> :
-                  <Image source={{ uri: `file://${secondImage}` }}
-                         style={_styles.id_image}
-                         resizeMode={'stretch'}/>
-              }
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+      {
+        systemInfo?.coinPwdAuditOptionAry?.includes('id') ?
+          renderIdCard() :
+          null
+      }
     </View>
 
     <Button title={'提交'}
@@ -109,15 +159,11 @@ const ForgetPasswordPage = ({ navigation, route }) => {
             containerStyle={[_styles.submit_bt,
               { backgroundColor: Skin1.themeColor }]}
             onPress={() => {
-              // bindPassword({
-              //   login_pwd: loginPwd,
-              //   fund_pwd: fundPwd,
-              //   fund_pwd2: fundPwd2,
-              //   callBack: () => {
-              //     onCallback && onCallback()
-              //     pop()
-              //   },
-              // })
+              bindPassword().then((res) => {
+                if (res == 0) {
+                  onCallback && onCallback()
+                }
+              })
 
             }}/>
   </View>

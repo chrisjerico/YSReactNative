@@ -6,6 +6,7 @@ import { Toast } from '../../../../public/tools/ToastUtils'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import md5 from 'blueimp-md5'
 import { useState } from 'react'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 忘记密码
@@ -26,11 +27,20 @@ const UseForgetPassword = () => {
    * 绑定密码
    */
   const bindPassword = async () => {
-    if (anyEmpty(bankCard)) {
+    if (systemInfo?.coinPwdAuditOptionAry?.includes('bank') &&
+      anyEmpty(bankCard)) {
       Toast('请填写银行卡号')
+      return
+    } else if (systemInfo?.coinPwdAuditOptionAry?.includes('mobile') &&
+      anyEmpty(phoneNumber)) {
+      Toast('请填写手机号')
       return
     } else if (anyEmpty(fundPassword)) {
       Toast('请输入您的4位数字提款密码')
+      return
+    } else if (systemInfo?.coinPwdAuditOptionAry?.includes('id') &&
+      (anyEmpty(firstImage) || anyEmpty(secondImage))) {
+      Toast('请上传身份证的正反面图片')
       return
     }
 
@@ -39,11 +49,12 @@ const UseForgetPassword = () => {
       bankNo: bankCard,
       coinpwd: fundPassword,
       mobile: phoneNumber,
-      identityPathDot: ''
+      identityPathDot: `${firstImage},${secondImage}`
     })
 
     hideLoading()
 
+    ugLog('result?.data = ', result?.data)
     if (result?.data?.code == 0) {
       Toast('设置密码成功')
 
@@ -63,6 +74,8 @@ const UseForgetPassword = () => {
     systemInfo,
     bankCard,
     setBankCard,
+    phoneNumber,
+    setPhoneNumber,
     fundPassword,
     setFundPassword,
     firstImage,
