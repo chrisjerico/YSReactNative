@@ -16,8 +16,8 @@ export class api_team {
   }
 
   // 下线信息
-  static inviteList() {//下线级别0(全部)，1(1级下线)、2(2级下线)、3(3级下线)
-    return this.c.get('inviteList');
+  static inviteList(level: number, page = 1, rows = 20) {//下线级别0(全部)，1(1级下线)、2(2级下线)、3(3级下线)
+    return this.c.get('inviteList',{ level: level, page: page, rows: rows });
   }
 
   // 下线投注报表信息
