@@ -20,8 +20,8 @@ export async function setRnPageInfo() {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
-      vcName: 'RedEnvelopeVCViewController',
-      rnName: PageName.JDRedEnveloperPage,
+      vcName: 'UGPromotionIncomeController',
+      rnName: PageName.JDPromotionIncomePage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -92,7 +92,14 @@ export async function setRnPageInfo() {
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
-
+ // 申请代理
+  pages.push({
+    vcName: 'UGAgentViewController',
+    rnName: PageName.JDAgentPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
 //红包扫雷
  pages.push({
     vcName: 'RedEnvelopeVCViewController',
