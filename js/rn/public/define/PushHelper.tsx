@@ -424,12 +424,12 @@ export default class PushHelper {
         let subId = ''
         switch (code) {
           case UGUserCenterType.存款: {
-            if (B_DEBUG) {
+            // if (B_DEBUG) {
               push(PageName.CapitalPage)
-              // return
-            }
-            subId = MenuType.CZ
-            break
+              return
+            // }
+            // subId = MenuType.CZ
+            // break
           }
           case UGUserCenterType.每日签到: {
             subId = MenuType.QD
