@@ -116,5 +116,5 @@ export enum PageName {
   VietnamRegister = 'VietnamRegister',
   VietnamMine = 'VietnamMine',
   VietnamGameList = 'VietnamGameList',
-  
+  BtcPayPage = "BtcPayPage"
 }
