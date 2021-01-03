@@ -138,10 +138,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   FeedbackRecordView, //建议反馈记录
   SupFeedbackSubmitView, //建议反馈记录反馈
   TransferRecordView, //额度转页记录
-  TransferView, //额度转页
-  TransferLineView, //额度转页
-  TransferTKLMainView, //额度转页
-  TransferLineView, //额度转页
+  TransferView, //额度转页-经典版
+  TransferLineView, //额度转页-天空蓝版
+  TransferTKLMainView, //额度转页-新版
   IncomeRecommendPage,
   JDAgentPage,//申请代理
   JDRedEnveloperPage,//红包扫雷
