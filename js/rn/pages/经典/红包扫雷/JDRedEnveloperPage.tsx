@@ -145,7 +145,9 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
 
     }, (err) => {
       console.log('err = ', err);
-      // setProps()
+      v.state.isRefreshing = false
+      v.state.showFoot = 2
+      setProps()
       // Toast(err.message)
     });
   }

@@ -14,6 +14,9 @@ import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
 import { ugLog } from '../../../public/tools/UgLog';
 import { PromotionConst } from '../const/PromotionConst';
 import { Badge, Button } from 'react-native-elements';
+
+
+
 interface JDPromotionTablePage {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
@@ -56,7 +59,7 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
   //初始化
   useEffect(() => {
     setProps({
-      navbarOpstions: { hidden: false, title: pageTitle },
+      navbarOpstions: { hidden: false, title: pageTitle,back: true },
       didFocus: () => {
         v.pageTitle = pageTitle;
         v.titleArray = titleArray;
@@ -70,7 +73,7 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
 
       }
     })
-  }, [{}])
+  }, [])
 
   /**
   * 下拉刷新

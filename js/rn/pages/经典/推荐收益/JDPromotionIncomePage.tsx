@@ -13,7 +13,6 @@ import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
 import { ugLog } from '../../../public/tools/UgLog';
 import JDPromotionTablePage from './JDPromotionTablePage';
 import { PromotionConst } from '../const/PromotionConst';
-
 interface JDPromotionIncomePage {
   tabNames?: Array<string>//tab界面名称数据
 }
@@ -100,27 +99,37 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
   const renderRecordList = (item: string) => {
     switch (item) {
       case "推荐信息":
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
       case PromotionConst.会员管理:
         return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.投注报表:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.投注记录:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.域名绑定:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.存款报表:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.存款记录:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.提款报表:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.提款记录:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.真人报表:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
       case PromotionConst.真人记录:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <View />
+        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
     }
   }
 

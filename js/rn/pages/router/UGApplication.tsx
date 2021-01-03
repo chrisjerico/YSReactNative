@@ -100,6 +100,9 @@ import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 import JDPromotionIncomePage from '../经典/推荐收益/JDPromotionIncomePage'
+import JDPromotionTablePage from '../经典/推荐收益/JDPromotionTablePage'
+import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMemberPage'
+
 
 /**
  * 所有界面
@@ -147,6 +150,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDAgentPage,//申请代理
   JDRedEnveloperPage,//红包扫雷
   JDPromotionIncomePage,//推荐收益
+  JDPromotionTablePage,//
+  JDPromotionTabMemberPage,//
 
   // ———————————— 模板页面 —————————————
 
