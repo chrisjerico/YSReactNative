@@ -220,7 +220,7 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
         >
           <View style={styles.foot}>
             <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
-              上拉重新加载
+              上拉加载
               </Text>
           </View>
         </TouchableOpacity>
