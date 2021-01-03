@@ -106,11 +106,11 @@ export default class UGSkinManagers extends UGThemeColor {
 
   // 应用主题色到iOS原生代码
   static async updateOcSkin() {
-    const skin = Skin1
-    if (Platform.OS != 'ios') {
-      return
-    }
+    if (Platform.OS != 'ios') return
+    if (Skin1.skitType == '默认') return
+
     // 已上线模板
+    const skin = Skin1
     const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('香槟金') != -1 || skin.skitType.indexOf('威尼斯') != -1 || skin.skitType.indexOf('宝石红') != -1
     const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin
     if (!ok) return

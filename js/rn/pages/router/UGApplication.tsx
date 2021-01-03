@@ -139,6 +139,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   SupFeedbackSubmitView, //建议反馈记录反馈
   TransferRecordView, //额度转页记录
   TransferView, //额度转页
+  TransferLineView, //额度转页
   TransferTKLMainView, //额度转页
   TransferLineView, //额度转页
   IncomeRecommendPage,
