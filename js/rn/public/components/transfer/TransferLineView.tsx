@@ -68,10 +68,24 @@ export const TransferLineView = () => {
 
   return (
     <View bounces={false} style={{ backgroundColor: '#f5f5f5', flex: 1 }}>
-      <Header />
-      <UserContent />
-      <TabBar setActiveTab={setActiveTab} activeTab={activeTab} />
-      {activeTab == 0 ? <ScrollView bounces={true} style={{ backgroundColor: '#f5f5f5' }}>
+      <View>
+        <Header />
+        <UserContent />
+        <TabBar setActiveTab={setActiveTab} activeTab={activeTab} />
+        {(open || open2) && <TouchableWithoutFeedback style={{
+          width: AppDefine.width,
+          height: AppDefine.height + 150,
+        }} onPress={onGreyBGPress}>
+          <View style={{
+            backgroundColor: 'rgba(0,0,0, 0.1)',
+            width: AppDefine.width,
+            height: AppDefine.height + 150,
+            position: 'absolute',
+          }} />
+        </TouchableWithoutFeedback>}
+      </View>
+      {activeTab == 0 ?
+        <ScrollView bounces={true} style={{ backgroundColor: '#f5f5f5', zIndex: 2 }}>
           <FlatList
             style={{ backgroundColor: '#fff' }}
             stickyHeaderIndices={[0]}
@@ -242,20 +256,20 @@ export const TransferLineView = () => {
               </View>
             </TouchableOpacity>
           </View>
+          {(open || open2) && <TouchableWithoutFeedback style={{
+            width: AppDefine.width,
+            height: AppDefine.height + 150,
+          }} onPress={onGreyBGPress}>
+            <View style={{
+              backgroundColor: 'rgba(0,0,0, 0.1)',
+              width: AppDefine.width,
+              height: AppDefine.height + 150,
+              position: 'absolute',
+            }} />
+          </TouchableWithoutFeedback>}
         </ScrollView> :
         <TransferLineRecordView />
       }
-      {(open || open2) && <TouchableWithoutFeedback style={{
-        width: AppDefine.width,
-        height: AppDefine.height + 150,
-      }} onPress={onGreyBGPress}>
-        <View style={{
-          backgroundColor: 'rgba(0,0,0, 0.1)',
-          width: AppDefine.width,
-          height: AppDefine.height + 150,
-          position: 'absolute',
-        }} />
-      </TouchableWithoutFeedback>}
     </View>
   )
 }
@@ -374,11 +388,11 @@ const TabBar = ({ activeTab, setActiveTab }) => {
           borderBottomWidth: activeTab == 0 ? 2 : 0,
           alignItems: 'center',
           justifyContent: 'center',
-          borderColor: Skin1.textColor2,
+          borderColor: activeTab == 0 ? Skin1.themeColor : Skin1.textColor2,
         }}>
           <Text style={{
             fontSize: 14,
-            color: Skin1.textColor2,
+            color: activeTab == 0 ? Skin1.themeColor : Skin1.textColor2,
           }}>额度转换</Text>
         </View>
       </TouchableWithoutFeedback>
@@ -389,14 +403,14 @@ const TabBar = ({ activeTab, setActiveTab }) => {
           paddingHorizontal: 32,
           paddingVertical: 12,
           borderBottomWidth: activeTab == 1 ? 2 : 0,
-          borderColor: Skin1.textColor2,
+          borderColor: activeTab == 1 ? Skin1.themeColor : Skin1.textColor2,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
           <Text
             style={{
               fontSize: 14,
-              color: Skin1.textColor2,
+              color: activeTab == 1 ? Skin1.themeColor : Skin1.textColor2,
             }}>转换记录</Text>
         </View>
       </TouchableWithoutFeedback>
@@ -416,9 +430,9 @@ const WalletTabBar = ({ activeTab, setActiveTab, data }) => {
               alignItems: 'center',
               borderBottomWidth: activeTab == item ? 2 : 1,
               paddingVertical: 16,
-              borderColor: activeTab == item ? Skin1.textColor2 : Skin1.textColor3,
+              borderColor: activeTab == item ? Skin1.themeColor : '#dddddd',
             }}>
-              <Text style={{ color: activeTab == item ? Skin1.textColor2 : Skin1.textColor3 }}>{item.title}</Text>
+              <Text style={{ color: activeTab == item ? Skin1.themeColor : Skin1.textColor2 }}>{item.title}</Text>
             </View>
           </TouchableWithoutFeedback>
         ) : <></>
