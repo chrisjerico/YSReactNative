@@ -17,7 +17,7 @@ import { hideLoading, showLoading } from '../../../../../public/widget/UGLoading
 import { pop } from '../../../../../public/navigation/RootNavigation'
 
 /**
- * 银行卡管理
+ * 提现界面
  * @constructor
  */
 const UseWithdraw = () => {

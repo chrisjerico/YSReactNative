@@ -19,11 +19,11 @@ import NeedNameInputComponent from '../../../../../public/components/tars/NeedNa
 import { ugLog } from '../../../../../public/tools/UgLog'
 
 /**
- * 添加银行卡管理
+ * 提现界面
  * @param navigation
  * @constructor
  */
-const WithdrawPage = ({ navigation, route }) => {
+const WithdrawComponent = ({ navigation, route }) => {
 
   const needNameInputRef = useRef(null)
   const { getYueBaoInfo, refreshTabPage } = useContext(CapitalContext) //余额宝信息
@@ -500,4 +500,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default WithdrawPage
+export default WithdrawComponent
