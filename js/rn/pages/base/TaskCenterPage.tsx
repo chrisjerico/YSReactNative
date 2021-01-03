@@ -3,10 +3,10 @@ import { pop } from '../../public/navigation/RootNavigation'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MineHeader from '../../public/views/tars/MineHeader'
-import { View, Text } from 'react-native'
+import { View, Text, Image, TouchableWithoutFeedback } from 'react-native'
 import Avatar from '../../public/views/tars/Avatar'
 import AppDefine from '../../public/define/AppDefine'
-import ReLoadBalanceComponent from '../../public/components/temp/ReLoadBalanceComponent'
+import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 
 const ExpBar = () => {
@@ -64,7 +64,17 @@ const TaskCenterPage = () => {
             <ExpBar />
           </View>
         </View>
-        <View style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center' }}></View>
+        <View style={{ flex: 1, justifyContent: 'space-around', paddingVertical: 50 }}>
+          <TouchableWithoutFeedback>
+            <Image source={{ uri: 'lqfl' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <Image source={{ uri: 'lqfl' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <Image source={{ uri: 'lqfl' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+          </TouchableWithoutFeedback>
+        </View>
       </View>
       <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false} showIndicator={false}>
         <TaskLobby tabLabel={'任务大厅'} key={'任务大厅'} />
