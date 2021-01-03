@@ -45,11 +45,11 @@ export const AlipayView = ({ setProps }) => {
   }
 
   return (
-    <View>
-      <Header setShowMoneyImg={setShowMoneyImg} setProps={setProps} name={yuebao?.yuebaoName} />
+    <View style={{backgroundColor: '#fff'}}>
+      <Header setShowMoneyImg={setShowMoneyImg} setProps={setProps} name={yuebao?.yuebaoName} getYuebao={getYuebao} />
       <View style={{ alignItems: 'center', marginTop: 24 }}>
         <Text style={{ color: Skin1.textColor2 }}>今日收益(元)</Text>
-        <Text style={{ marginTop: 16, fontSize: 30 }}>0</Text>
+        <Text style={{ marginTop: 16, fontSize: 30 }}>{yuebao?.todayProfit || 0}</Text>
         <View style={{ flexDirection: 'row', marginTop: 12 }}>
           <Text style={{ color: Skin1.textColor2 }}>{yuebao?.yuebaoName || ''}余额：</Text>
           <Text style={{ color: '#fb4f48' }}>{`${yuebao?.balance || 0.0000000000}元`}</Text>
@@ -74,7 +74,7 @@ export const AlipayView = ({ setProps }) => {
             }}>
             <Text style={{
               fontSize: 18,
-              color: Skin1.isBlack ? '#ffffff' : '#111111',
+              color: '#111111',
             }}>{yuebao?.weekProfit ? yuebao?.weekProfit : 0}</Text>
             <Text style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>本周收益</Text>
           </View>
@@ -90,7 +90,7 @@ export const AlipayView = ({ setProps }) => {
             <Text
               style={{
                 fontSize: 18,
-                color: Skin1.isBlack ? '#ffffff' : '#111111',
+                color: '#111111',
               }}>{yuebao?.monthProfit ? yuebao?.monthProfit : 0}</Text>
             <Text style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>本月收益</Text>
           </View>
@@ -98,7 +98,7 @@ export const AlipayView = ({ setProps }) => {
             <Text
               style={{
                 fontSize: 18,
-                color: Skin1.isBlack ? '#ffffff' : '#111111',
+                color: '#111111',
               }}>{yuebao?.totalProfit ? yuebao?.totalProfit : 0}</Text>
             <Text style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>总收益</Text>
           </View>
@@ -161,7 +161,7 @@ export const AlipayView = ({ setProps }) => {
 }
 
 
-const Header = ({ setProps, name, setShowMoneyImg }) => {
+const Header = ({ setProps, name, setShowMoneyImg, getYuebao }) => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
@@ -197,7 +197,10 @@ const Header = ({ setProps, name, setShowMoneyImg }) => {
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
           }}>{name || ``}</Text>
           <View style={{ position: 'absolute', right: 12 }}>
-            <UrgeWithPleasureComponent setShowMoneyImg={setShowMoneyImg} />
+            <UrgeWithPleasureComponent  setShowMoneyImg={() => {
+              getYuebao()
+              setShowMoneyImg()
+            }} />
           </View>
         </View>
       </SafeAreaView>

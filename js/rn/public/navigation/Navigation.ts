@@ -107,6 +107,7 @@ export enum PageName {
   TransferRecordView = 'TransferRecordView',
   TransferTKLMainView = 'TransferTKLMainView',
   TransferView = 'TransferView',
+  TransferLineView = 'TransferLineView',
   SupFeedbackSubmitView = 'SupFeedbackSubmitView',
 
   GDRegisterPage = 'GDRegisterPage',
