@@ -176,8 +176,10 @@ const JDSigInPage = () => {
 
     }
 
-    // 网络请求========================================================================================================
-    //得到领取连续签到奖励数据
+   /**
+   * 得到领取连续签到奖励数据
+   * 
+   */
     function checkinBonusData(type: string) {
         console.log('123');
 
@@ -194,7 +196,11 @@ const JDSigInPage = () => {
 
         });
     }
-    //用户签到（签到类型：0是签到，1是补签）
+
+   /**
+   * 用户签到（签到类型：0是签到，1是补签）
+   * 
+   */
     function checkinDataWithType(type: string, date: string) {
         api.task.checkin(type, date).setCompletionBlock(({ data, msg }) => {
             // console.log('签到总开关', data.checkinSwitch);
@@ -210,7 +216,10 @@ const JDSigInPage = () => {
         });
     }
 
-    //用户签到列表
+   /**
+   * 用户签到列表
+   * 
+   */
     function checkinList() {
         api.task.checkinList().setCompletionBlock(({ data }) => {
             // console.log('签到总开关', data.checkinSwitch);

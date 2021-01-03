@@ -400,7 +400,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
-            push(PageName.ManageBankListComponent, {})
+            push(PageName.ManageBankListPage, {})
             break
           }
           case UGUserCenterType.即时注单: {
@@ -463,11 +463,31 @@ export default class PushHelper {
             subId = MenuType.TZJL
             break
           }
-          case UGUserCenterType.彩票注单记录: {
-            subId = MenuType.TZJL
+          case UGUserCenterType.其他注单记录: {
+            subId = MenuType.QTZD
             break
           }
-          case UGUserCenterType.其他注单记录: {
+          case UGUserCenterType.电子注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.捕鱼注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.电竞注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.真人注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.棋牌注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.体育注单: {
             subId = MenuType.QTZD
             break
           }
@@ -575,6 +595,7 @@ export default class PushHelper {
         if(!anyEmpty(subId)) {
           ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
             seriesId: '7',
+            subCode: code,
             subId: subId,
           })
         }

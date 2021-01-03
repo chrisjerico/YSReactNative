@@ -173,6 +173,10 @@ export default class UGSysConfModel {
   chatLink?: string // 聊天的链接*/
   mBonsSwitch?: boolean // 俸禄开关开启。0 为开启， 1 为 关闭
 
+  switchCoinPwdSms?: string // 资金密码开启短信验证
+  switchCoinPwd?: string // 是否打开忘记密码
+  coinPwdAuditOptionAry?: Array<string> //忘记密码有哪些选项 mobile, bank, id
+
   // 注册页
   hide_reco?: number // 代理人 0不填，1选填，2必填
   reg_name?: number // 真实姓名 0不填，1选填，2必填
