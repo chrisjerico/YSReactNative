@@ -121,5 +121,6 @@ export enum PageName {
   VietnamMine = 'VietnamMine',
   VietnamGameList = 'VietnamGameList',
   UGPromotionIncomeController = "UGPromotionIncomeController",
+  JDPromotionTabBettingReportPage = "JDPromotionTabBettingReportPage",
   JDPromotionTabMemberPage = "JDPromotionTabMemberPage"
 }

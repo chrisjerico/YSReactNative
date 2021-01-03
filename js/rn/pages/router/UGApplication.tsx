@@ -101,6 +101,7 @@ import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 import JDPromotionIncomePage from '../经典/推荐收益/JDPromotionIncomePage'
 import JDPromotionTablePage from '../经典/推荐收益/JDPromotionTablePage'
+import JDPromotionTabBettingReportPage from '../经典/推荐收益/JDPromotionTabBettingReportPage'
 import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMemberPage'
 
 
@@ -151,8 +152,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDRedEnveloperPage,//红包扫雷
   JDPromotionIncomePage,//推荐收益
   JDPromotionTablePage,//
-  JDPromotionTabMemberPage,//
-
+  JDPromotionTabBettingReportPage,//推荐收益--投注报表
+  JDPromotionTabMemberPage,//推荐收益--会员管理
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页
