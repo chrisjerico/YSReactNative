@@ -21,7 +21,7 @@ export class api_team {
   }
 
   // 下线投注报表信息
-  static betStat(level: number, startDate?: string, endDate?: string, page = 1, rows = 20) {
+  static betStat(level: string, startDate?: string, endDate?: string, page = 1, rows = 20) {
     return this.c.get('betStat', { level: level, startDate: startDate, endDate: endDate, page: page, rows: rows });
   }
 
