@@ -84,6 +84,33 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
   console.log('下拉刷新');
   teamBetStatData()
 }
+
+  /**
+* 点击刷新
+* 
+*/
+function onEndReached() {
+  console.log('onEndReached');
+  console.log('showFoot ==', v.state.showFoot);
+
+  //如果是正在加载中或没有更多数据了，则返回
+  if (v.state.showFoot != 0) {
+    console.log('正在加载中或没有更多数据了，则返回');
+    return;
+  }
+  //如果当前页大于或等于总页数，那就是到最后一页了，返回
+  if (v.state.isLastPage) {
+    console.log('当前页大于或等于总页数，那就是到最后一页了，则返回');
+    return;
+  }
+  //是否已是下拉刷新 返回     
+  if (v.state.isRefreshing) {
+    console.log('已是下拉刷新 返回  ');
+    return;
+  }
+  //获取数据
+  teamBetStatData();
+}
   /**
    * 根据数据是数组还是字典返回数据
    * 
@@ -132,13 +159,130 @@ function teamBetStatData() {
   });
 }
 
+
+  /**
+  * 数据为空展示页面
+  * 
+  */
+ const _renderListEmptyComp = () => {
+  return (
+    <View style={{
+      flex: 1,
+      height: AppDefine.height,
+      borderColor: '#E4E7EA',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Text style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</Text>
+    </View>
+  );
+}
+
+  /**
+* 上拉加载布局
+* 
+*/
+const renderFooter = () => {
+  if (v.state.showFoot === 0) {
+    return (
+      <TouchableOpacity onPress={() => {
+        onEndReached()
+      }}
+      >
+        <View style={styles.foot}>
+          <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            点击重新加载
+              </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  } else if (v.state.showFoot === 1) {
+    return (
+      <TouchableOpacity onPress={() => {
+        // onEndReached()  //测试的时候可以打开，打开也没有影响
+      }}
+      >
+        <View style={styles.foot}>
+          <ActivityIndicator />
+          <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            正在加载...
+            </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  } else if (v.state.showFoot === 2) {
+    return (
+      <TouchableOpacity onPress={() => {
+        // onEndReached()//测试的时候可以打开，打开也没有影响
+      }}
+      >
+        <View style={styles.foot}>
+          <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+
+          </Text>
+
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
+
+  /**
+* 渲染列表项
+* 
+*/
+  const _renderItem = ({ index, item }) => {
+    {
+      return (
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+          <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            {item.level == 1 ? '全部下线' : item.level + '级下线'}
+          </Text>
+          <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            {anyEmpty(item.date) ? '--' : item.date}
+          </Text>
+          <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            {item.bet_sum}
+          </Text>
+          <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            {item.fandian_sum}
+          </Text>
+        </View>
+      );
+    }
+  }
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.textColor4 }}>
-       <Text>你好</Text>
-      </View>
-
-    
+      <FlatList
+        data={v.items}
+        renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
+        keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
+        //下拉刷新
+        //设置下拉刷新样式
+        refreshControl={
+          <RefreshControl
+            title={"正在加载..."} //android中设置无效
+            colors={[Skin1.textColor2]} //android
+            tintColor={Skin1.textColor2} //ios
+            titleColor={Skin1.textColor2}
+            refreshing={v.state.isRefreshing}
+            // refreshing={isHeader}
+            onRefresh={() => {
+              onHeaderRefresh(); //下拉刷新加载数据
+            }}
+          />
+        }
+        //设置上拉加载
+        ListFooterComponent={() => renderFooter()}
+      // onEndReachedThreshold={0}//上拉刷新测试发现经常不触发
+      // onEndReached={() => {
+      //   onEndReached()
+      // }}
+      // onContentSizeChange={() => {
+      //   console.log('onContentSizeChange');
+      // }}
+      />
     </View >
   )
 
