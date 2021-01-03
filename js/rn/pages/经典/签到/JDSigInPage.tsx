@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, RefreshControl, Image, ImageBackgroun
 import { Button } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppDefine from '../../../public/define/AppDefine';
-import { useHtml5Image } from '../../../public/tools/tars';
+import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
 import React, { useEffect, useRef, useState, Component } from 'react'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { UGcheckinBonusModel, UGCheckinListModel, UGSignInModel } from '../../../redux/model/other/UGcheckinBonusModel';
@@ -18,7 +18,7 @@ import { JDSignInHistoryCP } from '../cp/JDSignInHistoryCP';
 import chroma from 'chroma-js';
 
 
-const { getHtml5Image, img_platform } = useHtml5Image('http://test10.6yc.com')
+const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test10)
 
 const JDSigInPage = () => {
 

@@ -4,7 +4,8 @@ import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
-import { icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
+import { icon_任务弹窗, icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
+import { UGStore } from '../../../redux/store/UGStore'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -43,30 +44,33 @@ export interface GoldenEgg {
 }
 
 const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
+  const { missionPopUpSwitch } = UGStore.globalProps.sysConf
   return (
     <>
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(220), right: 0 }}
+        containerStyle={{ top: scale(235), right: 0 }}
         show={redBag?.data}
         logo={redBagLogo}
         onPress={() => {
+          // 红包
           PushHelper.pushRedBag(redBag)
         }}
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(340), right: 0 }}
+        containerStyle={{ top: scale(355), right: 0 }}
         enableFastImage={false}
         show={uid && roulette}
         logo={ROULETTE_LOGO}
         onPress={() => {
+          // 大转盘
           PushHelper.pushWheel(roulette)
         }}
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(450), right: 0 }}
+        containerStyle={{ top: scale(465), right: 0 }}
         enableFastImage={false}
         show={uid && goldenEggs}
         logo={icon_砸金蛋}
@@ -74,13 +78,22 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(570), right: 0 }}
+        containerStyle={{ top: scale(590), right: 0 }}
         enableFastImage={false}
         show={uid && scratchs}
         logo={icon_刮刮乐}
         onPress={goToUserCenterType.刮刮乐}
       />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(590), left: 0 }}
+        enableFastImage={false}
+        show={uid && missionPopUpSwitch == '1'}
+        logo={icon_任务弹窗}
+        onPress={goToUserCenterType.任务弹窗}
+      />
       {floatAds?.map((item: any, index) => {
+        // 左上、右上、左下、右下浮窗
         const { image, position, linkCategory, linkPosition } = item
         return (
           <ActivityComponent

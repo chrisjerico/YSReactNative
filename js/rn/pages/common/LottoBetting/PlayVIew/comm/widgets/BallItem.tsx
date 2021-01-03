@@ -6,9 +6,9 @@ import {BALL_STYLES} from "../LotteryStyles";
 import {getHKballColor} from "../../lottoSetting";
 import {anyLength} from "../../../../../../public/tools/Ext";
 import FastImage from "react-native-fast-image";
-import { useHtml5Image } from "../../../../../../public/tools/tars";
+import { UGImageHost, useHtml5Image } from "../../../../../../public/tools/tars";
 
-const {img_assets} = useHtml5Image('http://test05.6yc.com')
+const {img_assets} = useHtml5Image(UGImageHost.test5)
 
 const BALL_TYPE = {
   ROUND_LINE: '圆形边框',

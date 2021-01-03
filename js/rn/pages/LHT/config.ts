@@ -1,8 +1,8 @@
-import { useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../public/tools/tars'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
-const { getHtml5Image, img_platform } = useHtml5Image('http://test05.6yc.com/')
+const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test5)
 
 const config = {
   defaultUserCenterLogos: {

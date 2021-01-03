@@ -1,6 +1,6 @@
-import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
 
-const { getHtml5Image, img_platform, img_assets } = useHtml5Image('http://t132f.fhptcdn.com')
+const { getHtml5Image, img_platform, img_assets } = useHtml5Image(UGImageHost.t132f)
 
 const config = {
   defaultUserCenterLogos: {

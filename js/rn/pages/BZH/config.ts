@@ -1,5 +1,5 @@
-import { useHtml5Image } from '../../public/tools/tars'
-const { getHtml5Image, img_platform } = useHtml5Image('http://test10.6yc.com/')
+import { UGImageHost, useHtml5Image } from '../../public/tools/tars'
+const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test10)
 
 const config = {
   defaultUserCenterLogos: {

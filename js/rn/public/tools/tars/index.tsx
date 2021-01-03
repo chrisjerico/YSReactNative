@@ -63,11 +63,21 @@ export const ToastStatus = (msg: any) => {
 
 type ImageType = 'png' | 'jpg' | 'gif' | 'svg'
 
-export const RES_BASE_URL = 'https://appstatic.guolaow.com/'
+export enum UGImageHost {
+  test5 = 'http://test05.6yc.com',
+  test10 = 'http://test10.6yc.com',
+  t132f = 'http://t132f.fhptcdn.com',
 
-export const useHtml5Image = (host: string = AppDefine.host) => {
+  // git仓库的图片
+  git = 'https://appstatic.guolaow.com',
+}
 
-  function getImage(pType: string, p1: string, p2?: string, suffix: ImageType = 'png') {
+export const useHtml5Image = (host?: UGImageHost) => {
+
+  function getImage(host: string, pType: string, p1: string, p2?: string, suffix: ImageType = 'png') {
+    // 不传host默认使用当前站点的接口域名
+    !host?.length && (host = AppDefine.host)
+
     // 替换 pType 中的 {p1}、{p2}
     let path: string
     if (p2?.length) {
@@ -82,34 +92,34 @@ export const useHtml5Image = (host: string = AppDefine.host) => {
   // 替换掉第一个入参中的 {p1}、{p2} 会得到完整路径
   return {
     getHtml5Image: (id: number, path: string, type: ImageType = 'png') =>
-      getImage('views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type),
+      getImage(host, 'views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type),
 
     img_mobileTemplate: (id: number, path: string, type: ImageType = 'png') =>
-      getImage('views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type),
+      getImage(host, 'views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type),
 
     img_home: (path: string, type: ImageType = 'png') =>
-      getImage('views/home/images/{p1}', path, undefined, type),
+      getImage(host, 'views/home/images/{p1}', path, undefined, type),
 
     img_platform: (siteId: string, path?: string, type: ImageType = 'png') =>
-      getImage('platform/{p1}/images/{p2}', siteId, path, type),
+      getImage(host, 'platform/{p1}/images/{p2}', siteId, path, type),
 
     img_images: (path: string, type: ImageType = 'png') =>
-      getImage('images/{p1}', path, undefined, type),
+      getImage(host, 'images/{p1}', path, undefined, type),
 
     img_assets: (path: string, type: ImageType = 'png') =>
-      getImage(RES_BASE_URL + '/{p1}', path, undefined, type),
+      getImage(UGImageHost.git, 'assets/{p1}', path, undefined, type),
   }
 }
 
 export const getActivityPosition = (position: number) => {
   if (position == 1) {
-    return { left: 0, top: scale(100) }
+    return { left: 0, top: scale(115) }
   } else if (position == 2) {
-    return { left: 0, bottom: scale(200) }
+    return { left: 0, top: scale(725) }
   } else if (position == 3) {
-    return { right: 0, top: scale(100) }
+    return { right: 0, top: scale(115) }
   } else if (position == 4) {
-    return { right: 0, bottom: scale(200) }
+    return { right: 0, top: scale(725) }
   } else {
     return {}
   }

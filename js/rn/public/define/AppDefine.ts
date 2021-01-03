@@ -1,3 +1,4 @@
+import { EdgeInsets } from 'react-native-safe-area-context';
 import { ANHelper } from './ANHelper/ANHelper'
 import { Dimensions, PixelRatio, Platform } from 'react-native'
 import { OCHelper } from './OCHelper/OCHelper'
@@ -10,6 +11,7 @@ export default class AppDefine {
   static siteId = '未知站点'
   static width = Dimensions.get('window').width
   static height = Dimensions.get('window').height
+  static safeArea: EdgeInsets
   static iOS = Platform.OS == 'ios'
   static onePx = 1 / PixelRatio.get()
   static defaultAvatar = 'https://appstatic.guolaow.com/assets/money-2.png'
