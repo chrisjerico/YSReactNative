@@ -218,7 +218,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     //设置一个计数器给用户倒计时
     const interval = setInterval(() => {
       // ugLog('counter=', counter)
-      setProps({ counter: counter + 1 })
+      counter <= MAX_TIME && setProps({ counter: counter + 1 })
     }, 1000)
     return () => {
       // ugLog('clear interval')
