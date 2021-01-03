@@ -1,4 +1,3 @@
-import BtcPayPage from '../../pages/cpt/list/record/pay/btc/BtcPayPage'
 
 export enum PageName {
   // ———————————— 通用页面 —————————————
@@ -16,6 +15,7 @@ export enum PageName {
   IncomeRecommendPage = 'IncomeRecommendPage',
   ManageBankListPage = 'ManageBankListPage',
   BtcPayPage = 'BtcPayPage',//虚拟币支付
+  BtcTutorialPage = 'BtcTutorialPage',//虚拟币教程
   CapitalPage = 'CapitalPage',//资金管理
   SetPasswordPage = 'SetPasswordPage',//取消界面
   ForgetPasswordPage = 'ForgetPasswordPage',//忘记密码

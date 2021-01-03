@@ -99,6 +99,7 @@ import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
+import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 
 
 /**
@@ -132,6 +133,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   OnlinePayPage, //在线支付
   TransferPayPage, //银行支付
   BtcPayPage, //虚拟币支付
+  BtcTutorialPage, //虚拟币教程
   AlipayView, //利息宝
   AlipayTransferView, //利息宝额度转
   AlipayTransferRecordView, //利息宝记录

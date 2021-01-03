@@ -1,11 +1,10 @@
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
+import { useContext } from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { scale } from '../../../../../public/tools/Scale'
-import { ugLog } from '../../../../../public/tools/UgLog'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import EmptyView from '../../../../../public/components/view/empty/EmptyView'
-import { DepositListData } from '../../../../../public/network/Model/wd/DepositRecordModel'
 import CommStyles from '../../../../base/CommStyles'
 import UsePayList from './UsePayList'
 import { PayAisleListData } from '../../../../../public/network/Model/wd/PayAisleModel'
@@ -15,8 +14,6 @@ import WebView from 'react-native-webview'
 import { push } from '../../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../../public/navigation/Navigation'
 import CapitalContext from '../../CapitalContext'
-import { useContext, useEffect } from 'react'
-import { CapitalConst } from '../../../const/CapitalConst'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 
 interface IRouteParams {
@@ -42,7 +39,7 @@ const PayListComponent = ({ navigation, route }) => {
    * 跳转虚拟币教程
    */
   const gotoBtcTutorial = (item: PayAisleListData) => {
-
+    push(PageName.BtcTutorialPage, {btc_type: item?.id})
   }
 
   /**
