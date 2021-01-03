@@ -62,6 +62,14 @@ export async function setRnPageInfo() {
       允许游客访问: true,
       允许未登录访问: true,
     })
+    //利息宝页
+    pages.push({
+      rnName: PageName.AlipayView,
+      userCenterItemCode: 4,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 申请代理
     pages.push({
       vcName: 'UGAgentViewController',
@@ -147,15 +155,6 @@ export async function setRnPageInfo() {
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  })
-
-  //利息宝页
-  pages.push({
-    rnName: PageName.AlipayView,
-    userCenterItemCode: 4,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: false,
-    允许未登录访问: false,
   })
 
   //建议反馈页
