@@ -13,6 +13,7 @@ import EmptyView from '../../../public/components/view/empty/EmptyView';
 import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
 import { ugLog } from '../../../public/tools/UgLog';
 import { PromotionConst } from '../const/PromotionConst';
+import { Badge, Button } from 'react-native-elements';
 interface JDPromotionTablePage {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
@@ -39,6 +40,7 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
     {
       pageTitle: pageTitle,
       titleArray: titleArray,
+      items:[],
       levelArray: ["全部下线", "1级下线", "2级下线", "3级下线", "4级下线", "5级下线", "6级下线", "7级下线", "8级下线", "9级下线", "10级下线"],
       pageSize: 20,
       pageNumber: 1,
@@ -58,15 +60,17 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       didFocus: () => {
         v.pageTitle = pageTitle;
         v.titleArray = titleArray;
-        v.items.length = 0;
+        v.items = [];
         v.pageNumber = 1;
         v.state.showFoot = 0;
         v.state.isRefreshing = true;
         v.state.isLastPage = false;
+        console.log('useEffect');
         onHeaderRefresh()
+
       }
     })
-  }, [])
+  }, [{}])
 
   /**
   * 下拉刷新
@@ -80,6 +84,7 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
   }
 
   function swithAction() {
+    console.log('pageTitle===',pageTitle);
     switch (pageTitle) {
       case PromotionConst.会员管理:
         {
@@ -156,10 +161,7 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
    * 
    */
   function teamInviteListData() {
-    let params = {
-      level: v.levelindex.toString(),
-      page: v.pageNumber,
-    }
+
     console.log('下线信息列表页码===', v.pageNumber);
     api.team.inviteList(v.levelindex, 1, v.pageSize).setCompletionBlock(({ data }) => {
       let dicData = data;
@@ -518,10 +520,10 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
     );
   }
 
-     /**
-   * 点击刷新
-   * 
-   */
+  /**
+* 点击刷新
+* 
+*/
   function onEndReached() {
     console.log('onEndReached');
     console.log('showFoot ==', v.state.showFoot);
@@ -546,10 +548,10 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
   }
 
 
-     /**
-   * 上拉加载布局
-   * 
-   */
+  /**
+* 上拉加载布局
+* 
+*/
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
       return (
@@ -595,17 +597,46 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
     }
   }
 
-     /**
-   * 渲染列表项
-   * 
-   */
+  /**
+* 渲染列表项
+* 
+*/
   const _renderItem = ({ index, item }) => {
     switch (pageTitle) {
       case PromotionConst.会员管理:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.username}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.is_online == 1 ? '在线' : '离线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.regtime) ? '--' : item.regtime}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.sunyi}
+              </Text>
+
+              {item.is_setting == '1' && <View style={{ flexDirection: 'row', marginTop: 9 }}>
+                <Button title={'充值'} containerStyle={{ width: 70, height: 30, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                  onPress={() => {
+
+                    console.log('充值')
+
+                  }} />
+                <Badge
+                  status={item.enable == '正常' ? "success" : "error"}
+                  containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+                />
+
+              </View>}
+
             </View>
           );
         }
@@ -613,8 +644,19 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.投注报表:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level == 1 ? '全部下线' : item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.date) ? '--' : item.date}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.bet_sum}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.fandian_sum}
+              </Text>
             </View>
           );
         }
@@ -622,8 +664,19 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.投注记录:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.username}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.date) ? '--' : item.date}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.money}
+              </Text>
             </View>
           );
         }
@@ -632,8 +685,13 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.域名绑定:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {'http://' + item.domain}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {'http://' + item.domain}
+              </Text>
             </View>
           );
         }
@@ -641,8 +699,19 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.存款报表:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level == 1 ? '全部下线' : item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.date) ? '--' : item.date}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.amount}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.member == 1 ? item.member + '人' : '--'}
+              </Text>
             </View>
           );
         }
@@ -650,8 +719,19 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.存款记录:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.username}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.date) ? '--' : item.date}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.amount}
+              </Text>
             </View>
           );
         }
@@ -659,8 +739,19 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.提款报表:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level == 1 ? '全部下线' : item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.date) ? '--' : item.date}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.amount}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.member == 1 ? item.member + '人' : '--'}
+              </Text>
             </View>
           );
         }
@@ -668,8 +759,19 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.提款记录:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level == 1 ? '全部下线' : item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.username}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.date) ? '--' : item.date}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.amount}
+              </Text>
             </View>
           );
         }
@@ -677,8 +779,22 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.真人报表:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level == 1 ? '全部下线' : item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.date) ? '--' : item.date}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.validBetAmount}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.netAmount}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.fandian_sum}
+              </Text>
             </View>
           );
         }
@@ -686,8 +802,25 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
       case PromotionConst.真人记录:
         {
           return (
-            <View style={[styles.viewItem, {  }]}>
-              
+            <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.level + '级下线'}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.username) ? '--' : item.username}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.platform) ? '--' : item.platform}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {anyEmpty(item.date) ? '--' : item.date}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.validBetAmount}
+              </Text>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+                {item.comNetAmount}
+              </Text>
             </View>
           );
         }
@@ -701,7 +834,7 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', height: scale(44), backgroundColor: Skin1.textColor4 }}>
+      <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.textColor4 }}>
         {v.titleArray?.map((title, idx) => {
           return (
             <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, }}
