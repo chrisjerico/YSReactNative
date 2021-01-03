@@ -127,7 +127,7 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
                 borderRadius: 4,
               }}>
                 <Text style={{
-                  color: active ? Skin1.tabSelectedColor : Skin1.textColor1,
+                  color: active ? Skin1.tabSelectedColor : '#111',
                   fontSize: 13,
                 }}>{text}</Text>
               </View>
