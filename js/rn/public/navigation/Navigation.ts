@@ -15,7 +15,7 @@ export enum PageName {
   ManageBankListComponent = 'ManageBankListComponent', //银行卡管理（我的提款账户列表）
   CapitalComponent = 'CapitalComponent', //存款取款资金明细
   AddBankComponent = 'AddBankComponent', //添加提款账户
-  IncomeRecommendPage = 'IncomeRecommendPage',
+  TaskCenterPage = 'TaskCenterPage',
   ManageBankListPage = 'ManageBankListPage', //银行卡管理（我的提款账户列表）
   CapitalPage = 'CapitalPage', //存款取款资金明细
   AddBankPage = 'AddBankPage', //添加提款账户
@@ -26,10 +26,9 @@ export enum PageName {
   JDSigInPage = 'JDSigInPage', //签到
   JDFeedBackPage = 'JDFeedBackPage', //建议反馈
 
-  OnlinePayPage = 'OnlinePayPage',//在线支付
-  TransferPayPage = 'TransferPayPage',//银行卡支付
-  BtcPayPage = 'BtcPayPage',//虚拟币支付
-
+  OnlinePayPage = 'OnlinePayPage', //在线支付
+  TransferPayPage = 'TransferPayPage', //银行卡支付
+  BtcPayPage = 'BtcPayPage', //虚拟币支付
 
   // ———————————— 模板页面 —————————————
 
@@ -94,9 +93,9 @@ export enum PageName {
   KSSignUpPage = 'KSSignUpPage', //凯时-注册
   KSMinePage = 'KSMinePage', //凯时-我的页
 
-  XBJLoginPage = 'XBJLoginPage',//香槟金-登录
-  XBJRegisterPage = 'XBJRegisterPage',//香槟金-注册
-  XBJMinePage = 'XBJMinePage',//香槟金-我的页
+  XBJLoginPage = 'XBJLoginPage', //香槟金-登录
+  XBJRegisterPage = 'XBJRegisterPage', //香槟金-注册
+  XBJMinePage = 'XBJMinePage', //香槟金-我的页
   FeedbackRecordView = 'FeedbackRecordView',
   FeedbackSubmitView = 'FeedbackSubmitView',
   AlipayProfitView = 'AlipayProfitView',

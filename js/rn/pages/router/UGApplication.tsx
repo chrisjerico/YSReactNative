@@ -23,11 +23,11 @@ import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import AddBankPage from '../bank/add/AddBankPage'
 import ManageBankListPage from '../bank/list/ManageBankListPage'
 import ActivityRewardPage from '../base/ActivityRewardPage'
-import IncomeRecommendPage from '../base/IncomeRecommendPage'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import PromotionPage from '../base/PromotionPage'
 import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
+import TaskCenterPage from '../base/TaskCenterPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
@@ -44,6 +44,7 @@ import BZHSignUpPage from '../BZH/BZHSignUpPage'
 import LottoBetting from '../common/LottoBetting'
 import PromotionListPage from '../common/PromotionListPage'
 import CapitalPage from '../cpt/list/CapitalPage'
+import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
@@ -94,14 +95,11 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
-
 
 /**
  * 所有界面
  */
 const pageComponents: { [key in PageName]?: Function } = {
-
   // ———————————— 通用页面 —————————————
 
   JDVirtualCurrencyTutorialPage, //虚拟币充值教程
@@ -138,7 +136,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferRecordView, //额度转页记录
   TransferView, //额度转页
   TransferTKLMainView, //额度转页
-  IncomeRecommendPage,
+  TaskCenterPage,
 
   // ———————————— 模板页面 —————————————
 
