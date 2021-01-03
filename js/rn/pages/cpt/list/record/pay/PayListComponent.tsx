@@ -14,13 +14,23 @@ import { Res } from '../../../../../Res/icon/Res'
 import WebView from 'react-native-webview'
 import { push } from '../../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../../public/navigation/Navigation'
+import CapitalContext from '../../CapitalContext'
+import { useContext, useEffect } from 'react'
+import { CapitalConst } from '../../../const/CapitalConst'
+
+interface IRouteParams {
+  // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
+}
 
 /**
  * 支付通道记录
  * @param navigation
  * @constructor
  */
-const PayListComponent = () => {
+const PayListComponent = ({ navigation, route }) => {
+
+  const { refreshTabPage } = useContext(CapitalContext)
+
   const {
     refreshCT,
     payData,
@@ -59,6 +69,8 @@ const PayListComponent = () => {
               //   requestManageBankData(null)
               // },
               payData: item,
+              refreshTabPage: refreshTabPage,
+
             })
             break;
           case 'bank_transfer'://"银行卡转账"
@@ -82,11 +94,13 @@ const PayListComponent = () => {
           case 'liaobei_transfer'://"聊呗转账"
             push(PageName.TransferPayPage, {
               payData: item,
+              refreshTabPage: refreshTabPage,
             })
             break;
           case 'xnb_transfer'://虚拟币充值
             push(PageName.BtcPayPage, {
               payData: item,
+              refreshTabPage: refreshTabPage,
             })
             break;
         }
@@ -199,9 +213,5 @@ const PayIcon = {
   '39': Res.btc_deposit_icon,
   '41': Res.aliyin2,
 }
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default PayListComponent

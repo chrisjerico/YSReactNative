@@ -95,13 +95,16 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
+import JDAgentPage from '../经典/申请代理/JDAgentPage'
+import SetPasswordPage from '../base/pwd/SetPasswordPage'
+import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 
 /**
  * 所有界面
  */
 const pageComponents: { [key in PageName]?: Function } = {
   // ———————————— 通用页面 —————————————
-
   JDVirtualCurrencyTutorialPage, //虚拟币充值教程
   TransitionPage, //过渡页
   PromotionListPage, //优惠活动列表
@@ -113,6 +116,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   TrendView, //开奖走势
   ManageBankListPage, //银行卡管理（我的提款账户列表）
   CapitalPage, //存款取款资金明细
+  SetPasswordPage, //设置资金密码
+  ForgetPasswordPage, //忘记密码
   AddBankPage, //添加提款账户
   LottoBetting, //下注页（未完成）
   UserMessagePage, //站内信
@@ -137,6 +142,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferView, //额度转页
   TransferTKLMainView, //额度转页
   TaskCenterPage,
+  JDAgentPage, //申请代理
+  JDRedEnveloperPage, //红包扫雷
 
   // ———————————— 模板页面 —————————————
 

@@ -31,6 +31,7 @@ import { getBankIcon } from '../../../../../bank/list/UseManageBankList'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
+  refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
 /**
@@ -43,7 +44,7 @@ const OnlinePayPage = ({ navigation, route }) => {
   const [curSelBank, setCurSelBank] = useState(null) //选择了哪个银行
   const [accountItems, setAccountItems] = useState(null) //账户有哪些
 
-  const { payData }: IRouteParams = route?.params
+  const { payData, refreshTabPage }: IRouteParams = route?.params
 
   let bankController //银行选择
 
@@ -242,9 +243,5 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default OnlinePayPage

@@ -1,11 +1,12 @@
-import { devConfig } from '../../../../../config'
+import { Platform } from 'react-native'
+import { releaseConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
-import { Skin1 } from '../../theme/UGSkinManagers'
-import { OCHelper } from './OCHelper'
-import { Platform } from 'react-native'
 import AppDefine from '../AppDefine'
-import { releaseConfig } from '../../../../../config'
+import { devConfig } from './../../../../../config'
+import { Skin1 } from './../../theme/UGSkinManagers'
+import { OCHelper } from './OCHelper'
+
 
 // 配置需要被替换的oc页面（替换成rn）
 export async function setRnPageInfo() {
@@ -19,8 +20,8 @@ export async function setRnPageInfo() {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
-      vcName: 'UGFeedBackController',
-      rnName: PageName.JDFeedBackPage,
+      vcName: 'UGPromotionIncomeController',
+      rnName: PageName.JDPromotionIncomePage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -53,7 +54,23 @@ export async function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
-
+    //红包扫雷
+    pages.push({
+      vcName: 'RedEnvelopeVCViewController',
+      rnName: PageName.JDRedEnveloperPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
+    // 申请代理
+    pages.push({
+      vcName: 'UGAgentViewController',
+      rnName: PageName.JDAgentPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
+    
     // 彩票大厅（第三样式）
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat([{
@@ -75,15 +92,30 @@ export async function setRnPageInfo() {
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
-
+ // 申请代理
+  pages.push({
+    vcName: 'UGAgentViewController',
+    rnName: PageName.JDAgentPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+//红包扫雷
+ pages.push({
+    vcName: 'RedEnvelopeVCViewController',
+    rnName: PageName.JDRedEnveloperPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+   })
   // 签到页
   pages.push({
     tabbarItemPath: '/Sign',
     vcName: 'UGSigInCodeViewController',
     rnName: PageName.JDSigInPage,
     fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
+    允许游客访问: false,
+    允许未登录访问: false,
   })
 
   // 优惠活动列表页

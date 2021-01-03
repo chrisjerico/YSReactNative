@@ -6,7 +6,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
 import { PageName } from '../navigation/Navigation'
-import { popToRoot, push } from '../navigation/RootNavigation'
+import { navigate, popToRoot, push } from '../navigation/RootNavigation'
 import { httpClient } from '../network/httpClient'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
@@ -400,7 +400,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
-            push(PageName.ManageBankListComponent, {})
+            push(PageName.ManageBankListPage, {})
             break
           }
           case UGUserCenterType.即时注单: {
@@ -463,11 +463,31 @@ export default class PushHelper {
             subId = MenuType.TZJL
             break
           }
-          case UGUserCenterType.彩票注单记录: {
-            subId = MenuType.TZJL
+          case UGUserCenterType.其他注单记录: {
+            subId = MenuType.QTZD
             break
           }
-          case UGUserCenterType.其他注单记录: {
+          case UGUserCenterType.电子注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.捕鱼注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.电竞注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.真人注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.棋牌注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.体育注单: {
             subId = MenuType.QTZD
             break
           }
@@ -493,7 +513,7 @@ export default class PushHelper {
           }
           case UGUserCenterType.建议反馈: {
             navigate(PageName.FeedbackView)
-            break
+            return
           }
           case UGUserCenterType.在线客服: {
             subId = MenuType.KF
@@ -572,11 +592,13 @@ export default class PushHelper {
           }
         }
 
-        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
-          seriesId: '7',
-          subId: subId,
-        })
-        break
+        if(!anyEmpty(subId)) {
+          ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
+            seriesId: '7',
+            subCode: code,
+            subId: subId,
+          })
+        }
     }
   }
 }

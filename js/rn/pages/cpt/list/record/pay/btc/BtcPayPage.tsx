@@ -33,9 +33,12 @@ import Modal from 'react-native-modal'
 import { useEffect, useState } from 'react'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
 import AppDefine from '../../../../../../public/define/AppDefine'
+import { pop } from '../../../../../../public/navigation/RootNavigation'
+import { CapitalConst } from '../../../../const/CapitalConst'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
+  refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
 /**
@@ -48,9 +51,11 @@ const BtcPayPage = ({ navigation, route }) => {
   const intentData: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
   const [smallPic, setSmallPic] = useState(null) //当前小图
+  const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
     newRate,
+    newUsd,
     moneyOption,
     inputMoney,
     setInputMoney,
@@ -64,6 +69,13 @@ const BtcPayPage = ({ navigation, route }) => {
     setPayData,
     requestPayData,
   } = UseBtcPay()
+
+  useEffect(()=>{
+    if (!anyEmpty(goPage)) {
+      intentData?.refreshTabPage(goPage)
+      pop()
+    }
+  }, [goPage])
 
   useEffect(()=>{
     setPayData(intentData?.payData)
@@ -100,7 +112,7 @@ const BtcPayPage = ({ navigation, route }) => {
       </TouchableOpacity>
     </View>
     <View style={_styles.btc_hint_container}>
-      <Text style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newRate}CNY`}</Text>
+      <Text style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newUsd}CNY`}</Text>
     </View>
   </View>
 
@@ -239,6 +251,10 @@ const BtcPayPage = ({ navigation, route }) => {
                     payer: `${btcMoney}${payData?.channel[selPayChannel]?.domain}`,
                     remark: inputRemark,
                     depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
+                  }).then(res => {
+                    if (res == 0) {
+                      setGoPage(CapitalConst.DEPOSIT_RECORD)
+                    }
                   })
 
                 }}/>
@@ -425,9 +441,5 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default BtcPayPage

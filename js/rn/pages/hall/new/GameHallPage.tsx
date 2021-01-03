@@ -28,13 +28,20 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
 import { setProps } from '../../base/UGPage'
 import { pop } from '../../../public/navigation/RootNavigation'
+import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
+
+interface IRouteParams {
+  showBackButton?: boolean //是否显示返回按钮
+}
 
 /**
  * 新游戏大厅
  * @param navigation
  * @constructor
  */
-const GameHallPage = ({ navigation, setProps }) => {
+const GameHallPage = ({ navigation, route }) => {
+
+  const { showBackButton }: IRouteParams = route?.params
 
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
@@ -163,7 +170,7 @@ const GameHallPage = ({ navigation, setProps }) => {
 
   const menuStr = [['即时注单', userInfo?.unsettleAmount], ['今日已结'], ['开奖记录'], ['提现']]
   /**
-   * 绘制菜单
+   * 点击菜单
    * @param index
    */
   const renderMenu = (index) => {
@@ -191,7 +198,7 @@ const GameHallPage = ({ navigation, setProps }) => {
                     showRightTitle={true}
                     rightButton={rightButton}
                     onPressBackBtn={()=>{ pop() }}
-                    showBackBtn={Platform.OS == 'ios'}/>
+                    showBackBtn={Platform.OS == 'ios' || showBackButton}/>
       </SafeAreaHeader>
       {
         renderAllData()
@@ -253,9 +260,5 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default GameHallPage

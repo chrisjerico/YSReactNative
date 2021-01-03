@@ -196,14 +196,6 @@ const WNZMinePage = () => {
                             },
                           },
                         ])
-                      } else if (code == UGUserCenterType.个人信息) {
-                        push(PageName.UserInfoPage)
-                      } else if (code == UGUserCenterType.站内信) {
-                        push(PageName.UserMessagePage)
-                      } else if (code == UGUserCenterType.安全中心) {
-                        push(PageName.SafeCenterPage)
-                      } else if (code == UGUserCenterType.活动彩金) {
-                        push(PageName.ActivityRewardPage)
                       } else {
                         if (__DEV__) {
                           if (code == UGUserCenterType.个人信息) {

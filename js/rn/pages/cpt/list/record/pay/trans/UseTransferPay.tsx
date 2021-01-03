@@ -33,16 +33,12 @@ const UseTransferPay = () => {
 
     ugLog('params=', JSON.stringify(params))
     showLoading()
-    APIRouter.recharge_transfer(params).then(({ data: res }) => {
-      //ugLog('data res=', JSON.stringify(res?.data))
-      Toast(res?.msg)
-      if (res?.code == 0) {
-
-
-      }
-    }).finally(() => {
-      hideLoading()
-    })
+    const res = await APIRouter.recharge_transfer(params)
+      .then(({ data: res }) => res)
+    //ugLog('data res=', JSON.stringify(res?.data))
+    hideLoading()
+    Toast(res?.msg)
+    return res?.code
   }
 
   return {

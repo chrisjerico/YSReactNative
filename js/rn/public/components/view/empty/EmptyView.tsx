@@ -6,9 +6,13 @@ import FastImage from 'react-native-fast-image'
 import * as React from 'react'
 import { Res } from '../../../../Res/icon/Res'
 import { anyEmpty } from '../../../tools/Ext'
+import Button from '../../../views/tars/Button'
+import { CapitalConst } from '../../../../pages/cpt/const/CapitalConst'
 
 interface EmptyViewProps {
-  text?: string,
+  text?: string, //提示文字
+  buttonText?: string, //按钮
+  buttonCallback?: () => void, //按钮回调
   style?: StyleProp<TextStyle>
 }
 
@@ -17,6 +21,8 @@ interface EmptyViewProps {
  */
 const EmptyView = ({
                      text,
+                     buttonText,
+                     buttonCallback,
                      style,
                    }: EmptyViewProps) => {
 
@@ -28,6 +34,14 @@ const EmptyView = ({
                  resizeMode={'contain'}
                  style={_styles.empty_text_icon}/>
       <Text style={_styles.empty_text_name}>{textContent}</Text>
+
+      {
+        buttonText && <Button title={buttonText ? buttonText : '确定'}
+                              titleStyle={_styles.submit_text}
+                              containerStyle={[_styles.submit_bt,
+                                { backgroundColor: Skin1.themeColor }]}
+                              onPress={buttonCallback}/>
+      }
     </View>
   )
 }
@@ -48,6 +62,17 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingTop: scale(24),
     textAlign: 'center',
+  },
+  submit_text: {
+    fontSize: scale(22),
+    color: 'white',
+  },
+  submit_bt: {
+    width: scale(320),
+    // paddingHorizontal: scale(32),
+    height: scale(66),
+    borderRadius: scale(8),
+    marginTop: scale(32),
   },
 
 })
