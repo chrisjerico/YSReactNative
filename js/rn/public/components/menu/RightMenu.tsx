@@ -13,8 +13,14 @@ interface IRightMenu {
   onMenuClick?: (index: number) => void //点击了哪个菜单
 }
 
-
-const RightMenu = ({ menu, onMenuClick }: IRightMenu, ref?: RefObject<any>) => {
+/**
+ * 右侧菜单
+ * @param menu
+ * @param onMenuClick
+ * @param ref
+ * @constructor
+ */
+const RightMenu = ({ menu, onMenuClick }: IRightMenu, ref?: any) => {
 
   const [show, setShow] = useState(false)
 
