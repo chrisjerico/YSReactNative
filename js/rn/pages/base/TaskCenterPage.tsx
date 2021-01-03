@@ -7,6 +7,7 @@ import { View, Text } from 'react-native'
 import Avatar from '../../public/views/tars/Avatar'
 import AppDefine from '../../public/define/AppDefine'
 import ReLoadBalanceComponent from '../../public/components/temp/ReLoadBalanceComponent'
+import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 
 const ExpBar = () => {
   return (
@@ -21,6 +22,21 @@ const ExpBar = () => {
   )
 }
 
+const TaskLobby = () => {
+  return (
+    <ScrollableTabViewComponent
+      indicatorStyle={{ width: '100%', backgroundColor: Skin1.themeColor, height: 5 }}
+      tabBarScrollEnabled={false}
+      indicatorContainerStyle={{ height: '100%', position: 'absolute', backgroundColor: 'rgba(193,66,66,0.4)', justifyContent: 'flex-end' }}>
+      <View tabLabel={'日常任务'} key={'日常任务'} />
+      <View tabLabel={'存款任务'} key={'存款任务'} />
+      <View tabLabel={'提款任务'} key={'提款任务'} />
+      <View tabLabel={'彩票投注'} key={'彩票投注'} />
+      <View tabLabel={'推广任务'} key={'推广任务'} />
+      <View tabLabel={'聊天室'} key={'聊天室'} />
+    </ScrollableTabViewComponent>
+  )
+}
 const TaskCenterPage = () => {
   return (
     <>
@@ -50,6 +66,11 @@ const TaskCenterPage = () => {
         </View>
         <View style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center' }}></View>
       </View>
+      <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false} showIndicator={false}>
+        <TaskLobby tabLabel={'任务大厅'} key={'任务大厅'} />
+        <View tabLabel={'M豆子兑换'} key={'M豆子兑换'} />
+        <View tabLabel={'M豆子帐变'} key={'M豆子帐变'} />
+      </ScrollableTabViewComponent>
     </>
   )
 }
