@@ -283,12 +283,6 @@ const TabBar = ({ activeTab, setActiveTab, data }) => {
 
 const Header = ({ pressRecord, setProps }: { pressRecord: () => {}, setProps: () => void }) => {
   const [show, setShow] = useState(false)
-  useEffect(() => {
-    AppDefine.checkHeaderShowBackButton((show) => {
-      show && setShow(show)
-      setProps()
-    })
-  }, [])
   return (
     <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
       <SafeAreaView style={{
@@ -301,9 +295,9 @@ const Header = ({ pressRecord, setProps }: { pressRecord: () => {}, setProps: ()
           alignSelf: 'center',
           justifyContent: 'center',
         }}>
-          {show && <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
-            <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
-          </TouchableOpacity>}
+          <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
+            <Icon size={22} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
+          </TouchableOpacity>
           <Text style={{
             alignSelf: 'center',
             paddingTop: 15,
