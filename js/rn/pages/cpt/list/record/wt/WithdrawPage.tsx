@@ -15,6 +15,8 @@ import { CapitalConst } from '../../../const/CapitalConst'
 import { push } from '../../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../../public/navigation/Navigation'
 import Icon from 'react-native-vector-icons/Entypo'
+import NeedNameInputComponent from '../../../../../public/components/tars/NeedNameInputComponent'
+import { ugLog } from '../../../../../public/tools/UgLog'
 
 /**
  * 添加银行卡管理
@@ -23,6 +25,7 @@ import Icon from 'react-native-vector-icons/Entypo'
  */
 const WithdrawPage = ({ navigation, route }) => {
 
+  const needNameInputRef = useRef(null)
   const { getYueBaoInfo, refreshTabPage } = useContext(CapitalContext) //余额宝信息
   const [tabIndex, setTabIndex] = useState<number>(0) //当前是哪个Tab
   const refMenu = useRef(null)
@@ -48,6 +51,7 @@ const WithdrawPage = ({ navigation, route }) => {
     confirmWithdraw,
     yuebaoWithdraw,
     yueBao2YuE,
+    bindRealName,
   } = UseWithdraw()
 
   useEffect(() => {
@@ -321,7 +325,14 @@ const WithdrawPage = ({ navigation, route }) => {
    * 绘制取款条目
    */
   const renderItem = () => {
-    if (!userInfo?.hasFundPwd) {//判断有没有资金密码
+    if (anyEmpty(userInfo?.fullName)) {//没有实名
+      return <EmptyView style={{ flex: 1 }}
+                        text={'您还没有完善个人信息'}
+                        buttonText={'完善个人信息'}
+                        buttonCallback={() => {
+                          needNameInputRef?.current?.reload()
+                        }}/>
+    } else if (!userInfo?.hasFundPwd) {//判断有没有资金密码
       return <EmptyView style={{ flex: 1 }}
                         text={'您还未设置资金密码'}
                         buttonText={'设置资金密码'}
@@ -372,6 +383,15 @@ const WithdrawPage = ({ navigation, route }) => {
       </View>
   }
 
+  /**
+   * 绑定姓名
+   * @param text
+   */
+  const onSubmitFullName = (text?: string) => {
+    ugLog('onSubmitFullName=', text)
+    bindRealName(text).then( () => {})
+  }
+
   return (
     <View style={_styles.container}>
       {
@@ -383,6 +403,9 @@ const WithdrawPage = ({ navigation, route }) => {
       <MiddleMenu ref={refMenu}
                   onMenuClick={clickMenu}
                   menu={menuItem}/>
+
+      <NeedNameInputComponent ref={needNameInputRef}
+                              onSubmitFullName={onSubmitFullName}/>
     </View>
   )
 }

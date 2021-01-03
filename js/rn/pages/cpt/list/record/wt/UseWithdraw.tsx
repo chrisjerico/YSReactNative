@@ -22,7 +22,6 @@ import { pop } from '../../../../../public/navigation/RootNavigation'
  */
 const UseWithdraw = () => {
 
-  const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
 
   const [bankCardData, setBankCardData] = useState<ManageBankCardData>(null) //所有数据
@@ -37,7 +36,11 @@ const UseWithdraw = () => {
   const [inputMoney, setInputMoney] = useState(null) //取款金额
   const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
   const [showAddBank, setShowAddBank] = useState(false) //是否显示添加银行卡等帐户
+  const [userInfo, setUserInfo] = useState(null) //个人信息
 
+  useEffect(()=>{
+    setUserInfo(UGStore.globalProps.userInfo)
+  }, [])
 
   /**
    * 初始化1次数据
@@ -242,6 +245,34 @@ const UseWithdraw = () => {
     return res?.code
   }
 
+
+  /**
+   * 绑定实名
+   * @param fullName 真名
+   * @param callBack
+   */
+  const bindRealName = async (fullName?: string) => {
+    if (anyEmpty(fullName)) return
+
+    showLoading()
+    const result = await APIRouter.user_bindRealName({ fullName: fullName })
+    hideLoading()
+
+    if (result?.data?.code == 0) {
+      userInfo.fullName = fullName
+      UGStore.dispatch({type: 'merge', userInfo: { fullName: fullName }});
+      UGStore.save();
+
+      setUserInfo(null)
+      setUserInfo(UGStore.globalProps.userInfo)
+
+    } else {
+      Toast(result?.data?.msg)
+    }
+
+    return result?.data?.code
+  }
+
   return {
     userInfo,
     systemInfo,
@@ -263,6 +294,7 @@ const UseWithdraw = () => {
     confirmWithdraw,
     yuebaoWithdraw,
     yueBao2YuE,
+    bindRealName,
   }
 }
 

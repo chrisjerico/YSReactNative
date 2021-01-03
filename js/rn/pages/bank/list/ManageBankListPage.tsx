@@ -223,7 +223,8 @@ const ManageBankListPage = ({ navigation, setProps }) => {
                 )
               }
             </ScrollableTabView>,
-          <NeedNameInputComponent ref={needNameInputRef} onSubmitFullName={onSubmitFullName}/>,
+          <NeedNameInputComponent ref={needNameInputRef}
+                                  onSubmitFullName={onSubmitFullName}/>,
         ]
       }
     </BaseScreen>
