@@ -92,6 +92,7 @@ const WNZMinePage = () => {
       UGUserCenterType.电竞注单,
       UGUserCenterType.棋牌注单,
       UGUserCenterType.体育注单,
+      UGUserCenterType.捕鱼注单,
     ].includes(ele?.code)
   )
 
