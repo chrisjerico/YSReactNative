@@ -72,6 +72,9 @@ export const Res = {
   btc_deposit_icon: RES_BASE_URL + 'assets/bank/btc_deposit_icon.png',
   aliyin2: RES_BASE_URL + 'assets/bank/aliyin2.png',
 
+  //虚拟币教程
+  hbjc_img: RES_BASE_URL + 'web/static/images/czjc/huobi/huobic012.jpg',
+  c012_virtualcoin_icon: RES_BASE_URL + 'web/static/images/czjc/mobile/CGpayC012.jpg',
 
   //农场
   xync_num_01: RES_BASE_URL + 'assets/ball/xync_num_01.png',
