@@ -18,11 +18,10 @@ import { HomeGamesModel } from './Model/HomeGamesModel'
 import { HomeRecommendModel } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
-import { LottoGamesModel } from './Model/LottoGamesModel'
+import { LottoGamesModel, UGNextIssueModel } from './Model/LottoGamesModel'
 import { NormalModel } from './Model/NormalModel'
 import { NoticeModel } from './Model/NoticeModel'
 import { OnlineModel } from './Model/OnlineModel'
-import { PlayOddDataModel } from './Model/PlayOddDataModel'
 import { PromotionsModel } from './Model/PromotionsModel'
 import { RankListModel } from './Model/RankListModel'
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
@@ -47,6 +46,8 @@ import { HallGameModel } from './Model/game/HallGameModel'
 import { PayAisleModel } from './Model/wd/PayAisleModel'
 import AppDefine from '../define/AppDefine'
 import { NewRateModel } from './Model/wd/NewRateModel'
+import { NextIssueModel } from './Model/lottery/NextIssueModel'
+import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -774,6 +775,62 @@ class APIRouter {
   }
 
   /**
+   * 下一期开奖信息
+   * id 游戏 id
+   */
+  static game_nextIssue = async (id: string): Promise<AxiosResponse<NextIssueModel>> => {
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        //TODO 完成对 id 的加密
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            id
+          },
+        })
+        for (let key in pms) {
+          tokenParams += '&' + key + '=' + pms[key]
+        }
+        break
+    }
+
+    return httpClient.get<NextIssueModel>('c=game&a=nextIssue&' + tokenParams)
+  }
+
+  /**
+   * 彩票详情
+   * id 游戏 id
+   */
+  static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDetailModel>> => {
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        //TODO 完成对 id 的加密
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            id
+          },
+        })
+        for (let key in pms) {
+          tokenParams += '&' + key + '=' + pms[key]
+        }
+        break
+    }
+
+    return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds&' + tokenParams)
+  }
+
+  /**
    * 游戏大厅数据
    */
   static game_lotteryGames = async (): Promise<AxiosResponse<LottoGamesModel>> => {
@@ -793,12 +850,12 @@ class APIRouter {
     return httpClient.get<HallGameModel>('c=game&a=lotteryGames')
   }
 
-  static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
-    return httpClient.get('c=game&a=playOdds&id=' + id, {
-      //@ts-ignore
-      isEncrypt: false,
-    })
-  }
+  // static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
+  //   return httpClient.get('c=game&a=playOdds&id=' + id, {
+  //     //@ts-ignore
+  //     isEncrypt: false,
+  //   })
+  // }
 
   static system_avatarList = async () => {
     return httpClient.get<SystemAvatarListModel>('c=system&a=avatarList')

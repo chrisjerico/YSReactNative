@@ -10,6 +10,7 @@ import { FeedbackRecordView } from '../../public/components/FeedbackRecordView'
 import { FeedbackSubmitView } from '../../public/components/FeedbackSubmitView'
 import { FeedbackView } from '../../public/components/FeedbackView'
 import { SupFeedbackSubmitView } from '../../public/components/SupFeedbackSubmitView'
+import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import { TransferRecordView } from '../../public/components/transfer/TransferRecordView'
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import { TransferView } from '../../public/components/transfer/TransferView'
@@ -25,13 +26,15 @@ import ManageBankListPage from '../bank/list/ManageBankListPage'
 import ActivityRewardPage from '../base/ActivityRewardPage'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import PromotionPage from '../base/PromotionPage'
+import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
+import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
-import TaskCenterPage from '../base/TaskCenterPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
 import UserMessagePage from '../base/UserMessagePage'
+import BetLotteryPage from '../bet/BetLotteryPage'
 import BYHomePage from '../BY/BYHomePage'
 import BYMinePage from '../BY/BYMinePage'
 import BYSignInPage from '../BY/BYSignInPage'
@@ -47,6 +50,7 @@ import CapitalPage from '../cpt/list/CapitalPage'
 import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
+import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import GameHallPage from '../hall/new/GameHallPage'
 import JXHHomePage from '../JXH/JXHHomePage'
@@ -85,7 +89,9 @@ import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
 import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
 import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
+import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
+import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import { XBJLoginPage } from '../香槟金/XBJLoginPage'
 import { XBJMinePage } from '../香槟金/XBJMinePage'
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage'
@@ -95,10 +101,6 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
-import JDAgentPage from '../经典/申请代理/JDAgentPage'
-import SetPasswordPage from '../base/pwd/SetPasswordPage'
-import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 
 /**
  * 所有界面
@@ -129,7 +131,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDFeedBackPage, //建议反馈
   OnlinePayPage, //在线支付
   TransferPayPage, //银行支付
+  BetLotteryPage, //彩票下注
   BtcPayPage, //虚拟币支付
+  BtcTutorialPage, //虚拟币教程
   AlipayView, //利息宝
   AlipayTransferView, //利息宝额度转
   AlipayTransferRecordView, //利息宝记录
@@ -139,9 +143,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   FeedbackRecordView, //建议反馈记录
   SupFeedbackSubmitView, //建议反馈记录反馈
   TransferRecordView, //额度转页记录
-  TransferView, //额度转页
-  TransferTKLMainView, //额度转页
-  TaskCenterPage,
+  TransferView, //额度转页-经典版
+  TransferLineView, //额度转页-天空蓝版
+  TransferTKLMainView, //额度转页-新版
   JDAgentPage, //申请代理
   JDRedEnveloperPage, //红包扫雷
 

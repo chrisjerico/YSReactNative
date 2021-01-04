@@ -39,6 +39,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import MarqueePopupView from '../common/MarqueePopupView'
 import NavBlock from './component/homePage/NavBlock'
 import Carousel from 'react-native-banner-carousel'
+import Activitys from '../../public/views/tars/Activitys'
 
 
 const LCHomePage = ({ setProps }) => {
@@ -48,11 +49,12 @@ const LCHomePage = ({ setProps }) => {
   const [show, setShow] = useState(false)
   const [content, setContent] = useState('')
   const { refresh, info, goTo } = useHomePage({})
-  const { loading, userInfo, sysInfo, homeInfo } = info
-  const {goToPromotionPage} = goTo
-  const {showCoupon} = sysInfo
-  const { homeGames, navs, rankLists, banners, onlineNum, redBag, notices, midBanners, announcements, bannersInterval } = homeInfo
+  const { loading, userInfo, sysInfo, homeInfo, refreshing, redBagLogo, isTest } = info
+  const { goToPromotionPage } = goTo
+  const { showCoupon } = sysInfo
+  const { homeGames, navs, rankLists, banners, onlineNum, redBag, notices, midBanners, goldenEggs, scratchs, roulette, bannersInterval, floatAds } = homeInfo
   const { rankingListSwitch, webName, midBannerTimer } = sysInfo
+  const { uid } = userInfo
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -200,8 +202,8 @@ const LCHomePage = ({ setProps }) => {
         <Text style={{ color: '#000000', textAlign: 'center' }}>{'VERSION : 13'}</Text>
         <View style={{ height: 100 }} />
       </ScrollView>
-      <RedBagItem redBag={redBag} />
-      <TurntableListItem />
+      <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag}
+                 roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
       <MarqueePopupView onPress={() => {
         setShow(false)
       }} content={content} show={show} onDismiss={() => {

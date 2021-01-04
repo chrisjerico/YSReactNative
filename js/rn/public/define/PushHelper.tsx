@@ -129,6 +129,10 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game])
         break
       case 'android':
+        // if (B_DEBUG) {
+        //   push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
+        //   return
+        // }
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }
@@ -424,12 +428,12 @@ export default class PushHelper {
         let subId = ''
         switch (code) {
           case UGUserCenterType.存款: {
-            if (B_DEBUG) {
+            // if (B_DEBUG) {
               push(PageName.CapitalPage)
-              // return
-            }
-            subId = MenuType.CZ
-            break
+              return
+            // }
+            // subId = MenuType.CZ
+            // break
           }
           case UGUserCenterType.每日签到: {
             subId = MenuType.QD
