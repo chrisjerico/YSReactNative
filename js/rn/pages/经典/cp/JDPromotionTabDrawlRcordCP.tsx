@@ -19,7 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-interface JDPromotionTabBettingReportPage {
+interface JDPromotionTabDrawlRcordCP {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -39,13 +39,13 @@ interface JDPromotionTabBettingReportPage {
 
 }
 
-const JDPromotionTabBettingReportPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
+const JDPromotionTabDrawlRcordCP = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
 
 
-  let { current: v } = useRef<JDPromotionTabBettingReportPage>(
+  let { current: v } = useRef<JDPromotionTabDrawlRcordCP>(
     {
-      pageTitle: pageTitle,
-      titleArray: titleArray,
+      pageTitle: '提款记录',
+      titleArray: ["分级", "用户名", "日期", "提款金额"],
       items: [],
       levelArray: [],
       pageSize: 20,
@@ -72,22 +72,7 @@ const JDPromotionTabBettingReportPage = ({ pageTitle, titleArray }: { pageTitle?
   { value: 10, label: '10级下线' }];
   //初始化
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '投注报表', back: true },
-      didFocus: () => {
-        v.pageTitle = '投注报表';
-        v.titleArray = ["分级", "日期", "投注金额", "佣金"];
-        v.items = [];
-        v.pageNumber = 1;
-        v.state.showFoot = 0;
-        v.state.isRefreshing = true;
-        v.state.isLastPage = false;
-
-        console.log('useEffect');
         onHeaderRefresh()
-
-      }
-    })
   }, [])
 
   /**
@@ -98,7 +83,7 @@ const JDPromotionTabBettingReportPage = ({ pageTitle, titleArray }: { pageTitle?
     v.state.isRefreshing = true
     v.pageNumber = 1
     console.log('下拉刷新');
-    teamBetStatData()
+    teamWithdrawListData()
   }
   /**
   * 点击（上拉）加载更多数据
@@ -109,7 +94,7 @@ const JDPromotionTabBettingReportPage = ({ pageTitle, titleArray }: { pageTitle?
     console.log('上拉加载');
     v.state.showFoot = 1
     setProps()
-    teamBetStatData()
+    teamWithdrawListData()
   }
   /**
 * 点击刷新
@@ -118,7 +103,7 @@ const JDPromotionTabBettingReportPage = ({ pageTitle, titleArray }: { pageTitle?
   function onEndReached() {
     console.log('onEndReached');
     console.log('showFoot ==', v.state.showFoot);
-
+    console.log('showFoot ==', v.state.showFoot);
     //如果是正在加载中或没有更多数据了，则返回
     if (v.state.showFoot != 0) {
       console.log('正在加载中或没有更多数据了，则返回');
@@ -150,53 +135,52 @@ const JDPromotionTabBettingReportPage = ({ pageTitle, titleArray }: { pageTitle?
   }
 
   /**
-   * 得到投注报表列表数据
-   * 
-   */
-  function teamBetStatData() {
-    console.log('投注报表列表页码===', v.pageNumber);
-    api.team.betStat(v.levelindex.toString(), '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
-      let dicData = data;
-      let arrayData = returnData(dicData);
-      if (arrayData.length == 0) {
-        console.log('进来了：==================');
-        v.state.isLastPage = true;
-        v.state.showFoot = 2
-        v.state.isRefreshing = false;
-        setProps();
-        return;
-      }
-      if (v.pageNumber == 1) {
-        v.state.isRefreshing = false
-        v.items.length = 0
-        v.items = JSON.parse(JSON.stringify(arrayData))
-        // console.log('v.state.isRefreshing ====', v.state.isRefreshing);
-      }
-      else {
-        v.items = v.items.concat(JSON.parse(JSON.stringify(arrayData)))
-      }
+* 得到提款记录列表数据
+* 
+*/
+function teamWithdrawListData() {
+
+  // console.log('v.state.isLastPage1：', v.state.isLastPage);
+  console.log('提款记录列表页码===', v.pageNumber);
+  api.team.withdrawList(v.levelindex, v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+    let dicData = data;
+    let arrayData = returnData(dicData);
+
+    if (arrayData.length == 0) {
+      console.log('进来了：==================');
+      v.state.isLastPage = true;
+      v.state.showFoot = 2
+      v.state.isRefreshing = false;
+      setProps();
+      return;
+    }
+    if (v.pageNumber == 1) {
+      v.state.isRefreshing = false
+      v.items.length = 0
+      v.items = JSON.parse(JSON.stringify(arrayData))
+      console.log('v.state.isRefreshing ====', v.state.isRefreshing);
+    }
+    else {
+      v.items = v.items.concat(JSON.parse(JSON.stringify(arrayData)))
+    }
+    v.state.showFoot = 0
+    if (arrayData.length < v.pageSize) {
+      console.log('进来了：==================', v.state.isLastPage);
+      v.state.isLastPage = true;
+      v.state.showFoot = 2
+    }
+    else{
+      v.state.isLastPage = false;
       v.state.showFoot = 0
-      if (arrayData.length < v.pageSize) {
-        console.log('进来了：==================', v.state.isLastPage);
-        v.state.isLastPage = true;
-        v.state.showFoot = 2
-      }
-      else{
-        v.state.isLastPage = false;
-        v.state.showFoot = 0
-      }
-      // console.log('网络数据长度：', arrayData.length);
-      // console.log('网络数据：', arrayData);
-      // console.log('showFoot==', v.state.showFoot);
+    }
+    setProps()
 
-      setProps()
-
-    }, (err) => {
-      console.log('err = ', err);
-      // setProps()
-      // Toast(err.message)
-    });
-  }
+  }, (err) => {
+    console.log('err = ', err);
+    // setProps()
+    // Toast(err.message)
+  });
+}
 
 
   /**
@@ -275,28 +259,28 @@ const JDPromotionTabBettingReportPage = ({ pageTitle, titleArray }: { pageTitle?
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {item.level == 0 ? '全部下线' : item.level + '级下线'}
+            {item.level + '级下线'}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {anyEmpty(item.date) ? '--' : item.date}
+            {item.username}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {item.bet_sum}
+            {anyEmpty(item.date) ? '--' : item.date}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
-
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {item.fandian_sum}
+            {item.amount}
             </Text>
           </View>
+         
         </View>
       );
     }
@@ -437,4 +421,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDPromotionTabBettingReportPage
+export default JDPromotionTabDrawlRcordCP

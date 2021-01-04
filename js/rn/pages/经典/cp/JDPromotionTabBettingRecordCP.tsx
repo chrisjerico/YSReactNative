@@ -19,7 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-interface JDPromotionTabBettingRecordPage {
+interface JDPromotionTabBettingRecordCP {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -39,13 +39,13 @@ interface JDPromotionTabBettingRecordPage {
 
 }
 
-const JDPromotionTabBettingRecordPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
+const JDPromotionTabBettingRecordCP = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
 
 
-  let { current: v } = useRef<JDPromotionTabBettingRecordPage>(
+  let { current: v } = useRef<JDPromotionTabBettingRecordCP>(
     {
-      pageTitle: pageTitle,
-      titleArray: titleArray,
+      pageTitle: '投注记录',
+      titleArray: ["分级", "用户", "日期", "金额"],
       items: [],
       levelArray: [],
       pageSize: 20,
@@ -72,22 +72,7 @@ const JDPromotionTabBettingRecordPage = ({ pageTitle, titleArray }: { pageTitle?
   { value: 10, label: '10级下线' }];
   //初始化
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '投注记录', back: true },
-      didFocus: () => {
-        v.pageTitle = '投注记录';
-        v.titleArray = ["分级", "用户", "日期", "金额"];
-        v.items = [];
-        v.pageNumber = 1;
-        v.state.showFoot = 0;
-        v.state.isRefreshing = true;
-        v.state.isLastPage = false;
-
-        console.log('useEffect');
         onHeaderRefresh()
-
-      }
-    })
   }, [])
 
   /**
@@ -278,7 +263,7 @@ function teamBetListData() {
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
             {item.level + '级下线'}
@@ -440,4 +425,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDPromotionTabBettingRecordPage
+export default JDPromotionTabBettingRecordCP

@@ -11,8 +11,18 @@ import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native
 import EmptyView from '../../../public/components/view/empty/EmptyView';
 import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
 import { ugLog } from '../../../public/tools/UgLog';
-import JDPromotionTablePage from './JDPromotionTablePage';
 import { PromotionConst } from '../const/PromotionConst';
+import JDPromotionTabMemberCP from '../cp/JDPromotionTabMemberCP';
+import JDPromotionTabBettingReportCP from '../cp/JDPromotionTabBettingReportCP';
+import JDPromotionTabBettingRecordCP from '../cp/JDPromotionTabBettingRecordCP';
+import JDPromotionTabInviteDomainCP from '../cp/JDPromotionTabInviteDomainCP';
+import JDPromotionTabDepositStateCP from '../cp/JDPromotionTabDepositStateCP';
+import JDPromotionTabDepostCP from '../cp/JDPromotionTabDepostCP';
+import JDPromotionTabWithdrawalReportCP from '../cp/JDPromotionTabWithdrawalReportCP';
+import JDPromotionTabDrawlRcordCP from '../cp/JDPromotionTabDrawlRcordCP';
+import JDPromotionTabRealityReportCP from '../cp/JDPromotionTabRealityReportCP';
+import JDPromotionTabRealityRcordCP from '../cp/JDPromotionTabRealityRcordCP';
+
 interface JDPromotionIncomePage {
   tabNames?: Array<string>//tab界面名称数据
 }
@@ -55,81 +65,33 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
 
 
   /**
-  * 按钮数组显示数据
-  * @param  item
-  */
-  const titleList = (item: string) => {
-    let array = [];
-    if (PromotionConst.会员管理 == item) {
-      array = ["分级", "用户名", "在线状态", "注册时间", "下线盈亏", "操作/状态"];
-    }
-    else if (PromotionConst.投注报表 == item) {
-      array = ["分级", "日期", "投注金额", "佣金"];
-    }
-    else if (PromotionConst.投注记录 == item) {
-      array = ["分级", "用户", "日期", "金额"];
-    }
-    else if (PromotionConst.域名绑定 == item) {
-      array = ["首页推荐链接", "注册推荐链接"];
-    }
-    else if (PromotionConst.存款报表 == item) {
-      array = ["分级", "日期", "存款金额", "存款人数"];
-    }
-    else if (PromotionConst.存款记录 == item) {
-      array = ["分级", "用户", "日期", "存款金额"];
-    }
-    else if (PromotionConst.提款报表 == item) {
-      array = ["分级", "日期", "提款金额", "提款人数"];
-    }
-    else if (PromotionConst.提款记录 == item) {
-      array = ["分级", "用户名", "日期", "提款金额"];
-    }
-    else if (PromotionConst.真人报表 == item) {
-      array = ["分级", "日期", "投注金额", "会员输赢", "返点"];
-    }
-    else if (PromotionConst.真人记录 == item) {
-      array = ["分级", "用户", "游戏", "日期", "投注金额", "会员输赢"];
-    }
-    return array;
-  }
-  /**
      * 绘制各列表
      * @param item
      */
   const renderRecordList = (item: string) => {
     switch (item) {
       case "推荐信息":
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
         return <View />
       case PromotionConst.会员管理:
-        return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabMemberCP tabLabel={item} key={item}   />
       case PromotionConst.投注报表:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabBettingReportCP tabLabel={item} key={item}   />
       case PromotionConst.投注记录:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabBettingRecordCP tabLabel={item} key={item}   />
       case PromotionConst.域名绑定:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabInviteDomainCP tabLabel={item} key={item}  />
       case PromotionConst.存款报表:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabDepositStateCP tabLabel={item} key={item}   />
       case PromotionConst.存款记录:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabDepostCP tabLabel={item} key={item}   />
       case PromotionConst.提款报表:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabWithdrawalReportCP tabLabel={item} key={item}  />
       case PromotionConst.提款记录:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabDrawlRcordCP tabLabel={item} key={item}  />
       case PromotionConst.真人报表:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabRealityReportCP tabLabel={item} key={item} />
       case PromotionConst.真人记录:
-        return <View />
-        // return <JDPromotionTablePage tabLabel={item} key={item} pageTitle={item} titleArray={titleList(item)} />
+        return <JDPromotionTabRealityRcordCP tabLabel={item} key={item}   />
     }
   }
 

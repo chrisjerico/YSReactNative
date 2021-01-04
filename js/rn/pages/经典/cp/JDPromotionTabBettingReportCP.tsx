@@ -17,11 +17,9 @@ import { PromotionConst } from '../const/PromotionConst';
 import { Badge, Button } from 'react-native-elements';
 import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
-import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 
 
-interface JDPromotionTabMemberPage {
+interface JDPromotionTabBettingReportCP {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -41,13 +39,13 @@ interface JDPromotionTabMemberPage {
 
 }
 
-const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
+const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
 
 
-  let { current: v } = useRef<JDPromotionTabMemberPage>(
+  let { current: v } = useRef<JDPromotionTabBettingReportCP>(
     {
-      pageTitle: pageTitle,
-      titleArray: titleArray,
+      pageTitle: '投注报表',
+      titleArray: ["分级", "日期", "投注金额", "佣金"],
       items: [],
       levelArray: [],
       pageSize: 20,
@@ -61,7 +59,6 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
     }
   )
   let capitalController //类型选择
-
   v.levelArray = [{ value: 0, label: '全部下线' },
   { value: 1, label: '1级下线' },
   { value: 2, label: '2级下线' },
@@ -73,24 +70,10 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
   { value: 8, label: '8级下线' },
   { value: 9, label: '9级下线' },
   { value: 10, label: '10级下线' }];
+
   //初始化
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '会员管理', back: true },
-      didFocus: () => {
-        v.pageTitle = '会员管理';
-        v.titleArray = ["分级", "用户名", "在线状态", "注册时间", "下线盈亏", "操作/状态"];
-        v.items = [];
-        v.pageNumber = 1;
-        v.state.showFoot = 0;
-        v.state.isRefreshing = true;
-        v.state.isLastPage = false;
-
-        console.log('useEffect');
         onHeaderRefresh()
-
-      }
-    })
   }, [])
 
   /**
@@ -101,7 +84,7 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
     v.state.isRefreshing = true
     v.pageNumber = 1
     console.log('下拉刷新');
-    teamInviteListData()
+    teamBetStatData()
   }
   /**
   * 点击（上拉）加载更多数据
@@ -112,7 +95,7 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
     console.log('上拉加载');
     v.state.showFoot = 1
     setProps()
-    teamInviteListData()
+    teamBetStatData()
   }
   /**
 * 点击刷新
@@ -153,13 +136,12 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
   }
 
   /**
-   * 得到下线信息列表数据
+   * 得到投注报表列表数据
    * 
    */
-  function teamInviteListData() {
-
-    console.log('下线信息列表页码===', v.pageNumber);
-    api.team.inviteList(v.levelindex, 1, v.pageSize).setCompletionBlock(({ data }) => {
+  function teamBetStatData() {
+    console.log('投注报表列表页码===', v.pageNumber);
+    api.team.betStat(v.levelindex.toString(), '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
       let dicData = data;
       let arrayData = returnData(dicData);
       if (arrayData.length == 0) {
@@ -190,6 +172,7 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
         v.state.showFoot = 0
       }
       // console.log('网络数据长度：', arrayData.length);
+      // console.log('网络数据：', arrayData);
       // console.log('showFoot==', v.state.showFoot);
 
       setProps()
@@ -278,139 +261,108 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {item.level + '级下线'}
+              {item.level == 0 ? '全部下线' : item.level + '级下线'}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {item.username}
+              {anyEmpty(item.date) ? '--' : item.date}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {item.is_online == 1 ? '在线' : '离线'}
+              {item.bet_sum}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
+
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {anyEmpty(item.regtime) ? '--' : item.regtime}
+              {item.fandian_sum}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center',  width: AppDefine.width / 6-26, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {item.sunyi}
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
-            {item.is_setting == '1' && <View style={{ flexDirection: 'row', marginTop: 9 }}>
-              <Button title={'充值'} containerStyle={{ width: 55, height: 30, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
-                onPress={() => {
-
-                  console.log('充值')
-                  if (item.is_setting == '1') {
-                    if (AppDefine.siteId != 'c001') {
-                      OCHelper.call('SGBrowserView.showZoomView:', [{
-                        selectors: 'UGPormotionUserInfoView.alloc.initWithFrame:[setItem:]',
-                        args1: [NSValue.CGRectMake(0, 0, AppDefine.width - 40, 500)],
-                        args2: [Object.assign({ clsName: 'UGinviteLisModel' }, item)]
-                      }])
-
-                    }
-                  }
-
-                }} />
-              <Badge
-                status={item.enable == '正常' ? "success" : "error"}
-                containerStyle={{ position: 'absolute', top: -4, right: -4 }}
-              />
-
-            </View>}
-          </View>
-
         </View>
       );
     }
   }
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 44 }}>
-        <FlatList
-          data={v.items}
-          renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
-          keyExtractor={(item, index) => index.toString()}
-          ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
-          //下拉刷新
-          //设置下拉刷新样式
-          refreshControl={
-            <RefreshControl
-              title={"正在加载..."} //android中设置无效
-              colors={[Skin1.textColor2]} //android
-              tintColor={Skin1.textColor2} //ios
-              titleColor={Skin1.textColor2}
-              refreshing={v.state.isRefreshing}
-              // refreshing={isHeader}
-              onRefresh={() => {
-                onHeaderRefresh(); //下拉刷新加载数据
-              }}
-            />
-          }
-          //设置上拉加载
-          ListFooterComponent={() => renderFooter()}
-          onEndReachedThreshold={0.01}//上拉刷新测试发现经常不触发
-          onEndReached={() => {
-            onEndReached()
-          }}
-          onContentSizeChange={() => {
-            console.log('onContentSizeChange');
-          }}
-        />
+      <View style ={{marginTop:44}}>
+      <FlatList
+        data={v.items}
+        renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
+        keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
+        //下拉刷新
+        //设置下拉刷新样式
+        refreshControl={
+          <RefreshControl
+            title={"正在加载..."} //android中设置无效
+            colors={[Skin1.textColor2]} //android
+            tintColor={Skin1.textColor2} //ios
+            titleColor={Skin1.textColor2}
+            refreshing={v.state.isRefreshing}
+            // refreshing={isHeader}
+            onRefresh={() => {
+              onHeaderRefresh(); //下拉刷新加载数据
+            }}
+          />
+        }
+        //设置上拉加载
+        ListFooterComponent={() => renderFooter()}
+        onEndReachedThreshold={0.01}//上拉刷新测试发现经常不触发
+        onEndReached={() => {
+          onEndReached()
+        }}
+        onContentSizeChange={() => {
+          console.log('onContentSizeChange');
+        }}
+      />
       </View>
-      <View style={{ position: 'absolute', width: '100%', padding: 0, }}>
-        {(v.pageTitle != PromotionConst.域名绑定) && <View key={'renderTitleHint'}>
-          <View style={styles.capital_type_picker}>
-            <DropDownPicker
-              items={
-                v.levelArray
-
-              }
-              defaultValue={v.levelindex}
-              containerStyle={{ height: 44, width: AppDefine.width / 3 }}
-              controller={instance => capitalController = instance}
-              style={{ backgroundColor: '#fafafa' }}
-              itemStyle={{
-                justifyContent: 'flex-start'
-              }}
-              dropDownStyle={{ backgroundColor: '#fafafa' }}
-              onChangeItem={item => {
-                v.levelindex = item.value;
-                onHeaderRefresh();
-              }}
-            />
-          </View>
-        </View>}
-        <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.textColor4 }}>
-          {v.titleArray?.map((title, idx) => {
-            return (
-
-              <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, }}
-                onPress={() => {
-                  if ((v.pageTitle != PromotionConst.域名绑定 && idx == 0)) {
-                    console.log('点击了。。。');
-                    capitalController?.toggle();
-                  }
-                }}>
-                <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
-                  {title}
-                </Text>
-                {(v.pageTitle != PromotionConst.域名绑定 && idx == 0) && <Image style={[{ height: 18, width: 18, marginTop: 15 }]} source={{ uri: Skin1.isBlack ? 'https://appstatic.guolaow.com/assets/baijiantou1.png' : 'https://appstatic.guolaow.com/assets/jiantou1.png' }} />}
-
-              </TouchableOpacity>
-            )
-          })}
+      <View style={{ position: 'absolute',width: '100%',padding: 0,}}>
+      { (v.pageTitle != PromotionConst.域名绑定) && <View key={'renderTitleHint'}>
+        <View style={styles.capital_type_picker}>
+          <DropDownPicker
+            items={
+              v.levelArray
+            }
+            defaultValue={v.levelindex}
+            containerStyle={{ height: 44, width: AppDefine.width / 3 }}
+            controller={instance => capitalController = instance}
+            style={{ backgroundColor: '#fafafa' }}
+            itemStyle={{
+              justifyContent: 'flex-start'
+            }}
+            dropDownStyle={{ backgroundColor: '#fafafa' }}
+            onChangeItem={item => {
+              v.levelindex = item.value;
+              onHeaderRefresh();
+             }}
+          />
         </View>
+      </View>}
+      <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.textColor4 }}>
+        {v.titleArray?.map((title, idx) => {
+          return (
+
+            <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, }}
+              onPress={() => {
+                if ((v.pageTitle != PromotionConst.域名绑定 && idx == 0)) {
+                  console.log('点击了。。。');
+                  capitalController?.toggle();
+                }
+              }}>
+              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
+                {title}
+              </Text>
+              {(v.pageTitle != PromotionConst.域名绑定 && idx == 0) && <Image style={[{ height: 18, width: 18, marginTop: 15 }]} source={{ uri: Skin1.isBlack ? 'https://appstatic.guolaow.com/assets/baijiantou1.png' : 'https://appstatic.guolaow.com/assets/jiantou1.png' }} />}
+
+            </TouchableOpacity>
+          )
+        })}
+      </View>
 
       </View>
 
@@ -471,4 +423,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDPromotionTabMemberPage
+export default JDPromotionTabBettingReportCP

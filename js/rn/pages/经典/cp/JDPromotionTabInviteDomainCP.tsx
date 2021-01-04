@@ -19,7 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-interface JDPromotionTabDrawlRcordPage {
+interface JDPromotionTabInviteDomainCP {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -39,13 +39,13 @@ interface JDPromotionTabDrawlRcordPage {
 
 }
 
-const JDPromotionTabDrawlRcordPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
+const JDPromotionTabInviteDomainCP = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
 
 
-  let { current: v } = useRef<JDPromotionTabDrawlRcordPage>(
+  let { current: v } = useRef<JDPromotionTabInviteDomainCP>(
     {
-      pageTitle: pageTitle,
-      titleArray: titleArray,
+      pageTitle: '域名绑定',
+      titleArray: ["首页推荐链接", "注册推荐链接"],
       items: [],
       levelArray: [],
       pageSize: 20,
@@ -72,22 +72,7 @@ const JDPromotionTabDrawlRcordPage = ({ pageTitle, titleArray }: { pageTitle?: s
   { value: 10, label: '10级下线' }];
   //初始化
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '提款记录', back: true },
-      didFocus: () => {
-        v.pageTitle = '提款记录';
-        v.titleArray = ["分级", "用户名", "日期", "提款金额"];
-        v.items = [];
-        v.pageNumber = 1;
-        v.state.showFoot = 0;
-        v.state.isRefreshing = true;
-        v.state.isLastPage = false;
-
-        console.log('useEffect');
         onHeaderRefresh()
-
-      }
-    })
   }, [])
 
   /**
@@ -98,7 +83,7 @@ const JDPromotionTabDrawlRcordPage = ({ pageTitle, titleArray }: { pageTitle?: s
     v.state.isRefreshing = true
     v.pageNumber = 1
     console.log('下拉刷新');
-    teamWithdrawListData()
+    teamInviteDomainData()
   }
   /**
   * 点击（上拉）加载更多数据
@@ -109,7 +94,7 @@ const JDPromotionTabDrawlRcordPage = ({ pageTitle, titleArray }: { pageTitle?: s
     console.log('上拉加载');
     v.state.showFoot = 1
     setProps()
-    teamWithdrawListData()
+    teamInviteDomainData()
   }
   /**
 * 点击刷新
@@ -150,14 +135,14 @@ const JDPromotionTabDrawlRcordPage = ({ pageTitle, titleArray }: { pageTitle?: s
   }
 
   /**
-* 得到提款记录列表数据
+* 得到域名绑定列表数据
 * 
 */
-function teamWithdrawListData() {
+function teamInviteDomainData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
-  console.log('提款记录列表页码===', v.pageNumber);
-  api.team.withdrawList(v.levelindex, v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+  console.log('域名绑定列表数据===', v.pageNumber);
+  api.team.inviteDomain(v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
 
@@ -274,25 +259,15 @@ function teamWithdrawListData() {
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.level + '级下线'}
+            {'http://' + item.domain}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.username}
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {anyEmpty(item.date) ? '--' : item.date}
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.amount}
+            {'http://' + item.domain}
             </Text>
           </View>
          
@@ -436,4 +411,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDPromotionTabDrawlRcordPage
+export default JDPromotionTabInviteDomainCP

@@ -19,7 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-interface JDPromotionTabRealityReportPage {
+interface JDPromotionTabRealityReportCP {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -39,13 +39,13 @@ interface JDPromotionTabRealityReportPage {
 
 }
 
-const JDPromotionTabRealityReportPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
+const JDPromotionTabRealityReportCP = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
 
 
-  let { current: v } = useRef<JDPromotionTabRealityReportPage>(
+  let { current: v } = useRef<JDPromotionTabRealityReportCP>(
     {
-      pageTitle: pageTitle,
-      titleArray: titleArray,
+      pageTitle: '真人报表',
+      titleArray: ["分级", "日期", "投注金额", "会员输赢", "返点"],
       items: [],
       levelArray: [],
       pageSize: 20,
@@ -72,22 +72,7 @@ const JDPromotionTabRealityReportPage = ({ pageTitle, titleArray }: { pageTitle?
   { value: 10, label: '10级下线' }];
   //初始化
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '真人报表', back: true },
-      didFocus: () => {
-        v.pageTitle = '真人报表';
-        v.titleArray = ["分级", "日期", "投注金额", "会员输赢", "返点"];
-        v.items = [];
-        v.pageNumber = 1;
-        v.state.showFoot = 0;
-        v.state.isRefreshing = true;
-        v.state.isLastPage = false;
-
-        console.log('useEffect');
         onHeaderRefresh()
-
-      }
-    })
   }, [])
 
   /**
@@ -273,7 +258,7 @@ function teamRealBetStatData() {
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width:AppDefine.width/5-10, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
             {item.level == 0 ? '全部下线' : item.level + '级下线'}
@@ -440,4 +425,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDPromotionTabRealityReportPage
+export default JDPromotionTabRealityReportCP

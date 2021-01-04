@@ -19,7 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-interface JDPromotionTabDepostPage {
+interface JDPromotionTabWithdrawalReportCP {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -39,13 +39,13 @@ interface JDPromotionTabDepostPage {
 
 }
 
-const JDPromotionTabDepostPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
+const JDPromotionTabWithdrawalReportCP = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
 
 
-  let { current: v } = useRef<JDPromotionTabDepostPage>(
+  let { current: v } = useRef<JDPromotionTabWithdrawalReportCP>(
     {
-      pageTitle: pageTitle,
-      titleArray: titleArray,
+      pageTitle: '提款报表',
+      titleArray: ["分级", "日期", "提款金额", "提款人数"],
       items: [],
       levelArray: [],
       pageSize: 20,
@@ -72,22 +72,7 @@ const JDPromotionTabDepostPage = ({ pageTitle, titleArray }: { pageTitle?: strin
   { value: 10, label: '10级下线' }];
   //初始化
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '存款记录', back: true },
-      didFocus: () => {
-        v.pageTitle = '存款记录';
-        v.titleArray = ["分级", "用户", "日期", "存款金额"];
-        v.items = [];
-        v.pageNumber = 1;
-        v.state.showFoot = 0;
-        v.state.isRefreshing = true;
-        v.state.isLastPage = false;
-
-        console.log('useEffect');
         onHeaderRefresh()
-
-      }
-    })
   }, [])
 
   /**
@@ -98,7 +83,7 @@ const JDPromotionTabDepostPage = ({ pageTitle, titleArray }: { pageTitle?: strin
     v.state.isRefreshing = true
     v.pageNumber = 1
     console.log('下拉刷新');
-    teamDepositListData()
+    teamWithdrawStatData()
   }
   /**
   * 点击（上拉）加载更多数据
@@ -109,7 +94,7 @@ const JDPromotionTabDepostPage = ({ pageTitle, titleArray }: { pageTitle?: strin
     console.log('上拉加载');
     v.state.showFoot = 1
     setProps()
-    teamDepositListData()
+    teamWithdrawStatData()
   }
   /**
 * 点击刷新
@@ -150,14 +135,14 @@ const JDPromotionTabDepostPage = ({ pageTitle, titleArray }: { pageTitle?: strin
   }
 
   /**
-* 得到存款记录列表数据
+* 得到域名绑定列表数据
 * 
 */
-function teamDepositListData() {
+function teamWithdrawStatData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
-  console.log('存款记录列表页码===', v.pageNumber);
-  api.team.depositList(v.levelindex, v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+  console.log('提款报表列表页码===', v.pageNumber);
+    api.team.withdrawStat(v.levelindex, '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
 
@@ -188,8 +173,6 @@ function teamDepositListData() {
       v.state.isLastPage = false;
       v.state.showFoot = 0
     }
-
-    console.log('arrayData==================',arrayData);
     setProps()
 
   }, (err) => {
@@ -276,15 +259,10 @@ function teamDepositListData() {
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.level + '级下线'}
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.username}
+            {item.level == 1 ? '全部下线' : item.level + '级下线'}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
@@ -292,9 +270,14 @@ function teamDepositListData() {
             {anyEmpty(item.date) ? '--' : item.date}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
             {item.amount}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            {item.member == 1 ? item.member + '人' : '--'}
             </Text>
           </View>
          
@@ -438,4 +421,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDPromotionTabDepostPage
+export default JDPromotionTabWithdrawalReportCP

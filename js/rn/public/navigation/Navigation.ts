@@ -31,14 +31,7 @@ export enum PageName {
   JDRedEnveloperPage = 'JDRedEnveloperPage',
   JDAgentPage = "JDAgentPage",
   JDPromotionIncomePage = "JDPromotionIncomePage",
-  JDPromotionTabBettingRecordPage = "JDPromotionTabBettingRecordPage",
-  JDPromotionTabInviteDomainPage = "JDPromotionTabInviteDomainPage",
-  JDPromotionTabDepositStatePage = "JDPromotionTabDepositStatePage",
   TaskCenterPage = 'TaskCenterPage',
-  JDPromotionTabDepostPage = "JDPromotionTabDepostPage",
-  JDPromotionTabWithdrawalReportPage = "JDPromotionTabWithdrawalReportPage",
-  JDPromotionTabDrawlRcordPage = "JDPromotionTabDrawlRcordPage",
-  JDPromotionTabRealityReportPage = "JDPromotionTabRealityReportPage",
 
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',

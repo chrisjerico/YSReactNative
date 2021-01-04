@@ -99,21 +99,9 @@ import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 import JDPromotionIncomePage from '../经典/推荐收益/JDPromotionIncomePage'
-// import JDPromotionTabBettingReportPage from '../经典/推荐收益/JDPromotionTabBettingReportPage'
-// import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMemberPage'
 import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import BetLotteryPage from '../bet/BetLotteryPage'
-import JDPromotionTabBettingReportPage from '../经典/推荐收益/JDPromotionTabBettingReportPage'
-import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMemberPage'
-import JDPromotionTabInviteDomainPage from '../经典/推荐收益/JDPromotionTabInviteDomainPage'
-import JDPromotionTabBettingRecordPage from '../经典/推荐收益/JDPromotionTabBettingRecordPage'
-import JDPromotionTablePage from '../经典/推荐收益/JDPromotionTablePage'
-import JDPromotionTabDepositStatePage from '../经典/推荐收益/JDPromotionTabDepositStatePage'
-import JDPromotionTabDepostPage from '../经典/推荐收益/JDPromotionTabDepostPage'
-import JDPromotionTabWithdrawalReportPage from '../经典/推荐收益/JDPromotionTabWithdrawalReportPage'
-import JDPromotionTabDrawlRcordPage from '../经典/推荐收益/JDPromotionTabDrawlRcordPage'
-import JDPromotionTabRealityReportPage from '../经典/推荐收益/JDPromotionTabRealityReportPage'
 
 /**
  * 所有界面
@@ -162,16 +150,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDAgentPage,//申请代理
   JDRedEnveloperPage,//红包扫雷
   JDPromotionIncomePage,//推荐收益
-  JDPromotionTablePage,//
-  JDPromotionTabBettingReportPage,//推荐收益--投注报表
-  JDPromotionTabMemberPage,//推荐收益--会员管理
-  JDPromotionTabBettingRecordPage,//推荐收益--投注记录
-  JDPromotionTabInviteDomainPage,//推荐收益--域名绑定
-  JDPromotionTabDepositStatePage,//推荐收益--存款报表
-  JDPromotionTabDepostPage,//推荐收益--存款记录
-  JDPromotionTabWithdrawalReportPage,//推荐收益--提款报表
-  JDPromotionTabDrawlRcordPage,//推荐收益--提款记录
-  JDPromotionTabRealityReportPage,//推荐收益--真人报表
+
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页

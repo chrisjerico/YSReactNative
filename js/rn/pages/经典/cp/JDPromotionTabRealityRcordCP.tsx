@@ -19,7 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-interface JDPromotionTabWithdrawalReportPage {
+interface JDPromotionTabRealityRcordCP {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -39,13 +39,13 @@ interface JDPromotionTabWithdrawalReportPage {
 
 }
 
-const JDPromotionTabWithdrawalReportPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
+const JDPromotionTabRealityRcordCP = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
 
 
-  let { current: v } = useRef<JDPromotionTabWithdrawalReportPage>(
+  let { current: v } = useRef<JDPromotionTabRealityRcordCP>(
     {
-      pageTitle: pageTitle,
-      titleArray: titleArray,
+      pageTitle: '真人记录',
+      titleArray: ["分级", "用户", "游戏", "日期", "投注金额", "会员输赢"],
       items: [],
       levelArray: [],
       pageSize: 20,
@@ -72,22 +72,7 @@ const JDPromotionTabWithdrawalReportPage = ({ pageTitle, titleArray }: { pageTit
   { value: 10, label: '10级下线' }];
   //初始化
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '提款报表', back: true },
-      didFocus: () => {
-        v.pageTitle = '提款报表';
-        v.titleArray = ["分级", "日期", "提款金额", "提款人数"];
-        v.items = [];
-        v.pageNumber = 1;
-        v.state.showFoot = 0;
-        v.state.isRefreshing = true;
-        v.state.isLastPage = false;
-
-        console.log('useEffect');
         onHeaderRefresh()
-
-      }
-    })
   }, [])
 
   /**
@@ -98,7 +83,7 @@ const JDPromotionTabWithdrawalReportPage = ({ pageTitle, titleArray }: { pageTit
     v.state.isRefreshing = true
     v.pageNumber = 1
     console.log('下拉刷新');
-    teamWithdrawStatData()
+    teamRealBetListData()
   }
   /**
   * 点击（上拉）加载更多数据
@@ -109,7 +94,7 @@ const JDPromotionTabWithdrawalReportPage = ({ pageTitle, titleArray }: { pageTit
     console.log('上拉加载');
     v.state.showFoot = 1
     setProps()
-    teamWithdrawStatData()
+    teamRealBetListData()
   }
   /**
 * 点击刷新
@@ -148,16 +133,15 @@ const JDPromotionTabWithdrawalReportPage = ({ pageTitle, titleArray }: { pageTit
       return data['list']
     }
   }
-
   /**
-* 得到域名绑定列表数据
+* 得到真人记录列表数据
 * 
 */
-function teamWithdrawStatData() {
+function teamRealBetListData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
-  console.log('提款报表列表页码===', v.pageNumber);
-    api.team.withdrawStat(v.levelindex, '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+  console.log('真人记录列表页码===', v.pageNumber);
+  api.team.realBetList(v.levelindex, v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
 
@@ -274,10 +258,20 @@ function teamWithdrawStatData() {
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4 }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width:AppDefine.width/6, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.level == 1 ? '全部下线' : item.level + '级下线'}
+            {item.level + '级下线'}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width:AppDefine.width/6 }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            {anyEmpty(item.username) ? '--' : item.username}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width:AppDefine.width/6-16, }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            {anyEmpty(item.platform) ? '--' : item.platform}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
@@ -285,14 +279,14 @@ function teamWithdrawStatData() {
             {anyEmpty(item.date) ? '--' : item.date}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width:AppDefine.width/6-10,  }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.amount}
+            {item.validBetAmount}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width:AppDefine.width/6,  }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.member == 1 ? item.member + '人' : '--'}
+            {item.comNetAmount}
             </Text>
           </View>
          
@@ -436,4 +430,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDPromotionTabWithdrawalReportPage
+export default JDPromotionTabRealityRcordCP
