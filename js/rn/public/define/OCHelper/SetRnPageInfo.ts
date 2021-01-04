@@ -166,27 +166,27 @@ export async function setRnPageInfo() {
     允许未登录访问: false,
   })
 
-  // {
-  //   //额度转页-经典版
-  //   let page: PageName = PageName.TransferView
-  //   //额度转页-天空蓝版
-  //   if (skitType.indexOf('天空蓝') != -1 || 'c085'.indexOf(AppDefine.siteId) != -1) {
-  //     page = PageName.TransferTKLMainView
-  //   }
-  //   //额度转页-新版
-  //   else if ('c200,a002,c186,test60f'.indexOf(AppDefine.siteId) != -1) {
-  //     page = PageName.TransferLineView
-  //   }
-  //   pages.push({
-  //     rnName: page,
-  //     userCenterItemCode: 8,
-  //     fd_prefersNavigationBarHidden: true,
-  //     tabbarItemPath: '/conversion',
-  //     vcName: 'UGBalanceConversionController,LineConversionHeaderVC,TKLMainViewController',
-  //     允许游客访问: false,
-  //     允许未登录访问: false,
-  //   })
-  // }
+  {
+    //额度转页-经典版
+    let page: PageName = PageName.TransferView
+    //额度转页-天空蓝版
+    if (skitType.indexOf('天空蓝') != -1 || 'c085'.indexOf(AppDefine.siteId) != -1) {
+      page = PageName.TransferTKLMainView
+    }
+    //额度转页-新版
+    else if ('c200,a002,c186,test60f'.indexOf(AppDefine.siteId) != -1) {
+      page = PageName.TransferLineView
+    }
+    pages.push({
+      rnName: page,
+      userCenterItemCode: 8,
+      fd_prefersNavigationBarHidden: true,
+      tabbarItemPath: '/conversion',
+      vcName: 'UGBalanceConversionController,LineConversionHeaderVC,TKLMainViewController',
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+  }
 
 
   if (skitType.indexOf('尊龙') != -1) {
@@ -206,13 +206,17 @@ export async function setRnPageInfo() {
   switch (Platform.OS) {
     case 'ios':
       // // vcName支持填多个页面，用英文逗号分隔
-      // const tmp: RnPageModel[] = []
-      // pages.forEach((rpm) => {
-      //   rpm?.vcName?.split(',').forEach((v) => {
-      //     v?.length && tmp.push(Object.assign({}, rpm, { vcName: v }))
-      //   })
-      // })
-      // pages = tmp
+      const tmp: RnPageModel[] = []
+      pages.forEach((rpm) => {
+        if (rpm?.vcName?.length) {
+          rpm?.vcName?.split(',').forEach((v) => {
+            v?.length && tmp.push(Object.assign({}, rpm, { vcName: v }))
+          })
+        } else {
+          tmp.push(rpm)
+        }
+      })
+      pages = tmp
 
       // 替换原生页面
       await OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages])
