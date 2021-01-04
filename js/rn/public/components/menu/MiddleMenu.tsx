@@ -52,7 +52,7 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
              backdropOpacity={0.3}>
         <View style={[
           _styles.content,
-          { height: arrayLength(menu) * ITEM_HEIGHT },
+          { height: (arrayLength(menu) < 11 ? arrayLength(menu) : 10) * ITEM_HEIGHT },
         ]}>
           <ScrollView style={_styles.sv_container}
                       showsVerticalScrollIndicator={false}>

@@ -1,6 +1,8 @@
 import { Platform } from 'react-native'
 import APIRouter, { UserReg } from '../../network/APIRouter'
 import useSignIn from './useSignIn'
+import { api } from '../../network/NetworkRequest1/NetworkRequest1'
+import SlideCodeModel from '../../../redux/model/other/SlideCodeModel'
 
 interface Options {
   onSuccessAutoLogin?: () => any
@@ -13,7 +15,8 @@ interface Options {
 const useSignUp = (options: Options = {}) => {
   const { onSuccessAutoLogin, onErrorAutoLogin, onStart, onSuccess, onError } = options
   const { signIn } = useSignIn({
-    onStart: () => {},
+    onStart: () => {
+    },
     onSuccess: () => {
       onSuccessAutoLogin && onSuccessAutoLogin()
     },
@@ -21,6 +24,36 @@ const useSignUp = (options: Options = {}) => {
       onErrorAutoLogin && onErrorAutoLogin(error)
     },
   })
+
+  const userSingUp = async (params: {
+    inviter: string; // 推荐人ID
+    usr: string; // 账号
+    pwd: string; // 密码
+    fundPwd: string; // 取款密码
+    fullName: string; // 真实姓名
+    qq: string; // QQ号
+    wx: string; // 微信号
+    phone: string; // 手机号
+    smsCode: string; // 短信验证码
+    imgCode: string; // 字母验证码
+    slideCode: SlideCodeModel; // 滑动验证码
+    email: string; // 邮箱
+    regType: 'user' | 'agent'; // 用户注册 或 代理注册
+  }) => {
+    (await api.user.reg(params)).promise.then(async (data)=> {
+      if (data.data.autoLogin) {
+        //登陸
+        await signIn({
+          account: params.usr,
+          password: params.pwd,
+          device: Platform.OS == 'android' ? 2 : 3,
+        })
+      } else {
+        onSuccess && onSuccess()
+      }
+    })
+  }
+
   const signUp = async (params: UserReg) => {
     try {
       onStart && onStart()
@@ -49,7 +82,7 @@ const useSignUp = (options: Options = {}) => {
       onError && onError(error)
     }
   }
-  return { signUp }
+  return { signUp, userSingUp }
 }
 
 export default useSignUp

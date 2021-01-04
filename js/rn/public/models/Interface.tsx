@@ -61,6 +61,7 @@ export interface SlideCode {
   nc_csessionid?: string;
   nc_token?: string;
   nc_sig?: string;
+  nc_value?: string;
 }
 
 export interface SubType {
