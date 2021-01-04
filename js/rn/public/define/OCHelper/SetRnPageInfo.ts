@@ -70,7 +70,14 @@ export async function setRnPageInfo() {
       允许游客访问: true,
       允许未登录访问: true,
     })
-
+    //利息宝页
+    pages.push({
+      rnName: PageName.AlipayView,
+      userCenterItemCode: 4,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 彩票大厅（第三样式）
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat([{
@@ -147,15 +154,6 @@ export async function setRnPageInfo() {
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  })
-
-  //利息宝页
-  pages.push({
-    rnName: PageName.AlipayView,
-    userCenterItemCode: 4,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: false,
-    允许未登录访问: false,
   })
 
   //建议反馈页

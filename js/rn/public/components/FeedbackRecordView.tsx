@@ -83,7 +83,7 @@ export const FeedbackRecordView = () => {
   }
 
   return (
-    <>
+    <View style={{backgroundColor: "#fff", flex: 1}}>
       <Header />
       <View style={{ flexDirection: 'row', paddingTop: 10, zIndex: 2 }}>
         <Picker value={date} setValue={setDate} data={dateArr} height={250} />
@@ -140,10 +140,10 @@ export const FeedbackRecordView = () => {
         )}
         ListFooterComponent={() => (
           <View style={{ alignItems: 'center', paddingVertical: 24 }}>
-            <Text style={{ color: Skin1.textColor1 }}>点击可查看反馈详情</Text>
+            <Text style={{ color: "#111" }}>点击可查看反馈详情</Text>
           </View>
         )}
-        style={{ marginTop: 20 }}
+        style={{ marginTop: 20, flex: 1 }}
         contentContainerStyle={{ borderColor: borderColor, borderTopWidth: 0.5 }}
         data={record}
         renderItem={({ item }) => {
@@ -191,7 +191,7 @@ export const FeedbackRecordView = () => {
             </TouchableWithoutFeedback>
           )
         }} />
-    </>
+    </View>
   )
 }
 
@@ -253,11 +253,12 @@ const Picker = ({ data, value, setValue, height = 120 }:
             alignItems: 'center',
             flexDirection: 'row',
             width: 115,
+            backgroundColor: "#fff"
           }}>
             <Text
-              style={{ color: Skin1.isBlack ? 'white' : 'black', marginLeft: 4 }}>{value}</Text>
+              style={{ color: '#111', marginLeft: 4 }}>{value}</Text>
             <View style={{ flex: 1 }} />
-            <Icon color={Skin1.isBlack ? '#fff' : Skin1.textColor2}
+            <Icon color={"#111"}
                   style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }], marginRight: 4 }}
                   size={22}
                   name={'caret-down'} />
@@ -290,7 +291,7 @@ const Picker = ({ data, value, setValue, height = 120 }:
                 setValue(item)
               }}>
                 <View style={{ paddingVertical: 12, paddingHorizontal: 12, justifyContent: 'center' }}>
-                  <Text>{item ? item || '' : ''}</Text>
+                  <Text style={{color: "#111"}}>{item ? item || '' : ''}</Text>
                 </View>
               </TouchableWithoutFeedback>
             )} />}
