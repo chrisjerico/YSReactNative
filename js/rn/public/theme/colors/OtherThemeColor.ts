@@ -5,7 +5,7 @@ export const OtherThemeColor: { [x: string]: UGThemeColor } = {
   //乐橙
   石榴红: {
     skitType: '石榴红',
-    skitString: '乐橙 ',
+    skitString: '石榴红 ',
     bgColor: ['#F5F5F5', '#F5F5F5'],
     navBarBgColor: ['#CC022C', '#CC022C'],
     tabBarBgColor: '#CC022C',
@@ -25,10 +25,10 @@ export const OtherThemeColor: { [x: string]: UGThemeColor } = {
     intoViewColor: '#7BA2C2',
     moneyCellColor: '#9BB8CB',
   },
-  //黑色模板
-  黑色模板: {
-    skitType: '黑色模板',
-    skitString: '黑色模板',
+  //GPK版
+  GPK版0: {
+    skitType: 'GPK版0',
+    skitString: 'GPK版0 黑色',
     bgColor: ['#171717', '#171717'],
     navBarBgColor: ['#333333', '#333333'],
     tabBarBgColor: '#313131',
