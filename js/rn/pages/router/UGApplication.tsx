@@ -100,6 +100,7 @@ import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
+import BetLotteryPage from '../bet/BetLotteryPage'
 
 
 /**
@@ -132,6 +133,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDFeedBackPage, //建议反馈
   OnlinePayPage, //在线支付
   TransferPayPage, //银行支付
+  BetLotteryPage, //彩票下注
   BtcPayPage, //虚拟币支付
   BtcTutorialPage, //虚拟币教程
   AlipayView, //利息宝
