@@ -8,7 +8,7 @@ import {
   PlayOddDetailData,
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import APIRouter from '../../../../public/network/APIRouter'
 import { ugLog } from '../../../../public/tools/UgLog'
 
@@ -29,7 +29,7 @@ const UseLhcTM = () => {
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
 
   // ugLog('playOddData=', playOddData)
-  useEffect(()=>{
+  useEffect(() => {
     //特码取前3个数据
     if (!anyEmpty(playOddData?.playGroups)) {
       setDataTMA([playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]])
@@ -39,16 +39,67 @@ const UseLhcTM = () => {
     }
   }, [playOddData])
 
+  // /**
+  //  * 生肖有变化，重新计算球球
+  //  */
+  // useEffect(()=>{
+  //   setSelectedBalls(null)
+  //   let newBalls = []
+  //   selectedZodiac?.map((zodiac) => {
+  //     let itemArr = zodiac?.nums.map((item) => ('0' + item).slice(-2))
+  //     newBalls = [...newBalls, ...itemArr]
+  //   })
+  //   setSelectedBalls([...selectedBalls, ...newBalls])
+  // }, [selectedZodiac])
+
   /**
-   * 生肖有变化
+   * 有选中的数据变化时，计算生肖的选中情况
    */
-  useEffect(()=>{
-    // setSelectedBalls(null)
-    // selectedZodiac?.map((zodiac) => {
-    //   let itemArr = zodiac?.nums.map((item) => ('0' + item).slice(-2))
-    //   setSelectedBalls([...selectedBalls, ...itemArr])
-    // })
-  }, [selectedZodiac])
+  useEffect(() => {
+    let selArr = []
+    zodiacData?.map((zodiac) => {
+      //重组数字
+      const checkMap = zodiac.nums.map((item) => ('0' + item).slice(-2))
+      ugLog('checkMap=', checkMap)
+      const intersection = selectedBalls?.filter((item) => checkMap.includes(item))
+      if (arrayLength(intersection) == arrayLength(checkMap)) {
+        selArr = [...selArr, zodiac]
+      }
+    })
+
+    setSelectedZodiac(selArr)
+  }, [selectedBalls])
+
+  /**
+   * 添加或移除生肖
+   * @param item
+   */
+  const addOrRemoveZodiac = (item: ZodiacNum) => {
+    //重组数字
+    const checkMap = item.nums.map((item) => ('0' + item).slice(-2))
+    ugLog('checkMap2=', checkMap)
+    if (selectedZodiac.includes(item)) {
+      let newResult = selectedBalls?.filter((item) => !checkMap.includes(item))
+      setSelectedBalls(newResult)
+    } else {
+      setSelectedBalls([...selectedBalls,
+        ...checkMap.filter((item) => !selectedBalls.includes(item))])
+    }
+  }
+
+  /**
+   * 添加或移除选中的球
+   * @param ball
+   */
+  const addOrRemoveBall = (ball?: string) => {
+    //重组数字
+    if (selectedBalls.includes(ball)) {
+      let newResult = selectedBalls?.filter((item) => item != ball)
+      setSelectedBalls(newResult)
+    } else {
+      setSelectedBalls([...selectedBalls, ball])
+    }
+  }
 
   return {
     nextIssueData,
@@ -66,7 +117,9 @@ const UseLhcTM = () => {
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
-    setSelectedBalls
+    setSelectedBalls,
+    addOrRemoveZodiac,
+    addOrRemoveBall,
   }
 }
 

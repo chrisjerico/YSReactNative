@@ -65,7 +65,9 @@ const LhcTMComponent = ({
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
-    setSelectedBalls
+    setSelectedBalls,
+    addOrRemoveZodiac,
+    addOrRemoveBall,
   } = UseLhcTM()
 
   useEffect(() => {
@@ -110,27 +112,22 @@ const LhcTMComponent = ({
                 horizontal={true}>
       <View style={_styles.zodiac_container}>
         {
-          zodiacData?.map((item, index) => <TouchableOpacity onPress={() => {
-            if (selectedZodiac?.includes(item)) {
-              // ugLog('selectedZodiac.filter((zk) => zk != item)=', selectedZodiac.filter((zk) => zk != item))
-              setSelectedZodiac(selectedZodiac.filter((zk) => zk != item))
-            } else {
-              setSelectedZodiac([...selectedZodiac, item])
-            }
-          }}>
-            <View key={`${selectedZodiac?.includes(item)}`}
-              style={_styles.zodiac_item}>
-              {
-                selectedZodiac?.includes(item) ?
-                  <Icon size={scale(36)}
-                        color={Skin1.themeColor}
-                        name={'check-circle'}/> :
-                  <Icon size={scale(36)}
-                        name={'circle-o'}/>
-              }
-              <Text style={_styles.zodiac_item_text}>{item?.name}</Text>
-            </View>
-          </TouchableOpacity>)
+          zodiacData?.map((item, index) =>
+            <TouchableOpacity key={index}
+                              onPress={() => addOrRemoveZodiac(item)}>
+              <View key={`${selectedZodiac?.includes(item)}`}
+                    style={_styles.zodiac_item}>
+                {
+                  selectedZodiac?.includes(item) ?
+                    <Icon size={scale(36)}
+                          color={Skin1.themeColor}
+                          name={'check-circle'}/> :
+                    <Icon size={scale(36)}
+                          name={'circle-o'}/>
+                }
+                <Text style={_styles.zodiac_item_text}>{item?.name}</Text>
+              </View>
+            </TouchableOpacity>)
         }
       </View>
     </ScrollView>
@@ -152,18 +149,20 @@ const LhcTMComponent = ({
             <View style={_styles.ball_container}>
               {
                 groupData?.plays?.map((item) =>
-                  <View style={[
-                    _styles.ball_item,
-                    {
-                      backgroundColor:
-                        selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}88` : null,
-                    }
-                  ]}>
-                    <LotteryBall type={BallStyles.lhc}
-                                 ballNumber={item?.name}/>
-                    <Text numberOfLines={1}
-                          style={_styles.ball_odds}>{item.odds}</Text>
-                  </View>)
+                  <TouchableOpacity onPress={() => addOrRemoveBall(item?.name)}>
+                    <View style={[
+                      _styles.ball_item,
+                      {
+                        backgroundColor:
+                          selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}66` : null,
+                      },
+                    ]}>
+                      <LotteryBall type={BallStyles.lhc}
+                                   ballNumber={item?.name}/>
+                      <Text numberOfLines={1}
+                            style={_styles.ball_odds}>{item.odds}</Text>
+                    </View>
+                  </TouchableOpacity>)
               }
             </View>
 
@@ -205,8 +204,9 @@ const _styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: scale(2),
-    paddingVertical: scale(10),
-    borderRadius: scale(16),
+    paddingVertical: scale(8),
+    marginVertical: scale(2),
+    borderRadius: scale(10),
   },
   ball_odds: {
     width: scale(76),
@@ -235,13 +235,14 @@ const _styles = StyleSheet.create({
   },
   zodiac_item: {
     flexDirection: 'row',
-    padding: scale(16),
+    paddingVertical: scale(16),
+    paddingHorizontal: scale(12),
     alignItems: 'center',
   },
   zodiac_item_text: {
     color: UGColor.TextColor3,
     fontSize: scale(22),
-    paddingHorizontal: scale(1),
+    paddingLeft: scale(6),
   },
 
 
