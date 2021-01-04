@@ -37,10 +37,10 @@ import { TransferLineView } from '../../public/components/transfer/TransferLineV
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
   const { info, refresh } = useHomePage({})
-  const { homeInfo, loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, isTest, redBagLogo } = info
-  const { rankLists, redBag, goldenEggs, scratchs, roulette } = homeInfo
-  const {showCoupon} = sysInfo
-  const { uid } = userInfo
+  const { homeInfo, loading, refreshing, userInfo, sysInfo, } = info
+  const { rankLists, redBag, goldenEggs, scratchs, roulette, floatAds, redBagLogo, announcements } = homeInfo
+  const { showCoupon } = sysInfo
+  const { uid, isTest } = userInfo
   const { mobile_logo, rankingListSwitch, webName } = sysInfo
 
   useEffect(() => {
@@ -70,7 +70,14 @@ const LLHomePage = ({ setProps, navigation }) => {
       <StatusBar barStyle="dark-content" translucent={true} />
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView refreshControl={<RefreshControl style={{ backgroundColor: '#ffffff' }} refreshing={loading}
-                                                    onRefresh={onRefresh} />} style={{ flex: 1 }}>
+          onRefresh={async () => {
+            try {
+              await refresh()
+              PushHelper.pushAnnouncement(announcements)
+            } catch (error) {
+              console.log('-------error------', error)
+            }
+          }} />} style={{ flex: 1 }}>
           <HomeHeaderButtonBar logoIcon={mobile_logo} />
           <HomeTabView />
           {showCoupon && (

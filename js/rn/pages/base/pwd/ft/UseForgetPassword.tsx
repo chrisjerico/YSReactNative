@@ -5,7 +5,7 @@ import { UGStore } from '../../../../redux/store/UGStore'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import md5 from 'blueimp-md5'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { pop } from '../../../../public/navigation/RootNavigation'
 
@@ -24,6 +24,29 @@ const UseForgetPassword = () => {
   const [fundPassword, setFundPassword] = useState(null) //设置资金密码
   const [firstImage, setFirstImage] = useState(null) //设置第一张图片
   const [secondImage, setSecondImage] = useState(null) //设置第2张图片
+  const [countDown, setCountDown] = useState(-1) //倒计时次数
+  const [startCount, setStartCount] = useState(false) //是否开始倒计时
+
+  /**
+   * 倒计时
+   */
+  useEffect(() => {
+    let timer
+    if(startCount) {
+      timer = setInterval(()=>{
+        setCountDown( n => {
+          if (n <= 0) {
+            setStartCount(false)
+            clearInterval(timer)
+          }
+
+          return n - 1
+        })
+      }, 1000)
+    }
+
+    return () => clearInterval(timer)
+  }, [startCount])
 
   /**
    * 绑定密码
@@ -83,6 +106,8 @@ const UseForgetPassword = () => {
       Toast(res?.data?.msg)
       if (res?.data?.code == 0) {
         setSmsNumber(null)
+        setCountDown(60)
+        setStartCount(true)
       }
 
     }).finally(() => {
@@ -105,6 +130,8 @@ const UseForgetPassword = () => {
     setFirstImage,
     secondImage,
     setSecondImage,
+    countDown,
+    startCount,
     bindPassword,
     sendSmsCode,
   }
