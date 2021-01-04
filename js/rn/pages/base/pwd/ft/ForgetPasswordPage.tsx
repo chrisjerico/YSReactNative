@@ -48,6 +48,8 @@ const ForgetPasswordPage = ({ navigation, route }) => {
     setFirstImage,
     secondImage,
     setSecondImage,
+    countDown,
+    startCount,
     bindPassword,
     sendSmsCode,
   } = UseForgetPassword()
@@ -129,14 +131,18 @@ const ForgetPasswordPage = ({ navigation, route }) => {
                    value={smsNumber}
                    onChangeText={text => setSmsNumber(text)}
                    placeholder={'输入短信验证码'}/>
-        <Button title={'获取短信验证码'}
-                titleStyle={_styles.verify_code_text}
-                containerStyle={[_styles.verify_code_bt,
-                  { backgroundColor: Skin1.themeColor }]}
-                onPress={() => {
-                  sendSmsCode()
-
-                }}/>
+        {
+          startCount ?
+            <Text style={[_styles.verify_code_count,
+              {backgroundColor: Skin1.themeColor}]}>{`${countDown}秒`}</Text> :
+            <Button title={'获取短信验证码'}
+                  titleStyle={_styles.verify_code_text}
+                  containerStyle={[_styles.verify_code_bt,
+                    { backgroundColor: Skin1.themeColor }]}
+                  onPress={() => {
+                    sendSmsCode()
+                  }}/>
+        }
 
       </View>
     }
@@ -242,6 +248,16 @@ const _styles = StyleSheet.create({
     width: '100%',
     height: scale(66),
     borderRadius: scale(8),
+  },
+  verify_code_count: {
+    width: scale(200),
+    height: scale(44),
+    borderRadius: scale(8),
+    marginHorizontal: scale(8),
+    fontSize: scale(20),
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
   verify_code_text: {
     fontSize: scale(20),
