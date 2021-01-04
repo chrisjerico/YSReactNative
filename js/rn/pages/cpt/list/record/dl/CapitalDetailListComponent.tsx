@@ -170,7 +170,9 @@ const CapitalDetailListComponent = () => {
       <Text style={_styles.text_title_0}>{'金额'}</Text>
       <TouchableWithoutFeedback onPress={() => capitalController?.toggle()}>
         <View style={_styles.item_type}>
-          <Text style={_styles.text_title_0} numberOfLines={1}>{groups[curGroup].label}</Text>
+          <Text style={_styles.text_title_0} numberOfLines={1}>{
+            groups.find((item) => item.value == curGroup).label
+          }</Text>
           <Icon size={scale(20)} name={'chevron-down'}/>
         </View>
       </TouchableWithoutFeedback>
