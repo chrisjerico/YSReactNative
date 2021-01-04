@@ -76,8 +76,8 @@ const UseBetLottery = () => {
   //
 
   const [lotteryId, setLotteryId] = useState(null)
-  const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null)
-  const [playOddDetailData, setPlayOddDetailData] = useState<PlayOddDetailData>(null)
+  const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //当前期数据
+  const [playOddDetailData, setPlayOddDetailData] = useState<PlayOddDetailData>(null) //彩票数据
 
   useEffect(()=>{
     requestNextData(lotteryId)
