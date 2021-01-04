@@ -208,7 +208,7 @@ const HallGameListComponent = ({
 /**
  * 球的样式
  */
-const BallStyles = {
+export const BallStyles = {
   'lhc': BallType.round, //六合彩
   'qxc': BallType.pure, //"七星彩系列"
   'cqssc': BallType.pure, //"时时彩系列"
