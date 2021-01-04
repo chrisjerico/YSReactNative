@@ -11,6 +11,7 @@ import { GameType, RankingListType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
@@ -26,8 +27,6 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
-import { ugLog } from '../../public/tools/UgLog'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -128,19 +127,14 @@ const WNZHomePage = () => {
                   showGameSubType(index)
                 } else {
                   if (gameId == GameType.大厅) {
-                    if (subId == 47 && sysInfo?.mobileGameHall == '1') {//新彩票大厅
+                    if (subId == 47 && sysInfo?.mobileGameHall == '1') {
+                      //新彩票大厅
                       push(PageName.GameHallPage, { showBackButton: true })
-
-                    } else if (subId == 47 && sysInfo?.mobileGameHall == '2') {//自由彩票大厅
+                    } else if (subId == 47 && sysInfo?.mobileGameHall == '2') {
+                      //自由彩票大厅
                       push(PageName.FreedomHallPage, { showBackButton: true })
-
                     } else {
-                      push(PageName.SeriesLobbyPage,
-                        { gameId,
-                          subId,
-                          name,
-                          headerColor: Skin1.themeColor,
-                          homePage: PageName.WNZHomePage })
+                      push(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: Skin1.themeColor, homePage: PageName.WNZHomePage })
                     }
                   } else {
                     //@ts-ignore
