@@ -106,7 +106,7 @@ import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMembe
 import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import BetLotteryPage from '../bet/BetLotteryPage'
-
+import JDPromotionTabBettingRecordPage from '../经典/推荐收益/JDPromotionTabBettingRecordPage'
 
 
 /**
@@ -161,6 +161,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionTablePage,//
   JDPromotionTabBettingReportPage,//推荐收益--投注报表
   JDPromotionTabMemberPage,//推荐收益--会员管理
+  JDPromotionTabBettingRecordPage,//推荐收益--投注记录
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页

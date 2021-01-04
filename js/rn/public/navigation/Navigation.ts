@@ -32,6 +32,7 @@ export enum PageName {
   JDRedEnveloperPage = 'JDRedEnveloperPage',
   JDAgentPage = "JDAgentPage",
   JDPromotionIncomePage = "JDPromotionIncomePage",
+  JDPromotionTabBettingRecordPage = "JDPromotionTabBettingRecordPage",
 
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
