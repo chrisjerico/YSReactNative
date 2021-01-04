@@ -85,7 +85,6 @@ const WNZMinePage = () => {
     [
       UGUserCenterType.开奖网,
       UGUserCenterType.其他注单记录,
-      UGUserCenterType.活动彩金,
       UGUserCenterType.彩票注单记录,
       UGUserCenterType.长龙助手,
       UGUserCenterType.真人注单,
@@ -96,7 +95,7 @@ const WNZMinePage = () => {
     ].includes(ele?.code)
   )
 
-  const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.优惠活动, UGUserCenterType.推荐收益].includes(ele?.code))
+  const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.优惠活动, UGUserCenterType.推荐收益, UGUserCenterType.活动彩金].includes(ele?.code))
   // @ts-ignore
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
