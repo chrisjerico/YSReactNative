@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
@@ -298,12 +298,21 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
                   console.log('充值')
                   if (item.is_setting == '1') {
                     if (AppDefine.siteId != 'c001') {
-                      OCHelper.call('SGBrowserView.showZoomView:', [{
-                        selectors: 'UGPormotionUserInfoView.alloc.initWithFrame:[setItem:]',
-                        args1: [NSValue.CGRectMake(0, 0, AppDefine.width - 40, 500)],
-                        args2: [Object.assign({ clsName: 'UGinviteLisModel' }, item)]
-                      }])
 
+                      switch (Platform.OS) {
+                        case 'ios':
+                          //TODO iOS完成 跳充值弹框
+                          OCHelper.call('SGBrowserView.showZoomView:', [{
+                            selectors: 'UGPormotionUserInfoView.alloc.initWithFrame:[setItem:]',
+                            args1: [NSValue.CGRectMake(0, 0, AppDefine.width - 40, 500)],
+                            args2: [Object.assign({ clsName: 'UGinviteLisModel' }, item)]
+                          }])
+                          break
+                        case 'android':
+                          // TODO Android 跳充值弹框
+                          break
+                      }
+                     
                     }
                   }
 
