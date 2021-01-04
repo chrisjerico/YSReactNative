@@ -28,7 +28,7 @@
     "global": "^4.4.0",
     "immer": "6.0.9",
     "lodash": "^4.17.15",
-    "moment": "^2.27.0",
+    "moment": "^2.29.1",
     "object-path": "^0.11.4",
     "react": "16.9.0",
     "react-hook-form": "^5.7.2",

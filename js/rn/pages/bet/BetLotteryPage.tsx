@@ -26,6 +26,7 @@ import { UGColor } from '../../public/theme/UGThemeColor'
 import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
+import TimeComponent from './tm/TimeComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -234,7 +235,7 @@ const BetLotteryPage = ({ navigation, route }) => {
       </View>
     </TouchableOpacity>
     <Text style={[_styles.top_game_name,
-      { color: Skin1.navBarTitleColor }]}>{'彩票'}</Text>
+      { color: Skin1.navBarTitleColor }]}>{nextIssueData?.title}</Text>
     <Icon size={scale(28)}
           name={'caret-down'}
           color={Skin1.navBarTitleColor}/>
@@ -362,6 +363,7 @@ const BetLotteryPage = ({ navigation, route }) => {
           [
             renderTopBar(),
             renderGameTab(),
+            <TimeComponent key={nextIssueData?.curIssue}/>,
             <View style={{ flexDirection: 'row', flex: 1 }}>
               {renderLeftColumn()}
               {renderRightContent()}
