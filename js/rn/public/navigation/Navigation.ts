@@ -35,7 +35,9 @@ export enum PageName {
   JDPromotionTabInviteDomainPage = "JDPromotionTabInviteDomainPage",
   JDPromotionTabDepositStatePage = "JDPromotionTabDepositStatePage",
   TaskCenterPage = 'TaskCenterPage',
-
+  JDPromotionTabDepostPage = "JDPromotionTabDepostPage",
+  JDPromotionTabWithdrawalReportPage = "JDPromotionTabWithdrawalReportPage",
+  JDPromotionTabDrawlRcordPage = "JDPromotionTabDrawlRcordPage",
 
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',

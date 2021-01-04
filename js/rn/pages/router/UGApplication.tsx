@@ -109,9 +109,11 @@ import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMembe
 import JDPromotionTabInviteDomainPage from '../经典/推荐收益/JDPromotionTabInviteDomainPage'
 import JDPromotionTabBettingRecordPage from '../经典/推荐收益/JDPromotionTabBettingRecordPage'
 import JDPromotionTablePage from '../经典/推荐收益/JDPromotionTablePage'
-
-
 import JDPromotionTabDepositStatePage from '../经典/推荐收益/JDPromotionTabDepositStatePage'
+import JDPromotionTabDepostPage from '../经典/推荐收益/JDPromotionTabDepostPage'
+import JDPromotionTabWithdrawalReportPage from '../经典/推荐收益/JDPromotionTabWithdrawalReportPage'
+import JDPromotionTabDrawlRcordPage from '../经典/推荐收益/JDPromotionTabDrawlRcordPage'
+
 /**
  * 所有界面
  */
@@ -165,6 +167,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionTabBettingRecordPage,//推荐收益--投注记录
   JDPromotionTabInviteDomainPage,//推荐收益--域名绑定
   JDPromotionTabDepositStatePage,//推荐收益--存款报表
+  JDPromotionTabDepostPage,//推荐收益--存款记录
+  JDPromotionTabWithdrawalReportPage,//推荐收益--提款报表
+  JDPromotionTabDrawlRcordPage,//推荐收益--提款记录
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页
