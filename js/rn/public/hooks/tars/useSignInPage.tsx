@@ -1,17 +1,17 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Platform } from 'react-native'
 import { UGStore } from '../../../redux/store/UGStore'
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
+import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { PageName } from '../../navigation/Navigation'
-import { navigate } from '../../navigation/RootNavigation'
+import { push } from '../../navigation/RootNavigation'
 import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
 import useSignIn from './useSignIn'
 import useSignOut from './useSignOut'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import { ANHelper } from '../../define/ANHelper/ANHelper'
-import { CMD } from '../../define/ANHelper/hp/CmdDefine'
-import { Platform } from 'react-native'
-import { OCHelper } from '../../define/OCHelper/OCHelper'
 
 interface SlidingVerification {
   nc_csessionid: string
@@ -48,11 +48,11 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   const rememberRef = useRef(sign?.remember)
 
   const navigateToSignUpPage = useCallback(() => {
-    homePage && navigate(signUpPage, {})
+    homePage && push(signUpPage, {})
   }, [])
 
   const navigateToHomePage = useCallback(() => {
-    homePage && navigate(homePage, {})
+    homePage && push(homePage, {})
     switch (Platform.OS) {
       case 'ios':
         OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]).then(() => {

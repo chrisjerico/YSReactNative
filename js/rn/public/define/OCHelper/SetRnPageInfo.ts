@@ -62,6 +62,14 @@ export async function setRnPageInfo() {
       允许游客访问: true,
       允许未登录访问: true,
     })
+    //利息宝页
+    pages.push({
+      rnName: PageName.AlipayView,
+      userCenterItemCode: 4,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 申请代理
     pages.push({
       vcName: 'UGAgentViewController',
@@ -204,12 +212,16 @@ export async function setRnPageInfo() {
   RnPageModel.pages = pages
   switch (Platform.OS) {
     case 'ios':
-      // vcName支持填多个页面，用英文逗号分隔
+      // // vcName支持填多个页面，用英文逗号分隔
       const tmp: RnPageModel[] = []
       pages.forEach((rpm) => {
-        rpm?.vcName?.split(',').forEach((v) => {
-          v?.length && tmp.push(Object.assign({}, rpm, { vcName: v }))
-        })
+        if (rpm?.vcName?.length) {
+          rpm?.vcName?.split(',').forEach((v) => {
+            v?.length && tmp.push(Object.assign({}, rpm, { vcName: v }))
+          })
+        } else {
+          tmp.push(rpm)
+        }
       })
       pages = tmp
 

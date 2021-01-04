@@ -1,15 +1,12 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { RefreshControl } from 'react-native'
-import { DepositListData } from '../../../../../public/network/Model/wd/DepositRecordModel'
 import APIRouter from '../../../../../public/network/APIRouter'
-import { anyEmpty, arrayEmpty } from '../../../../../public/tools/Ext'
-import { ugLog } from '../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../public/tools/ToastUtils'
 import { PayAisleData } from '../../../../../public/network/Model/wd/PayAisleModel'
 
 /**
- * 支付通道记录
+ * 虚拟币教程
  * @constructor
  */
 const UsePayList = () => {

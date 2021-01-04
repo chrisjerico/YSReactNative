@@ -4,7 +4,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
-import { navigate, popToRoot } from '../../navigation/RootNavigation'
+import { push, popToRoot } from '../../navigation/RootNavigation'
 import { validPassword } from '../../tools/tars'
 import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
@@ -48,11 +48,11 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
   const inviteCodeRef = useRef<string>()
 
   const navigateToHomePage = useCallback(() => {
-    homePage && navigate(homePage, {})
+    homePage && push(homePage, {})
   }, [])
 
   const navigateToSignInPage = useCallback(() => {
-    signInPage && navigate(signInPage, {})
+    signInPage && push(signInPage, {})
   }, [])
 
   const { tryPlay } = useMemo(
@@ -328,7 +328,6 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
   }
 
   const _signUp = () => {
-    // if (allowReg) {
     if (valid) {
       const params = {
         inviter: recommendGuy, // 推荐人ID
@@ -352,9 +351,6 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     } else {
       showError(getValidErrorMessage() || '')
     }
-    // } else {
-    //   Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])
-    // }
   }
 
   const value = {

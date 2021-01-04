@@ -16,7 +16,7 @@ import CapitalDetailListComponent from './record/dl/CapitalDetailListComponent'
 import PayListComponent from './record/pay/PayListComponent'
 import CapitalContext from './CapitalContext'
 import FastImage from 'react-native-fast-image'
-import WithdrawPage from './record/wt/WithdrawPage'
+import WithdrawComponent from './record/wt/WithdrawComponent'
 import { push } from '../../../public/navigation/RootNavigation'
 import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
@@ -73,7 +73,7 @@ const CapitalPage = ({ navigation, setProps }) => {
       case CapitalConst.DEPOSIT:
         return <PayListComponent tabLabel={item} key={item}/>
       case CapitalConst.WITHDRAWAL:
-        return <WithdrawPage tabLabel={item} key={item}/>
+        return <WithdrawComponent tabLabel={item} key={item}/>
       case CapitalConst.DEPOSIT_RECORD:
         return <DepositRecordListComponent tabLabel={item}/>
       case CapitalConst.WITHDRAWAL_RECORD:

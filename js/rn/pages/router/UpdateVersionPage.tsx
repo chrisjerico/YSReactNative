@@ -99,9 +99,10 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               setProps({ progress: 1, text: '更新出错...' })
 
               // 更新出错时无限重试
-              Platform.OS == 'ios' && setTimeout(() => {
-                CodePushSync(options)
-              }, 1000);
+              Platform.OS == 'ios' &&
+                setTimeout(() => {
+                  CodePushSync(options)
+                }, 1000)
               break
             case CodePush.SyncStatus.UPDATE_INSTALLED:
               console.log('rn热更新安装成功，正在重启RN')
@@ -155,7 +156,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         })
       })
     } else {
-      CodePushSync({ installMode: CodePush.InstallMode.IMMEDIATE, })
+      CodePushSync({ installMode: CodePush.InstallMode.IMMEDIATE })
     }
 
     switch (Platform.OS) {
@@ -238,16 +239,17 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 配置替换rn的页面
         await setRnPageInfo()
         // 通知iOS进入首页
-        willLaunch && await OCHelper.call('ReactNativeVC.showLastRnPage')
+        willLaunch && (await OCHelper.call('ReactNativeVC.showLastRnPage'))
         // 请求系统配置数据（从原生获取的配置数据被原生处理过，不太好用）
         UGSysConfModel.updateFromNetwork()
         // RN初始化完毕
         await OCHelper.call('ReactNativeHelper.launchFinish')
         // RN版本更新完毕，进入首页
-        willLaunch && setTimeout(() => {
-          OCHelper.launchFinish()
-          OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['kRnVersionUpdateFinish'])
-        }, 500)
+        willLaunch &&
+          setTimeout(() => {
+            OCHelper.launchFinish()
+            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['kRnVersionUpdateFinish'])
+          }, 500)
         break
       case 'android':
         await UGSkinManagers.updateSkin(sysConf)
