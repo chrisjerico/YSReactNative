@@ -24,6 +24,8 @@ import CommStyles from '../base/CommStyles'
 import { ugLog } from '../../public/tools/UgLog'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import LhcTMComponent from './lhc/tm/LhcTMComponent'
+import BetLotteryContext from './BetLotteryContext'
+import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -292,10 +294,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
     switch (leftColumnIndex) {
       case 0: {
-        return <LhcTMComponent key={leftColumnIndex}
-                               nextIssueData={nextIssueData}
-                               playOddDetailData={playOddDetailData}
-                               playOddData={playOddDetailData?.playOdds[leftColumnIndex]}/>
+        return <LhcTMComponent key={leftColumnIndex}/>
       }
 
     }
@@ -319,52 +318,58 @@ const BetLotteryPage = ({ navigation, route }) => {
   </View>
 
   return (
-    <BaseScreen screenName={''}
-                style={{ backgroundColor: UGColor.BackgroundColor1 }}
-                hideBar={true}>
+    <BetLotteryContext.Provider value={{
+      nextIssueData: () => nextIssueData,
+      playOddDetailData: () => playOddDetailData,
+      playOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
+    }}>
+      <BaseScreen screenName={''}
+                  style={{ backgroundColor: UGColor.BackgroundColor1 }}
+                  hideBar={true}>
 
-      {/*<Text>{lotteryId}</Text>*/}
-      {/*<Animatable.Text animation="pulse" easing="linear" iterationDelay={1000} iterationCount="infinite" style={{ textAlign: 'center', backgroundColor: 'yellow' }}>{new Date().format('yyyy年MM月dd日 hh时mm分')}️</Animatable.Text>*/}
+        {/*<Text>{lotteryId}</Text>*/}
+        {/*<Animatable.Text animation="pulse" easing="linear" iterationDelay={1000} iterationCount="infinite" style={{ textAlign: 'center', backgroundColor: 'yellow' }}>{new Date().format('yyyy年MM月dd日 hh时mm分')}️</Animatable.Text>*/}
 
-      {/*<Animatable.Text style={{backgroundColor: 'red'}} animation="slideInDown" iterationCount="infinite" direction="alternate">Up and down you go</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="zoomInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeIn" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInDown" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInDownBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInUpBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInLeft" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInLeftBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInRight" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInRightBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'red'}} animation="slideInDown" iterationCount="infinite" direction="alternate">Up and down you go</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="zoomInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeIn" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInDown" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInDownBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInUpBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInLeft" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInLeftBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInRight" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInRightBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
 
-      {/*<TouchableOpacity onPress={() => setTextSize(textSize + 5)}>*/}
-      {/*  <Animatable.Text transition="fontSize" style={{fontSize: textSize}}>Size me up, Scotty</Animatable.Text>*/}
-      {/*</TouchableOpacity>*/}
+        {/*<TouchableOpacity onPress={() => setTextSize(textSize + 5)}>*/}
+        {/*  <Animatable.Text transition="fontSize" style={{fontSize: textSize}}>Size me up, Scotty</Animatable.Text>*/}
+        {/*</TouchableOpacity>*/}
 
-      {/*<Modal isVisible={!anyEmpty(bigPic)}*/}
-      {/*       style={_styles.modal_content}*/}
-      {/*       onBackdropPress={() => setBigPic(null)}*/}
-      {/*       onBackButtonPress={() => setBigPic(null)}*/}
-      {/*       animationIn={'fadeIn'}*/}
-      {/*       animationOut={'fadeOut'}*/}
-      {/*       backdropOpacity={0.3}>*/}
-      {/*  <FastImage source={{ uri: bigPic }}*/}
-      {/*             style={{ aspectRatio: 1, width: scale(500) }}*/}
-      {/*             resizeMode={'contain'}/>*/}
-      {/*</Modal>*/}
+        {/*<Modal isVisible={!anyEmpty(bigPic)}*/}
+        {/*       style={_styles.modal_content}*/}
+        {/*       onBackdropPress={() => setBigPic(null)}*/}
+        {/*       onBackButtonPress={() => setBigPic(null)}*/}
+        {/*       animationIn={'fadeIn'}*/}
+        {/*       animationOut={'fadeOut'}*/}
+        {/*       backdropOpacity={0.3}>*/}
+        {/*  <FastImage source={{ uri: bigPic }}*/}
+        {/*             style={{ aspectRatio: 1, width: scale(500) }}*/}
+        {/*             resizeMode={'contain'}/>*/}
+        {/*</Modal>*/}
 
-      {
-        [
-          renderTopBar(),
-          renderGameTab(),
-          <View style={{ flexDirection: 'row', flex: 1 }}>
-            {renderLeftColumn()}
-            {renderRightContent()}
-          </View>,
-        ]
-      }
-    </BaseScreen>
+        {
+          [
+            renderTopBar(),
+            renderGameTab(),
+            <View style={{ flexDirection: 'row', flex: 1 }}>
+              {renderLeftColumn()}
+              {renderRightContent()}
+            </View>,
+          ]
+        }
+      </BaseScreen>
+    </BetLotteryContext.Provider>
 
   )
 }

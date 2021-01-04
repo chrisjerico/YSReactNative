@@ -12,7 +12,7 @@ import * as React from 'react'
 import FastImage from 'react-native-fast-image'
 import WebView from 'react-native-webview'
 import Modal from 'react-native-modal'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { BaseScreen } from '../../../乐橙/component/BaseScreen'
 import * as Animatable from 'react-native-animatable'
 import { scale } from '../../../../public/tools/Scale'
@@ -27,11 +27,9 @@ import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssu
 import { PlayOddData, PlayOddDetailData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
+import BetLotteryContext from '../../BetLotteryContext'
 
 interface IRouteParams {
-  nextIssueData?: NextIssueData //下期数据
-  playOddDetailData?: PlayOddDetailData //当前彩种信息
-  playOddData?: PlayOddData //当前数据列表
 }
 
 const TAB_A = 0//代表 特码A
@@ -43,19 +41,14 @@ const TAB_B = 1 //代表 特码B
  * @param navigation
  * @constructor
  */
-const LhcTMComponent = ({
-                          nextIssueData,
-                          playOddDetailData,
-                          playOddData,
-                        }: IRouteParams) => {
+const LhcTMComponent = ({}: IRouteParams) => {
 
+
+  // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const [tabIndex, setTabIndex] = useState(TAB_B) //当前选中哪个tab，0 和 1
 
   const {
-    setNextIssueData,
-    setPlayOddDetailData,
-    setPlayOddData,
     dataTMA,
     setDataTMA,
     dataTMB,
@@ -72,9 +65,6 @@ const LhcTMComponent = ({
 
   useEffect(() => {
     // ugLog('playOddData=', playOddData)
-    setNextIssueData(nextIssueData)
-    setPlayOddDetailData(playOddDetailData)
-    setPlayOddData(playOddData)
   }, [])
 
   //当前的数据是 特码A 还是 特码B
