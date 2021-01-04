@@ -130,7 +130,7 @@ export default class PushHelper {
         break
       case 'android':
         if (B_DEBUG) {
-          push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
+          // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
           // return
         }
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
@@ -429,11 +429,11 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             // if (B_DEBUG) {
-              push(PageName.CapitalPage)
-              return
+            //   push(PageName.CapitalPage)
+            //   return
             // }
-            // subId = MenuType.CZ
-            // break
+            subId = MenuType.CZ
+            break
           }
           case UGUserCenterType.每日签到: {
             subId = MenuType.QD
