@@ -32,6 +32,7 @@ const config = {
     22: getHtml5Image(23, 'center/electronic'), // 电子游戏
     23: getHtml5Image(23, 'center/live'), // 真人游戏
     24: getHtml5Image(23, 'center/chess'), // 棋牌游戏
+    25: getHtml5Image(23, 'center/chase'), // 捕鱼游戏
     26: getHtml5Image(23, 'center/vr'), // 电竞游戏
     27: getHtml5Image(23, 'center/sport'), // 体育游戏
     30: getHtml5Image(23, 'center/recharge_record'), // 存款纪录
