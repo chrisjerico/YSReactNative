@@ -162,6 +162,14 @@ const JDPromotionTabMemberPage = ({ pageTitle, titleArray }: { pageTitle?: strin
     api.team.inviteList(v.levelindex, 1, v.pageSize).setCompletionBlock(({ data }) => {
       let dicData = data;
       let arrayData = returnData(dicData);
+      if (arrayData.length == 0) {
+        console.log('进来了：==================');
+        v.state.isLastPage = true;
+        v.state.showFoot = 2
+        v.state.isRefreshing = false;
+        setProps();
+        return;
+      }
       if (v.pageNumber == 1) {
         v.state.isRefreshing = false
         v.items.length = 0
