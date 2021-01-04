@@ -209,13 +209,9 @@ const WNZHomePage = () => {
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
-                    fontSize: scale(18),
+                    fontSize: scale(20),
                   }}
-<<<<<<< HEAD
-                  circleContainerStyle = {{ width: '95%'}}
-=======
                   circleContainerStyle = {{ width: '85%'}}
->>>>>>> c0aef14f... 135929 c108 nav image larger
                   circleColor={'transparent'}
                   onPress={() => {
                     if (AppDefine.siteId == 'c245') {
