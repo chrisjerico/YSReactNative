@@ -198,6 +198,7 @@ const WNZHomePage = () => {
                   logo={icon || logo}
                   title={name}
                   containerStyle={{
+                    padding: 5,
                     width: '20%',
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
@@ -208,8 +209,9 @@ const WNZHomePage = () => {
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
-                    fontSize: scale(20),
+                    fontSize: scale(18),
                   }}
+                  circleContainerStyle = {{ width: '95%'}}
                   circleColor={'transparent'}
                   onPress={() => {
                     if (AppDefine.siteId == 'c245') {
