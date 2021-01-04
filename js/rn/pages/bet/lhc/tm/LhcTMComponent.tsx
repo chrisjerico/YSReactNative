@@ -34,6 +34,9 @@ interface IRouteParams {
   playOddData?: PlayOddData //当前数据列表
 }
 
+const TAB_A = 0//代表 特码A
+const TAB_B = 1 //代表 特码B
+
 /**
  * 六合彩特码
  *
@@ -47,12 +50,22 @@ const LhcTMComponent = ({
                         }: IRouteParams) => {
 
 
+  const [tabIndex, setTabIndex] = useState(TAB_B) //当前选中哪个tab，0 和 1
+
   const {
     setNextIssueData,
     setPlayOddDetailData,
     setPlayOddData,
-    playGroupData,
-    setPlayGroupData,
+    dataTMA,
+    setDataTMA,
+    dataTMB,
+    setDataTMB,
+    zodiacData,
+    setZodiacData,
+    selectedZodiac,
+    setSelectedZodiac,
+    selectedBalls,
+    setSelectedBalls
   } = UseLhcTM()
 
   useEffect(() => {
@@ -62,33 +75,109 @@ const LhcTMComponent = ({
     setPlayOddData(playOddData)
   }, [])
 
+  //当前的数据是 特码A 还是 特码B
+  const ballData = tabIndex == TAB_A ? dataTMA : dataTMB
+
+  /**
+   * 绘制 特码A 特码B Tab
+   */
+  const renderTabItem = (tab?: number) => <View style={[
+    _styles.tab_item,
+    tabIndex == tab ? { backgroundColor: UGColor.LineColor1 } : null,
+  ]}>
+    <TouchableOpacity onPress={() => setTabIndex(tab)}>
+      <Text style={_styles.tab_title}>{
+        tab == TAB_A ?
+          (dataTMA && dataTMA[0].alias) :
+          (dataTMB && dataTMB[0].alias)
+      }</Text>
+    </TouchableOpacity>
+  </View>
+
+  /**
+   * 绘制 特码A 特码B Tab
+   */
+  const renderTab = () => <View style={_styles.tab_container}>
+    {renderTabItem(TAB_B)}
+    {renderTabItem(TAB_A)}
+  </View>
+
+  /**
+   * 绘制生肖
+   */
+  const renderZodiac = () => <View>
+    <ScrollView showsHorizontalScrollIndicator={false}
+                horizontal={true}>
+      <View style={_styles.zodiac_container}>
+        {
+          zodiacData?.map((item, index) => <TouchableOpacity onPress={() => {
+            if (selectedZodiac?.includes(item)) {
+              // ugLog('selectedZodiac.filter((zk) => zk != item)=', selectedZodiac.filter((zk) => zk != item))
+              setSelectedZodiac(selectedZodiac.filter((zk) => zk != item))
+            } else {
+              setSelectedZodiac([...selectedZodiac, item])
+            }
+          }}>
+            <View key={`${selectedZodiac?.includes(item)}`}
+              style={_styles.zodiac_item}>
+              {
+                selectedZodiac?.includes(item) ?
+                  <Icon size={scale(36)}
+                        color={Skin1.themeColor}
+                        name={'check-circle'}/> :
+                  <Icon size={scale(36)}
+                        name={'circle-o'}/>
+              }
+              <Text style={_styles.zodiac_item_text}>{item?.name}</Text>
+            </View>
+          </TouchableOpacity>)
+        }
+      </View>
+    </ScrollView>
+  </View>
+
+  /**
+   * 绘制全部的球
+   */
+  const renderBall = () => <View>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {
+        ballData?.map((groupData) => {
+          return <View style={CommStyles.flex}>
+
+            <View style={_styles.sub_title_container}>
+              <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+            </View>
+
+            <View style={_styles.ball_container}>
+              {
+                groupData?.plays?.map((item) =>
+                  <View style={[
+                    _styles.ball_item,
+                    {
+                      backgroundColor:
+                        selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}88` : null,
+                    }
+                  ]}>
+                    <LotteryBall type={BallStyles.lhc}
+                                 ballNumber={item?.name}/>
+                    <Text numberOfLines={1}
+                          style={_styles.ball_odds}>{item.odds}</Text>
+                  </View>)
+              }
+            </View>
+
+          </View>
+        })
+      }
+    </ScrollView>
+  </View>
+
   return (
     <View style={CommStyles.flex}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {
-          playGroupData?.map((groupData) => {
-            return <View style={CommStyles.flex}>
-
-              <View style={_styles.sub_title_container}>
-                <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
-              </View>
-
-              <View style={_styles.ball_container}>
-                {
-                  groupData?.plays?.map((item) =>
-                    <View style={_styles.ball_item}>
-                      <LotteryBall type={BallStyles.lhc}
-                                   ballNumber={item?.name}/>
-                      <Text numberOfLines={1}
-                            style={_styles.ball_odds}>{item.odds}</Text>
-                    </View>)
-                }
-              </View>
-
-            </View>
-          })
-        }
-      </ScrollView>
+      {renderTab()}
+      {renderZodiac()}
+      {renderBall()}
     </View>
 
   )
@@ -103,7 +192,7 @@ const _styles = StyleSheet.create({
   },
   sub_title_text: {
     color: UGColor.TextColor2,
-    fontSize: scale(24),
+    fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
   ball_container: {
@@ -117,11 +206,41 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: scale(2),
     paddingVertical: scale(10),
+    borderRadius: scale(16),
   },
   ball_odds: {
     width: scale(76),
     color: UGColor.TextColor7,
     fontSize: scale(18),
+    paddingHorizontal: scale(1),
+  },
+  tab_title: {
+    color: UGColor.TextColor2,
+    fontSize: scale(24),
+    padding: scale(8),
+  },
+  tab_item: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(8),
+  },
+  tab_container: {
+    flexDirection: 'row',
+    backgroundColor: UGColor.LineColor3,
+    borderRadius: scale(8),
+  },
+  zodiac_container: {
+    flexDirection: 'row',
+  },
+  zodiac_item: {
+    flexDirection: 'row',
+    padding: scale(16),
+    alignItems: 'center',
+  },
+  zodiac_item_text: {
+    color: UGColor.TextColor3,
+    fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
 

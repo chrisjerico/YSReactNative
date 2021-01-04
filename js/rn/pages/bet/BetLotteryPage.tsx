@@ -290,10 +290,17 @@ const BetLotteryPage = ({ navigation, route }) => {
    */
   const renderRightContent = () => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
-    return <LhcTMComponent key={leftColumnIndex}
-                           nextIssueData={nextIssueData}
-                           playOddDetailData={playOddDetailData}
-                           playOddData={playOddDetailData?.playOdds[leftColumnIndex]}/>
+    switch (leftColumnIndex) {
+      case 0: {
+        return <LhcTMComponent key={leftColumnIndex}
+                               nextIssueData={nextIssueData}
+                               playOddDetailData={playOddDetailData}
+                               playOddData={playOddDetailData?.playOdds[leftColumnIndex]}/>
+      }
+
+    }
+
+    return null
   }
 
   /**
