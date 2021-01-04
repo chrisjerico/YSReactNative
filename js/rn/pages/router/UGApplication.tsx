@@ -100,16 +100,19 @@ import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 import JDPromotionIncomePage from '../经典/推荐收益/JDPromotionIncomePage'
-import JDPromotionTablePage from '../经典/推荐收益/JDPromotionTablePage'
-import JDPromotionTabBettingReportPage from '../经典/推荐收益/JDPromotionTabBettingReportPage'
-import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMemberPage'
+// import JDPromotionTabBettingReportPage from '../经典/推荐收益/JDPromotionTabBettingReportPage'
+// import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMemberPage'
 import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import BetLotteryPage from '../bet/BetLotteryPage'
-import JDPromotionTabBettingRecordPage from '../经典/推荐收益/JDPromotionTabBettingRecordPage'
+import JDPromotionTabBettingReportPage from '../经典/推荐收益/JDPromotionTabBettingReportPage'
+import JDPromotionTabMemberPage from '../经典/推荐收益/JDPromotionTabMemberPage'
 import JDPromotionTabInviteDomainPage from '../经典/推荐收益/JDPromotionTabInviteDomainPage'
+import JDPromotionTabBettingRecordPage from '../经典/推荐收益/JDPromotionTabBettingRecordPage'
+import JDPromotionTablePage from '../经典/推荐收益/JDPromotionTablePage'
 
 
+import JDPromotionTabDepositStatePage from '../经典/推荐收益/JDPromotionTabDepositStatePage'
 /**
  * 所有界面
  */
@@ -163,7 +166,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionTabBettingReportPage,//推荐收益--投注报表
   JDPromotionTabMemberPage,//推荐收益--会员管理
   JDPromotionTabBettingRecordPage,//推荐收益--投注记录
-  JDPromotionTabInviteDomainPage,
+  JDPromotionTabInviteDomainPage,//推荐收益--域名绑定
+  JDPromotionTabDepositStatePage,//推荐收益--存款报表
+ 
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页

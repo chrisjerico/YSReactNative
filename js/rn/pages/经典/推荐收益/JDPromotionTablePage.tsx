@@ -200,7 +200,7 @@ const JDPromotionTablePage = ({ pageTitle, titleArray }: { pageTitle?: string, t
  */
   function teamBetStatData() {
     console.log('投注报表列表页码===', v.pageNumber);
-    api.team.betStat(v.levelindex, '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+    api.team.betStat(v.levelindex.toString(), '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
       let dicData = data;
       let arrayData = returnData(dicData);
       if (v.pageNumber == 1) {

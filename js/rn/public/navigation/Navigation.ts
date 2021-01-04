@@ -34,6 +34,7 @@ export enum PageName {
   JDPromotionIncomePage = "JDPromotionIncomePage",
   JDPromotionTabBettingRecordPage = "JDPromotionTabBettingRecordPage",
   JDPromotionTabInviteDomainPage = "JDPromotionTabInviteDomainPage",
+  JDPromotionTabDepositStatePage = "JDPromotionTabDepositStatePage",
 
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
