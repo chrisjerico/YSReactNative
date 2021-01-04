@@ -23,6 +23,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../base/CommStyles'
 import { ugLog } from '../../public/tools/UgLog'
 import { UGColor } from '../../public/theme/UGThemeColor'
+import LhcTMComponent from './lhc/tm/LhcTMComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -255,7 +256,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制左边列表 特码 双面 正码 等等
    */
   const renderLeftColumn = () => <View
-    >
+  >
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         playOddDetailData?.playOdds?.map((item, index) => {
@@ -267,11 +268,11 @@ const BetLotteryPage = ({ navigation, route }) => {
                 justifyContent: 'center',
                 height: scale(52),
                 borderRadius: scale(8),
-                borderWidth: leftColumnIndex == index ? scale(3) : scale(1)
+                borderWidth: leftColumnIndex == index ? scale(3) : scale(1),
               },
               {
-                borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4
-              }
+                borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
+              },
             ]}>
               <Text style={{
                 color: UGColor.TextColor7,
@@ -287,18 +288,11 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制右边彩票区域，彩球 等等
    */
-  const renderRightContent = () => <View style={{ flex: 1 }}>
-    <ScrollView showsVerticalScrollIndicator={false}
-    >
-      {
-        playOddDetailData?.playOdds[0]?.playGroups[0]?.plays?.map((item) => {
-          return <View>
-            <Text>{item.name}</Text>
-          </View>
-        })
-      }
-    </ScrollView>
-  </View>
+  const renderRightContent = () => {
+    return <LhcTMComponent nextIssueData={nextIssueData}
+                           playOddDetailData={playOddDetailData}
+                           playOddData={playOddDetailData.playOdds[leftColumnIndex]}/>
+  }
 
   /**
    * 绘制游戏聊天切换tab
@@ -355,7 +349,7 @@ const BetLotteryPage = ({ navigation, route }) => {
         [
           renderTopBar(),
           renderGameTab(),
-          <View style={{ flexDirection: 'row', flex: 1, }}>
+          <View style={{ flexDirection: 'row', flex: 1 }}>
             {renderLeftColumn()}
             {renderRightContent()}
           </View>,

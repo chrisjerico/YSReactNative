@@ -129,10 +129,10 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game])
         break
       case 'android':
-        // if (B_DEBUG) {
-        //   push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
-        //   return
-        // }
+        if (B_DEBUG) {
+          push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
+          // return
+        }
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }
