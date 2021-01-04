@@ -44,7 +44,7 @@ const JDPromotionTabDepostCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
   let { current: v } = useRef<JDPromotionTabDepostCP>(
     {
-      pageTitle: '存款记录',
+      pageTitle: PromotionConst.存款记录,
       titleArray: ["分级", "用户", "日期", "存款金额"],
       items: [],
       levelArray: [],

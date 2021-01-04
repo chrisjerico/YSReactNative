@@ -44,7 +44,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
 
   let { current: v } = useRef<JDPromotionTabBettingReportCP>(
     {
-      pageTitle: '投注报表',
+      pageTitle: PromotionConst.投注报表,
       titleArray: ["分级", "日期", "投注金额", "佣金"],
       items: [],
       levelArray: [],

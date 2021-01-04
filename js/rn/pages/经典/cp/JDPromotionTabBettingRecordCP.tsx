@@ -44,7 +44,7 @@ const JDPromotionTabBettingRecordCP = ({ pageTitle, titleArray }: { pageTitle?: 
 
   let { current: v } = useRef<JDPromotionTabBettingRecordCP>(
     {
-      pageTitle: '投注记录',
+      pageTitle: PromotionConst.投注记录,
       titleArray: ["分级", "用户", "日期", "金额"],
       items: [],
       levelArray: [],

@@ -44,7 +44,7 @@ const JDPromotionTabWithdrawalReportCP = ({ pageTitle, titleArray }: { pageTitle
 
   let { current: v } = useRef<JDPromotionTabWithdrawalReportCP>(
     {
-      pageTitle: '提款报表',
+      pageTitle: PromotionConst.提款报表,
       titleArray: ["分级", "日期", "提款金额", "提款人数"],
       items: [],
       levelArray: [],

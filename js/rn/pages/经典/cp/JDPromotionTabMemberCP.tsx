@@ -46,7 +46,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
   let { current: v } = useRef<JDPromotionTabMemberCP>(
     {
-      pageTitle: '会员管理',
+      pageTitle: PromotionConst.会员管理,
       titleArray: ["分级", "用户名", "在线状态", "注册时间", "下线盈亏", "操作/状态"],
       items: [],
       levelArray: [],

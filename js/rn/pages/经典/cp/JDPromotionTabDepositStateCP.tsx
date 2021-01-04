@@ -44,7 +44,7 @@ const JDPromotionTabDepositStateCP = ({ pageTitle, titleArray }: { pageTitle?: s
 
   let { current: v } = useRef<JDPromotionTabDepositStateCP>(
     {
-      pageTitle: '存款报表',
+      pageTitle: PromotionConst.存款报表,
       titleArray: ["分级", "日期", "存款金额", "存款人数"],
       items: [],
       levelArray: [],
