@@ -118,7 +118,7 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
             <View style={{ marginHorizontal: 10, marginBottom: -5, flexDirection: 'row', alignItems: 'center' }}>
               {showBackBtn && (
                 <Button
-                  icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
+                  icon={{ name: 'ios-arrow-back', type: 'ionicon', color: '#A7BEDF' }}
                   buttonStyle={Object.assign({ backgroundColor: 'transparent', marginLeft: -8 })}
                   onPress={() => {
                     pop();
