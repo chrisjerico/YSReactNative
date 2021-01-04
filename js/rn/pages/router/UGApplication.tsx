@@ -113,6 +113,7 @@ import JDPromotionTabDepositStatePage from '../经典/推荐收益/JDPromotionTa
 import JDPromotionTabDepostPage from '../经典/推荐收益/JDPromotionTabDepostPage'
 import JDPromotionTabWithdrawalReportPage from '../经典/推荐收益/JDPromotionTabWithdrawalReportPage'
 import JDPromotionTabDrawlRcordPage from '../经典/推荐收益/JDPromotionTabDrawlRcordPage'
+import JDPromotionTabRealityReportPage from '../经典/推荐收益/JDPromotionTabRealityReportPage'
 
 /**
  * 所有界面
@@ -170,6 +171,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionTabDepostPage,//推荐收益--存款记录
   JDPromotionTabWithdrawalReportPage,//推荐收益--提款报表
   JDPromotionTabDrawlRcordPage,//推荐收益--提款记录
+  JDPromotionTabRealityReportPage,//推荐收益--真人报表
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页
