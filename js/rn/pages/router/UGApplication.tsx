@@ -10,6 +10,7 @@ import { FeedbackRecordView } from '../../public/components/FeedbackRecordView'
 import { FeedbackSubmitView } from '../../public/components/FeedbackSubmitView'
 import { FeedbackView } from '../../public/components/FeedbackView'
 import { SupFeedbackSubmitView } from '../../public/components/SupFeedbackSubmitView'
+import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import { TransferRecordView } from '../../public/components/transfer/TransferRecordView'
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import { TransferView } from '../../public/components/transfer/TransferView'
@@ -23,15 +24,17 @@ import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import AddBankPage from '../bank/add/AddBankPage'
 import ManageBankListPage from '../bank/list/ManageBankListPage'
 import ActivityRewardPage from '../base/ActivityRewardPage'
-import IncomeRecommendPage from '../base/IncomeRecommendPage'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import PromotionPage from '../base/PromotionPage'
+import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
+import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
 import UserMessagePage from '../base/UserMessagePage'
+import BetLotteryPage from '../bet/BetLotteryPage'
 import BYHomePage from '../BY/BYHomePage'
 import BYMinePage from '../BY/BYMinePage'
 import BYSignInPage from '../BY/BYSignInPage'
@@ -44,8 +47,10 @@ import BZHSignUpPage from '../BZH/BZHSignUpPage'
 import LottoBetting from '../common/LottoBetting'
 import PromotionListPage from '../common/PromotionListPage'
 import CapitalPage from '../cpt/list/CapitalPage'
+import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
+import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import GameHallPage from '../hall/new/GameHallPage'
 import JXHHomePage from '../JXH/JXHHomePage'
@@ -84,7 +89,9 @@ import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
 import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
 import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
+import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
+import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import { XBJLoginPage } from '../香槟金/XBJLoginPage'
 import { XBJMinePage } from '../香槟金/XBJMinePage'
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage'
@@ -94,21 +101,11 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
-import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
-import JDAgentPage from '../经典/申请代理/JDAgentPage'
-import SetPasswordPage from '../base/pwd/SetPasswordPage'
-import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
-import { TransferLineView } from '../../public/components/transfer/TransferLineView'
-import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
-import BetLotteryPage from '../bet/BetLotteryPage'
-
 
 /**
  * 所有界面
  */
 const pageComponents: { [key in PageName]?: Function } = {
-
   // ———————————— 通用页面 —————————————
   JDVirtualCurrencyTutorialPage, //虚拟币充值教程
   TransitionPage, //过渡页
@@ -149,9 +146,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferView, //额度转页-经典版
   TransferLineView, //额度转页-天空蓝版
   TransferTKLMainView, //额度转页-新版
-  IncomeRecommendPage,
-  JDAgentPage,//申请代理
-  JDRedEnveloperPage,//红包扫雷
+  JDAgentPage, //申请代理
+  JDRedEnveloperPage, //红包扫雷
 
   // ———————————— 模板页面 —————————————
 

@@ -1,4 +1,3 @@
-
 export enum PageName {
   // ———————————— 通用页面 —————————————
   TransitionPage = 'TransitionPage',
@@ -14,13 +13,13 @@ export enum PageName {
   SafeCenterPage = 'SafeCenterPage',
   IncomeRecommendPage = 'IncomeRecommendPage',
   ManageBankListPage = 'ManageBankListPage',
-  BetLotteryPage = 'BetLotteryPage',//彩票下注
-  BtcPayPage = 'BtcPayPage',//虚拟币支付
-  BtcTutorialPage = 'BtcTutorialPage',//虚拟币教程
-  CapitalPage = 'CapitalPage',//资金管理
-  SetPasswordPage = 'SetPasswordPage',//取消界面
-  ForgetPasswordPage = 'ForgetPasswordPage',//忘记密码
-  AddBankPage = 'AddBankPage',//添加银行卡
+  BetLotteryPage = 'BetLotteryPage', //彩票下注
+  BtcPayPage = 'BtcPayPage', //虚拟币支付
+  BtcTutorialPage = 'BtcTutorialPage', //虚拟币教程
+  CapitalPage = 'CapitalPage', //资金管理
+  SetPasswordPage = 'SetPasswordPage', //取消界面
+  ForgetPasswordPage = 'ForgetPasswordPage', //忘记密码
+  AddBankPage = 'AddBankPage', //添加银行卡
   JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',
   TrendView = 'TrendView',
   LottoSelector = 'LottoSelector',
@@ -30,8 +29,9 @@ export enum PageName {
   OnlinePayPage = 'OnlinePayPage',
   TransferPayPage = 'TransferPayPage',
   JDRedEnveloperPage = 'JDRedEnveloperPage',
-  JDAgentPage = "JDAgentPage",
-  JDPromotionIncomePage = "JDPromotionIncomePage",
+  JDAgentPage = 'JDAgentPage',
+  JDPromotionIncomePage = 'JDPromotionIncomePage',
+  TaskCenterPage = 'TaskCenterPage',
 
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
@@ -119,5 +119,4 @@ export enum PageName {
   VietnamRegister = 'VietnamRegister',
   VietnamMine = 'VietnamMine',
   VietnamGameList = 'VietnamGameList',
-
 }
