@@ -289,9 +289,11 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContent = () => {
-    return <LhcTMComponent nextIssueData={nextIssueData}
+    // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
+    return <LhcTMComponent key={leftColumnIndex}
+                           nextIssueData={nextIssueData}
                            playOddDetailData={playOddDetailData}
-                           playOddData={playOddDetailData.playOdds[leftColumnIndex]}/>
+                           playOddData={playOddDetailData?.playOdds[leftColumnIndex]}/>
   }
 
   /**
