@@ -23,7 +23,6 @@ import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import AddBankPage from '../bank/add/AddBankPage'
 import ManageBankListPage from '../bank/list/ManageBankListPage'
 import ActivityRewardPage from '../base/ActivityRewardPage'
-import IncomeRecommendPage from '../base/IncomeRecommendPage'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import PromotionPage from '../base/PromotionPage'
 import SafeCenterPage from '../base/SafeCenterPage'
@@ -117,7 +116,6 @@ import JDPromotionTabDepositStatePage from '../经典/推荐收益/JDPromotionTa
  * 所有界面
  */
 const pageComponents: { [key in PageName]?: Function } = {
-
   // ———————————— 通用页面 —————————————
   JDVirtualCurrencyTutorialPage, //虚拟币充值教程
   TransitionPage, //过渡页
@@ -158,7 +156,6 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferView, //额度转页-经典版
   TransferLineView, //额度转页-天空蓝版
   TransferTKLMainView, //额度转页-新版
-  IncomeRecommendPage,
   JDAgentPage,//申请代理
   JDRedEnveloperPage,//红包扫雷
   JDPromotionIncomePage,//推荐收益
@@ -168,7 +165,6 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionTabBettingRecordPage,//推荐收益--投注记录
   JDPromotionTabInviteDomainPage,//推荐收益--域名绑定
   JDPromotionTabDepositStatePage,//推荐收益--存款报表
- 
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页

@@ -24,8 +24,8 @@ const UserMessagePage = () => {
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
 
-  const [spinValue, setSpinValue] = useState(new Animated.Value(1))
-  const [translateY, setTranslateY] = useState(new Animated.Value(70))
+  const spinValue = useRef(new Animated.Value(1)).current
+  const translateY = useRef(new Animated.Value(140)).current
   const spinDeg = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
@@ -114,7 +114,7 @@ const UserMessagePage = () => {
           }
         }}
       />
-      <Animated.View style={{ position: 'absolute', bottom: 80, right: 0, height: 100, width: '100%', alignItems: 'flex-end', transform: [{ translateY }] }}>
+      <Animated.View style={{ position: 'absolute', bottom: 70, right: 0, height: 100, width: '100%', alignItems: 'flex-end', transform: [{ translateY }] }}>
         <TouchableWithoutFeedback
           onPress={() => {
             if (!inAnimated.current) {
@@ -127,7 +127,7 @@ const UserMessagePage = () => {
                   useNativeDriver: true,
                 }),
                 Animated.timing(translateY, {
-                  toValue: sliderIsOpen.current ? 70 : 0,
+                  toValue: sliderIsOpen.current ? 140 : 70,
                   duration: 500,
                   easing: Easing.linear,
                   useNativeDriver: true,
@@ -144,7 +144,7 @@ const UserMessagePage = () => {
             </ImageBackground>
           </View>
         </TouchableWithoutFeedback>
-        <View style={{ flex: 1, backgroundColor: '#2894FF', width: '100%', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flex: 1, backgroundColor: '#2894FF', width: '100%', flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }}>
           <Button
             title={'全部已读'}
             logo={'站内信_全部已读'}
@@ -190,7 +190,6 @@ const UserMessagePage = () => {
           />
         </View>
       </Animated.View>
-      <BottomGap />
     </>
   )
 }
