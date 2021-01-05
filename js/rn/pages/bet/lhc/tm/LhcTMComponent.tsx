@@ -36,7 +36,7 @@ import BetLotteryContext from '../../BetLotteryContext'
 import EBall from '../../../../public/components/view/lottery/EBall'
 import { arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
-import LotteryConfig from '../../config/LotteryConfig'
+import LCF from '../../config/LCF'
 
 interface IRouteParams {
 }
@@ -80,7 +80,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
    */
   const renderTabItem = (tab?: number) => <View style={[
     _styles.tab_item,
-    tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}aa` } : null,
+    tabIndex == tab ? { backgroundColor: LCF.pressedColor } : null,
   ]}>
     <TouchableOpacity onPress={() => setTabIndex(tab)}
                       style={_styles.tab_title_tb}>
@@ -142,13 +142,13 @@ const LhcTMComponent = ({}: IRouteParams) => {
       _styles.ball_item_lm,
       {
         backgroundColor:
-          selectedBalls?.includes(item?.name) ? LotteryConfig.pressedColor : null,
+          selectedBalls?.includes(item?.name) ? LCF.pressedColor : null,
       },
     ]}>
       <ERect title={item?.name}
-             titleStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}
+             titleStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}
              odds={item?.odds}
-             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}/>
+             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}/>
     </View>
   </TouchableOpacity>
 
@@ -162,14 +162,14 @@ const LhcTMComponent = ({}: IRouteParams) => {
       _styles.ball_item_tm,
       {
         backgroundColor:
-          selectedBalls?.includes(item?.name) ? LotteryConfig.pressedColor : null,
+          selectedBalls?.includes(item?.name) ? LCF.pressedColor : null,
       },
     ]}>
       <EBall ballType={{
         type: BallStyles.lhc,
         ballNumber: item?.name,
       }}
-             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}
+             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}
              odds={item?.odds}/>
     </View>
   </TouchableOpacity>
@@ -268,15 +268,18 @@ const _styles = StyleSheet.create({
     padding: scale(4),
   },
   ball_item_tm: {
-    width: LotteryConfig.ball_container_width,
+    width: LCF.ball_container_width,
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: scale(8),
     marginVertical: scale(2),
-    borderRadius: scale(10),
+    borderBottomRightRadius: scale(32),
+    borderTopLeftRadius: scale(32),
+    borderTopRightRadius: scale(16),
+    borderBottomLeftRadius: scale(16),
   },
   ball_item_lm: {
-    width: LotteryConfig.react_container_width,
+    width: LCF.react_container_width,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

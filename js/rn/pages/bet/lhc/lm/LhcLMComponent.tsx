@@ -9,7 +9,7 @@ import UseLhcLM from './UseLhcLM'
 import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
-import LotteryConfig from '../../config/LotteryConfig'
+import LCF from '../../config/LCF'
 import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 interface IRouteParams {
@@ -45,13 +45,13 @@ const LhcLMComponent = ({}: IRouteParams) => {
       _styles.ball_item_lm,
       {
         backgroundColor:
-          selectedBalls?.includes(item?.name) ? LotteryConfig.pressedColor : null,
+          selectedBalls?.includes(item?.name) ? LCF.pressedColor : null,
       },
     ]}>
       <ERect title={item?.name}
-             titleStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}
+             titleStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}
              odds={item?.odds}
-             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}/>
+             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}/>
     </View>
   </TouchableOpacity>
 
