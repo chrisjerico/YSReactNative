@@ -9,7 +9,7 @@ import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import FreedomGameListComponent from './games/FreedomGameListComponent'
-import { HallGameData } from '../../../public/network/Model/game/HallGameModel'
+import { GroupGameData, HallGameData, HallGameModel1 } from '../../../public/network/Model/game/HallGameModel'
 import APIRouter from '../../../public/network/APIRouter'
 import { ugLog } from '../../../public/tools/UgLog'
 import { Toast } from '../../../public/tools/ToastUtils'
@@ -30,18 +30,23 @@ import FastImage from 'react-native-fast-image'
 import { Res } from '../../../Res/icon/Res'
 import LinearGradient from 'react-native-linear-gradient'
 import { pop, push } from '../../../public/navigation/RootNavigation'
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 
 /**
  * 自由游戏大厅
  * @param navigation
  * @constructor
  */
-const FreedomHallPage = ({ navigation, setProps }) => {
+const FreedomHallPage = ({ navigation, setProps }: UGBasePageProps) => {
 
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
-
+  const { current: v } = useRef<{
+    hallGames?: HallGameData[]
+    isGroup: boolean
+  }>({ isGroup: true });
+  
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
@@ -56,11 +61,75 @@ const FreedomHallPage = ({ navigation, setProps }) => {
     requestGameData()
   }, [])
 
+  setProps({
+    didFocus: () => {
+      !gameData?.length && requestGameData()
+    }
+  }, false)
+  
   /**
    * 请求游戏数据
    */
   const requestGameData = async () => {
     setRefreshing(true)
+
+    // 处理分组数据
+    function groupGameToHallGame(groups: GroupGameData[]): HallGameData[] {
+      const temp: { [x: string]: HallGameData } = {}
+      const array : HallGameData[] = []
+      groups?.forEach((group) => {
+        group?.lotteries?.forEach((l) => {
+          v.hallGames?.forEach((hall) => {
+            hall?.list?.forEach((g) => {
+              g.pic = g.pic ?? l.logo
+              if (l?.id != g?.id) return
+              if (temp[group?.id] == undefined) {
+                array.push(temp[group?.id] = { gameType: hall.gameType, gameTypeName: group.name, list: [] })
+              }
+              temp[group?.id].list?.push(g)
+            })
+          })
+        })
+      })
+      return array
+    }
+
+    // 刷新UI
+    function refreshUI(data: HallGameData[]) {
+      setRefreshing(false)
+
+      // 是否显示分类
+      if (systemInfo?.picTypeshow != '1') {
+        let temp: HallGameModel1[] = []
+        data?.forEach(element => {
+          temp = temp.concat(element?.list)
+        });
+        data[0].list = temp
+        setGameData([data?.[0]])
+      } else {
+        setGameData(data)
+      }
+    }
+
+    // 获取分组数据
+    function getGroup() {
+      api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
+        sm.noShowErrorHUD = true
+        
+        // 若只有一个“其他“分组，则不显示分组
+        const other = data?.filter((v) => v.id == '0')[0]
+        data = data?.filter((v) => v.id != '0')
+        if (data?.length) {
+          data.push(other)
+          refreshUI(groupGameToHallGame(data))
+        } else {
+          v.isGroup = false
+          refreshUI(v.hallGames)
+        }
+      })
+    }
+
+    // 获取彩票数据
     APIRouter.game_lotteryHallGames().then(({ data: res }) => {
       let resData = res?.data
       //ugLog('data res=', res)
@@ -71,9 +140,12 @@ const FreedomHallPage = ({ navigation, setProps }) => {
             item.parentGameType = parentItem.gameType
           })
         })
-
-        setGameData(resData)
-
+        v.hallGames = resData
+        if (v.isGroup) {
+          getGroup()
+        } else {
+          refreshUI(resData)
+        }
       } else {
         Toast(res?.msg)
       }

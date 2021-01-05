@@ -26,7 +26,7 @@ import { PageName } from '../../../public/navigation/Navigation'
 import MineHeader from '../../../public/views/tars/MineHeader'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
-import { setProps } from '../../base/UGPage'
+import { setProps, UGBasePageProps } from '../../base/UGPage'
 import { pop } from '../../../public/navigation/RootNavigation'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
@@ -40,7 +40,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const GameHallPage = ({ navigation, route }) => {
+const GameHallPage = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   const { showBackButton }: IRouteParams = route?.params
 
@@ -183,7 +183,7 @@ const GameHallPage = ({ navigation, route }) => {
             tabBarUnderlineStyle={[_styles.tab_bar_underline,
               { backgroundColor: Skin1.themeColor }]}
             tabBarActiveTextColor={Skin1.themeColor}
-            tabBarInactiveTextColor={Skin1.textColor1}
+            tabBarInactiveTextColor={'#111'}
             tabBarTextStyle={{ fontSize: scale(20) }}
             style={[{ flex: 1 }]}
             renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
