@@ -295,6 +295,8 @@ class APIRouter {
       Toast('请登录')
       return null
     }
+
+    //ugLog('recharge_onlinePay=', JSON.stringify(params))
     return httpClient.post<NormalModel>('c=recharge&a=onlinePay', params)
   }
 
@@ -306,6 +308,8 @@ class APIRouter {
       Toast('请登录')
       return null
     }
+
+    //ugLog('recharge_onlinePay=', JSON.stringify(params))
     return httpClient.post<NormalModel>('c=recharge&a=transfer', params)
   }
 
@@ -314,13 +318,32 @@ class APIRouter {
    * @param params
    */
   static open_onlinepay = async (params: IRechargeOnlineParams) => {
-    let tokenParams = ''
-    for (let key in params) {
-      tokenParams += '&' + key + '=' + params[key]
-    }
-    let url = AppDefine?.host + '?c=recharge&a=payUrl&' + tokenParams
+    // ugLog('pay url params=', JSON.stringify(params))
 
-    ugLog('pay url=', url)
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        //TODO iOS 完成 params 加密转换
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: params,
+        })
+
+        for (let key in pms) {
+          tokenParams += '&' + key + '=' + pms[key]
+        }
+        break
+    }
+    // let tokenParams = ''
+    // for (let key in params) {
+    //   tokenParams += '&' + key + '=' + params[key]
+    // }
+    let url = AppDefine?.host + '/wjapp/api.php?c=recharge&a=payUrl&' + tokenParams
+
+    // ugLog('pay url=', url)
     Linking.openURL(url)
   }
 
