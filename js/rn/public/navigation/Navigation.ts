@@ -32,7 +32,7 @@ export enum PageName {
   JDAgentPage = "JDAgentPage",
   JDPromotionIncomePage = "JDPromotionIncomePage",
   TaskCenterPage = 'TaskCenterPage',
-
+  JDPromotionInfoCP = 'JDPromotionInfoCP',
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
   LHTPreferencePage = 'LHTPreferencePage',
