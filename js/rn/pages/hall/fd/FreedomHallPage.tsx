@@ -31,6 +31,7 @@ import { Res } from '../../../Res/icon/Res'
 import LinearGradient from 'react-native-linear-gradient'
 import { pop, push } from '../../../public/navigation/RootNavigation'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
+import { UGBasePageProps } from '../../base/UGPage'
 
 /**
  * 自由游戏大厅
