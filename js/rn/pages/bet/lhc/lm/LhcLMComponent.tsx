@@ -9,6 +9,8 @@ import UseLhcLM from './UseLhcLM'
 import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
+import LotteryConfig from '../../config/LotteryConfig'
+import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 interface IRouteParams {
 }
@@ -32,10 +34,31 @@ const LhcLMComponent = ({}: IRouteParams) => {
     addOrRemoveBall,
   } = UseLhcLM()
 
+
+  /**
+   * 绘制 方格式
+   * @param item
+   */
+  const renderERect = (item?: PlayData) => <TouchableOpacity key={item?.name}
+                                                             onPress={() => addOrRemoveBall(item?.name)}>
+    <View style={[
+      _styles.ball_item_lm,
+      {
+        backgroundColor:
+          selectedBalls?.includes(item?.name) ? LotteryConfig.pressedColor : null,
+      },
+    ]}>
+      <ERect title={item?.name}
+             titleStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}
+             odds={item?.odds}
+             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}/>
+    </View>
+  </TouchableOpacity>
+
   /**
    * 绘制全部的球
    */
-  const renderBall = () => <View>
+  const renderAllBall = () => <View>
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         dataLM?.map((groupData) => {
@@ -48,22 +71,7 @@ const LhcLMComponent = ({}: IRouteParams) => {
 
             <View style={_styles.ball_container}>
               {
-                groupData?.plays?.map((item) =>
-                  <TouchableOpacity key={item?.name}
-                                    onPress={() => addOrRemoveBall(item?.name)}>
-                    <View style={[
-                      _styles.ball_item,
-                      {
-                        backgroundColor:
-                          selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}aa` : null,
-                      },
-                    ]}>
-                      <ERect title={item?.name}
-                             titleStyle={selectedBalls?.includes(item?.name) ? { color: `white` } : null}
-                             odds={item?.odds}
-                             oddsStyle={selectedBalls?.includes(item?.name) ? { color: UGColor.TextColor8 } : null}/>
-                    </View>
-                  </TouchableOpacity>)
+                groupData?.plays?.map((item) => renderERect(item))
               }
             </View>
 
@@ -75,7 +83,7 @@ const LhcLMComponent = ({}: IRouteParams) => {
 
   return (
     <View style={CommStyles.flex}>
-      {renderBall()}
+      {renderAllBall()}
     </View>
 
   )
@@ -100,7 +108,7 @@ const _styles = StyleSheet.create({
     padding: scale(4),
     flex: 1,
   },
-  ball_item: {
+  ball_item_lm: {
     width: scale(196),
     flexDirection: 'row',
     alignItems: 'center',
