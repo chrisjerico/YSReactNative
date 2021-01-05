@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { Platform } from 'react-native'
+import UGSignModel from '../../../redux/model/全局/UGSignModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
@@ -45,7 +46,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   // refs
   const slideCodeRef = useRef(null)
   const needNameInputRef = useRef(null)
-  const rememberRef = useRef(sign?.remember)
+  const { current: v } = useRef<UGSignModel>(sign)
 
   const navigateToSignUpPage = useCallback(() => {
     homePage && push(signUpPage, {})
@@ -73,6 +74,13 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
         },
         onSuccess: () => {
           navigateToHomePage()
+          UGStore.dispatch({
+            type: 'merge',
+            sign: {
+              account: v.remember ? v.account : null,
+              password: v.remember ? v.password : null,
+            },
+          }, false)
           // if (loginTo == LoginTo.首页) {
           //   navigateToHomePage()
           // } else {
@@ -136,43 +144,21 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
 
   const onChangeAccount = useCallback(
     (value: string) => {
-      UGStore.dispatch({
-        type: 'merge',
-        sign: {
-          account: rememberRef.current ? value : null,
-          password: rememberRef.current ? password : null,
-        },
-      })
-      setAccount(value)
+      setAccount(v.account = value)
     },
     [password]
   )
 
   const onChangePassword = useCallback(
     (value: string) => {
-      UGStore.dispatch({
-        type: 'merge',
-        sign: {
-          account: rememberRef.current ? account : null,
-          password: rememberRef.current ? value : null,
-        },
-      })
-      setPassword(value)
+      setPassword(v.password = value)
     },
     [account]
   )
 
   const onChangeRemember = useCallback(
     (value: boolean) => {
-      rememberRef.current = value
-      UGStore.dispatch({
-        type: 'merge',
-        sign: {
-          remember: value,
-          account: value ? account : null,
-          password: value ? password : null,
-        },
-      })
+      v.remember = value
     },
     [account, password]
   )
@@ -214,7 +200,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   const value = {
     account,
     password,
-    remember: rememberRef.current,
+    remember: v.remember,
   }
 
   const onChange = {
