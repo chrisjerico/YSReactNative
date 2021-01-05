@@ -119,6 +119,7 @@ export enum UGColor {
   TextColor4 = '#bbb',
   TextColor5 = '#ddd',
   TextColor6 = '#fff',
+  TextColor7 = '#666',
 
   //
   LoadingColor1 = '#ccd1d9',

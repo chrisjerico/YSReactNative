@@ -87,7 +87,11 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     }
     return returnStr
   }
-  //下拉刷新
+
+   /**
+   * 下拉刷新
+   * 
+   */
   const onHeaderRefresh = () => {
     v.state.isRefreshing = true
     v.pageNumber = 1
@@ -95,7 +99,10 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     loadWBData()
   }
 
-  //点击（上拉）加载更多数据
+   /**
+   * 点击（上拉）加载更多数据
+   * 
+   */
   const onFooterRefresh = () => {
     v.pageNumber++
     console.log('上拉加载');
@@ -103,7 +110,11 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     setProps()
     loadWBData()
   }
-  // 网络请求
+
+   /**
+   * 网络请求
+   * 
+   */
   function loadWBData() {
     let params = {
       type: parseInt(v.type),
@@ -138,7 +149,11 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
       // Toast(err.message)
     });
   }
-  // 点击刷新
+
+   /**
+   * 点击刷新
+   * 
+   */
   function onEndReached() {
     console.log('onEndReached');
     console.log('showFoot ==', v.state.showFoot);
@@ -162,7 +177,11 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     onFooterRefresh();
   }
 
-  //上拉加载布局
+
+   /**
+   * 上拉加载布局
+   * 
+   */
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
       return (
@@ -209,7 +228,10 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
   }
 
 
-  //数据为空展示页面
+   /**
+   * 数据为空展示页面
+   * 
+   */
   const _renderListEmptyComp = () => {
     return (
       <View style={{
@@ -224,7 +246,10 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     );
   }
 
-  // 渲染列表项
+   /**
+   * 渲染列表项
+   * 
+   */
   const _renderItem = ({ index, item }) => {
     return (
       <View style={[styles.viewItem, { backgroundColor: index % 2 ? Skin1.isBlack ? '#707070' : '#F7F8F8' : Skin1.isBlack ? Skin1.CLBgColor : 'white' }]}>

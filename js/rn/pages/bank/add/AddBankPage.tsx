@@ -46,6 +46,8 @@ import { BankConst } from '../const/BankConst'
 import Button from '../../../public/views/tars/Button'
 import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
+import { Toast } from '../../../public/tools/ToastUtils'
+import { pop } from '../../../public/navigation/RootNavigation'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -105,15 +107,21 @@ const AddBankPage = ({ navigation, route }) => {
    */
   let bankList = bankCardData?.allAccountList
   useEffect(() => {
-    let accountTypes = bankList.filter((item) => arrayLength(item.data) < Number(item.number)).map(
+    let accountTypes = bankList.filter((item) =>
+      arrayLength(item.data) < Number(item.number) || Number(item.number) == 0).map(
       (item, index) =>
         ({
           label: item.name, value: item.type, icon: () => <FastImage source={getBankIcon(item.type.toString())}
                                                                      resizeMode={'contain'}
                                                                      style={_styles.bank_name_icon}/>,
         }))
-    !anyEmpty(bankList) && setAccountItems(accountTypes)
-    !anyEmpty(bankList) && setCurAccountType(selectType > 0 ? selectType : accountTypes[0].value)
+    if (anyEmpty(accountTypes)) {
+      Toast('不能添加更多账户')
+      pop()
+    } else {
+      !anyEmpty(bankList) && setAccountItems(accountTypes)
+      !anyEmpty(bankList) && setCurAccountType(selectType > 0 ? selectType : accountTypes[0].value)
+    }
   }, [])
 
   /**
@@ -329,17 +337,17 @@ const AddBankPage = ({ navigation, route }) => {
                           { backgroundColor: Skin1.themeColor }]}
                         onPress={() => {
                           addBankAccount({
-                            curAccountType: curAccountType,
-                            curBankID: curBankID,
-                            curBtcID: curBtcID,
-                            curChainValue: curChainValue,
-                            bankAddr: bankAddr,
-                            bankNumber: bankNumber,
-                            bankPassword: bankPassword,
-                            btcAddr: btcAddr,
-                            wxAccount: wxAccount,
-                            wxPhone: wxPhone,
-                            aliAccount: aliAccount,
+                            curAccountType,
+                            curBankID,
+                            curBtcID,
+                            curChainValue,
+                            bankAddr,
+                            bankNumber,
+                            bankPassword,
+                            btcAddr,
+                            wxAccount,
+                            wxPhone,
+                            aliAccount,
                             callBack: (accountType) => {
                               refreshBankList(accountType)
                             },
@@ -356,7 +364,7 @@ const AddBankPage = ({ navigation, route }) => {
 
 const _styles = StyleSheet.create({
   container: {
-    backgroundColor: UGColor.BackgroundColor1
+    backgroundColor: UGColor.BackgroundColor1,
   },
   item_pwd_container: {
     padding: scale(32),
@@ -435,9 +443,5 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default AddBankPage

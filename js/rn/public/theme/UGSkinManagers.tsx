@@ -57,7 +57,7 @@ export default class UGSkinManagers extends UGThemeColor {
       2: `新年红${mobileTemplateStyle}`,
       3: '石榴红',
       4: `六合资料${mobileTemplateLhcStyle}`,
-      5: '黑色模板',
+      5: `GPK版${mobileTemplateStyle}`,
       6: '金沙主题',
       7: '火山橙',
       8: `香槟金${mobileTemplateStyle}`,

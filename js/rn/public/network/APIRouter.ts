@@ -18,11 +18,10 @@ import { HomeGamesModel } from './Model/HomeGamesModel'
 import { HomeRecommendModel } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
-import { LottoGamesModel } from './Model/LottoGamesModel'
+import { LottoGamesModel, UGNextIssueModel } from './Model/LottoGamesModel'
 import { NormalModel } from './Model/NormalModel'
 import { NoticeModel } from './Model/NoticeModel'
 import { OnlineModel } from './Model/OnlineModel'
-import { PlayOddDataModel } from './Model/PlayOddDataModel'
 import { PromotionsModel } from './Model/PromotionsModel'
 import { RankListModel } from './Model/RankListModel'
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
@@ -47,6 +46,8 @@ import { HallGameModel } from './Model/game/HallGameModel'
 import { PayAisleModel } from './Model/wd/PayAisleModel'
 import AppDefine from '../define/AppDefine'
 import { NewRateModel } from './Model/wd/NewRateModel'
+import { NextIssueModel } from './Model/lottery/NextIssueModel'
+import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -324,17 +325,48 @@ class APIRouter {
   }
 
   /**
-   * 银行卡和虚拟币等信息
-   * @param params 增加银行卡，虚拟币，微信，支付宝
-   * type: 增加银行卡，虚拟币，微信，支付宝
-   * bank_id:
-   * bank_card:
-   * bank_addr:
-   * pwd:
-   * owner_name:
+   * 余额提现申请
    *
    */
-  static user_addBank = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+  static withdraw_apply = async (params: IRequestWithdrawParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+    return httpClient.post<NormalModel>('c=withdraw&a=apply', params)
+  }
+
+  /**
+   * 利息宝提现申请
+   *
+   */
+  static yuebao_transferToBank = async (params: IRequestWithdrawParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+
+    ugLog('transferToBank=', JSON.stringify(params))
+    return httpClient.post<NormalModel>('c=yuebao&a=transferToBank', params)
+  }
+
+  /**
+   * 利息宝转入转出
+   *
+   */
+  static yuebao_transfer = async (params: IYueBao2YuEParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+    return httpClient.post<NormalModel>('c=yuebao&a=transfer', params)
+  }
+
+  /**
+   * 银行卡和虚拟币等信息
+   *
+   */
+  static user_addBank = async (params: IAddBankParams): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) {
       Toast('请登录')
       return null
@@ -347,7 +379,7 @@ class APIRouter {
    * @param params 真名
    * fullName: 真名
    */
-  static user_bindRealName = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+  static user_bindRealName = async (params: IBindRealNameParams): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) {
       Toast('请登录')
       return null
@@ -360,12 +392,24 @@ class APIRouter {
    * login_pwd: 登录密码
    * fund_pwd: 取款密码
    */
-  static user_bindPwd = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+  static user_bindPwd = async (params: IBindPasswordParams): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) {
       Toast('请登录')
       return null
     }
     return httpClient.post<NormalModel>('c=user&a=addFundPwd', params)
+  }
+
+  /**
+   * 忘记密码
+   */
+  static user_applyCoinPwd = async (params: IForgetPasswordParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+
+    return httpClient.post<NormalModel>('c=user&a=applyCoinPwd', params)
   }
 
   /**
@@ -683,8 +727,12 @@ class APIRouter {
       },
     })
   }
-  static secure_smsCaptcha = async (phone) => {
-    return httpClient.post('c=secure&a=smsCaptcha', { phone: phone })
+
+  static secure_smsCaptcha = async (phone, action?) => {
+    return httpClient.post('c=secure&a=smsCaptcha', {
+      phone,
+      action,
+    })
   }
 
   static system_config = async () => {
@@ -711,7 +759,7 @@ class APIRouter {
         },
         {
           noToken: true,
-        } as any
+        } as any,
       )
     } catch (error) {
       throw error
@@ -724,6 +772,62 @@ class APIRouter {
 
   static lhcdoc_lotteryNumber = async () => {
     return httpClient.get('c=lhcdoc&a=lotteryNumber')
+  }
+
+  /**
+   * 下一期开奖信息
+   * id 游戏 id
+   */
+  static game_nextIssue = async (id: string): Promise<AxiosResponse<NextIssueModel>> => {
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        //TODO 完成对 id 的加密
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            id
+          },
+        })
+        for (let key in pms) {
+          tokenParams += '&' + key + '=' + pms[key]
+        }
+        break
+    }
+
+    return httpClient.get<NextIssueModel>('c=game&a=nextIssue&' + tokenParams)
+  }
+
+  /**
+   * 彩票详情
+   * id 游戏 id
+   */
+  static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDetailModel>> => {
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        //TODO 完成对 id 的加密
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            id
+          },
+        })
+        for (let key in pms) {
+          tokenParams += '&' + key + '=' + pms[key]
+        }
+        break
+    }
+
+    return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds&' + tokenParams)
   }
 
   /**
@@ -746,12 +850,12 @@ class APIRouter {
     return httpClient.get<HallGameModel>('c=game&a=lotteryGames')
   }
 
-  static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
-    return httpClient.get('c=game&a=playOdds&id=' + id, {
-      //@ts-ignore
-      isEncrypt: false,
-    })
-  }
+  // static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
+  //   return httpClient.get('c=game&a=playOdds&id=' + id, {
+  //     //@ts-ignore
+  //     isEncrypt: false,
+  //   })
+  // }
 
   static system_avatarList = async () => {
     return httpClient.get<SystemAvatarListModel>('c=system&a=avatarList')

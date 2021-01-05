@@ -109,7 +109,7 @@ export class api_user {
   static bet() {
     return this.c.post('bet');
   }
-  
+
   // 即时投注（待完善）
   static instantBet() {
     return this.c.post('instantBet');
@@ -175,15 +175,15 @@ export class api_user {
     return this.c.post('profileName', {fullName:fullName});
   }
 
-  // 绑定提款账户
-  static bindBank(
-    type: number,//1银行卡，2支付宝，3微信，4虚拟币
-    bank_id: string, //提款渠道ID
-    bank_addr: string, // 银行:开户地址，支付宝:不填，微信:手机号，虚拟币:链名称
-    bank_card: string, // 银行卡号，或支付宝，或微信号，或虚拟币收款号
-    ) {
-    return this.c.post('bindBank', {type:type, bank_id:bank_id, bank_addr:bank_addr, bank_card:bank_card});
-  }
+  // // 绑定提款账户
+  // static bindBank(
+  //   type: number,//1银行卡，2支付宝，3微信，4虚拟币
+  //   bank_id: string, //提款渠道ID
+  //   bank_addr: string, // 银行:开户地址，支付宝:不填，微信:手机号，虚拟币:链名称
+  //   bank_card: string, // 银行卡号，或支付宝，或微信号，或虚拟币收款号
+  //   ) {
+  //   return this.c.post('bindBank', {type:type, bank_id:bank_id, bank_addr:bank_addr, bank_card:bank_card});
+  // }
 
   // 获取头像配置
   static getAvatarSetting() {
@@ -200,9 +200,9 @@ export class api_user {
     return this.c.post<{isReview:boolean}>('uploadAvatar', {}, {files:files});
   }
 
-  // 上传身份证（待完善）
-  static uploadIdentity(files) {
-    return this.c.post('uploadIdentity');
+  // 上传身份证
+  static uploadIdentity(files: string) {// 图片文件路径
+    return this.c.post<{isReview:boolean}>('uploadIdentity', {}, {files:files});
   }
 
 

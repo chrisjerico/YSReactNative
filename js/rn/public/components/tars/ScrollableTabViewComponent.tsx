@@ -13,6 +13,9 @@ interface ScrollableTabViewComponentProps {
   minTabWidth?: number
   enableMinWidth?: boolean
   initialTabIndex?: number
+  activeTabStyle?: StyleProp<ViewStyle>
+  tabStyle?: StyleProp<ViewStyle>
+  indicatorContainerStyle?: StyleProp<ViewStyle>
 }
 
 interface RenderTabBar {
@@ -30,6 +33,9 @@ const ScrollableTabViewComponent = ({
   enableMinWidth,
   minTabWidth,
   initialTabIndex = 0,
+  activeTabStyle,
+  tabStyle,
+  indicatorContainerStyle,
 }: ScrollableTabViewComponentProps) => {
   const x = useRef(new Animated.Value(0)).current
   const inAnimated = useRef(false)
@@ -126,6 +132,7 @@ const ScrollableTabViewComponent = ({
                         <View
                           style={[
                             styles.tab,
+                            activeTab == index ? activeTabStyle : tabStyle,
                             {
                               width: tabWidth,
                             },
@@ -137,7 +144,7 @@ const ScrollableTabViewComponent = ({
                   })}
                 </View>
                 {showIndicator && (
-                  <Animated.View style={[styles.indicatorContainer, { width: tabWidth, transform: [{ translateX: x }] }]}>
+                  <Animated.View style={[styles.indicatorContainer, indicatorContainerStyle, { width: tabWidth, transform: [{ translateX: x }] }]}>
                     <View style={[styles.indicator, indicatorStyle]} />
                   </Animated.View>
                 )}

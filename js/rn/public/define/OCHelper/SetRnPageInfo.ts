@@ -20,8 +20,8 @@ export async function setRnPageInfo() {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
-      vcName: 'RedEnvelopeVCViewController',
-      rnName: PageName.JDRedEnveloperPage,
+      vcName: 'UGPromotionIncomeController',
+      rnName: PageName.JDPromotionIncomePage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -62,6 +62,14 @@ export async function setRnPageInfo() {
       允许游客访问: true,
       允许未登录访问: true,
     })
+    //利息宝页
+    pages.push({
+      rnName: PageName.AlipayView,
+      userCenterItemCode: 4,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 申请代理
     pages.push({
       vcName: 'UGAgentViewController',
@@ -70,7 +78,7 @@ export async function setRnPageInfo() {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    
+
     // 彩票大厅（第三样式）
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat([{
@@ -95,7 +103,14 @@ export async function setRnPageInfo() {
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
-
+ // 申请代理
+  pages.push({
+    vcName: 'UGAgentViewController',
+    rnName: PageName.JDAgentPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
 //红包扫雷
  pages.push({
     vcName: 'RedEnvelopeVCViewController',
@@ -145,15 +160,6 @@ export async function setRnPageInfo() {
     允许未登录访问: true,
   })
 
-  //利息宝页
-  // pages.push({
-  //   rnName: PageName.AlipayView,
-  //   userCenterItemCode: 4,
-  //   fd_prefersNavigationBarHidden: true,
-  //   允许游客访问: false,
-  //   允许未登录访问: false,
-  // })
-
   //建议反馈页
   pages.push({
     rnName: PageName.FeedbackView,
@@ -163,25 +169,28 @@ export async function setRnPageInfo() {
     允许未登录访问: false,
   })
 
-  //额度转页
-  // pages.push({
-  //   rnName: PageName.TransferView,
-  //   userCenterItemCode: 8,
-  //   fd_prefersNavigationBarHidden: true,
-  //   vcName: 'UGBalanceConversionController',
-  //   允许游客访问: false,
-  //   允许未登录访问: false,
-  // })
+  {
+    //额度转页-经典版
+    let page: PageName = PageName.TransferView
+    //额度转页-天空蓝版
+    if (skitType.indexOf('天空蓝') != -1 || 'c085'.indexOf(AppDefine.siteId) != -1) {
+      page = PageName.TransferTKLMainView
+    }
+    //额度转页-新版
+    else if ('c200,a002,c186,test60f'.indexOf(AppDefine.siteId) != -1) {
+      page = PageName.TransferLineView
+    }
+    pages.push({
+      rnName: page,
+      userCenterItemCode: 8,
+      fd_prefersNavigationBarHidden: true,
+      tabbarItemPath: '/conversion',
+      vcName: 'UGBalanceConversionController,LineConversionHeaderVC,TKLMainViewController',
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+  }
 
-  //额度转页
-  // pages.push({
-  //   rnName: PageName.TransferTKLMainView,
-  //   userCenterItemCode: 8,
-  //   fd_prefersNavigationBarHidden: true,
-  //   vcName: 'TKLMainViewController',
-  //   允许游客访问: false,
-  //   允许未登录访问: false,
-  // })
 
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
@@ -199,6 +208,20 @@ export async function setRnPageInfo() {
   RnPageModel.pages = pages
   switch (Platform.OS) {
     case 'ios':
+      // // vcName支持填多个页面，用英文逗号分隔
+      const tmp: RnPageModel[] = []
+      pages.forEach((rpm) => {
+        if (rpm?.vcName?.length) {
+          rpm?.vcName?.split(',').forEach((v) => {
+            v?.length && tmp.push(Object.assign({}, rpm, { vcName: v }))
+          })
+        } else {
+          tmp.push(rpm)
+        }
+      })
+      pages = tmp
+
+      // 替换原生页面
       await OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages])
       await OCHelper.call('AppDefine.shared.setImageHost:', ['https://appstatic.guolaow.com'])
       break

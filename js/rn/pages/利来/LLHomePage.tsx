@@ -32,6 +32,7 @@ import PromotionsBlock from '../../public/components/PromotionsBlock'
 import LinearGradient from 'react-native-linear-gradient'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import Activitys from '../../public/views/tars/Activitys'
+import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
@@ -59,6 +60,10 @@ const LLHomePage = ({ setProps, navigation }) => {
 
     return unsubscribe
   }, [navigation])
+
+  // return (
+  //   <TransferLineView />
+  // )
 
   return (
     <View style={{ flex: 1 }}>

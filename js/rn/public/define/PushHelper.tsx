@@ -130,6 +130,10 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game])
         break
       case 'android':
+        if (B_DEBUG) {
+          // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
+          // return
+        }
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }
@@ -438,10 +442,10 @@ export default class PushHelper {
         let subId = ''
         switch (code) {
           case UGUserCenterType.存款: {
-            if (B_DEBUG) {
-              push(PageName.CapitalPage)
-              // return
-            }
+            // if (B_DEBUG) {
+            //   push(PageName.CapitalPage)
+            //   return
+            // }
             subId = MenuType.CZ
             break
           }
@@ -477,11 +481,31 @@ export default class PushHelper {
             subId = MenuType.TZJL
             break
           }
-          case UGUserCenterType.彩票注单记录: {
-            subId = MenuType.TZJL
+          case UGUserCenterType.其他注单记录: {
+            subId = MenuType.QTZD
             break
           }
-          case UGUserCenterType.其他注单记录: {
+          case UGUserCenterType.电子注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.捕鱼注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.电竞注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.真人注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.棋牌注单: {
+            subId = MenuType.QTZD
+            break
+          }
+          case UGUserCenterType.体育注单: {
             subId = MenuType.QTZD
             break
           }
@@ -593,6 +617,7 @@ export default class PushHelper {
         if(!anyEmpty(subId)) {
           ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
             seriesId: '7',
+            subCode: code,
             subId: subId,
           })
         }

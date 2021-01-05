@@ -58,7 +58,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
     signInPage: PageName.LCLoginPage,
   })
   const [haveBottomTab, setHaveBottomTab] = useState(false)
-  const { signUp } = sign
+  const { userSingUp } = sign
   const { showRecommendGuy, showSms, showName, showEmail, showInviteCode, showAgentButton, showFundPassword, showPhoneNumber, showQQ, showSlideCode, showWx,  } = show
   const {
     recommendGuyPlaceholder,
@@ -253,7 +253,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                             onChanePhone(text)
                             setData({ ...data, phoneNumber: text })
                           }} />
-            <RegisterItem placeHolder={smsPlaceholder || '请输入手机短信验证码'} iconName={'unlock-alt'} config={showSms}
+            <RegisterItem sms={showSms} placeHolder={smsPlaceholder || '请输入手机短信验证码'} iconName={'unlock-alt'} config={showSms}
                           onChangeText={(text) => onChaneSms(text)} phoneNumber={data.phoneNumber} />
             <RegisterItem placeHolder={emailPlaceholder || '请输入邮箱地址'} iconName={'envelope-o'} config={showEmail}
                           onChangeText={(text) => onChangeEmail(text)} />
@@ -320,7 +320,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
               }}
             />
             <TouchableOpacity
-              onPress={signUp}
+              onPress={userSingUp}
               style={{ paddingVertical: 16, marginTop: 12, borderRadius: 8, backgroundColor: '#ff9c06' }}>
               <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16 }}>注册</Text>
             </TouchableOpacity>
