@@ -66,6 +66,8 @@ const ForgetPasswordPage = ({ navigation, route }) => {
             { value: '1' }).then((res) => {
             if (res == null) return
 
+            ugLog('renderIdCard=', JSON.stringify(res))
+
             showLoading()
             api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
               ({ data, msg }) => {

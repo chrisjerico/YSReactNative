@@ -137,4 +137,4 @@ const BallType = {
 }
 
 export default LotteryBall
-export { BallType }
+export { BallType, ILotteryBall }

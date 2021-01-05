@@ -140,6 +140,9 @@ const BetLotteryPage = ({ navigation, route }) => {
       case LotteryConst.LM: {
         return <LhcLMComponent key={lotteryCode}/>
       }
+      case LotteryConst.ZM: {
+        return <LhcLMComponent key={lotteryCode}/>
+      }
 
     }
 

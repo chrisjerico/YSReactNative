@@ -7,6 +7,7 @@ import { BallType } from '../../../public/components/view/LotteryBall'
 const LotteryConst = {
   TM: 'TM', //特码
   LM: 'LM', //两面
+  ZM: 'ZM', //正码
 }
 
 export default LotteryConst

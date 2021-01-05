@@ -24,10 +24,18 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcTM from './UseLhcTM'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import { PlayOddData, PlayOddDetailData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import {
+  PlayData,
+  PlayGroupData,
+  PlayOddData,
+  PlayOddDetailData,
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import BetLotteryContext from '../../BetLotteryContext'
+import EBall from '../../../../public/components/view/lottery/EBall'
+import { arrayLength } from '../../../../public/tools/Ext'
+import ERect from '../../../../public/components/view/lottery/ERect'
 
 interface IRouteParams {
 }
@@ -124,45 +132,101 @@ const LhcTMComponent = ({}: IRouteParams) => {
   </View>
 
   /**
+   * 绘制 特码B/A
+   * @param groupData
+   */
+  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+                                                        style={CommStyles.flex}>
+
+    <View style={_styles.sub_title_container}>
+      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    </View>
+
+    <View style={_styles.ball_container}>
+      {
+        groupData?.plays?.map((item) =>
+          <TouchableOpacity key={item?.name}
+                            onPress={() => addOrRemoveBall(item?.name)}>
+            <View style={[
+              _styles.ball_item_tm,
+              {
+                backgroundColor:
+                  selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}66` : null,
+              },
+            ]}>
+              <EBall ballType={{
+                type: BallStyles.lhc,
+                ballNumber: item?.name,
+              }}
+                     odds={item?.odds}/>
+            </View>
+          </TouchableOpacity>)
+      }
+    </View>
+  </View>
+
+  const renderRect = (item?: PlayData) => <TouchableOpacity key={item?.name}
+                                                            onPress={() => addOrRemoveBall(item?.name)}>
+    <View style={[
+      _styles.ball_item_lm,
+      {
+        backgroundColor:
+          selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}aa` : null,
+      },
+    ]}>
+      <ERect title={item?.name}
+             titleStyle={selectedBalls?.includes(item?.name) ? { color: `white` } : null}
+             odds={item?.odds}
+             oddsStyle={selectedBalls?.includes(item?.name) ? { color: UGColor.TextColor8 } : null}/>
+    </View>
+  </TouchableOpacity>
+
+
+  /**
+   * 绘制 连码B/A
+   * @param groupData
+   */
+  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+                                                        style={CommStyles.flex}>
+
+    <View style={_styles.sub_title_container}>
+      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    </View>
+
+    <View style={_styles.ball_container}>
+      {
+        groupData?.plays?.map((item) => renderRect(item))
+      }
+    </View>
+  </View>
+
+  /**
+   * 绘制 色波B/A
+   * @param groupData
+   */
+  const renderSB = (groupData?: PlayGroupData) => <View key={groupData?.id}
+                                                        style={CommStyles.flex}>
+
+    <View style={_styles.sub_title_container}>
+      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    </View>
+
+    <View style={_styles.ball_container}>
+      {
+        groupData?.plays?.map((item) => renderRect(item))
+      }
+    </View>
+  </View>
+
+  /**
    * 绘制全部的球
    */
-  const renderBall = () => <View>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {
-        ballData?.map((groupData) => {
-          return <View key={groupData?.id}
-                       style={CommStyles.flex}>
-
-            <View style={_styles.sub_title_container}>
-              <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
-            </View>
-
-            <View style={_styles.ball_container}>
-              {
-                groupData?.plays?.map((item) =>
-                  <TouchableOpacity key={item?.name}
-                                    onPress={() => addOrRemoveBall(item?.name)}>
-                    <View style={[
-                      _styles.ball_item,
-                      {
-                        backgroundColor:
-                          selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}66` : null,
-                      },
-                    ]}>
-                      <LotteryBall type={BallStyles.lhc}
-                                   ballNumber={item?.name}/>
-                      <Text numberOfLines={1}
-                            style={_styles.ball_odds}>{item?.odds}</Text>
-                    </View>
-                  </TouchableOpacity>)
-              }
-            </View>
-
-          </View>
-        })
-      }
-    </ScrollView>
-  </View>
+  const renderBall = () => <ScrollView style={CommStyles.flex}
+                                       showsVerticalScrollIndicator={false}>
+    {arrayLength(ballData) > 0 && renderTM(ballData[0])}
+    {arrayLength(ballData) > 1 && renderLM(ballData[1])}
+    {arrayLength(ballData) > 2 && renderSB(ballData[2])}
+  </ScrollView>
 
   return (
     <View style={CommStyles.flex}>
@@ -192,12 +256,25 @@ const _styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: scale(4),
   },
-  ball_item: {
+  ball_item_tm: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: scale(8),
     marginVertical: scale(2),
     borderRadius: scale(10),
+  },
+  ball_item_lm: {
+    width: scale(196),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: scale(16),
+    borderBottomRightRadius: scale(32),
+    borderTopLeftRadius: scale(32),
+    borderTopRightRadius: scale(16),
+    borderBottomLeftRadius: scale(16),
+    borderColor: UGColor.LineColor4,
+    borderWidth: scale(0.5),
   },
   ball_odds: {
     width: scale(76),
