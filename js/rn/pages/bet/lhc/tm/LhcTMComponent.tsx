@@ -30,13 +30,15 @@ import {
   PlayOddData,
   PlayOddDetailData,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall from '../../../../public/components/view/LotteryBall'
+import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import BetLotteryContext from '../../BetLotteryContext'
 import EBall from '../../../../public/components/view/lottery/EBall'
 import { arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LCF from '../../config/LCF'
+import LotteryEBall from '../../widget/LotteryEBall'
+import LotteryERect from '../../widget/LotteryERect'
 
 interface IRouteParams {
 }
@@ -136,43 +138,17 @@ const LhcTMComponent = ({}: IRouteParams) => {
    * 绘制 方格式
    * @param item
    */
-  const renderERect = (item?: PlayData) => <TouchableOpacity key={item?.name}
-                                                            onPress={() => addOrRemoveBall(item?.name)}>
-    <View style={[
-      _styles.ball_item_lm,
-      {
-        backgroundColor:
-          selectedBalls?.includes(item?.name) ? LCF.pressedColor : null,
-      },
-    ]}>
-      <ERect title={item?.name}
-             titleStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}
-             odds={item?.odds}
-             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}/>
-    </View>
-  </TouchableOpacity>
+  const renderERect = (item?: PlayData) => <LotteryERect item={item}
+                                                         selectedBalls={selectedBalls}
+                                                         callback={() => addOrRemoveBall(item?.name)}/>
 
   /**
    * 绘制 球
    * @param item
    */
-  const renderEBall = (item?: PlayData) => <TouchableOpacity key={item?.name}
-                                                             onPress={() => addOrRemoveBall(item?.name)}>
-    <View style={[
-      _styles.ball_item_tm,
-      {
-        backgroundColor:
-          selectedBalls?.includes(item?.name) ? LCF.pressedColor : null,
-      },
-    ]}>
-      <EBall ballType={{
-        type: BallStyles.lhc,
-        ballNumber: item?.name,
-      }}
-             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}
-             odds={item?.odds}/>
-    </View>
-  </TouchableOpacity>
+  const renderEBall = (item?: PlayData) => <LotteryEBall item={item}
+                                                         selectedBalls={selectedBalls}
+                                                         callback={() => addOrRemoveBall(item?.name)}/>
 
   /**
    * 绘制 特码B/A
@@ -187,7 +163,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
 
     <View style={_styles.ball_container}>
       {
-        groupData?.plays?.map((item) => renderEBall(item) )
+        groupData?.plays?.map((item) => renderEBall(item))
       }
     </View>
   </View>
@@ -233,7 +209,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <ScrollView style={CommStyles.flex}
-                                       showsVerticalScrollIndicator={false}>
+                                          showsVerticalScrollIndicator={false}>
     {arrayLength(ballData) > 0 && renderTM(ballData[0])}
     {arrayLength(ballData) > 1 && renderLM(ballData[1])}
     {arrayLength(ballData) > 2 && renderSB(ballData[2])}
@@ -266,30 +242,6 @@ const _styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     padding: scale(4),
-  },
-  ball_item_tm: {
-    width: LCF.ball_container_width,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: scale(8),
-    marginVertical: scale(2),
-    borderBottomRightRadius: scale(32),
-    borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(16),
-    borderBottomLeftRadius: scale(16),
-  },
-  ball_item_lm: {
-    width: LCF.react_container_width,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: scale(16),
-    borderBottomRightRadius: scale(32),
-    borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(16),
-    borderBottomLeftRadius: scale(16),
-    borderColor: UGColor.LineColor4,
-    borderWidth: scale(0.5),
   },
   ball_odds: {
     width: scale(76),

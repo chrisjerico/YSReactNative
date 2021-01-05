@@ -11,6 +11,7 @@ import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LCF from '../../config/LCF'
 import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import LotteryERect from '../../widget/LotteryERect'
 
 interface IRouteParams {
 }
@@ -39,21 +40,9 @@ const LhcLMComponent = ({}: IRouteParams) => {
    * 绘制 方格式
    * @param item
    */
-  const renderERect = (item?: PlayData) => <TouchableOpacity key={item?.name}
-                                                             onPress={() => addOrRemoveBall(item?.name)}>
-    <View style={[
-      _styles.ball_item_lm,
-      {
-        backgroundColor:
-          selectedBalls?.includes(item?.name) ? LCF.pressedColor : null,
-      },
-    ]}>
-      <ERect title={item?.name}
-             titleStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}
-             odds={item?.odds}
-             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LCF.pressedTextColor : LCF.unpressedTextColor }}/>
-    </View>
-  </TouchableOpacity>
+  const renderERect = (item?: PlayData) => <LotteryERect item={item}
+                                                         selectedBalls={selectedBalls}
+                                                         callback={() => addOrRemoveBall(item?.name)}/>
 
   /**
    * 绘制全部的球
@@ -107,19 +96,6 @@ const _styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: scale(4),
     flex: 1,
-  },
-  ball_item_lm: {
-    width: scale(196),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: scale(16),
-    borderBottomRightRadius: scale(32),
-    borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(16),
-    borderBottomLeftRadius: scale(16),
-    borderColor: UGColor.LineColor4,
-    borderWidth: scale(0.5),
   },
 
 })

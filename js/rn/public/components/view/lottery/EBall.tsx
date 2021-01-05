@@ -12,7 +12,7 @@ interface IEBall {
 }
 
 /**
- * 元素球球
+ * 元素球球，一个球、一个文字
  * @constructor
  */
 const EBall = ({
@@ -45,3 +45,4 @@ const _styles = StyleSheet.create({
 })
 
 export default EBall
+export {IEBall}
