@@ -57,7 +57,6 @@ const TimeComponent = ({}: IRouteParams) => {
 const _styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    flex: 1,
     alignItems: 'center',
   },
   issue_text: {

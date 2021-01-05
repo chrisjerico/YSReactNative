@@ -75,10 +75,14 @@ const LhcTMComponent = ({}: IRouteParams) => {
    */
   const renderTabItem = (tab?: number) => <View style={[
     _styles.tab_item,
-    tabIndex == tab ? { backgroundColor: UGColor.LineColor1 } : null,
+    tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}aa` } : null,
   ]}>
-    <TouchableOpacity onPress={() => setTabIndex(tab)}>
-      <Text style={_styles.tab_title}>{
+    <TouchableOpacity onPress={() => setTabIndex(tab)}
+                      style={_styles.tab_title_tb}>
+      <Text style={[
+        _styles.tab_title,
+        tabIndex == tab ? { color: 'white' } : null,
+      ]}>{
         tab == TAB_A ?
           (dataTMA && dataTMA[0].alias) :
           (dataTMB && dataTMB[0].alias)
@@ -87,7 +91,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
   </View>
 
   /**
-   * 绘制 特码A 特码B Tab
+   * 绘制 特码A 特码B 容器
    */
   const renderTab = () => <View style={_styles.tab_container}>
     {renderTabItem(TAB_B)}
@@ -130,7 +134,8 @@ const LhcTMComponent = ({}: IRouteParams) => {
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         ballData?.map((groupData) => {
-          return <View style={CommStyles.flex}>
+          return <View key={groupData?.id}
+                       style={CommStyles.flex}>
 
             <View style={_styles.sub_title_container}>
               <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
@@ -204,10 +209,14 @@ const _styles = StyleSheet.create({
     fontSize: scale(18),
     paddingHorizontal: scale(1),
   },
+  tab_title_tb: {
+    width: '100%',
+    alignItems: 'center',
+  },
   tab_title: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
-    padding: scale(8),
+    padding: scale(6),
   },
   tab_item: {
     flex: 1,
