@@ -46,7 +46,10 @@ export const JDPromotionInfoCopyCP = (props: JDPromotionInfoCopyCP) => {
             onValueChange={
               (v) => {
                 setSwicthValue(v)
-                props.onValueChange(v)
+                if ( props.onValueChange) {
+                  props.onValueChange(v)
+                }
+               
               }
             }
           />
@@ -58,7 +61,7 @@ export const JDPromotionInfoCopyCP = (props: JDPromotionInfoCopyCP) => {
     </View>
  {/* 👇图片界面 */}
    {swicthValue && <View  style={{ height: 200, alignItems: 'center', justifyContent: 'center', width: '100%' ,}}>
-      <Image style={[{ height: 200, width: 200, }]} source={{ uri: props.imgUrl}} />
+      <Image style={[{ height: 190, width: 190, }]} source={{ uri: props.imgUrl}} />
 
     </View>}
     <View style={{ height: 8, }}></View>

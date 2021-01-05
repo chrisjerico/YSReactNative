@@ -1,5 +1,6 @@
 import { CCSessionReq, SampleAPI } from './../CCSessionModel';
 import { UGAgentApplyInfo } from "../../../../redux/model/全局/UGSysConfModel";
+import UGinviteInfoModel from '../../../../redux/model/全局/UGinviteInfoModel';
 
 
 export class api_team {
@@ -12,7 +13,7 @@ export class api_team {
 
   // 推荐信息
   static inviteInfo() {
-    return this.c.get('inviteInfo');
+    return this.c.get<UGinviteInfoModel>('inviteInfo');
   }
 
   // 下线信息
