@@ -27,6 +27,8 @@ import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import TimeComponent from './tm/TimeComponent'
+import LotteryConst from './const/LotteryConst'
+import LhcLMComponent from './lhc/lm/LhcLMComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -99,7 +101,8 @@ const BetLotteryPage = ({ navigation, route }) => {
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         playOddDetailData?.playOdds?.map((item, index) => {
-          return <TouchableOpacity onPress={() => setLeftColumnIndex(index)}>
+          return <TouchableOpacity key={item?.code}
+                                   onPress={() => setLeftColumnIndex(index)}>
             <View style={[
               {
                 width: scale(140),
@@ -129,9 +132,13 @@ const BetLotteryPage = ({ navigation, route }) => {
    */
   const renderRightContent = () => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
-    switch (leftColumnIndex) {
-      case 0: {
-        return <LhcTMComponent key={leftColumnIndex}/>
+    let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
+    switch (lotteryCode) {
+      case LotteryConst.TM: {
+        return <LhcTMComponent key={lotteryCode}/>
+      }
+      case LotteryConst.LM: {
+        return <LhcLMComponent key={lotteryCode}/>
       }
 
     }

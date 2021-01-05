@@ -63,10 +63,6 @@ const LhcTMComponent = ({}: IRouteParams) => {
     addOrRemoveBall,
   } = UseLhcTM()
 
-  useEffect(() => {
-    // ugLog('playOddData=', playOddData)
-  }, [])
-
   //当前的数据是 特码A 还是 特码B
   const ballData = tabIndex == TAB_A ? dataTMA : dataTMB
 
@@ -144,7 +140,8 @@ const LhcTMComponent = ({}: IRouteParams) => {
             <View style={_styles.ball_container}>
               {
                 groupData?.plays?.map((item) =>
-                  <TouchableOpacity onPress={() => addOrRemoveBall(item?.name)}>
+                  <TouchableOpacity key={item?.name}
+                                    onPress={() => addOrRemoveBall(item?.name)}>
                     <View style={[
                       _styles.ball_item,
                       {
@@ -155,7 +152,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
                       <LotteryBall type={BallStyles.lhc}
                                    ballNumber={item?.name}/>
                       <Text numberOfLines={1}
-                            style={_styles.ball_odds}>{item.odds}</Text>
+                            style={_styles.ball_odds}>{item?.odds}</Text>
                     </View>
                   </TouchableOpacity>)
               }
@@ -198,7 +195,6 @@ const _styles = StyleSheet.create({
   ball_item: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: scale(2),
     paddingVertical: scale(8),
     marginVertical: scale(2),
     borderRadius: scale(10),
