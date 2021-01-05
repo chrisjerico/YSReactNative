@@ -40,6 +40,7 @@ export interface AllAccountListData {
 }
 
 export interface BankInfoParam {
+  parentTypeName?: string// 本地使用，父类名字，比如 银行卡
   id?: string //
   uid?: string //
   type?: string //
@@ -55,4 +56,6 @@ export interface BankInfoParam {
   bankName?: string //
   bankCode?: string //
   bankBackgroundImage?: string //
+
+  notBind?: boolean //本地使用，未绑定数据
 }

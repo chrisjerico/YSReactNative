@@ -169,9 +169,13 @@ export default class UGSysConfModel {
   homeTypeSelect?: string // 是否开启前台分类
   chatRoomName?: string // 聊天室名称
   chatMinFollowAmount?: string // 聊天室跟注最小金额*/
-  easyRememberDomain?: string // 黑色模板易记的网址*/
+  easyRememberDomain?: string // 易记域名*/
   chatLink?: string // 聊天的链接*/
   mBonsSwitch?: boolean // 俸禄开关开启。0 为开启， 1 为 关闭
+
+  switchCoinPwdSms?: string // 资金密码开启短信验证
+  switchCoinPwd?: string // 是否打开忘记密码
+  coinPwdAuditOptionAry?: Array<string> //忘记密码有哪些选项 mobile, bank, id
 
   // 注册页
   hide_reco?: number // 代理人 0不填，1选填，2必填
@@ -194,6 +198,7 @@ export default class UGSysConfModel {
   allowMemberCancelBet?: boolean // 是否允许会员撤单，1允许 0不允许
   m_promote_pos?: boolean // 优惠活动显示在首页还是内页，1首页，0内页
   yuebaoSwitch?: boolean // 未登录时是否允许访问利息宝
+  yuebaoName?: string // 利息宝名字
   chatFollowSwitch?: boolean // 是否允许聊天室跟注
   switchBindVerify?: number // 新增提款账号時，校验取款密码
   switchAgentRecharge?: boolean // 给下级会员充值开关

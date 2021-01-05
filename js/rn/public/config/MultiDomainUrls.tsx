@@ -175,11 +175,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://papghawshugposwaughwsoohu.com',
   ],
   'c085': [
-    'https://www.ysap01ntd.cc',
-    'https://www.ysay02psi.cc',
-    'https://www.ysap03xyw.cc',
-    'https://www.ysay04upx.cc',
-    'https://www.ysay05432.xyz',
+    'https://abaidu.ya1237888.cc',
+    'https://brer.ya1237888.cc',
+    'https://cgd.ya1237888.cc',
+    'https://dygf.ya1237888.cc',
+    'https://eyfhppdj.ya1237888.cc',
   ],
   'c085yw': [
     'https://x558.cc',
@@ -347,6 +347,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://appxpj2.org',
     'https://appxpj213.co',
     'https://appxpj213.com',
+    'https://450-c213-app.cc',
+    'https://450-c213-app.co',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -405,7 +407,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://hg88991.com',
   ],
   'c259': [
-    'https://663638.com',
+    'https://660598.com',
+    'https://738868.com',
+    'https://667568.com'
   ],
   'l001': [
     'https://4988wap.com',

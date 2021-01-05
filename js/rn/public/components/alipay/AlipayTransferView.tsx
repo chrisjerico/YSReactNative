@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, SafeAreaView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import AppDefine from '../../define/AppDefine'
 import LinearGradient from 'react-native-linear-gradient'
 import { Skin1 } from '../../theme/UGSkinManagers'

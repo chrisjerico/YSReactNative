@@ -64,7 +64,7 @@ const WNZMinePage = () => {
       UGUserCenterType.存款,
       UGUserCenterType.取款,
       UGUserCenterType.存款纪录,
-      UGUserCenterType.取款纪录
+      UGUserCenterType.取款纪录,
     ].includes(ele?.code)
   )
 
@@ -85,7 +85,6 @@ const WNZMinePage = () => {
     [
       UGUserCenterType.开奖网,
       UGUserCenterType.其他注单记录,
-      UGUserCenterType.活动彩金,
       UGUserCenterType.彩票注单记录,
       UGUserCenterType.长龙助手,
       UGUserCenterType.真人注单,
@@ -93,14 +92,11 @@ const WNZMinePage = () => {
       UGUserCenterType.电竞注单,
       UGUserCenterType.棋牌注单,
       UGUserCenterType.体育注单,
+      UGUserCenterType.捕鱼注单,
     ].includes(ele?.code)
   )
 
-  const activityTools = otherTools?.filter((ele) => [
-    UGUserCenterType.任务中心,
-    UGUserCenterType.优惠活动,
-    UGUserCenterType.推荐收益
-  ].includes(ele?.code))
+  const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.优惠活动, UGUserCenterType.推荐收益, UGUserCenterType.活动彩金].includes(ele?.code))
   // @ts-ignore
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
@@ -200,14 +196,6 @@ const WNZMinePage = () => {
                             },
                           },
                         ])
-                      } else if (code == UGUserCenterType.个人信息) {
-                        navigate(PageName.UserInfoPage)
-                      } else if (code == UGUserCenterType.站内信) {
-                        navigate(PageName.UserMessagePage)
-                      } else if (code == UGUserCenterType.安全中心) {
-                        navigate(PageName.SafeCenterPage)
-                      } else if (code == UGUserCenterType.活动彩金) {
-                        navigate(PageName.ActivityRewardPage)
                       } else {
                         if (__DEV__) {
                           if (code == UGUserCenterType.个人信息) {
@@ -220,8 +208,8 @@ const WNZMinePage = () => {
                             push(PageName.ActivityRewardPage)
                           } else if (code == UGUserCenterType.彩票注单记录) {
                             push(PageName.LotteryHistoryPage)
-                          } else if (code == UGUserCenterType.推荐收益) {
-                            push(PageName.IncomeRecommendPage)
+                          } else if (code == UGUserCenterType.任务中心) {
+                            push(PageName.TaskCenterPage)
                           } else {
                             PushHelper.pushUserCenterType(code)
                           }

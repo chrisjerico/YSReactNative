@@ -4,7 +4,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
-import { navigate, popToRoot } from '../../navigation/RootNavigation'
+import { push, popToRoot } from '../../navigation/RootNavigation'
 import { validPassword } from '../../tools/tars'
 import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
@@ -12,6 +12,7 @@ import useSignOut from './useSignOut'
 import useSignUp from './useSignUp'
 import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
+import SlideCodeModel from '../../../redux/model/other/SlideCodeModel'
 
 interface UseRegisterPage {
   homePage?: PageName
@@ -47,11 +48,11 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
   const inviteCodeRef = useRef<string>()
 
   const navigateToHomePage = useCallback(() => {
-    homePage && navigate(homePage, {})
+    homePage && push(homePage, {})
   }, [])
 
   const navigateToSignInPage = useCallback(() => {
-    signInPage && navigate(signInPage, {})
+    signInPage && push(signInPage, {})
   }, [])
 
   const { tryPlay } = useMemo(
@@ -68,10 +69,10 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
           showError(error ?? '登录失败')
         },
       }),
-    []
+    [],
   )
 
-  const { signUp } = useSignUp({
+  const { signUp, userSingUp } = useSignUp({
     onStart: () => {
       showLoading('正在注册...')
     },
@@ -119,7 +120,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
           showError(error ?? '退出失败')
         },
       }),
-    []
+    [],
   )
 
   // stores
@@ -282,8 +283,51 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     }
   }
 
+  const _userSingUp = () => {
+    if (valid) {
+      const params = {
+        inviter: recommendGuy || '', // 推荐人ID
+        inviteCode: inviteCodeRef.current || '',
+        usr: account, // 账号
+        pwd: password?.md5(), // 密码
+        fundPwd: fundPassword?.md5(), // 取款密码
+        fullName: name || '', // 真实姓名
+        qq: qq || '', // QQ号
+        wx: weChat || '',  // 微信号
+        phone: phoneNumber || '', // 手机号
+        smsCode: sms ?? '', // 短信验证码
+        imgCode: '', // 字母验证码
+        slideCode: {
+          nc_csessionid: slideCode?.nc_csessionid,
+          nc_token: slideCode?.nc_token,
+          nc_sig: slideCode?.nc_sig,
+          nc_value: slideCode?.nc_value,
+        }, // 滑动验证码
+        email: email || '',
+        regType: agentRef.current || AgentType.用户注册, // 用户注册 或 代理注册
+      }
+
+      userSingUp(params as {
+        inviter: string; // 推荐人ID
+        usr: string; // 账号
+        pwd: string; // 密码
+        fundPwd: string; // 取款密码
+        fullName: string; // 真实姓名
+        qq: string; // QQ号
+        wx: string; // 微信号
+        phone: string; // 手机号
+        smsCode: string; // 短信验证码
+        imgCode: string; // 字母验证码
+        slideCode: SlideCodeModel; // 滑动验证码
+        email: string; // 邮箱
+        regType: 'user' | 'agent'; // 用户注册 或 代理注册
+      })
+    } else {
+      showError(getValidErrorMessage() || '')
+    }
+  }
+
   const _signUp = () => {
-    // if (allowReg) {
     if (valid) {
       const params = {
         inviter: recommendGuy, // 推荐人ID
@@ -307,9 +351,6 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     } else {
       showError(getValidErrorMessage() || '')
     }
-    // } else {
-    //   Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])
-    // }
   }
 
   const value = {
@@ -337,6 +378,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     passwordLimit,
     sign: {
       signUp: _signUp,
+      userSingUp: _userSingUp,
       tryPlay,
       signOut,
     },

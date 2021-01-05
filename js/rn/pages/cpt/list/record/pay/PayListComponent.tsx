@@ -1,11 +1,10 @@
-import { Alert, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
+import { useContext } from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { scale } from '../../../../../public/tools/Scale'
-import { ugLog } from '../../../../../public/tools/UgLog'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import EmptyView from '../../../../../public/components/view/empty/EmptyView'
-import { DepositListData } from '../../../../../public/network/Model/wd/DepositRecordModel'
 import CommStyles from '../../../../base/CommStyles'
 import UsePayList from './UsePayList'
 import { PayAisleListData } from '../../../../../public/network/Model/wd/PayAisleModel'
@@ -15,8 +14,7 @@ import WebView from 'react-native-webview'
 import { push } from '../../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../../public/navigation/Navigation'
 import CapitalContext from '../../CapitalContext'
-import { useContext, useEffect } from 'react'
-import { CapitalConst } from '../../../const/CapitalConst'
+import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
@@ -29,7 +27,6 @@ interface IRouteParams {
  */
 const PayListComponent = ({ navigation, route }) => {
 
-  // const { refreshTabPage }: IRouteParams = route?.params
   const { refreshTabPage } = useContext(CapitalContext)
 
   const {
@@ -37,6 +34,13 @@ const PayListComponent = ({ navigation, route }) => {
     payData,
     requestPayData,
   } = UsePayList()
+
+  /**
+   * 跳转虚拟币教程
+   */
+  const gotoBtcTutorial = (item: PayAisleListData) => {
+    push(PageName.BtcTutorialPage, {btc_type: item?.id})
+  }
 
   /**
    * 绘制条目内容
@@ -73,7 +77,7 @@ const PayListComponent = ({ navigation, route }) => {
               refreshTabPage: refreshTabPage,
 
             })
-            break;
+            break
           case 'bank_transfer'://"银行卡转账"
           case 'alipay_transfer'://"支付宝转账"
           case 'yxsm_transfer'://"易信扫码支付"
@@ -97,13 +101,13 @@ const PayListComponent = ({ navigation, route }) => {
               payData: item,
               refreshTabPage: refreshTabPage,
             })
-            break;
+            break
           case 'xnb_transfer'://虚拟币充值
             push(PageName.BtcPayPage, {
               payData: item,
               refreshTabPage: refreshTabPage,
             })
-            break;
+            break
         }
       }}>
         <View style={_styles.item_container}>
@@ -111,7 +115,17 @@ const PayListComponent = ({ navigation, route }) => {
                      resizeMode={'contain'}
                      style={_styles.pay_icon}/>
           <View style={_styles.text_item_container}>
-            <Text style={_styles.text_title_0}>{item.name}</Text>
+            <View style={_styles.text_title_container}>
+              <Text style={_styles.text_title_0}>{item.name}</Text>
+              <View style={CommStyles.flex}/>
+              {
+                (item?.id == 'xnb_transfer' || item?.id == 'xnb_online') &&
+                <TouchableOpacity onPress={() => gotoBtcTutorial(item)}>
+                  <Text style={[_styles.text_title_1,
+                    { borderColor: Skin1.themeColor, color: Skin1.themeColor }]}>充值教程</Text>
+                </TouchableOpacity>
+              }
+            </View>
             <WebView
               textZoom={scale(380)}
               javaScriptEnabled
@@ -159,9 +173,21 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: scale(16),
   },
+  text_title_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   text_title_0: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
+  },
+  text_title_1: {
+    color: UGColor.TextColor2,
+    fontSize: scale(22),
+    borderColor: UGColor.LineColor4,
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    paddingHorizontal: scale(2),
   },
   text_content_0: {
     paddingTop: scale(4),
@@ -176,7 +202,7 @@ const _styles = StyleSheet.create({
 
 /**
  * 本地支付通道图标，应该使用id类似 xnb_online 来判断
- * code 判断难阅读
+ * code 判断难阅读，原来这样用，将就使用
  */
 const PayIcon = {
   '2': Res.bank_online,
@@ -214,9 +240,5 @@ const PayIcon = {
   '39': Res.btc_deposit_icon,
   '41': Res.aliyin2,
 }
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default PayListComponent

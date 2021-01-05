@@ -11,15 +11,14 @@ export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getDat
   const [money, setMoney] = useState<any>()
   const [fundPwd, setFundPwd] = useState<string>()
   const [showModal, setShowModal] = useState(false)
-  const [error, setError] = useState()
   const transferOut = () => {
     api.yuebao.transfer(money, 'out', md5(fundPwd)).promise.then(async ({ data }) => {
-      await setShowModal(false)
-      pop()
-      data && Alert.alert('转出成功')
+      data && Alert.alert('转出成功', '', [{ text: '确认', onPress: async () => {
+          await setShowModal(false)
+          pop()
+        } }])
       getData()
-    }).catch( (error) => {
-      Alert.alert('转出失败')
+    }).catch((error) => {
       setShowModal(false)
     })
   }
@@ -59,7 +58,7 @@ export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getDat
         </View>
       </View>
       <TouchableWithoutFeedback onPress={() => {
-        money ? setShowModal(true) : Alert.alert("请输入取款金额")
+        money ? setShowModal(true) : Alert.alert('请输入取款金额')
       }}>
         <View style={{
           backgroundColor: Skin1.themeColor,
@@ -102,7 +101,7 @@ export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getDat
             secureTextEntry={true}
             style={{ borderWidth: 0.5, borderColor: '#000', marginTop: 20, width: 200, height: 30, fontSize: 18 }}
             onChangeText={(text) => setFundPwd(text)} />
-          <View style={{ flexDirection: 'row', marginTop: 32}}>
+          <View style={{ flexDirection: 'row', marginTop: 32 }}>
             <TouchableWithoutFeedback onPress={() => setShowModal(false)}>
               <View style={{
                 borderColor: '#111',

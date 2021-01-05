@@ -223,7 +223,8 @@ const ManageBankListPage = ({ navigation, setProps }) => {
                 )
               }
             </ScrollableTabView>,
-          <NeedNameInputComponent ref={needNameInputRef} onSubmitFullName={onSubmitFullName}/>,
+          <NeedNameInputComponent ref={needNameInputRef}
+                                  onSubmitFullName={onSubmitFullName}/>,
         ]
       }
     </BaseScreen>
@@ -284,9 +285,5 @@ const _styles = StyleSheet.create({
     padding: scale(8),
   },
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default ManageBankListPage

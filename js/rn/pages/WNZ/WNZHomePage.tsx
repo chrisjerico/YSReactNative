@@ -27,6 +27,7 @@ import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { ugLog } from '../../public/tools/UgLog'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -197,6 +198,7 @@ const WNZHomePage = () => {
                   logo={icon || logo}
                   title={name}
                   containerStyle={{
+                    padding: 5,
                     width: '20%',
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
@@ -209,6 +211,7 @@ const WNZHomePage = () => {
                     color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
                     fontSize: scale(20),
                   }}
+                  circleContainerStyle = {{ width: '85%'}}
                   circleColor={'transparent'}
                   onPress={() => {
                     if (AppDefine.siteId == 'c245') {

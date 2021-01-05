@@ -52,6 +52,7 @@ const UseManageBankList = () => {
     setRefreshing(true)
     APIRouter.user_bankCardList().then(({ data: res }) => {
       let actData = res?.data
+      //ugLog('requestManageBankData=', JSON.stringify(actData))
       if(anyEmpty(actData?.allAccountList)) return
 
       actData?.allAccountList?.map((item) => {
@@ -142,7 +143,7 @@ const UseManageBankList = () => {
  * 得到图标
  * @param type
  */
-const getBankIcon = (type?: string): {} => {
+const getBankIcon = (type?: string): IBankIcon => {
   switch (type) {
     case BankConst.BANK:
       return { uri: Res.bankhl1 }
@@ -155,6 +156,10 @@ const getBankIcon = (type?: string): {} => {
     default:
       return null
   }
+}
+
+interface IBankIcon {
+  uri?: string
 }
 
 export default UseManageBankList

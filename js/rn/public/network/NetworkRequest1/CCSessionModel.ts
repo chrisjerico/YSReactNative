@@ -8,6 +8,7 @@ import { CMD } from "../../define/ANHelper/hp/CmdDefine";
 import { string } from 'prop-types';
 import { showError } from '../../widget/UGLoadingCP';
 import { CheckError } from './NetworkRequest1';
+import { ugLog } from '../../tools/UgLog'
 
 
 // 返回结果类型
@@ -108,7 +109,9 @@ export class CCSessionReq {
         for (const k in files) {
           const uri = files[k];
           const name = uri.substring(uri.lastIndexOf('/') + 1);
-          const blob: any & Blob = { uri: uri, type: 'multipart/form-data', name: name };
+          const blob: any & Blob = { uri: Platform.OS == 'ios' ? uri : `file://${uri}`,
+            type: 'multipart/form-data',
+            name: name };
           formData.append(k, blob);
         }
         for (const k in params) {

@@ -210,7 +210,7 @@ const HallGameListComponent = ({
 /**
  * 球的样式
  */
-const BallStyles = {
+export const BallStyles = {
   'lhc': BallType.round, //六合彩
   'qxc': BallType.pure, //"七星彩系列"
   'cqssc': BallType.pure, //"时时彩系列"
@@ -302,9 +302,5 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default HallGameListComponent

@@ -100,9 +100,10 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               setProps({ progress: 1, text: '更新出错...' })
 
               // 更新出错时无限重试
-              Platform.OS == 'ios' && setTimeout(() => {
-                CodePushSync(options)
-              }, 1000);
+              Platform.OS == 'ios' &&
+                setTimeout(() => {
+                  CodePushSync(options)
+                }, 1000)
               break
             case CodePush.SyncStatus.UPDATE_INSTALLED:
               console.log('rn热更新安装成功，正在重启RN')
@@ -156,7 +157,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         })
       })
     } else {
-      CodePushSync({ installMode: CodePush.InstallMode.IMMEDIATE, })
+      CodePushSync({ installMode: CodePush.InstallMode.IMMEDIATE })
     }
 
     switch (Platform.OS) {
@@ -219,7 +220,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     //设置一个计数器给用户倒计时
     const interval = setInterval(() => {
       // ugLog('counter=', counter)
-      setProps({ counter: counter + 1 })
+      counter <= MAX_TIME && setProps({ counter: counter + 1 })
     }, 1000)
     return () => {
       // ugLog('clear interval')
@@ -239,14 +240,15 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 配置替换rn的页面
         await setRnPageInfo(true)
         // 通知iOS显示上一个RN页面
-        willLaunch && await OCHelper.call('ReactNativeVC.showLastRnPage')
+        willLaunch && (await OCHelper.call('ReactNativeVC.showLastRnPage'))
         // RN初始化完毕
         await OCHelper.call('ReactNativeHelper.launchFinish')
         // RN版本更新完毕，进入首页
-        willLaunch && setTimeout(() => {
-          OCHelper.launchFinish()
-          OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['kRnVersionUpdateFinish'])
-        }, 500)
+        willLaunch &&
+          setTimeout(() => {
+            OCHelper.launchFinish()
+            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['kRnVersionUpdateFinish'])
+          }, 500)
         break
       case 'android':
         await UGSkinManagers.updateSkin(sysConf)

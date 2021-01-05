@@ -13,7 +13,8 @@ import { Toast } from '../../../public/tools/ToastUtils';
 import { showSuccess } from '../../../public/widget/UGLoadingCP';
 import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
 import { UGBasePageProps } from '../../base/UGPage';
-import { JDAgentInput } from './JDAgentInput';
+import { JDAgentInput } from '../cp/JDAgentInput';
+
 interface JDAgentPage {
 
 }

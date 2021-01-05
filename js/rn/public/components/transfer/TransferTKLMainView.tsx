@@ -94,6 +94,7 @@ export const TransferTKLMainView = () => {
     api.real.autoTransferOut().useSuccess((data) => {
       Alert.alert(data.msg)
       UGUserModel.updateFromNetwork()
+      getData()
     })
   }
 
@@ -113,7 +114,11 @@ export const TransferTKLMainView = () => {
     <View style={{ flex: 1 }}>
       <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
         <Header pressRecord={() => push(PageName.TransferRecordView)} />
-        <TabBar data={data} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TabBar data={data} activeTab={activeTab} setActiveTab={(item) => {
+          setActiveTab(item)
+          setTransIn(undefined)
+          setTransOut(undefined)
+        }} />
         <View style={{ paddingHorizontal: 12, paddingTop: 16, flexDirection: 'row', zIndex: 2 }}>
           <TransferPicker
             key={1}
@@ -278,12 +283,6 @@ const TabBar = ({ activeTab, setActiveTab, data }) => {
 
 const Header = ({ pressRecord, setProps }: { pressRecord: () => {}, setProps: () => void }) => {
   const [show, setShow] = useState(false)
-  useEffect(() => {
-    AppDefine.checkHeaderShowBackButton((show) => {
-      show && setShow(show)
-      setProps()
-    })
-  }, [])
   return (
     <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
       <SafeAreaView style={{
@@ -296,9 +295,9 @@ const Header = ({ pressRecord, setProps }: { pressRecord: () => {}, setProps: ()
           alignSelf: 'center',
           justifyContent: 'center',
         }}>
-          {show && <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
-            <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
-          </TouchableOpacity>}
+          <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
+            <Icon size={22} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
+          </TouchableOpacity>
           <Text style={{
             alignSelf: 'center',
             paddingTop: 15,
@@ -341,7 +340,6 @@ const AccListView = ({ data, updateWallet, setUpdateWallet }: { data: any[], upd
         data={data}
         renderItem={({ item }) => {
           const wallet = updateWallet.find((wallet) => wallet.id === item.id)
-          wallet && console.log('wallet', wallet)
           return (
             <AccItem item={item} updateBalance={wallet && wallet.balance} setUpdateWallet={setUpdateWallet} />
           )

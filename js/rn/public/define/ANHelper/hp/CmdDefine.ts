@@ -43,6 +43,7 @@ export enum CMD {
   ASK_MINE_ITEMS = 'ASK_MINE_ITEMS', //个人信息item
   ASK_FOR_TOKEN = 'ASK_FOR_TOKEN', //得到 token
   ASK_FOR_TOKEN_AND_RSA = 'ASK_FOR_TOKEN_AND_RSA', //得到 token和rsa
+  ASK_IMAGES = 'ASK_IMAGES', //得到 图片
   ACCESS_TOKEN = 'ACCESS_TOKEN', //得到 access token
   SAVE_DATA = 'SAVE_DATA', //存储数据
   LOAD_DATA = 'LOAD_DATA', //加载数据

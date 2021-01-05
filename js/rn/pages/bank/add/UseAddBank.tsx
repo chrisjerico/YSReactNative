@@ -76,7 +76,6 @@ const UseAddBank = () => {
       } else {
         Toast(res?.msg)
       }
-    }).finally(() => {
     })
   }
 
