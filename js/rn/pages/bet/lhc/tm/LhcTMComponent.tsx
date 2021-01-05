@@ -36,6 +36,7 @@ import BetLotteryContext from '../../BetLotteryContext'
 import EBall from '../../../../public/components/view/lottery/EBall'
 import { arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
+import LotteryConfig from '../../config/LotteryConfig'
 
 interface IRouteParams {
 }
@@ -132,6 +133,48 @@ const LhcTMComponent = ({}: IRouteParams) => {
   </View>
 
   /**
+   * 绘制 方格式
+   * @param item
+   */
+  const renderERect = (item?: PlayData) => <TouchableOpacity key={item?.name}
+                                                            onPress={() => addOrRemoveBall(item?.name)}>
+    <View style={[
+      _styles.ball_item_lm,
+      {
+        backgroundColor:
+          selectedBalls?.includes(item?.name) ? LotteryConfig.pressedColor : null,
+      },
+    ]}>
+      <ERect title={item?.name}
+             titleStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}
+             odds={item?.odds}
+             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}/>
+    </View>
+  </TouchableOpacity>
+
+  /**
+   * 绘制 球
+   * @param item
+   */
+  const renderEBall = (item?: PlayData) => <TouchableOpacity key={item?.name}
+                                                             onPress={() => addOrRemoveBall(item?.name)}>
+    <View style={[
+      _styles.ball_item_tm,
+      {
+        backgroundColor:
+          selectedBalls?.includes(item?.name) ? LotteryConfig.pressedColor : null,
+      },
+    ]}>
+      <EBall ballType={{
+        type: BallStyles.lhc,
+        ballNumber: item?.name,
+      }}
+             oddsStyle={{ color: selectedBalls?.includes(item?.name) ? LotteryConfig.pressedTextColor : LotteryConfig.unpressedTextColor }}
+             odds={item?.odds}/>
+    </View>
+  </TouchableOpacity>
+
+  /**
    * 绘制 特码B/A
    * @param groupData
    */
@@ -144,42 +187,10 @@ const LhcTMComponent = ({}: IRouteParams) => {
 
     <View style={_styles.ball_container}>
       {
-        groupData?.plays?.map((item) =>
-          <TouchableOpacity key={item?.name}
-                            onPress={() => addOrRemoveBall(item?.name)}>
-            <View style={[
-              _styles.ball_item_tm,
-              {
-                backgroundColor:
-                  selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}66` : null,
-              },
-            ]}>
-              <EBall ballType={{
-                type: BallStyles.lhc,
-                ballNumber: item?.name,
-              }}
-                     odds={item?.odds}/>
-            </View>
-          </TouchableOpacity>)
+        groupData?.plays?.map((item) => renderEBall(item) )
       }
     </View>
   </View>
-
-  const renderRect = (item?: PlayData) => <TouchableOpacity key={item?.name}
-                                                            onPress={() => addOrRemoveBall(item?.name)}>
-    <View style={[
-      _styles.ball_item_lm,
-      {
-        backgroundColor:
-          selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}aa` : null,
-      },
-    ]}>
-      <ERect title={item?.name}
-             titleStyle={selectedBalls?.includes(item?.name) ? { color: `white` } : null}
-             odds={item?.odds}
-             oddsStyle={selectedBalls?.includes(item?.name) ? { color: UGColor.TextColor8 } : null}/>
-    </View>
-  </TouchableOpacity>
 
 
   /**
@@ -195,7 +206,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
 
     <View style={_styles.ball_container}>
       {
-        groupData?.plays?.map((item) => renderRect(item))
+        groupData?.plays?.map((item) => renderERect(item))
       }
     </View>
   </View>
@@ -213,7 +224,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
 
     <View style={_styles.ball_container}>
       {
-        groupData?.plays?.map((item) => renderRect(item))
+        groupData?.plays?.map((item) => renderERect(item))
       }
     </View>
   </View>
@@ -221,7 +232,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderBall = () => <ScrollView style={CommStyles.flex}
+  const renderAllBall = () => <ScrollView style={CommStyles.flex}
                                        showsVerticalScrollIndicator={false}>
     {arrayLength(ballData) > 0 && renderTM(ballData[0])}
     {arrayLength(ballData) > 1 && renderLM(ballData[1])}
@@ -232,7 +243,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
     <View style={CommStyles.flex}>
       {renderTab()}
       {renderZodiac()}
-      {renderBall()}
+      {renderAllBall()}
     </View>
 
   )
@@ -257,6 +268,7 @@ const _styles = StyleSheet.create({
     padding: scale(4),
   },
   ball_item_tm: {
+    width: LotteryConfig.ball_container_width,
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: scale(8),
@@ -264,7 +276,7 @@ const _styles = StyleSheet.create({
     borderRadius: scale(10),
   },
   ball_item_lm: {
-    width: scale(196),
+    width: LotteryConfig.react_container_width,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

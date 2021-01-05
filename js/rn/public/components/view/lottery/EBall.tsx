@@ -37,7 +37,6 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
   },
   ball_odds: {
-    width: scale(76),
     color: UGColor.TextColor7,
     fontSize: scale(18),
     paddingHorizontal: scale(1),
