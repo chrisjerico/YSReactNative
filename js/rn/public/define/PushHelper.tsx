@@ -137,6 +137,15 @@ export default class PushHelper {
         if (game?.seriesId == '7' && game?.subId == MenuType.ZHGL) {
           push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
           return
+        } else if (game?.seriesId == '7' && game?.subId == MenuType.CQK) {
+          push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
+          return
+        } else if (game?.seriesId == '7' && game?.subId == MenuType.CZJL) {
+          push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
+          return
+        } else if (game?.seriesId == '7' && game?.subId == MenuType.TXJL) {
+          push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
+          return
         }
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
