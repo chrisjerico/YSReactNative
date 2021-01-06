@@ -48,6 +48,7 @@ import AppDefine from '../define/AppDefine'
 import { NewRateModel } from './Model/wd/NewRateModel'
 import { NextIssueModel } from './Model/lottery/NextIssueModel'
 import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
+import PushHelper from '../define/PushHelper'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -329,7 +330,7 @@ class APIRouter {
         break
       case 'android':
         const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: params,
+          params,
         })
 
         for (let key in pms) {

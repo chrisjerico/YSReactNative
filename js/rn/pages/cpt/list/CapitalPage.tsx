@@ -92,7 +92,7 @@ const CapitalPage = ({ navigation, setProps }) => {
                style={_styles.mine_info_avatar}/>
     <View>
       <Text style={_styles.mine_info_name}>{userInfo?.usr}</Text>
-      <Text style={_styles.mine_info_balance}>{'用户余额: ' + userInfo?.balance}</Text>
+      <Text style={_styles.mine_info_balance}>{userInfo?.balance && `用户余额: ${userInfo?.balance}`}</Text>
       {
         yueBaoData != null &&
         <Text style={_styles.mine_info_balance}>{yueBaoData?.yuebaoName + '余额: ' + yueBaoData?.balance}</Text>
