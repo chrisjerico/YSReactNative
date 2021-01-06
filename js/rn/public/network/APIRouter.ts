@@ -285,7 +285,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<BankDetailListModel>('c=system&a=bankList&' + tokenParams)
+    return httpClient.get<BankDetailListModel>('c=system&a=bankList' + tokenParams)
   }
 
   /**
@@ -342,7 +342,7 @@ class APIRouter {
     // for (let key in params) {
     //   tokenParams += '&' + key + '=' + params[key]
     // }
-    let url = AppDefine?.host + '/wjapp/api.php?c=recharge&a=payUrl&' + tokenParams
+    let url = AppDefine?.host + '/wjapp/api.php?c=recharge&a=payUrl' + tokenParams
 
     // ugLog('pay url=', url)
     Linking.openURL(url)
@@ -458,7 +458,7 @@ class APIRouter {
         break
       case 'android':
         const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: params,
+          params,
         })
 
         for (let key in pms) {
@@ -467,7 +467,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<DepositRecordModel>('c=recharge&a=logs&' + tokenParams)
+    return httpClient.get<DepositRecordModel>('c=recharge&a=logs' + tokenParams)
   }
 
   /**
@@ -531,7 +531,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<WithdrawalRecordModel>('c=withdraw&a=logs&' + tokenParams)
+    return httpClient.get<WithdrawalRecordModel>('c=withdraw&a=logs' + tokenParams)
   }
 
   /**
@@ -556,7 +556,7 @@ class APIRouter {
         break
       case 'android':
         const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: params,
+          params,
         })
 
         for (let key in pms) {
@@ -657,7 +657,7 @@ class APIRouter {
         break
       case 'android':
         const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: params,
+          params,
         })
         for (let key in pms) {
           tokenParams += '&' + key + '=' + pms[key]
@@ -665,7 +665,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<NewRateModel>('c=system&a=currencyRate&' + tokenParams)
+    return httpClient.get<NewRateModel>('c=system&a=currencyRate' + tokenParams)
   }
 
   static system_mobileRight = async () => {
@@ -823,7 +823,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<NextIssueModel>('c=game&a=nextIssue&' + tokenParams)
+    return httpClient.get<NextIssueModel>('c=game&a=nextIssue' + tokenParams)
   }
 
   /**
@@ -851,7 +851,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds&' + tokenParams)
+    return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds' + tokenParams)
   }
 
   /**
