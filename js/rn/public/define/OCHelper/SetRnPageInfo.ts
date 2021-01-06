@@ -54,6 +54,14 @@ export async function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
+    // 推荐信息
+    pages.push({
+      vcName: 'UGPromotionIncomeController',
+      rnName: PageName.JDPromotionIncomePage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
     //红包扫雷
     pages.push({
       vcName: 'RedEnvelopeVCViewController',
