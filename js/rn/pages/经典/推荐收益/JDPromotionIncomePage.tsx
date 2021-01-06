@@ -70,6 +70,7 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
         />
       },
       didFocus: () => {
+        console.log('AppDefine.siteId ========',AppDefine.siteId );
         AppDefine.checkHeaderShowBackButton((show) => {
           setProps({ navbarOpstions: { back: show } });
         })
@@ -135,12 +136,13 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
                 ugLog('tab index=', value?.from, value?.i)
               }}
               // ref={instance => tabController = instance}
-              tabBarUnderlineStyle={[styles.tab_bar_underline,
+              tabBarUnderlineStyle=
+              {[styles.tab_bar_underline,
               { backgroundColor: Skin1.themeColor }]}
-              tabBarActiveTextColor={Skin1.themeColor}
-              tabBarInactiveTextColor={Skin1.textColor1}
+              tabBarActiveTextColor={Skin1.themeColor }
+              tabBarInactiveTextColor={Skin1.textColor2}
               tabBarTextStyle={{ fontSize: scale(20) }}
-              style={[{ flex: 1 }]}
+              style={[{ flex: 1 ,}]}
               renderTabBar={() => <ScrollableTabBar style={styles.tab_bar} />}>
               {
                 v.tabNames?.map((tabItem, index) => {

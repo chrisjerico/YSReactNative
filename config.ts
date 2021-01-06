@@ -6,7 +6,8 @@ export const devConfig = {
     return isTest() // 這邊固定寫isTest()
   }, // 是否是测试环境
 
-  skinKey: '威尼斯',
+  // skinKey: 'GPK版0',
+  skinKey: '经典1',
 }
 
 // 线上环境配置（这几个站点写死经典模板）

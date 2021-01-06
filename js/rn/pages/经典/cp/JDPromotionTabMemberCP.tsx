@@ -270,12 +270,12 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
               {item.level + '级下线'}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6+10, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.username}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6-10, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.is_online == 1 ? '在线' : '离线'}
             </Text>

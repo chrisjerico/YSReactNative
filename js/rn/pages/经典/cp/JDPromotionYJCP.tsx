@@ -24,17 +24,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
     
   }, [])
 
-    /**
-* 界面是否show
-* 
-*/
-function isShow() {
- if (AppDefine.siteId =='c085') {
-   return true;
- } else {
-   return false;
- }
-}
+
 
   /**
 * 点击
@@ -65,7 +55,7 @@ function isShow() {
   }}>
     <Text style={{ fontSize: scale(24), paddingVertical: scale(20), marginLeft: scale(20), color: Skin1.textColor1 }} >{'佣金比例'}</Text>
     {/* 样式1 */}
-   {!isShow && <View style={{ alignItems: 'center', }} >
+   {!(AppDefine.siteId =='c085') && <View style={{ alignItems: 'center', }} >
       <View style={{ flexDirection: 'row', paddingTop: 0, borderColor: Skin1.textColor3, borderRadius: 5, overflow: 'hidden', borderWidth: 1, backgroundColor: Skin1.CLBgColor, height: 260, width: AppDefine.width - 30 }} >
         <View style={{ flexDirection: 'column', backgroundColor: '#C4CBCC', width: 100, height: 260 }} >
           {list?.map((obj, idx) => {
@@ -92,7 +82,7 @@ function isShow() {
       </View>
     </View>}
     {/* 样式2  */}
-    {(isShow) && <View style={{ alignItems: 'center', }} >
+    {AppDefine.siteId =='c085' && <View style={{ alignItems: 'center', }} >
       <View style={{ flexDirection: 'column',width: '100%', }} >
         {list?.map((obj, idx) => {
           return (
