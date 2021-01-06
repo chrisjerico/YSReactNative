@@ -7,6 +7,7 @@ import { scale } from "../../../public/tools/Scale";
 interface JDPromotionInfoText1CP {
   title?:string,
 content?:string,
+textAlign?:string,
 
 }
 
@@ -21,7 +22,7 @@ export const JDPromotionInfoText1CP = (props: JDPromotionInfoText1CP)=> {
    borderBottomWidth:1,
   }}>
     <Text style={{ fontSize: scale(24), paddingVertical: scale(20), marginLeft: scale(20) ,color:Skin1.textColor1}} >{props.title}</Text>
-    <Text style={{ fontSize: scale(24), paddingVertical: scale(20),marginHorizontal: scale(20),flex:1 ,color:Skin1.textColor1,textAlign:'right',}} >{props.content}</Text>
+    <Text style={{ fontSize: scale(24), paddingVertical: scale(20),marginHorizontal: scale(20),flex:1 ,color:Skin1.textColor1,textAlign: props.textAlign?props.textAlign:'right',}} >{props.content}</Text>
   </View>
 
 }
