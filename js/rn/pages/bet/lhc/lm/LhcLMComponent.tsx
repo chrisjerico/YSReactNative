@@ -9,7 +9,6 @@ import UseLhcLM from './UseLhcLM'
 import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
-import LCF from '../../config/LCF'
 import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../widget/LotteryERect'
 

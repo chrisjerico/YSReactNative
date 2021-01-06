@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
@@ -20,16 +20,26 @@ import WithdrawComponent from './record/wt/WithdrawComponent'
 import { push } from '../../../public/navigation/RootNavigation'
 import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
+import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
+import MineHeader from '../../../public/views/tars/MineHeader'
+
+interface IRouteParams {
+  initTabIndex?: string, //选中哪个TAB
+  showBackButton?: string // 1或者不传 为 显示
+}
 
 /**
  * 存款提现
  * @param navigation
  * @constructor
  */
-const CapitalPage = ({ navigation, setProps }) => {
+const CapitalPage = ({ navigation, route }) => {
 
-  const needNameInputRef = useRef(null)
-  const [tabIndex, setTabIndex] = useState<number>(0) //当前是哪个Tab
+  const { initTabIndex, showBackButton }: IRouteParams = route?.params
+  const indexValue = Object.values(CapitalConst).findIndex((item) =>  item == initTabIndex)
+
+  // const needNameInputRef = useRef(null)
+  const [tabIndex, setTabIndex] = useState<number>(indexValue < 0 ? 0 : indexValue) //当前是哪个Tab
   const [refreshCount, setRefreshCount] = useState(0) //更新界面
 
   // let tabController //tab选择器
@@ -42,6 +52,12 @@ const CapitalPage = ({ navigation, setProps }) => {
     yueBaoData,
     requestYueBao,
   } = UseCapital()
+
+  useEffect(()=>{
+    if (showBackButton == '0') {//主页初始化再确认一次
+      setRefreshCount(refreshCount + 1)
+    }
+  }, [showBackButton])
 
   /**
    * 刷新哪个界面
@@ -106,6 +122,7 @@ const CapitalPage = ({ navigation, setProps }) => {
       getYueBaoInfo: () => yueBaoData,
     }}>
       <BaseScreen style={_styles.container}
+                  hideLeft={showBackButton == '0'}
                   screenName={'资金管理'}>
         {
           [
