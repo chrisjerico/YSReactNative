@@ -63,7 +63,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制顶部的标题栏
    */
-  const renderTopBar = () => <View style={[_styles.top_bar_container,
+  const renderTopBar = () => <View key={'renderTopBar'} style={[_styles.top_bar_container,
     { backgroundColor: Skin1.themeColor }]}>
     <TouchableOpacity onPress={() => pop()}>
       <View style={_styles.back_bt_container}>
@@ -96,8 +96,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制左边列表 特码 双面 正码 等等
    */
-  const renderLeftColumn = () => <View
-  >
+  const renderLeftColumn = () => <View key={playOddDetailData?.playOdds?.toString()}>
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         playOddDetailData?.playOdds?.map((item, index) => {
@@ -152,7 +151,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制游戏聊天切换tab
    */
-  const renderGameTab = () => <View style={[_styles.game_tab_container,
+  const renderGameTab = () => <View key={'renderGameTab'}  style={[_styles.game_tab_container,
     { backgroundColor: `${Skin1.themeColor}cc` }]}>
 
     <View style={[_styles.game_tab, _styles.game_tab_left, { backgroundColor: '#ffffff44' }]}>

@@ -26,7 +26,7 @@ const UseLhcLM = () => {
 
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
-    ugLog('dataTMB 2 =', JSON.stringify(playOddData()))
+    //ugLog('dataTMB 2 =', JSON.stringify(playOddData()))
     //特码取前3个数据
     if (!anyEmpty(playOddData()?.playGroups)) {
       setDataLM([playOddData()?.playGroups[0]])

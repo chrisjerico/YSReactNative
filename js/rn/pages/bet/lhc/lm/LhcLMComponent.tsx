@@ -40,7 +40,8 @@ const LhcLMComponent = ({}: IRouteParams) => {
    * 绘制 方格式
    * @param item
    */
-  const renderERect = (item?: PlayData) => <LotteryERect item={item}
+  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
+                                                         item={item}
                                                          selectedBalls={selectedBalls}
                                                          callback={() => addOrRemoveBall(item?.name)}/>
 
