@@ -29,6 +29,7 @@ import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDet
 import TimeComponent from './tm/TimeComponent'
 import LotteryConst from './const/LotteryConst'
 import LhcLMComponent from './lhc/lm/LhcLMComponent'
+import LhcZMComponent from './lhc/zm/LhcZMComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -140,7 +141,7 @@ const BetLotteryPage = ({ navigation, route }) => {
         return <LhcLMComponent key={lotteryCode}/>
       }
       case LotteryConst.ZM: {
-        return <LhcLMComponent key={lotteryCode}/>
+        return <LhcZMComponent key={lotteryCode}/>
       }
 
     }
@@ -152,7 +153,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制游戏聊天切换tab
    */
   const renderGameTab = () => <View key={'renderGameTab'}  style={[_styles.game_tab_container,
-    { backgroundColor: `${Skin1.themeColor}cc` }]}>
+    { backgroundColor: `${Skin1.themeColor}ff` }]}>
 
     <View style={[_styles.game_tab, _styles.game_tab_left, { backgroundColor: '#ffffff44' }]}>
       <Text style={_styles.tab_text}>{'投注区'}</Text>
