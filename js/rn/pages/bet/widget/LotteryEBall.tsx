@@ -1,11 +1,11 @@
 import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import LCF from '../config/LCF'
 import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
 import { BallStyles } from '../../hall/new/games/HallGameListComponent'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
+import { Skin1 } from '../../../public/theme/UGSkinManagers'
 
 interface ILotteryEBall {
   item?: PlayData // 要绘制的数据
@@ -36,7 +36,7 @@ const LotteryEBall = ({
         {
           backgroundColor:
             selectedBalls?.includes(item?.name) ?
-              LCF.pressedColor :
+              `${Skin1.themeColor}dd` :
               null,
         },
       ]}>
@@ -46,8 +46,8 @@ const LotteryEBall = ({
         }}
                oddsStyle={{
                  color: selectedBalls?.includes(item?.name) ?
-                   LCF.pressedTextColor :
-                   LCF.unpressedTextColor,
+                   UGColor.TextColor6 :
+                   UGColor.TextColor7,
                }}
                odds={item?.odds}
                {...ballProps}/>
@@ -58,7 +58,7 @@ const LotteryEBall = ({
 
 const _styles = StyleSheet.create({
   ball_item_tm: {
-    width: LCF.ball_container_width,
+    width: scale(126),
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: scale(8),

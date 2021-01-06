@@ -1,12 +1,12 @@
 import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import LCF from '../config/LCF'
 import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
 import { BallStyles } from '../../hall/new/games/HallGameListComponent'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import ERect from '../../../public/components/view/lottery/ERect'
+import { Skin1 } from '../../../public/theme/UGSkinManagers'
 
 interface ILotteryERect {
   item?: PlayData // 要绘制的数据
@@ -35,20 +35,20 @@ const LotteryERect = ({
         {
           backgroundColor:
             selectedBalls?.includes(item?.name) ?
-              LCF.pressedColor : null,
+              `${Skin1.themeColor}dd` : null,
         },
       ]}>
         <ERect title={item?.name}
                titleStyle={{
                  color: selectedBalls?.includes(item?.name) ?
-                   LCF.pressedTextColor :
-                   LCF.unpressedTextColor,
+                   UGColor.TextColor6 :
+                   UGColor.TextColor7,
                }}
                odds={item?.odds}
                oddsStyle={{
                  color: selectedBalls?.includes(item?.name) ?
-                   LCF.pressedTextColor :
-                   LCF.unpressedTextColor,
+                   UGColor.TextColor6 :
+                   UGColor.TextColor7,
                }}/>
       </View>
     </TouchableOpacity>
@@ -57,7 +57,7 @@ const LotteryERect = ({
 
 const _styles = StyleSheet.create({
   ball_item_lm: {
-    width: LCF.react_container_width,
+    width: scale(196),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

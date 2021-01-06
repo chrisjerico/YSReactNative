@@ -36,7 +36,6 @@ import BetLotteryContext from '../../BetLotteryContext'
 import EBall from '../../../../public/components/view/lottery/EBall'
 import { arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
-import LCF from '../../config/LCF'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 
@@ -82,7 +81,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
    */
   const renderTabItem = (tab?: number) => <View style={[
     _styles.tab_item,
-    tabIndex == tab ? { backgroundColor: LCF.pressedColor } : null,
+    tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
   ]}>
     <TouchableOpacity onPress={() => setTabIndex(tab)}
                       style={_styles.tab_title_tb}>
