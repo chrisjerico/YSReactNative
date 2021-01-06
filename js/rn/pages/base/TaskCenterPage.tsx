@@ -1,13 +1,16 @@
-import React from 'react'
-import { pop } from '../../public/navigation/RootNavigation'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import MineHeader from '../../public/views/tars/MineHeader'
-import { View, Text, Image, TouchableWithoutFeedback } from 'react-native'
-import Avatar from '../../public/views/tars/Avatar'
-import AppDefine from '../../public/define/AppDefine'
+import React, { useState } from 'react'
+import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
+import AppDefine from '../../public/define/AppDefine'
+import { pop } from '../../public/navigation/RootNavigation'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
+import Avatar from '../../public/views/tars/Avatar'
+import Button from '../../public/views/tars/Button'
+import MineHeader from '../../public/views/tars/MineHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import { UGStore } from '../../redux/store/UGStore'
 
 const ExpBar = () => {
   return (
@@ -37,7 +40,47 @@ const TaskLobby = () => {
     </ScrollableTabViewComponent>
   )
 }
+
+const MChange = () => {
+  const [clickIndex, seClickIndex] = useState(0)
+  return (
+    <View style={{ alignItems: 'center' }}>
+      <Text>{'10.00000 M豆子:1元人民币'}</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginVertical: 20, width: '100%' }}>
+        <Text>{'500.0000'}</Text>
+        <FontAwesome5 name={'exchange-alt'} size={20} />
+        <Text>{'500.0000'}</Text>
+      </View>
+      <Button
+        title={'确认兑换'}
+        containerStyle={{ backgroundColor: Skin1.themeColor, borderRadius: 5, marginBottom: 20 }}
+        titleStyle={{ color: '#ffffff', paddingVertical: 15, paddingHorizontal: 20 }}
+      />
+      <View style={{ flexDirection: 'row', width: '100%' }}>
+        {['10.0000', '50.0000', '100.0000', '500.0000', '全部兑换'].map((item, index) => (
+          <Button
+            key={index}
+            title={item}
+            containerStyle={[
+              styles.button,
+              {
+                borderColor: index == clickIndex ? Skin1.themeColor : '#7B7B7B',
+              },
+            ]}
+            titleStyle={styles.buttonTitle}
+            onPress={() => {
+              seClickIndex(index)
+            }}
+          />
+        ))}
+      </View>
+    </View>
+  )
+}
 const TaskCenterPage = () => {
+  const userInfo = UGStore.globalProps.userInfo
+
+  const { balance } = userInfo
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
@@ -54,7 +97,7 @@ const TaskCenterPage = () => {
                 <Text style={{ color: '#BEBEBE', fontSize: 12 }}>{'M豆子'}</Text>
                 <Text style={{ color: '#BEBEBE', fontSize: 12 }}>{'200'}</Text>
               </View>
-              <ReLoadBalanceComponent balance={'30'} containerStyle={{ flex: 1, marginLeft: 5 }} color={'#ffffff'} balanceStyle={{ color: '#ffffff' }} />
+              <ReLoadBalanceComponent balance={balance} containerStyle={{ flex: 1, marginLeft: 5 }} balanceStyle={{ color: '#ffffff' }} balanceDecimal={2} iconColor={'#ffffff'} />
             </View>
           </View>
           <View style={{ flex: 0.7, paddingLeft: 10 }}>
@@ -78,11 +121,23 @@ const TaskCenterPage = () => {
       </View>
       <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false} showIndicator={false}>
         <TaskLobby tabLabel={'任务大厅'} key={'任务大厅'} />
-        <View tabLabel={'M豆子兑换'} key={'M豆子兑换'} />
+        <MChange tabLabel={'M豆子兑换'} key={'M豆子兑换'} />
         <View tabLabel={'M豆子帐变'} key={'M豆子帐变'} />
       </ScrollableTabViewComponent>
     </>
   )
 }
 
+const styles = StyleSheet.create({
+  button: {
+    borderWidth: 1,
+    borderColor: '#7B7B7B',
+    flex: 1,
+    marginHorizontal: 3,
+    borderRadius: 3,
+  },
+  buttonTitle: {
+    paddingVertical: 10,
+  },
+})
 export default TaskCenterPage

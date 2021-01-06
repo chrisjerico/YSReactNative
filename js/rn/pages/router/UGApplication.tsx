@@ -30,6 +30,7 @@ import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
+import TaskCenterPage from '../base/TaskCenterPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
@@ -148,6 +149,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferTKLMainView, //额度转页-新版
   JDAgentPage, //申请代理
   JDRedEnveloperPage, //红包扫雷
+  TaskCenterPage, // 任务中心
 
   // ———————————— 模板页面 —————————————
 
