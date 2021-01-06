@@ -22,6 +22,10 @@ import JDPromotionTabWithdrawalReportCP from '../cp/JDPromotionTabWithdrawalRepo
 import JDPromotionTabDrawlRcordCP from '../cp/JDPromotionTabDrawlRcordCP';
 import JDPromotionTabRealityReportCP from '../cp/JDPromotionTabRealityReportCP';
 import JDPromotionTabRealityRcordCP from '../cp/JDPromotionTabRealityRcordCP';
+import JDPromotionInfoCP from '../cp/JDPromotionInfoCP';
+import { Button } from 'react-native-elements';
+import { UGStore } from '../../../redux/store/UGStore';
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 
 interface JDPromotionIncomePage {
   tabNames?: Array<string>//tab界面名称数据
@@ -29,6 +33,8 @@ interface JDPromotionIncomePage {
 
 const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
 
+  //调用sysConf
+  const { inviteCode } = UGStore.globalProps.sysConf
 
   let { current: v } = useRef<JDPromotionIncomePage>(
     {
@@ -53,7 +59,16 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
    */
   useEffect(() => {
     setProps({
-      navbarOpstions: { hidden: false, title: '推荐收益' },
+      navbarOpstions: {
+        hidden: false, title: '推荐收益',
+        rightComponent:
+         <Button 
+         title={inviteCode.displayWord}
+         buttonStyle ={{backgroundColor:Skin1.themeColor,width:100,}}
+         titleStyle={{ fontSize:16 }}
+          onPress={() => rightClicked()}
+        />
+      },
       didFocus: () => {
         AppDefine.checkHeaderShowBackButton((show) => {
           setProps({ navbarOpstions: { back: show } });
@@ -63,35 +78,47 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
 
   }, [])
 
-
+  /**
+     * 跳到邀请码界面
+     * 
+     */
+  function rightClicked() {
+    
+    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+      {
+        selectors: 'PromotionCodeListVC.alloc.init',
+      },
+      true,
+    ]);
+  }
   /**
      * 绘制各列表
      * @param item
      */
   const renderRecordList = (item: string) => {
     switch (item) {
-      case "推荐信息":
-        return <View />
+      case PromotionConst.推荐信息:
+        return <JDPromotionInfoCP tabLabel={item} key={item} />
       case PromotionConst.会员管理:
-        return <JDPromotionTabMemberCP tabLabel={item} key={item}   />
+        return <JDPromotionTabMemberCP tabLabel={item} key={item} />
       case PromotionConst.投注报表:
-        return <JDPromotionTabBettingReportCP tabLabel={item} key={item}   />
+        return <JDPromotionTabBettingReportCP tabLabel={item} key={item} />
       case PromotionConst.投注记录:
-        return <JDPromotionTabBettingRecordCP tabLabel={item} key={item}   />
+        return <JDPromotionTabBettingRecordCP tabLabel={item} key={item} />
       case PromotionConst.域名绑定:
-        return <JDPromotionTabInviteDomainCP tabLabel={item} key={item}  />
+        return <JDPromotionTabInviteDomainCP tabLabel={item} key={item} />
       case PromotionConst.存款报表:
-        return <JDPromotionTabDepositStateCP tabLabel={item} key={item}   />
+        return <JDPromotionTabDepositStateCP tabLabel={item} key={item} />
       case PromotionConst.存款记录:
-        return <JDPromotionTabDepostCP tabLabel={item} key={item}   />
+        return <JDPromotionTabDepostCP tabLabel={item} key={item} />
       case PromotionConst.提款报表:
-        return <JDPromotionTabWithdrawalReportCP tabLabel={item} key={item}  />
+        return <JDPromotionTabWithdrawalReportCP tabLabel={item} key={item} />
       case PromotionConst.提款记录:
-        return <JDPromotionTabDrawlRcordCP tabLabel={item} key={item}  />
+        return <JDPromotionTabDrawlRcordCP tabLabel={item} key={item} />
       case PromotionConst.真人报表:
         return <JDPromotionTabRealityReportCP tabLabel={item} key={item} />
       case PromotionConst.真人记录:
-        return <JDPromotionTabRealityRcordCP tabLabel={item} key={item}   />
+        return <JDPromotionTabRealityRcordCP tabLabel={item} key={item} />
     }
   }
 

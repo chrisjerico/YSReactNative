@@ -40,6 +40,6 @@ export default class AppDefine {
     }
   }
 
-  // static isShowAllup = ()=> 'c085'.indexOf(AppDefine.siteId) != -1 
+  static isShowAllup = ()=> 'c085'.indexOf(AppDefine.siteId) != -1 
 
 }

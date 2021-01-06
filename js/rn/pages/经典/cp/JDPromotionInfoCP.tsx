@@ -17,8 +17,8 @@ import { showSuccess } from '../../../public/widget/UGLoadingCP';
 import UGinviteInfoModel from '../../../redux/model/全局/UGinviteInfoModel';
 import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
 import { UGStore } from '../../../redux/store/UGStore';
-import { UGBasePageProps } from '../../base/UGPage';
-import { JDAgentInput } from '../cp/JDAgentInput';
+import { setProps, UGBasePageProps } from '../../base/UGPage';
+import { JDAgentInput } from './JDAgentInput';
 import { JDPromotionInfoCopyCP } from './JDPromotionInfoCopyCP';
 import { JDPromotionInfoText1CP } from './JDPromotionInfoText1CP';
 import { JDPromotionInfoText2CP } from './JDPromotionInfoText2CP';
@@ -29,7 +29,7 @@ interface JDPromotionInfoCP {
   list?: Array<UGinviteInfoModel>,//佣金比例 数据
   selItemContent?:string,//佣金比例选中的数据 默认第1个
 }
-const JDPromotionInfoCP = ({ route, setProps }: UGBasePageProps) => {
+const JDPromotionInfoCP = () => {
 
   const [inviteInfoModel, setInviteInfoModel] = useState<UGinviteInfoModel>()
   const { myreco_img } = UGStore.globalProps.sysConf//系统设置数据
@@ -50,7 +50,6 @@ const JDPromotionInfoCP = ({ route, setProps }: UGBasePageProps) => {
       YJlist(JSON.parse(JSON.stringify(data)))
     }, (err) => {
       console.log('err = ', err);
-      // setProps()
       // Toast(err.message)
     });
   }
@@ -173,18 +172,12 @@ const JDPromotionInfoCP = ({ route, setProps }: UGBasePageProps) => {
       v.list[0].isPress = true;
       v.selItemContent =  v.list[0].content;
     }
-    
+
     setProps()
   }
 
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '推荐信息', back: true },
-      didFocus: () => {
         teamBetListData()
-      }
-    })
-
   }, [])
 
   return (

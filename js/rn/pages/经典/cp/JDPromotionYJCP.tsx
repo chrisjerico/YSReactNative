@@ -5,7 +5,6 @@ import { Skin1 } from "../../../public/theme/UGSkinManagers";
 import { scale } from "../../../public/tools/Scale";
 import AppDefine from "../../../public/define/AppDefine";
 import UGinviteInfoModel from "../../../redux/model/全局/UGinviteInfoModel";
-import { setProps } from "../../base/UGPage";
 import { anyEmpty } from "../../../public/tools/Ext";
 
 interface JDPromotionYJCP {
@@ -21,24 +20,22 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
   //初始化
   useEffect(() => {
     setList(props?.list)
-    console.log('AppDefine.siteId ==',AppDefine.siteId);
+    console.log('AppDefine.siteId ==',AppDefine.siteId );
+    
   }, [])
 
     /**
-*  界面显示
+* 界面是否show
 * 
 */
 function isShow() {
-  if ('c085'=== AppDefine.siteId
-  // ||' t30-andrew'==AppDefine.siteId
-  ) {
-    console.log('AppDefine.siteId ==',AppDefine.siteId);
-    return true
-  } else {
-    console.log('AppDefine.siteId ==',AppDefine.siteId);
-    return false
-  }
+ if (AppDefine.siteId =='c085') {
+   return true;
+ } else {
+   return false;
+ }
 }
+
   /**
 * 点击
 * 
