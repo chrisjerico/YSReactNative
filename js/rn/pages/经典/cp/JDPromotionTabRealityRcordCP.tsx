@@ -336,7 +336,7 @@ function teamRealBetListData() {
               v.levelArray
             }
             defaultValue={v.levelindex}
-            containerStyle={{ height: 44, width: AppDefine.width / 3 }}
+            containerStyle={{ height: 40, width: AppDefine.width / 3 }}
             controller={instance => capitalController = instance}
             style={{ backgroundColor: '#fafafa' }}
             itemStyle={{
