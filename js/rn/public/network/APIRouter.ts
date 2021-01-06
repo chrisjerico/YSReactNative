@@ -353,10 +353,6 @@ class APIRouter {
    *
    */
   static withdraw_apply = async (params: IRequestWithdrawParams): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
     return httpClient.post<NormalModel>('c=withdraw&a=apply', params)
   }
 
@@ -365,12 +361,7 @@ class APIRouter {
    *
    */
   static yuebao_transferToBank = async (params: IRequestWithdrawParams): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
-
-    ugLog('transferToBank=', JSON.stringify(params))
+    // ugLog('transferToBank=', JSON.stringify(params))
     return httpClient.post<NormalModel>('c=yuebao&a=transferToBank', params)
   }
 
@@ -379,10 +370,6 @@ class APIRouter {
    *
    */
   static yuebao_transfer = async (params: IYueBao2YuEParams): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
     return httpClient.post<NormalModel>('c=yuebao&a=transfer', params)
   }
 
@@ -391,10 +378,6 @@ class APIRouter {
    *
    */
   static user_addBank = async (params: IAddBankParams): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
     return httpClient.post<NormalModel>('c=user&a=bindBank', params)
   }
 
@@ -404,10 +387,6 @@ class APIRouter {
    * fullName: 真名
    */
   static user_bindRealName = async (params: IBindRealNameParams): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
     return httpClient.post<NormalModel>('c=user&a=profileName', params)
   }
 
@@ -417,10 +396,6 @@ class APIRouter {
    * fund_pwd: 取款密码
    */
   static user_bindPwd = async (params: IBindPasswordParams): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
     return httpClient.post<NormalModel>('c=user&a=addFundPwd', params)
   }
 
@@ -428,11 +403,6 @@ class APIRouter {
    * 忘记密码
    */
   static user_applyCoinPwd = async (params: IForgetPasswordParams): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
-
     return httpClient.post<NormalModel>('c=user&a=applyCoinPwd', params)
   }
 
@@ -444,11 +414,6 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_rechargeRecordList = async (params: IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
-
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -478,11 +443,6 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_rechargeCashier = async (): Promise<AxiosResponse<PayAisleModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
-
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -506,11 +466,6 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_withdrawalRecordList = async (params: IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
-
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -542,11 +497,6 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_capitalDetailRecordList = async (params: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
-
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
