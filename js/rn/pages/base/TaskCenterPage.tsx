@@ -30,13 +30,17 @@ const ExpBar = () => {
   )
 }
 
+const CommonTaskTab = ({ tabLabel }) => {
+  return <View></View>
+}
+
 const TaskLobbyTab = ({ tabLabel }) => {
   return (
     <ScrollableTabViewComponent
       indicatorStyle={{ width: '100%', backgroundColor: Skin1.themeColor, height: 5 }}
       tabBarScrollEnabled={false}
       indicatorContainerStyle={{ height: '100%', position: 'absolute', backgroundColor: 'rgba(193,66,66,0.4)', justifyContent: 'flex-end' }}>
-      <View tabLabel={'日常任务'} key={'日常任务'} />
+      <CommonTaskTab tabLabel={'日常任务'} key={'日常任务'} />
       <View tabLabel={'存款任务'} key={'存款任务'} />
       <View tabLabel={'提款任务'} key={'提款任务'} />
       <View tabLabel={'彩票投注'} key={'彩票投注'} />
@@ -88,7 +92,7 @@ const MChangeTab = ({ tabLabel }) => {
   const [mValue, setMvalue] = useState(null)
   return (
     <View style={{ alignItems: 'center' }}>
-      <Text>{'10.00000 M豆子:1元人民币'}</Text>
+      <Text style={{ paddingVertical: 10 }}>{'10.00000 M豆子:1元人民币'}</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginVertical: 20, width: '100%' }}>
         <View style={{ width: 100, flexDirection: 'row', alignItems: 'center' }}>
           <TextInput
@@ -178,7 +182,7 @@ const TaskCenterPage = () => {
           </TouchableWithoutFeedback>
         </View>
       </View>
-      <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false} showIndicator={false}>
+      <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false} showIndicator={false} activeTabStyle={{ borderWidth: 1, borderColor: Skin1.themeColor }}>
         <TaskLobbyTab tabLabel={'任务大厅'} key={'任务大厅'} />
         <MChangeTab tabLabel={'M豆子兑换'} key={'M豆子兑换'} />
         <MAccountTab tabLabel={'M豆子帐变'} key={'M豆子帐变'} />
