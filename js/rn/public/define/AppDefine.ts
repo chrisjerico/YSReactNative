@@ -1,3 +1,4 @@
+import { YueBaoStatModel } from './../network/Model/YueBaoStatModel';
 import { ANHelper } from './ANHelper/ANHelper'
 import { Dimensions, PixelRatio, Platform } from 'react-native'
 import { OCHelper } from './OCHelper/OCHelper'
@@ -38,4 +39,7 @@ export default class AppDefine {
         break
     }
   }
+
+  // static isShowAllup = ()=> 'c085'.indexOf(AppDefine.siteId) != -1 
+
 }

@@ -7,6 +7,8 @@ import { Button } from "react-native-elements";
 import QRCode from 'react-native-qrcode-svg';
 import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
 import { Toast } from "../../../public/tools/ToastUtils";
+import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
+import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
 interface JDPromotionInfoCopyCP {
   title?: string,
   content?: string,
@@ -31,20 +33,22 @@ export const JDPromotionInfoCopyCP = (props: JDPromotionInfoCopyCP) => {
     <View style={{ height: 120, flexDirection: 'column', width: '100%' }}>
       <View style={{ flexDirection: "row", height: 55, justifyContent: 'space-between' }}>
         <Text style={{ fontSize: scale(24), marginTop: scale(20), marginLeft: scale(20), color: Skin1.textColor1 }} >{props.title}</Text>
-        <Button title={'复制链接'} containerStyle={{ marginRight: scale(20), marginTop: scale(15), width: 100, height: 40, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
+        <Button title={'复制链接'} containerStyle={{ marginRight: scale(20), marginTop: scale(15), width: 95, height: 40, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
           onPress={
             (v) => {
               switch (Platform.OS) {
                 case 'ios':
                   //TODO iOS 复制 title 到粘贴板
                   OCHelper.call('UIPasteboard.generalPasteboard.setString:', [props.content]).then(() => {
-                    Toast('复制成功')
+                   
                   })
                   break
                 case 'android':
                   // TODO Andoid 复制 title 到粘贴板
+                  ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: props.content })
                   break
               }
+              Toast('复制成功')
               if (props.onPress) {
                 props.onPress(v)
               }
@@ -81,6 +85,7 @@ export const JDPromotionInfoCopyCP = (props: JDPromotionInfoCopyCP) => {
       <QRCode
         value={props.imgUrl}
         size={190}
+        ecl=  {"Q"}
       />
 
     </View>}

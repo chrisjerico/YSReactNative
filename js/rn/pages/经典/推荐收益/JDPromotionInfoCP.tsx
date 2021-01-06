@@ -1,13 +1,16 @@
 
 
+import { push } from 'object-path';
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import { TextInput } from 'react-native-gesture-handler';
+import { add } from 'react-native-reanimated';
 import AppDefine from '../../../public/define/AppDefine';
 import { pop } from '../../../public/navigation/RootNavigation';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
+import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
 import { scale } from '../../../public/tools/Scale';
 import { Toast } from '../../../public/tools/ToastUtils';
 import { showSuccess } from '../../../public/widget/UGLoadingCP';
@@ -19,14 +22,23 @@ import { JDAgentInput } from '../cp/JDAgentInput';
 import { JDPromotionInfoCopyCP } from './JDPromotionInfoCopyCP';
 import { JDPromotionInfoText1CP } from './JDPromotionInfoText1CP';
 import { JDPromotionInfoText2CP } from './JDPromotionInfoText2CP';
+import { JDPromotionYJCP } from './JDPromotionYJCP';
 
 interface JDPromotionInfoCP {
-  inviteInfoModel?: UGinviteInfoModel;
+  inviteInfoModel?: UGinviteInfoModel;//网络数据（全部）
+  list?: Array<UGinviteInfoModel>,//佣金比例 数据
+  selItemContent?:string,//佣金比例选中的数据 默认第1个
 }
 const JDPromotionInfoCP = ({ route, setProps }: UGBasePageProps) => {
 
-  const [inviteInfoModel, setInviteInfoModel] = useState<UGinviteInfoModel>()//数据（全部）
-  const { myreco_img } = UGStore.globalProps.sysConf
+  const [inviteInfoModel, setInviteInfoModel] = useState<UGinviteInfoModel>()
+  const { myreco_img } = UGStore.globalProps.sysConf//系统设置数据
+  let { current: v } = useRef<JDPromotionInfoCP>(
+    {
+      list: [],
+      selItemContent:'',
+    }
+  )
 
   /**
  * 得到推荐信息数据
@@ -34,8 +46,8 @@ const JDPromotionInfoCP = ({ route, setProps }: UGBasePageProps) => {
  */
   function teamBetListData() {
     api.team.inviteInfo().setCompletionBlock(({ data }) => {
-      console.log('得到推荐信息==================', JSON.parse(JSON.stringify(data)));
       setInviteInfoModel(JSON.parse(JSON.stringify(data)))
+      YJlist(JSON.parse(JSON.stringify(data)))
     }, (err) => {
       console.log('err = ', err);
       // setProps()
@@ -98,9 +110,71 @@ const JDPromotionInfoCP = ({ route, setProps }: UGBasePageProps) => {
     else {
       returnNumber = AppDefine.width * 740 / 994;
     }
-    console.log('returnNumber = ',returnNumber);
-    
     return returnNumber;
+  }
+
+  /**
+* JDPromotionYJCP list数据
+* 
+*/
+  function YJlist(item: UGinviteInfoModel) {
+
+    if (!anyEmpty(item.fandian_intro)) {
+      let obj: UGinviteInfoModel= {}
+      obj.title = '彩票返点'
+      obj.content = item.fandian_intro
+      obj.isPress = false
+      v.list.push(obj)
+    }
+    if (!anyEmpty(item.real_fandian_intro)) {
+      let obj: UGinviteInfoModel= {}
+      obj.title = '真人返点'
+      obj.content = item.real_fandian_intro
+      obj.isPress = false
+      v.list.push(obj)
+    }
+    if (!anyEmpty(item.fish_fandian_intro)) {
+      let obj: UGinviteInfoModel= {}
+      obj.title = '捕鱼返点'
+      obj.content = item.fish_fandian_intro
+      obj.isPress = false
+      v.list.push(obj)
+    }
+    if (!anyEmpty(item.game_fandian_intro)) {
+      let obj: UGinviteInfoModel= {}
+      obj.title = '电子返点'
+      obj.content = item.game_fandian_intro
+      obj.isPress = false
+      v.list.push(obj)
+    }
+    if (!anyEmpty(item.esport_fandian_intro)) {
+      let obj: UGinviteInfoModel= {}
+      obj.title = '电竞返点'
+      obj.content = item.esport_fandian_intro
+      obj.isPress = false
+      v.list.push(obj)
+    }
+    if (!anyEmpty(item.sport_fandian_intro)) {
+      let obj: UGinviteInfoModel= {}
+      obj.title = '体育返点'
+      obj.content = item.sport_fandian_intro
+      obj.isPress = false
+      v.list.push(obj)
+    }
+    if (!anyEmpty(item.card_fandian_intro)) {
+      let obj: UGinviteInfoModel= {}
+      obj.title = '棋牌返点'
+      obj.content = item.card_fandian_intro
+      obj.isPress = false
+      v.list.push(obj)
+    }
+
+    if (!arrayEmpty(v.list)) {
+      v.list[0].isPress = true;
+      v.selItemContent =  v.list[0].content;
+    }
+    
+    setProps()
   }
 
   useEffect(() => {
@@ -129,6 +203,7 @@ const JDPromotionInfoCP = ({ route, setProps }: UGBasePageProps) => {
         content={inviteInfoModel?.link_i}
         imgUrl={inviteInfoModel?.link_i}
       />
+      <JDPromotionYJCP list={v.list} selItemContent ={v.selItemContent }/>
       <JDPromotionInfoText1CP title={'本月推荐收益:'} content={inviteInfoModel?.month_earn} />
       <JDPromotionInfoText1CP title={'本月推荐会员:'} content={inviteInfoModel?.total_member} />
       <JDPromotionInfoText1CP title={'推荐会员总计:'} content={inviteInfoModel?.month_member} />
