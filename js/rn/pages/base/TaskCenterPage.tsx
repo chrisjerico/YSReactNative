@@ -41,7 +41,7 @@ const TaskCenterPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
-        <MineHeader title={'任务中心'} showBackBtn onPressBackBtn={pop} />
+        <MineHeader title={'任务中心(RN)'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
       <View style={{ aspectRatio: 2.2, width: '100%', backgroundColor: Skin1.themeColor, flexDirection: 'row' }}>
         <View style={{ flex: 3, paddingHorizontal: 20 }}>

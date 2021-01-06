@@ -41,7 +41,7 @@ const LotteryHistoryPage = () => {
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader
-          title={'投注记录'}
+          title={'投注记录(RN)'}
           showBackBtn
           onPressBackBtn={pop}
           customerIcon={'calendar'}

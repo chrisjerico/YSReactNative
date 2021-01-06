@@ -41,7 +41,7 @@ const UserMessagePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
-        <MineHeader title={'站內信'} showBackBtn onPressBackBtn={pop} />
+        <MineHeader title={'站內信(RN)'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
       <PullToRefreshListComponent
         onReleaseToRefresh={async () => {

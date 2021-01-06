@@ -131,7 +131,7 @@ const ActivityRewardPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
-        <MineHeader title={'活动彩金'} showBackBtn onPressBackBtn={pop} />
+        <MineHeader title={'活动彩金(RN)'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
       <View style={{ flex: 1 }}>
         {loading ? (

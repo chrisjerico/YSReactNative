@@ -16,7 +16,7 @@ const UserInfoPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
-        <MineHeader title={'我的资料'} showBackBtn onPressBackBtn={pop} />
+        <MineHeader title={'我的资料(RN)'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
       <View>
         <ImageBackground source={{ uri: 'xiawu' }} style={{ width: '100%', aspectRatio: 2 }}>
