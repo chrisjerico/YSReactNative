@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { TextInput } from 'react-native-gesture-handler'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
@@ -11,6 +12,8 @@ import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGStore } from '../../redux/store/UGStore'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import { stringToFloat, stringToNumber } from '../../public/tools/tars'
 
 const ExpBar = () => {
   return (
@@ -43,13 +46,29 @@ const TaskLobby = () => {
 
 const MChange = () => {
   const [clickIndex, seClickIndex] = useState(0)
+  const [mValue, setMvalue] = useState(null)
   return (
     <View style={{ alignItems: 'center' }}>
       <Text>{'10.00000 M豆子:1元人民币'}</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginVertical: 20, width: '100%' }}>
-        <Text>{'500.0000'}</Text>
+        <View style={{ width: 100, flexDirection: 'row', alignItems: 'center' }}>
+          <TextInput
+            placeholder={'请输入M豆子'}
+            style={{ width: '80%' }}
+            value={mValue}
+            onChangeText={(value) => {
+              setMvalue(value)
+            }}
+          />
+          <AntDesign
+            name={'closecircle'}
+            onPress={() => {
+              setMvalue(null)
+            }}
+          />
+        </View>
         <FontAwesome5 name={'exchange-alt'} size={20} />
-        <Text>{'500.0000'}</Text>
+        <Text>{mValue ? stringToFloat(mValue) / 10 : '获得人民币'}</Text>
       </View>
       <Button
         title={'确认兑换'}
@@ -70,6 +89,7 @@ const MChange = () => {
             titleStyle={styles.buttonTitle}
             onPress={() => {
               seClickIndex(index)
+              setMvalue(item == '全部兑换' ? '200' : item)
             }}
           />
         ))}
