@@ -48,6 +48,7 @@ import AppDefine from '../define/AppDefine'
 import { NewRateModel } from './Model/wd/NewRateModel'
 import { NextIssueModel } from './Model/lottery/NextIssueModel'
 import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
+import { TaskCreditsLogModel } from './Model/TaskCreditsLogModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -72,6 +73,21 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static task_creditsLog = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.get<TaskCreditsLogModel>('c=task&a=creditsLog&time=0&rows=20&token=' + tokenParams)
+  }
+
   static activity_applyWinLog = async () => {
     let tokenParams = ''
     switch (Platform.OS) {
@@ -759,7 +775,7 @@ class APIRouter {
         },
         {
           noToken: true,
-        } as any,
+        } as any
       )
     } catch (error) {
       throw error
@@ -779,7 +795,6 @@ class APIRouter {
    * id 游戏 id
    */
   static game_nextIssue = async (id: string): Promise<AxiosResponse<NextIssueModel>> => {
-
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -790,7 +805,7 @@ class APIRouter {
       case 'android':
         const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
           params: {
-            id
+            id,
           },
         })
         for (let key in pms) {
@@ -807,7 +822,6 @@ class APIRouter {
    * id 游戏 id
    */
   static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDetailModel>> => {
-
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -818,7 +832,7 @@ class APIRouter {
       case 'android':
         const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
           params: {
-            id
+            id,
           },
         })
         for (let key in pms) {

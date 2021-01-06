@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { stringToFloat } from '../../public/tools/tars'
 import Avatar from '../../public/views/tars/Avatar'
 import Button from '../../public/views/tars/Button'
+import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGStore } from '../../redux/store/UGStore'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import { stringToFloat, stringToNumber } from '../../public/tools/tars'
 
 const ExpBar = () => {
   return (
@@ -28,7 +30,7 @@ const ExpBar = () => {
   )
 }
 
-const TaskLobby = () => {
+const TaskLobbyTab = ({ tabLabel }) => {
   return (
     <ScrollableTabViewComponent
       indicatorStyle={{ width: '100%', backgroundColor: Skin1.themeColor, height: 5 }}
@@ -44,7 +46,44 @@ const TaskLobby = () => {
   )
 }
 
-const MChange = () => {
+const MAccountTab = ({ tabLabel }) => {
+  const [list, setList] = useState([])
+  useEffect(() => {
+    APIRouter.task_creditsLog().then((value) => {
+      const list = value?.data?.data?.list
+      setList(list)
+    })
+  }, [])
+  return (
+    <List
+      uniqueKey={'MAccountTab'}
+      data={list}
+      ListHeaderComponent={() => {
+        return (
+          <View style={styles.listRowContainer}>
+            <Text style={styles.listRow}>{'帐变类型'}</Text>
+            <Text style={styles.listRow}>{'M豆子'}</Text>
+            <Text style={styles.listRow}>{'M豆子余额'}</Text>
+            <Text style={styles.listRow}>{'全部日期'}</Text>
+          </View>
+        )
+      }}
+      renderItem={({ item }) => {
+        const { type, integral, newInt, addTime } = item
+        return (
+          <View style={styles.listRowContainer}>
+            <Text style={styles.listRow}>{type}</Text>
+            <Text style={styles.listRow}>{integral}</Text>
+            <Text style={styles.listRow}>{newInt}</Text>
+            <Text style={styles.listRow}>{addTime}</Text>
+          </View>
+        )
+      }}
+    />
+  )
+}
+
+const MChangeTab = ({ tabLabel }) => {
   const [clickIndex, seClickIndex] = useState(0)
   const [mValue, setMvalue] = useState(null)
   return (
@@ -140,9 +179,9 @@ const TaskCenterPage = () => {
         </View>
       </View>
       <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false} showIndicator={false}>
-        <TaskLobby tabLabel={'任务大厅'} key={'任务大厅'} />
-        <MChange tabLabel={'M豆子兑换'} key={'M豆子兑换'} />
-        <View tabLabel={'M豆子帐变'} key={'M豆子帐变'} />
+        <TaskLobbyTab tabLabel={'任务大厅'} key={'任务大厅'} />
+        <MChangeTab tabLabel={'M豆子兑换'} key={'M豆子兑换'} />
+        <MAccountTab tabLabel={'M豆子帐变'} key={'M豆子帐变'} />
       </ScrollableTabViewComponent>
     </>
   )
@@ -158,6 +197,17 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     paddingVertical: 10,
+  },
+  listRowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    borderBottomColor: '#d9d9d9',
+    borderBottomWidth: AppDefine.onePx,
+  },
+  listRow: {
+    flex: 1,
+    textAlign: 'center',
   },
 })
 export default TaskCenterPage
