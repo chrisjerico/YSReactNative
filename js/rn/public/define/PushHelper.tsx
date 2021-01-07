@@ -135,19 +135,8 @@ export default class PushHelper {
           // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
           // return
         }
-        // if (game?.seriesId == '7' && game?.subId == MenuType.ZHGL) {
-        //   push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
-        //   return
-        // } else if (game?.seriesId == '7' && game?.subId == MenuType.CQK) {
-        //   push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
-        //   return
-        // } else if (game?.seriesId == '7' && game?.subId == MenuType.CZJL) {
-        //   push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
-        //   return
-        // } else if (game?.seriesId == '7' && game?.subId == MenuType.TXJL) {
-        //   push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
-        //   return
-        // }
+        if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
+
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }
@@ -193,13 +182,42 @@ export default class PushHelper {
     }
   }
 
+  /**
+   * 跳转存款
+   * @param seriesId
+   * @param subId
+   */
+  static pushDeposit(seriesId?: string, subId?: string): boolean {
+    if (seriesId == '7' && subId == MenuType.ZHGL) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+      return true
+    } else if (seriesId == '7' && (subId == MenuType.CQK || subId == MenuType.CZ)) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
+      return true
+    } else if (seriesId == '7' && subId == MenuType.TX) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
+      return true
+    } else if (seriesId == '7' && subId == MenuType.CZJL) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
+      return true
+    } else if (seriesId == '7' && subId == MenuType.TXJL) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
+      return true
+    }
+
+    return false
+  }
+
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
+    ugLog('pushCategory = ', linkCategory, linkPosition)
     switch (Platform.OS) {
       case 'ios':
         OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
         break
       case 'android':
+        if(this.pushDeposit(linkCategory?.toString(), linkPosition?.toString())) return
+
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
           seriesId: linkCategory,
           subId: linkPosition,
@@ -381,7 +399,7 @@ export default class PushHelper {
           case UGUserCenterType.任务弹窗: {
             if (!UGUserModel.checkLogin()) return
             console.log('top', AppDefine.safeArea.top, AppDefine.safeArea.bottom);
-            
+
             const h = AppDefine.height - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 150;
             OCHelper.call('UGTaskNoticeView.alloc.initWithFrame:.show', [NSValue.CGRectMake(25, (AppDefine.height - h) / 2, AppDefine.width - 50, h)])
             break
@@ -457,11 +475,11 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             // if (B_DEBUG) {
-            // push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
-            //   return
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
+              return
             // }
-            subId = MenuType.CZ
-            break
+            // subId = MenuType.CZ
+            // break
           }
           case UGUserCenterType.每日签到: {
             subId = MenuType.QD
@@ -469,11 +487,11 @@ export default class PushHelper {
           }
           case UGUserCenterType.取款: {
             // if (B_DEBUG) {
-            // push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
-            // return
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
+            return
             // }
-            subId = MenuType.TX
-            break
+            // subId = MenuType.TX
+            // break
           }
           case UGUserCenterType.银行卡管理: {
             // if (B_DEBUG) {
@@ -579,11 +597,11 @@ export default class PushHelper {
           }
           case UGUserCenterType.资金明细: {
             // if (B_DEBUG) {
-            // push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
-            // return
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+            return
             // }
-            subId = MenuType.ZHGL
-            break
+            // subId = MenuType.ZHGL
+            // break
           }
           case UGUserCenterType.开奖网: {
             this.openWebView(
