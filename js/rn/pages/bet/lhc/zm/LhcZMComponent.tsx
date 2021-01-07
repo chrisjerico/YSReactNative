@@ -70,7 +70,7 @@ const LhcZMComponent = ({}: IRouteParams) => {
   const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
                                                          item={item}
                                                          selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.name)}/>
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 球
@@ -79,7 +79,7 @@ const LhcZMComponent = ({}: IRouteParams) => {
   const renderEBall = (item?: PlayData) => <LotteryEBall key={item?.id}
                                                          item={item}
                                                          selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.name)}/>
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 正码

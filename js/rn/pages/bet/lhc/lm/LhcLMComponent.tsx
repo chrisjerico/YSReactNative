@@ -42,7 +42,7 @@ const LhcLMComponent = ({}: IRouteParams) => {
   const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
                                                          item={item}
                                                          selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.name)}/>
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制全部的球

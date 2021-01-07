@@ -10,4 +10,13 @@ const LotteryConst = {
   ZM: 'ZM', //正码
 }
 
+/**
+ * tab选中 特码A 特码B
+ */
+const LHC_Tab = {
+  TM_A: 0, //特码A
+  TM_B: 1, //特码B
+}
+
 export default LotteryConst
+export { LHC_Tab }

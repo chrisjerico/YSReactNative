@@ -6,6 +6,7 @@ import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
+import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
 
 interface ILotteryEBall {
   item?: PlayData // 要绘制的数据
@@ -28,6 +29,7 @@ const LotteryEBall = ({
                         callback,
                       }: ILotteryEBall) => {
 
+  let isSel = isSelectedBallOnId(selectedBalls, item?.id)
   return (
     <TouchableOpacity key={item?.id}
                       onPress={() => callback && callback()}>
@@ -35,7 +37,7 @@ const LotteryEBall = ({
         _styles.ball_item_tm,
         {
           backgroundColor:
-            selectedBalls?.includes(item?.name) ?
+            isSel ?
               `${Skin1.themeColor}dd` :
               null,
         },
@@ -45,7 +47,7 @@ const LotteryEBall = ({
           ballNumber: item?.name,
         }}
                oddsStyle={{
-                 color: selectedBalls?.includes(item?.name) ?
+                 color: isSel ?
                    UGColor.TextColor6 :
                    UGColor.TextColor7,
                }}

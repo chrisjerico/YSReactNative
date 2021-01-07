@@ -38,12 +38,10 @@ import { arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
+import { LHC_Tab } from '../../const/LotteryConst'
 
 interface IRouteParams {
 }
-
-const TAB_A = 0//代表 特码A
-const TAB_B = 1 //代表 特码B
 
 /**
  * 六合彩特码
@@ -56,9 +54,9 @@ const LhcTMComponent = ({}: IRouteParams) => {
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
-  const [tabIndex, setTabIndex] = useState(TAB_B) //当前选中哪个tab，0 和 1
-
   const {
+    tabIndex,
+    setTabIndex,
     dataTMA,
     setDataTMA,
     dataTMB,
@@ -74,7 +72,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
   } = UseLhcTM()
 
   //当前的数据是 特码A 还是 特码B
-  const ballData = tabIndex == TAB_A ? dataTMA : dataTMB
+  const ballData = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
 
   /**
    * 绘制 特码A 特码B Tab
@@ -89,7 +87,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
         _styles.tab_title,
         tabIndex == tab ? { color: 'white' } : null,
       ]}>{
-        tab == TAB_A ?
+        tab == LHC_Tab.TM_A ?
           (dataTMA && dataTMA[0].alias) :
           (dataTMB && dataTMB[0].alias)
       }</Text>
@@ -100,8 +98,8 @@ const LhcTMComponent = ({}: IRouteParams) => {
    * 绘制 特码A 特码B 容器
    */
   const renderTab = () => <View style={_styles.tab_container}>
-    {renderTabItem(TAB_B)}
-    {renderTabItem(TAB_A)}
+    {renderTabItem(LHC_Tab.TM_B)}
+    {renderTabItem(LHC_Tab.TM_A)}
   </View>
 
   /**
@@ -140,7 +138,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
   const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
                                                          item={item}
                                                          selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.name)}/>
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 球
@@ -149,7 +147,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
   const renderEBall = (item?: PlayData) => <LotteryEBall key={item?.id}
                                                          item={item}
                                                          selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.name)}/>
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 特码B/A
