@@ -7,7 +7,7 @@ import { scale } from "../../../public/tools/Scale";
 interface JDPromotionInfoText1CP {
   title?:string,
 content?:string,
-textAlign?:string,
+textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify',
 
 }
 
