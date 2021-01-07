@@ -85,34 +85,29 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: true,
       允许未登录访问: true,
     })
-
-    // 彩票大厅（第三样式）
-    {
-      const { mobileGameHall } = sysConf
-      let page: PageName = undefined;
-      page = mobileGameHall == '1' ? PageName.GameHallPage : page;
-      page = mobileGameHall == '2' ? PageName.FreedomHallPage : page;
-      if (page) {
-        pages = pages.concat([{
-          vcName: 'UGLotteryHomeController',
-          rnName: page,
-          tabbarItemPath: '/gameHall',
-          fd_prefersNavigationBarHidden: true,
-          允许游客访问: true,
-          允许未登录访问: false,
-        }, {
-          vcName: 'NewLotteryHomeViewController',
-          rnName: page,
-          tabbarItemPath: '/gameHall',
-          fd_prefersNavigationBarHidden: true,
-          允许游客访问: true,
-          允许未登录访问: false,
-        }])
-      }
-    }
+    
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
+
+  // 彩票大厅（新版、自由版）
+  {
+    const { mobileGameHall } = sysConf
+    let page: PageName = undefined;
+    page = mobileGameHall == '1' ? PageName.GameHallPage : page;
+    page = mobileGameHall == '2' ? PageName.FreedomHallPage : page;
+    if (page) {
+      pages.push({
+        vcName: 'UGLotteryHomeController,NewLotteryHomeViewController',
+        rnName: page,
+        tabbarItemPath: '/gameHall',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      })
+    }
+  }
+
  // 申请代理
   pages.push({
     vcName: 'UGAgentViewController',
