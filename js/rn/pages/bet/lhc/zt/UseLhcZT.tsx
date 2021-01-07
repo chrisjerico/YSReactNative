@@ -51,7 +51,7 @@ const UseLhcZT = () => {
           ])
         }
       })
-      ugLog('newData=', JSON.stringify(newData))
+      //ugLog('newData=', JSON.stringify(newData))
       setDataZT(newData)
 
     }

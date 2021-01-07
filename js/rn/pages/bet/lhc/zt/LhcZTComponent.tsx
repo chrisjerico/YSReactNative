@@ -122,7 +122,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
    * 绘制 特码B/A
    * @param groupData
    */
-  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+  const renderZT1 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
     <View style={_styles.sub_title_container}>
@@ -141,7 +141,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
    * 绘制 连码B/A
    * @param groupData
    */
-  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+  const renderZT2 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
     <View style={_styles.sub_title_container}>
@@ -158,10 +158,9 @@ const LhcZTComponent = ({}: IRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView
-    showsVerticalScrollIndicator={false}>
-    {arrayLength(curData) > 0 && renderTM(curData[0])}
-    {arrayLength(curData) > 1 && renderLM(curData[1])}
+  const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
+    {arrayLength(curData) > 0 && renderZT1(curData[0])}
+    {arrayLength(curData) > 1 && renderZT2(curData[1])}
   </ScrollView>
 
   return (
