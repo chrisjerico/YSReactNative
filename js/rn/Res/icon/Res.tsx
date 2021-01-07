@@ -77,8 +77,8 @@ export const Res = {
   aliyin2: img_assets('bank/aliyin2'),
 
   //虚拟币教程
-  hbjc_img: RES_BASE_URL + 'web/static/images/czjc/huobi/huobic012.jpg',
-  c012_virtualcoin_icon: RES_BASE_URL + 'web/static/images/czjc/mobile/CGpayC012.jpg',
+  hbjc_img: img_assets('tutorial/hbjc_img', 'jpg'),
+  c012_virtualcoin_icon: img_assets('tutorial/c012_virtualcoin_icon', 'jpg'),
 
   //农场
   xync_num_01: img_assets('ball/xync_num_01'),
