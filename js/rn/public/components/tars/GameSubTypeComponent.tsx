@@ -62,7 +62,7 @@ const GameSubTypeComponent = ({
   const mainGames = sliceCount == -1 ? games : games?.slice(0, sliceCount) ?? []
   const subGames = sliceCount == -1 ? [] : games?.slice(sliceCount, games?.length) ?? []
 
-  ugLog('renderGameSub mainGames=', JSON.stringify(mainGames))
+  //ugLog('renderGameSub mainGames=', JSON.stringify(mainGames))
   return (
     <View style={containerStyle}>
       <List

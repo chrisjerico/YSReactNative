@@ -1,4 +1,4 @@
-import { Platform } from 'react-native'
+import { Linking, Platform } from 'react-native'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -21,6 +21,7 @@ import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
+import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -132,6 +133,19 @@ export default class PushHelper {
         if (B_DEBUG) {
           // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
           // return
+        }
+        if (game?.seriesId == '7' && game?.subId == MenuType.ZHGL) {
+          push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+          return
+        } else if (game?.seriesId == '7' && game?.subId == MenuType.CQK) {
+          push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
+          return
+        } else if (game?.seriesId == '7' && game?.subId == MenuType.CZJL) {
+          push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
+          return
+        } else if (game?.seriesId == '7' && game?.subId == MenuType.TXJL) {
+          push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
+          return
         }
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
@@ -429,19 +443,23 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             // if (B_DEBUG) {
-            //   push(PageName.CapitalPage)
-            //   return
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
+              return
             // }
-            subId = MenuType.CZ
-            break
+            // subId = MenuType.CZ
+            // break
           }
           case UGUserCenterType.每日签到: {
             subId = MenuType.QD
             break
           }
           case UGUserCenterType.取款: {
-            subId = MenuType.TX
-            break
+            // if (B_DEBUG) {
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
+            return
+            // }
+            // subId = MenuType.TX
+            // break
           }
           case UGUserCenterType.银行卡管理: {
             // if (B_DEBUG) {
@@ -546,8 +564,12 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.资金明细: {
-            subId = MenuType.ZHGL
-            break
+            // if (B_DEBUG) {
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+            return
+            // }
+            // subId = MenuType.ZHGL
+            // break
           }
           case UGUserCenterType.开奖网: {
             this.openWebView(

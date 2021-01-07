@@ -15,6 +15,8 @@ import { push } from '../../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../../public/navigation/Navigation'
 import CapitalContext from '../../CapitalContext'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
+import HTML from 'react-native-render-html'
+import { ugLog } from '../../../../../public/tools/UgLog'
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
@@ -39,7 +41,7 @@ const PayListComponent = ({ navigation, route }) => {
    * 跳转虚拟币教程
    */
   const gotoBtcTutorial = (item: PayAisleListData) => {
-    push(PageName.BtcTutorialPage, {btc_type: item?.id})
+    push(PageName.BtcTutorialPage, { btc_type: item?.id })
   }
 
   /**
@@ -50,6 +52,8 @@ const PayListComponent = ({ navigation, route }) => {
     let icon = item.bank_sort_icon //优先从后台拿图片
     if (anyEmpty(icon)) icon = PayIcon[item.code]
     if (anyEmpty(icon)) icon = PayIcon['39']
+
+    ugLog('item.tip=', item?.tip)
 
     return (
       <TouchableWithoutFeedback onPress={() => {
@@ -126,13 +130,8 @@ const PayListComponent = ({ navigation, route }) => {
                 </TouchableOpacity>
               }
             </View>
-            <WebView
-              textZoom={scale(380)}
-              javaScriptEnabled
-              showsVerticalScrollIndicator={false}
-              source={{ html: item.tip }}
-              // source={{ html: `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=0.8"></head><body>${item.tip}</body></html>` }}
-            />
+            <HTML
+              source={{ html: item?.tip?.replace(/font/g, 'span').replace(/color="#/g, 'style=\"color:#') }}/>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -176,6 +175,7 @@ const _styles = StyleSheet.create({
   text_title_container: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: scale(2),
   },
   text_title_0: {
     color: UGColor.TextColor2,

@@ -38,4 +38,12 @@ export default class AppDefine {
         break
     }
   }
+
+  /**
+   * 判断某个站点
+   * @param site
+   */
+  static isSite(site?: string): boolean {
+    return site?.toLowerCase() == AppDefine.siteId?.toLocaleLowerCase()
+  }
 }

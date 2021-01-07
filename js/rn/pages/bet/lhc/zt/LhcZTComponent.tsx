@@ -22,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcTM from './UseLhcTM'
+import UseLhcZT from './UseLhcZT'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import {
   PlayData,
@@ -44,12 +44,12 @@ interface IRouteParams {
 }
 
 /**
- * 六合彩特码
+ * 六合彩正特
  *
  * @param navigation
  * @constructor
  */
-const LhcTMComponent = ({}: IRouteParams) => {
+const LhcZTComponent = ({}: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
@@ -69,7 +69,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
     setSelectedBalls,
     addOrRemoveZodiac,
     addOrRemoveBall,
-  } = UseLhcTM()
+  } = UseLhcZT()
 
   //当前的数据是 特码A 还是 特码B
   const ballData = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
@@ -286,4 +286,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default LhcTMComponent
+export default LhcZTComponent
