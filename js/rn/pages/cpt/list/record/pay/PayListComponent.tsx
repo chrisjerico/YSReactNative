@@ -53,8 +53,6 @@ const PayListComponent = ({ navigation, route }) => {
     if (anyEmpty(icon)) icon = PayIcon[item.code]
     if (anyEmpty(icon)) icon = PayIcon['39']
 
-    ugLog('item.tip=', item?.tip)
-
     return (
       <TouchableWithoutFeedback onPress={() => {
         switch (item?.id) {
