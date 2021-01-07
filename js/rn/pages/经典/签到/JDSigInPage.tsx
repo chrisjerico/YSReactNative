@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, RefreshControl, Image, ImageBackgroun
 import { Button } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppDefine from '../../../public/define/AppDefine';
-import { useHtml5Image } from '../../../public/tools/tars';
+import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
 import React, { useEffect, useRef, useState, Component } from 'react'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { UGcheckinBonusModel, UGCheckinListModel, UGSignInModel } from '../../../redux/model/other/UGcheckinBonusModel';
@@ -15,9 +15,10 @@ import { setProps } from '../../base/UGPage';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
 import { JDSignInHistoryCP } from '../cp/JDSignInHistoryCP';
+import chroma from 'chroma-js';
 
 
-const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
+const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test10)
 
 const JDSigInPage = () => {
 
@@ -272,7 +273,7 @@ const JDSigInPage = () => {
     // 渲染列表项
     const _renderItem = ({ index, item }) => {
         console.log(index);
-        console.log('img = ', getHtml5ImagePlatform(undefined, 'static/vueTemplate/vue/images/my/userInfo/signed'));
+        console.log('img = ', img_platform(undefined, 'static/vueTemplate/vue/images/my/userInfo/signed'));
 
         return (
             <View key={item.key} style={styles.itemViewStyle}>
@@ -303,8 +304,9 @@ const JDSigInPage = () => {
         );
     }
 
+    const bgColor = chroma(Skin1.bgColor[0]).name() == 'white' ? ['#ccc', '#ccc'] : Skin1.bgColor
     return (
-        [<LinearGradient style={{ flex: 1, }} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={Skin1.bgColor}>
+        [<LinearGradient style={{ flex: 1, }} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={bgColor}>
             {/* 签到记录 */}
             <View style={[{ height: 40, }]}>
                 <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>

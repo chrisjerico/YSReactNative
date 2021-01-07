@@ -141,8 +141,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   AlipayTransferRecordView, //利息宝记录
   AlipayProfitView, //利息宝收益
   FeedbackView, //建议反馈
-  FeedbackSubmitView, //建议反馈
-  FeedbackRecordView, //建议反馈记录
+  FeedbackSubmitView, //提交反馈
+  FeedbackRecordView, //反馈记录
   SupFeedbackSubmitView, //建议反馈记录反馈
   TransferRecordView, //额度转页记录
   JDAgentPage,//申请代理

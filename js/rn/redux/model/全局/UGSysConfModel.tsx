@@ -67,6 +67,7 @@ export enum UGUserCenterType {
   开奖结果 = 109,
   砸金蛋 = 110,
   刮刮乐 = 111,
+  任务弹窗 = 112,
   即时注单 = 112,
 }
 
@@ -172,6 +173,7 @@ export default class UGSysConfModel {
   easyRememberDomain?: string // 易记域名*/
   chatLink?: string // 聊天的链接*/
   mBonsSwitch?: boolean // 俸禄开关开启。0 为开启， 1 为 关闭
+  missionPopUpSwitch?: '0' | '1' // 首页是否显示任务浮窗
 
   switchCoinPwdSms?: string // 资金密码开启短信验证
   switchCoinPwd?: string // 是否打开忘记密码

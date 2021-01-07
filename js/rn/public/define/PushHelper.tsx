@@ -1,4 +1,5 @@
 import { Linking, Platform } from 'react-native'
+import { useSafeArea } from 'react-native-safe-area-context'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -377,6 +378,14 @@ export default class PushHelper {
             })
             break
           }
+          case UGUserCenterType.任务弹窗: {
+            if (!UGUserModel.checkLogin()) return
+            console.log('top', AppDefine.safeArea.top, AppDefine.safeArea.bottom);
+            
+            const h = AppDefine.height - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 150;
+            OCHelper.call('UGTaskNoticeView.alloc.initWithFrame:.show', [NSValue.CGRectMake(25, (AppDefine.height - h) / 2, AppDefine.width - 50, h)])
+            break
+          }
           case UGUserCenterType.我的页: {
             OCHelper.call('UGTabbarController.shared.mms').then((mms: UGTabbarItem[]) => {
               let isOcPush = false
@@ -418,7 +427,11 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
-            push(PageName.ManageBankListPage, {})
+            if (__DEV__) {
+              push(PageName.ManageBankListPage, {})
+            } else {
+              OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [UGUserCenterType.银行卡管理])
+            }
             break
           }
           case UGUserCenterType.即时注单: {
@@ -432,6 +445,7 @@ export default class PushHelper {
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
+                console.log('跳转原生页面失败，请对接');
               }
             })
           }
@@ -607,6 +621,10 @@ export default class PushHelper {
               ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd', data: data })
             })
             return
+          }
+          case UGUserCenterType.任务弹窗: {
+            // TODO Android
+            break
           }
           case UGUserCenterType.我的页: {
             subId = MenuType.HYZX

@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image'
 import {scale} from '../../../public/tools/Scale'
 import Button from '../../../public/views/temp/Button'
 import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
+import { TouchableHighlight, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler'
 
 interface HomeHeaderProps {
   name: string;
@@ -58,7 +59,7 @@ const HomeHeader = ({
               />
               <Text
                 numberOfLines={1}
-                style={{color: 'white', fontSize: scale(20)}}>
+                style={{color: 'white', fontSize: scale(20), flex:1}}>
                 {name}
               </Text>
             </View>
@@ -134,27 +135,26 @@ const _styles = StyleSheet.create({
     marginRight: scale(8),
   },
   row: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   imageContainer: {
-    flex: 1.5,
+    width:180,
     justifyContent: 'center',
     alignItems: 'flex-start',
+    marginHorizontal:10,
   },
-  left: {flex: 1},
+  left: {},
   right_button_container: {
-    flex: 1,
+    flex:1,
     alignItems: 'center',
     flexDirection: "row",
     justifyContent: "center",
   },
   right_login: {
-    flex: 1,
+    flex:1,
     flexDirection: "row",
-    justifyContent: "flex-end",
     alignItems: "center",
   },
 })

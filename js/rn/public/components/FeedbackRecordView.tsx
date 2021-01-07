@@ -66,18 +66,20 @@ export const FeedbackRecordView = () => {
     }
   }
 
-  const getDaysArray = (year, month, date) => {
+  const getDaysArray = (year:number, month:number, date:number) => {
     let monthIndex = month - 1
     let newDate = new Date(year, monthIndex, date)
-    let result = []
+    const result = []
+    let day = date
     while (newDate.getMonth() == monthIndex) {
       result.push(moment(newDate).subtract(1, 'months').format('YYYY-MM-DD'))
-      newDate.setDate(newDate.getDate() + 1)
+      newDate.setDate(++day)
+      
     }
-    newDate = new Date(year, month - 1, 1)
-    while (newDate.getDate() <= date) {
+    newDate = new Date(year, month - 1, day = 1)
+    while (day <= date) {
+      newDate.setDate(day++)
       result.push(moment(newDate).format('YYYY-MM-DD'))
-      newDate.setDate(newDate.getDate() + 1)
     }
     return result
   }

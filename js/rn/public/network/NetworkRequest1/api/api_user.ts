@@ -116,8 +116,8 @@ export class api_user {
   }
 
   // 提交反馈
-  static addFeedback(type:string, pid:string, content:string,imgPaths:string[]) {
-    return this.c.post('addFeedback', {type:type, pid:pid, content:content ,imgPaths:imgPaths.toString});
+  static addFeedback(type:string, pid:string, content:string, imgPaths:string[]) {
+    return this.c.post('addFeedback', {type:type, pid:pid, content:content , imgPaths:imgPaths?.toString});
   }
 
   // 刪除全部站內信

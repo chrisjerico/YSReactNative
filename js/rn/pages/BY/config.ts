@@ -1,6 +1,6 @@
-import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
 
-const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://t132f.fhptcdn.com')
+const { getHtml5Image, img_platform, img_assets } = useHtml5Image(UGImageHost.t132f)
 
 const config = {
   defaultUserCenterLogos: {
@@ -17,13 +17,13 @@ const config = {
     11: getHtml5Image(23, 'center/my_redenvelope'), // 任务中心
     12: getHtml5Image(23, 'center/user_info'), // 个人信息
     13: getHtml5Image(7, 'zhmx'), // 建议反馈
-    14: getHtml5ImagePlatform('c087', 'zxkf'), // 在线客服 X
+    14: img_platform('c087', 'zxkf'), // 在线客服 X
     15: getHtml5Image(23, 'center/my_activity'), // 活动彩金
-    16: getHtml5ImagePlatform('c092', 'changlong_logo'), // 长龙助手
+    16: img_platform('c092', 'changlong_logo'), // 长龙助手
     17: getHtml5Image(23, 'center/rule'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
-    19: getHtml5ImagePlatform('c064', 'qqkf'), // QQ客服
-    20: getHtml5ImagePlatform('c006', 'kjw'), // 開獎網
+    19: img_platform('c091', 'qqkf'), // QQ客服
+    20: img_platform('c006', 'kjw'), // 開獎網
   },
   menus: [
     {
@@ -43,7 +43,7 @@ const config = {
     },
     {
       title: '投注记录',
-      logo: getHtml5ImagePlatform('c175', 'tzjl'),
+      logo: img_platform('c175', 'tzjl'),
       onPress: goToUserCenterType.彩票注单记录,
     },
     {
@@ -59,17 +59,17 @@ const config = {
     },
     {
       title: '站内短信',
-      logo: getHtml5ImagePlatform('c054', 'znx'),
+      logo: img_platform('c054', 'znx'),
       onPress: goToUserCenterType.站内信,
     },
     {
       title: '返回大厅',
-      logo: getIbbImage('dM51dH6/gobacklobby'),
+      logo: img_assets('shouye'),
       onPress: () => {},
     },
     {
       title: '退出登录',
-      logo: getIbbImage('pWfZ2L6/logout'),
+      logo: getHtml5Image(25, 'tc_r'),
       onPress: () => {},
     },
   ],

@@ -62,6 +62,7 @@ export interface List {
     supportTrial?: number;
     isPopup?: number;
 }
+export type HomeGameModel = List
 
 export interface Icon {
     id?: string;

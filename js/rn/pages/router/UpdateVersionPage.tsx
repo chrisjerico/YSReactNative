@@ -34,6 +34,9 @@ const MAX_TIME = 8 //最多8秒倒计时
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
   const { setProps, progress = 0, counter = 0, clickCount = 0, showNetwork = '', text = '正在努力更新中...', bCodePush = false, bBanner = false } = props
 
+  // 保存安全区域
+  AppDefine.safeArea = useSafeArea()
+
   //网络状态的回调
   const testResult = (str: string) => {
     let net = ' ' + AppDefine.host + ' ' + str
