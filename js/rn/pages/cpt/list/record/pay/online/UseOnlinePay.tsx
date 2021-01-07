@@ -8,7 +8,7 @@ import { ugLog } from '../../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { PayAisleData } from '../../../../../../public/network/Model/wd/PayAisleModel'
 import { hideLoading, showLoading } from '../../../../../../public/widget/UGLoadingCP'
-
+import queryStrng from 'query-string'
 /**
  * 在线支付
  * @constructor
@@ -34,7 +34,13 @@ const UseOnlinePay = () => {
     APIRouter.recharge_onlinePay(params).then(({ data: res }) => {
       //ugLog('data res=', JSON.stringify(res?.data))
       if (res?.code == 0) {
-        APIRouter.open_onlinepay(params)
+        const {payId, gateway, money} = queryStrng.parse(res?.data)
+        ugLog('payId=', payId, gateway, money)
+        APIRouter.open_onlinepay({
+          payId: payId.toString(),
+          gateway: gateway.toString(),
+          money: money.toString(),
+        })
       } else {
         Toast(res?.msg)
       }

@@ -18,10 +18,10 @@ import { LHC_Tab } from '../../const/LotteryConst'
 
 
 /**
- * 六合彩特码
+ * 六合彩正特
  * @constructor
  */
-const UseLhcTM = () => {
+const UseLhcZT = () => {
 
   const {
     nextIssueData,
@@ -105,5 +105,5 @@ const UseLhcTM = () => {
   }
 }
 
-export default UseLhcTM
+export default UseLhcZT
 

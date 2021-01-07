@@ -343,7 +343,6 @@ const _styles = StyleSheet.create({
   btc_type: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
-    fontStyle: 'italic',
   },
   choose_result_copy: {
     color: UGColor.RedColor2,

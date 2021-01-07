@@ -62,6 +62,9 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
         })
         break
       case 'android':
+        // push(PageName.PromotionPage, {
+        //   showBackBtn: true,
+        // })
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
           seriesId: '7',
           subId: MenuType.YHDD,

@@ -66,11 +66,13 @@ const ForgetPasswordPage = ({ navigation, route }) => {
             { value: '1' }).then((res) => {
             if (res == null) return
 
+            ugLog('renderIdCard=', JSON.stringify(res))
+
             showLoading()
             api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
               ({ data, msg }) => {
                 hideLoading()
-                setFirstImage(data?.url)
+                setFirstImage(data)
               }, () => {
                 hideLoading()
               })
@@ -82,7 +84,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
                 <Icon size={scale(72)}
                       color={Skin1.themeColor}
                       name={'plus'}/> :
-                <Image source={{ uri: firstImage }}
+                <Image source={{ uri: firstImage?.url }}
                        style={_styles.id_image}
                        resizeMode={'stretch'}/>
             }
@@ -97,7 +99,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
             api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
               ({ data, msg }) => {
                 hideLoading()
-                setSecondImage(data?.url)
+                setSecondImage(data)
               }, () => {
                 hideLoading()
               })
@@ -109,7 +111,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
                 <Icon size={scale(72)}
                       color={Skin1.themeColor}
                       name={'plus'}/> :
-                <Image source={{ uri: secondImage }}
+                <Image source={{ uri: secondImage?.url }}
                        style={_styles.id_image}
                        resizeMode={'stretch'}/>
             }
