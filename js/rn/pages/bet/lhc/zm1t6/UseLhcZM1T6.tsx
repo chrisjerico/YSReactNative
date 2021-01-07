@@ -14,6 +14,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
 import ISelBall, { isSelectedBall, isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
+import LotteryConst from '../../const/LotteryConst'
 
 /**
  * 六合彩正码1t6
@@ -24,7 +25,7 @@ const UseLhcZM1T6 = () => {
   const {
     nextIssueData,
     playOddDetailData,
-    playOddData,
+    curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -32,14 +33,24 @@ const UseLhcZM1T6 = () => {
 
   const [dataZM1T6, setDataZM1T6] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
 
+  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
+
+  /**
+   * 找出当前彩种数据
+   */
+  useEffect(() => {
+    setPlayOddData(playOddDetailData()?.playOdds?.find(
+      (item) => item?.code == LotteryConst.ZM1_6))
+  }, [playOddDetailData()])
+
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
-    //ugLog('dataTMB 2 =', JSON.stringify(playOddData()))
+    //ugLog('dataTMB 2 =', JSON.stringify(playOddData))
     //特码取前3个数据
-    if (!anyEmpty(playOddData()?.playGroups)) {
-      setDataZM1T6(playOddData()?.playGroups)
+    if (!anyEmpty(playOddData?.playGroups)) {
+      setDataZM1T6(playOddData?.playGroups)
     }
-  }, [playOddData()])
+  }, [playOddData])
 
   return {
     dataZM1T6,

@@ -1,12 +1,12 @@
 import {
   FlatList, Platform,
-  ScrollView,
+  ScrollView, StyleProp,
   StyleSheet,
   Text,
   TextInput,
   TouchableNativeFeedback, TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View, ViewProps, ViewStyle,
 } from 'react-native'
 import * as React from 'react'
 import FastImage from 'react-native-fast-image'
@@ -41,6 +41,7 @@ import LotteryERect from '../../widget/LotteryERect'
 import { LHC_Tab } from '../../const/LotteryConst'
 
 interface IRouteParams {
+  style?: StyleProp<ViewStyle>
 }
 
 /**
@@ -49,7 +50,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({}: IRouteParams) => {
+const LhcZTComponent = ({ style }: IRouteParams) => {
 
   const [curData, setCurData] = useState<Array<PlayGroupData>>(null)
 
@@ -123,7 +124,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
    * @param groupData
    */
   const renderZT1 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
-                                                        style={CommStyles.flex}>
+                                                         style={CommStyles.flex}>
 
     <View style={_styles.sub_title_container}>
       <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
@@ -142,7 +143,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
    * @param groupData
    */
   const renderZT2 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
-                                                        style={CommStyles.flex}>
+                                                         style={CommStyles.flex}>
 
     <View style={_styles.sub_title_container}>
       <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
@@ -164,7 +165,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
   </ScrollView>
 
   return (
-    <View style={CommStyles.flex}>
+    <View style={[CommStyles.flex, style, style]}>
       {renderTab()}
       {renderAllBall()}
     </View>

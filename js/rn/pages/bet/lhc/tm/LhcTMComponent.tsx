@@ -1,12 +1,12 @@
 import {
   FlatList, Platform,
-  ScrollView,
+  ScrollView, StyleProp,
   StyleSheet,
   Text,
   TextInput,
   TouchableNativeFeedback, TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View, ViewStyle,
 } from 'react-native'
 import * as React from 'react'
 import FastImage from 'react-native-fast-image'
@@ -41,6 +41,7 @@ import LotteryERect from '../../widget/LotteryERect'
 import { LHC_Tab } from '../../const/LotteryConst'
 
 interface IRouteParams {
+  style?: StyleProp<ViewStyle>
 }
 
 /**
@@ -49,7 +50,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcTMComponent = ({}: IRouteParams) => {
+const LhcTMComponent = ({ style }: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
@@ -215,7 +216,7 @@ const LhcTMComponent = ({}: IRouteParams) => {
   </ScrollView>
 
   return (
-    <View style={CommStyles.flex}>
+    <View style={[CommStyles.flex, style]}>
       {renderTab()}
       {renderZodiac()}
       {renderAllBall()}

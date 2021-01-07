@@ -134,33 +134,48 @@ const BetLotteryPage = ({ navigation, route }) => {
    */
   const renderRightContent = () => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
+
     let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
-    switch (lotteryCode) {
-      case LotteryConst.TM: {
-        return <LhcTMComponent key={lotteryCode}/>
-      }
-      case LotteryConst.LM: {
-        return <LhcLMComponent key={lotteryCode}/>
-      }
-      case LotteryConst.ZM: {
-        return <LhcZMComponent key={lotteryCode}/>
-      }
-      case LotteryConst.ZM1_6: {
-        return <LhcZM1T6Component key={lotteryCode}/>
-      }
-      case LotteryConst.ZT: {
-        return <LhcZTComponent key={lotteryCode}/>
-      }
 
-    }
+    return <View style={CommStyles.flex}>
+      <LhcTMComponent style={lotteryCode == LotteryConst.TM ? null : { display: 'none' }}
+                      key={LotteryConst.TM}/>
+      <LhcLMComponent style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
+                      key={LotteryConst.LM}/>
+      <LhcZMComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
+                      key={LotteryConst.ZM}/>
+      <LhcZM1T6Component style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
+                         key={LotteryConst.ZM1_6}/>
+      <LhcZTComponent style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
+                      key={LotteryConst.ZT}/>
+    </View>
 
-    return null
+    // switch (lotteryCode) {
+    //   case LotteryConst.TM: {
+    //     return <LhcTMComponent key={LotteryConst.TM}/>
+    //   }
+    //   case LotteryConst.LM: {
+    //     return <LhcLMComponent key={LotteryConst.LM}/>
+    //   }
+    //   case LotteryConst.ZM: {
+    //     return <LhcZMComponent key={LotteryConst.ZM}/>
+    //   }
+    //   case LotteryConst.ZM1_6: {
+    //     return <LhcZM1T6Component key={LotteryConst.ZM1_6}/>
+    //   }
+    //   case LotteryConst.ZT: {
+    //     return <LhcZTComponent key={LotteryConst.ZT}/>
+    //   }
+    //
+    // }
+    //
+    // return null
   }
 
   /**
    * 绘制游戏聊天切换tab
    */
-  const renderGameTab = () => <View key={'renderGameTab'}  style={[_styles.game_tab_container,
+  const renderGameTab = () => <View key={'renderGameTab'} style={[_styles.game_tab_container,
     { backgroundColor: `${Skin1.themeColor}ff` }]}>
 
     <View style={[_styles.game_tab, _styles.game_tab_left, { backgroundColor: '#ffffff44' }]}>
@@ -176,7 +191,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     <BetLotteryContext.Provider value={{
       nextIssueData: () => nextIssueData,
       playOddDetailData: () => playOddDetailData,
-      playOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
+      curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
     }}>
       <BaseScreen screenName={''}
                   style={{ backgroundColor: UGColor.BackgroundColor1 }}
