@@ -5,7 +5,7 @@ import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcLM from './UseLhcLM'
+import UseLhcZM1T6 from './UseLhcZM1T6'
 import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
@@ -16,23 +16,23 @@ interface IRouteParams {
 }
 
 /**
- * 六合彩两面
+ * 正码1t6
  *
  * @param navigation
  * @constructor
  */
-const LhcLMComponent = ({}: IRouteParams) => {
+const LhcZM1T6Component = ({}: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
-    dataLM,
-    setDataLM,
+    dataZM1T6,
+    setDataZM1T6,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseLhcLM()
+  } = UseLhcZM1T6()
 
 
   /**
@@ -50,7 +50,7 @@ const LhcLMComponent = ({}: IRouteParams) => {
   const renderAllBall = () => <View>
     <ScrollView showsVerticalScrollIndicator={false}>
       {
-        dataLM?.map((groupData) => {
+        dataZM1T6?.map((groupData) => {
           return <View key={groupData?.id}
                        style={CommStyles.flex}>
 
@@ -100,4 +100,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default LhcLMComponent
+export default LhcZM1T6Component

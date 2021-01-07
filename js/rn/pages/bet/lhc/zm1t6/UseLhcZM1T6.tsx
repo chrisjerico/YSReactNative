@@ -16,10 +16,10 @@ import ISelBall, { isSelectedBall, isSelectedBallOnId } from '../../const/ISelBa
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 
 /**
- * 六合彩两面
+ * 六合彩正码1t6
  * @constructor
  */
-const UseLhcLM = () => {
+const UseLhcZM1T6 = () => {
 
   const {
     nextIssueData,
@@ -30,25 +30,25 @@ const UseLhcLM = () => {
     addOrRemoveBall,
   } = UseLotteryHelper()
 
-  const [dataLM, setDataLM] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
+  const [dataZM1T6, setDataZM1T6] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
 
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
     //ugLog('dataTMB 2 =', JSON.stringify(playOddData()))
     //特码取前3个数据
     if (!anyEmpty(playOddData()?.playGroups)) {
-      setDataLM([playOddData()?.playGroups[0]])
+      setDataZM1T6(playOddData()?.playGroups)
     }
   }, [playOddData()])
 
   return {
-    dataLM,
-    setDataLM,
+    dataZM1T6,
+    setDataZM1T6,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   }
 }
 
-export default UseLhcLM
+export default UseLhcZM1T6
 

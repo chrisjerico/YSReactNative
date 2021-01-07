@@ -30,6 +30,7 @@ import TimeComponent from './tm/TimeComponent'
 import LotteryConst from './const/LotteryConst'
 import LhcLMComponent from './lhc/lm/LhcLMComponent'
 import LhcZMComponent from './lhc/zm/LhcZMComponent'
+import LhcZM1T6Component from './lhc/zm1t6/LhcZM1T6Component'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -142,6 +143,9 @@ const BetLotteryPage = ({ navigation, route }) => {
       }
       case LotteryConst.ZM: {
         return <LhcZMComponent key={lotteryCode}/>
+      }
+      case LotteryConst.ZM1_6: {
+        return <LhcZM1T6Component key={lotteryCode}/>
       }
 
     }
