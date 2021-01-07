@@ -45,7 +45,7 @@ const JDPromotionTabRealityRcordCP = ({ pageTitle, titleArray }: { pageTitle?: s
   let { current: v } = useRef<JDPromotionTabRealityRcordCP>(
     {
       pageTitle: PromotionConst.真人记录,
-      titleArray: ["分级", "用户", "游戏", "日期", "投注金额", "会员输赢"],
+      titleArray: ["分级888", "用户", "游戏", "日期", "投注金额", "会员输赢"],
       items: [],
       levelArray: [],
       pageSize: 20,

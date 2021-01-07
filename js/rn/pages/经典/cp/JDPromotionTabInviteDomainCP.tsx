@@ -45,7 +45,7 @@ const JDPromotionTabInviteDomainCP = ({ pageTitle, titleArray }: { pageTitle?: s
   let { current: v } = useRef<JDPromotionTabInviteDomainCP>(
     {
       pageTitle: PromotionConst.域名绑定,
-      titleArray: ["首页推荐链接", "注册推荐链接"],
+      titleArray: ["首页推荐链接666", "注册推荐链接"],
       items: [],
       levelArray: [],
       pageSize: 20,

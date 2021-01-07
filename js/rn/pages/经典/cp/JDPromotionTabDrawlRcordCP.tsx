@@ -45,7 +45,7 @@ const JDPromotionTabDrawlRcordCP = ({ pageTitle, titleArray }: { pageTitle?: str
   let { current: v } = useRef<JDPromotionTabDrawlRcordCP>(
     {
       pageTitle: PromotionConst.提款记录,
-      titleArray: ["分级", "用户名", "日期", "提款金额"],
+      titleArray: ["分级555", "用户名", "日期", "提款金额"],
       items: [],
       levelArray: [],
       pageSize: 20,
