@@ -61,7 +61,6 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
       },
     })
   }
-  console.log('tops = ', useSafeArea()?.top);
   
   return <Header {...p} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top-2, height: useSafeArea()?.top + 45 }} />
 }

@@ -42,7 +42,7 @@ export default class UGUserModel extends UGLoginModel {
     UGStore.save();
   }
   static updateFromNetwork(completed?: () => void) {
-    return api.user.info().setCompletionBlock(({ data: user }, sm) => {
+    return api.user.info().useSuccess(({ data: user }, sm) => {
       sm.noShowErrorHUD = true;
       UGStore.dispatch({ type: 'merge', userInfo: user })
       UGStore.save();
