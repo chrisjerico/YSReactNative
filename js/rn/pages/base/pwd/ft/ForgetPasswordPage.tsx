@@ -69,11 +69,11 @@ const ForgetPasswordPage = ({ navigation, route }) => {
             ugLog('renderIdCard=', JSON.stringify(res))
 
             showLoading()
-            api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
+            api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).useSuccess(
               ({ data, msg }) => {
                 hideLoading()
                 setFirstImage(data)
-              }, () => {
+              }).useFailure(() => {
                 hideLoading()
               })
           })
@@ -96,11 +96,11 @@ const ForgetPasswordPage = ({ navigation, route }) => {
             if (res == null) return
 
             showLoading()
-            api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).setCompletionBlock(
+            api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).useSuccess(
               ({ data, msg }) => {
                 hideLoading()
                 setSecondImage(data)
-              }, () => {
+              }).useFailure(() => {
                 hideLoading()
               })
           })
