@@ -34,7 +34,7 @@ import LotteryBall, { BallType } from '../../../../public/components/view/Lotter
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import BetLotteryContext from '../../BetLotteryContext'
 import EBall from '../../../../public/components/view/lottery/EBall'
-import { arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
@@ -51,84 +51,53 @@ interface IRouteParams {
  */
 const LhcZTComponent = ({}: IRouteParams) => {
 
-
-  // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
+  const [curData, setCurData] = useState<Array<PlayGroupData>>(null)
 
   const {
     tabIndex,
     setTabIndex,
-    dataTMA,
-    setDataTMA,
-    dataTMB,
-    setDataTMB,
-    zodiacData,
-    setZodiacData,
+    dataZT,
+    setDataZT,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
-    addOrRemoveZodiac,
     addOrRemoveBall,
   } = UseLhcZT()
 
-  //当前的数据是 特码A 还是 特码B
-  const ballData = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
-
-  /**
-   * 绘制 特码A 特码B Tab
-   */
-  const renderTabItem = (tab?: number) => <View style={[
-    _styles.tab_item,
-    tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-  ]}>
-    <TouchableOpacity onPress={() => setTabIndex(tab)}
-                      style={_styles.tab_title_tb}>
-      <Text style={[
-        _styles.tab_title,
-        tabIndex == tab ? { color: 'white' } : null,
-      ]}>{
-        tab == LHC_Tab.TM_A ?
-          (dataTMA && dataTMA[0].alias) :
-          (dataTMB && dataTMB[0].alias)
-      }</Text>
-    </TouchableOpacity>
-  </View>
-
-  /**
-   * 绘制 特码A 特码B 容器
-   */
-  const renderTab = () => <View style={_styles.tab_container}>
-    {renderTabItem(LHC_Tab.TM_B)}
-    {renderTabItem(LHC_Tab.TM_A)}
-  </View>
+  useEffect(() => {
+    !anyEmpty(dataZT) && setCurData(dataZT[tabIndex])
+  }, [tabIndex, dataZT])
 
   /**
    * 绘制生肖
    */
-  const renderZodiac = () => <View>
-    <ScrollView showsHorizontalScrollIndicator={false}
+  const renderTab = () => <View style={_styles.tab_title_container}>
+    <ScrollView style={_styles.tab_title_sv}
+                showsHorizontalScrollIndicator={false}
                 horizontal={true}>
-      <View style={_styles.zodiac_container}>
+      <View style={_styles.tab_title_content}>
         {
-          zodiacData?.map((item, index) =>
-            <TouchableOpacity key={index}
-                              onPress={() => addOrRemoveZodiac(item)}>
-              <View key={`${selectedZodiac?.includes(item)}`}
-                    style={_styles.zodiac_item}>
-                {
-                  selectedZodiac?.includes(item) ?
-                    <Icon size={scale(36)}
-                          color={Skin1.themeColor}
-                          name={'check-circle'}/> :
-                    <Icon size={scale(36)}
-                          name={'circle-o'}/>
-                }
-                <Text style={_styles.zodiac_item_text}>{item?.name}</Text>
+          dataZT?.map((item, index) =>
+            <TouchableOpacity style={CommStyles.flex} key={index}
+                              onPress={() => setTabIndex(index)}>
+              <View key={index}
+                    style={[
+                      _styles.tab_item,
+                      index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+                    ]}>
+                <Text style={[
+                  _styles.tab_title_item_text,
+                  index == tabIndex ? { color: `white` } : null,
+                ]}>{item[0]?.alias}</Text>
               </View>
             </TouchableOpacity>)
         }
       </View>
     </ScrollView>
+    <Icon size={scale(36)}
+          color={Skin1.themeColor}
+          name={'angle-double-left'}/>
   </View>
 
   /**
@@ -187,37 +156,17 @@ const LhcZTComponent = ({}: IRouteParams) => {
   </View>
 
   /**
-   * 绘制 色波B/A
-   * @param groupData
-   */
-  const renderSB = (groupData?: PlayGroupData) => <View key={groupData?.id}
-                                                        style={CommStyles.flex}>
-
-    <View style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
-    </View>
-
-    <View style={_styles.ball_container}>
-      {
-        groupData?.plays?.map((item) => renderERect(item))
-      }
-    </View>
-  </View>
-
-  /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView style={CommStyles.flex}
-                                          showsVerticalScrollIndicator={false}>
-    {arrayLength(ballData) > 0 && renderTM(ballData[0])}
-    {arrayLength(ballData) > 1 && renderLM(ballData[1])}
-    {arrayLength(ballData) > 2 && renderSB(ballData[2])}
+  const renderAllBall = () => <ScrollView
+    showsVerticalScrollIndicator={false}>
+    {arrayLength(curData) > 0 && renderTM(curData[0])}
+    {arrayLength(curData) > 1 && renderLM(curData[1])}
   </ScrollView>
 
   return (
     <View style={CommStyles.flex}>
       {renderTab()}
-      {renderZodiac()}
       {renderAllBall()}
     </View>
 
@@ -257,27 +206,26 @@ const _styles = StyleSheet.create({
     fontSize: scale(24),
     padding: scale(6),
   },
-  tab_item: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: scale(8),
-  },
-  tab_container: {
+  tab_title_container: {
     flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
   },
-  zodiac_container: {
+  tab_title_sv: {
+    flex: 1,
+  },
+  tab_title_content: {
     flexDirection: 'row',
   },
-  zodiac_item: {
-    flexDirection: 'row',
-    paddingVertical: scale(16),
-    paddingHorizontal: scale(12),
+  tab_item: {
+    justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: scale(8),
+    paddingVertical: scale(8),
+    paddingHorizontal: scale(30),
   },
-  zodiac_item_text: {
+  tab_title_item_text: {
     color: UGColor.TextColor3,
     fontSize: scale(22),
     paddingLeft: scale(6),

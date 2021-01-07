@@ -33,9 +33,7 @@ const UseLhcZT = () => {
     zodiacBallIds,
   } = UseLotteryHelper()
 
-  const [dataTMA, setDataTMA] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
-  const [dataTMB, setDataTMB] = useState<Array<PlayGroupData>>(null) //当前特码B数据列表
-  const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //生肖数据列表
+  const [dataZT, setDataZT] = useState<Array<Array<PlayGroupData>>>(null) //当前重组后的正特数据列表
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
 
   const [tabIndex, setTabIndex] = useState(LHC_Tab.TM_B) //当前选中哪个tab，TAB_A 和 TAB_B
@@ -43,64 +41,31 @@ const UseLhcZT = () => {
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
     //特码取前3个数据 特码 两面 色波
-    if (!anyEmpty(playOddData()?.playGroups)) {
-      setDataTMA([playOddData()?.playGroups[0], playOddData()?.playGroups[1], playOddData()?.playGroups[2]])
-      setDataTMB([playOddData()?.playGroups[3], playOddData()?.playGroups[4], playOddData()?.playGroups[5]])
-      setZodiacData(playOddDetailData()?.setting?.zodiacNums)
+    if (arrayLength(playOddData()?.playGroups) % 2 == 0) {//长度是偶数
+      let newData = new Array<Array<PlayGroupData>>()
+      playOddData()?.playGroups?.map((item, index) => {
+        if (index % 2 == 0) {
+          newData.push([
+            playOddData()?.playGroups[index],
+            playOddData()?.playGroups[index+1],
+          ])
+        }
+      })
+      ugLog('newData=', JSON.stringify(newData))
+      setDataZT(newData)
 
     }
   }, [playOddData()])
 
-  /**
-   * 有选中的数据变化时，计算生肖的选中情况
-   */
-  useEffect(() => {
-    let selArr = []
-    zodiacData?.map((zodiac) => {
-      let data = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
-      const zodiacIds = zodiacBallIds(zodiac, data[0])
-
-      const intersection = selectedBalls?.filter((item) => zodiacIds.includes(item))
-      if (arrayLength(intersection) == arrayLength(zodiac.nums)) {
-        selArr = [...selArr, zodiac]
-      }
-    })
-
-    setSelectedZodiac(selArr)
-  }, [selectedBalls])
-
-  /**
-   * 添加或移除生肖
-   * @param item
-   */
-  const addOrRemoveZodiac = (item: ZodiacNum) => {
-    //重组数字
-    // const checkMap = item.nums.map((item) => ('0' + item).slice(-2))
-    let data = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
-    const zodiacIds = zodiacBallIds(item, data[0])
-
-    if (selectedZodiac.includes(item)) {
-      let newResult = selectedBalls?.filter((item) => !zodiacIds.includes(item))
-      setSelectedBalls(newResult)
-    } else {
-      setSelectedBalls(Array.from(new Set([...selectedBalls, ...zodiacIds])))
-    }
-  }
-
   return {
     tabIndex,
     setTabIndex,
-    dataTMA,
-    setDataTMA,
-    dataTMB,
-    setDataTMB,
-    zodiacData,
-    setZodiacData,
+    dataZT,
+    setDataZT,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
-    addOrRemoveZodiac,
     addOrRemoveBall,
   }
 }
