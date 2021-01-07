@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-community/async-storage'
+import { Platform } from 'react-native'
 import { Action, Unsubscribe } from 'redux'
 import { setProps, UGBasePageProps } from '../../pages/base/UGPage'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { PageName } from '../../public/navigation/Navigation'
 import UGBannerModel from '../model/全局/UGBannerModel'
 import UGGameLobbyModel from '../model/全局/UGGameLobbyModel'
@@ -110,15 +112,27 @@ export class UGStore {
   }
 
   // 从本地获取所有数据，并刷新UI
-  static refreshFromLocalData() {
-    AsyncStorage.getItem(AsyncStorageKey.IGlobalState).then((value) => {
-      const gs: IGlobalState = JSON.parse(value)
-      gs && UGStore.dispatch({ type: 'reset', sysConf: gs?.sysConf, userInfo: gs?.userInfo })
-    })
+  static async refreshFromLocalData() {
+    const str = await this.load(AsyncStorageKey.IGlobalState)
+    const gs: IGlobalState = JSON.parse(str)
+    gs && UGStore.dispatch({ type: 'reset', sysConf: gs?.sysConf, userInfo: gs?.userInfo })
   }
 
   // 存储到本地
-  static save() {
-    AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(this.globalProps))
+  static async save(key = AsyncStorageKey.IGlobalState, value: any = this.globalProps) {
+    if (Platform.OS == 'ios') {
+      await OCHelper.call('NSUserDefaults.standardUserDefaults[setObject:forKey:]', [JSON.stringify(value), key])
+    } else {
+      await AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(value))
+    }
+  }
+
+  // 获取本地缓存
+  static async load(key: AsyncStorageKey): Promise<string> {
+    if (Platform.OS == 'ios') {
+      return OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', [key])
+    } else {
+      return AsyncStorage.getItem(key)
+    }
   }
 }
