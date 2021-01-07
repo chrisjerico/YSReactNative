@@ -106,9 +106,6 @@ export async function setRnPageInfo(force = false) {
         允许未登录访问: false,
       })
     }
-    if (skitType.indexOf('乐FUN') != -1) {
-      pages = pages.concat(LEFPages)
-    }
   }
 
  // 申请代理
@@ -211,6 +208,9 @@ export async function setRnPageInfo(force = false) {
   }
   if (skitType.indexOf('威尼斯') != -1) {
     pages = pages.concat(WNSPages)
+  }
+  if (skitType.indexOf('乐FUN') != -1) {
+    pages = pages.concat(LEFPages)
   }
   // 替换原生页面
   RnPageModel.pages = pages
