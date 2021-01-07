@@ -102,8 +102,7 @@ import JDPromotionIncomePage from '../经典/推荐收益/JDPromotionIncomePage'
 import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import BetLotteryPage from '../bet/BetLotteryPage'
-
-
+import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
 /**
  * 所有界面
  */
@@ -151,7 +150,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDAgentPage,//申请代理
   JDRedEnveloperPage,//红包扫雷
   JDPromotionIncomePage,//推荐收益
-
+  JDPromotionCodeListPage,//邀请码
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页

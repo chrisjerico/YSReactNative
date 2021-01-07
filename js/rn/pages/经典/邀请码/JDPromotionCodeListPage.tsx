@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
@@ -17,9 +17,12 @@ import { PromotionConst } from '../const/PromotionConst';
 import { Badge, Button } from 'react-native-elements';
 import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
+import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
+import { UGStore } from '../../../redux/store/UGStore';
 
 
-interface JDPromotionTabInviteDomainCP {
+interface JDPromotionCodeListPage {
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -33,24 +36,22 @@ interface JDPromotionTabInviteDomainCP {
     isRefreshing?: boolean//下拉刷新开始结束 
     isLastPage?: boolean //是否是最后一页 
   }
-  //===下拉数据====================================
-  levelArray?: Array<any>,// 下拉名称数据
-  levelindex?: number,//下拉选中的索引
+
 
 }
 
-const JDPromotionTabInviteDomainCP = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
+const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
 
+  //调用sysConf
+  const { inviteCode } = UGStore.globalProps.sysConf
 
-  let { current: v } = useRef<JDPromotionTabInviteDomainCP>(
+  let { current: v } = useRef<JDPromotionCodeListPage>(
     {
-      pageTitle: PromotionConst.域名绑定,
-      titleArray: ["首页推荐链接", "注册推荐链接"],
+      pageTitle: PromotionConst.会员管理,
+      titleArray: [inviteCode.displayWord, "招募类型", "创建时间", "注册会员",],
       items: [],
-      levelArray: [],
       pageSize: 20,
       pageNumber: 1,
-      levelindex: 0,
       state: {
         showFoot: 0,
         isRefreshing: true,
@@ -58,23 +59,41 @@ const JDPromotionTabInviteDomainCP = ({ pageTitle, titleArray }: { pageTitle?: s
       }
     }
   )
-  let capitalController //类型选择
-  v.levelArray = [{ value: 0, label: '全部下线' },
-  { value: 1, label: '1级下线' },
-  { value: 2, label: '2级下线' },
-  { value: 3, label: '3级下线' },
-  { value: 4, label: '4级下线' },
-  { value: 5, label: '5级下线' },
-  { value: 6, label: '6级下线' },
-  { value: 7, label: '7级下线' },
-  { value: 8, label: '8级下线' },
-  { value: 9, label: '9级下线' },
-  { value: 10, label: '10级下线' }];
-  //初始化
+
+  /**
+ * 初始化
+ * @param item
+ */
   useEffect(() => {
+    setProps({
+      navbarOpstions: {
+        hidden: false, title: inviteCode.displayWord,
+        rightComponent:
+          <Button
+            title={'生成' + inviteCode.displayWord}
+            buttonStyle={{ backgroundColor: Skin1.themeColor, width: 120, }}
+            titleStyle={{ fontSize: 16 }}
+            onPress={() => rightClicked()}
+          />
+      },
+      didFocus: () => {
         onHeaderRefresh()
+        AppDefine.checkHeaderShowBackButton((show) => {
+          setProps({ navbarOpstions: { back: show } });
+        })
+      }
+    })
+
   }, [])
 
+  /**
+    * 跳到生成邀请码界面
+    * 
+    */
+  function rightClicked() {
+
+
+  }
   /**
  * 下拉刷新
  * 
@@ -83,7 +102,7 @@ const JDPromotionTabInviteDomainCP = ({ pageTitle, titleArray }: { pageTitle?: s
     v.state.isRefreshing = true
     v.pageNumber = 1
     console.log('下拉刷新');
-    teamInviteDomainData()
+    inviteCodeListData()
   }
   /**
   * 点击（上拉）加载更多数据
@@ -94,7 +113,7 @@ const JDPromotionTabInviteDomainCP = ({ pageTitle, titleArray }: { pageTitle?: s
     console.log('上拉加载');
     v.state.showFoot = 1
     setProps()
-    teamInviteDomainData()
+    inviteCodeListData()
   }
   /**
 * 点击刷新
@@ -103,7 +122,7 @@ const JDPromotionTabInviteDomainCP = ({ pageTitle, titleArray }: { pageTitle?: s
   function onEndReached() {
     console.log('onEndReached');
     console.log('showFoot ==', v.state.showFoot);
-    console.log('showFoot ==', v.state.showFoot);
+
     //如果是正在加载中或没有更多数据了，则返回
     if (v.state.showFoot != 0) {
       console.log('正在加载中或没有更多数据了，则返回');
@@ -135,52 +154,55 @@ const JDPromotionTabInviteDomainCP = ({ pageTitle, titleArray }: { pageTitle?: s
   }
 
   /**
-* 得到域名绑定列表数据
-* 
-*/
-function teamInviteDomainData() {
+   * 得到邀请码列表数据
+   * 
+   */
+  function inviteCodeListData() {
 
-  // console.log('v.state.isLastPage1：', v.state.isLastPage);
-  console.log('域名绑定列表数据===', v.pageNumber);
-  api.team.inviteDomain(v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
-    let dicData = data;
-    let arrayData = returnData(dicData);
+    console.log('得到邀请码列表数据===', v.pageNumber);
+    api.team.inviteCodeList(1, v.pageSize).setCompletionBlock(({ data }) => {
 
-    if (arrayData.length == 0) {
-      console.log('进来了：==================');
-      v.state.isLastPage = true;
-      v.state.showFoot = 2
-      v.state.isRefreshing = false;
-      setProps();
-      return;
-    }
-    if (v.pageNumber == 1) {
-      v.state.isRefreshing = false
-      v.items.length = 0
-      v.items = JSON.parse(JSON.stringify(arrayData))
-      console.log('v.state.isRefreshing ====', v.state.isRefreshing);
-    }
-    else {
-      v.items = v.items.concat(JSON.parse(JSON.stringify(arrayData)))
-    }
-    v.state.showFoot = 0
-    if (arrayData.length < v.pageSize) {
-      console.log('进来了：==================', v.state.isLastPage);
-      v.state.isLastPage = true;
-      v.state.showFoot = 2
-    }
-    else{
-      v.state.isLastPage = false;
+      console.log('data =', data);
+      let dicData = data;
+      let arrayData = returnData(dicData);
+      if (arrayData.length == 0) {
+        console.log('进来了：==================');
+        v.state.isLastPage = true;
+        v.state.showFoot = 2
+        v.state.isRefreshing = false;
+        setProps();
+        return;
+      }
+      if (v.pageNumber == 1) {
+        v.state.isRefreshing = false
+        v.items.length = 0
+        v.items = JSON.parse(JSON.stringify(arrayData))
+        // console.log('v.state.isRefreshing ====', v.state.isRefreshing);
+      }
+      else {
+        v.items = v.items.concat(JSON.parse(JSON.stringify(arrayData)))
+      }
       v.state.showFoot = 0
-    }
-    setProps()
+      if (arrayData.length < v.pageSize) {
+        console.log('进来了：==================', v.state.isLastPage);
+        v.state.isLastPage = true;
+        v.state.showFoot = 2
+      }
+      else {
+        v.state.isLastPage = false;
+        v.state.showFoot = 0
+      }
+      // console.log('网络数据长度：', arrayData.length);
+      // console.log('showFoot==', v.state.showFoot);
 
-  }, (err) => {
-    console.log('err = ', err);
-    // setProps()
-    // Toast(err.message)
-  });
-}
+      setProps()
+
+    }, (err) => {
+      console.log('err = ', err);
+      // setProps()
+      // Toast(err.message)
+    });
+  }
 
 
   /**
@@ -259,104 +281,85 @@ function teamInviteDomainData() {
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+              {item.invite_code}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+              {item.user_type_txt}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+              {item.created_time}
+            </Text>
+          </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {'http://' + item.domain}
+              {item.used_num}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {'http://' + item.domain}
-            </Text>
-          </View>
-         
         </View>
       );
     }
   }
   return (
     <View style={styles.container}>
-      <View style ={{marginTop:44}}>
-      <FlatList
-        data={v.items}
-        renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
-        keyExtractor={(item, index) => index.toString()}
-        ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
-        //下拉刷新
-        //设置下拉刷新样式
-        refreshControl={
-          <RefreshControl
-            title={"正在加载..."} //android中设置无效
-            colors={[Skin1.textColor2]} //android
-            tintColor={Skin1.textColor2} //ios
-            titleColor={Skin1.textColor2}
-            refreshing={v.state.isRefreshing}
-            // refreshing={isHeader}
-            onRefresh={() => {
-              onHeaderRefresh(); //下拉刷新加载数据
-            }}
-          />
-        }
-        //设置上拉加载
-        ListFooterComponent={() => renderFooter()}
-        onEndReachedThreshold={0.01}//上拉刷新测试发现经常不触发
-        onEndReached={() => {
-          onEndReached()
-        }}
-        onContentSizeChange={() => {
-          console.log('onContentSizeChange');
-        }}
-      />
-      </View>
-      <View style={{ position: 'absolute',width: '100%',padding: 0,}}>
-      { (v.pageTitle != PromotionConst.域名绑定) && <View key={'renderTitleHint'}>
-        <View style={styles.capital_type_picker}>
-          <DropDownPicker
-            items={
-              v.levelArray
-            }
-            defaultValue={v.levelindex}
-            containerStyle={{ height: 40, width: AppDefine.width / 3 }}
-            controller={instance => capitalController = instance}
-            style={{ backgroundColor: '#fafafa' }}
-            itemStyle={{
-              justifyContent: 'flex-start'
-            }}
-            dropDownStyle={{ backgroundColor: '#fafafa' }}
-            onChangeItem={item => {
-              v.levelindex = item.value;
-              onHeaderRefresh();
-             }}
-          />
+      <View style={{ }}>
+       {inviteCode.canUseNum !='0' && <View style={{ height: 44,  justifyContent: 'center',alignItems: 'center', }}>
+        <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+                  {'每个'+inviteCode.displayWord+'可以使用'+inviteCode.canUseNum+'次'}
+                </Text>
+        </View>}
+        <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.textColor4 }}>
+          {v.titleArray?.map((title, idx) => {
+            return (
+              <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, }}
+                onPress={() => {
+                }}>
+                <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
+                  {title}
+                </Text>
+              </TouchableOpacity>
+            )
+          })}
         </View>
-      </View>}
-      <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.textColor4 }}>
-        {v.titleArray?.map((title, idx) => {
-          return (
-
-            <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, }}
-              onPress={() => {
-                if ((v.pageTitle != PromotionConst.域名绑定 && idx == 0)) {
-                  console.log('点击了。。。');
-                  capitalController?.toggle();
-                }
-              }}>
-              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
-                {title}
-              </Text>
-              {(v.pageTitle != PromotionConst.域名绑定 && idx == 0) && <Image style={[{ height: 18, width: 18, marginTop: 15 }]} source={{ uri: Skin1.isBlack ? 'https://appstatic.guolaow.com/assets/baijiantou1.png' : 'https://appstatic.guolaow.com/assets/jiantou1.png' }} />}
-
-            </TouchableOpacity>
-          )
-        })}
       </View>
-
+      <View style={{  }}>
+        <FlatList
+          data={v.items}
+          renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
+          keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
+          //下拉刷新
+          //设置下拉刷新样式
+          refreshControl={
+            <RefreshControl
+              title={"正在加载..."} //android中设置无效
+              colors={[Skin1.textColor2]} //android
+              tintColor={Skin1.textColor2} //ios
+              titleColor={Skin1.textColor2}
+              refreshing={v.state.isRefreshing}
+              // refreshing={isHeader}
+              onRefresh={() => {
+                onHeaderRefresh(); //下拉刷新加载数据
+              }}
+            />
+          }
+          //设置上拉加载
+          ListFooterComponent={() => renderFooter()}
+          onEndReachedThreshold={0.01}//上拉刷新测试发现经常不触发
+          onEndReached={() => {
+            onEndReached()
+          }}
+          onContentSizeChange={() => {
+            console.log('onContentSizeChange');
+          }}
+        />
       </View>
-
-
-
-
     </View >
   )
 
@@ -411,4 +414,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDPromotionTabInviteDomainCP
+export default JDPromotionCodeListPage

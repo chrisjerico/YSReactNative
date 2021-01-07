@@ -18,7 +18,7 @@ export class api_team {
 
   // 下线信息
   static inviteList(level: number, page = 1, rows = 20) {//下线级别0(全部)，1(1级下线)、2(2级下线)、3(3级下线)
-    return this.c.get('inviteList',{ level: level, page: page, rows: rows });
+    return this.c.get('inviteList', { level: level, page: page, rows: rows });
   }
 
   // 下线投注报表信息
@@ -79,6 +79,11 @@ export class api_team {
   // 申请代理
   static agentApply(qq: string, phone: string, content: string) {//QQ手机号二选一
     return this.c.post('agentApply', { qq: qq, phone: phone, content: content, action: 'apply' });
+  }
+
+  //邀请码列表
+  static inviteCodeList(page = 1, rows = 20) {
+    return this.c.get('inviteCodeList', { page: page, rows: rows });
   }
 
 }
