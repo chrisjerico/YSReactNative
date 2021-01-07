@@ -36,7 +36,7 @@ const UseLhcZT = () => {
   const [dataZT, setDataZT] = useState<Array<Array<PlayGroupData>>>(null) //当前重组后的正特数据列表
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
 
-  const [tabIndex, setTabIndex] = useState(LHC_Tab.TM_B) //当前选中哪个tab，TAB_A 和 TAB_B
+  const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，TAB_A 和 TAB_B
 
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
