@@ -268,7 +268,7 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        //TODO iOS 完成 params 加密转换
+        //TODO iOS 完成 status = 0 和 type = category 加密转换
         const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams += '&token=' + user?.token
         break

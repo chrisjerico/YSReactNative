@@ -73,7 +73,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
    * 绘制生肖
    */
   const renderTab = () => <View style={_styles.tab_title_container}>
-    <ScrollView style={_styles.tab_title_sv}
+    <ScrollView style={_styles.sv_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
       <View style={_styles.tab_title_content}>
@@ -211,7 +211,7 @@ const _styles = StyleSheet.create({
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
   },
-  tab_title_sv: {
+  sv_container: {
     flex: 1,
   },
   tab_title_content: {
