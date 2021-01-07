@@ -20,7 +20,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
-
+import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 
 interface JDPromotionCodeListPage {
   pageTitle?: string,//界面名称数据
@@ -35,9 +35,9 @@ interface JDPromotionCodeListPage {
     showFoot?: number//控制foot， 0：点击重新加载   1：'数据加载中…  2 ：已加载全部数据(空)
     isRefreshing?: boolean//下拉刷新开始结束 
     isLastPage?: boolean //是否是最后一页 
-  }
-
-
+  },
+ //===弹窗====================================
+  codeCP?:JDInviteCodeGenerateCP,
 }
 
 const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
@@ -47,7 +47,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
   let { current: v } = useRef<JDPromotionCodeListPage>(
     {
-      pageTitle: PromotionConst.会员管理,
+      pageTitle: '邀请码',
       titleArray: [inviteCode.displayWord, "招募类型", "创建时间", "注册会员",],
       items: [],
       pageSize: 20,
@@ -56,7 +56,8 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         showFoot: 0,
         isRefreshing: true,
         isLastPage: false,
-      }
+      },
+      codeCP:{}
     }
   )
 
@@ -91,8 +92,10 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
     * 
     */
   function rightClicked() {
-
-
+    console.log('跳到生成邀请码界面');
+    
+    v.codeCP?.showSalaryAlert && v.codeCP?.showSalaryAlert()
+    setProps()
   }
   /**
  * 下拉刷新
@@ -299,11 +302,12 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
             </Text>
           </View>
         </View>
+        
       );
     }
   }
   return (
-    <View style={styles.container}>
+   [ <View style={styles.container}>
       <View style={{ }}>
        {inviteCode.canUseNum !='0' && <View style={{ height: 44,  justifyContent: 'center',alignItems: 'center', }}>
         <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
@@ -356,8 +360,9 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
           }}
         />
       </View>
-    </View >
-  )
+    </View >,
+ <JDInviteCodeGenerateCP {...{ c_ref: v.codeCP, }} />]
+ )
 
 }
 

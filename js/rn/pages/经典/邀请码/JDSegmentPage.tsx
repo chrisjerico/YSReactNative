@@ -50,21 +50,21 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
   }, [])
 
   return (
-    <View style={{}}>
+    <View style={{  justifyContent: 'center', alignItems: 'center'}}>
      <SegmentedControl
         tabs={["按钮1", "按钮2",]}
         onChange={handleTabsChange}
         currentIndex={tabIndex}
-        paddingVertical={14}
+        paddingVertical={8}
         width={AppDefine.width - 90}
         containerStyle={{
           marginVertical: 20,
         }}
         textStyle={{
           fontWeight: "300",
-          fontSize: 24,
+          fontSize: 16,
         }}
-        // theme={'blue'}
+        theme={'DARK'}
       />
     </View >
   )
