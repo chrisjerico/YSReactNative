@@ -117,6 +117,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
+  // 彩票大厅-默认
+  // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
   SeriesLobbyPage, // 游戏大厅二级页面（xx系列游戏列表）
@@ -148,6 +150,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   FeedbackRecordView, //建议反馈记录
   SupFeedbackSubmitView, //建议反馈记录反馈
   TransferRecordView, //额度转页记录
+  JDAgentPage,//申请代理
+  JDRedEnveloperPage,//红包扫雷
   TransferView, //额度转页-经典版
   TransferLineView, //额度转页-天空蓝版
   TransferTKLMainView, //额度转页-新版
@@ -156,6 +160,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionIncomePage,//推荐收益
   JDPromotionCodeListPage,//邀请码
   JDSegmentPage,//测试segment
+
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页

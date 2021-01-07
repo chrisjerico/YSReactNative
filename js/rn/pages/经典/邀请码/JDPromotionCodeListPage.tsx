@@ -160,7 +160,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   function inviteCodeListData() {
 
     console.log('得到邀请码列表数据===', v.pageNumber);
-    api.team.inviteCodeList(1, v.pageSize).setCompletionBlock(({ data }) => {
+    api.team.inviteCodeList(1, v.pageSize).useSuccess(({ data }) => {
 
       console.log('data =', data);
       let dicData = data;
@@ -197,10 +197,6 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
       setProps()
 
-    }, (err) => {
-      console.log('err = ', err);
-      // setProps()
-      // Toast(err.message)
     });
   }
 

@@ -142,7 +142,7 @@ function teamBetListData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
   console.log('投注记录列表页码===', v.pageNumber);
-  api.team.betList(v.levelindex, '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+  api.team.betList(v.levelindex, '', '', v.pageNumber, v.pageSize).useSuccess(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
     if (arrayData.length == 0) {
@@ -179,10 +179,6 @@ function teamBetListData() {
     }
     setProps()
 
-  }, (err) => {
-    console.log('err = ', err);
-    // setProps()
-    // Toast(err.message)
   });
 }
 

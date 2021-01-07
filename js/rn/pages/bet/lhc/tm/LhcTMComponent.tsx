@@ -24,16 +24,24 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcTM from './UseLhcTM'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import { PlayOddData, PlayOddDetailData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall from '../../../../public/components/view/LotteryBall'
+import {
+  PlayData,
+  PlayGroupData,
+  PlayOddData,
+  PlayOddDetailData,
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import BetLotteryContext from '../../BetLotteryContext'
+import EBall from '../../../../public/components/view/lottery/EBall'
+import { arrayLength } from '../../../../public/tools/Ext'
+import ERect from '../../../../public/components/view/lottery/ERect'
+import LotteryEBall from '../../widget/LotteryEBall'
+import LotteryERect from '../../widget/LotteryERect'
+import { LHC_Tab } from '../../const/LotteryConst'
 
 interface IRouteParams {
 }
-
-const TAB_A = 0//代表 特码A
-const TAB_B = 1 //代表 特码B
 
 /**
  * 六合彩特码
@@ -46,9 +54,9 @@ const LhcTMComponent = ({}: IRouteParams) => {
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
-  const [tabIndex, setTabIndex] = useState(TAB_B) //当前选中哪个tab，0 和 1
-
   const {
+    tabIndex,
+    setTabIndex,
     dataTMA,
     setDataTMA,
     dataTMB,
@@ -63,23 +71,23 @@ const LhcTMComponent = ({}: IRouteParams) => {
     addOrRemoveBall,
   } = UseLhcTM()
 
-  useEffect(() => {
-    // ugLog('playOddData=', playOddData)
-  }, [])
-
   //当前的数据是 特码A 还是 特码B
-  const ballData = tabIndex == TAB_A ? dataTMA : dataTMB
+  const ballData = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
 
   /**
    * 绘制 特码A 特码B Tab
    */
   const renderTabItem = (tab?: number) => <View style={[
     _styles.tab_item,
-    tabIndex == tab ? { backgroundColor: UGColor.LineColor1 } : null,
+    tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
   ]}>
-    <TouchableOpacity onPress={() => setTabIndex(tab)}>
-      <Text style={_styles.tab_title}>{
-        tab == TAB_A ?
+    <TouchableOpacity onPress={() => setTabIndex(tab)}
+                      style={_styles.tab_title_tb}>
+      <Text style={[
+        _styles.tab_title,
+        tabIndex == tab ? { color: 'white' } : null,
+      ]}>{
+        tab == LHC_Tab.TM_A ?
           (dataTMA && dataTMA[0].alias) :
           (dataTMB && dataTMB[0].alias)
       }</Text>
@@ -87,11 +95,11 @@ const LhcTMComponent = ({}: IRouteParams) => {
   </View>
 
   /**
-   * 绘制 特码A 特码B Tab
+   * 绘制 特码A 特码B 容器
    */
   const renderTab = () => <View style={_styles.tab_container}>
-    {renderTabItem(TAB_B)}
-    {renderTabItem(TAB_A)}
+    {renderTabItem(LHC_Tab.TM_B)}
+    {renderTabItem(LHC_Tab.TM_A)}
   </View>
 
   /**
@@ -124,49 +132,93 @@ const LhcTMComponent = ({}: IRouteParams) => {
   </View>
 
   /**
+   * 绘制 方格式
+   * @param item
+   */
+  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
+                                                         item={item}
+                                                         selectedBalls={selectedBalls}
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
+
+  /**
+   * 绘制 球
+   * @param item
+   */
+  const renderEBall = (item?: PlayData) => <LotteryEBall key={item?.id}
+                                                         item={item}
+                                                         selectedBalls={selectedBalls}
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
+
+  /**
+   * 绘制 特码B/A
+   * @param groupData
+   */
+  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+                                                        style={CommStyles.flex}>
+
+    <View style={_styles.sub_title_container}>
+      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    </View>
+
+    <View style={_styles.ball_container}>
+      {
+        groupData?.plays?.map((item) => renderEBall(item))
+      }
+    </View>
+  </View>
+
+
+  /**
+   * 绘制 连码B/A
+   * @param groupData
+   */
+  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+                                                        style={CommStyles.flex}>
+
+    <View style={_styles.sub_title_container}>
+      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    </View>
+
+    <View style={_styles.ball_container}>
+      {
+        groupData?.plays?.map((item) => renderERect(item))
+      }
+    </View>
+  </View>
+
+  /**
+   * 绘制 色波B/A
+   * @param groupData
+   */
+  const renderSB = (groupData?: PlayGroupData) => <View key={groupData?.id}
+                                                        style={CommStyles.flex}>
+
+    <View style={_styles.sub_title_container}>
+      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    </View>
+
+    <View style={_styles.ball_container}>
+      {
+        groupData?.plays?.map((item) => renderERect(item))
+      }
+    </View>
+  </View>
+
+  /**
    * 绘制全部的球
    */
-  const renderBall = () => <View>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {
-        ballData?.map((groupData) => {
-          return <View style={CommStyles.flex}>
-
-            <View style={_styles.sub_title_container}>
-              <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
-            </View>
-
-            <View style={_styles.ball_container}>
-              {
-                groupData?.plays?.map((item) =>
-                  <TouchableOpacity onPress={() => addOrRemoveBall(item?.name)}>
-                    <View style={[
-                      _styles.ball_item,
-                      {
-                        backgroundColor:
-                          selectedBalls?.includes(item?.name) ? `${Skin1.themeColor}66` : null,
-                      },
-                    ]}>
-                      <LotteryBall type={BallStyles.lhc}
-                                   ballNumber={item?.name}/>
-                      <Text numberOfLines={1}
-                            style={_styles.ball_odds}>{item.odds}</Text>
-                    </View>
-                  </TouchableOpacity>)
-              }
-            </View>
-
-          </View>
-        })
-      }
-    </ScrollView>
-  </View>
+  const renderAllBall = () => <ScrollView style={CommStyles.flex}
+                                          showsVerticalScrollIndicator={false}>
+    {arrayLength(ballData) > 0 && renderTM(ballData[0])}
+    {arrayLength(ballData) > 1 && renderLM(ballData[1])}
+    {arrayLength(ballData) > 2 && renderSB(ballData[2])}
+  </ScrollView>
 
   return (
     <View style={CommStyles.flex}>
       {renderTab()}
       {renderZodiac()}
-      {renderBall()}
+      {renderAllBall()}
     </View>
 
   )
@@ -190,24 +242,20 @@ const _styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: scale(4),
   },
-  ball_item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: scale(2),
-    paddingVertical: scale(8),
-    marginVertical: scale(2),
-    borderRadius: scale(10),
-  },
   ball_odds: {
     width: scale(76),
     color: UGColor.TextColor7,
     fontSize: scale(18),
     paddingHorizontal: scale(1),
   },
+  tab_title_tb: {
+    width: '100%',
+    alignItems: 'center',
+  },
   tab_title: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
-    padding: scale(8),
+    padding: scale(6),
   },
   tab_item: {
     flex: 1,

@@ -41,7 +41,7 @@ const useTransfer = () => {
   }
 
   const autoTransfer = async () => {
-    api.real.autoTransferOut().setCompletionBlock((data) => {
+    api.real.autoTransferOut().useSuccess((data) => {
       Alert.alert(data.msg)
       UGUserModel.updateFromNetwork()
     })

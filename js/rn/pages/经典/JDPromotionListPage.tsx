@@ -53,7 +53,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       },
     });
 
-    api.system.promotions().setCompletionBlock(({ data }) => {
+    api.system.promotions().useSuccess(({ data }) => {
       if (data.showCategory) {
         const temp: { [x: number]: Array<UGPromoteModel> } = [];
         data.list.map(pm => {

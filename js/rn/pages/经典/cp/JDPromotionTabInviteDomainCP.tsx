@@ -142,7 +142,7 @@ function teamInviteDomainData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
   console.log('域名绑定列表数据===', v.pageNumber);
-  api.team.inviteDomain(v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+  api.team.inviteDomain(v.pageNumber, v.pageSize).useSuccess(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
 
@@ -175,10 +175,6 @@ function teamInviteDomainData() {
     }
     setProps()
 
-  }, (err) => {
-    console.log('err = ', err);
-    // setProps()
-    // Toast(err.message)
   });
 }
 

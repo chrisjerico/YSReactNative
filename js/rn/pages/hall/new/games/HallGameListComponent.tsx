@@ -135,7 +135,7 @@ const HallGameListComponent = ({
     }
 
     return anyEmpty(balls) ?
-      <View style={_styles.start_game_container}>
+      <View style={_styles.start_game_container} pointerEvents={'none'}>
         <Button containerStyle={[_styles.start_game_button, { borderColor: Skin1.themeColor }]}
                 titleStyle={[_styles.start_game_text, { color: Skin1.themeColor }]}
                 title={'立即游戏'}/>
@@ -161,7 +161,7 @@ const HallGameListComponent = ({
         <View style={_styles.ball_item_container}>
           <FastImage style={_styles.item_logo}
                      resizeMode={'contain'}
-                     source={{ uri: item.pic }}/>
+                     source={{ uri: item.pic ?? item.logo }}/>
           <View style={CommStyles.flex}>
             <Text style={_styles.text_content_title}>{item.title}</Text>
             {
@@ -194,6 +194,8 @@ const HallGameListComponent = ({
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${item}-${index}`}
                         data={gameData?.list}
+                        ListHeaderComponent={<View style={{height:5}} />}
+                        ListFooterComponent={<View style={{height:80}} />}
                         renderItem={({ item, index }) => {
                           return (
                             renderItemContent(item)

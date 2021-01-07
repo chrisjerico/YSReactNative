@@ -8,6 +8,7 @@ import { OCEvent } from './OCBridge/OCEvent'
 import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel'
 import { stringToNumber } from '../../tools/tars'
 import { DomainUrls, initDomain } from '../../config/MultiDomainUrls'
+import { setRnPageInfo } from './SetRnPageInfo'
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey ?? ''
@@ -30,30 +31,11 @@ export class OCHelper extends OCEvent {
   static async setup() {
     try {
       super.setup()
-      // 设置接口域名
+
       // 获取系统配置信息
-      const ios_response = await Promise.all([
-        OCHelper.call('AppDefine.shared.SiteId').catch((error) => {
-          console.log(error)
-        }),
-        OCHelper.call('AppDefine.shared.Host').catch((error) => {
-          console.log(error)
-        }),
-        OCHelper.call('UGSystemConfigModel.currentConfig').catch((error) => {
-          console.log(error)
-        }),
-        OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').catch((error) => {
-          console.log(error)
-        }),
-        OCHelper.call('AppDefine.shared.Version').catch((error) => {
-          console.log(error)
-        }),
-      ])
-      const siteId = ios_response[0]
-      const host = DomainUrls[siteId] ?? ios_response[1]
-      const sysConf_ios = ios_response[2] ?? {}
-      const userCenterItems = ios_response[3]?.map((item: any) => new UGUserCenterItem(item)) ?? []
-      const appVersion = ios_response[4]
+      const siteId = await OCHelper.call('AppDefine.shared.SiteId')
+      const host = DomainUrls[siteId] ?? await OCHelper.call('AppDefine.shared.Host')
+      const appVersion = await OCHelper.call('AppDefine.shared.Version')
       AppDefine.host = host
       httpClient.defaults.baseURL = host
       console.log('AppDefine.siteId =', siteId);
@@ -82,13 +64,14 @@ export class OCHelper extends OCEvent {
       const userInfo = net_response[0]?.data?.data ?? {}
       //@ts-ignore
       const sysConf_net = net_response[1]?.data?.data ?? {}
-      const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
-      const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
       const gameLobby = net_response[2]?.data?.data ?? []
       const banner = net_response[3]?.data?.data ?? {}
       const rightMenu = net_response[4]?.data?.data ?? []
-      UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: Object.assign({}, sysConf_net, { appVersion }) })
+      UGStore.dispatch({ type: 'merge', userInfo, sysConf: sysConf_net, gameLobby, banner, rightMenu, sys: Object.assign({}, sysConf_net, { appVersion }) })
       UGStore.save()
+
+      // 配置原生页面
+      setRnPageInfo()
     } catch (error) {
       console.log('-----error-----', error)
     }

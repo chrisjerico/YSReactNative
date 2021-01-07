@@ -141,7 +141,7 @@ function teamRealBetStatData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
   console.log('真人报表列表页码===', v.pageNumber);
-    api.team.realBetStat(v.levelindex, '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+    api.team.realBetStat(v.levelindex, '', '', v.pageNumber, v.pageSize).useSuccess(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
 
@@ -174,10 +174,6 @@ function teamRealBetStatData() {
     }
     setProps()
 
-  }, (err) => {
-    console.log('err = ', err);
-    // setProps()
-    // Toast(err.message)
   });
 }
 

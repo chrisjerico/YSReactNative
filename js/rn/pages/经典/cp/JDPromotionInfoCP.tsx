@@ -45,12 +45,9 @@ const JDPromotionInfoCP = () => {
  * 
  */
   function teamBetListData() {
-    api.team.inviteInfo().setCompletionBlock(({ data }) => {
+    api.team.inviteInfo().useSuccess(({ data }) => {
       setInviteInfoModel(JSON.parse(JSON.stringify(data)))
       YJlist(JSON.parse(JSON.stringify(data)))
-    }, (err) => {
-      console.log('err = ', err);
-      // Toast(err.message)
     });
   }
 

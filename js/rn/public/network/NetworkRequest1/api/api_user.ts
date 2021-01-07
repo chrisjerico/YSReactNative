@@ -202,7 +202,7 @@ export class api_user {
 
   // 上传身份证
   static uploadIdentity(files: string) {// 图片文件路径
-    return this.c.post<{isReview:boolean}>('uploadIdentity', {}, {files:files});
+    return this.c.post<IUploadIdentify>('uploadIdentity', {}, {files:files});
   }
 
 

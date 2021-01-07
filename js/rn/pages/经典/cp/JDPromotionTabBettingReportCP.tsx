@@ -141,7 +141,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
    */
   function teamBetStatData() {
     console.log('投注报表列表页码===', v.pageNumber);
-    api.team.betStat(v.levelindex.toString(), '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+    api.team.betStat(v.levelindex.toString(), '', '', v.pageNumber, v.pageSize).useSuccess(({ data }) => {
       let dicData = data;
       let arrayData = returnData(dicData);
       if (arrayData.length == 0) {
@@ -177,10 +177,6 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
 
       setProps()
 
-    }, (err) => {
-      console.log('err = ', err);
-      // setProps()
-      // Toast(err.message)
     });
   }
 

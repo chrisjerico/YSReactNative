@@ -142,7 +142,7 @@ function teamWithdrawStatData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
   console.log('提款报表列表页码===', v.pageNumber);
-    api.team.withdrawStat(v.levelindex, '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+    api.team.withdrawStat(v.levelindex, '', '', v.pageNumber, v.pageSize).useSuccess(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
 
@@ -175,10 +175,6 @@ function teamWithdrawStatData() {
     }
     setProps()
 
-  }, (err) => {
-    console.log('err = ', err);
-    // setProps()
-    // Toast(err.message)
   });
 }
 

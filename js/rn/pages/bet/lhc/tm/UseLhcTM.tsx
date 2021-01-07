@@ -12,6 +12,10 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import APIRouter from '../../../../public/network/APIRouter'
 import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
+import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
+import UseLotteryHelper from '../../util/UseLotteryHelper'
+import { LHC_Tab } from '../../const/LotteryConst'
+
 
 /**
  * 六合彩特码
@@ -19,18 +23,26 @@ import BetLotteryContext from '../../BetLotteryContext'
  */
 const UseLhcTM = () => {
 
-  const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
+  const {
+    nextIssueData,
+    playOddDetailData,
+    playOddData,
+    selectedBalls,
+    setSelectedBalls,
+    addOrRemoveBall,
+    zodiacBallIds,
+  } = UseLotteryHelper()
 
   const [dataTMA, setDataTMA] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
   const [dataTMB, setDataTMB] = useState<Array<PlayGroupData>>(null) //当前特码B数据列表
   const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //生肖数据列表
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
 
-  const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
+  const [tabIndex, setTabIndex] = useState(LHC_Tab.TM_B) //当前选中哪个tab，TAB_A 和 TAB_B
 
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
-    //特码取前3个数据
+    //特码取前3个数据 特码 两面 色波
     if (!anyEmpty(playOddData()?.playGroups)) {
       setDataTMA([playOddData()?.playGroups[0], playOddData()?.playGroups[1], playOddData()?.playGroups[2]])
       setDataTMB([playOddData()?.playGroups[3], playOddData()?.playGroups[4], playOddData()?.playGroups[5]])
@@ -39,30 +51,17 @@ const UseLhcTM = () => {
     }
   }, [playOddData()])
 
-  // /**
-  //  * 生肖有变化，重新计算球球
-  //  */
-  // useEffect(()=>{
-  //   setSelectedBalls(null)
-  //   let newBalls = []
-  //   selectedZodiac?.map((zodiac) => {
-  //     let itemArr = zodiac?.nums.map((item) => ('0' + item).slice(-2))
-  //     newBalls = [...newBalls, ...itemArr]
-  //   })
-  //   setSelectedBalls([...selectedBalls, ...newBalls])
-  // }, [selectedZodiac])
-
   /**
    * 有选中的数据变化时，计算生肖的选中情况
    */
   useEffect(() => {
     let selArr = []
     zodiacData?.map((zodiac) => {
-      //重组数字
-      const checkMap = zodiac.nums.map((item) => ('0' + item).slice(-2))
-      //ugLog('checkMap=', checkMap)
-      const intersection = selectedBalls?.filter((item) => checkMap.includes(item))
-      if (arrayLength(intersection) == arrayLength(checkMap)) {
+      let data = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
+      const zodiacIds = zodiacBallIds(zodiac, data[0])
+
+      const intersection = selectedBalls?.filter((item) => zodiacIds.includes(item))
+      if (arrayLength(intersection) == arrayLength(zodiac.nums)) {
         selArr = [...selArr, zodiac]
       }
     })
@@ -76,32 +75,21 @@ const UseLhcTM = () => {
    */
   const addOrRemoveZodiac = (item: ZodiacNum) => {
     //重组数字
-    const checkMap = item.nums.map((item) => ('0' + item).slice(-2))
-    ugLog('checkMap2=', checkMap)
-    if (selectedZodiac.includes(item)) {
-      let newResult = selectedBalls?.filter((item) => !checkMap.includes(item))
-      setSelectedBalls(newResult)
-    } else {
-      setSelectedBalls([...selectedBalls,
-        ...checkMap.filter((item) => !selectedBalls.includes(item))])
-    }
-  }
+    // const checkMap = item.nums.map((item) => ('0' + item).slice(-2))
+    let data = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
+    const zodiacIds = zodiacBallIds(item, data[0])
 
-  /**
-   * 添加或移除选中的球
-   * @param ball
-   */
-  const addOrRemoveBall = (ball?: string) => {
-    //重组数字
-    if (selectedBalls.includes(ball)) {
-      let newResult = selectedBalls?.filter((item) => item != ball)
+    if (selectedZodiac.includes(item)) {
+      let newResult = selectedBalls?.filter((item) => !zodiacIds.includes(item))
       setSelectedBalls(newResult)
     } else {
-      setSelectedBalls([...selectedBalls, ball])
+      setSelectedBalls(Array.from(new Set([...selectedBalls, ...zodiacIds])))
     }
   }
 
   return {
+    tabIndex,
+    setTabIndex,
     dataTMA,
     setDataTMA,
     dataTMB,

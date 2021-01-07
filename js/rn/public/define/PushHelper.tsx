@@ -1,4 +1,4 @@
-import { Platform } from 'react-native'
+import { Linking, Platform } from 'react-native'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -21,6 +21,7 @@ import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
+import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -133,6 +134,19 @@ export default class PushHelper {
           // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
           // return
         }
+        // if (game?.seriesId == '7' && game?.subId == MenuType.ZHGL) {
+        //   push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+        //   return
+        // } else if (game?.seriesId == '7' && game?.subId == MenuType.CQK) {
+        //   push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
+        //   return
+        // } else if (game?.seriesId == '7' && game?.subId == MenuType.CZJL) {
+        //   push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
+        //   return
+        // } else if (game?.seriesId == '7' && game?.subId == MenuType.TXJL) {
+        //   push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
+        //   return
+        // }
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }
@@ -312,7 +326,7 @@ export default class PushHelper {
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.scratchList().setCompletionBlock(({ data }) => {
+            api.activity.scratchList().useSuccess(({ data }) => {
               hideLoading()
               // 数据转换为原生格式
               const scratchList = data?.scratchList?.map((v) => {
@@ -338,7 +352,7 @@ export default class PushHelper {
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+            api.activity.goldenEggList().useSuccess(({ data }) => {
               hideLoading()
               // 数据转换为原生格式
               const list = data?.map((v) => {
@@ -429,7 +443,7 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             // if (B_DEBUG) {
-            //   push(PageName.CapitalPage)
+            // push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
             //   return
             // }
             subId = MenuType.CZ
@@ -440,6 +454,10 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.取款: {
+            // if (B_DEBUG) {
+            // push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
+            // return
+            // }
             subId = MenuType.TX
             break
           }
@@ -546,6 +564,10 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.资金明细: {
+            // if (B_DEBUG) {
+            // push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+            // return
+            // }
             subId = MenuType.ZHGL
             break
           }
@@ -571,7 +593,7 @@ export default class PushHelper {
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.scratchList().setCompletionBlock(({ data }) => {
+            api.activity.scratchList().useSuccess(({ data }) => {
               hideLoading()
               ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl', data: data })
             })
@@ -580,7 +602,7 @@ export default class PushHelper {
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+            api.activity.goldenEggList().useSuccess(({ data }) => {
               hideLoading()
               ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd', data: data })
             })

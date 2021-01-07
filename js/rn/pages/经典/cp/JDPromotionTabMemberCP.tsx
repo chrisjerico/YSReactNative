@@ -145,7 +145,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   function teamInviteListData() {
 
     console.log('下线信息列表页码===', v.pageNumber);
-    api.team.inviteList(v.levelindex, 1, v.pageSize).setCompletionBlock(({ data }) => {
+    api.team.inviteList(v.levelindex, 1, v.pageSize).useSuccess(({ data }) => {
       let dicData = data;
       let arrayData = returnData(dicData);
       if (arrayData.length == 0) {
@@ -180,10 +180,6 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
       setProps()
 
-    }, (err) => {
-      console.log('err = ', err);
-      // setProps()
-      // Toast(err.message)
     });
   }
 
