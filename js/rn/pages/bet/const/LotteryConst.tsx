@@ -9,6 +9,7 @@ const LotteryConst = {
   LM: 'LM', //两面
   ZM: 'ZM', //正码
   ZM1_6: 'ZM1-6', //正码1T6
+  ZT: 'ZT', //正特
 }
 
 /**
