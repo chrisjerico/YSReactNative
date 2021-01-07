@@ -265,25 +265,10 @@ class APIRouter {
       return null
     }
 
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO iOS 完成 status = 0 和 type = category 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: {
-            status: 0,
-            type: category,
-          },
-        })
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-        break
-    }
+    let tokenParams = await APIRouter.encryptGetParams({
+      status: 0,
+      type: category,
+    })
 
     return httpClient.get<BankDetailListModel>('c=system&a=bankList' + tokenParams)
   }
@@ -321,27 +306,8 @@ class APIRouter {
   static open_onlinepay = async (params: IRechargeOnlineParams) => {
     // ugLog('pay url params=', JSON.stringify(params))
 
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO iOS 完成 params 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params,
-        })
+    let tokenParams = await APIRouter.encryptGetParams(params)
 
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-        break
-    }
-    // let tokenParams = ''
-    // for (let key in params) {
-    //   tokenParams += '&' + key + '=' + params[key]
-    // }
     let url = AppDefine?.host + '/wjapp/api.php?c=recharge&a=payUrl' + tokenParams
 
     // ugLog('pay url=', url)
@@ -414,23 +380,8 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_rechargeRecordList = async (params: IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO iOS 完成 params 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params,
-        })
 
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-        break
-    }
+    let tokenParams = await APIRouter.encryptGetParams(params)
 
     return httpClient.get<DepositRecordModel>('c=recharge&a=logs' + tokenParams)
   }
@@ -466,25 +417,8 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_withdrawalRecordList = async (params: IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO iOS 完成 params 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        // tokenParams += '&token=' + pms?.token
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: params,
-        })
 
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-        break
-    }
+    let tokenParams = await APIRouter.encryptGetParams(params)
 
     return httpClient.get<WithdrawalRecordModel>('c=withdraw&a=logs' + tokenParams)
   }
@@ -497,24 +431,8 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_capitalDetailRecordList = async (params: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO iOS 完成 params 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params,
-        })
 
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-
-        break
-    }
+    let tokenParams = await APIRouter.encryptGetParams(params)
 
     return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&' + tokenParams)
   }
@@ -593,27 +511,8 @@ class APIRouter {
    * 实时汇率
    */
   static system_currencyRate = async (params: ICurrencyRateParams): Promise<AxiosResponse<NewRateModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
 
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO iOS 完成 params 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params,
-        })
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-        break
-    }
+    let tokenParams = await APIRouter.encryptGetParams(params)
 
     return httpClient.get<NewRateModel>('c=system&a=currencyRate' + tokenParams)
   }
@@ -754,24 +653,9 @@ class APIRouter {
    */
   static game_nextIssue = async (id: string): Promise<AxiosResponse<NextIssueModel>> => {
 
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO 完成对 id 的加密
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: {
-            id
-          },
-        })
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-        break
-    }
+    let tokenParams = await APIRouter.encryptGetParams({
+      id,
+    })
 
     return httpClient.get<NextIssueModel>('c=game&a=nextIssue' + tokenParams)
   }
@@ -782,24 +666,9 @@ class APIRouter {
    */
   static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDetailModel>> => {
 
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO 完成对 id 的加密
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: {
-            id
-          },
-        })
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-        break
-    }
+    let tokenParams = await APIRouter.encryptGetParams({
+      id,
+    })
 
     return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds' + tokenParams)
   }
@@ -870,6 +739,31 @@ class APIRouter {
   }
   static yuebao_stat = async () => {
     return httpClient.get<YueBaoStatModel>('c=yuebao&a=stat')
+  }
+
+  /**
+   * 加密 GET 参数
+   * @param params
+   */
+  static encryptGetParams =  async (params?: any) => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        //TODO iOS 完成 params 加密转换
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params,
+        })
+        for (let key in pms) {
+          tokenParams += '&' + key + '=' + pms[key]
+        }
+        break
+    }
+    ugLog('APIRouter encryptParams=', JSON.stringify(params))
+    return tokenParams
   }
 }
 
