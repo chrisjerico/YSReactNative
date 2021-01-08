@@ -29,8 +29,12 @@ import config from '../BZH/config'
 import { useHtml5Image } from '../../public/tools/tars'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { useDimensions } from '@react-native-community/hooks'
+import { Button } from 'react-native-elements'
+import { pop } from '../../public/navigation/RootNavigation'
+import { UGBasePageProps } from '../base/UGPage'
+import AppDefine from '../../public/define/AppDefine'
 
-const LLMinePage = ({ navigation, setProps }) => {
+const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
   const {
     pickAvatarComponentRef,
     onSaveAvatarSuccess,
@@ -59,6 +63,7 @@ const LLMinePage = ({ navigation, setProps }) => {
   const userStore = UGStore.globalProps.userInfo
   const { width } = useDimensions().window
   const { uid = '', curLevelTitle, curLevelInt, nextLevelInt, curLevelGrade, nextLevelGrade, avatar, isTest, balance, usr, unreadMsg, taskRewardTotal } = userStore
+  const [showBackBtn, setShowBackBtn] = useState(false)
 
   const getLevelWidth = () => {
     setLevelWidth(193 * parseFloat(taskRewardTotal).toFixed(balanceDecimal || 2) / parseFloat(nextLevelInt).toFixed(balanceDecimal || 2))
@@ -79,6 +84,13 @@ const LLMinePage = ({ navigation, setProps }) => {
       setProps()
     })
 
+    setProps({
+      didFocus: () => {
+        AppDefine.checkHeaderShowBackButton((show) => {
+          setShowBackBtn(show)
+        })
+      }
+    }, false)
     return (() => {
       navigation.removeListener('focus', null)
     })
@@ -103,12 +115,24 @@ const LLMinePage = ({ navigation, setProps }) => {
       <SafeAreaView style={{ backgroundColor: '#39150D' }}>
         <ScrollView bounces={false} style={{ backgroundColor: '#ffffff' }}>
           <SafeAreaView style={{ backgroundColor: '#39150D', height: 172 }}>
-            <TouchableWithoutFeedback onPress={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-            }}>
-              <Image style={{ alignSelf: 'flex-end', width: 28, height: 28, marginRight: 8 }}
-                     source={{ uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/zxkf.png' }} />
-            </TouchableWithoutFeedback>
+            <View style={{ marginHorizontal: 10, marginBottom: -5, flexDirection: 'row', alignItems: 'center' }}>
+              {showBackBtn && (
+                <Button
+                  icon={{ name: 'ios-arrow-back', type: 'ionicon', color: '#A7BEDF' }}
+                  buttonStyle={Object.assign({ backgroundColor: 'transparent', marginLeft: -8 })}
+                  onPress={() => {
+                    pop();
+                  }}
+                />
+              )}
+              <View style={{ flex: 1 }} />
+              <TouchableWithoutFeedback onPress={() => {
+                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+              }}>
+                <Image style={{ width: 28, height: 28, marginRight: 8 }}
+                  source={{ uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/zxkf.png' }} />
+              </TouchableWithoutFeedback>
+            </View>
             <View style={{
               backgroundColor: '#F3745B',
               marginHorizontal: 8,
