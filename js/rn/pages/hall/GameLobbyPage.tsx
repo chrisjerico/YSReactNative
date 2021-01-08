@@ -9,7 +9,7 @@ import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native
 import { UGColor } from '../../public/theme/UGThemeColor'
 import EmptyView from '../../public/components/view/empty/EmptyView'
 import HallGameListComponent from './new/games/HallGameListComponent'
-import { HallGameData, GroupGameData, HallGameModel1 } from '../../public/network/Model/HallGameModel'
+import { HomeRecommendModel, Data } from '../../public/network/Model/HomeRecommendModel'
 import APIRouter from '../../public/network/APIRouter'
 import { ugLog } from '../../public/tools/UgLog'
 import { Toast } from '../../public/tools/ToastUtils'
@@ -30,6 +30,8 @@ import { setProps, UGBasePageProps } from '../base/UGPage'
 import { navigate, pop } from '../../public/navigation/RootNavigation'
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1'
 import { PayAisleListData } from '../../public/network/Model/wd/PayAisleModel'
+import LobbyGameListComponent from './new/games/LobbyGameListComponent'
+import { ScrollView } from 'react-native-gesture-handler'
 
 /**
  * 游戏大厅
@@ -42,11 +44,7 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
-  const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
-  const { current: v } = useRef<{
-    hallGames?: HallGameData[]
-    isGroup: boolean
-  }>({ isGroup: true });
+  const [gameData, setGameData] = useState<Array<Data>>([])//所有数据
 
   const {
     systemInfo,
@@ -69,79 +67,18 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
   const requestGameData = async () => {
     setRefreshing(true)
 
-    // 处理分组数据
-    function groupGameToHallGame(groups: GroupGameData[]): HallGameData[] {
-      const temp: { [x: string]: HallGameData } = {}
-      const array : HallGameData[] = []
-      groups?.forEach((group) => {
-        group?.lotteries?.forEach((l) => {
-          v.hallGames?.forEach((hall) => {
-            hall?.list?.forEach((g) => {
-              g.pic = g.pic ?? l.logo
-              if (l?.id != g?.id) return
-              if (temp[group?.id] == undefined) {
-                array.push(temp[group?.id] = { gameType: hall.gameType, gameTypeName: group.name, list: [] })
-              }
-              temp[group?.id].list?.push(g)
-            })
-          })
-        })
-      })
-      return array
-    }
-
     // 刷新UI
-    function refreshUI(data: HallGameData[]) {
+    function refreshUI(data: Data[]) {
       setRefreshing(false)
-
-      // 是否显示分类
-      if (systemInfo?.picTypeshow != '1') {
-        let temp: HallGameModel1[] = []
-        data?.forEach(element => {
-          temp = temp.concat(element?.list)
-        });
-        data[0].list = temp
-        setGameData([data?.[0]])
-      } else {
-        setGameData(data)
-      }
-    }
-
-    // 获取分组数据
-    function getGroup() {
-      api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
-        sm.noShowErrorHUD = true
-        
-        // 若只有一个“其他“分组，则不显示分组
-        const other = data?.filter((v) => v.id == '0')[0]
-        data = data?.filter((v) => v.id != '0')
-        if (data?.length) {
-          data.push(other)
-          refreshUI(groupGameToHallGame(data))
-        } else {
-          v.isGroup = false
-          refreshUI(v.hallGames)
-        }
-      })
+      setGameData(data)
     }
 
     // 获取彩票数据
-    APIRouter.game_lotteryHallGames().then(({ data: res }) => {
-      let resData = res?.data
-      //ugLog('data res=', res)
+    APIRouter.game_homeRecommend().then(({ data: res }) => {
+      ugLog('data res=', res)
       if (res?.code == 0) {
-        //parentGameType 是 越南彩，gameType 可能是越南彩下面的某一个彩
-        resData?.map((parentItem) => {
-          parentItem?.list?.map((item) => {
-            item.parentGameType = parentItem.gameType
-          })
-        })
-        v.hallGames = resData
-        if (v.isGroup) {
-          getGroup()
-        } else {
-          refreshUI(resData)
-        }
+        let resData = res?.data
+        refreshUI(res?.data)
       } else {
         Toast(res?.msg)
       }
@@ -154,9 +91,8 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
    * 绘制各Tab列表
    * @param item
    */
-  const renderDataList = (item: HallGameData) =>
-    <HallGameListComponent tabLabel={item?.gameTypeName}
-                           refreshing={refreshing}
+  const renderDataList = (item: Array<Data>) =>
+    <LobbyGameListComponent refreshing={refreshing}
                            gameData={item}
                            requestGameData={requestGameData}/>
 
@@ -164,51 +100,27 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
    * 绘制所有的数据
    */
   const renderAllData = () => {
-    if (systemInfo?.picTypeshow != '1') {
-      return (
-        anyEmpty(gameData)
-          ? <EmptyView style={{ flex: 1 }}/>
-          : renderDataList(gameData[0])
-      )
-
-    } else {
-      return (
-        anyEmpty(gameData)
-          ? <EmptyView style={{ flex: 1 }}/>
-          : <ScrollableTabView
-            tabBarUnderlineStyle={[_styles.tab_bar_underline,
-              { backgroundColor: Skin1.themeColor }]}
-            tabBarActiveTextColor={Skin1.themeColor}
-            tabBarInactiveTextColor={'#111'}
-            tabBarTextStyle={{ fontSize: scale(20) }}
-            style={[{ flex: 1 }]}
-            renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
-            {
-              gameData?.map((tabItem, index) => {
-                  return (
-                    renderDataList(tabItem)
-                  )
-                },
-              )
-            }
-          </ScrollableTabView>
-      )
-
-    }
+    return (
+      anyEmpty(gameData)
+        ? <EmptyView style={{ flex: 1 }}/>
+        : <ScrollView>
+          {renderDataList(gameData)}
+        </ScrollView>
+    )
   }
 
   return (
     <View style={CommStyles.flex}>
-    <SafeAreaHeader headerColor={Skin1.themeColor}>
-      <MineHeader
-        showBackBtn={anyEmpty(showBackButton) ? true : showBackButton == '1'}
-        onPressBackBtn={() => {
-              pop()
+      <SafeAreaHeader headerColor={Skin1.themeColor}>
+        <MineHeader
+          showBackBtn={anyEmpty(showBackButton) ? true : showBackButton == '1'}
+          onPressBackBtn={() => {
+                pop()
+            }
           }
-        }
-        title={'游戏大厅'}
-      />
-    </SafeAreaHeader>
+          title={'游戏大厅'}
+        />
+      </SafeAreaHeader>
       {
         renderAllData()
       }
