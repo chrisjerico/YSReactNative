@@ -525,7 +525,7 @@ const AccItem = ({ userBalance, item, updateBalance, setUpdateWallet, index, las
   const checkBalance = async (id) => {
     setLoading(true)
     if (id == 0) {
-      api.user.info().setCompletionBlock(({ data: user }) => {
+      api.user.info().useSuccess(({ data: user }) => {
         setBalance(user.balance)
         setLoading(false)
       })

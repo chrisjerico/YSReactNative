@@ -39,7 +39,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...KSThemeColor, // 凯时
     ...BYThemeColor, // 白曜
     ...HJThemeColor, //黑金
-    ...LEFThemeColor, //黑金
+    ...LEFThemeColor, //乐FUN
     ...XBJThemeColor, // 香槟金
     ...OtherThemeColor, // 其他
   }
@@ -76,6 +76,7 @@ export default class UGSkinManagers extends UGThemeColor {
       277: `越南`, //这个值 要与 后台站点一致
       27: `摩登红`,
       28: `黑金`,
+      30: '乐FUN',
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
@@ -112,8 +113,8 @@ export default class UGSkinManagers extends UGThemeColor {
     if (Skin1.skitType == '默认') return
 
     // 已上线模板
-    const skin = Skin1
-    const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('香槟金') != -1 || skin.skitType.indexOf('威尼斯') != -1 || skin.skitType.indexOf('宝石红') != -1
+    const skin = Object.assign({}, Skin1, Skin1.ocSkin)
+    const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('香槟金') != -1 || skin.skitType.indexOf('威尼斯') != -1 || skin.skitType.indexOf('宝石红') != -1 || skin.skitType.indexOf('乐FUN') != -1
     const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin
     if (!ok) return
 

@@ -49,7 +49,7 @@ const UseWithdrawalRecordList = () => {
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
 
     APIRouter.capital_withdrawalRecordList({
-      startDate: '2020-01-01',
+      startDate: '2010-01-01',
       endDate: date,
       page: reqPage.toString(),
       rows: "20",

@@ -8,7 +8,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, UGImageHost, stringToNumber, useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import TouchableImage from '../../public/views/tars/TouchableImage'
@@ -20,7 +20,7 @@ import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
 
-const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
+const { getHtml5Image } = useHtml5Image(UGImageHost.test5)
 
 const LHTHomePage = () => {
   // states

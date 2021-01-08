@@ -7,11 +7,11 @@ import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanc
 import { PageName } from '../../../public/navigation/Navigation'
 import { navigate } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
-import { useHtml5Image } from '../../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../../public/tools/tars'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 import TouchableImage from '../../../public/views/tars/TouchableImage'
 
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
+const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
 const buttonHeight = scale(82)
 

@@ -4,9 +4,9 @@ import FastImage from 'react-native-fast-image'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
-import { useHtml5Image } from '../../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../../public/tools/tars'
 
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
+const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
 const tabs = [
   {

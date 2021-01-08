@@ -1,15 +1,22 @@
+import { UGStore } from './../../../redux/store/UGStore';
+import { devConfig } from '../../../../../config'
 import { Platform } from 'react-native'
 import { releaseConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
 import AppDefine from '../AppDefine'
-import { devConfig } from './../../../../../config'
 import { Skin1 } from './../../theme/UGSkinManagers'
 import { OCHelper } from './OCHelper'
 
 
+let __launchFinish = false
+
 // 配置需要被替换的oc页面（替换成rn）
-export async function setRnPageInfo() {
+export async function setRnPageInfo(force = false) {
+  if (!force && !__launchFinish) return
+  __launchFinish = true
+
+  const { sysConf } = UGStore.globalProps
   let pages: Array<RnPageModel> = []
 
   let skitType = Skin1.skitType
@@ -78,35 +85,29 @@ export async function setRnPageInfo() {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    //利息宝页
-    pages.push({
-      rnName: PageName.AlipayView,
-      userCenterItemCode: 4,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-    // 彩票大厅（第三样式）
-    if (skitType.indexOf('威尼斯') != -1) {
-      pages = pages.concat([{
-        vcName: 'UGLotteryHomeController',
-        rnName: PageName.GameHallPage,
-        tabbarItemPath: '/gameHall',
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      }, {
-        vcName: 'NewLotteryHomeViewController',
-        rnName: PageName.GameHallPage,
-        tabbarItemPath: '/gameHall',
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      }])
-    }
+    
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
+
+  // 彩票大厅（新版、自由版）
+  {
+    const { mobileGameHall } = sysConf
+    let page: PageName = undefined;
+    page = mobileGameHall == '1' ? PageName.GameHallPage : page;
+    page = mobileGameHall == '2' ? PageName.FreedomHallPage : page;
+    if (page) {
+      pages.push({
+        vcName: 'UGLotteryHomeController,NewLotteryHomeViewController',
+        rnName: page,
+        tabbarItemPath: '/gameHall',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      })
+    }
+  }
+
  // 申请代理
   pages.push({
     vcName: 'UGAgentViewController',
@@ -208,6 +209,9 @@ export async function setRnPageInfo() {
   if (skitType.indexOf('威尼斯') != -1) {
     pages = pages.concat(WNSPages)
   }
+  if (skitType.indexOf('乐FUN') != -1) {
+    pages = pages.concat(LEFPages)
+  }
   // 替换原生页面
   RnPageModel.pages = pages
   switch (Platform.OS) {
@@ -233,6 +237,43 @@ export async function setRnPageInfo() {
       break
   }
 }
+
+// 乐FUN
+const LEFPages = [
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.LEFSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.LEFSignUpPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 首页
+    tabbarItemPath: '/home',
+    rnName: PageName.LEFHomePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.LEFMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+]
 
 // 香槟金
 const XBJPages = [

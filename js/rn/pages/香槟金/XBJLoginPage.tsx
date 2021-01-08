@@ -126,7 +126,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
 
     v.reloadSlide();
     showLoading('正在登录...');
-    api.user.login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode), v.fullName).setCompletionBlock(({ data }) => {
+    api.user.login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode), v.fullName).useSuccess(({ data }) => {
       showSuccess('登录成功！');
 
       async function didLogin() {
@@ -159,7 +159,8 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         }
       }
       didLogin();
-    }, (err, sm) => {
+    })
+      .useFailure((err, sm) => {
       if (sm.res?.data?.needFullName) {
         sm.noShowErrorHUD = true;
         hideLoading();

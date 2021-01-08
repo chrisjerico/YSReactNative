@@ -6,6 +6,7 @@ import { anyEmpty, arrayEmpty, arrayLength } from '../../../../../public/tools/E
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../public/tools/ToastUtils'
 import { CapitalGroupData, CapitalListData } from '../../../../../public/network/Model/wd/CapitalDetailModel'
+import moment from 'moment'
 
 /**
  * 资金明细记录
@@ -58,7 +59,9 @@ const UseCapitalDetailRecordList = () => {
 
     const stDate = !anyEmpty(startDate) ? startDate : '2010-01-01'
     const edDate = !anyEmpty(endDate) ? endDate : new Date().format('yyyy-MM-dd')
-    let reqGroup = !anyEmpty(selGroup) ? selGroup : groups[curGroup].value.toString()
+    let reqGroup = !anyEmpty(selGroup) ? selGroup : groups.find(
+      (item) => item.value == curGroup,
+    ).value.toString()
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
 
     APIRouter.capital_capitalDetailRecordList({

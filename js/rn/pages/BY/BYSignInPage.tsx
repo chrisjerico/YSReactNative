@@ -6,13 +6,13 @@ import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop } from '../../public/navigation/RootNavigation'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
+const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
 const BYSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, reference } = useSignInPage({

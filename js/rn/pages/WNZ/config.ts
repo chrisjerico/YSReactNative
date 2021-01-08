@@ -3,9 +3,9 @@ import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
-import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
 
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
+const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
 const config = {
   defaultUserCenterLogos: {
@@ -29,11 +29,12 @@ const config = {
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
     19: 'https://appstatic.guolaow.com/assets/wnz/qq.png', // QQ客服
     20: 'https://appstatic.guolaow.com/assets/wnz/award.png', // 開獎網
-    22: getHtml5Image(23, 'center/electronic'), // 电子游戏
-    23: getHtml5Image(23, 'center/live'), // 真人游戏
-    24: getHtml5Image(23, 'center/chess'), // 棋牌游戏
-    26: getHtml5Image(23, 'center/vr'), // 电竞游戏
-    27: getHtml5Image(23, 'center/sport'), // 体育游戏
+    22: getHtml5Image(23, 'center/electronic'), // 电子注单
+    23: getHtml5Image(23, 'center/live'), // 真人注单
+    24: getHtml5Image(23, 'center/chess'), // 棋牌注单
+    25: getHtml5Image(23, 'center/chase'), // 捕鱼注单
+    26: getHtml5Image(23, 'center/vr'), // 电竞注单
+    27: getHtml5Image(23, 'center/sport'), // 体育注单
     30: getHtml5Image(23, 'center/recharge_record'), // 存款纪录
     31: getHtml5Image(23, 'center/withdraw-order'), // 取款纪录
     32: getHtml5Image(23, 'center/account_bill'), // 资金明细

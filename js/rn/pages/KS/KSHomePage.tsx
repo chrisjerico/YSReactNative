@@ -7,7 +7,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
@@ -20,7 +20,7 @@ import MoreGameButton from './views/MoreGameButton'
 import ProfileBlock from './views/ProfileBlock'
 
 const buttonHeight = scale(82)
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
+const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
 const KSHomePage = () => {
   const { goTo, refresh, info, sign } = useHomePage({})
