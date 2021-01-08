@@ -116,8 +116,8 @@ export class api_user {
   }
 
   // 提交反馈
-  static addFeedback(type:string, pid:string, content:string,imgPaths:string[]) {
-    return this.c.post('addFeedback', {type:type, pid:pid, content:content ,imgPaths:imgPaths.toString});
+  static addFeedback(type:string, pid:string, content:string, imgPaths:string[]) {
+    return this.c.post('addFeedback', {type:type, pid:pid, content:content , imgPaths:imgPaths?.toString});
   }
 
   // 刪除全部站內信
@@ -202,7 +202,7 @@ export class api_user {
 
   // 上传身份证
   static uploadIdentity(files: string) {// 图片文件路径
-    return this.c.post<{isReview:boolean}>('uploadIdentity', {}, {files:files});
+    return this.c.post<IUploadIdentify>('uploadIdentity', {}, {files:files});
   }
 
 

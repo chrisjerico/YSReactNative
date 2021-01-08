@@ -9,7 +9,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -21,7 +21,7 @@ import MenuButton from './views/MenuButton'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 
-const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
+const { getHtml5Image } = useHtml5Image(UGImageHost.test5)
 
 const WNZMinePage = () => {
   const { current: v } = useRef<{} & JDSalaryListCP>({})

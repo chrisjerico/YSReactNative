@@ -73,7 +73,7 @@ const JDWriteMessagePage = ({ setProps }) => {
           imgs.push(imgURLs);
           showLoading()
 
-          api.user.uploadFeedback(imgs).setCompletionBlock(({ data, msg }) => {
+          api.user.uploadFeedback(imgs).useSuccess(({ data, msg }) => {
             showSuccess(msg)
             imgs.length = 0
             // console.log('返回的数据'+JSON.stringify(data));
@@ -136,15 +136,12 @@ const JDWriteMessagePage = ({ setProps }) => {
   //网络请求
   function addFeedback(imgs?: Array<string>) {
     showLoading()
-    api.user.addFeedback(type.toString(), '', remark, imgs).setCompletionBlock(({ data, msg }) => {
+    api.user.addFeedback(type.toString(), '', remark, imgs).useSuccess(({ data, msg }) => {
       console.log('数据：=', data);
       showSuccess(msg)
       imgPaths.length = 0
       pop()
 
-    }, (err) => {
-      console.log('err = ', err);
-      // Toast(err.message)
     });
   }
 

@@ -36,6 +36,8 @@ export class UGThemeColor {
   progress?: Progress
   // promition
   promotion?: Promotion
+  // 用于替换oc颜色（优先级高）
+  ocSkin?:UGThemeColor
 }
 
 interface Progress {
@@ -118,6 +120,7 @@ export enum UGColor {
   TextColor5 = '#ddd',
   TextColor6 = '#fff',
   TextColor7 = '#666',
+  TextColor8 = '#eee',
 
   //
   LoadingColor1 = '#ccd1d9',

@@ -400,7 +400,8 @@ const WithdrawComponent = ({ navigation, route }) => {
           renderItem()
       }
 
-      <MiddleMenu ref={refMenu}
+      <MiddleMenu key={menuItem?.toString()}
+                  ref={refMenu}
                   onMenuClick={clickMenu}
                   menu={menuItem}/>
 

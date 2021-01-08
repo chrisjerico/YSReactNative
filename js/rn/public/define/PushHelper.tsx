@@ -1,4 +1,5 @@
-import { Platform } from 'react-native'
+import { Linking, Platform } from 'react-native'
+import { useSafeArea } from 'react-native-safe-area-context'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -21,6 +22,7 @@ import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
+import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -129,10 +131,12 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game])
         break
       case 'android':
-        // if (B_DEBUG) {
-        //   push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
-        //   return
-        // }
+        if (B_DEBUG) {
+          // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
+          // return
+        }
+        if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
+
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }
@@ -178,13 +182,42 @@ export default class PushHelper {
     }
   }
 
+  /**
+   * 跳转存款
+   * @param seriesId
+   * @param subId
+   */
+  static pushDeposit(seriesId?: string, subId?: string): boolean {
+    if (seriesId == '7' && subId == MenuType.ZHGL) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+      return true
+    } else if (seriesId == '7' && (subId == MenuType.CQK || subId == MenuType.CZ)) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
+      return true
+    } else if (seriesId == '7' && subId == MenuType.TX) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
+      return true
+    } else if (seriesId == '7' && subId == MenuType.CZJL) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
+      return true
+    } else if (seriesId == '7' && subId == MenuType.TXJL) {
+      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
+      return true
+    }
+
+    return false
+  }
+
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
+    ugLog('pushCategory = ', linkCategory, linkPosition)
     switch (Platform.OS) {
       case 'ios':
         OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
         break
       case 'android':
+        if(this.pushDeposit(linkCategory?.toString(), linkPosition?.toString())) return
+
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
           seriesId: linkCategory,
           subId: linkPosition,
@@ -312,7 +345,7 @@ export default class PushHelper {
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.scratchList().setCompletionBlock(({ data }) => {
+            api.activity.scratchList().useSuccess(({ data }) => {
               hideLoading()
               // 数据转换为原生格式
               const scratchList = data?.scratchList?.map((v) => {
@@ -338,7 +371,7 @@ export default class PushHelper {
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+            api.activity.goldenEggList().useSuccess(({ data }) => {
               hideLoading()
               // 数据转换为原生格式
               const list = data?.map((v) => {
@@ -361,6 +394,14 @@ export default class PushHelper {
                 ])
               }
             })
+            break
+          }
+          case UGUserCenterType.任务弹窗: {
+            if (!UGUserModel.checkLogin()) return
+            console.log('top', AppDefine.safeArea.top, AppDefine.safeArea.bottom);
+
+            const h = AppDefine.height - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 150;
+            OCHelper.call('UGTaskNoticeView.alloc.initWithFrame:.show', [NSValue.CGRectMake(25, (AppDefine.height - h) / 2, AppDefine.width - 50, h)])
             break
           }
           case UGUserCenterType.我的页: {
@@ -404,7 +445,11 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
-            push(PageName.ManageBankListPage, {})
+            if (__DEV__) {
+              push(PageName.ManageBankListPage, {})
+            } else {
+              OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [UGUserCenterType.银行卡管理])
+            }
             break
           }
           case UGUserCenterType.即时注单: {
@@ -418,6 +463,7 @@ export default class PushHelper {
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
+                console.log('跳转原生页面失败，请对接');
               }
             })
           }
@@ -429,7 +475,7 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             // if (B_DEBUG) {
-              push(PageName.CapitalPage)
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
               return
             // }
             // subId = MenuType.CZ
@@ -440,8 +486,12 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.取款: {
-            subId = MenuType.TX
-            break
+            // if (B_DEBUG) {
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
+            return
+            // }
+            // subId = MenuType.TX
+            // break
           }
           case UGUserCenterType.银行卡管理: {
             // if (B_DEBUG) {
@@ -546,8 +596,12 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.资金明细: {
-            subId = MenuType.ZHGL
-            break
+            // if (B_DEBUG) {
+            push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+            return
+            // }
+            // subId = MenuType.ZHGL
+            // break
           }
           case UGUserCenterType.开奖网: {
             this.openWebView(
@@ -571,7 +625,7 @@ export default class PushHelper {
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.scratchList().setCompletionBlock(({ data }) => {
+            api.activity.scratchList().useSuccess(({ data }) => {
               hideLoading()
               ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl', data: data })
             })
@@ -580,11 +634,15 @@ export default class PushHelper {
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+            api.activity.goldenEggList().useSuccess(({ data }) => {
               hideLoading()
               ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd', data: data })
             })
             return
+          }
+          case UGUserCenterType.任务弹窗: {
+            // TODO Android
+            break
           }
           case UGUserCenterType.我的页: {
             subId = MenuType.HYZX

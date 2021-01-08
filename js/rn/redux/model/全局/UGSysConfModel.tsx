@@ -67,6 +67,7 @@ export enum UGUserCenterType {
   开奖结果 = 109,
   砸金蛋 = 110,
   刮刮乐 = 111,
+  任务弹窗 = 112,
   即时注单 = 112,
 }
 
@@ -129,7 +130,7 @@ export default class UGSysConfModel {
     return temp.filter((ele) => ele)
   }
   static updateFromNetwork(completed?: () => void) {
-    return api.system.config().setCompletionBlock(({ data }, sm) => {
+    return api.system.config().useSuccess(({ data }, sm) => {
       sm.noShowErrorHUD = true
       UGStore.dispatch({ type: 'merge', sysConf: data })
       completed && completed()
@@ -156,8 +157,8 @@ export default class UGSysConfModel {
   mobileTemplateCategory?: string // 模板号      9 简约
   mobileTemplateLhcStyle?: string // 六合配色方案
   mobileTemplateStyle?: string // 新年红 简约 香槟金 配色方案
-  mobileGameHall: string//用户中心类型
-  picTypeshow: string//风格tab打开还是关闭
+  mobileGameHall?: '0' | '1' | '2' //彩票大厅类型，0默认，1新版，2自由版
+  picTypeshow?: string//彩票大厅是否显示分类栏
   webName?: string // 首页底部文字   网址名称*/;
   serviceQQ1?: string // QQ客服q1
   serviceQQ2?: string // QQ客服q2
@@ -172,6 +173,7 @@ export default class UGSysConfModel {
   easyRememberDomain?: string // 易记域名*/
   chatLink?: string // 聊天的链接*/
   mBonsSwitch?: boolean // 俸禄开关开启。0 为开启， 1 为 关闭
+  missionPopUpSwitch?: '0' | '1' // 首页是否显示任务浮窗
 
   switchCoinPwdSms?: string // 资金密码开启短信验证
   switchCoinPwd?: string // 是否打开忘记密码
