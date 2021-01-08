@@ -23,6 +23,7 @@ import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
 import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
+import { Skin1 } from '../theme/UGSkinManagers'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -596,8 +597,8 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.资金明细: {
-            // if (B_DEBUG) {
-            push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+            // if (B_DEBUG) {r
+            push(PageName.CapitalPage, { showBackButton: true })
             return
             // }
             // subId = MenuType.ZHGL
@@ -619,7 +620,11 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.游戏大厅: {
-            subId = MenuType.GCDT
+            // subId = MenuType.GCDT
+            ugLog("游戏大厅")
+            push(PageName.GameLobbyPage,
+              { headerColor: Skin1.themeColor,
+                homePage: PageName.WNZHomePage })
             break
           }
           case UGUserCenterType.刮刮乐: {

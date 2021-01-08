@@ -46,7 +46,8 @@ export default class ExtUGApplication {
     PageName.GameHallPage,
     PageName.FreedomHallPage,
     PageName.LEFMinePage,
-    PageName.UpdateVersionPage,
+    PageName.UpdateVersionPage,    
+    PageName.GameLobbyPage,
   ]
 
   //在Application初始化之前使用，只能手动初始化 stack列表
