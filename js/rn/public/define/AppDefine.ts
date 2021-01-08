@@ -42,10 +42,10 @@ export default class AppDefine {
   }
 
   /**
-   * 判断某个站点
+   * 判断站点（多个站点用英文逗号隔开）
    * @param site
    */
-  static isSite(site?: string): boolean {
-    return site?.toLowerCase() == AppDefine.siteId?.toLocaleLowerCase()
+  static inSites(sites?: string): boolean {
+    return !!sites?.toLowerCase().split(',').filter((v) => v == AppDefine.siteId?.toLowerCase()).length
   }
 }
