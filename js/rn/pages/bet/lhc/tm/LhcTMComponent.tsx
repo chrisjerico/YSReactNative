@@ -112,7 +112,7 @@ const LhcTMComponent = ({ style }: IRouteParams) => {
       <View style={_styles.zodiac_container}>
         {
           zodiacData?.map((item, index) =>
-            <TouchableOpacity key={index}
+            <TouchableOpacity key={`${selectedZodiac?.includes(item)}`}
                               onPress={() => addOrRemoveZodiac(item)}>
               <View key={`${selectedZodiac?.includes(item)}`}
                     style={_styles.zodiac_item}>
@@ -124,7 +124,8 @@ const LhcTMComponent = ({ style }: IRouteParams) => {
                     <Icon size={scale(36)}
                           name={'circle-o'}/>
                 }
-                <Text style={_styles.zodiac_item_text}>{item?.name}</Text>
+                <Text key={item?.name}
+                      style={_styles.zodiac_item_text}>{item?.name}</Text>
               </View>
             </TouchableOpacity>)
         }
@@ -154,11 +155,13 @@ const LhcTMComponent = ({ style }: IRouteParams) => {
    * 绘制 特码B/A
    * @param groupData
    */
-  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
-    <View style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    <View key={groupData?.alias}
+          style={_styles.sub_title_container}>
+      <Text key={groupData?.alias}
+            style={_styles.sub_title_text}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>
@@ -173,10 +176,11 @@ const LhcTMComponent = ({ style }: IRouteParams) => {
    * 绘制 连码B/A
    * @param groupData
    */
-  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
-    <View style={_styles.sub_title_container}>
+    <View key={groupData?.alias}
+          style={_styles.sub_title_container}>
       <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
     </View>
 
@@ -191,10 +195,11 @@ const LhcTMComponent = ({ style }: IRouteParams) => {
    * 绘制 色波B/A
    * @param groupData
    */
-  const renderSB = (groupData?: PlayGroupData) => <View key={groupData?.id}
+  const renderSB = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
-    <View style={_styles.sub_title_container}>
+    <View key={groupData?.alias}
+          style={_styles.sub_title_container}>
       <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
     </View>
 

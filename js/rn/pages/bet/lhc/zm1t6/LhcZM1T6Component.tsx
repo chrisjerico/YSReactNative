@@ -52,10 +52,11 @@ const LhcZM1T6Component = ({ style }: IRouteParams) => {
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         dataZM1T6?.map((groupData) => {
-          return <View key={groupData?.alias}
+          return <View key={groupData?.id + groupData?.alias}
                        style={CommStyles.flex}>
 
-            <View style={_styles.sub_title_container}>
+            <View key={groupData?.alias}
+                  style={_styles.sub_title_container}>
               <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
             </View>
 

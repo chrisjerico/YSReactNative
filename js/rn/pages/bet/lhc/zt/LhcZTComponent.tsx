@@ -71,7 +71,7 @@ const LhcZTComponent = ({ style }: IRouteParams) => {
   }, [tabIndex, dataZT])
 
   /**
-   * 绘制生肖
+   * 绘制tab
    */
   const renderTab = () => <View style={_styles.tab_title_container}>
     <ScrollView style={_styles.sv_container}
@@ -80,9 +80,10 @@ const LhcZTComponent = ({ style }: IRouteParams) => {
       <View style={_styles.tab_title_content}>
         {
           dataZT?.map((item, index) =>
-            <TouchableOpacity style={CommStyles.flex} key={index}
+            <TouchableOpacity key={item[0]?.alias}
+                              style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>
-              <View key={index}
+              <View key={item[0]?.alias}
                     style={[
                       _styles.tab_item,
                       index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
@@ -165,7 +166,7 @@ const LhcZTComponent = ({ style }: IRouteParams) => {
   </ScrollView>
 
   return (
-    <View style={[CommStyles.flex, style, style]}>
+    <View style={[CommStyles.flex, style]}>
       {renderTab()}
       {renderAllBall()}
     </View>

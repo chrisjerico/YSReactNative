@@ -33,19 +33,21 @@ const LotteryEBall = ({
   return (
     <TouchableOpacity key={item?.id}
                       onPress={() => callback && callback()}>
-      <View style={[
-        _styles.ball_item_tm,
-        {
-          backgroundColor:
-            isSel ?
-              `${Skin1.themeColor}dd` :
-              null,
-        },
-      ]}>
-        <EBall ballType={{
-          type: BallStyles.lhc,
-          ballNumber: item?.name,
-        }}
+      <View key={item?.id}
+            style={[
+              _styles.ball_item_tm,
+              {
+                backgroundColor:
+                  isSel ?
+                    `${Skin1.themeColor}dd` :
+                    null,
+              },
+            ]}>
+        <EBall key={item?.id}
+               ballType={{
+                 type: BallStyles.lhc,
+                 ballNumber: item?.name,
+               }}
                oddsStyle={{
                  color: isSel ?
                    UGColor.TextColor6 :

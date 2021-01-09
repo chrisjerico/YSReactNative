@@ -23,9 +23,12 @@ const EBall = ({
 
 
   return (
-    <View style={_styles.container}>
-      <LotteryBall {...ballType}/>
+    <View key={ballType?.ballNumber + odds}
+          style={_styles.container}>
+      <LotteryBall key={ballType?.ballNumber}
+                   {...ballType}/>
       <Text numberOfLines={1}
+            key={odds}
             style={[_styles.ball_odds, oddsStyle]}>{odds}</Text>
     </View>
   )

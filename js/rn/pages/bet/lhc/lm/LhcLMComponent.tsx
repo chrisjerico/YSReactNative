@@ -52,11 +52,13 @@ const LhcLMComponent = ({ style }: IRouteParams) => {
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         dataLM?.map((groupData) => {
-          return <View key={groupData?.id}
+          return <View key={groupData?.id + groupData?.alias}
                        style={CommStyles.flex}>
 
-            <View style={_styles.sub_title_container}>
-              <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+            <View key={groupData?.alias}
+                  style={_styles.sub_title_container}>
+              <Text key={groupData?.alias}
+                    style={_styles.sub_title_text}>{groupData?.alias}</Text>
             </View>
 
             <View style={_styles.ball_container}>

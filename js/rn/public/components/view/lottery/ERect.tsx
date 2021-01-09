@@ -23,9 +23,12 @@ const ERect = ({
 
 
   return (
-    <View style={_styles.container}>
-      <Text style={[_styles.title_text, titleStyle]}>{title}</Text>
-      <Text style={[_styles.odds_text, oddsStyle]}>{odds}</Text>
+    <View key={title + odds}
+          style={_styles.container}>
+      <Text key={title}
+            style={[_styles.title_text, titleStyle]}>{title}</Text>
+      <Text key={odds}
+            style={[_styles.odds_text, oddsStyle]}>{odds}</Text>
     </View>
   )
 }
