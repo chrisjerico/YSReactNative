@@ -35,6 +35,7 @@ import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { CapitalConst, TransferConst } from '../../../../const/CapitalConst'
 import CapitalContext from '../../../CapitalContext'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
+import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
@@ -104,6 +105,9 @@ const TransferPayPage = ({ navigation, route }) => {
       switch (Platform.OS) {
         case 'ios':
           //TODO iOS 复制 title 到粘贴板
+          OCHelper.call('UIPasteboard.generalPasteboard.setString:', [copyText]).then(() => {
+              
+          })
           break
         case 'android':
           ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })

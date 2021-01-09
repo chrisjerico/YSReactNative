@@ -3,6 +3,19 @@ import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { UGStore } from '../../store/UGStore'
 
+
+export interface InviteCodeConfigModel {
+  codeSwith?: string
+  displayWord?: string
+  canGenNum?: string
+  canUseNum?: string
+  randomSwitch?: string
+  randomLength?: string
+  noticeSwitch?: string //邀请码说明栏开关
+  noticeText?: string   //邀请码说明栏文字
+
+}
+
 export interface UGAgentApplyInfo {
   username: string // 用户名
   qq: string // qq
@@ -179,6 +192,8 @@ export default class UGSysConfModel {
   switchCoinPwd?: string // 是否打开忘记密码
   coinPwdAuditOptionAry?: Array<string> //忘记密码有哪些选项 mobile, bank, id
 
+  // 邀请码
+  inviteCode ?: InviteCodeConfigModel
   // 注册页
   hide_reco?: number // 代理人 0不填，1选填，2必填
   reg_name?: number // 真实姓名 0不填，1选填，2必填
@@ -219,6 +234,7 @@ export default class UGSysConfModel {
   appDownloadUrl?: string
   // 我的頁
   userCenterItems?: Array<userCenterItems>
+
 }
 
 interface userCenterItems {
@@ -231,3 +247,4 @@ interface userCenterItems {
   logo: string
   name: string
 }
+

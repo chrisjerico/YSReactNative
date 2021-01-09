@@ -131,4 +131,6 @@ export class api {
 
   // 朋友圈
   static moment = api_moment;
+
+
 }

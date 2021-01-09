@@ -1,4 +1,6 @@
+
 import { EdgeInsets } from 'react-native-safe-area-context';
+import { YueBaoStatModel } from './../network/Model/YueBaoStatModel';
 import { ANHelper } from './ANHelper/ANHelper'
 import { Dimensions, PixelRatio, Platform } from 'react-native'
 import { OCHelper } from './OCHelper/OCHelper'
@@ -41,6 +43,7 @@ export default class AppDefine {
     }
   }
 
+
   /**
    * 判断站点（多个站点用英文逗号隔开）
    * @param site
@@ -48,4 +51,7 @@ export default class AppDefine {
   static inSites(sites?: string): boolean {
     return !!sites?.toLowerCase().split(',').filter((v) => v == AppDefine.siteId?.toLowerCase()).length
   }
+
+  static isShowAllup = () => 'c085'.indexOf(AppDefine.siteId) != -1
+
 }
