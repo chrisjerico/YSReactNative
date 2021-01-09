@@ -22,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcZT from './UseLhcZT'
+import UseLhcLMA, { ILMABallArray } from './UseLhcLMA'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import {
   PlayData,
@@ -39,32 +39,34 @@ import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 import { LHC_Tab } from '../../const/LotteryConst'
+import { doc } from 'prettier'
 
 interface IRouteParams {
   style?: StyleProp<ViewStyle>
 }
 
 /**
- * 六合彩正特
+ * 六合彩连码
  *
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({ style }: IRouteParams) => {
+const LhcLMAComponent = ({ style }: IRouteParams) => {
 
 
   const {
     tabIndex,
     setTabIndex,
     curData,
-    dataZT,
-    setDataZT,
+    ballArray,
+    dataLMA,
+    setDataLMA,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseLhcZT()
+  } = UseLhcLMA()
 
   /**
    * 绘制tab
@@ -75,11 +77,11 @@ const LhcZTComponent = ({ style }: IRouteParams) => {
                 horizontal={true}>
       <View style={_styles.tab_title_content}>
         {
-          dataZT?.map((item, index) =>
-            <TouchableOpacity key={item[0]?.alias}
+          dataLMA?.map((item, index) =>
+            <TouchableOpacity key={item?.alias}
                               style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>
-              <View key={item[0]?.alias}
+              <View key={item?.alias}
                     style={[
                       _styles.tab_item,
                       index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
@@ -87,7 +89,7 @@ const LhcZTComponent = ({ style }: IRouteParams) => {
                 <Text style={[
                   _styles.tab_title_item_text,
                   index == tabIndex ? { color: `white` } : null,
-                ]}>{item[0]?.alias}</Text>
+                ]}>{item?.alias}</Text>
               </View>
             </TouchableOpacity>)
         }
@@ -99,66 +101,52 @@ const LhcZTComponent = ({ style }: IRouteParams) => {
   </View>
 
   /**
-   * 绘制 方格式
-   * @param item
-   */
-  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
-
-  /**
    * 绘制 球
    * @param item
+   * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayData) => <LotteryEBall key={item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
+
+    return (
+      <LotteryEBall key={item?.id}
+                    item={{
+                      ...item?.plays[0],
+                      ...ballInfo,
+                    }}
+                    selectedBalls={selectedBalls}
+                    ballStyle={{flexDirection: 'column'}}
+                    callback={() => addOrRemoveBall(item?.id)}/>
+    )
+  }
 
   /**
    * 绘制 特码B/A
    * @param groupData
    */
-  const renderZT1 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
-                                                         style={CommStyles.flex}>
+  const renderLMA = (groupData?: PlayGroupData) => {
 
-    <View style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
-    </View>
+    return (
+      <View key={groupData?.id + groupData?.alias}
+            style={CommStyles.flex}>
 
-    <View style={_styles.ball_container}>
-      {
-        groupData?.plays?.map((item) => renderEBall(item))
-      }
-    </View>
-  </View>
+        <View style={_styles.sub_title_container}>
+          <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+        </View>
 
-
-  /**
-   * 绘制 连码B/A
-   * @param groupData
-   */
-  const renderZT2 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
-                                                         style={CommStyles.flex}>
-
-    <View style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
-    </View>
-
-    <View style={_styles.ball_container}>
-      {
-        groupData?.plays?.map((item) => renderERect(item))
-      }
-    </View>
-  </View>
+        <View style={_styles.ball_container}>
+          {
+            ballArray?.map((item, index) => renderEBall(groupData, item))
+          }
+        </View>
+      </View>
+    )
+  }
 
   /**
    * 绘制全部的球
    */
   const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    {arrayLength(curData) > 0 && renderZT1(curData[0])}
-    {arrayLength(curData) > 1 && renderZT2(curData[1])}
+    {renderLMA(curData)}
   </ScrollView>
 
   return (
@@ -231,4 +219,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default LhcZTComponent
+export default LhcLMAComponent

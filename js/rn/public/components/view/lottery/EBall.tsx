@@ -8,7 +8,8 @@ import { BallStyles } from '../../../../pages/hall/new/games/HallGameListCompone
 interface IEBall {
   ballType?: ILotteryBall //球风格
   odds?: string, //赔率
-  oddsStyle?: StyleProp<TextStyle> //赔率风格
+  oddsStyle?: StyleProp<TextStyle>, //赔率风格
+  style?: StyleProp<ViewStyle>
 }
 
 /**
@@ -19,16 +20,19 @@ const EBall = ({
                  ballType,
                  odds,
                  oddsStyle,
+                 style
                }: IEBall) => {
 
 
   return (
     <View key={ballType?.ballNumber + odds}
-          style={_styles.container}>
+          style={[
+            _styles.container,
+            style
+          ]}>
       <LotteryBall key={ballType?.ballNumber}
                    {...ballType}/>
-      <Text numberOfLines={1}
-            key={odds}
+      <Text key={odds}
             style={[_styles.ball_odds, oddsStyle]}>{odds}</Text>
     </View>
   )
@@ -40,9 +44,11 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
   },
   ball_odds: {
+    flex: 1,
     color: UGColor.TextColor7,
     fontSize: scale(18),
     paddingHorizontal: scale(1),
+    textAlign: 'center',
   },
 
 })

@@ -35,6 +35,7 @@ import LhcZTComponent from './lhc/zt/LhcZTComponent'
 import { getBankIcon } from '../bank/list/UseManageBankList'
 import { Res } from '../../Res/icon/Res'
 import { BankConst } from '../bank/const/BankConst'
+import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -141,39 +142,42 @@ const BetLotteryPage = ({ navigation, route }) => {
 
     let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
 
-    return <View style={CommStyles.flex}>
-      <LhcTMComponent style={lotteryCode == LotteryConst.TM ? null : { display: 'none' }}
-                      key={LotteryConst.TM}/>
-      <LhcLMComponent style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
-                      key={LotteryConst.LM}/>
-      <LhcZMComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
-                      key={LotteryConst.ZM}/>
-      <LhcZM1T6Component style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
-                         key={LotteryConst.ZM1_6}/>
-      <LhcZTComponent style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
-                      key={LotteryConst.ZT}/>
-    </View>
+    // return <View style={CommStyles.flex}>
+    //   <LhcTMComponent style={lotteryCode == LotteryConst.TM ? null : { display: 'none' }}
+    //                   key={LotteryConst.TM}/>
+    //   <LhcLMComponent style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
+    //                   key={LotteryConst.LM}/>
+    //   <LhcZMComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
+    //                   key={LotteryConst.ZM}/>
+    //   <LhcZM1T6Component style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
+    //                      key={LotteryConst.ZM1_6}/>
+    //   <LhcLMAComponent style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
+    //                   key={LotteryConst.ZT}/>
+    // </View>
 
-    // switch (lotteryCode) {
-    //   case LotteryConst.TM: {
-    //     return <LhcTMComponent key={LotteryConst.TM}/>
-    //   }
-    //   case LotteryConst.LM: {
-    //     return <LhcLMComponent key={LotteryConst.LM}/>
-    //   }
-    //   case LotteryConst.ZM: {
-    //     return <LhcZMComponent key={LotteryConst.ZM}/>
-    //   }
-    //   case LotteryConst.ZM1_6: {
-    //     return <LhcZM1T6Component key={LotteryConst.ZM1_6}/>
-    //   }
-    //   case LotteryConst.ZT: {
-    //     return <LhcZTComponent key={LotteryConst.ZT}/>
-    //   }
-    //
-    // }
-    //
-    // return null
+    switch (lotteryCode) {
+      case LotteryConst.TM: {
+        return <LhcTMComponent/>
+      }
+      case LotteryConst.LM: {
+        return <LhcLMComponent/>
+      }
+      case LotteryConst.ZM: {
+        return <LhcZMComponent/>
+      }
+      case LotteryConst.ZM1_6: {
+        return <LhcZM1T6Component/>
+      }
+      case LotteryConst.ZT: {
+        return <LhcZTComponent/>
+      }
+      case LotteryConst.LMA: {
+        return <LhcLMAComponent/>
+      }
+
+    }
+
+    return null
   }
 
   /**
