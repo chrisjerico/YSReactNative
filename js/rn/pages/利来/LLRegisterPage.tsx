@@ -1,30 +1,37 @@
 import * as React from 'react'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { Alert, Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native'
+import { useState } from 'react'
+import { Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
 import AppDefine from '../../public/define/AppDefine'
-import { navigate, popToRoot } from '../../public/navigation/RootNavigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
-import APIRouter from '../../public/network/APIRouter'
 import { UGStore } from '../../redux/store/UGStore'
-import { EventRegister } from 'react-native-event-listeners'
 // @ts-ignore
-import WebView, { WebViewMessageEvent } from 'react-native-webview'
-import { ugLog } from '../../public/tools/UgLog'
-import { Icon } from 'react-native-elements'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { LLRegisterInput } from './component/registerPage/LLRegisterInput'
 import { httpClient } from '../../public/network/httpClient'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { AgentType } from '../../public/models/Enum'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 
 export const LLRegisterPage = () => {
-  const { show, onChange, sign  } = useSignUpPage({
+  const { show, onChange, sign, reference, placeholder } = useSignUpPage({
     homePage: PageName.LLHomePage,
     signInPage: PageName.LLLoginPage,
   })
-  const { signUp } = sign
-  const { showRecommendGuy, } = show
+  const { userSingUp } = sign
+  const {
+    recommendGuyPlaceholder,
+    accountPlaceholder,
+    passwordPlaceholder,
+    confirmPasswordPlaceholder,
+    fundPasswordPlaceholder,
+    qqPlaceholder,
+    wxPlaceholder,
+    emailPlaceholder,
+    smsPlaceholder,
+    inviteCodePlaceholder,
+  } = placeholder
   const {
     onChangeRecommendGuy,
     onChangeAccount,
@@ -43,70 +50,15 @@ export const LLRegisterPage = () => {
   } = onChange
   const [acc, setAcc] = useState('')
   const [pwd, setPwd] = useState('')
-  const [code, setCode] = useState('')
   const [inviter, setInviter] = useState('')
   const [agentType, setAgentType] = useState<any>(AgentType.用户注册)
   const regex = RegExp('^[A-Za-z0-9]{6,15}$')
   const SystemStore = UGStore.globalProps.sysConf
-  const {
-    mobile_logo = '',
-    rankingListSwitch,
-    hide_reco, // 代理人 0不填，1选填，2必填
-    reg_name, // 真实姓名 0不填，1选填，2必填
-    reg_fundpwd, // 取款密码 0不填，1选填，2必填
-    reg_qq, // QQ 0不填，1选填，2必填
-    reg_wx, // 微信 0不填，1选填，2必填
-    reg_phone, // 手机 0不填，1选填，2必填
-    reg_email, // 邮箱 0不填，1选填，2必填
-    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-    pass_length_min, // 注册密码最小长度
-    pass_length_max, // 注册密码最大长度,
-    agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
-    smsVerify, // 手机短信验证
-    allowreg,
-    showInviteCode,
-    closeregreason,
-  } = SystemStore
-
-  useEffect(() => {
-    if (reg_vcode == 1) {
-      reRenderCode()
-    }
-  }, [reg_vcode])
-
-  useEffect(() => {
-    if (allowreg == false) {
-      Alert.alert(closeregreason, '', [{
-        text: '确定',
-        onPress: () => {
-          popToRoot()
-        },
-      }])
-    }
-  }, [allowreg])
-
-  const reRenderCode = async () => {
-    try {
-      const { data, status } = await APIRouter.secure_imgCaptcha()
-      setCode(data)
-    } catch (error) {
-    }
-  }
-
-  const getVcode = useMemo(() => {
-    ugLog('sliding reg_vcode=', reg_vcode)
-    if (reg_vcode == 0) {
-      return null
-    } else if (reg_vcode == 3 || reg_vcode == 1) {
-      return <LetterVerificationCode reg_vcode={reg_vcode} onPress={reRenderCode} code={code} />
-    } else {
-      return <SlidingVerification onChange={onChangeSlideCode} />
-    }
-  }, [reg_vcode, code])
+  const { showRecommendGuy, showSms, showName, showEmail, showInviteCode, showAgentButton, showFundPassword, showPhoneNumber, showQQ, showSlideCode, showWx } = show
+  const { mobile_logo = '', pass_length_min, pass_length_max } = SystemStore
 
   return (
-    <BaseScreen screenName={'注册'} style={{backgroundColor: "#ffffff"}}>
+    <BaseScreen screenName={'注册'} style={{ backgroundColor: '#ffffff' }}>
       <StatusBar barStyle="dark-content" translucent={true} />
       <View style={{ alignItems: 'center', width: AppDefine.width, height: 140 }}>
         <Image style={{ width: AppDefine.width, height: 182, resizeMode: 'stretch', position: 'absolute' }}
@@ -119,15 +71,15 @@ export const LLRegisterPage = () => {
         <LLRegisterInput isPwd={false} visible={showInviteCode} onChangeText={(text) => {
           onChangeInviteCode(text)
         }}
-                         placeholder={'邀请码'}
+                         placeholder={inviteCodePlaceholder || '邀请码'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-reco.png'} />
         <LLRegisterInput isPwd={false} visible={showRecommendGuy} onChangeText={(text) => {
           setInviter(text)
           onChangeRecommendGuy(text)
         }}
-                         placeholder={'推荐人或上级代理'}
+                         placeholder={recommendGuyPlaceholder || '推荐人或上级代理'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-reco.png'} />
-        {showRecommendGuy && inviter == '' && hide_reco == 2 && <View style={{ flexDirection: 'row' }}>
+        {showRecommendGuy && inviter == '' && <View style={{ flexDirection: 'row' }}>
           <Text style={{
             color: 'red',
             fontSize: 12,
@@ -139,7 +91,7 @@ export const LLRegisterPage = () => {
         <LLRegisterInput maxLength={15} isPwd={false} onChangeText={(text) => {
           setAcc(text)
           onChangeAccount(text)
-        }} placeholder={'请输入会员账号（7-15位字母或数字)'}
+        }} placeholder={accountPlaceholder || '请输入会员账号（7-15位字母或数字)'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
         {!regex.test(acc) && <View style={{ flexDirection: 'row' }}>
           <Text style={{
@@ -153,7 +105,7 @@ export const LLRegisterPage = () => {
         <LLRegisterInput maxLength={15} isPwd={true} onChangeText={(text) => {
           setPwd(text)
           onChangePassword(text)
-        }} placeholder={'请输入密码（长度不能低于6位)'}
+        }} placeholder={passwordPlaceholder || '请输入密码（长度不能低于6位)'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
         {pass_length_min && pass_length_max && (pwd.length < pass_length_min || pwd.length > pass_length_max) &&
         <View style={{ flexDirection: 'row' }}>
@@ -165,23 +117,33 @@ export const LLRegisterPage = () => {
             paddingVertical: 4,
           }}>{`*请使用${pass_length_min}-${pass_length_max}位英文或数字的组合`}</Text>
         </View>}
-        <LLRegisterInput isPwd={true} onChangeText={onChangeConfirmPassword} placeholder={'请确认密码'}
+        <LLRegisterInput isPwd={true} onChangeText={onChangeConfirmPassword} placeholder={confirmPasswordPlaceholder || '请确认密码'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
-        <LLRegisterInput isPwd={false} visible={reg_email != 0} onChangeText={onChangeEmail} placeholder={'请输入电子邮件'}
+        <LLRegisterInput visible={showEmail} isPwd={false} onChangeText={onChangeEmail} placeholder={emailPlaceholder || '请输入电子邮件'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-email.png'} />
-        {reg_fundpwd ?
-          <LLRegisterInput maxLength={4} isPwd={true} onChangeText={onChaneFundPassword} placeholder={'请输入取款密码'}
-                           img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} /> : null}
-        {reg_name ? <LLRegisterInput isPwd={false} onChangeText={onChaneRealName} placeholder={'请输入真实姓名'}
-                                     img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} /> : null}
-        {reg_qq ? <LLRegisterInput isPwd={false} onChangeText={onChaneQQ} placeholder={'请输入QQ号'}
-                                   img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} /> : null}
-        {reg_wx ? <LLRegisterInput isPwd={false} onChangeText={onChaneWeChat} placeholder={'请输入微信号'}
-                                   img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} /> : null}
-        {reg_phone ? <LLRegisterInput isPwd={false} onChangeText={onChanePhone} placeholder={'请输入手机'}
-                                      img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} /> : null}
-        {getVcode}
-        {agentRegbutton ? <View style={{
+        <LLRegisterInput visible={showFundPassword} maxLength={4} isPwd={true} onChangeText={onChaneFundPassword}
+                         placeholder={fundPasswordPlaceholder || '请输入取款密码'}
+                         img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
+        <LLRegisterInput visible={showName} isPwd={false} onChangeText={onChaneRealName} placeholder={'请输入真实姓名'}
+                         img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
+        <LLRegisterInput visible={showQQ} isPwd={false} onChangeText={onChaneQQ} placeholder={qqPlaceholder || '请输入QQ号'}
+                         img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
+        <LLRegisterInput visible={showWx} isPwd={false} onChangeText={onChaneWeChat} placeholder={wxPlaceholder || '请输入微信号'}
+                         img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
+        <LLRegisterInput visible={showSms || showPhoneNumber} isPwd={false} onChangeText={onChanePhone} placeholder={'请输入手机'}
+                         img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
+        <LLRegisterInput visible={showSms} isPwd={false} onChangeText={onChaneSms} placeholder={smsPlaceholder || '请输入手机短信验证码'}
+                         img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
+        <ReloadSlidingVerification
+          ref={reference?.slideCodeRef}
+          show={showSlideCode}
+          onChange={onChangeSlideCode}
+          backgroundColor={'#ffffff'}
+          containerStyle={{
+            backgroundColor: '#ffffff',
+          }}
+        />
+        {showAgentButton ? <View style={{
           backgroundColor: '#b6b6b6',
           flexDirection: 'row',
           width: 152,
@@ -219,7 +181,7 @@ export const LLRegisterPage = () => {
         </View> : null}
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity style={{ flex: 1, backgroundColor: '#d19898', borderRadius: 30, marginTop: 12 }}
-                            onPress={signUp}>
+                            onPress={userSingUp}>
             <Text
               style={{
                 fontSize: 16,
@@ -233,7 +195,7 @@ export const LLRegisterPage = () => {
           <View style={{ flexDirection: 'row', marginTop: 16 }}>
             <Text style={{ color: '#3c3c3c', fontSize: 14 }}>已有账号？</Text>
             <Text style={{ color: '#387ef5', fontSize: 14 }} onPress={() => {
-              navigate(PageName.LLLoginPage, '')
+              push(PageName.LLLoginPage)
             }}>马上登录</Text>
           </View>
           <Text style={{ color: '#666', marginTop: 16, fontSize: 14 }}>Copyright ©2012-2020 All Right
@@ -241,82 +203,5 @@ export const LLRegisterPage = () => {
         </View>
       </ScrollView>
     </BaseScreen>
-  )
-}
-
-const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) => {
-  const webViewScript = `setTimeout(function() {
-            document.getElementById('app').style.background = 'white'
-            window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
-          }, 500);
-          true;`
-  const [webviewHeight, setWebViewHeight] = useState(0)
-  const hadnleMessage = (e: WebViewMessageEvent) => {
-    let eData = e?.nativeEvent?.data
-    console.log('sliding response: ' + eData)
-
-    if (typeof eData == 'string') {
-      setWebViewHeight(parseInt(eData) * 1.5)
-    } else {
-      onChange(eData)
-    }
-  }
-  const webViewRef = useRef<WebView>()
-  useEffect(() => {
-    const listener = EventRegister.addEventListener('reload', (data) => {
-      webViewRef?.current?.reload()
-    })
-    return (() => EventRegister.removeEventListener(this.listener))
-  }, [])
-
-  let slidingUrl = `${AppDefine.host}/dist/index.html#/swiperverify?platform=native`
-  ugLog('slidingUrl=' + slidingUrl)
-
-  return (
-    <View style={{ height: webviewHeight }}>
-      <WebView
-        ref={webViewRef}
-        style={{ minHeight: webviewHeight, backgroundColor: 'white' }}
-        containerStyle={{ backgroundColor: 'white', height: 10 }}
-        javaScriptEnabled
-        injectedJavaScript={webViewScript}
-        startInLoadingState
-        source={{ uri: slidingUrl }}
-        onMessage={hadnleMessage}
-      />
-    </View>
-  )
-}
-
-const LetterVerificationCode = ({ code, onPress, reg_vcode }: { code: string, onPress: () => {}, reg_vcode: 1 | 3 }) => {
-  const [hide, setHide] = useState(reg_vcode == 1 ? false : true)
-  return (
-    <View style={{
-      flexDirection: 'row',
-      alignItems: 'center',
-      height: 50,
-      backgroundColor: 'gray',
-      borderRadius: 4,
-      borderColor: 'white',
-      borderWidth: 1,
-      marginBottom: 10,
-      paddingHorizontal: 10,
-    }}>
-      <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
-        <Icon name={'Safety'} type={'antdesign'} color="black" size={24} />
-      </View>
-      <View style={{ height: '90%', width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
-      {!hide ? <TouchableWithoutFeedback onPress={onPress}>
-        <Image resizeMode={'contain'} style={{ height: '100%', aspectRatio: 2 }} source={{ uri: code }} />
-      </TouchableWithoutFeedback> : <TouchableWithoutFeedback onPress={() => {
-        setHide(false)
-        onPress()
-      }}>
-        <Text>点击显示验证码</Text>
-      </TouchableWithoutFeedback>}
-
-    </View>
-
-
   )
 }

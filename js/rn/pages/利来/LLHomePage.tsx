@@ -32,25 +32,18 @@ import PromotionsBlock from '../../public/components/PromotionsBlock'
 import LinearGradient from 'react-native-linear-gradient'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import Activitys from '../../public/views/tars/Activitys'
-import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
   const { info, refresh } = useHomePage({})
-  const { homeInfo, loading, refreshing, userInfo, sysInfo, } = info
+  const { homeInfo, loading, refreshing, userInfo, sysInfo } = info
   const { rankLists, redBag, goldenEggs, scratchs, roulette, floatAds, redBagLogo, announcements } = homeInfo
   const { showCoupon } = sysInfo
   const { uid, isTest } = userInfo
   const { mobile_logo, rankingListSwitch, webName } = sysInfo
 
   useEffect(() => {
-    // const timer = setInterval(() => {
     refresh()
-    //updateUserInfo()
-    // }, 2000)
-    // return () => {
-    //   clearInterval(timer)
-    // }
   }, [uid])
 
   useEffect(() => {
@@ -61,23 +54,19 @@ const LLHomePage = ({ setProps, navigation }) => {
     return unsubscribe
   }, [navigation])
 
-  // return (
-  //   <TransferLineView />
-  // )
-
   return (
     <View style={{ flex: 1 }}>
       <StatusBar barStyle="dark-content" translucent={true} />
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView refreshControl={<RefreshControl style={{ backgroundColor: '#ffffff' }} refreshing={loading}
-          onRefresh={async () => {
-            try {
-              await refresh()
-              PushHelper.pushAnnouncement(announcements)
-            } catch (error) {
-              console.log('-------error------', error)
-            }
-          }} />} style={{ flex: 1 }}>
+                                                    onRefresh={async () => {
+                                                      try {
+                                                        await refresh()
+                                                        PushHelper.pushAnnouncement(announcements)
+                                                      } catch (error) {
+                                                        console.log('-------error------', error)
+                                                      }
+                                                    }} />} style={{ flex: 1 }}>
           <HomeHeaderButtonBar logoIcon={mobile_logo} />
           <HomeTabView />
           {showCoupon && (
@@ -109,41 +98,27 @@ const LLHomePage = ({ setProps, navigation }) => {
             }}
             uri={httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/llhhr.png'}
           />
-          { rankingListSwitch === 1 ? (
-              <SafeAreaView style={{ marginHorizontal: 10 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      lineHeight: 22,
-                      color: '#3c3c3c',
-                      marginVertical: 10,
-                    }}>
-                    中奖排行榜
-                  </Text>
-                </View>
-                <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
-                            width={Dimensions.get('screen').width - 24} ranks={rankLists} />
-              </SafeAreaView>
-            ) : (
-              <SafeAreaView style={{ marginHorizontal: 10 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      lineHeight: 22,
-                      color: '#3c3c3c',
-                      marginVertical: 10,
-                    }}>
-                    投注排行榜
-                  </Text>
-                </View>
-                <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
-                            width={Dimensions.get('screen').width - 24} ranks={rankLists} />
-              </SafeAreaView>
-            )}
+          {rankingListSwitch === 2 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
+                <Text style={{
+                  fontSize: 16,
+                  lineHeight: 22,
+                  color: '#3c3c3c',
+                  marginVertical: 10,
+                }}>投注排行榜</Text>
+              </View>
+              <RankListCP titleVisible={false} timing={5000} backgroundColor={'white'} textColor={'black'}
+                          width={Dimensions.get('screen').width - 24} ranks={rankLists} />
+            </SafeAreaView> :
+            rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
+                <Text style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</Text>
+              </View>
+              <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
+                          width={Dimensions.get('screen').width - 24} ranks={rankLists} />
+            </SafeAreaView> : <></>}
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
             <Text
               onPress={() => {
@@ -190,7 +165,8 @@ const LLHomePage = ({ setProps, navigation }) => {
           </LinearGradient>
         </View>
       )}
-      <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
+      <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag}
+                 roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
     </View>
   )
 }
