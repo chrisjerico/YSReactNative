@@ -28,7 +28,7 @@ export async function setRnPageInfo(force = false) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
       vcName: 'UGPromotionIncomeController',
-      rnName: PageName.JDPromotionCodeListPage,
+      rnName: PageName.JDChanglongBetRecordpage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
