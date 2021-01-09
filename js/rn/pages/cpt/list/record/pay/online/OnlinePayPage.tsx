@@ -30,7 +30,8 @@ import { useEffect, useState } from 'react'
 import { getBankIcon } from '../../../../../bank/list/UseManageBankList'
 
 interface IRouteParams {
-  payData?: PayAisleListData, //当前的账户数据
+  payData?: PayAisleListData, //当前的条目数据
+  payBigData?: PayAisleData, //总数据
   refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
@@ -44,7 +45,7 @@ const OnlinePayPage = ({ navigation, route }) => {
   const [curSelBank, setCurSelBank] = useState(null) //选择了哪个银行
   const [accountItems, setAccountItems] = useState(null) //账户有哪些
 
-  const { payData, refreshTabPage }: IRouteParams = route?.params
+  const { payData, payBigData, refreshTabPage }: IRouteParams = route?.params
 
   let bankController //银行选择
 
@@ -99,7 +100,7 @@ const OnlinePayPage = ({ navigation, route }) => {
         payData.channel[selPayChannel]?.payeeName :
         payData.channel[selPayChannel]?.fcomment
     }</Text>
-    <Text style={_styles.choose_channel_hint}>UG集团你梦想的起航！来UG成就的你梦想</Text>
+    <Text style={_styles.choose_channel_hint}>{payBigData?.transferPrompt}</Text>
   </View>
 
   /**
