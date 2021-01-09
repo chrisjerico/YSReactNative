@@ -36,7 +36,7 @@ const LotteryLineEBall = ({
                           }: ILotteryEBall) => {
 
   let isSel = isSelectedBallOnId(selectedBalls, item?.id)
-  
+
   return (
     <TouchableOpacity key={item?.id}
                       onPress={() => callback && callback()}>

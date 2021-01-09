@@ -108,14 +108,14 @@ const LhcLMAComponent = ({ style }: IRouteParams) => {
   const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
 
     return (
-      <LotteryEBall key={item?.id}
+      <LotteryEBall key={ballInfo?.id}
                     item={{
                       ...item?.plays[0],
                       ...ballInfo,
                     }}
                     selectedBalls={selectedBalls}
                     ballStyle={{flexDirection: 'column'}}
-                    callback={() => addOrRemoveBall(item?.id)}/>
+                    callback={() => addOrRemoveBall(ballInfo?.id)}/>
     )
   }
 
