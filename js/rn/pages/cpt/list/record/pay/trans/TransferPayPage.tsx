@@ -37,7 +37,8 @@ import CapitalContext from '../../../CapitalContext'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
 
 interface IRouteParams {
-  payData?: PayAisleListData, //当前的账户数据
+  payData?: PayAisleListData, //当前的条目数据
+  payBigData?: PayAisleData, //总数据
   refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
@@ -48,7 +49,7 @@ interface IRouteParams {
  */
 const TransferPayPage = ({ navigation, route }) => {
 
-  const { payData, refreshTabPage }: IRouteParams = route?.params
+  const { payData, payBigData, refreshTabPage }: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
   const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
@@ -123,7 +124,7 @@ const TransferPayPage = ({ navigation, route }) => {
     let nameHint: ITransName = transName(payData, payChannelBean)
 
     return <View>
-      <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
+      <Text style={_styles.choose_result_hint}>{payBigData?.depositPrompt}</Text>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
           <Text style={_styles.choose_result_title}>{nameHint?.bank_name + nameHint?.bank_name_des}</Text>

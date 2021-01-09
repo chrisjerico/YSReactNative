@@ -112,9 +112,9 @@ const LhcTMComponent = ({ style }: IRouteParams) => {
       <View style={_styles.zodiac_container}>
         {
           zodiacData?.map((item, index) =>
-            <TouchableOpacity key={`${selectedZodiac?.includes(item)}`}
+            <TouchableOpacity key={`${item?.name}_${selectedZodiac?.includes(item)}`}
                               onPress={() => addOrRemoveZodiac(item)}>
-              <View key={`${selectedZodiac?.includes(item)}`}
+              <View key={`${item?.name}_${selectedZodiac?.includes(item)}`}
                     style={_styles.zodiac_item}>
                 {
                   selectedZodiac?.includes(item) ?
