@@ -130,10 +130,10 @@ const TransferPayPage = ({ navigation, route }) => {
         </View>
         {
           [
-            nameHint?.payee_des && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
-            nameHint?.bank_account_des && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
-            nameHint?.account_address_des && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
-            payChannelBean?.qrcode && <TouchableImage
+            !anyEmpty(nameHint?.payee_des) && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
+            !anyEmpty(nameHint?.bank_account_des) && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
+            !anyEmpty((nameHint?.account_address_des)) && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
+            !anyEmpty(payChannelBean?.qrcode) && <TouchableImage
               pic={payChannelBean?.qrcode}
               containerStyle={{ aspectRatio: 1, width: scale(240) }}
               resizeMode={'contain'}

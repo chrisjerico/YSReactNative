@@ -23,7 +23,7 @@ const UseLotteryHelper = () => {
   const {
     nextIssueData, // 下一期数据
     playOddDetailData, //彩票数据
-    playOddData, //当前选中的，特码 连码 等等
+    curPlayOddData, //当前选中的，特码 连码 等等
   } = useContext(BetLotteryContext)
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
@@ -54,8 +54,8 @@ const UseLotteryHelper = () => {
     const zodiacIds = groupData?.plays?.filter((item) => checkMap?.includes(item?.name))
       .map((item) => item?.id)
 
-    ugLog('checkMap=', JSON.stringify(checkMap))
-    ugLog('data=', JSON.stringify(groupData))
+    // ugLog('checkMap=', JSON.stringify(checkMap))
+    // ugLog('data=', JSON.stringify(groupData))
 
     return zodiacIds
   }
@@ -63,7 +63,7 @@ const UseLotteryHelper = () => {
   return {
     nextIssueData,
     playOddDetailData,
-    playOddData,
+    curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,

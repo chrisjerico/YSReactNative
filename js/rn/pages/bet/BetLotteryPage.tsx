@@ -25,13 +25,18 @@ import { ugLog } from '../../public/tools/UgLog'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
-import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import TimeComponent from './tm/TimeComponent'
 import LotteryConst from './const/LotteryConst'
 import LhcLMComponent from './lhc/lm/LhcLMComponent'
 import LhcZMComponent from './lhc/zm/LhcZMComponent'
 import LhcZM1T6Component from './lhc/zm1t6/LhcZM1T6Component'
 import LhcZTComponent from './lhc/zt/LhcZTComponent'
+import { getBankIcon } from '../bank/list/UseManageBankList'
+import { Res } from '../../Res/icon/Res'
+import { BankConst } from '../bank/const/BankConst'
+import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
+import LhcSBComponent from './lhc/sb/LhcSBComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -60,6 +65,7 @@ const BetLotteryPage = ({ navigation, route }) => {
 
   const [textSize, setTextSize] = useState(scale(22))
   const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，投注0 还是游戏1
+  const [gameTabIndex, setGameTabIndex] = useState(0) // 彩票和聊天切换TAB
   const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
 
 
@@ -134,22 +140,43 @@ const BetLotteryPage = ({ navigation, route }) => {
    */
   const renderRightContent = () => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
+
     let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
+
+    // return <View style={CommStyles.flex}>
+    //   <LhcTMComponent style={lotteryCode == LotteryConst.TM ? null : { display: 'none' }}
+    //                   key={LotteryConst.TM}/>
+    //   <LhcLMComponent style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
+    //                   key={LotteryConst.LM}/>
+    //   <LhcZMComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
+    //                   key={LotteryConst.ZM}/>
+    //   <LhcSBComponent style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
+    //                      key={LotteryConst.ZM1_6}/>
+    //   <LhcLMAComponent style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
+    //                   key={LotteryConst.ZT}/>
+    // </View>
+
     switch (lotteryCode) {
       case LotteryConst.TM: {
-        return <LhcTMComponent key={lotteryCode}/>
+        return <LhcTMComponent/>
       }
       case LotteryConst.LM: {
-        return <LhcLMComponent key={lotteryCode}/>
+        return <LhcLMComponent/>
       }
       case LotteryConst.ZM: {
-        return <LhcZMComponent key={lotteryCode}/>
+        return <LhcZMComponent/>
       }
       case LotteryConst.ZM1_6: {
-        return <LhcZM1T6Component key={lotteryCode}/>
+        return <LhcZM1T6Component/>
       }
       case LotteryConst.ZT: {
-        return <LhcZTComponent key={lotteryCode}/>
+        return <LhcZTComponent/>
+      }
+      case LotteryConst.LMA: {
+        return <LhcLMAComponent/>
+      }
+      case LotteryConst.SB: {
+        return <LhcSBComponent/>
       }
 
     }
@@ -160,15 +187,27 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制游戏聊天切换tab
    */
-  const renderGameTab = () => <View key={'renderGameTab'}  style={[_styles.game_tab_container,
-    { backgroundColor: `${Skin1.themeColor}ff` }]}>
+  const renderGameTab = () => <View key={'renderGameTab'} style={[_styles.game_tab_container,
+    { backgroundColor: Skin1.themeColor }]}>
 
-    <View style={[_styles.game_tab, _styles.game_tab_left, { backgroundColor: '#ffffff44' }]}>
-      <Text style={_styles.tab_text}>{'投注区'}</Text>
-    </View>
-    <View style={[_styles.game_tab, _styles.game_tab_right]}>
-      <Text style={_styles.tab_text}>{'主房间'}</Text>
-    </View>
+    <TouchableOpacity style={CommStyles.flex}
+                      onPress={() => setGameTabIndex(0)}>
+      <View style={[
+        _styles.game_tab,
+        _styles.game_tab_left,
+        gameTabIndex == 0 ? { backgroundColor: '#ffffff44' } : null]}>
+        <Text style={_styles.tab_text}>{'投注区'}</Text>
+      </View>
+    </TouchableOpacity>
+    <TouchableOpacity style={CommStyles.flex}
+                      onPress={() => setGameTabIndex(1)}>
+      <View style={[
+        _styles.game_tab,
+        _styles.game_tab_right,
+        gameTabIndex == 1 ? { backgroundColor: '#ffffff44' } : null]}>
+        <Text style={_styles.tab_text}>{'主房间'}</Text>
+      </View>
+    </TouchableOpacity>
 
   </View>
 
@@ -176,7 +215,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     <BetLotteryContext.Provider value={{
       nextIssueData: () => nextIssueData,
       playOddDetailData: () => playOddDetailData,
-      playOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
+      curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
     }}>
       <BaseScreen screenName={''}
                   style={{ backgroundColor: UGColor.BackgroundColor1 }}
@@ -277,7 +316,10 @@ const _styles = StyleSheet.create({
     borderTopRightRadius: scale(12),
     borderBottomRightRadius: scale(12),
   },
-  game_tab_right: {},
+  game_tab_right: {
+    borderTopLeftRadius: scale(12),
+    borderBottomLeftRadius: scale(12),
+  },
   tab_text: {
     fontSize: scale(22),
     color: 'white',
