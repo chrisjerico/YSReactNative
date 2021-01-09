@@ -13,7 +13,7 @@ const UsePayList = () => {
 
   const [refreshing, setRefreshing] = useState(false)
 
-  const [payData, setPayData] = useState<PayAisleData>(null)//所有数据
+  const [payBigData, setPayBigData] = useState<PayAisleData>(null)//所有数据
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
@@ -39,7 +39,7 @@ const UsePayList = () => {
       let listData = res?.data
       //ugLog('data res=', JSON.stringify(res?.data))
       if (res?.code == 0) {
-        setPayData(listData)
+        setPayBigData(listData)
 
       } else {
         Toast(res?.msg)
@@ -51,7 +51,7 @@ const UsePayList = () => {
 
   return {
     refreshCT,
-    payData,
+    payBigData,
     requestPayData,
   }
 }

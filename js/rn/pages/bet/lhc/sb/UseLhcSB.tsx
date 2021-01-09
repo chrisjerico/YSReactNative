@@ -12,15 +12,15 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import APIRouter from '../../../../public/network/APIRouter'
 import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
-import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
+import ISelBall, { isSelectedBall, isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 import LotteryConst from '../../const/LotteryConst'
 
 /**
- * 六合彩特码
+ * 色波
  * @constructor
  */
-const UseLhcZM = () => {
+const UseLhcSB = () => {
 
   const {
     nextIssueData,
@@ -31,8 +31,7 @@ const UseLhcZM = () => {
     addOrRemoveBall,
   } = UseLotteryHelper()
 
-  const [dataZM, setDataZM] = useState<Array<PlayGroupData>>(null) //当前正码数据列表
-  const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
+  const [dataSB, setDataSB] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
 
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
 
@@ -41,27 +40,26 @@ const UseLhcZM = () => {
    */
   useEffect(() => {
     setPlayOddData(playOddDetailData()?.playOdds?.find(
-      (item) => item?.code == LotteryConst.ZM))
+      (item) => item?.code == LotteryConst.SB))
   }, [playOddDetailData()])
 
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
+    //ugLog('dataTMB 2 =', JSON.stringify(playOddData))
     //特码取前3个数据
     if (!anyEmpty(playOddData?.playGroups)) {
-      setDataZM(playOddData?.playGroups)
+      setDataSB(playOddData?.playGroups)
     }
   }, [playOddData])
 
   return {
-    dataZM,
-    setDataZM,
-    selectedZodiac,
-    setSelectedZodiac,
+    dataSB,
+    setDataSB,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   }
 }
 
-export default UseLhcZM
+export default UseLhcSB
 

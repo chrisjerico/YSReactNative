@@ -175,11 +175,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://papghawshugposwaughwsoohu.com',
   ],
   'c085': [
-    'https://abaidu.ya1237888.cc',
-    'https://brer.ya1237888.cc',
-    'https://cgd.ya1237888.cc',
-    'https://dygf.ya1237888.cc',
-    'https://eyfhppdj.ya1237888.cc',
+    'https://www.ya1237888.cc',
+    'https://www.ya2238888.cc',
+    'https://www.ya3388888.cc',
+    'https://www.ya442778111.cc',
+    'https://www.ya557887.cc',
   ],
   'c085yw': [
     'https://x558.cc',

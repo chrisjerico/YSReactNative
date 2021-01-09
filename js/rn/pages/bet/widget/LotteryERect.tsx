@@ -32,16 +32,18 @@ const LotteryERect = ({
   return (
     <TouchableOpacity key={item?.id}
                       onPress={() => callback && callback()}>
-      <View style={[
-        _styles.ball_item_lm,
-        {
-          backgroundColor:
-            isSel ?
-              `${Skin1.themeColor}dd` :
-              null,
-        },
-      ]}>
-        <ERect title={item?.name}
+      <View key={item?.id}
+            style={[
+              _styles.ball_item_lm,
+              {
+                backgroundColor:
+                  isSel ?
+                    `${Skin1.themeColor}dd` :
+                    null,
+              },
+            ]}>
+        <ERect key={item?.id}
+               title={item?.name}
                titleStyle={{
                  color: isSel ?
                    UGColor.TextColor6 :

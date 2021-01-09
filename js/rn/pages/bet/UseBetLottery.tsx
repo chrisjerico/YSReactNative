@@ -58,20 +58,6 @@ const UseBetLottery = () => {
   }
 
   return {
-    // newRate,
-    // newUsd,
-    // moneyOption,
-    // inputMoney,
-    // setInputMoney,
-    // btcMoney,
-    // setBtcMoney,
-    // inputRemark,
-    // setInputRemark,
-    // selPayChannel,
-    // setSelPayChannel,
-    // payData,
-    // setPayData,
-    // requestPayData,
     setLotteryId,
     nextIssueData,
     playOddDetailData,

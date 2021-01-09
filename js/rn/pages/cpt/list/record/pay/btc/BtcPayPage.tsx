@@ -38,7 +38,8 @@ import { CapitalConst } from '../../../../const/CapitalConst'
 import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
 
 interface IRouteParams {
-  payData?: PayAisleListData, //当前的账户数据
+  payData?: PayAisleListData, //当前的条目数据
+  payBigData?: PayAisleData, //总数据
   refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
@@ -162,7 +163,7 @@ const BtcPayPage = ({ navigation, route }) => {
   const renderSelectedChannel = () => {
     const payChannelBean = payData?.channel[selPayChannel]
     return <View>
-      <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
+      <Text style={_styles.choose_result_hint}>{intentData?.payBigData?.depositPrompt}</Text>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
           <Text style={_styles.choose_result_title}>{'币种: ' + payChannelBean?.domain}</Text>
