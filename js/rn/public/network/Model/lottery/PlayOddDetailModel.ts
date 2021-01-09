@@ -34,9 +34,9 @@ export interface PlayOddData {
 }
 
 export interface ZodiacNum {
-  key: string; //"rat" metal
-  name: string; //"鼠" 金
-  nums: string[]; //["1","13","25","37","49"]
+  key?: string; //"rat" metal
+  name?: string; //"鼠" 金
+  nums?: string[]; //["1","13","25","37","49"]
 }
 
 // export interface FiveElement {

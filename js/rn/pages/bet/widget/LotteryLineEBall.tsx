@@ -99,8 +99,7 @@ const _styles = StyleSheet.create({
   },
   sub_title_text_odds: {
     color: UGColor.TextColor3,
-    fontSize: scale(24),
-    paddingHorizontal: scale(4),
+    fontSize: scale(22),
   },
 })
 

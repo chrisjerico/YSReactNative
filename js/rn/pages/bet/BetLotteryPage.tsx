@@ -180,7 +180,12 @@ const BetLotteryPage = ({ navigation, route }) => {
         return <LhcSBComponent/>
       }
       case LotteryConst.YX: {
-        return <LhcPTYXComponent/>
+        return <LhcPTYXComponent key={LotteryConst.YX}
+                                 lotteryCode={LotteryConst.YX}/>
+      }
+      case LotteryConst.WS: {
+        return <LhcPTYXComponent key={LotteryConst.WS}
+                                 lotteryCode={LotteryConst.WS}/>
       }
 
     }

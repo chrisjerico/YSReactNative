@@ -13,6 +13,7 @@ const LotteryConst = {
   LMA: 'LMA', //连码
   SB: 'SB', //色波
   YX: 'YX', //平特一肖
+  WS: 'WS', //平特尾数
 }
 
 /**

@@ -41,21 +41,23 @@ import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
 
 interface IRouteParams {
+  lotteryCode?: string, //当前的彩票CODE，是平特一肖 还是 平特尾数等等
   style?: StyleProp<ViewStyle>
 }
 
 /**
- * 六合彩正码
+ * 六合彩 平特一肖
  *
  * @param navigation
  * @constructor
  */
-const LhcPTYXComponent = ({ style }: IRouteParams) => {
+const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
+    setLotteryCode,
     dataPTYX,
     setDataPTYX,
     zodiacData,
@@ -65,12 +67,15 @@ const LhcPTYXComponent = ({ style }: IRouteParams) => {
     addOrRemoveBall,
   } = UseLhcPTYX()
 
+  useEffect(()=>{
+    setLotteryCode(lotteryCode)
+  }, [])
 
   /**
    * 绘制 生肖和球
    * @param item
    */
-  const renderEBall = (item?: PlayData) => <LotteryLineEBall key={item?.id}
+  const renderEBall = (item?: PlayData) => <LotteryLineEBall key={item?.id + item?.name}
                                                          item={{
                                                            ...item,
                                                            zodiacData
