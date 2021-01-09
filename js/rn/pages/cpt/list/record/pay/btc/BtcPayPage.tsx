@@ -35,6 +35,7 @@ import { Toast } from '../../../../../../public/tools/ToastUtils'
 import AppDefine from '../../../../../../public/define/AppDefine'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { CapitalConst } from '../../../../const/CapitalConst'
+import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
@@ -70,14 +71,14 @@ const BtcPayPage = ({ navigation, route }) => {
     requestPayData,
   } = UseBtcPay()
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!anyEmpty(goPage)) {
       intentData?.refreshTabPage(goPage)
       pop()
     }
   }, [goPage])
 
-  useEffect(()=>{
+  useEffect(() => {
     setPayData(intentData?.payData)
   }, [])
 
@@ -90,10 +91,10 @@ const BtcPayPage = ({ navigation, route }) => {
    */
   const renderInputMoney = () => <View style={_styles.btc_input_info_container}>
     <TextInput style={_styles.input_money}
-               value={inputMoney}
-               keyboardType={'numeric'}
-               onChangeText={(text) => setInputMoney(text)}
-               placeholder={'请填写存款金额'}/>
+      value={inputMoney}
+      keyboardType={'numeric'}
+      onChangeText={(text) => setInputMoney(text)}
+      placeholder={'请填写存款金额'} />
     <View style={_styles.btc_hint_container}>
       <Text style={_styles.choose_result_title}>{`虚拟币金额: ${btcMoney}`}</Text>
       <Text style={_styles.btc_type}>{payData?.channel[selPayChannel]?.domain}</Text>
@@ -101,6 +102,9 @@ const BtcPayPage = ({ navigation, route }) => {
         switch (Platform.OS) {
           case 'ios':
             //TODO iOS 复制 title 到粘贴板
+            OCHelper.call('UIPasteboard.generalPasteboard.setString:', [btcMoney]).then(() => {
+              
+            })
             break
           case 'android':
             ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: btcMoney })
@@ -138,6 +142,9 @@ const BtcPayPage = ({ navigation, route }) => {
       switch (Platform.OS) {
         case 'ios':
           //TODO iOS 复制 title 到粘贴板
+          OCHelper.call('UIPasteboard.generalPasteboard.setString:', [copyText]).then(() => {
+              
+          })
           break
         case 'android':
           ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })
@@ -188,11 +195,11 @@ const BtcPayPage = ({ navigation, route }) => {
       payData?.channel?.map((item, index) => <TouchableOpacity
         onPress={() => setSelPayChannel(index)}>
         <View style={[_styles.select_channel_item,
-          index != 0 ? null : { borderTopWidth: 0 }]}>
+        index != 0 ? null : { borderTopWidth: 0 }]}>
           {
             index == selPayChannel ?
-              <Icon size={scale(32)} name={'check'}/> :
-              <Icon size={scale(32)} name={'circle-o'}/>
+              <Icon size={scale(32)} name={'check'} /> :
+              <Icon size={scale(32)} name={'circle-o'} />
           }
           <Text style={_styles.select_channel_text}>{item?.payeeName}</Text>
         </View>
@@ -208,12 +215,12 @@ const BtcPayPage = ({ navigation, route }) => {
     return <View style={_styles.input_info_container}>
       <View style={_styles.date_info_container}>
         <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
-        <Icon size={scale(20)} name={'calendar'}/>
+        <Icon size={scale(20)} name={'calendar'} />
       </View>
       <TextInput style={_styles.input_info}
-                 value={inputRemark}
-                 onChangeText={(text) => setInputRemark(text)}
-                 placeholder={'请填写备注信息'}/>
+        value={inputRemark}
+        onChangeText={(text) => setInputRemark(text)}
+        placeholder={'请填写备注信息'} />
     </View>
   }
 
@@ -221,7 +228,7 @@ const BtcPayPage = ({ navigation, route }) => {
   return (
     <BaseScreen screenName={payData?.name}>
       <ScrollView showsVerticalScrollIndicator={false}
-                  style={_styles.container}>
+        style={_styles.container}>
         {
           [
             renderAllChannel(),
@@ -240,37 +247,37 @@ const BtcPayPage = ({ navigation, route }) => {
         }
 
         <Button title={'开始充值'}
-                titleStyle={_styles.submit_text}
-                containerStyle={[_styles.submit_bt,
-                  { backgroundColor: Skin1.themeColor }]}
-                onPress={() => {
-                  requestPayData({
-                    amount: inputMoney,
-                    channel: payData?.channel[selPayChannel]?.id,
-                    payee: payData?.channel[selPayChannel]?.account,
-                    payer: `${btcMoney}${payData?.channel[selPayChannel]?.domain}`,
-                    remark: inputRemark,
-                    depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
-                  }).then(res => {
-                    if (res == 0) {
-                      setGoPage(CapitalConst.DEPOSIT_RECORD)
-                    }
-                  })
+          titleStyle={_styles.submit_text}
+          containerStyle={[_styles.submit_bt,
+          { backgroundColor: Skin1.themeColor }]}
+          onPress={() => {
+            requestPayData({
+              amount: inputMoney,
+              channel: payData?.channel[selPayChannel]?.id,
+              payee: payData?.channel[selPayChannel]?.account,
+              payer: `${btcMoney}${payData?.channel[selPayChannel]?.domain}`,
+              remark: inputRemark,
+              depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
+            }).then(res => {
+              if (res == 0) {
+                setGoPage(CapitalConst.DEPOSIT_RECORD)
+              }
+            })
 
-                }}/>
-        <View style={{ height: scale(200) }}/>
+          }} />
+        <View style={{ height: scale(200) }} />
       </ScrollView>
 
       <Modal isVisible={!anyEmpty(bigPic)}
-             style={_styles.modal_content}
-             onBackdropPress={() => setBigPic(null)}
-             onBackButtonPress={() => setBigPic(null)}
-             animationIn={'fadeIn'}
-             animationOut={'fadeOut'}
-             backdropOpacity={0.3}>
+        style={_styles.modal_content}
+        onBackdropPress={() => setBigPic(null)}
+        onBackButtonPress={() => setBigPic(null)}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+        backdropOpacity={0.3}>
         <FastImage source={{ uri: bigPic }}
-                   style={{ aspectRatio: 1, width: scale(500) }}
-                   resizeMode={'contain'}/>
+          style={{ aspectRatio: 1, width: scale(500) }}
+          resizeMode={'contain'} />
       </Modal>
     </BaseScreen>
 

@@ -14,7 +14,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
 import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
-import { LHC_Tab } from '../../const/LotteryConst'
+import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 
 
 /**
@@ -26,7 +26,7 @@ const UseLhcZT = () => {
   const {
     nextIssueData,
     playOddDetailData,
-    playOddData,
+    curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -38,16 +38,31 @@ const UseLhcZT = () => {
 
   const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，TAB_A 和 TAB_B
 
+  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
+
+  const [curData, setCurData] = useState<Array<PlayGroupData>>(null) //当前选中的TAB数据
+
+  useEffect(() => {
+    !anyEmpty(dataZT) && setCurData(dataZT[tabIndex])
+  }, [tabIndex, dataZT])
+
+  /**
+   * 找出当前彩种数据
+   */
+  useEffect(() => {
+    setPlayOddData(playOddDetailData()?.playOdds?.find(
+      (item) => item?.code == LotteryConst.ZT))
+  }, [playOddDetailData()])
+
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
-    //特码取前3个数据 特码 两面 色波
-    if (arrayLength(playOddData()?.playGroups) % 2 == 0) {//长度是偶数
+    if (arrayLength(playOddData?.playGroups) % 2 == 0) {//长度是偶数
       let newData = new Array<Array<PlayGroupData>>()
-      playOddData()?.playGroups?.map((item, index) => {
+      playOddData?.playGroups?.map((item, index) => {
         if (index % 2 == 0) {
           newData.push([
-            playOddData()?.playGroups[index],
-            playOddData()?.playGroups[index+1],
+            playOddData?.playGroups[index],
+            playOddData?.playGroups[index + 1],
           ])
         }
       })
@@ -55,11 +70,12 @@ const UseLhcZT = () => {
       setDataZT(newData)
 
     }
-  }, [playOddData()])
+  }, [playOddData])
 
   return {
     tabIndex,
     setTabIndex,
+    curData,
     dataZT,
     setDataZT,
     selectedZodiac,

@@ -29,10 +29,11 @@ export enum PageName {
   OnlinePayPage = 'OnlinePayPage',
   TransferPayPage = 'TransferPayPage',
   JDRedEnveloperPage = 'JDRedEnveloperPage',
-  JDAgentPage = 'JDAgentPage',
-  JDPromotionIncomePage = 'JDPromotionIncomePage',
+  JDAgentPage = "JDAgentPage",
+  JDPromotionIncomePage = "JDPromotionIncomePage",
   TaskCenterPage = 'TaskCenterPage',
-
+  JDPromotionCodeListPage = 'JDPromotionCodeListPage',
+  JDSegmentPage =  'JDSegmentPage',
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
   LHTPreferencePage = 'LHTPreferencePage',

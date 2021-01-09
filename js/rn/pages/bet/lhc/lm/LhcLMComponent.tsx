@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -13,6 +13,7 @@ import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetail
 import LotteryERect from '../../widget/LotteryERect'
 
 interface IRouteParams {
+  style?: StyleProp<ViewStyle>
 }
 
 /**
@@ -21,7 +22,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcLMComponent = ({}: IRouteParams) => {
+const LhcLMComponent = ({ style }: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
@@ -51,11 +52,13 @@ const LhcLMComponent = ({}: IRouteParams) => {
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         dataLM?.map((groupData) => {
-          return <View key={groupData?.id}
+          return <View key={groupData?.id + groupData?.alias}
                        style={CommStyles.flex}>
 
-            <View style={_styles.sub_title_container}>
-              <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+            <View key={groupData?.alias}
+                  style={_styles.sub_title_container}>
+              <Text key={groupData?.alias}
+                    style={_styles.sub_title_text}>{groupData?.alias}</Text>
             </View>
 
             <View style={_styles.ball_container}>
@@ -71,7 +74,7 @@ const LhcLMComponent = ({}: IRouteParams) => {
   </View>
 
   return (
-    <View style={CommStyles.flex}>
+    <View style={[CommStyles.flex, style]}>
       {renderAllBall()}
     </View>
 

@@ -1,12 +1,12 @@
 import {
   FlatList, Platform,
-  ScrollView,
+  ScrollView, StyleProp,
   StyleSheet,
   Text,
   TextInput,
   TouchableNativeFeedback, TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View, ViewStyle,
 } from 'react-native'
 import * as React from 'react'
 import FastImage from 'react-native-fast-image'
@@ -40,6 +40,7 @@ import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 
 interface IRouteParams {
+  style?: StyleProp<ViewStyle>
 }
 
 /**
@@ -48,7 +49,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZMComponent = ({}: IRouteParams) => {
+const LhcZMComponent = ({ style }: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
@@ -85,11 +86,13 @@ const LhcZMComponent = ({}: IRouteParams) => {
    * 绘制 正码
    * @param groupData
    */
-  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
-    <View style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    <View key={groupData?.alias}
+          style={_styles.sub_title_container}>
+      <Text key={groupData?.alias}
+            style={_styles.sub_title_text}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>
@@ -104,11 +107,13 @@ const LhcZMComponent = ({}: IRouteParams) => {
    * 绘制 连码B/A
    * @param groupData
    */
-  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id}
+  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
-    <View style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    <View key={groupData?.alias}
+          style={_styles.sub_title_container}>
+      <Text key={groupData?.alias}
+            style={_styles.sub_title_text}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>
@@ -128,7 +133,7 @@ const LhcZMComponent = ({}: IRouteParams) => {
   </ScrollView>
 
   return (
-    <View style={CommStyles.flex}>
+    <View style={[CommStyles.flex, style]}>
       {renderAllBall()}
     </View>
 

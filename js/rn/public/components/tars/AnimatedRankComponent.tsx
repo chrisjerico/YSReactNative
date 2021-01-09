@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   item: {
     color: '#EA0000',
-    fontSize: scale(25),
+    fontSize: scale(20),
   },
   iconText: {
     fontSize: scale(25),
