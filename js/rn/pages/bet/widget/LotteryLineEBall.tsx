@@ -8,6 +8,7 @@ import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
 import LotteryEBall from './LotteryEBall'
+import { ugLog } from '../../../public/tools/UgLog'
 
 interface ILotteryEBall {
   item?: ILotteryLineEBallItem // 要绘制的数据
@@ -35,6 +36,7 @@ const LotteryLineEBall = ({
                           }: ILotteryEBall) => {
 
   let isSel = isSelectedBallOnId(selectedBalls, item?.id)
+  
   return (
     <TouchableOpacity key={item?.id}
                       onPress={() => callback && callback()}>
@@ -49,10 +51,15 @@ const LotteryLineEBall = ({
               },
             ]}>
         {
-          item?.zodiacData?.map((zodiac) => <LotteryEBall key={zodiac?.key}
+
+          item?.zodiacData?.find((zodiac) => zodiac?.name == item?.name )?.nums?.map((zodiacNumber) => <LotteryEBall key={item?.id + zodiacNumber}
                                                           ballProps={ballProps}
+                                                          containerStyle={{width: null}}
                                                           ballStyle={ballStyle}
-                                                          item={item}/>)
+                                                          item={{
+                                                            id: item?.id + zodiacNumber,
+                                                            name: ('0' + zodiacNumber)?.slice(-2)
+                                                          }}/>)
         }
       </View>
     </TouchableOpacity>
@@ -61,7 +68,6 @@ const LotteryLineEBall = ({
 
 const _styles = StyleSheet.create({
   ball_item_tm: {
-    width: scale(126),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

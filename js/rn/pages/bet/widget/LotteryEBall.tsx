@@ -7,11 +7,13 @@ import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
+import { anyEmpty } from '../../../public/tools/Ext'
 
 interface ILotteryEBall {
   item?: ILotteryEBallItem // 要绘制的数据
   ballProps?: IEBall //球的属性
   selectedBalls?: Array<string> // 已选中的数据
+  containerStyle?: StyleProp<ViewStyle>
   ballStyle?: StyleProp<ViewStyle>
   callback?: () => void // 按压回调
 }
@@ -21,6 +23,7 @@ interface ILotteryEBall {
  * @param item 条目数据
  * @param ballProps 球的类型
  * @param selectedBalls 选中的球列表
+ * @param containerStyle 球的容器风格
  * @param ballStyle 球的风格
  * @param callback 点击回调
  * @constructor
@@ -29,6 +32,7 @@ const LotteryEBall = ({
                         item,
                         ballProps,
                         selectedBalls,
+                        containerStyle,
                         ballStyle,
                         callback,
                       }: ILotteryEBall) => {
@@ -46,6 +50,7 @@ const LotteryEBall = ({
                     `${Skin1.themeColor}dd` :
                     null,
               },
+              containerStyle
             ]}>
         <EBall key={item?.id + item?.odds}
                ballType={{
@@ -85,10 +90,10 @@ const _styles = StyleSheet.create({
  */
 interface ILotteryEBallItem {
   id: string; //708501
-  name: string; //01
-  alias: string;//特码A"
-  code: string;//01
-  odds: string;//42.5500
+  name?: string; //01
+  alias?: string;//特码A"
+  code?: string;//01
+  odds?: string;//42.5500
 }
 
 export default LotteryEBall

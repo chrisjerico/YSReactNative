@@ -38,6 +38,7 @@ import { arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
+import LotteryLineEBall from '../../widget/LotteryLineEBall'
 
 interface IRouteParams {
   style?: StyleProp<ViewStyle>
@@ -64,12 +65,16 @@ const LhcPTYXComponent = ({ style }: IRouteParams) => {
     addOrRemoveBall,
   } = UseLhcPTYX()
 
+
   /**
-   * 绘制 球
+   * 绘制 生肖和球
    * @param item
    */
-  const renderEBall = (item?: PlayData) => <LotteryEBall key={item?.id}
-                                                         item={item}
+  const renderEBall = (item?: PlayData) => <LotteryLineEBall key={item?.id}
+                                                         item={{
+                                                           ...item,
+                                                           zodiacData
+                                                         }}
                                                          selectedBalls={selectedBalls}
                                                          callback={() => addOrRemoveBall(item?.id)}/>
 
@@ -126,9 +131,7 @@ const _styles = StyleSheet.create({
     paddingHorizontal: scale(1),
   },
   ball_container: {
-    flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
     padding: scale(4),
   },
 })

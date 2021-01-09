@@ -48,9 +48,10 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //取出生肖数据
     if (!anyEmpty(playOddData?.playGroups)) {
-      setDataPTYX(playOddData?.playGroups)
       setZodiacData(playOddData?.playGroups[0]?.plays.map((item) =>
-        playOddDetailData()?.setting?.zodiacNums[item?.name]))
+        playOddDetailData()?.setting?.zodiacNums?.find((zodiac) =>
+          zodiac?.name == item?.name)))
+      setDataPTYX(playOddData?.playGroups)
     }
   }, [playOddData])
 
