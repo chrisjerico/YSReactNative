@@ -18,6 +18,45 @@ interface ILotteryEBall {
   callback?: () => void // 按压回调
 }
 
+const renderContent = ({
+                         item,
+                         ballProps,
+                         selectedBalls,
+                         containerStyle,
+                         ballStyle,
+                         callback,
+                       }: ILotteryEBall) => {
+  let isSel = isSelectedBallOnId(selectedBalls, item?.id)
+
+  return (
+    <View key={item?.id + item?.name}
+          style={[
+            _styles.ball_item_tm,
+            {
+              backgroundColor:
+                isSel ?
+                  `${Skin1.themeColor}dd` :
+                  null,
+            },
+            containerStyle,
+          ]}>
+      <EBall key={item?.id + item?.odds}
+             ballType={{
+               type: BallStyles.lhc,
+               ballNumber: item?.name,
+             }}
+             oddsStyle={{
+               color: isSel ?
+                 UGColor.TextColor6 :
+                 UGColor.TextColor7,
+             }}
+             odds={item?.odds}
+             {...ballProps}
+             style={ballStyle}/>
+    </View>
+  )
+}
+
 /**
  * 彩票球，一个球、一个文字+点击回调
  * @param item 条目数据
@@ -28,45 +67,14 @@ interface ILotteryEBall {
  * @param callback 点击回调
  * @constructor
  */
-const LotteryEBall = ({
-                        item,
-                        ballProps,
-                        selectedBalls,
-                        containerStyle,
-                        ballStyle,
-                        callback,
-                      }: ILotteryEBall) => {
-
-  let isSel = isSelectedBallOnId(selectedBalls, item?.id)
+const LotteryEBall = (iBall: ILotteryEBall) => {
+  const { item, callback } = iBall
   return (
-    <TouchableOpacity key={item?.id + item?.name}
-                      onPress={() => callback && callback()}>
-      <View key={item?.id + item?.name}
-            style={[
-              _styles.ball_item_tm,
-              {
-                backgroundColor:
-                  isSel ?
-                    `${Skin1.themeColor}dd` :
-                    null,
-              },
-              containerStyle
-            ]}>
-        <EBall key={item?.id + item?.odds}
-               ballType={{
-                 type: BallStyles.lhc,
-                 ballNumber: item?.name,
-               }}
-               oddsStyle={{
-                 color: isSel ?
-                   UGColor.TextColor6 :
-                   UGColor.TextColor7,
-               }}
-               odds={item?.odds}
-               {...ballProps}
-               style={ballStyle}/>
-      </View>
-    </TouchableOpacity>
+    callback != null ? <TouchableOpacity key={item?.id + item?.name}
+                                         onPress={() => callback && callback()}>
+        {renderContent(iBall)}
+      </TouchableOpacity> :
+      renderContent(iBall)
   )
 }
 
@@ -97,5 +105,5 @@ interface ILotteryEBallItem {
 }
 
 export default LotteryEBall
-export {ILotteryEBallItem}
+export { ILotteryEBallItem }
 

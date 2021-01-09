@@ -131,7 +131,6 @@ const _styles = StyleSheet.create({
     paddingHorizontal: scale(1),
   },
   ball_container: {
-    flexWrap: 'wrap',
     padding: scale(4),
   },
 })
