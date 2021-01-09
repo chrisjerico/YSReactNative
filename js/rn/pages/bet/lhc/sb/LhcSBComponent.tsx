@@ -5,7 +5,7 @@ import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcZM1T6 from './UseLhcZM1T6'
+import UseLhcSB from './UseLhcSB'
 import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
@@ -17,23 +17,23 @@ interface IRouteParams {
 }
 
 /**
- * 正码1t6
+ * 色波
  *
  * @param navigation
  * @constructor
  */
-const LhcZM1T6Component = ({ style }: IRouteParams) => {
+const LhcSBComponent = ({ style }: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
-    dataZM1T6,
-    setDataZM1T6,
+    dataSB,
+    setDataSB,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseLhcZM1T6()
+  } = UseLhcSB()
 
 
   /**
@@ -51,7 +51,7 @@ const LhcZM1T6Component = ({ style }: IRouteParams) => {
   const renderAllBall = () => <View>
     <ScrollView showsVerticalScrollIndicator={false}>
       {
-        dataZM1T6?.map((groupData) => {
+        dataSB?.map((groupData) => {
           return <View key={groupData?.id + groupData?.alias}
                        style={CommStyles.flex}>
 
@@ -102,4 +102,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default LhcZM1T6Component
+export default LhcSBComponent

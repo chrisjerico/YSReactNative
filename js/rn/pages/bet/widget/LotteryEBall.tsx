@@ -1,5 +1,5 @@
 import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
 import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
 import { BallStyles } from '../../hall/new/games/HallGameListComponent'
 import * as React from 'react'
@@ -12,6 +12,7 @@ interface ILotteryEBall {
   item?: PlayData // 要绘制的数据
   ballProps?: IEBall //球的属性
   selectedBalls?: Array<string> // 已选中的数据
+  ballStyle?: StyleProp<ViewStyle>
   callback?: () => void // 按压回调
 }
 
@@ -26,6 +27,7 @@ const LotteryEBall = ({
                         item,
                         ballProps,
                         selectedBalls,
+                        ballStyle,
                         callback,
                       }: ILotteryEBall) => {
 
@@ -33,26 +35,29 @@ const LotteryEBall = ({
   return (
     <TouchableOpacity key={item?.id}
                       onPress={() => callback && callback()}>
-      <View style={[
-        _styles.ball_item_tm,
-        {
-          backgroundColor:
-            isSel ?
-              `${Skin1.themeColor}dd` :
-              null,
-        },
-      ]}>
-        <EBall ballType={{
-          type: BallStyles.lhc,
-          ballNumber: item?.name,
-        }}
+      <View key={item?.id}
+            style={[
+              _styles.ball_item_tm,
+              {
+                backgroundColor:
+                  isSel ?
+                    `${Skin1.themeColor}dd` :
+                    null,
+              },
+            ]}>
+        <EBall key={item?.id}
+               ballType={{
+                 type: BallStyles.lhc,
+                 ballNumber: item?.name,
+               }}
                oddsStyle={{
                  color: isSel ?
                    UGColor.TextColor6 :
                    UGColor.TextColor7,
                }}
                odds={item?.odds}
-               {...ballProps}/>
+               {...ballProps}
+               style={ballStyle}/>
       </View>
     </TouchableOpacity>
   )
@@ -63,6 +68,7 @@ const _styles = StyleSheet.create({
     width: scale(126),
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: scale(8),
     marginVertical: scale(2),
     borderBottomRightRadius: scale(32),

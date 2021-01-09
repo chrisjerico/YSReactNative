@@ -14,7 +14,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
 import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
-import { LHC_Tab } from '../../const/LotteryConst'
+import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 
 
 /**
@@ -26,7 +26,7 @@ const UseLhcTM = () => {
   const {
     nextIssueData,
     playOddDetailData,
-    playOddData,
+    curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -40,16 +40,26 @@ const UseLhcTM = () => {
 
   const [tabIndex, setTabIndex] = useState(LHC_Tab.TM_B) //当前选中哪个tab，TAB_A 和 TAB_B
 
+  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
+
+  /**
+   * 找出当前彩种数据
+   */
+  useEffect(() => {
+    setPlayOddData(playOddDetailData()?.playOdds?.find(
+      (item) => item?.code == LotteryConst.TM))
+  }, [playOddDetailData()])
+
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
     //特码取前3个数据 特码 两面 色波
-    if (!anyEmpty(playOddData()?.playGroups)) {
-      setDataTMA([playOddData()?.playGroups[0], playOddData()?.playGroups[1], playOddData()?.playGroups[2]])
-      setDataTMB([playOddData()?.playGroups[3], playOddData()?.playGroups[4], playOddData()?.playGroups[5]])
+    if (!anyEmpty(playOddData?.playGroups)) {
+      setDataTMA([playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]])
+      setDataTMB([playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]])
       setZodiacData(playOddDetailData()?.setting?.zodiacNums)
 
     }
-  }, [playOddData()])
+  }, [playOddData])
 
   /**
    * 有选中的数据变化时，计算生肖的选中情况
