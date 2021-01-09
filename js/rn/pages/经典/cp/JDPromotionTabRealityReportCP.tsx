@@ -45,7 +45,7 @@ const JDPromotionTabRealityReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
   let { current: v } = useRef<JDPromotionTabRealityReportCP>(
     {
       pageTitle: PromotionConst.真人报表,
-      titleArray: ["分级999", "日期", "投注金额", "会员输赢", "返点"],
+      titleArray: ["分级", "日期", "投注金额", "会员输赢", "返点"],
       items: [],
       levelArray: [],
       pageSize: 20,

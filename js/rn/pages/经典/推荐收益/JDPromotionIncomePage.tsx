@@ -60,7 +60,7 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
   useEffect(() => {
     setProps({
       navbarOpstions: {
-        hidden: false, title: '推荐收益111',
+        hidden: false, title: '推荐收益',
         rightComponent:
          <Button 
          title={inviteCode.displayWord}
