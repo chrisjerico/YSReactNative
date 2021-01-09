@@ -1,12 +1,12 @@
 import {
   FlatList, Platform,
-  ScrollView,
+  ScrollView, StyleProp,
   StyleSheet,
   Text,
   TextInput,
   TouchableNativeFeedback, TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View, ViewProps, ViewStyle,
 } from 'react-native'
 import * as React from 'react'
 import FastImage from 'react-native-fast-image'
@@ -41,6 +41,7 @@ import LotteryERect from '../../widget/LotteryERect'
 import { LHC_Tab } from '../../const/LotteryConst'
 
 interface IRouteParams {
+  style?: StyleProp<ViewStyle>
 }
 
 /**
@@ -49,13 +50,13 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({}: IRouteParams) => {
+const LhcZTComponent = ({ style }: IRouteParams) => {
 
-  const [curData, setCurData] = useState<Array<PlayGroupData>>(null)
 
   const {
     tabIndex,
     setTabIndex,
+    curData,
     dataZT,
     setDataZT,
     selectedZodiac,
@@ -65,12 +66,8 @@ const LhcZTComponent = ({}: IRouteParams) => {
     addOrRemoveBall,
   } = UseLhcZT()
 
-  useEffect(() => {
-    !anyEmpty(dataZT) && setCurData(dataZT[tabIndex])
-  }, [tabIndex, dataZT])
-
   /**
-   * 绘制生肖
+   * 绘制tab
    */
   const renderTab = () => <View style={_styles.tab_title_container}>
     <ScrollView style={_styles.sv_container}
@@ -79,9 +76,10 @@ const LhcZTComponent = ({}: IRouteParams) => {
       <View style={_styles.tab_title_content}>
         {
           dataZT?.map((item, index) =>
-            <TouchableOpacity style={CommStyles.flex} key={index}
+            <TouchableOpacity key={item[0]?.alias}
+                              style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>
-              <View key={index}
+              <View key={item[0]?.alias}
                     style={[
                       _styles.tab_item,
                       index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
@@ -123,7 +121,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
    * @param groupData
    */
   const renderZT1 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
-                                                        style={CommStyles.flex}>
+                                                         style={CommStyles.flex}>
 
     <View style={_styles.sub_title_container}>
       <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
@@ -142,7 +140,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
    * @param groupData
    */
   const renderZT2 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
-                                                        style={CommStyles.flex}>
+                                                         style={CommStyles.flex}>
 
     <View style={_styles.sub_title_container}>
       <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
@@ -164,7 +162,7 @@ const LhcZTComponent = ({}: IRouteParams) => {
   </ScrollView>
 
   return (
-    <View style={CommStyles.flex}>
+    <View style={[CommStyles.flex, style]}>
       {renderTab()}
       {renderAllBall()}
     </View>

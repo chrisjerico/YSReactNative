@@ -1,5 +1,6 @@
 import { CCSessionReq, SampleAPI } from './../CCSessionModel';
 import { UGAgentApplyInfo } from "../../../../redux/model/全局/UGSysConfModel";
+import UGinviteInfoModel from '../../../../redux/model/全局/UGinviteInfoModel';
 
 
 export class api_team {
@@ -12,16 +13,16 @@ export class api_team {
 
   // 推荐信息
   static inviteInfo() {
-    return this.c.get('inviteInfo');
+    return this.c.get<UGinviteInfoModel>('inviteInfo');
   }
 
   // 下线信息
-  static inviteList() {//下线级别0(全部)，1(1级下线)、2(2级下线)、3(3级下线)
-    return this.c.get('inviteList');
+  static inviteList(level: number, page = 1, rows = 20) {//下线级别0(全部)，1(1级下线)、2(2级下线)、3(3级下线)
+    return this.c.get('inviteList', { level: level, page: page, rows: rows });
   }
 
   // 下线投注报表信息
-  static betStat(level: number, startDate?: string, endDate?: string, page = 1, rows = 20) {
+  static betStat(level: string, startDate?: string, endDate?: string, page = 1, rows = 20) {
     return this.c.get('betStat', { level: level, startDate: startDate, endDate: endDate, page: page, rows: rows });
   }
 
@@ -80,4 +81,17 @@ export class api_team {
     return this.c.post('agentApply', { qq: qq, phone: phone, content: content, action: 'apply' });
   }
 
+  //邀请码列表
+  static inviteCodeList(page = 1, rows = 20) {
+    return this.c.get('inviteCodeList', { page: page, rows: rows });
+  }
+  // 生成邀请码
+  static generateInviteCode(params: {
+    length: number, // 长度
+    count: number,//数量
+    user_type: number,//类型
+    randomCheck?: number,//是否随机
+  }) {
+    return this.c.post('createInviteCode', params)
+  }
 }
