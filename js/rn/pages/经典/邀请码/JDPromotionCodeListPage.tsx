@@ -309,7 +309,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   return (
    [ <View style={styles.container}>
       <View style={{ }}>
-       {inviteCode.canUseNum !='0' && <View style={{ height: 44,  justifyContent: 'center',alignItems: 'center', }}>
+       {inviteCode.canUseNum !='0' && <View style={{ height: 44,  justifyContent: 'center',alignItems: 'center', backgroundColor:Skin1.CLBgColor}}>
         <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
                   {'每个'+inviteCode.displayWord+'可以使用'+inviteCode.canUseNum+'次'}
                 </Text>

@@ -85,5 +85,13 @@ export class api_team {
   static inviteCodeList(page = 1, rows = 20) {
     return this.c.get('inviteCodeList', { page: page, rows: rows });
   }
-
+  // 生成邀请码
+  static generateInviteCode(params: {
+    length: number, // 长度
+    count: number,//数量
+    user_type: number,//类型
+    randomCheck?: number,//是否随机
+  }) {
+    return this.c.post('createInviteCode', params)
+  }
 }
