@@ -36,6 +36,7 @@ import { getBankIcon } from '../bank/list/UseManageBankList'
 import { Res } from '../../Res/icon/Res'
 import { BankConst } from '../bank/const/BankConst'
 import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
+import LhcSBComponent from './lhc/sb/LhcSBComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -149,7 +150,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     //                   key={LotteryConst.LM}/>
     //   <LhcZMComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
     //                   key={LotteryConst.ZM}/>
-    //   <LhcZM1T6Component style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
+    //   <LhcSBComponent style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
     //                      key={LotteryConst.ZM1_6}/>
     //   <LhcLMAComponent style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
     //                   key={LotteryConst.ZT}/>
@@ -173,6 +174,9 @@ const BetLotteryPage = ({ navigation, route }) => {
       }
       case LotteryConst.LMA: {
         return <LhcLMAComponent/>
+      }
+      case LotteryConst.SB: {
+        return <LhcSBComponent/>
       }
 
     }
