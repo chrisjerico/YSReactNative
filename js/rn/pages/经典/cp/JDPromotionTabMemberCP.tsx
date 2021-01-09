@@ -145,7 +145,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   function teamInviteListData() {
 
     console.log('下线信息列表页码===', v.pageNumber);
-    api.team.inviteList(v.levelindex, 1, v.pageSize).setCompletionBlock(({ data }) => {
+    api.team.inviteList(v.levelindex, 1, v.pageSize).useSuccess(({ data }) => {
       let dicData = data;
       let arrayData = returnData(dicData);
       if (arrayData.length == 0) {
@@ -180,10 +180,6 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
       setProps()
 
-    }, (err) => {
-      console.log('err = ', err);
-      // setProps()
-      // Toast(err.message)
     });
   }
 
@@ -213,7 +209,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()
         }}
         >
@@ -226,7 +222,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
       );
     } else if (v.state.showFoot === 1) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity  style={{paddingBottom:150}} onPress={() => {
           // onEndReached()  //测试的时候可以打开，打开也没有影响
         }}
         >
@@ -240,7 +236,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
       );
     } else if (v.state.showFoot === 2) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()//测试的时候可以打开，打开也没有影响
         }}
         >

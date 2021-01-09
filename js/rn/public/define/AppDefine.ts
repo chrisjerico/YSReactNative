@@ -44,14 +44,15 @@ export default class AppDefine {
   }
 
 
+  static isShowAllup = ()=> 'c085'.indexOf(AppDefine.siteId) != -1 
+
   /**
-   * 判断站点（多个站点用英文逗号隔开）
-   * @param site
+   * 判断站点(多个站点用英文逗号隔开)
+   * @param sites
    */
-  static inSites(sites?: string): boolean {
-    return !!sites?.toLowerCase().split(',').filter((v) => v == AppDefine.siteId?.toLowerCase()).length
+  static belongSites(sites?: string): boolean {
+    return sites?.toLowerCase().indexOf(AppDefine.siteId?.toLocaleLowerCase()) != -1
   }
 
-  static isShowAllup = () => 'c085'.indexOf(AppDefine.siteId) != -1
 
 }

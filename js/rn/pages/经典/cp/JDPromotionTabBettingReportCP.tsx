@@ -141,7 +141,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
    */
   function teamBetStatData() {
     console.log('投注报表列表页码===', v.pageNumber);
-    api.team.betStat(v.levelindex.toString(), '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+    api.team.betStat(v.levelindex.toString(), '', '', v.pageNumber, v.pageSize).useSuccess(({ data }) => {
       let dicData = data;
       let arrayData = returnData(dicData);
       if (arrayData.length == 0) {
@@ -177,10 +177,6 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
 
       setProps()
 
-    }, (err) => {
-      console.log('err = ', err);
-      // setProps()
-      // Toast(err.message)
     });
   }
 
@@ -210,7 +206,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()
         }}
         >
@@ -223,7 +219,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
       );
     } else if (v.state.showFoot === 1) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()  //测试的时候可以打开，打开也没有影响
         }}
         >
@@ -237,7 +233,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
       );
     } else if (v.state.showFoot === 2) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()//测试的时候可以打开，打开也没有影响
         }}
         >

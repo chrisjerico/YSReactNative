@@ -142,7 +142,7 @@ function teamWithdrawListData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
   console.log('提款记录列表页码===', v.pageNumber);
-  api.team.withdrawList(v.levelindex, v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+  api.team.withdrawList(v.levelindex, v.pageNumber, v.pageSize).useSuccess(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
 
@@ -175,10 +175,6 @@ function teamWithdrawListData() {
     }
     setProps()
 
-  }, (err) => {
-    console.log('err = ', err);
-    // setProps()
-    // Toast(err.message)
   });
 }
 
@@ -208,7 +204,7 @@ function teamWithdrawListData() {
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()
         }}
         >
@@ -221,7 +217,7 @@ function teamWithdrawListData() {
       );
     } else if (v.state.showFoot === 1) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()  //测试的时候可以打开，打开也没有影响
         }}
         >
@@ -235,7 +231,7 @@ function teamWithdrawListData() {
       );
     } else if (v.state.showFoot === 2) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()//测试的时候可以打开，打开也没有影响
         }}
         >

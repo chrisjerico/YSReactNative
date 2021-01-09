@@ -142,7 +142,7 @@ function teamDepositStatData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
   console.log('存款报表列表页码===', v.pageNumber);
-  api.team.depositStat(v.levelindex, '', '', v.pageNumber, v.pageSize).setCompletionBlock(({ data }) => {
+  api.team.depositStat(v.levelindex, '', '', v.pageNumber, v.pageSize).useSuccess(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);
 
@@ -177,10 +177,6 @@ function teamDepositStatData() {
     console.log('arrayData==================',arrayData);
     setProps()
 
-  }, (err) => {
-    console.log('err = ', err);
-    // setProps()
-    // Toast(err.message)
   });
 }
 
@@ -210,7 +206,7 @@ function teamDepositStatData() {
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()
         }}
         >
@@ -223,7 +219,7 @@ function teamDepositStatData() {
       );
     } else if (v.state.showFoot === 1) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()  //测试的时候可以打开，打开也没有影响
         }}
         >
@@ -237,7 +233,7 @@ function teamDepositStatData() {
       );
     } else if (v.state.showFoot === 2) {
       return (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
           // onEndReached()//测试的时候可以打开，打开也没有影响
         }}
         >

@@ -1443,6 +1443,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native@^0.63.27":
+  version "0.63.44"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.63.44.tgz#cd8df1bb6b2764b47afc1e643d20fb503dbfc52d"
+  integrity sha512-zTb6/mTehBtTBouFEvYzLv4rY+p1ujFVB+biO6KRaXQ+8rDeRabtvYVLf8ScZUL3qnahn38vHbcE6P63FneqOg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.7":
   version "7.1.9"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.9.tgz#280c13565c9f13ceb727ec21e767abe0e9b4aec3"
@@ -7796,6 +7803,15 @@ rn-host-detect@1.2.0:
   resolved "https://registry.yarnpkg.com/rn-host-detect/-/rn-host-detect-1.2.0.tgz#8b0396fc05631ec60c1cb8789e5070cdb04d0da0"
   integrity sha512-btNg5kzHcjZZ7t7mvvV/4wNJ9e3MPgrWivkRgWURzXL0JJ0pwWlU4zrbmdlz3HHzHOxhBhHB4D+/dbMFfu4/4A==
 
+rn-segmented-control@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/rn-segmented-control/-/rn-segmented-control-0.2.7.tgz#b301b83f67264f0c2d233efdb11cc210e36d0720"
+  integrity sha512-Rm4kHDC/oeB23dlpScjvXxyTPx/Cjsxh82Ad+bTVYNsdWnIc1v9jyNdj92V3MOlkn9zBdJKscZ+sRb21bI8Zhw==
+  dependencies:
+    "@types/react-native" "^0.63.27"
+    prop-types "^15.7.2"
+    typescript next
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
@@ -8760,6 +8776,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typescript@next:
+  version "4.2.0-dev.20210107"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.0-dev.20210107.tgz#ceeef926a57d2f06629a193a79b2757d39e4080e"
+  integrity sha512-+0Bu/NkTFz81q52monvo7BNeN4yfHzKtdfQB8ESg7bSq2guqhaid0JHoQRd9GB6acdC9xY1YZ5etAQrj1RDKUQ==
 
 ua-parser-js@^0.7.18:
   version "0.7.22"
