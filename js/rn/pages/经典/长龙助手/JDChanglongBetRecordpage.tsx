@@ -136,7 +136,7 @@ function isHide(item: any) {
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 12, }}>
               {item.title}
             </Text>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#1E90FF',marginLeft: 10,  marginTop: 12, }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#1E90FF',marginLeft: 10,  marginTop: 10, }}>
               {'¥' + item.money}
             </Text>
             <View style={{ flex: 1 }}>
@@ -186,9 +186,9 @@ const renderFooter = () => {
         <View style={styles.foot}>
           <Button
               title="查看更多"
-              style={{width:AppDefine.width -20,height:55}}
-              titleStyle ={{color:'white',fontSize:16}}
-              buttonStyle ={{backgroundColor:Skin1.themeColor,overflow: 'hidden', borderColor:Skin1.themeColor,borderWidth:1 }}
+              style={{width:AppDefine.width -20,height:80}}
+              titleStyle ={{color:'white',fontSize:15}}
+              buttonStyle ={{backgroundColor:Skin1.themeColor,overflow: 'hidden', borderColor:Skin1.themeColor,borderWidth:1 ,}}
               onPress={() => {
                 OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
                   {
@@ -223,8 +223,8 @@ const renderFooter = () => {
 
 
   return (
-    <View style={styles.container}>
-      <View style={{marginTop:20,flex:1}}>
+    <View style={[styles.container,{backgroundColor: Skin1.CLBgColor}]}>
+      <View style={{marginTop:10,flex:1}}>
         <FlatList
           data={v.items}
           renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
@@ -259,7 +259,7 @@ const renderFooter = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Skin1.CLBgColor
+    
   },
   item: {
     flex: 1,
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     margin: scale(10)
   },
   foot: {
-    height: scale(80),
+    height: scale(150),
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 10,
