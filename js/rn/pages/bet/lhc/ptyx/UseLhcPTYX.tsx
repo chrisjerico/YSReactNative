@@ -20,7 +20,7 @@ import LotteryConst from '../../const/LotteryConst'
  * 六合彩特码
  * @constructor
  */
-const UseLhcZM = () => {
+const UseLhcPTYX = () => {
 
   const {
     nextIssueData,
@@ -31,7 +31,8 @@ const UseLhcZM = () => {
     addOrRemoveBall,
   } = UseLotteryHelper()
 
-  const [dataZM, setDataZM] = useState<Array<PlayGroupData>>(null) //当前正码数据列表
+  const [dataPTYX, setDataPTYX] = useState<Array<PlayGroupData>>(null) //当前正码数据列表
+  const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //选中了生肖数据
 
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
 
@@ -40,24 +41,29 @@ const UseLhcZM = () => {
    */
   useEffect(() => {
     setPlayOddData(playOddDetailData()?.playOdds?.find(
-      (item) => item?.code == LotteryConst.ZM))
+      (item) => item?.code == LotteryConst.YX))
   }, [playOddDetailData()])
 
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
+    //取出生肖数据
     if (!anyEmpty(playOddData?.playGroups)) {
-      setDataZM(playOddData?.playGroups)
+      setDataPTYX(playOddData?.playGroups)
+      setZodiacData(playOddData?.playGroups[0]?.plays.map((item) =>
+        playOddDetailData()?.setting?.zodiacNums[item?.name]))
     }
   }, [playOddData])
 
   return {
-    dataZM,
-    setDataZM,
+    dataPTYX,
+    setDataPTYX,
+    zodiacData,
+    setZodiacData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   }
 }
 
-export default UseLhcZM
+export default UseLhcPTYX
 

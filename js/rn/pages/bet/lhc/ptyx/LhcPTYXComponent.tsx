@@ -22,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcZM from './UseLhcZM'
+import UseLhcPTYX from './UseLhcPTYX'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import {
   PlayData,
@@ -49,27 +49,20 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZMComponent = ({ style }: IRouteParams) => {
+const LhcPTYXComponent = ({ style }: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
-    dataZM,
-    setDataZM,
+    dataPTYX,
+    setDataPTYX,
+    zodiacData,
+    setZodiacData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseLhcZM()
-
-  /**
-   * 绘制 方格式
-   * @param item
-   */
-  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  } = UseLhcPTYX()
 
   /**
    * 绘制 球
@@ -95,28 +88,11 @@ const LhcZMComponent = ({ style }: IRouteParams) => {
 
     <View style={_styles.ball_container}>
       {
-        groupData?.plays?.map((item) => renderEBall(item))
-      }
-    </View>
-  </View>
-
-
-  /**
-   * 绘制 两面
-   * @param groupData
-   */
-  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
-                                                        style={CommStyles.flex}>
-
-    <View key={groupData?.alias}
-          style={_styles.sub_title_container}>
-      <Text key={groupData?.alias}
-            style={_styles.sub_title_text}>{groupData?.alias}</Text>
-    </View>
-
-    <View style={_styles.ball_container}>
-      {
-        groupData?.plays?.map((item) => renderERect(item))
+        groupData?.plays?.map((item) => <View>
+          {
+            renderEBall(item)
+          }
+        </View>)
       }
     </View>
   </View>
@@ -126,8 +102,7 @@ const LhcZMComponent = ({ style }: IRouteParams) => {
    */
   const renderAllBall = () => <ScrollView style={CommStyles.flex}
                                           showsVerticalScrollIndicator={false}>
-    {arrayLength(dataZM) > 0 && renderTM(dataZM[0])}
-    {arrayLength(dataZM) > 1 && renderLM(dataZM[1])}
+    {arrayLength(dataPTYX) > 0 && renderTM(dataPTYX[0])}
   </ScrollView>
 
   return (
@@ -158,4 +133,4 @@ const _styles = StyleSheet.create({
   },
 })
 
-export default LhcZMComponent
+export default LhcPTYXComponent

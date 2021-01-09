@@ -17,9 +17,10 @@ interface ILotteryERect {
 
 /**
  * 彩票球，一个球、一个文字+点击回调
- * @param item
- * @param selectedBalls
- * @param callback
+ * @param item 条目数据
+ * @param ballProps 球的类型
+ * @param selectedBalls 选中的球列表
+ * @param callback 点击回调
  * @constructor
  */
 const LotteryERect = ({
@@ -30,9 +31,9 @@ const LotteryERect = ({
 
   let isSel = isSelectedBallOnId(selectedBalls, item?.id)
   return (
-    <TouchableOpacity key={item?.id}
+    <TouchableOpacity key={item?.id + item?.name}
                       onPress={() => callback && callback()}>
-      <View key={item?.id}
+      <View key={item?.id + item?.name}
             style={[
               _styles.ball_item_lm,
               {
@@ -42,7 +43,7 @@ const LotteryERect = ({
                     null,
               },
             ]}>
-        <ERect key={item?.id}
+        <ERect key={item?.id + item?.name}
                title={item?.name}
                titleStyle={{
                  color: isSel ?

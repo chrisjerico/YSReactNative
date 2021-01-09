@@ -46,7 +46,6 @@ const UseLhcSB = () => {
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
     //ugLog('dataTMB 2 =', JSON.stringify(playOddData))
-    //特码取前3个数据
     if (!anyEmpty(playOddData?.playGroups)) {
       setDataSB(playOddData?.playGroups)
     }

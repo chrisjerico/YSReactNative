@@ -1,4 +1,4 @@
-import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
 import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
 import { BallStyles } from '../../hall/new/games/HallGameListComponent'
@@ -7,9 +7,10 @@ import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
+import LotteryEBall from './LotteryEBall'
 
 interface ILotteryEBall {
-  item?: ILotteryEBallItem // 要绘制的数据
+  item?: ILotteryLineEBallItem // 要绘制的数据
   ballProps?: IEBall //球的属性
   selectedBalls?: Array<string> // 已选中的数据
   ballStyle?: StyleProp<ViewStyle>
@@ -25,19 +26,19 @@ interface ILotteryEBall {
  * @param callback 点击回调
  * @constructor
  */
-const LotteryEBall = ({
-                        item,
-                        ballProps,
-                        selectedBalls,
-                        ballStyle,
-                        callback,
-                      }: ILotteryEBall) => {
+const LotteryLineEBall = ({
+                            item,
+                            ballProps,
+                            selectedBalls,
+                            ballStyle,
+                            callback,
+                          }: ILotteryEBall) => {
 
   let isSel = isSelectedBallOnId(selectedBalls, item?.id)
   return (
-    <TouchableOpacity key={item?.id + item?.name}
+    <TouchableOpacity key={item?.id}
                       onPress={() => callback && callback()}>
-      <View key={item?.id + item?.name}
+      <View key={item?.id}
             style={[
               _styles.ball_item_tm,
               {
@@ -47,19 +48,12 @@ const LotteryEBall = ({
                     null,
               },
             ]}>
-        <EBall key={item?.id + item?.odds}
-               ballType={{
-                 type: BallStyles.lhc,
-                 ballNumber: item?.name,
-               }}
-               oddsStyle={{
-                 color: isSel ?
-                   UGColor.TextColor6 :
-                   UGColor.TextColor7,
-               }}
-               odds={item?.odds}
-               {...ballProps}
-               style={ballStyle}/>
+        {
+          item?.zodiacData?.map((zodiac) => <LotteryEBall key={zodiac?.key}
+                                                          ballProps={ballProps}
+                                                          ballStyle={ballStyle}
+                                                          item={item}/>)
+        }
       </View>
     </TouchableOpacity>
   )
@@ -83,14 +77,15 @@ const _styles = StyleSheet.create({
 /**
  * 和 PlayData 结构类似
  */
-interface ILotteryEBallItem {
+interface ILotteryLineEBallItem {
   id: string; //708501
   name: string; //01
   alias: string;//特码A"
   code: string;//01
   odds: string;//42.5500
+  zodiacData: Array<ZodiacNum>
 }
 
-export default LotteryEBall
-export {ILotteryEBallItem}
+export default LotteryLineEBall
+export { ILotteryLineEBallItem }
 
