@@ -116,7 +116,17 @@ export async function setRnPageInfo(force = false) {
     }
   }
 
- // 申请代理
+  // —————————————————— 以下为已上线内容 ————————————————————————
+
+  // 推荐信息
+  pages.push({
+    vcName: 'UGPromotionIncomeController',
+    rnName: PageName.JDPromotionIncomePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+  // 申请代理
   pages.push({
     vcName: 'UGAgentViewController',
     rnName: PageName.JDAgentPage,
@@ -124,14 +134,14 @@ export async function setRnPageInfo(force = false) {
     允许游客访问: false,
     允许未登录访问: false,
   })
-//红包扫雷
- pages.push({
+  //红包扫雷
+  pages.push({
     vcName: 'RedEnvelopeVCViewController',
     rnName: PageName.JDRedEnveloperPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: false,
     允许未登录访问: false,
-   })
+  })
   // 签到页
   pages.push({
     tabbarItemPath: '/Sign',
@@ -166,8 +176,8 @@ export async function setRnPageInfo(force = false) {
   pages.push({
     rnName: PageName.TrendView,
     userCenterItemCode: 18,
-    linkCategory:7,//导航链接
-    linkPosition:54,//导航链接ID
+    linkCategory: 7,//导航链接
+    linkPosition: 54,//导航链接ID
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
