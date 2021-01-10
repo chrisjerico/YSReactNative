@@ -46,7 +46,7 @@ const LhcSBComponent = ({ style }: IRouteParams) => {
                                                          callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
-   * 绘制全部的球
+   * 绘制全部的格子
    */
   const renderAllBall = () => <View>
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -60,7 +60,7 @@ const LhcSBComponent = ({ style }: IRouteParams) => {
               <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
             </View>
 
-            <View style={_styles.ball_container}>
+            <View style={_styles.rect_container}>
               {
                 groupData?.plays?.map((item) => renderERect(item))
               }
@@ -92,7 +92,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  rect_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',

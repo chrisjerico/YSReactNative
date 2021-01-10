@@ -51,16 +51,16 @@ const UseLhcPTYX = () => {
 
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
-    //取出生肖数据，生成对应的数据
+    //取出生肖数据，生成对应的数据, 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
     if (!anyEmpty(playOddData?.playGroups)) {
       if (lotteryCode == LotteryConst.YX) { //平特一肖
         setZodiacData(playOddData?.playGroups[0]?.plays.map((item) =>
           playOddDetailData()?.setting?.zodiacNums?.find((zodiac) =>
             zodiac?.name == item?.name)))
 
+        setDataPTYX([null, ...playOddData?.playGroups])
       } else if (lotteryCode == LotteryConst.WS) { //平特尾数
-        setZodiacData(playOddData?.playGroups[0]?.plays.map((item, index) =>
-        {
+        setZodiacData(playOddData?.playGroups[0]?.plays.map((item, index) => {
           return {
             key: item?.id,
             name: item?.name,
@@ -68,9 +68,19 @@ const UseLhcPTYX = () => {
           }
         }))
 
+        setDataPTYX([null, ...playOddData?.playGroups])
+      } else if (lotteryCode == LotteryConst.TWS) { //头尾数
+        setZodiacData(playOddData?.playGroups[1]?.plays.map((item, index) => {
+          return {
+            key: item?.id,
+            name: item?.name,
+            nums: LotteryData.WS[index],
+          }
+        }))
+
+        setDataPTYX(playOddData?.playGroups)
       }
 
-      setDataPTYX(playOddData?.playGroups)
     }
   }, [playOddData])
 

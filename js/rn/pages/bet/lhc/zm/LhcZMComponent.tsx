@@ -84,7 +84,7 @@ const LhcZMComponent = ({ style }: IRouteParams) => {
    * 绘制 正码
    * @param groupData
    */
-  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
+  const renderZM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
     <View key={groupData?.alias}
@@ -126,7 +126,7 @@ const LhcZMComponent = ({ style }: IRouteParams) => {
    */
   const renderAllBall = () => <ScrollView style={CommStyles.flex}
                                           showsVerticalScrollIndicator={false}>
-    {arrayLength(dataZM) > 0 && renderTM(dataZM[0])}
+    {arrayLength(dataZM) > 0 && renderZM(dataZM[0])}
     {arrayLength(dataZM) > 1 && renderLM(dataZM[1])}
   </ScrollView>
 

@@ -14,6 +14,7 @@ const LotteryConst = {
   SB: 'SB', //色波
   YX: 'YX', //平特一肖
   WS: 'WS', //平特尾数
+  TWS: 'TWS', //头尾数
 }
 
 /**

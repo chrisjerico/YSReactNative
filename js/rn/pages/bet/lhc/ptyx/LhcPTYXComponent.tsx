@@ -34,7 +34,7 @@ import LotteryBall, { BallType } from '../../../../public/components/view/Lotter
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import BetLotteryContext from '../../BetLotteryContext'
 import EBall from '../../../../public/components/view/lottery/EBall'
-import { arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
@@ -84,10 +84,40 @@ const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
                                                          callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
-   * 绘制 正码
+   * 绘制 方格式
+   * @param item
+   */
+  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
+                                                         item={item}
+                                                         selectedBalls={selectedBalls}
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
+
+  /**
+   * 绘制全部的格子
    * @param groupData
    */
-  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
+  const renderAllRect = (groupData?: PlayGroupData) => !anyEmpty(groupData) && <View key={groupData?.id + groupData?.alias}
+                                    style={CommStyles.flex}>
+
+    <View key={groupData?.alias}
+          style={_styles.sub_title_container}>
+      <Text key={groupData?.alias}
+            style={_styles.sub_title_text}>{groupData?.alias}</Text>
+    </View>
+
+    <View style={_styles.rect_container}>
+      {
+        groupData?.plays?.map((item) => renderERect(item))
+      }
+    </View>
+
+  </View>
+
+  /**
+   * 绘制 一行球
+   * @param groupData
+   */
+  const renderLineBall = (groupData?: PlayGroupData) => !anyEmpty(groupData) && <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
     <View key={groupData?.alias}
@@ -112,7 +142,8 @@ const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
    */
   const renderAllBall = () => <ScrollView style={CommStyles.flex}
                                           showsVerticalScrollIndicator={false}>
-    {arrayLength(dataPTYX) > 0 && renderTM(dataPTYX[0])}
+    {arrayLength(dataPTYX) > 0 && renderAllRect(dataPTYX[0])}
+    {arrayLength(dataPTYX) > 1 && renderLineBall(dataPTYX[1])}
   </ScrollView>
 
   return (
@@ -137,6 +168,13 @@ const _styles = StyleSheet.create({
   },
   ball_container: {
     padding: scale(4),
+  },
+  rect_container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    padding: scale(4),
+    flex: 1,
   },
 })
 
