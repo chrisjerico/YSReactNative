@@ -34,5 +34,12 @@ interface ILotteryRouteParams {
   style?: StyleProp<ViewStyle>
 }
 
+/**
+ * 彩票功能区入参
+ */
+interface IBetBoardParams {
+  style?: StyleProp<ViewStyle>
+}
+
 export default LotteryConst
-export { ILotteryRouteParams }
+export { ILotteryRouteParams, IBetBoardParams }

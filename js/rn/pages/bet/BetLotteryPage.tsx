@@ -19,6 +19,7 @@ import LhcSBComponent from './lhc/sb/LhcSBComponent'
 import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
 import LhcHXComponent from './lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
+import BetBoardComponent from './board/BetBoardComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -257,12 +258,13 @@ const BetLotteryPage = ({ navigation, route }) => {
             renderTopBar(),
             renderGameTab(),
             <TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>,
-            <View style={{ flexDirection: 'row', flex: 1 }}>
-              {renderLeftColumn()}
-              {renderRightContent()}
-            </View>,
           ]
         }
+        <View style={{ flexDirection: 'row', flex: 1 }}>
+          {renderLeftColumn()}
+          {renderRightContent()}
+        </View>
+        <BetBoardComponent/>
       </BaseScreen>
     </BetLotteryContext.Provider>
 
