@@ -12,7 +12,6 @@ import { AlipayTransOutView } from './AlipayTransOutView'
 
 export const AlipayTransferView = ({ route }) => {
   const [activeTab, setActiveTab] = useState(0)
-  const { refresh } = useHomePage({})
   const { params } = route
   const { getYuebao, yuebao } = params
 
@@ -26,12 +25,14 @@ export const AlipayTransferView = ({ route }) => {
   }
 
   return (
-    <View style={{ backgroundColor: '#f3f3f3', flex: 1 }}>
-      <Header name={yuebao?.yuebaoName} activeTab={activeTab}/>
-      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab == 0 ? <AlipayTransInView yuebao={yuebao} getData={getData} /> :
-        <AlipayTransOutView getData={getData} yuebao={yuebao} />}
-    </View>
+    <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+      <View style={{ flex: 1 }}>
+        <Header name={yuebao?.yuebaoName} activeTab={activeTab} />
+        <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+        {activeTab == 0 ? <AlipayTransInView yuebao={yuebao} getData={getData} /> :
+          <AlipayTransOutView getData={getData} yuebao={yuebao} />}
+      </View>
+    </LinearGradient>
   )
 }
 
@@ -75,7 +76,7 @@ const TabBar = ({ activeTab, setActiveTab }) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      borderBottomWidth: 1,
+      borderBottomWidth: 0.5,
       borderBottomColor: '#dddddd',
     }}>
       <TouchableWithoutFeedback onPress={() => setActiveTab(0)}>
