@@ -10,6 +10,7 @@ import { anyEmpty } from "../../../public/tools/Ext";
 interface JDPromotionYJCP {
   list?: Array<UGinviteInfoModel>,//tab界面名称数据
   selItemContent?: string,
+  onRoad?:() => void,
 }
 
 
@@ -20,8 +21,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
   //初始化
   useEffect(() => {
     setList(props?.list)
-    console.log('AppDefine.siteId ==',AppDefine.siteId );
-    
+
   }, [])
 
 
@@ -34,6 +34,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
     falseItem()
     item.isPress = true
     setSelItemContent(item.content)
+    props?.onRoad()
   }
 
   /**
