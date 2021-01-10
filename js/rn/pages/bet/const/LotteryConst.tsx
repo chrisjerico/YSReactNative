@@ -15,6 +15,8 @@ const LotteryConst = {
   YX: 'YX', //平特一肖
   WS: 'WS', //平特尾数
   TWS: 'TWS', //头尾数
+  ZOX: 'ZOX', //总肖
+  TX: 'TX', //特肖
 }
 
 /**

@@ -18,7 +18,7 @@ import LotteryConst from '../../const/LotteryConst'
 import LotteryData from '../../const/LotteryData'
 
 /**
- * 六合彩 平特一肖, 平特尾数, 头尾数
+ * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
  * @constructor
  */
 const UseLhcPTYX = () => {
@@ -51,7 +51,8 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //取出生肖数据，生成对应的数据, 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
     if (!anyEmpty(playOddData?.playGroups)) {
-      if (lotteryCode == LotteryConst.YX) { //平特一肖
+      if (lotteryCode == LotteryConst.YX
+        || lotteryCode == LotteryConst.TX) { //平特一肖, 特肖
         setZodiacData(playOddData?.playGroups[0]?.plays.map((item) =>
           playOddDetailData()?.setting?.zodiacNums?.find((zodiac) =>
             zodiac?.name == item?.name)))

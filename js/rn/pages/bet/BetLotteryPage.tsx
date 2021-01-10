@@ -28,9 +28,7 @@ import BetLotteryContext from './BetLotteryContext'
 import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import TimeComponent from './tm/TimeComponent'
 import LotteryConst from './const/LotteryConst'
-import LhcLMComponent from './lhc/lm/LhcLMComponent'
 import LhcZMComponent from './lhc/zm/LhcZMComponent'
-import LhcZM1T6Component from './lhc/zm1t6/LhcZM1T6Component'
 import LhcZTComponent from './lhc/zt/LhcZTComponent'
 import { getBankIcon } from '../bank/list/UseManageBankList'
 import { Res } from '../../Res/icon/Res'
@@ -172,13 +170,15 @@ const BetLotteryPage = ({ navigation, route }) => {
       }
       case LotteryConst.LM:
       case LotteryConst.ZM1_6:
-      case LotteryConst.SB: {
+      case LotteryConst.SB:
+      case LotteryConst.ZOX: {
         return <LhcSBComponent key={lotteryCode}
                                lotteryCode={lotteryCode}/>
       }
       case LotteryConst.YX:
       case LotteryConst.WS:
-      case LotteryConst.TWS: {
+      case LotteryConst.TWS:
+      case LotteryConst.TX: {
         return <LhcPTYXComponent key={lotteryCode}
                                  lotteryCode={lotteryCode}/>
       }

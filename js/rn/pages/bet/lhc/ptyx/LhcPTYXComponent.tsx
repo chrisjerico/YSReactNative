@@ -46,7 +46,7 @@ interface IRouteParams {
 }
 
 /**
- * 六合彩 平特一肖, 平特尾数, 头尾数
+ * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
  *
  * @param navigation
  * @constructor
