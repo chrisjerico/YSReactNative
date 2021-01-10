@@ -18,7 +18,7 @@ import LotteryConst from '../../const/LotteryConst'
 import LotteryData from '../../const/LotteryData'
 
 /**
- * 六合彩 平特一肖
+ * 六合彩 平特一肖, 平特尾数, 头尾数
  * @constructor
  */
 const UseLhcPTYX = () => {
@@ -34,9 +34,7 @@ const UseLhcPTYX = () => {
 
   const [dataPTYX, setDataPTYX] = useState<Array<PlayGroupData>>(null) //当前正码数据列表
   const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //选中了生肖数据
-
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
-
   const [lotteryCode, setLotteryCode] = useState<string>(null) //当前的彩票CODE，是平特一肖 还是 平特尾数 等等
 
   /**

@@ -1,6 +1,6 @@
 import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import CommStyles from '../../../base/CommStyles'
@@ -13,21 +13,23 @@ import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetail
 import LotteryERect from '../../widget/LotteryERect'
 
 interface IRouteParams {
+  lotteryCode?: string, //当前的彩票CODE，色波, 两面, 正码1-6, 总肖, 五行 等等
   style?: StyleProp<ViewStyle>
 }
 
 /**
- * 色波
+ * 色波, 两面, 正码1-6, 总肖, 五行
  *
  * @param navigation
  * @constructor
  */
-const LhcSBComponent = ({ style }: IRouteParams) => {
+const LhcSBComponent = ({ lotteryCode, style }: IRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
+    setLotteryCode,
     dataSB,
     setDataSB,
     selectedBalls,
@@ -35,6 +37,9 @@ const LhcSBComponent = ({ style }: IRouteParams) => {
     addOrRemoveBall,
   } = UseLhcSB()
 
+  useEffect(()=>{
+    setLotteryCode(lotteryCode)
+  }, [])
 
   /**
    * 绘制 方格式

@@ -41,12 +41,12 @@ import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
 
 interface IRouteParams {
-  lotteryCode?: string, //当前的彩票CODE，是平特一肖 还是 平特尾数等等
+  lotteryCode?: string, //当前的彩票CODE，是平特一肖 还是 平特尾数 等等
   style?: StyleProp<ViewStyle>
 }
 
 /**
- * 六合彩 平特一肖
+ * 六合彩 平特一肖, 平特尾数, 头尾数
  *
  * @param navigation
  * @constructor

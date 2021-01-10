@@ -161,35 +161,32 @@ const BetLotteryPage = ({ navigation, route }) => {
       case LotteryConst.TM: {
         return <LhcTMComponent/>
       }
-      case LotteryConst.LM: {
-        return <LhcLMComponent/>
-      }
+      // case LotteryConst.LM: {
+      //   return <LhcLMComponent/>
+      // }
       case LotteryConst.ZM: {
         return <LhcZMComponent/>
       }
-      case LotteryConst.ZM1_6: {
-        return <LhcZM1T6Component/>
-      }
+      // case LotteryConst.ZM1_6: {
+      //   return <LhcZM1T6Component/>
+      // }
       case LotteryConst.ZT: {
         return <LhcZTComponent/>
       }
       case LotteryConst.LMA: {
         return <LhcLMAComponent/>
       }
+      case LotteryConst.LM:
+      case LotteryConst.ZM1_6:
       case LotteryConst.SB: {
-        return <LhcSBComponent/>
+        return <LhcSBComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.YX: {
-        return <LhcPTYXComponent key={LotteryConst.YX}
-                                 lotteryCode={LotteryConst.YX}/>
-      }
-      case LotteryConst.WS: {
-        return <LhcPTYXComponent key={LotteryConst.WS}
-                                 lotteryCode={LotteryConst.WS}/>
-      }
+      case LotteryConst.YX:
+      case LotteryConst.WS:
       case LotteryConst.TWS: {
-        return <LhcPTYXComponent key={LotteryConst.TWS}
-                                 lotteryCode={LotteryConst.TWS}/>
+        return <LhcPTYXComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
       }
 
     }

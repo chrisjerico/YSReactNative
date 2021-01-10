@@ -17,7 +17,7 @@ import UseLotteryHelper from '../../util/UseLotteryHelper'
 import LotteryConst from '../../const/LotteryConst'
 
 /**
- * 色波
+ * 色波, 两面, 正码1-6, 总肖, 五行
  * @constructor
  */
 const UseLhcSB = () => {
@@ -32,16 +32,18 @@ const UseLhcSB = () => {
   } = UseLotteryHelper()
 
   const [dataSB, setDataSB] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
-
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
+  const [lotteryCode, setLotteryCode] = useState<string>(null) //当前的彩票CODE，色波, 两面, 正码1-6, 总肖, 五行 等等
 
   /**
    * 找出当前彩种数据
    */
   useEffect(() => {
-    setPlayOddData(playOddDetailData()?.playOdds?.find(
-      (item) => item?.code == LotteryConst.SB))
-  }, [playOddDetailData()])
+    if (!anyEmpty(lotteryCode)) {
+      setPlayOddData(playOddDetailData()?.playOdds?.find(
+        (item) => item?.code == lotteryCode))
+    }
+  }, [lotteryCode, playOddDetailData()])
 
   // ugLog('playOddData=', playOddData)
   useEffect(() => {
@@ -52,6 +54,7 @@ const UseLhcSB = () => {
   }, [playOddData])
 
   return {
+    setLotteryCode,
     dataSB,
     setDataSB,
     selectedBalls,
