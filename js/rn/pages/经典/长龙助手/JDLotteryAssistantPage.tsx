@@ -23,14 +23,14 @@ import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 
 interface JDLotteryAssistantPage {
-
+  bottomH?:number,//底部的高度
 }
 
 const JDLotteryAssistantPage = () => {
 
   let { current: v } = useRef<JDLotteryAssistantPage>(
     {
-
+      bottomH:66,
     }
   )
 
@@ -73,14 +73,19 @@ const JDLotteryAssistantPage = () => {
       <View style={{ marginTop: 10, flex: 1 }}>
 
         {/* 底部 */}
-        <View style={{ marginTop: AppDefine.height - 80 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 44, justifyContent: 'center', flexDirection: 'row', backgroundColor: '#333333', height: 80, }}>
-          <View style={{ height: 80, width: 80, backgroundColor: 'blue' }}>
+        <View style={{
+           marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 66,
+            justifyContent: 'center',
+             flexDirection: 'row', 
+             backgroundColor: '#333333', 
+             height: 66, }}>
+          <View style={{ flex:1, width: 80, backgroundColor: 'blue' }}>
 
           </View>
-          <View style={{ height: 80, width: 80, backgroundColor: 'yellow',flex:1 }}>
+          <View style={{ flex:1, width: 80, backgroundColor: 'yellow', }}>
 
           </View>
-          <View style={{ height: 80, width: 180, backgroundColor: 'red' }}>
+          <View style={{ flex:1, width: 180, backgroundColor: 'red' }}>
 
           </View>
         </View>
