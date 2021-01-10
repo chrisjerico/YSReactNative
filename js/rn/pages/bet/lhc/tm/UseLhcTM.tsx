@@ -50,7 +50,7 @@ const UseLhcTM = () => {
       (item) => item?.code == LotteryConst.TM))
   }, [playOddDetailData()])
 
-  // ugLog('playOddData=', playOddData)
+
   useEffect(() => {
     //特码取前3个数据 特码 两面 色波
     if (!anyEmpty(playOddData?.playGroups)) {

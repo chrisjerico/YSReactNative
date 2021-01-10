@@ -45,7 +45,7 @@ const UseLhcSB = () => {
     }
   }, [lotteryCode, playOddDetailData()])
 
-  // ugLog('playOddData=', playOddData)
+
   useEffect(() => {
     //ugLog('dataTMB 2 =', JSON.stringify(playOddData))
     if (!anyEmpty(playOddData?.playGroups)) {

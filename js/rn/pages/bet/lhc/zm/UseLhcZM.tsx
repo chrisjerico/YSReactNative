@@ -43,7 +43,7 @@ const UseLhcZM = () => {
       (item) => item?.code == LotteryConst.ZM))
   }, [playOddDetailData()])
 
-  // ugLog('playOddData=', playOddData)
+
   useEffect(() => {
     if (!anyEmpty(playOddData?.playGroups)) {
       setDataZM(playOddData?.playGroups)

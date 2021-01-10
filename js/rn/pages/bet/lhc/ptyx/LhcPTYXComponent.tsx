@@ -75,7 +75,7 @@ const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
    * 绘制 生肖和球
    * @param item
    */
-  const renderEBall = (item?: PlayData) => <LotteryLineEBall key={item?.id + item?.name}
+  const renderEBall = (item?: PlayData) => !anyEmpty(zodiacData) &&  <LotteryLineEBall key={item?.id + item?.name}
                                                          item={{
                                                            ...item,
                                                            zodiacData

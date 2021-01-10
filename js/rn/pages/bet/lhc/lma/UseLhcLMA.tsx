@@ -92,7 +92,7 @@ const UseLhcLMA = () => {
       (item) => item?.code == LotteryConst.LMA))
   }, [playOddDetailData()])
 
-  // ugLog('playOddData=', playOddData)
+
   useEffect(() => {
     setDataLMA(playOddData?.playGroups)
     playOddData?.playGroups?.map((item) => {

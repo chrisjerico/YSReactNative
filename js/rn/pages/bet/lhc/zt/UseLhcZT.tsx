@@ -54,7 +54,7 @@ const UseLhcZT = () => {
       (item) => item?.code == LotteryConst.ZT))
   }, [playOddDetailData()])
 
-  // ugLog('playOddData=', playOddData)
+
   useEffect(() => {
     if (arrayLength(playOddData?.playGroups) % 2 == 0) {//长度是偶数
       let newData = new Array<Array<PlayGroupData>>()
