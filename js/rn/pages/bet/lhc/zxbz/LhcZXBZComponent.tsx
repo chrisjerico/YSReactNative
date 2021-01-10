@@ -22,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcLMA, { ILMABallArray } from './UseLhcLMA'
+import UseLhcZXBZ, { ILMABallArray } from './UseLhcZXBZ'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import {
   PlayData,
@@ -43,12 +43,12 @@ import { doc } from 'prettier'
 
 
 /**
- * 六合彩连码
+ * 六合彩 自选不中
  *
  * @param navigation
  * @constructor
  */
-const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   const {
     tabIndex,
@@ -62,43 +62,11 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseLhcLMA()
+  } = UseLhcZXBZ()
 
   useEffect(() => {
     setLotteryCode(lotteryCode)
   }, [])
-
-  /**
-   * 绘制tab
-   */
-  const renderTab = () => <View style={_styles.tab_title_container}>
-    <ScrollView style={_styles.sv_container}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}>
-      <View style={_styles.tab_title_content}>
-        {
-          pageData?.map((item, index) =>
-            <TouchableOpacity key={item[0]?.alias}
-                              style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
-              <View key={item[0]?.alias}
-                    style={[
-                      _styles.tab_item,
-                      index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-                    ]}>
-                <Text style={[
-                  _styles.tab_title_item_text,
-                  index == tabIndex ? { color: `white` } : null,
-                ]}>{item[0]?.alias}</Text>
-              </View>
-            </TouchableOpacity>)
-        }
-      </View>
-    </ScrollView>
-    <Icon size={scale(36)}
-          color={Skin1.themeColor}
-          name={'angle-double-left'}/>
-  </View>
 
   /**
    * 绘制 球
@@ -110,17 +78,16 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     return (
       <LotteryEBall key={ballInfo?.id}
                     item={{
-                      ...item?.plays[0],
                       ...ballInfo,
                     }}
                     selectedBalls={selectedBalls}
-                    ballStyle={{ flexDirection: 'column' }}
+                    containerStyle={{width: scale(78)}}
                     callback={() => addOrRemoveBall(ballInfo?.id)}/>
     )
   }
 
   /**
-   * 绘制 连码
+   * 绘制 自选不中
    * @param groupData
    */
   const renderLMA = (groupData?: PlayGroupData) => {
@@ -151,7 +118,6 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   return (
     <View style={[CommStyles.flex, style]}>
-      {renderTab()}
       {renderAllBall()}
     </View>
 
@@ -219,4 +185,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default LhcLMAComponent
+export default LhcZXBZComponent

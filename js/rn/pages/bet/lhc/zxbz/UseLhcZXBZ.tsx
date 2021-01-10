@@ -17,10 +17,10 @@ import UseLotteryHelper from '../../util/UseLotteryHelper'
 
 
 /**
- * 六合彩连码
+ * 六合彩 自选不中
  * @constructor
  */
-const UseLhcLMA = () => {
+const UseLhcZXBZ = () => {
 
   const {
     tabIndex,
@@ -48,36 +48,18 @@ const UseLhcLMA = () => {
     if (!anyEmpty(pageData) && !anyEmpty(pageData[tabIndex][0].plays)) {
       const data = pageData[tabIndex][0]
 
-      let arr: Array<ILMABallArray>
       const play0 = data?.plays[0]
-      //多个赔率的生成47个球，否则49个球
-      if (arrayLength(data?.plays) > 1) {
-        arr = new Array(
-          47,
-        ).fill(0).map((item, index) => {
-          let ballIndex = ('0' + index).slice(-2)
-          return (
-            {
-              id: play0?.id + ballIndex,
-              name: ballIndex,
-              odds: `${play0?.odds}\n${data?.plays[1]?.odds}`,
-            }
-          )
-        })
-      } else {
-        arr = new Array(
-          49,
-        ).fill(0).map((item, index) => {
-          let ballIndex = ('0' + index).slice(-2)
-          return (
-            {
-              id: play0?.id + ballIndex,
-              name: ballIndex,
-              odds: play0?.odds,
-            }
-          )
-        })
-      }
+      let arr = new Array(
+        49,
+      ).fill(0).map((item, index) => {
+        let ballIndex = ('0' + index).slice(-2)
+        return (
+          {
+            id: play0?.id + ballIndex,
+            name: ballIndex,
+          }
+        )
+      })
 
       setBallArray(arr)
       setCurData(pageData[tabIndex])
@@ -104,11 +86,11 @@ const UseLhcLMA = () => {
 }
 
 interface ILMABallArray {
-  id?: string//球的id + 编号组成
+  id: string//球的id + 编号组成
   name?: string
   odds?: string
 }
 
-export default UseLhcLMA
+export default UseLhcZXBZ
 export { ILMABallArray }
 

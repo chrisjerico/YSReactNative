@@ -123,7 +123,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
                                                          callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
-   * 绘制 特码B/A
+   * 绘制 正特
    * @param groupData
    */
   const renderZT1 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}

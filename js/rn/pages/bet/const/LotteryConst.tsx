@@ -23,6 +23,7 @@ const LotteryConst = {
   LW: 'LW', //连尾
   ZX: 'ZX', //正肖
   WX: 'WX', //五行
+  ZXBZ: 'ZXBZ', //自选不中
 }
 
 /**

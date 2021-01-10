@@ -18,6 +18,7 @@ import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
 import LhcSBComponent from './lhc/sb/LhcSBComponent'
 import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
 import LhcHXComponent from './lhc/hx/LhcHXComponent'
+import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -171,6 +172,10 @@ const BetLotteryPage = ({ navigation, route }) => {
       }
       case LotteryConst.HX: { //合肖
         return <LhcHXComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.ZXBZ: { //自选不中
+        return <LhcZXBZComponent key={lotteryCode}
                                  lotteryCode={lotteryCode}/>
       }
 
