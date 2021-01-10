@@ -314,7 +314,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
                   {'每个'+inviteCode.displayWord+'可以使用'+inviteCode.canUseNum+'次'}
                 </Text>
         </View>}
-        <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.textColor4 }}>
+        <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.homeContentColor }}>
           {v.titleArray?.map((title, idx) => {
             return (
               <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, borderRightColor: Skin1.textColor3,borderRightWidth:1,height: scale(66),   alignItems: 'center' }}

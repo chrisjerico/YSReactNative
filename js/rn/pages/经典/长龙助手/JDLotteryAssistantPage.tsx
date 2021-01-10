@@ -30,11 +30,11 @@ const JDLotteryAssistantPage = () => {
 
   let { current: v } = useRef<JDLotteryAssistantPage>(
     {
-     
+
     }
   )
 
- 
+
   /**
 * 渲染列表项
 * 
@@ -42,8 +42,8 @@ const JDLotteryAssistantPage = () => {
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, alignItems: 'center',marginHorizontal: 10, }]}>
-          
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, alignItems: 'center', marginHorizontal: 10, }]}>
+
         </View>
       );
     }
@@ -61,7 +61,7 @@ const JDLotteryAssistantPage = () => {
         hidden: false, title: '我的投注', back: true
       },
       didFocus: () => {
-       
+
       }
     })
 
@@ -69,14 +69,20 @@ const JDLotteryAssistantPage = () => {
 
 
   return (
-    <View style={[styles.container,{backgroundColor: Skin1.CLBgColor}]}>
-      <View style={{marginTop:10,flex:1}}>
+    <View style={[styles.container, { backgroundColor: Skin1.CLBgColor }]}>
+      <View style={{ marginTop: 10, flex: 1 }}>
 
         {/* 底部 */}
-        <View style={{marginTop:AppDefine.height-80-AppDefine.safeArea.top-AppDefine.safeArea.bottom-44, justifyContent: 'center',flexDirection: 'column' ,flex:1,backgroundColor:'#333333',height:80,}}>
-            <View>
-              
-            </View>
+        <View style={{ marginTop: AppDefine.height - 80 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 44, justifyContent: 'center', flexDirection: 'row', backgroundColor: '#333333', height: 80, }}>
+          <View style={{ height: 80, width: 80, backgroundColor: 'blue' }}>
+
+          </View>
+          <View style={{ height: 80, width: 80, backgroundColor: 'yellow',flex:1 }}>
+
+          </View>
+          <View style={{ height: 80, width: 180, backgroundColor: 'red' }}>
+
+          </View>
         </View>
       </View>
     </View >
@@ -89,7 +95,7 @@ const JDLotteryAssistantPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
   },
   item: {
     flex: 1,
