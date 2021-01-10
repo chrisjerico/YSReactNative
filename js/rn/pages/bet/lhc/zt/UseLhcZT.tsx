@@ -49,8 +49,6 @@ const UseLhcZT = () => {
     !anyEmpty(pageData) && setCurData(pageData[tabIndex])
   }, [tabIndex, pageData])
 
-
-
   useEffect(() => {
     if (arrayLength(playOddData?.playGroups) % 2 == 0) {//长度是偶数
       let newData = new Array<Array<PlayGroupData>>()

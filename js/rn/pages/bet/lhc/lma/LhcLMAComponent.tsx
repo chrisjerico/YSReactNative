@@ -52,20 +52,19 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   const {
     setLotteryCode,
+    ballArray,
     tabIndex,
     setTabIndex,
     curData,
-    ballArray,
-    dataLMA,
-    setDataLMA,
-    selectedZodiac,
-    setSelectedZodiac,
+    setCurData,
+    pageData,
+    setPageData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   } = UseLhcLMA()
 
-  useEffect(()=>{
+  useEffect(() => {
     setLotteryCode(lotteryCode)
   }, [])
 
@@ -78,11 +77,11 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
                 horizontal={true}>
       <View style={_styles.tab_title_content}>
         {
-          dataLMA?.map((item, index) =>
-            <TouchableOpacity key={item?.alias}
+          pageData?.map((item, index) =>
+            <TouchableOpacity key={item[0]?.alias}
                               style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>
-              <View key={item?.alias}
+              <View key={item[0]?.alias}
                     style={[
                       _styles.tab_item,
                       index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
@@ -90,7 +89,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
                 <Text style={[
                   _styles.tab_title_item_text,
                   index == tabIndex ? { color: `white` } : null,
-                ]}>{item?.alias}</Text>
+                ]}>{item[0]?.alias}</Text>
               </View>
             </TouchableOpacity>)
         }
@@ -115,7 +114,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
                       ...ballInfo,
                     }}
                     selectedBalls={selectedBalls}
-                    ballStyle={{flexDirection: 'column'}}
+                    ballStyle={{ flexDirection: 'column' }}
                     callback={() => addOrRemoveBall(ballInfo?.id)}/>
     )
   }
@@ -147,7 +146,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    {renderLMA(curData)}
+    {!anyEmpty(curData) && renderLMA(curData[0])}
   </ScrollView>
 
   return (

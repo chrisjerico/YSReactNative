@@ -24,6 +24,12 @@ import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 const UseLhcLMA = () => {
 
   const {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
     playOddData,
     setPlayOddData,
     lotteryCode,
@@ -37,18 +43,15 @@ const UseLhcLMA = () => {
     zodiacBallIds,
   } = UseLotteryHelper()
 
-  const [dataLMA, setDataLMA] = useState<Array<PlayGroupData>>(null) //当前重组后的正特数据列表
-  const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
-
-  const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，TAB_A 和 TAB_B
-
-  const [curData, setCurData] = useState<PlayGroupData>(null) //当前TAB选中的数据
+  // const [dataLMA, setDataLMA] = useState<Array<PlayGroupData>>(null) //当前重组后的正特数据列表
+  // const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，TAB_A 和 TAB_B
+  //
+  // const [curData, setCurData] = useState<PlayGroupData>(null) //当前TAB选中的数据
   const [ballArray, setBallArray] = useState<Array<ILMABallArray>>(null) //当前TAB选中的数据
 
   useEffect(() => {
-    if (!anyEmpty(dataLMA) &&
-      !anyEmpty(!anyEmpty(dataLMA[tabIndex].plays))) {
-      const data = dataLMA[tabIndex]
+    if (!anyEmpty(pageData) && !anyEmpty(pageData[tabIndex][0].plays)) {
+      const data = pageData[tabIndex][0]
 
       let arr: Array<ILMABallArray>
       const play0 = data?.plays[0]
@@ -82,31 +85,23 @@ const UseLhcLMA = () => {
       }
 
       setBallArray(arr)
-      setCurData(data)
+      setCurData(pageData[tabIndex])
     }
-  }, [tabIndex, dataLMA])
+  }, [tabIndex, pageData])
 
   useEffect(() => {
-    setDataLMA(playOddData?.playGroups)
-    playOddData?.playGroups?.map((item) => {
-      if (arrayLength(item.plays) > 1) {//多个赔率的生成47个球，否则49个球
-
-      } else if (arrayLength(item.plays) > 1) {//多个赔率的生成47个球，否则49个球
-
-      }
-    })
+    setPageData(playOddData?.playGroups?.map((item) => [item]))
   }, [playOddData])
 
   return {
     setLotteryCode,
+    ballArray,
     tabIndex,
     setTabIndex,
     curData,
-    ballArray,
-    dataLMA,
-    setDataLMA,
-    selectedZodiac,
-    setSelectedZodiac,
+    setCurData,
+    pageData,
+    setPageData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
