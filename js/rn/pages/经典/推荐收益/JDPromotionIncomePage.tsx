@@ -26,6 +26,8 @@ import JDPromotionInfoCP from '../cp/JDPromotionInfoCP';
 import { Button } from 'react-native-elements';
 import { UGStore } from '../../../redux/store/UGStore';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
+import { PageName } from '../../../public/navigation/Navigation';
+import { push } from '../../../public/navigation/RootNavigation';
 
 interface JDPromotionIncomePage {
   tabNames?: Array<string>//tab界面名称数据
@@ -84,13 +86,7 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
      * 
      */
   function rightClicked() {
-    
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-      {
-        selectors: 'PromotionCodeListVC.alloc.init',
-      },
-      true,
-    ]);
+    push(PageName.JDPromotionCodeListPage, {})
   }
   /**
      * 绘制各列表
