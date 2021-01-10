@@ -361,7 +361,9 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         />
       </View>
     </View >,
- <JDInviteCodeGenerateCP {...{ c_ref: v.codeCP, }} />]
+ <JDInviteCodeGenerateCP {...{ c_ref: v.codeCP, reloadBlock:()=>{
+  onHeaderRefresh()
+ } }} />]
  )
 
 }
