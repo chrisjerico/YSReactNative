@@ -161,15 +161,9 @@ const BetLotteryPage = ({ navigation, route }) => {
       case LotteryConst.TM: {
         return <LhcTMComponent/>
       }
-      // case LotteryConst.LM: {
-      //   return <LhcLMComponent/>
-      // }
       case LotteryConst.ZM: {
         return <LhcZMComponent/>
       }
-      // case LotteryConst.ZM1_6: {
-      //   return <LhcZM1T6Component/>
-      // }
       case LotteryConst.ZT: {
         return <LhcZTComponent/>
       }
