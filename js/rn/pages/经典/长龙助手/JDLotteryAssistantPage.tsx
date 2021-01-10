@@ -60,8 +60,9 @@ const JDLotteryAssistantPage = () => {
       navbarOpstions: {
         hidden: false, title: '我的投注', back: true
       },
+     
       didFocus: () => {
-
+        v.bottomH = 66;
       }
     })
 
@@ -74,18 +75,20 @@ const JDLotteryAssistantPage = () => {
 
         {/* 底部 */}
         <View style={{
-           marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 66,
+           marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH,
             justifyContent: 'center',
              flexDirection: 'row', 
              backgroundColor: '#333333', 
-             height: 66, }}>
-          <View style={{ flex:1, width: 80, backgroundColor: 'blue' }}>
+             height: v.bottomH, }}>
+          <View style={{ height:v.bottomH, width: 80, backgroundColor: 'blue' }}>
+            <Text>
+              
+            </Text>
+          </View>
+          <View style={{ height:v.bottomH, flex:1, backgroundColor: 'yellow', }}>
 
           </View>
-          <View style={{ flex:1, width: 80, backgroundColor: 'yellow', }}>
-
-          </View>
-          <View style={{ flex:1, width: 180, backgroundColor: 'red' }}>
+          <View style={{ height:v.bottomH, width: 100, backgroundColor: 'red' }}>
 
           </View>
         </View>
