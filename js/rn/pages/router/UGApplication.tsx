@@ -103,7 +103,8 @@ import { TransferLineView } from '../../public/components/transfer/TransferLineV
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import BetLotteryPage from '../bet/BetLotteryPage'
 import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
-import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
+import JDChanglongBetRecordpage from '../经典/长龙助手/JDChanglongBetRecordpage'
+import JDLotteryAssistantPage from '../经典/长龙助手/JDLotteryAssistantPage'
 
 
 
@@ -157,8 +158,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferTKLMainView, //额度转页-新版
   JDPromotionIncomePage,//推荐收益
   JDPromotionCodeListPage,//邀请码
-  JDSegmentPage,//测试segment
-
+  JDChanglongBetRecordpage,//我的下注记录
+  JDLotteryAssistantPage,//最新长龙
 
   // ———————————— 模板页面 —————————————
 
