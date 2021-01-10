@@ -138,7 +138,7 @@ const BetLotteryPage = ({ navigation, route }) => {
 
     switch (lotteryCode) {
       case LotteryConst.TM: {
-        return <LhcTMComponent/>
+        return <LhcTMComponent key={lotteryCode}/>
       }
       case LotteryConst.ZM:
       case LotteryConst.ZT: {
@@ -158,7 +158,8 @@ const BetLotteryPage = ({ navigation, route }) => {
       case LotteryConst.YX:
       case LotteryConst.WS:
       case LotteryConst.TWS:
-      case LotteryConst.TX: {
+      case LotteryConst.TX:
+      case LotteryConst.LX: {
         return <LhcPTYXComponent key={lotteryCode}
                                  lotteryCode={lotteryCode}/>
       }
@@ -240,7 +241,7 @@ const BetLotteryPage = ({ navigation, route }) => {
           [
             renderTopBar(),
             renderGameTab(),
-            <TimeComponent key={nextIssueData?.curIssue}/>,
+            <TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>,
             <View style={{ flexDirection: 'row', flex: 1 }}>
               {renderLeftColumn()}
               {renderRightContent()}

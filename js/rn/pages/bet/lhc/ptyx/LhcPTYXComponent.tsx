@@ -58,7 +58,10 @@ const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
 
   const {
     setLotteryCode,
+    tabIndex,
+    setTabIndex,
     dataPTYX,
+    curData,
     setDataPTYX,
     zodiacData,
     setZodiacData,
@@ -70,6 +73,39 @@ const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
   useEffect(()=>{
     setLotteryCode(lotteryCode)
   }, [])
+
+
+  /**
+   * 绘制tab，只有1个数据不绘制Tab
+   */
+  const renderTab = () => arrayLength(dataPTYX) > 1 &&  <View style={_styles.tab_title_container}>
+    <ScrollView style={_styles.sv_container}
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}>
+      <View style={_styles.tab_title_content}>
+        {
+          dataPTYX?.map((item, index) =>
+            <TouchableOpacity key={item[1]?.alias}
+                              style={CommStyles.flex}
+                              onPress={() => setTabIndex(index)}>
+              <View key={item[1]?.alias}
+                    style={[
+                      _styles.tab_item,
+                      index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+                    ]}>
+                <Text style={[
+                  _styles.tab_title_item_text,
+                  index == tabIndex ? { color: `white` } : null,
+                ]}>{item[1]?.alias}</Text>
+              </View>
+            </TouchableOpacity>)
+        }
+      </View>
+    </ScrollView>
+    <Icon size={scale(36)}
+          color={Skin1.themeColor}
+          name={'angle-double-left'}/>
+  </View>
 
   /**
    * 绘制 生肖和球
@@ -128,11 +164,7 @@ const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
 
     <View style={_styles.ball_container}>
       {
-        groupData?.plays?.map((item) => <View>
-          {
-            renderEBall(item)
-          }
-        </View>)
+        groupData?.plays?.map((item) => renderEBall(item))
       }
     </View>
   </View>
@@ -142,12 +174,13 @@ const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
    */
   const renderAllBall = () => <ScrollView style={CommStyles.flex}
                                           showsVerticalScrollIndicator={false}>
-    {arrayLength(dataPTYX) > 0 && renderAllRect(dataPTYX[0])}
-    {arrayLength(dataPTYX) > 1 && renderLineBall(dataPTYX[1])}
+    {arrayLength(curData) > 0 && renderAllRect(curData[0])}
+    {arrayLength(curData) > 1 && renderLineBall(curData[1])}
   </ScrollView>
 
   return (
     <View style={[CommStyles.flex, style]}>
+      {renderTab()}
       {renderAllBall()}
     </View>
 
@@ -175,6 +208,30 @@ const _styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: scale(4),
     flex: 1,
+  },
+  tab_title_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: UGColor.LineColor3,
+    borderRadius: scale(8),
+  },
+  sv_container: {
+    flex: 1,
+  },
+  tab_title_content: {
+    flexDirection: 'row',
+  },
+  tab_item: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(8),
+    paddingVertical: scale(8),
+    paddingHorizontal: scale(30),
+  },
+  tab_title_item_text: {
+    color: UGColor.TextColor3,
+    fontSize: scale(22),
+    paddingLeft: scale(6),
   },
 })
 

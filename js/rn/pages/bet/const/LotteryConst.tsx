@@ -17,6 +17,7 @@ const LotteryConst = {
   TWS: 'TWS', //头尾数
   ZOX: 'ZOX', //总肖
   TX: 'TX', //特肖
+  LX: 'LX', //连肖
 }
 
 /**

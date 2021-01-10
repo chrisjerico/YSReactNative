@@ -10,6 +10,7 @@ import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
 import LotteryEBall from './LotteryEBall'
 import { ugLog } from '../../../public/tools/UgLog'
 import CommStyles from '../../base/CommStyles'
+import { anyEmpty } from '../../../public/tools/Ext'
 
 interface ILotteryEBall {
   item?: ILotteryLineEBallItem // 要绘制的数据
@@ -38,6 +39,7 @@ const LotteryLineEBall = ({
 
   let isSel = isSelectedBallOnId(selectedBalls, item?.id)
 
+  let showName = anyEmpty(item?.alias) ? item?.name : item?.alias
   return (
     <TouchableOpacity key={item?.id}
                       onPress={() => callback && callback()}>
@@ -51,11 +53,11 @@ const LotteryLineEBall = ({
                     null,
               },
             ]}>
-        <Text key={item?.name}
+        <Text key={showName}
               style={[
                 _styles.sub_title_text,
                 isSel ? {color: 'white'} : null
-              ]}>{item?.name}</Text>
+              ]}>{showName}</Text>
         <Text key={item?.odds}
               style={[
                 _styles.sub_title_text_odds,
@@ -63,7 +65,7 @@ const LotteryLineEBall = ({
               ]}>{item?.odds}</Text>
         <View style={CommStyles.flex}/>
         {
-          item?.zodiacData?.find((zodiac) => zodiac?.name == item?.name)?.nums?.map((zodiacNumber) =>
+          item?.zodiacData?.find((zodiac) => zodiac?.name == showName)?.nums?.map((zodiacNumber) =>
             <LotteryEBall key={item?.id + zodiacNumber}
                           ballProps={ballProps}
                           containerStyle={{ width: null }}

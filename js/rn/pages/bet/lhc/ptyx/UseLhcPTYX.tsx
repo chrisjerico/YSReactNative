@@ -32,10 +32,17 @@ const UseLhcPTYX = () => {
     addOrRemoveBall,
   } = UseLotteryHelper()
 
-  const [dataPTYX, setDataPTYX] = useState<Array<PlayGroupData>>(null) //当前正码数据列表
+  const [dataPTYX, setDataPTYX] = useState<Array<Array<PlayGroupData>>>(null) //当前正码数据列表
+  const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab
   const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //选中了生肖数据
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
   const [lotteryCode, setLotteryCode] = useState<string>(null) //当前的彩票CODE，是平特一肖 还是 平特尾数 等等
+
+  const [curData, setCurData] = useState<Array<PlayGroupData>>(null) //当前选中的TAB数据
+
+  useEffect(() => {
+    !anyEmpty(dataPTYX) && setCurData(dataPTYX[tabIndex])
+  }, [tabIndex, dataPTYX])
 
   /**
    * 找出当前彩种数据
@@ -53,15 +60,19 @@ const UseLhcPTYX = () => {
       switch (lotteryCode) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
-          setDataPTYX([null, ...playOddData?.playGroups])
+          setDataPTYX([[null, ...playOddData?.playGroups]])
 
           break;
         case LotteryConst.WS://平特尾数
-          setDataPTYX([null, ...playOddData?.playGroups])
+          setDataPTYX([[null, ...playOddData?.playGroups]])
 
           break;
         case LotteryConst.TWS://头尾数
-          setDataPTYX(playOddData?.playGroups)
+          setDataPTYX([playOddData?.playGroups])
+
+          break;
+        case LotteryConst.LX: //连肖
+          setDataPTYX(playOddData?.playGroups?.map((item) => [null, item]))
 
           break;
       }
@@ -71,17 +82,18 @@ const UseLhcPTYX = () => {
 
   useEffect(() => {
     //取出生肖数据，生成对应的数据
-    if (!anyEmpty(dataPTYX)) {
+    if (!anyEmpty(curData)) {
       switch (lotteryCode) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
-          setZodiacData(playOddData?.playGroups[0]?.plays.map((item) =>
+        case LotteryConst.LX: //连肖
+          setZodiacData(curData[1]?.plays.map((item) =>
             playOddDetailData()?.setting?.zodiacNums?.find((zodiac) =>
-              zodiac?.name == item?.name)))
+              zodiac?.name == (anyEmpty(item?.alias) ? item?.name : item?.alias))))
 
           break;
         case LotteryConst.WS://平特尾数
-          setZodiacData(playOddData?.playGroups[0]?.plays.map((item, index) => {
+          setZodiacData(curData[1]?.plays.map((item, index) => {
             return {
               key: item?.id,
               name: item?.name,
@@ -91,7 +103,7 @@ const UseLhcPTYX = () => {
 
           break;
         case LotteryConst.TWS://头尾数
-          setZodiacData(playOddData?.playGroups[1]?.plays.map((item, index) => {
+          setZodiacData(curData[1]?.plays.map((item, index) => {
             return {
               key: item?.id,
               name: item?.name,
@@ -103,10 +115,13 @@ const UseLhcPTYX = () => {
       }
 
     }
-  }, [dataPTYX])
+  }, [curData])
 
   return {
     setLotteryCode,
+    tabIndex,
+    setTabIndex,
+    curData,
     dataPTYX,
     setDataPTYX,
     zodiacData,
