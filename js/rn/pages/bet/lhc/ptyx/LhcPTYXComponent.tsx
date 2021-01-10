@@ -40,6 +40,7 @@ import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
 import { ILotteryRouteParams } from '../../const/LotteryConst'
+import { findZodiacByName } from '../../util/LotteryUtil'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
@@ -111,7 +112,7 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderEBall = (item?: PlayData) => !anyEmpty(zodiacData) &&  <LotteryLineEBall key={item?.id + item?.name}
                                                          item={{
                                                            ...item,
-                                                           zodiacData
+                                                           zodiacItem: findZodiacByName(zodiacData, item)
                                                          }}
                                                          selectedBalls={selectedBalls}
                                                          callback={() => addOrRemoveBall(item?.id)}/>
