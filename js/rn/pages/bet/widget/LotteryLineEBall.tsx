@@ -56,16 +56,17 @@ const LotteryLineEBall = ({
         <Text key={showName}
               style={[
                 _styles.sub_title_text,
-                isSel ? {color: 'white'} : null
+                isSel ? { color: 'white' } : null,
               ]}>{showName}</Text>
         <Text key={item?.odds}
               style={[
                 _styles.sub_title_text_odds,
-                isSel ? {color: 'white'} : null
+                isSel ? { color: 'white' } : null,
               ]}>{item?.odds}</Text>
         <View style={CommStyles.flex}/>
         {
-          item?.zodiacData?.find((zodiac) => zodiac?.name == showName)?.nums?.map((zodiacNumber) =>
+          item?.zodiacData?.find((zodiac) => (zodiac?.name == item?.name
+            || zodiac?.alias == item?.alias))?.nums?.map((zodiacNumber) =>
             <LotteryEBall key={item?.id + zodiacNumber}
                           ballProps={ballProps}
                           containerStyle={{ width: null }}
@@ -92,7 +93,7 @@ const _styles = StyleSheet.create({
     borderTopRightRadius: scale(16),
     borderBottomLeftRadius: scale(16),
     borderBottomWidth: scale(1),
-    borderBottomColor: UGColor.LineColor4
+    borderBottomColor: UGColor.LineColor4,
   },
   sub_title_text: {
     color: UGColor.TextColor2,

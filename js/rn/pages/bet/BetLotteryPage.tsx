@@ -159,7 +159,9 @@ const BetLotteryPage = ({ navigation, route }) => {
       case LotteryConst.WS:
       case LotteryConst.TWS:
       case LotteryConst.TX:
-      case LotteryConst.LX: {
+      case LotteryConst.LX:
+      case LotteryConst.HX:
+      case LotteryConst.LW: {
         return <LhcPTYXComponent key={lotteryCode}
                                  lotteryCode={lotteryCode}/>
       }

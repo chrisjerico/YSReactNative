@@ -61,19 +61,26 @@ const UseLhcPTYX = () => {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
           setDataPTYX([[null, ...playOddData?.playGroups]])
-
           break;
         case LotteryConst.WS://平特尾数
           setDataPTYX([[null, ...playOddData?.playGroups]])
-
           break;
         case LotteryConst.TWS://头尾数
           setDataPTYX([playOddData?.playGroups])
-
           break;
         case LotteryConst.LX: //连肖
           setDataPTYX(playOddData?.playGroups?.map((item) => [null, item]))
-
+          break;
+        case LotteryConst.LW: //连尾
+          //连尾数据缺少一个 尾，补上
+          setDataPTYX(playOddData?.playGroups?.map((item) => [null, {
+            ...item,
+            plays: item?.plays?.map((item) => ({
+                ...item,
+                alias: item?.alias + '尾'
+              }
+            ))
+          }]))
           break;
       }
 
@@ -86,10 +93,20 @@ const UseLhcPTYX = () => {
       switch (lotteryCode) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
-        case LotteryConst.LX: //连肖
           setZodiacData(curData[1]?.plays.map((item) =>
             playOddDetailData()?.setting?.zodiacNums?.find((zodiac) =>
-              zodiac?.name == (anyEmpty(item?.alias) ? item?.name : item?.alias))))
+              zodiac?.name == item?.name)))
+
+          break;
+        case LotteryConst.LX: //连肖
+          setZodiacData(curData[1]?.plays.map((item) => {
+            let zodiacNum = playOddDetailData()?.setting?.zodiacNums?.find((zodiac) =>
+              zodiac?.name == item?.alias)
+            return {
+              ...zodiacNum,
+              alias: item?.alias
+            }
+          }))
 
           break;
         case LotteryConst.WS://平特尾数
@@ -100,7 +117,6 @@ const UseLhcPTYX = () => {
               nums: LotteryData.WS[index],
             }
           }))
-
           break;
         case LotteryConst.TWS://头尾数
           setZodiacData(curData[1]?.plays.map((item, index) => {
@@ -110,7 +126,15 @@ const UseLhcPTYX = () => {
               nums: LotteryData.WS[index],
             }
           }))
-
+          break;
+        case LotteryConst.LW://连尾
+          setZodiacData(curData[1]?.plays.map((item, index) => {
+            return {
+              key: item?.id,
+              alias: item?.alias,
+              nums: LotteryData.WS[index],
+            }
+          }))
           break;
       }
 

@@ -18,6 +18,8 @@ const LotteryConst = {
   ZOX: 'ZOX', //总肖
   TX: 'TX', //特肖
   LX: 'LX', //连肖
+  HX: 'HX', //合肖
+  LW: 'LW', //连尾
 }
 
 /**
