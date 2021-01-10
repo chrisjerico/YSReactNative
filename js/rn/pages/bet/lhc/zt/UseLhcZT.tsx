@@ -18,7 +18,7 @@ import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 
 
 /**
- * 六合彩正特
+ * 六合彩 正特 正码 等等
  * @constructor
  */
 const UseLhcZT = () => {
@@ -35,8 +35,9 @@ const UseLhcZT = () => {
 
   const [dataZT, setDataZT] = useState<Array<Array<PlayGroupData>>>(null) //当前重组后的正特数据列表
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
+  const [lotteryCode, setLotteryCode] = useState<string>(null) //当前的彩票CODE，正特 正码 等等
 
-  const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，TAB_A 和 TAB_B
+  const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab
 
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
 
@@ -50,9 +51,11 @@ const UseLhcZT = () => {
    * 找出当前彩种数据
    */
   useEffect(() => {
-    setPlayOddData(playOddDetailData()?.playOdds?.find(
-      (item) => item?.code == LotteryConst.ZT))
-  }, [playOddDetailData()])
+    if (!anyEmpty(lotteryCode)) {
+      setPlayOddData(playOddDetailData()?.playOdds?.find(
+        (item) => item?.code == lotteryCode))
+    }
+  }, [lotteryCode, playOddDetailData()])
 
 
   useEffect(() => {
@@ -73,6 +76,7 @@ const UseLhcZT = () => {
   }, [playOddData])
 
   return {
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,

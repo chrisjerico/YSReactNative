@@ -1,38 +1,19 @@
-import {
-  FlatList, Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import UseBetLottery from './UseBetLottery'
-import Modal from 'react-native-modal'
 import { useEffect, useState } from 'react'
+import UseBetLottery from './UseBetLottery'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
 import { scale } from '../../public/tools/Scale'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { pop } from '../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../base/CommStyles'
-import { ugLog } from '../../public/tools/UgLog'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
-import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import TimeComponent from './tm/TimeComponent'
 import LotteryConst from './const/LotteryConst'
-import LhcZMComponent from './lhc/zm/LhcZMComponent'
 import LhcZTComponent from './lhc/zt/LhcZTComponent'
-import { getBankIcon } from '../bank/list/UseManageBankList'
-import { Res } from '../../Res/icon/Res'
-import { BankConst } from '../bank/const/BankConst'
 import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
 import LhcSBComponent from './lhc/sb/LhcSBComponent'
 import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
@@ -159,11 +140,10 @@ const BetLotteryPage = ({ navigation, route }) => {
       case LotteryConst.TM: {
         return <LhcTMComponent/>
       }
-      case LotteryConst.ZM: {
-        return <LhcZMComponent/>
-      }
+      case LotteryConst.ZM:
       case LotteryConst.ZT: {
-        return <LhcZTComponent/>
+        return <LhcZTComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.LMA: {
         return <LhcLMAComponent/>

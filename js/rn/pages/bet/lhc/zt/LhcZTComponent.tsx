@@ -41,19 +41,21 @@ import LotteryERect from '../../widget/LotteryERect'
 import { LHC_Tab } from '../../const/LotteryConst'
 
 interface IRouteParams {
+  lotteryCode?: string, //当前的彩票CODE，正码、正特 等等
   style?: StyleProp<ViewStyle>
 }
 
 /**
- * 六合彩正特
+ * 六合彩 正特 正码 等等
  *
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({ style }: IRouteParams) => {
+const LhcZTComponent = ({ lotteryCode, style }: IRouteParams) => {
 
 
   const {
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -66,10 +68,14 @@ const LhcZTComponent = ({ style }: IRouteParams) => {
     addOrRemoveBall,
   } = UseLhcZT()
 
+  useEffect(()=>{
+    setLotteryCode(lotteryCode)
+  }, [])
+
   /**
-   * 绘制tab
+   * 绘制tab，只有1个数据不绘制Tab
    */
-  const renderTab = () => <View style={_styles.tab_title_container}>
+  const renderTab = () => arrayLength(dataZT) > 1 &&  <View style={_styles.tab_title_container}>
     <ScrollView style={_styles.sv_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
