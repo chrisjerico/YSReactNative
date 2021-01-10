@@ -66,7 +66,7 @@ const LotteryLineEBall = ({
         <View style={CommStyles.flex}/>
         {
           item?.zodiacData?.find((zodiac) => (zodiac?.name == item?.name
-            || zodiac?.alias == item?.alias))?.nums?.map((zodiacNumber) =>
+            || (!anyEmpty(item?.alias) && zodiac?.alias == item?.alias)))?.nums?.map((zodiacNumber) =>
             <LotteryEBall key={item?.id + zodiacNumber}
                           ballProps={ballProps}
                           containerStyle={{ width: null }}
@@ -112,9 +112,9 @@ const _styles = StyleSheet.create({
 interface ILotteryLineEBallItem {
   id: string; //708501
   name: string; //01
-  alias: string;//特码A"
-  code: string;//01
-  odds: string;//42.5500
+  alias?: string;//特码A"
+  code?: string;//01
+  odds?: string;//42.5500
   zodiacData: Array<ZodiacNum>
 }
 

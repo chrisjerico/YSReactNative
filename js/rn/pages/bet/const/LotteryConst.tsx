@@ -21,6 +21,7 @@ const LotteryConst = {
   LX: 'LX', //连肖
   HX: 'HX', //合肖
   LW: 'LW', //连尾
+  ZX: 'ZX', //正肖
 }
 
 /**

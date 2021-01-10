@@ -17,6 +17,7 @@ import LhcZTComponent from './lhc/zt/LhcZTComponent'
 import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
 import LhcSBComponent from './lhc/sb/LhcSBComponent'
 import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
+import LhcHXComponent from './lhc/hx/LhcHXComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -128,7 +129,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     //                   key={LotteryConst.TM}/>
     //   <LhcLMComponent style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
     //                   key={LotteryConst.LM}/>
-    //   <LhcPTYXComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
+    //   <LhcHXComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
     //                   key={LotteryConst.ZM}/>
     //   <LhcSBComponent style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
     //                      key={LotteryConst.ZM1_6}/>
@@ -137,34 +138,38 @@ const BetLotteryPage = ({ navigation, route }) => {
     // </View>
 
     switch (lotteryCode) {
-      case LotteryConst.TM: {
+      case LotteryConst.TM: { //特码
         return <LhcTMComponent key={lotteryCode}
                                lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.ZM:
-      case LotteryConst.ZT: {
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT: { //正特
         return <LhcZTComponent key={lotteryCode}
                                lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.LMA: {
+      case LotteryConst.LMA: { //连码
         return <LhcLMAComponent key={lotteryCode}
                                 lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.LM:
-      case LotteryConst.ZM1_6:
-      case LotteryConst.SB:
-      case LotteryConst.ZOX: {
+      case LotteryConst.LM: //两面
+      case LotteryConst.ZM1_6: //正码1T6
+      case LotteryConst.SB: //色波
+      case LotteryConst.ZOX: { //总肖
         return <LhcSBComponent key={lotteryCode}
                                lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.YX:
-      case LotteryConst.WS:
-      case LotteryConst.TWS:
-      case LotteryConst.TX:
-      case LotteryConst.LX:
-      case LotteryConst.HX:
-      case LotteryConst.LW: {
+      case LotteryConst.YX: //平特一肖
+      case LotteryConst.WS: //平特尾数
+      case LotteryConst.TWS: //头尾数
+      case LotteryConst.TX: //特肖
+      case LotteryConst.LX: //连肖
+      case LotteryConst.LW: //连尾
+      case LotteryConst.ZX: { //正肖
         return <LhcPTYXComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.HX: { //合肖
+        return <LhcHXComponent key={lotteryCode}
                                  lotteryCode={lotteryCode}/>
       }
 

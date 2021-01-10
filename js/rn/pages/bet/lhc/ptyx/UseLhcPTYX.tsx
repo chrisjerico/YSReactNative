@@ -54,6 +54,7 @@ const UseLhcPTYX = () => {
       switch (lotteryCode) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
+        case LotteryConst.ZX: //正肖
           setPageData([[null, ...playOddData?.playGroups]])
           break;
         case LotteryConst.WS://平特尾数
@@ -87,6 +88,7 @@ const UseLhcPTYX = () => {
       switch (lotteryCode) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
+        case LotteryConst.ZX: //正肖
           setZodiacData(curData[1]?.plays.map((item) =>
             playOddDetailData()?.setting?.zodiacNums?.find((zodiac) =>
               zodiac?.name == item?.name)))

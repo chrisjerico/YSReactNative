@@ -34,6 +34,7 @@ export interface PlayOddData {
 }
 
 export interface ZodiacNum {
+  id?: string//本地使用id
   key?: string; //"rat" metal
   name?: string; //"鼠" 金
   alias?: string; //本地使用别名
