@@ -138,7 +138,7 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
           <Text style={{ textAlign: 'center', color: 'white', fontSize: 17 }}>{inviteCode.displayWord}</Text>
         </LinearGradient>
         <View style={{ flexDirection: 'row', height: 50, marginTop: 15 }}>
-          <View style={{ width: 120, justifyContent: 'center', }}>
+          <View style={{ width:95, justifyContent: 'center', }}>
             <Text style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord + '类型'}</Text>
           </View>
           <View style={{ marginLeft: 20, flex: 1 }}>
@@ -161,7 +161,7 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
         </View>
 
         <View style={{ flexDirection: 'row', height: 50 }}>
-          <View style={{ width: 120, justifyContent: 'center', }}>
+          <View style={{ width:95, justifyContent: 'center', }}>
             <Text style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord}</Text>
           </View>
           <View style={{ marginLeft: 20, flex: 1, justifyContent: 'center' }}>
@@ -176,7 +176,7 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
         </View>
 
         <View style={{ flexDirection: 'row', height: 50 }}>
-          <View style={{ width: 120, justifyContent: 'center', }}>
+          <View style={{ width:95, justifyContent: 'center', }}>
             <Text style={{ textAlign: 'right', color: Skin1.textColor1 }}>{'生成数量'}</Text>
           </View>
           <View style={{ marginLeft: 20, flex: 1, justifyContent: 'center' }}>
@@ -191,7 +191,7 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
         </View>
 
         {noticeSwitch() && <View style={{ flexDirection: 'row', height: 70, marginTop: 20 }}>
-          <View style={{ width: 120, marginTop: 0 }}>
+          <View style={{ width:95, marginTop: 0 }}>
             <Text style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord + '说明'}</Text>
           </View>
           <View style={{ marginLeft: 20, flex: 1, marginTop: 0 }}>

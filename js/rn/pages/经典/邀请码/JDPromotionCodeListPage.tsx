@@ -50,7 +50,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
       pageTitle: '邀请码',
       titleArray: [inviteCode.displayWord, "招募类型", "创建时间", "注册会员",],
       items: [],
-      pageSize: 20,
+      pageSize: 10,
       pageNumber: 1,
       state: {
         showFoot: 0,
@@ -163,7 +163,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   function inviteCodeListData() {
 
     console.log('得到邀请码列表数据===', v.pageNumber);
-    api.team.inviteCodeList(1, v.pageSize).useSuccess(({ data }) => {
+    api.team.inviteCodeList(v.pageNumber, v.pageSize).useSuccess(({ data }) => {
 
       console.log('data =', data);
       let dicData = data;
@@ -195,8 +195,8 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         v.state.isLastPage = false;
         v.state.showFoot = 0
       }
-      // console.log('网络数据长度：', arrayData.length);
-      // console.log('showFoot==', v.state.showFoot);
+      console.log('网络数据长度：', arrayData.length);
+      console.log('showFoot==', v.state.showFoot);
 
       setProps()
 
@@ -230,7 +230,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
     if (v.state.showFoot === 0) {
       return (
         <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
-          // onEndReached()
+  
         }}
         >
           <View style={styles.foot}>
@@ -281,23 +281,23 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
     {
       return (
         <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, borderRightColor: Skin1.textColor3,borderRightWidth:1,height: scale(66),   alignItems: 'center' }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,  }}>
               {item.invite_code}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, borderRightColor: Skin1.textColor3,borderRightWidth:1 ,height: scale(66), alignItems: 'center' }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,  }}>
               {item.user_type_txt}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4,borderRightColor: Skin1.textColor3,borderRightWidth:1 ,height: scale(66), alignItems: 'center' }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,  }}>
               {item.created_time}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, height: scale(66),alignItems: 'center' }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.used_num}
             </Text>
           </View>
@@ -317,10 +317,10 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.textColor4 }}>
           {v.titleArray?.map((title, idx) => {
             return (
-              <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, }}
+              <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, borderRightColor: Skin1.textColor3,borderRightWidth:1,height: scale(66),   alignItems: 'center' }}
                 onPress={() => {
                 }}>
-                <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
+                <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,}}>
                   {title}
                 </Text>
               </TouchableOpacity>
