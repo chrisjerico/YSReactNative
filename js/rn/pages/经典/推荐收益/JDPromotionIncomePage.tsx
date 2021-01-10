@@ -126,7 +126,7 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
           arrayEmpty(v.tabNames)
             ? <EmptyView style={{ flex: 1 }} />
             : <ScrollableTabView
-              // key={'ScrollableTabView' + refreshCount}
+              key={'ScrollableTabView'}
               initialPage={tabIndex}//初始化时被选中的Tab下标，默认是0（即第一页）
               onChangeTab={value => {
                 ugLog('tab index=', value?.from, value?.i)
