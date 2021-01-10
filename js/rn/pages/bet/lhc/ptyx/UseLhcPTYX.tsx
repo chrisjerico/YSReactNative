@@ -24,6 +24,12 @@ import LotteryData from '../../const/LotteryData'
 const UseLhcPTYX = () => {
 
   const {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
     playOddData,
     setPlayOddData,
     lotteryCode,
@@ -36,15 +42,11 @@ const UseLhcPTYX = () => {
     addOrRemoveBall,
   } = UseLotteryHelper()
 
-  const [dataPTYX, setDataPTYX] = useState<Array<Array<PlayGroupData>>>(null) //当前正码数据列表
-  const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab
   const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //选中了生肖数据
 
-  const [curData, setCurData] = useState<Array<PlayGroupData>>(null) //当前选中的TAB数据
-
   useEffect(() => {
-    !anyEmpty(dataPTYX) && setCurData(dataPTYX[tabIndex])
-  }, [tabIndex, dataPTYX])
+    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
+  }, [tabIndex, pageData])
 
   useEffect(() => {
     //平特一肖 和 平特尾数 只有1个数组，头尾数有2个
@@ -52,20 +54,20 @@ const UseLhcPTYX = () => {
       switch (lotteryCode) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
-          setDataPTYX([[null, ...playOddData?.playGroups]])
+          setPageData([[null, ...playOddData?.playGroups]])
           break;
         case LotteryConst.WS://平特尾数
-          setDataPTYX([[null, ...playOddData?.playGroups]])
+          setPageData([[null, ...playOddData?.playGroups]])
           break;
         case LotteryConst.TWS://头尾数
-          setDataPTYX([playOddData?.playGroups])
+          setPageData([playOddData?.playGroups])
           break;
         case LotteryConst.LX: //连肖
-          setDataPTYX(playOddData?.playGroups?.map((item) => [null, item]))
+          setPageData(playOddData?.playGroups?.map((item) => [null, item]))
           break;
         case LotteryConst.LW: //连尾
           //连尾数据缺少一个 尾，补上
-          setDataPTYX(playOddData?.playGroups?.map((item) => [null, {
+          setPageData(playOddData?.playGroups?.map((item) => [null, {
             ...item,
             plays: item?.plays?.map((item) => ({
                 ...item,
@@ -134,12 +136,13 @@ const UseLhcPTYX = () => {
   }, [curData])
 
   return {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
-    dataPTYX,
-    setDataPTYX,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
     zodiacData,
     setZodiacData,
     selectedBalls,

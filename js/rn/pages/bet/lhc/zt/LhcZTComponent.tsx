@@ -55,13 +55,13 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
+    setLotteryCode,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,

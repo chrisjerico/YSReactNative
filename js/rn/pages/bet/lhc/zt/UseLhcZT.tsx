@@ -67,13 +67,13 @@ const UseLhcZT = () => {
   }, [playOddData])
 
   return {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
+    setLotteryCode,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,

@@ -53,12 +53,13 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
-    dataPTYX,
     curData,
-    setDataPTYX,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
     zodiacData,
     setZodiacData,
     selectedBalls,
@@ -74,13 +75,13 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制tab，只有1个数据不绘制Tab
    */
-  const renderTab = () => arrayLength(dataPTYX) > 1 &&  <View style={_styles.tab_title_container}>
+  const renderTab = () => arrayLength(pageData) > 1 &&  <View style={_styles.tab_title_container}>
     <ScrollView style={_styles.sv_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
       <View style={_styles.tab_title_content}>
         {
-          dataPTYX?.map((item, index) =>
+          pageData?.map((item, index) =>
             <TouchableOpacity key={item[1]?.alias}
                               style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>

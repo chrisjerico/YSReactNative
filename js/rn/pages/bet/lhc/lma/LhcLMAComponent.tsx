@@ -51,14 +51,14 @@ import { doc } from 'prettier'
 const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   const {
-    setLotteryCode,
-    ballArray,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
+    setLotteryCode,
+    ballArray,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
