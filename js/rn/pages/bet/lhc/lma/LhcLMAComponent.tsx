@@ -38,7 +38,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams, LHC_Tab } from '../../const/LotteryConst'
+import { ILotteryRouteParams } from '../../const/LotteryConst'
 import { doc } from 'prettier'
 
 

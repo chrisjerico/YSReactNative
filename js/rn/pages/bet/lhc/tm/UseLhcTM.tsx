@@ -1,20 +1,8 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import { RefreshControl } from 'react-native'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-  ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { useEffect, useState } from 'react'
+import { ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import APIRouter from '../../../../public/network/APIRouter'
-import { ugLog } from '../../../../public/tools/UgLog'
-import BetLotteryContext from '../../BetLotteryContext'
-import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
-import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 
 
 /**
@@ -24,6 +12,12 @@ import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 const UseLhcTM = () => {
 
   const {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
     playOddData,
     setPlayOddData,
     lotteryCode,
@@ -37,22 +31,24 @@ const UseLhcTM = () => {
     zodiacBallIds,
   } = UseLotteryHelper()
 
-  const [dataTMA, setDataTMA] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
-  const [dataTMB, setDataTMB] = useState<Array<PlayGroupData>>(null) //当前特码B数据列表
   const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //生肖数据列表
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
-
-  const [tabIndex, setTabIndex] = useState(LHC_Tab.TM_B) //当前选中哪个tab，TAB_A 和 TAB_B
 
   useEffect(() => {
     //特码取前3个数据 特码 两面 色波
     if (!anyEmpty(playOddData?.playGroups)) {
-      setDataTMA([playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]])
-      setDataTMB([playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]])
+      setPageData([
+        [playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]],
+        [playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]],
+      ])
       setZodiacData(playOddDetailData()?.setting?.zodiacNums)
 
     }
   }, [playOddData])
+
+  useEffect(() => {
+    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
+  }, [tabIndex, pageData])
 
   /**
    * 有选中的数据变化时，计算生肖的选中情况
@@ -60,7 +56,7 @@ const UseLhcTM = () => {
   useEffect(() => {
     let selArr = []
     zodiacData?.map((zodiac) => {
-      let data = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
+      let data = pageData[tabIndex]
       const zodiacIds = zodiacBallIds(zodiac, data[0])
 
       const intersection = selectedBalls?.filter((item) => zodiacIds.includes(item))
@@ -78,8 +74,7 @@ const UseLhcTM = () => {
    */
   const addOrRemoveZodiac = (item: ZodiacNum) => {
     //重组数字
-    // const checkMap = item.nums.map((item) => ('0' + item).slice(-2))
-    let data = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
+    let data = pageData[tabIndex]
     const zodiacIds = zodiacBallIds(item, data[0])
 
     if (selectedZodiac.includes(item)) {
@@ -91,13 +86,13 @@ const UseLhcTM = () => {
   }
 
   return {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
-    dataTMA,
-    setDataTMA,
-    dataTMB,
-    setDataTMB,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
     zodiacData,
     setZodiacData,
     selectedZodiac,

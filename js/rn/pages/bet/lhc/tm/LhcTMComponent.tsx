@@ -1,44 +1,17 @@
-import {
-  FlatList, Platform,
-  ScrollView, StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View, ViewStyle,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import Modal from 'react-native-modal'
-import { useContext, useEffect, useState } from 'react'
-import { BaseScreen } from '../../../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
+import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import { pop } from '../../../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
-import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcTM from './UseLhcTM'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
-import BetLotteryContext from '../../BetLotteryContext'
-import EBall from '../../../../public/components/view/lottery/EBall'
-import { arrayLength } from '../../../../public/tools/Ext'
-import ERect from '../../../../public/components/view/lottery/ERect'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams, LHC_Tab } from '../../const/LotteryConst'
+import { ILotteryRouteParams } from '../../const/LotteryConst'
 
 /**
  * 六合彩特码
@@ -52,13 +25,13 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
-    dataTMA,
-    setDataTMA,
-    dataTMB,
-    setDataTMB,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
     zodiacData,
     setZodiacData,
     selectedZodiac,
@@ -69,10 +42,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcTM()
 
-  //当前的数据是 特码A 还是 特码B
-  const ballData = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
-
-  useEffect(()=>{
+  useEffect(() => {
     setLotteryCode(lotteryCode)
   }, [])
 
@@ -88,11 +58,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
       <Text style={[
         _styles.tab_title,
         tabIndex == tab ? { color: 'white' } : null,
-      ]}>{
-        tab == LHC_Tab.TM_A ?
-          (dataTMA && dataTMA[0].alias) :
-          (dataTMB && dataTMB[0].alias)
-      }</Text>
+      ]}>{!anyEmpty(pageData) && pageData[tab][0].alias}</Text>
     </TouchableOpacity>
   </View>
 
@@ -100,8 +66,8 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 特码A 特码B 容器
    */
   const renderTab = () => <View style={_styles.tab_container}>
-    {renderTabItem(LHC_Tab.TM_B)}
-    {renderTabItem(LHC_Tab.TM_A)}
+    {renderTabItem(0)}
+    {renderTabItem(1)}
   </View>
 
   /**
@@ -216,9 +182,9 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <ScrollView style={CommStyles.flex}
                                           showsVerticalScrollIndicator={false}>
-    {arrayLength(ballData) > 0 && renderTM(ballData[0])}
-    {arrayLength(ballData) > 1 && renderLM(ballData[1])}
-    {arrayLength(ballData) > 2 && renderSB(ballData[2])}
+    {arrayLength(curData) > 0 && renderTM(curData[0])}
+    {arrayLength(curData) > 1 && renderLM(curData[1])}
+    {arrayLength(curData) > 2 && renderSB(curData[2])}
   </ScrollView>
 
   return (
