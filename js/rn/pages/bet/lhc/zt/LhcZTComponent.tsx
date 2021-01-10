@@ -130,7 +130,10 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
                                                          style={CommStyles.flex}>
 
     <View style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+      <Text style={[
+        _styles.sub_title_text,
+        { color: Skin1.themeColor },
+      ]}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>
@@ -142,14 +145,17 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   /**
-   * 绘制 连码B/A
+   * 绘制 正特
    * @param groupData
    */
   const renderZT2 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
                                                          style={CommStyles.flex}>
 
     <View style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+      <Text style={[
+        _styles.sub_title_text,
+        { color: Skin1.themeColor },
+      ]}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>

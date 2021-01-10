@@ -136,7 +136,10 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     <View key={groupData?.alias}
           style={_styles.sub_title_container}>
       <Text key={groupData?.alias}
-            style={_styles.sub_title_text}>{groupData?.alias}</Text>
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.rect_container}>
@@ -157,7 +160,10 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     <View key={groupData?.alias}
           style={_styles.sub_title_container}>
       <Text key={groupData?.alias}
-            style={_styles.sub_title_text}>{groupData?.alias}</Text>
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>

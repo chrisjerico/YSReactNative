@@ -62,7 +62,10 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
             <View key={groupData?.alias}
                   style={_styles.sub_title_container}>
-              <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+              <Text style={[
+                _styles.sub_title_text,
+                { color: Skin1.themeColor },
+              ]}>{groupData?.alias}</Text>
             </View>
 
             <View style={_styles.rect_container}>

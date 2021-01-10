@@ -128,7 +128,10 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     <View key={groupData?.alias}
           style={_styles.sub_title_container}>
       <Text key={groupData?.alias}
-            style={_styles.sub_title_text}>{groupData?.alias}</Text>
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>
@@ -140,7 +143,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   /**
-   * 绘制 连码B/A
+   * 绘制 连码
    * @param groupData
    */
   const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
@@ -148,7 +151,10 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
     <View key={groupData?.alias}
           style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+      <Text style={[
+        _styles.sub_title_text,
+        { color: Skin1.themeColor },
+      ]}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>
@@ -159,7 +165,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   </View>
 
   /**
-   * 绘制 色波B/A
+   * 绘制 色波
    * @param groupData
    */
   const renderSB = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
@@ -167,7 +173,10 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
     <View key={groupData?.alias}
           style={_styles.sub_title_container}>
-      <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+      <Text style={[
+        _styles.sub_title_text,
+        { color: Skin1.themeColor },
+      ]}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>
