@@ -14,7 +14,6 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
 import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
-import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 
 
 /**

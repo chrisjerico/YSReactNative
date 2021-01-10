@@ -38,7 +38,6 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { LHC_Tab } from '../../const/LotteryConst'
 
 interface ILotteryRouteParams {
   lotteryCode?: string, //当前的彩票CODE，正码、正特 等等

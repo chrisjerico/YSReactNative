@@ -154,7 +154,8 @@ const BetLotteryPage = ({ navigation, route }) => {
       case LotteryConst.LM: //两面
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
-      case LotteryConst.ZOX: { //总肖
+      case LotteryConst.ZOX://总肖
+      case LotteryConst.WX:{ //五行
         return <LhcSBComponent key={lotteryCode}
                                lotteryCode={lotteryCode}/>
       }

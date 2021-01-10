@@ -1,18 +1,9 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { RefreshControl } from 'react-native'
-import {
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-  ZodiacNum,
-} from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
-import APIRouter from '../../../public/network/APIRouter'
-import { ugLog } from '../../../public/tools/UgLog'
+import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../public/tools/Ext'
 import BetLotteryContext from '../BetLotteryContext'
-import ISelBall, { isSelectedBall, isSelectedBallOnId } from '../const/ISelBall'
-import { LHC_Tab } from '../const/LotteryConst'
+import { isSelectedBallOnId } from '../const/ISelBall'
 
 /**
  * 彩票公共处理类
