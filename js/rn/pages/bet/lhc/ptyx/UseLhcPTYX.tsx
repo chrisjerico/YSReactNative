@@ -53,7 +53,6 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //取出生肖数据，生成对应的数据
     if (!anyEmpty(playOddData?.playGroups)) {
-      ugLog('lotteryCode=',  lotteryCode)
       if (lotteryCode == LotteryConst.YX) { //平特一肖
         setZodiacData(playOddData?.playGroups[0]?.plays.map((item) =>
           playOddDetailData()?.setting?.zodiacNums?.find((zodiac) =>
