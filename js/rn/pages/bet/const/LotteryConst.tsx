@@ -1,4 +1,5 @@
 import { BallType } from '../../../public/components/view/LotteryBall'
+import { StyleProp, ViewStyle } from 'react-native'
 
 
 /**
@@ -30,5 +31,13 @@ const LHC_Tab = {
   TM_B: 1, //特码B
 }
 
+/**
+ * 彩票界面入参
+ */
+interface ILotteryRouteParams {
+  lotteryCode?: string, //当前的彩票CODE，正码, 正特, 平特一肖, 平特尾数 等等
+  style?: StyleProp<ViewStyle>
+}
+
 export default LotteryConst
-export { LHC_Tab }
+export { LHC_Tab, ILotteryRouteParams }

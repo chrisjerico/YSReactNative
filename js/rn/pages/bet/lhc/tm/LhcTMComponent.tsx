@@ -38,11 +38,7 @@ import { arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { LHC_Tab } from '../../const/LotteryConst'
-
-interface IRouteParams {
-  style?: StyleProp<ViewStyle>
-}
+import { ILotteryRouteParams, LHC_Tab } from '../../const/LotteryConst'
 
 /**
  * 六合彩特码
@@ -50,12 +46,13 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcTMComponent = ({ style }: IRouteParams) => {
+const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     dataTMA,
@@ -74,6 +71,10 @@ const LhcTMComponent = ({ style }: IRouteParams) => {
 
   //当前的数据是 特码A 还是 特码B
   const ballData = tabIndex == LHC_Tab.TM_A ? dataTMA : dataTMB
+
+  useEffect(()=>{
+    setLotteryCode(lotteryCode)
+  }, [])
 
   /**
    * 绘制 特码A 特码B Tab

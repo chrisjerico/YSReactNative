@@ -11,11 +11,7 @@ import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../widget/LotteryERect'
-
-interface IRouteParams {
-  lotteryCode?: string, //当前的彩票CODE，色波, 两面, 正码1-6, 总肖, 五行 等等
-  style?: StyleProp<ViewStyle>
-}
+import { ILotteryRouteParams } from '../../const/LotteryConst'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行
@@ -23,7 +19,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcSBComponent = ({ lotteryCode, style }: IRouteParams) => {
+const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)

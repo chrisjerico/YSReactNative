@@ -24,6 +24,10 @@ import LotteryData from '../../const/LotteryData'
 const UseLhcPTYX = () => {
 
   const {
+    playOddData,
+    setPlayOddData,
+    lotteryCode,
+    setLotteryCode,
     nextIssueData,
     playOddDetailData,
     curPlayOddData,
@@ -35,24 +39,12 @@ const UseLhcPTYX = () => {
   const [dataPTYX, setDataPTYX] = useState<Array<Array<PlayGroupData>>>(null) //当前正码数据列表
   const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab
   const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //选中了生肖数据
-  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
-  const [lotteryCode, setLotteryCode] = useState<string>(null) //当前的彩票CODE，是平特一肖 还是 平特尾数 等等
 
   const [curData, setCurData] = useState<Array<PlayGroupData>>(null) //当前选中的TAB数据
 
   useEffect(() => {
     !anyEmpty(dataPTYX) && setCurData(dataPTYX[tabIndex])
   }, [tabIndex, dataPTYX])
-
-  /**
-   * 找出当前彩种数据
-   */
-  useEffect(() => {
-    if (!anyEmpty(lotteryCode)) {
-      setPlayOddData(playOddDetailData()?.playOdds?.find(
-        (item) => item?.code == lotteryCode))
-    }
-  }, [lotteryCode, playOddDetailData()])
 
   useEffect(() => {
     //平特一肖 和 平特尾数 只有1个数组，头尾数有2个

@@ -39,11 +39,7 @@ import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
-
-interface IRouteParams {
-  lotteryCode?: string, //当前的彩票CODE，是平特一肖 还是 平特尾数 等等
-  style?: StyleProp<ViewStyle>
-}
+import { ILotteryRouteParams } from '../../const/LotteryConst'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
@@ -51,7 +47,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcPTYXComponent = ({ lotteryCode, style }: IRouteParams) => {
+const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)

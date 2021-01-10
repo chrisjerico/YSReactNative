@@ -138,7 +138,8 @@ const BetLotteryPage = ({ navigation, route }) => {
 
     switch (lotteryCode) {
       case LotteryConst.TM: {
-        return <LhcTMComponent key={lotteryCode}/>
+        return <LhcTMComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.ZM:
       case LotteryConst.ZT: {
@@ -146,7 +147,8 @@ const BetLotteryPage = ({ navigation, route }) => {
                                lotteryCode={lotteryCode}/>
       }
       case LotteryConst.LMA: {
-        return <LhcLMAComponent/>
+        return <LhcLMAComponent key={lotteryCode}
+                                lotteryCode={lotteryCode}/>
       }
       case LotteryConst.LM:
       case LotteryConst.ZM1_6:

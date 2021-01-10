@@ -38,12 +38,9 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { LHC_Tab } from '../../const/LotteryConst'
+import { ILotteryRouteParams, LHC_Tab } from '../../const/LotteryConst'
 import { doc } from 'prettier'
 
-interface IRouteParams {
-  style?: StyleProp<ViewStyle>
-}
 
 /**
  * 六合彩连码
@@ -51,10 +48,10 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcLMAComponent = ({ style }: IRouteParams) => {
-
+const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   const {
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -67,6 +64,10 @@ const LhcLMAComponent = ({ style }: IRouteParams) => {
     setSelectedBalls,
     addOrRemoveBall,
   } = UseLhcLMA()
+
+  useEffect(()=>{
+    setLotteryCode(lotteryCode)
+  }, [])
 
   /**
    * 绘制tab

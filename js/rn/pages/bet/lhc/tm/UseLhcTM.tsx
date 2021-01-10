@@ -24,6 +24,10 @@ import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 const UseLhcTM = () => {
 
   const {
+    playOddData,
+    setPlayOddData,
+    lotteryCode,
+    setLotteryCode,
     nextIssueData,
     playOddDetailData,
     curPlayOddData,
@@ -39,17 +43,6 @@ const UseLhcTM = () => {
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
 
   const [tabIndex, setTabIndex] = useState(LHC_Tab.TM_B) //当前选中哪个tab，TAB_A 和 TAB_B
-
-  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
-
-  /**
-   * 找出当前彩种数据
-   */
-  useEffect(() => {
-    setPlayOddData(playOddDetailData()?.playOdds?.find(
-      (item) => item?.code == LotteryConst.TM))
-  }, [playOddDetailData()])
-
 
   useEffect(() => {
     //特码取前3个数据 特码 两面 色波
@@ -98,6 +91,7 @@ const UseLhcTM = () => {
   }
 
   return {
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     dataTMA,

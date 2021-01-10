@@ -40,7 +40,7 @@ import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 import { LHC_Tab } from '../../const/LotteryConst'
 
-interface IRouteParams {
+interface ILotteryRouteParams {
   lotteryCode?: string, //当前的彩票CODE，正码、正特 等等
   style?: StyleProp<ViewStyle>
 }
@@ -51,7 +51,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({ lotteryCode, style }: IRouteParams) => {
+const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   const {
@@ -59,8 +59,9 @@ const LhcZTComponent = ({ lotteryCode, style }: IRouteParams) => {
     tabIndex,
     setTabIndex,
     curData,
-    dataZT,
-    setDataZT,
+    setCurData,
+    pageData,
+    setPageData,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
@@ -75,13 +76,13 @@ const LhcZTComponent = ({ lotteryCode, style }: IRouteParams) => {
   /**
    * 绘制tab，只有1个数据不绘制Tab
    */
-  const renderTab = () => arrayLength(dataZT) > 1 &&  <View style={_styles.tab_title_container}>
+  const renderTab = () => arrayLength(pageData) > 1 &&  <View style={_styles.tab_title_container}>
     <ScrollView style={_styles.sv_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
       <View style={_styles.tab_title_content}>
         {
-          dataZT?.map((item, index) =>
+          pageData?.map((item, index) =>
             <TouchableOpacity key={item[0]?.alias}
                               style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>
