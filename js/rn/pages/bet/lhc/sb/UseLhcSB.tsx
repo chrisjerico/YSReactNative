@@ -23,6 +23,12 @@ import LotteryConst from '../../const/LotteryConst'
 const UseLhcSB = () => {
 
   const {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
     playOddData,
     setPlayOddData,
     lotteryCode,
@@ -35,19 +41,22 @@ const UseLhcSB = () => {
     addOrRemoveBall,
   } = UseLotteryHelper()
 
-  const [dataSB, setDataSB] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
-
   useEffect(() => {
-    //ugLog('dataTMB 2 =', JSON.stringify(playOddData))
-    if (!anyEmpty(playOddData?.playGroups)) {
-      setDataSB(playOddData?.playGroups)
-    }
+    !anyEmpty(playOddData?.playGroups) && setPageData([playOddData?.playGroups])
   }, [playOddData])
 
+  useEffect(() => {
+    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
+  }, [tabIndex, pageData])
+
   return {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
     setLotteryCode,
-    dataSB,
-    setDataSB,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,

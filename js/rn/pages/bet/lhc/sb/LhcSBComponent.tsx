@@ -25,9 +25,13 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
     setLotteryCode,
-    dataSB,
-    setDataSB,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -52,7 +56,7 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderAllBall = () => <View>
     <ScrollView showsVerticalScrollIndicator={false}>
       {
-        dataSB?.map((groupData) => {
+        curData?.map((groupData) => {
           return <View key={groupData?.id + groupData?.alias}
                        style={CommStyles.flex}>
 
