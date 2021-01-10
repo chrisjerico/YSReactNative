@@ -48,9 +48,8 @@ const LCHomePage = ({ setProps }) => {
   const [noticeFormat, setNoticeFormat] = useState<{ label: string, value: string }[]>([])
   const [show, setShow] = useState(false)
   const [content, setContent] = useState('')
-  const { refresh, info, goTo } = useHomePage({})
+  const { refresh, info } = useHomePage({})
   const { loading, userInfo, sysInfo, homeInfo, refreshing, redBagLogo, isTest } = info
-  const { goToPromotionPage } = goTo
   const { showCoupon } = sysInfo
   const { homeGames, navs, rankLists, banners, onlineNum, redBag, notices, midBanners, goldenEggs, scratchs, roulette, bannersInterval, floatAds } = homeInfo
   const { rankingListSwitch, webName, midBannerTimer } = sysInfo
@@ -148,7 +147,7 @@ const LCHomePage = ({ setProps }) => {
             }}
           />
         )}
-        <HomeTabView homeGames={homeGames} goToPromotionPage={goToPromotionPage} />
+        <HomeTabView homeGames={homeGames} sysInfo={sysInfo} />
         {showCoupon && <>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 }}>
             <Icon style={{ paddingRight: 4 }} size={16} name={'gift'} />
