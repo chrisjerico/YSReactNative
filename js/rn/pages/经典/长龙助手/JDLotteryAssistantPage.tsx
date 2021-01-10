@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform, TextInput } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
@@ -23,14 +23,13 @@ import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 
 interface JDLotteryAssistantPage {
-  bottomH?:number,//底部的高度
+  bottomH?: number,//底部的高度
 }
 
 const JDLotteryAssistantPage = () => {
 
   let { current: v } = useRef<JDLotteryAssistantPage>(
     {
-      bottomH:66,
     }
   )
 
@@ -60,9 +59,9 @@ const JDLotteryAssistantPage = () => {
       navbarOpstions: {
         hidden: false, title: '我的投注', back: true
       },
-     
+
       didFocus: () => {
-        v.bottomH = 66;
+        v.bottomH = 60;
       }
     })
 
@@ -75,21 +74,41 @@ const JDLotteryAssistantPage = () => {
 
         {/* 底部 */}
         <View style={{
-           marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH,
-            justifyContent: 'center',
-             flexDirection: 'row', 
-             backgroundColor: '#333333', 
-             height: v.bottomH, }}>
-          <View style={{ height:v.bottomH, width: 80, backgroundColor: 'blue' }}>
-            <Text>
-              
+          marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH,
+          justifyContent: 'center',
+          flexDirection: 'row',
+          backgroundColor: '#333333',
+          height: v.bottomH,
+        }}>
+          <View style={{ height: v.bottomH, width: 80,  alignItems: 'center', justifyContent: 'center',borderRightWidth:1,borderRightColor:'white', }}>
+            <Text style={{ fontSize: 18, color: '#FF8C00' }}>
+              {'清空'}
             </Text>
           </View>
-          <View style={{ height:v.bottomH, flex:1, backgroundColor: 'yellow', }}>
+          <View style={{ height: v.bottomH, flex: 1,  flexDirection: 'row',alignItems: 'center',  }}>
+            <Text style={{ fontSize: 16, color: 'white',marginRight:2 ,marginLeft:10}}>
+              {'共'}
+            </Text>
+            <Text style={{ fontSize: 18, color: '#DC143C' }}>
+              {'0'}
+            </Text>
+            <Text style={{ fontSize: 16, color: 'white' ,marginHorizontal:2}}>
+              {'注'}
+            </Text>
+            <View style={{ flex:1}}></View>
+            <TextInput style={{ height: 30,width:140, backgroundColor: Skin1.textColor4, marginRight: 10, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
+              placeholder={'   投注金额'}
+              placeholderTextColor={Skin1.textColor3}
+              onChangeText={(text) => {
+          
+              }}
+            ></TextInput>
 
           </View>
-          <View style={{ height:v.bottomH, width: 100, backgroundColor: 'red' }}>
-
+          <View style={{ height: v.bottomH, width: 100, backgroundColor: '#1E90FF', alignItems: 'center', justifyContent: 'center', }}>
+            <Text style={{ fontSize: 18, color: 'white' }}>
+              {'马上投注'}
+            </Text>
           </View>
         </View>
       </View>
