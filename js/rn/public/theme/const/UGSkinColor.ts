@@ -1,7 +1,6 @@
 import { UGSkinStyle } from './UGSkinStyle';
-import { skin1, Skin1 } from '../UGSkinManagers';
-import { st, UGSkinType, UGSkinType1 } from './UGSkinConf';
-
+import UGSkinManagers, { skin1, Skin1 } from '../UGSkinManagers';
+import { convertToSkinType, st } from './UGSkinConf';
 export interface UGSkinColor<Color, Colors> {
   // 根据主题色自动生成色值
   themeColor?: Color // 主题色
@@ -167,6 +166,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     经典17金黄: ['#FECC0A', '#FE9C08'],
     经典18天空灰: ['#B3B3B3', '#B3B3B3'],
     经典19忧郁蓝: ['#00B2FF', '#005ED6'],
+    经典21黑: ['#0D0D0D', '#0D0D0D'],
     金星黑: ['#000000', '#000000'],
     凯时: ['gray', 'gray'],
     乐橙: ['#f4f4f4', '#f4f4f4'],
@@ -211,6 +211,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     经典17金黄: ['#FFAF06', '#FFAF06'],
     经典18天空灰: ['#C1C1C1', '#C1C1C1'],
     经典19忧郁蓝: ['#4CABFA', '#4CABFA'],
+    经典21黑: ['#101010', '#101010'],
     金星黑: ['#2C2E36', '#2C2E36'],
     简约0蓝: ['#4463A5', '#4463A5'],
     简约1红: ['#fb8787', '#e45353'],
@@ -260,6 +261,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     经典17金黄: '#FFE066',
     经典18天空灰: '#D9D9D9',
     经典19忧郁蓝: '#8CB9F4',
+    经典21黑: '#313131',
     金星黑: '#2C2E36',
     简约0蓝: '#F4F4F4',
     简约1红: '#F4F4F4',
@@ -290,6 +292,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     宝石红: '#9D9D9D',
     黑金: '#9D9D9D',
     经典1蓝: '#525252',
+    经典21黑: '#999999',
     金星黑: '#FFFFFF',
     简约0蓝: '#525252',
     简约1红: '#525252',
@@ -324,6 +327,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     白曜: '#000000',
     宝石红: '#e53333',
     经典1蓝: '#010101',
+    经典21黑: '#FFFFFF',
     金星黑: '#F1B709',
     简约0蓝: '#010101',
     简约1红: '#010101',
@@ -372,6 +376,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     经典17金黄: '#FFE066',
     经典18天空灰: '#D9D9D9',
     经典19忧郁蓝: '#8CB9F4',
+    经典21黑: '#181818',
     金星黑: '#444',
     凯时: '#444',
     GPK0黑: '#181818',
@@ -380,7 +385,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
   },
 
   // 我的页进度条背景渐变色
-  progressBgColor: new UGSkinType({
+  progressBgColor: {
     默认: ['#d80000', '#fb5959'],
     白曜: ['#fff', '#fff'],
     金星黑: ['#FEC434', '#FE8A23'],
@@ -394,7 +399,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     香槟金1黑: ['#FEC434', '#FE8A23'],
     新年红: ['#FEC434', '#FE8A23'],
     尊龙: ['#FEC434', '#FE8A23'],
-  }),
+  },
 
   // 侧边栏顶部背景渐变色
   menuHeadViewColor: {
@@ -420,6 +425,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     经典17金黄: ['#ffc344', '#ffe1a2'],
     经典18天空灰: ['#c1c1c1', '#ececec'],
     经典19忧郁蓝: ['#4ba2fa', '#64d0ef'],
+    经典21黑: ['#323232', '#323232'],
     金星黑: ['#000000', '#000000'],
     简约0蓝: ['#fa7dc5', '#f5c3e0'],
     简约1红: ['#fa7dc5', '#f5c3e0'],
@@ -470,6 +476,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     经典17金黄: '#ffe280',
     经典18天空灰: '#e0e0e0',
     经典19忧郁蓝: '#a1ccff',
+    经典21黑: '#606060',
     金星黑: '#444444',
     凯时: '#444',
     乐橙: '#f3f3f3',
@@ -510,6 +517,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     经典17金黄: '#F4D36C',
     经典18天空灰: '#c1c1c1',
     经典19忧郁蓝: '#49CEFC',
+    经典21黑: '#757575',
     金星黑: '#000000',
     简约0蓝: '#D3D3D3',
     简约1红: '#D3D3D3',
@@ -539,6 +547,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     GPK0黑: '#202122',
     香槟金1黑: '#202122',
     尊龙: '#202122',
+    经典21黑: '#202122',
   },
 
   // 字颜色 黑色
@@ -549,7 +558,8 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     乐FUN: '#333333',
     GPK0黑: '#FEFEFE',
     香槟金1黑: '#FEFEFE',
-    尊龙: '#FEFEFE'
+    尊龙: '#FEFEFE',
+    经典21黑: '#FEFEFE',
   },
 
   // 占位字颜色 深灰色
@@ -564,6 +574,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     GPK0黑: '#C1C1C1',
     香槟金1黑: '#C1C1C1',
     尊龙: '#C1C1C1',
+    经典21黑: '#C1C1C1',
   },
 
   // 占位字颜色 淡灰色
@@ -575,6 +586,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     香槟金1黑: '#555555',
     尊龙: '#555555',
     乐FUN: '#C1C1C1',
+    经典21黑: '#555555',
   },
 
   // 反差字体 白色
@@ -585,6 +597,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     GPK0黑: '#000000',
     香槟金1黑: '#000000',
     尊龙: '#000000',
+    经典21黑: '#000000',
   },
 
   // 内容Cell
@@ -600,6 +613,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     六合厅: '#444',
     利来: '#444',
     威尼斯: '#444',
+    经典21黑: '#444',
   },
 
   // 转入View

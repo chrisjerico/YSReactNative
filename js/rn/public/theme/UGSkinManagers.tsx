@@ -4,11 +4,12 @@ import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import AppDefine from '../define/AppDefine'
 import { skinColors, UGSkinColor } from './const/UGSkinColor'
 import { skinStyles, UGSkinStyle } from './const/UGSkinStyle'
-import { skinConfig, st, UGSkinConf, UGSkinType1 } from './const/UGSkinConf'
+import { skinConfig, st, UGSkinConf, UGSkinType, UGSkinType1 } from './const/UGSkinConf'
 import { updateOcSkin } from './OCSkinManager'
 import { ViewStyle, TextStyle, ImageStyle } from 'react-native'
 
 export default class UGSkinManagers {
+  static once = false
 
   // 更新皮肤
   static async updateSkin(sysConf: UGSysConfModel) {
@@ -24,7 +25,7 @@ export default class UGSkinManagers {
     // 这里必须写两遍（因为第一遍时 getter 取的 skin1 值是空的）
     skin1 = Skin1 = this.getSkinValue(skinType)
     skin1 = Skin1 = this.getSkinValue(skinType)
-    console.log('rnSkinColor = ', skin1);
+    // console.log('rnSkinColor = ', skin1);
     console.log('当前为皮肤：' + skinType)
     await updateOcSkin()
   }
@@ -79,9 +80,34 @@ export default class UGSkinManagers {
     skin.bgTextColor = chroma(skin.bgColor[0]).luminance() > 0.5 ? '#999' : 'white'
     return skin
   }
+
+  static convertToSkinType(data) {
+    function convert(target) {
+      for (const k1 in target) {
+        const obj: st<any> = target[k1]
+        if (Object.keys(obj).filter((k2) => k2 == UGSkinType1.默认)?.length) {
+          target[k1] = new UGSkinType(obj)
+        } else {
+          convert(obj)
+        }
+      }
+    }
+    convert(data)
+  }
 }
 
+
+// 当前皮肤信息
 type UGCurrentSkinValue = UGSkinColor<string, string[]> & UGSkinConf<string, number, boolean> & UGSkinStyle<ViewStyle | TextStyle | ImageStyle>
 const tmp: any = {}
 export let skin1: UGCurrentSkinValue = tmp
 export let Skin1 = skin1
+
+
+// 初始化所有皮肤的配置信息
+if (!UGSkinManagers.once) {
+  UGSkinManagers.once = true
+  UGSkinManagers.convertToSkinType(skinConfig)
+  UGSkinManagers.convertToSkinType(skinColors)
+  UGSkinManagers.convertToSkinType(skinStyles)
+}

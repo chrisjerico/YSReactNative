@@ -1,3 +1,4 @@
+import { skin1 } from './../UGSkinManagers';
 // 所有模板
 export class UGSkinType<T> {
   默认: T = null
@@ -74,7 +75,7 @@ export class UGSkinType<T> {
   //必须要 = null 或 = undefined（才能获取到key名，也就是模板名）
   constructor(props?: UGSkinType<T>) {
     if (!props) return this
-    
+
     for (const k in props) {
       this[k] = props[k]
     }
@@ -189,7 +190,7 @@ export const skinConfig: UGSkinConf<st<string>, st<number>, st<boolean>> = {
     经典18天空灰: 18,
     经典19忧郁蓝: 19,
     经典20科技绿: 20,
-    经典21黑: 21,
+    经典21黑: 23,
     经典22白: 22,
   },
   mobileTemplateStyle: {
@@ -218,5 +219,3 @@ export const skinConfig: UGSkinConf<st<string>, st<number>, st<boolean>> = {
   },
   is23: { 默认: false },
 }
-
-
