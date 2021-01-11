@@ -8,6 +8,7 @@ import UseLhcBoard from './UseLhcBoard'
 import { IBetBoardParams } from '../const/LotteryConst'
 import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
+import CommStyles from '../../base/CommStyles'
 
 
 /**
@@ -19,6 +20,8 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers'
 const BetBoardComponent = ({ style }: IBetBoardParams) => {
 
   const {
+    showSlider,
+    setShowSlider,
     sliderValue,
     setSliderValue,
     inputMoney,
@@ -34,32 +37,39 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
   /**
    * 绘制退水
    */
-  const renderSliderArea = () => <View style={_styles.slider_container}>
+  const renderSliderArea = () => showSlider ?
+    <View style={_styles.slider_container}>
 
-    <Icon size={scale(28)}
-          onPress={() => {
-          }}
-          color={'white'}
-          name={'chevron-down'}/>
+      <Icon size={scale(28)}
+            onPress={() => {setShowSlider(!showSlider)}}
+            color={'white'}
+            name={'chevron-down'}/>
 
-    <Text style={_styles.sub_title_text}>{'退水: 0%'}</Text>
+      <Text style={_styles.sub_title_text}>{'退水: 0%'}</Text>
 
-    <Icon size={scale(36)}
-          color={'white'}
-          name={'plus-circle'}/>
+      <Icon size={scale(36)}
+            color={'white'}
+            name={'plus-circle'}/>
 
-    <Slider
-      style={_styles.slider}
-      minimumValue={0}
-      maximumValue={100}
-      minimumTrackTintColor={Skin1.themeColor}
-      thumbTintColor={Skin1.themeColor}
-      maximumTrackTintColor={UGColor.LineColor4}/>
+      <Slider
+        style={_styles.slider}
+        minimumValue={0}
+        maximumValue={100}
+        minimumTrackTintColor={Skin1.themeColor}
+        thumbTintColor={Skin1.themeColor}
+        maximumTrackTintColor={UGColor.LineColor4}/>
 
-    <Icon size={scale(36)}
-          color={'white'}
-          name={'minus-circle'}/>
-  </View>
+      <Icon size={scale(36)}
+            color={'white'}
+            name={'minus-circle'}/>
+    </View> :
+    <View>
+      <Icon size={scale(28)}
+            style={_styles.slider_button}
+            onPress={() => {setShowSlider(!showSlider)}}
+            color={Skin1.themeColor}
+            name={'chevron-up'}/>
+    </View>
 
   /**
    * 绘制输入功能区
@@ -74,8 +84,9 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
     <View style={_styles.middle_container}>
       <View style={_styles.bet_info}>
         <Text style={_styles.lottery_count_hint}>已选中</Text>
-        <Text style={_styles.lottery_count_hint}>0</Text>
+        <Text style={_styles.lottery_count_count}>0</Text>
         <Text style={_styles.lottery_count_hint}>注</Text>
+        <View style={CommStyles.flex}/>
         <Text style={_styles.lottery_count_chip}>筹码</Text>
       </View>
       <TextInput style={_styles.input_text}
@@ -91,7 +102,7 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
 
 
   return (
-    <View style={style}>
+    <View style={[_styles.bet_container, style]}>
       {renderSliderArea()}
       {renderInputArea()}
     </View>
@@ -100,13 +111,21 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
 }
 
 const _styles = StyleSheet.create({
+  bet_container: {
+    position: 'absolute',
+    width: '100%',
+  },
   slider_container: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: UGColor.BackgroundColor5,
-    padding: scale(12),
+    paddingHorizontal: scale(12),
     borderTopLeftRadius: scale(16),
     borderTopRightRadius: scale(16),
+  },
+  slider_button: {
+    paddingHorizontal: scale(12),
+    paddingVertical: scale(12),
   },
   sub_title_text: {
     flex: 1,
@@ -173,18 +192,26 @@ const _styles = StyleSheet.create({
   },
   middle_container: {
     paddingHorizontal: scale(8),
+    flex: 1,
   },
   lottery_count_hint: {
     color: 'white',
     fontSize: scale(24),
-    paddingHorizontal: scale(16),
     textAlign: 'right',
+  },
+  lottery_count_count: {
+    color: UGColor.YellowColor3,
+    fontSize: scale(24),
+    textAlign: 'right',
+    paddingHorizontal: scale(4),
   },
   lottery_count_chip: {
     color: 'white',
     fontSize: scale(24),
-    backgroundColor: UGColor.GreenColor5,
-    borderRadius: scale(4)
+    backgroundColor: UGColor.SuccessColor1,
+    borderRadius: scale(4),
+    paddingHorizontal: scale(16),
+    paddingVertical: scale(2),
 
   },
   lottery_count_number: {
@@ -194,10 +221,12 @@ const _styles = StyleSheet.create({
     textAlign: 'right',
   },
   input_text: {
-    fontSize: scale(24),
+    fontSize: scale(26),
     backgroundColor: 'white',
     color: UGColor.TextColor2,
-    borderRadius: scale(12),
+    borderRadius: scale(4),
+    height: scale(48),
+    paddingVertical: 0,
   },
   bet_again: {
     fontSize: scale(24),
@@ -205,25 +234,35 @@ const _styles = StyleSheet.create({
     color: 'white',
     borderRadius: scale(4),
     width: scale(88),
-    paddingVertical: scale(6),
-    marginVertical: scale(4),
+    paddingVertical: scale(4),
+    marginVertical: scale(2),
     textAlign: 'center',
   },
   start_bet: {
     fontSize: scale(24),
-    backgroundColor: 'white',
-    color: UGColor.TextColor2,
-    borderRadius: scale(12),
+    backgroundColor: UGColor.RedColor6,
+    color: 'white',
+    borderRadius: scale(4),
+    height: scale(88),
+    textAlign: 'center',
+    paddingHorizontal: scale(16),
+    textAlignVertical: 'center',
   },
   start_reset: {
-    fontSize: scale(24),
-    backgroundColor: 'white',
-    color: UGColor.TextColor2,
-    borderRadius: scale(12),
+    fontSize: scale(22),
+    backgroundColor: UGColor.BlueColor7,
+    color: 'white',
+    borderRadius: scale(4),
+    height: scale(88),
+    textAlign: 'center',
+    paddingHorizontal: scale(12),
+    marginLeft: scale(8),
+    textAlignVertical: 'center',
   },
   bet_info: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: scale(2),
   },
 
 

@@ -55,28 +55,30 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View>
     <ScrollView showsVerticalScrollIndicator={false}>
-      {
-        curData?.map((groupData) => {
-          return <View key={groupData?.id + groupData?.alias}
-                       style={CommStyles.flex}>
+      <View style={_styles.content_container}>
+        {
+          curData?.map((groupData) => {
+            return <View key={groupData?.id + groupData?.alias}
+                         style={CommStyles.flex}>
 
-            <View key={groupData?.alias}
-                  style={_styles.sub_title_container}>
-              <Text style={[
-                _styles.sub_title_text,
-                { color: Skin1.themeColor },
-              ]}>{groupData?.alias}</Text>
+              <View key={groupData?.alias}
+                    style={_styles.sub_title_container}>
+                <Text style={[
+                  _styles.sub_title_text,
+                  { color: Skin1.themeColor },
+                ]}>{groupData?.alias}</Text>
+              </View>
+
+              <View style={_styles.rect_container}>
+                {
+                  groupData?.plays?.map((item) => renderERect(item))
+                }
+              </View>
+
             </View>
-
-            <View style={_styles.rect_container}>
-              {
-                groupData?.plays?.map((item) => renderERect(item))
-              }
-            </View>
-
-          </View>
-        })
-      }
+          })
+        }
+      </View>
     </ScrollView>
   </View>
 
@@ -89,6 +91,10 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 }
 
 const _styles = StyleSheet.create({
+  content_container: {
+    paddingBottom: scale(200),
+    flex: 1,
+  },
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
