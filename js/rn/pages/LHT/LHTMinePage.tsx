@@ -7,7 +7,7 @@ import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
-import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
@@ -32,7 +32,7 @@ const LHTMinePage = () => {
   const { signOut } = sign
   return (
     <>
-      <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
+      <SafeAreaHeader headerColor={skinColors.themeColor.六合厅}>
         <BackBtnComponent homePage={PageName.LHTMinePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} onPressRightTitle={goToUserCenterType.在线客服} />} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={() => {}} />} showsVerticalScrollIndicator={false}>
@@ -86,7 +86,7 @@ const LHTMinePage = () => {
       </ScrollView>
       <PickAvatarComponent
         ref={pickAvatarComponentRef}
-        color={LHThemeColor.六合厅.themeColor}
+        color={skinColors.themeColor.六合厅}
         initAvatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
         onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
