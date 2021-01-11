@@ -222,6 +222,7 @@ const WNZHomePage = () => {
                   circleContainerStyle = {{ width: '85%'}}
                   circleColor={'transparent'}
                   onPress={() => {
+                    ugLog("TEST onPRess")
                     if (AppDefine.siteId == 'c245') {
                       if (gameId == 'tryPlay') {
                         tryPlay()
@@ -357,7 +358,13 @@ const WNZHomePage = () => {
                     if (onPress) {
                       onPress()
                     } else {
-                      PushHelper.pushHomeGame(item)
+                      ugLog('GameType item=', JSON.stringify(item))
+                      const { subId } = item
+                      if (subId == GameType.游戏大厅) {  //游戏大厅
+                        push(PageName.GameLobbyPage, { showBackButton: true })
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
                     }
                   }
                 }}

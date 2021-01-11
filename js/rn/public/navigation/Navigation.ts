@@ -86,7 +86,8 @@ export enum PageName {
   LEFMinePage = 'LEFMinePage',
   LEFSignInPage = 'LEFSignInPage',
   LEFSignUpPage = 'LEFSignUpPage',
-
+  
+  GameLobbyPage = 'GameLobbyPage',
   GameHallPage = 'GameHallPage',
   FreedomHallPage = 'FreedomHallPage',
 
