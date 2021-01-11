@@ -68,19 +68,13 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
     setProps({
       navbarOpstions: { hidden: false, title: '申请代理', back: true },
       didFocus: (params) => {
-        // setAgentApplyInfo(params)
-        console.log('ppppp', params);
-
         let dic = params;
         // console.log("输出最初的字典元素: "+agentApplyInfo); 
         for (var key in dic) {
-          console.log("key: " + key + " ,value: " + dic[key]);
+          // console.log("key: " + key + " ,value: " + dic[key]);
           if (key == 'item') {
             let itemDic = dic[key];
             setAgentApplyInfo(JSON.parse(JSON.stringify(itemDic)))
-            for (var key in itemDic) {
-              console.log("key: " + key + " ,value: " + itemDic[key]);
-            }
             setProps()
           }
         }

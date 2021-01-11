@@ -34,6 +34,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
 
   useEffect(() => {
     let list: UGNextIssueModel[]
+
     async function findCurrentGame() {
       if (!list) {
         APIRouter.game_lotteryGames().then(async ({ data: res }) => {
@@ -54,7 +55,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
         const gameId: string = await OCHelper.call('UGNavigationController.current.viewControllers.objectAtIndex:.gameId', [cnt - 2])
         // 查看当前下注游戏的走势图
         const ret = list.filter((v) => {
-          if (v.id == gameId) return v;
+          if (v.id == gameId) return v
         })
         if (ret?.length) {
           setCurrentGame(ret[0])
@@ -63,6 +64,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
       }
       setCurrentGame(list[0])
     }
+
     findCurrentGame()
     setProps({ didFocus: findCurrentGame }, false)
   }, [])
@@ -221,18 +223,17 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                       return i == 0 ? (
                         <Text
                           key={`${index}-${i}`}
-                          style={[
-                            {
-                              backgroundColor: '#c2adac',
-                              borderWidth: 0.5,
-                              borderColor: '#ccc',
-                              color: '#ffffff',
-                              paddingVertical: 8,
-                              width: GRID_LEFT_HEADER_WIDTH,
-                              textAlign: 'center',
-                            },
-                            Platform.OS == 'ios' ? {} : { height: GRID_ITEM_HEIGHT },
-                          ]}>
+                          style={{
+                            backgroundColor: '#c2adac',
+                            borderWidth: 0.5,
+                            borderColor: '#ccc',
+                            color: '#ffffff',
+                            paddingVertical: 8,
+                            width: GRID_LEFT_HEADER_WIDTH,
+                            textAlign: 'center',
+                            height: GRID_ITEM_HEIGHT,
+                          }}
+                        >
                           {data}
                         </Text>
                       ) : (
@@ -426,15 +427,16 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
             {trendData?.positionArr && trendData?.positionArr?.length > 0 && (
               <Svg height={'100%'} width={'100%'} style={{ position: 'absolute', flex: 1 }}>
                 {trendData?.positionArr.map((item, index) => {
-                  return index != 0 && <Line key={index} x1={item.x} y1={item.y} x2={trendData?.positionArr[index - 1].x}
-                                             y2={trendData?.positionArr[index - 1].y} stroke="#409fdc" strokeWidth="1" />
+                  return index != 0 &&
+                    <Line key={index} x1={item.x} y1={item.y} x2={trendData?.positionArr[index - 1].x}
+                          y2={trendData?.positionArr[index - 1].y} stroke="#409fdc" strokeWidth="1" />
                 })}
               </Svg>
             )}
           </ScrollView>
         </ScrollView> :
-        <View style={{flex:1, backgroundColor: "#f3f3f3", justifyContent: 'center'}}>
-          <Text style={{alignSelf: 'center', color: "#cccccc", fontSize: 18}}>此彩种暂无走势资料</Text>
+        <View style={{ flex: 1, backgroundColor: '#f3f3f3', justifyContent: 'center' }}>
+          <Text style={{ alignSelf: 'center', color: '#cccccc', fontSize: 18 }}>此彩种暂无走势资料</Text>
         </View>}
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity style={{ backgroundColor: '#d7213a', height: 44, width: 160, justifyContent: 'center' }}
@@ -461,7 +463,8 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
               alignItems: 'center',
             }}
             onPress={() => getData()}>
-            <Image style={{ width: 20, height: 20 }} source={{ uri: httpClient.defaults.baseURL + '/images/kj_refresh.png' }} />
+            <Image style={{ width: 20, height: 20 }}
+                   source={{ uri: httpClient.defaults.baseURL + '/images/kj_refresh.png' }} />
           </TouchableOpacity>
           <TouchableOpacity
             style={{

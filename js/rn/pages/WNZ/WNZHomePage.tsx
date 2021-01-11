@@ -212,16 +212,17 @@ const WNZHomePage = () => {
                     justifyContent: 'center',
                   }}
                   imageContainerStyle={{
-                    width: '100%',
+                    width: '80%',
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
-                    fontSize: scale(20),
+                    fontSize: scale(19),
                   }}
                   circleContainerStyle = {{ width: '85%'}}
                   circleColor={'transparent'}
                   onPress={() => {
+                    ugLog("TEST onPRess")
                     if (AppDefine.siteId == 'c245') {
                       if (gameId == 'tryPlay') {
                         tryPlay()

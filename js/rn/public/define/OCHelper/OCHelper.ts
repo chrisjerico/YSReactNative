@@ -38,6 +38,8 @@ export class OCHelper extends OCEvent {
       const appVersion = await OCHelper.call('AppDefine.shared.Version')
       AppDefine.host = host
       httpClient.defaults.baseURL = host
+      console.log('AppDefine.siteId =', siteId);
+      
       AppDefine.siteId = siteId
 
       // 配置iOS的域名

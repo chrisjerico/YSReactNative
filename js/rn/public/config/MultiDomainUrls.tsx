@@ -175,11 +175,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://papghawshugposwaughwsoohu.com',
   ],
   'c085': [
-    'https://abaidu.ya1237888.cc',
-    'https://brer.ya1237888.cc',
-    'https://cgd.ya1237888.cc',
-    'https://dygf.ya1237888.cc',
-    'https://eyfhppdj.ya1237888.cc',
+    'https://www.ya1237888.cc',
+    'https://www.ya2238888.cc',
+    'https://www.ya3388888.cc',
+    'https://www.ya442778111.cc',
+    'https://www.ya557887.cc',
   ],
   'c085yw': [
     'https://x558.cc',
@@ -188,11 +188,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://83f9.com',
   ],
   'c092': [
-    'https://2013asd-555.com',
-    'https://2013tgb-555.com',
-    'https://2013qwe-555.com',
     'https://2013qaz-555.com',
     'https://2013wsx-555.com',
+    'https://2013yhn-555.com',
+    'https://2013jkl-555.com',
+    'https://2013egm-555.com',
   ],
   'c105b': [
     'https://390qp8.com',
@@ -233,10 +233,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'https://jz8444.com',
-    'https://jz5444.com',
-    'https://jz7444.com',
-    'https://jz6444.com',
+    'https://jz0222.com',
+    'https://jz0444.com',
+    'https://jz1444.com',
+    'https://jz2444.com',
+    'https://jz2111.com',
   ],
   'c126b': [
     'https://bc44698.com',
@@ -343,10 +344,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://appxpj2.me',
-    'https://450-c213-app.cc',
-    'https://450-c213-app.co',
-    'https://450-c213-app.com',
+    'https://450-xpj-app.com',
+    'https://450-xpj-app.live',
+    'https://450-xpj-app.me',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',

@@ -15,9 +15,10 @@ import { hideLoading, showLoading } from '../../../../../../public/widget/UGLoad
  */
 const UseBtcPay = () => {
 
-  const moneyOption = ['1', '10', '50', '100', '500', '1000', '5000', '10000', '50000', '100000'] //金额选项
-
+  const [moneyOption, setMoneyOption] = useState<Array<string>>(null) //输入金额
   const [payData, setPayData] = useState<PayAisleListData>(null) //存款数据对象
+  const [payBigData, setPayBigData] = useState<PayAisleData>(null) //总数据
+
   const [inputMoney, setInputMoney] = useState(null) //输入金额
   const [btcMoney, setBtcMoney] = useState(0) //btc金额
   const [newRate, setNewRate] = useState(1) //新计算的汇率
@@ -30,6 +31,15 @@ const UseBtcPay = () => {
       setInputMoney(null)
       setBtcMoney(0)
       rateMoney(Number(payData?.channel[selPayChannel]?.currencyRate))
+
+      let curChannel = payData?.channel[selPayChannel]
+      setMoneyOption(payBigData?.quickAmount)
+      if(!anyEmpty(curChannel?.para?.fixedAmount)) {
+        const moneyOp = curChannel?.para?.fixedAmount?.split(' ')
+        if (!anyEmpty(moneyOp)) {
+          setMoneyOption(moneyOp)
+        }
+      }
 
       //再调用一次实时汇率
       APIRouter.system_currencyRate({
@@ -111,6 +121,8 @@ const UseBtcPay = () => {
     setSelPayChannel,
     payData,
     setPayData,
+    payBigData,
+    setPayBigData,
     requestPayData,
   }
 }

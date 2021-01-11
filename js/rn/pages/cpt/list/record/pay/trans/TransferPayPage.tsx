@@ -35,6 +35,7 @@ import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { CapitalConst, TransferConst } from '../../../../const/CapitalConst'
 import CapitalContext from '../../../CapitalContext'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
+import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据
@@ -54,6 +55,8 @@ const TransferPayPage = ({ navigation, route }) => {
   const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
+    setPayData,
+    setPayBigData,
     moneyOption,
     inputMoney,
     setInputMoney,
@@ -66,6 +69,11 @@ const TransferPayPage = ({ navigation, route }) => {
     transName,
     requestPayData,
   } = UseTransferPay()
+
+  useEffect(()=>{
+    setPayBigData(payBigData)
+    setPayData(payData)
+  }, [])
 
   useEffect(()=>{
     if (!anyEmpty(goPage)) {
@@ -87,7 +95,7 @@ const TransferPayPage = ({ navigation, route }) => {
    */
   const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
-      moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
+      !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
           <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>
@@ -105,6 +113,9 @@ const TransferPayPage = ({ navigation, route }) => {
       switch (Platform.OS) {
         case 'ios':
           //TODO iOS 复制 title 到粘贴板
+          OCHelper.call('UIPasteboard.generalPasteboard.setString:', [copyText]).then(() => {
+              
+          })
           break
         case 'android':
           ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })

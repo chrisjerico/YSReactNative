@@ -93,7 +93,9 @@ export default class UGSkinManagers extends UGThemeColor {
     theme.themeLightColor =
       theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex()
     theme.bgTextColor =
-      chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white'
+      chroma(theme.bgColor[0]).luminance() > 0.5 ? '#999' : 'white'
+    console.log('bgColoraaaaa = ', chroma(theme.bgColor[0]).hex(), chroma(theme.bgColor[0]).luminance());
+    
     let skin = new UGSkinManagers()
     Object.assign(skin, Skin1)
     Object.assign(skin, theme)
