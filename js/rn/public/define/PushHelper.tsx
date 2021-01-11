@@ -623,7 +623,7 @@ export default class PushHelper {
             // subId = MenuType.GCDT
             ugLog("游戏大厅")
             push(PageName.GameLobbyPage, { headerColor: Skin1.themeColor })
-            break
+            return
           }
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
