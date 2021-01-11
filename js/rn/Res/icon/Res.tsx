@@ -101,4 +101,13 @@ export const Res = {
   xync_num_18: img_assets('ball/xync_num_18'),
   xync_num_19: img_assets('ball/xync_num_19'),
   xync_num_20: img_assets('ball/xync_num_20'),
+
+  // 游戏大厅
+  lottery_ticket: img_assets('lottery/lottery_ticket'),
+  game: img_assets('lottery/game'),
+  fish: img_assets('lottery/fish'),
+  chess: img_assets('lottery/chess'),
+  dj: img_assets('lottery/dj'),
+  real_person: img_assets('lottery/real_person'),
+  sports: img_assets('lottery/sports'),
 }
