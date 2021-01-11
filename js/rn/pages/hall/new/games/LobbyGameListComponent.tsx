@@ -76,12 +76,20 @@ const games = {
 
     return (
       <TouchableWithoutFeedback onPress={() => {
-        push(PageName.SeriesLobbyPage,
-          { 
-            gameId: 0,
-            subId: games.subId[item.category],
-            name: item.categoryName,
-            headerColor: Skin1.themeColor })
+        if (systemInfo?.mobileGameHall == '1') {//新彩票大厅
+          push(PageName.GameHallPage, { showBackButton: true })
+
+        } else if (systemInfo?.mobileGameHall == '2') {//自由彩票大厅
+          push(PageName.FreedomHallPage, { showBackButton: true })
+
+        } else {
+          push(PageName.SeriesLobbyPage,
+            { gameId: 0,
+              subId: games.subId[item.category],
+              name,
+              headerColor: Skin1.themeColor,
+              homePage: PageName.WNZHomePage })
+        }
       }}>
       <View style={_styles.game_item_container}>
         <Image 
