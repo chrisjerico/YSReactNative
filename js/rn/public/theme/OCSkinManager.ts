@@ -627,7 +627,8 @@ export async function updateOcSkin() {
 
   // 配置OC颜色
   const skin = getOcSkinValue(skin1.skitType)
-  console.log('ocSkinColor = ', skin);
+  // console.log('ocSkinColor = ', skin);
+
   //
   await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [
     skin,
