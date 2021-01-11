@@ -166,7 +166,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
 
   const noBgColor = props.style === '没有选中背景色'
   return ([
-    <View style={{ marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45 }}>
+    <View style={{ marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45 }} key='a111'>
       {titles.map((title, idx) => {
         return (
           <Text
@@ -197,6 +197,6 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
         );
       })}
     </View>,
-    <View style={{ height: noBgColor ? 1 : 0, backgroundColor: '#ccc', width: '100%' }} />
+    <View style={{ height: noBgColor ? 1 : 0, backgroundColor: '#ccc', width: '100%' }} key='a222' />
   ]);
 }

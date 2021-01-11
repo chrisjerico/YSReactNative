@@ -14,6 +14,7 @@ import UseGameHall from '../UseGameHall'
 import { Data } from '../../../../public/network/Model/HomeRecommendModel'
 import { push } from '../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../public/navigation/Navigation'
+import { Res } from '../../../../Res/icon/Res'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -58,13 +59,13 @@ const games = {
     'sport': 45,
   },
   icons: {
-    'lottery': require('../../../../Res/assets/lottery_ticket.png'),
-    'game': require('../../../../Res/assets/game.png'),
-    'fish': require('../../../../Res/assets/fish.png'),
-    'card': require('../../../../Res/assets/chess.png'),
-    'esport': require('../../../../Res/assets/dj.png'),
-    'real': require('../../../../Res/assets/real_person.png'),
-    'sport': require('../../../../Res/assets/sports.png'),
+    'lottery': Res.lottery_ticket,
+    'game': Res.game,
+    'fish': Res.fish,
+    'card': Res.chess,
+    'esport': Res.dj,
+    'real': Res.real_person,
+    'sport': Res.sports,
   }
 }
 
@@ -96,7 +97,7 @@ const games = {
       <View style={_styles.game_item_container}>
         <Image 
           style={{ width: 60, height: 60, marginRight: 10 }} 
-          source={games.icons[item.category]} />
+          source={{ uri: games.icons[item.category] }} />
           <View>
             <Text
               style={_styles.category_name}

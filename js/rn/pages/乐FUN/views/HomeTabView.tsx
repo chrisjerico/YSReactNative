@@ -6,11 +6,11 @@ import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
 import useGetHomeInfo from '../../../public/hooks/useGetHomeInfo'
 import {Icon} from '../../../public/network/Model/HomeGamesModel'
 import {removeHTMLTag} from '../../../public/tools/removeHTMLTag'
-import {LEFThemeColor} from '../../../public/theme/colors/LEFThemeColor'
 import {scale} from '../../../public/tools/Scale'
 import {GAME_ITEM_HEIGHT, GameListView} from './GameListView'
 import FastImage from 'react-native-fast-image'
 import {ugLog} from '../../../public/tools/UgLog'
+import { skinColors } from '../../../public/theme/const/UGSkinColor'
 
 export const HomeTabView = () => {
   const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
@@ -64,8 +64,8 @@ export const HomeTabView = () => {
         <ScrollableTabView
           // onChangeTab={({i}) => calculateHeight(i)}
           tabBarUnderlineStyle={_styles.tab_bar_underline}
-          // tabBarActiveTextColor={LEFThemeColor.乐FUN.textColor2}
-          // tabBarInactiveTextColor={LEFThemeColor.乐FUN.themeColor}
+          // tabBarActiveTextColor={skinColors.textColor2.乐FUN}
+          // tabBarInactiveTextColor={skinColors.themeColor.乐FUN}
           // tabBarTextStyle={_styles.tab_bar_text}
           style={[{flex: 1, height}]}
           renderTabBar={() => (
@@ -78,7 +78,7 @@ export const HomeTabView = () => {
                     <View style={[_styles.tab_bar_item, isTabActive ? {backgroundColor: 'white'} : {}]}>
                       <FastImage style={_styles.tab_bar_img} source={{uri: games[pageIndex].logo}}/>
                       <Text
-                        style={[_styles.tab_bar_text, isTabActive ? {color: LEFThemeColor.乐FUN.textColor2} : {}]}>{name}</Text>
+                        style={[_styles.tab_bar_text, isTabActive ? {color: skinColors.textColor2.乐FUN} : {}]}>{name}</Text>
                     </View>
                   </TouchableWithoutFeedback>
                 )
@@ -102,7 +102,7 @@ const _styles = StyleSheet.create({
   },
   tab_bar_underline: {
     height: scale(0),
-    backgroundColor: LEFThemeColor.乐FUN.textColor2,
+    backgroundColor: skinColors.textColor2.乐FUN,
   },
   tab_bar_item: {
     width: TAB_ITEM_WIDTH,
@@ -117,6 +117,6 @@ const _styles = StyleSheet.create({
   tab_bar_text: {
     fontWeight: '300',
     fontSize: scale(22),
-    color: LEFThemeColor.乐FUN.textColor1,
+    color: skinColors.textColor1.乐FUN,
   },
 })

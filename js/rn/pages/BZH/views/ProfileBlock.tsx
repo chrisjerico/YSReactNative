@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native'
-import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
+import { skinColors } from '../../../public/theme/const/UGSkinColor'
 
 interface ProfileBlockProps {
   balance: string
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 500 / 250,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.宝石红,
     paddingBottom: scale(30),
   },
   whiteBlock: {
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   redBlock: {
     width: '100%',
     height: '50%',
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
+    backgroundColor: skinColors.themeColor.宝石红,
     borderBottomLeftRadius: scale(20),
     borderBottomRightRadius: scale(20),
   },

@@ -1,7 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
 import React, {useState} from "react";
 import {HomeGamesModel, Icon} from "../../../public/network/Model/HomeGamesModel";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import FastImage from "react-native-fast-image";
 import PushHelper from "../../../public/define/PushHelper";

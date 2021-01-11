@@ -5,7 +5,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -40,7 +40,7 @@ const BZHHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'BZHHomePage'}
-      headerColor={BZHThemeColor.宝石红.themeColor}
+      headerColor={skinColors.themeColor.宝石红}
       items={homeGames}
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
@@ -145,7 +145,7 @@ const BZHHomePage = () => {
                         marginLeft: index % 3 == 1 ? '9.5%' : 0,
                         marginRight: index % 3 == 1 ? '9.5%' : 0,
                         marginBottom: scale(20),
-                        backgroundColor: BZHThemeColor.宝石红.themeLightColor,
+                        backgroundColor: skinColors.themeLightColor.宝石红,
                         paddingVertical: scale(20),
                         borderRadius: scale(5),
                       }}
@@ -216,7 +216,7 @@ const BZHHomePage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.宝石红,
   },
   subComponent: {
     marginTop: scale(10),

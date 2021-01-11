@@ -2,7 +2,6 @@ import {StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import React from "react";
 import {HomeGamesModel, Icon, List} from "../../../public/network/Model/HomeGamesModel";
 import {anyLength} from "../../../public/tools/Ext";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import FastImage from "react-native-fast-image";
 import {scale} from "../../../public/tools/Scale";
 import TouchableImage from "../../../public/views/temp/TouchableImage";

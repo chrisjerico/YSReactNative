@@ -478,12 +478,12 @@ const notifyDomainChanged = async (siteId?: string) => {
   for (const k in DomainUrls) {
     sites[k.toLowerCase()] = DomainUrls[k]
   }
-  const host = anyEmpty(siteId) ? null : sites[siteId.toLowerCase()].trim()
+  const host = anyEmpty(siteId) ? null : sites[siteId.toLowerCase()]?.trim()
   host?.length && ANHelper.refreshHost(host)
 
   switch (Platform.OS) {
     case 'ios':
-      host.length && OCHelper.call('AppDefine.shared.setHost:', [host])
+      host?.length && OCHelper.call('AppDefine.shared.setHost:', [host])
       break
     case 'android':
       await ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);
