@@ -4,6 +4,7 @@ import { scale } from '../../../tools/Scale'
 import { UGColor } from '../../../theme/UGThemeColor'
 import LotteryBall, { ILotteryBall } from '../LotteryBall'
 import { BallStyles } from '../../../../pages/hall/new/games/HallGameListComponent'
+import { anyEmpty } from '../../../tools/Ext'
 
 interface IEBall {
   ballType?: ILotteryBall //球风格
@@ -32,8 +33,10 @@ const EBall = ({
           ]}>
       <LotteryBall key={ballType?.ballNumber}
                    {...ballType}/>
-      <Text key={odds}
-            style={[_styles.ball_odds, oddsStyle]}>{odds}</Text>
+      {
+        !anyEmpty(odds) && <Text key={odds}
+              style={[_styles.ball_odds, oddsStyle]}>{odds}</Text>
+      }
     </View>
   )
 }

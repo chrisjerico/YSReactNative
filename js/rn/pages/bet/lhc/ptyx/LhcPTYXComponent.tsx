@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableNativeFeedback, TouchableOpacity,
   TouchableWithoutFeedback,
-  View, ViewProps, ViewStyle,
+  View, ViewStyle,
 } from 'react-native'
 import * as React from 'react'
 import FastImage from 'react-native-fast-image'
@@ -22,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcLMA, { ILMABallArray } from './UseLhcLMA'
+import UseLhcPTYX from './UseLhcPTYX'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import {
   PlayData,
@@ -34,21 +34,24 @@ import LotteryBall, { BallType } from '../../../../public/components/view/Lotter
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import BetLotteryContext from '../../BetLotteryContext'
 import EBall from '../../../../public/components/view/lottery/EBall'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
+import LotteryLineEBall from '../../widget/LotteryLineEBall'
 import { ILotteryRouteParams } from '../../const/LotteryConst'
-import { doc } from 'prettier'
-
+import { findZodiacByName } from '../../util/LotteryUtil'
 
 /**
- * 六合彩连码
+ * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
  *
  * @param navigation
  * @constructor
  */
-const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+
+
+  // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
     tabIndex,
@@ -58,30 +61,32 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     pageData,
     setPageData,
     setLotteryCode,
-    ballArray,
+    zodiacData,
+    setZodiacData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseLhcLMA()
+  } = UseLhcPTYX()
 
-  useEffect(() => {
+  useEffect(()=>{
     setLotteryCode(lotteryCode)
   }, [])
 
+
   /**
-   * 绘制tab
+   * 绘制tab，只有1个数据不绘制Tab
    */
-  const renderTab = () => <View style={_styles.tab_title_container}>
+  const renderTab = () => arrayLength(pageData) > 1 &&  <View style={_styles.tab_title_container}>
     <ScrollView style={_styles.sv_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
       <View style={_styles.tab_title_content}>
         {
           pageData?.map((item, index) =>
-            <TouchableOpacity key={item[0]?.alias}
+            <TouchableOpacity key={item[1]?.alias}
                               style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>
-              <View key={item[0]?.alias}
+              <View key={item[1]?.alias}
                     style={[
                       _styles.tab_item,
                       index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
@@ -89,7 +94,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
                 <Text style={[
                   _styles.tab_title_item_text,
                   index == tabIndex ? { color: `white` } : null,
-                ]}>{item[0]?.alias}</Text>
+                ]}>{item[1]?.alias}</Text>
               </View>
             </TouchableOpacity>)
         }
@@ -101,55 +106,80 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   </View>
 
   /**
-   * 绘制 球
+   * 绘制 生肖和球
    * @param item
-   * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
-
-    return (
-      <LotteryEBall key={ballInfo?.id}
-                    item={{
-                      ...item?.plays[0],
-                      ...ballInfo,
-                    }}
-                    selectedBalls={selectedBalls}
-                    ballStyle={{ flexDirection: 'column' }}
-                    callback={() => addOrRemoveBall(ballInfo?.id)}/>
-    )
-  }
+  const renderEBall = (item?: PlayData) => !anyEmpty(zodiacData) &&  <LotteryLineEBall key={item?.id + item?.name}
+                                                         item={{
+                                                           ...item,
+                                                           zodiacItem: findZodiacByName(zodiacData, item)
+                                                         }}
+                                                         selectedBalls={selectedBalls}
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
-   * 绘制 连码
+   * 绘制 方格式
+   * @param item
+   */
+  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
+                                                         item={item}
+                                                         selectedBalls={selectedBalls}
+                                                         callback={() => addOrRemoveBall(item?.id)}/>
+
+  /**
+   * 绘制全部的格子
    * @param groupData
    */
-  const renderLMA = (groupData?: PlayGroupData) => {
+  const renderAllRect = (groupData?: PlayGroupData) => !anyEmpty(groupData) && <View key={groupData?.id + groupData?.alias}
+                                    style={CommStyles.flex}>
 
-    return (
-      <View key={groupData?.id + groupData?.alias}
-            style={CommStyles.flex}>
+    <View key={groupData?.alias}
+          style={_styles.sub_title_container}>
+      <Text key={groupData?.alias}
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
+    </View>
 
-        <View style={_styles.sub_title_container}>
-          <Text style={[
-            _styles.sub_title_text,
-            { color: Skin1.themeColor },
-          ]}>{groupData?.alias}</Text>
-        </View>
+    <View style={_styles.rect_container}>
+      {
+        groupData?.plays?.map((item) => renderERect(item))
+      }
+    </View>
 
-        <View style={_styles.ball_container}>
-          {
-            ballArray?.map((item, index) => renderEBall(groupData, item))
-          }
-        </View>
-      </View>
-    )
-  }
+  </View>
+
+  /**
+   * 绘制 一行球
+   * @param groupData
+   */
+  const renderLineBall = (groupData?: PlayGroupData) => !anyEmpty(groupData) && <View key={groupData?.id + groupData?.alias}
+                                                        style={CommStyles.flex}>
+
+    <View key={groupData?.alias}
+          style={_styles.sub_title_container}>
+      <Text key={groupData?.alias}
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
+    </View>
+
+    <View style={_styles.ball_container}>
+      {
+        groupData?.plays?.map((item) => renderEBall(item))
+      }
+    </View>
+  </View>
 
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    {!anyEmpty(curData) && renderLMA(curData[0])}
+  const renderAllBall = () => <ScrollView style={CommStyles.flex}
+                                          showsVerticalScrollIndicator={false}>
+    {arrayLength(curData) > 0 && renderAllRect(curData[0])}
+    {arrayLength(curData) > 1 && renderLineBall(curData[1])}
   </ScrollView>
 
   return (
@@ -174,25 +204,14 @@ const _styles = StyleSheet.create({
     paddingHorizontal: scale(1),
   },
   ball_container: {
+    padding: scale(4),
+  },
+  rect_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     padding: scale(4),
-  },
-  ball_odds: {
-    width: scale(76),
-    color: UGColor.TextColor7,
-    fontSize: scale(18),
-    paddingHorizontal: scale(1),
-  },
-  tab_title_tb: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  tab_title: {
-    color: UGColor.TextColor2,
-    fontSize: scale(24),
-    padding: scale(6),
+    flex: 1,
   },
   tab_title_container: {
     flexDirection: 'row',
@@ -218,8 +237,6 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingLeft: scale(6),
   },
-
-
 })
 
-export default LhcLMAComponent
+export default LhcPTYXComponent

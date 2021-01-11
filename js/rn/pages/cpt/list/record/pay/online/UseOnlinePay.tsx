@@ -6,7 +6,7 @@ import APIRouter from '../../../../../../public/network/APIRouter'
 import { anyEmpty, arrayEmpty } from '../../../../../../public/tools/Ext'
 import { ugLog } from '../../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
-import { PayAisleData } from '../../../../../../public/network/Model/wd/PayAisleModel'
+import { PayAisleData, PayAisleListData } from '../../../../../../public/network/Model/wd/PayAisleModel'
 import { hideLoading, showLoading } from '../../../../../../public/widget/UGLoadingCP'
 import queryStrng from 'query-string'
 /**
@@ -15,10 +15,36 @@ import queryStrng from 'query-string'
  */
 const UseOnlinePay = () => {
 
-  const moneyOption = ['1', '10', '50', '100', '500', '1000', '5000', '10000', '50000', '100000'] //金额选项
 
+  const [curSelBank, setCurSelBank] = useState(null) //选择了哪个银行
+  const [accountItems, setAccountItems] = useState(null) //账户有哪些
   const [inputMoney, setInputMoney] = useState(null) //输入金额
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
+  const [moneyOption, setMoneyOption] = useState<Array<string>>(null) //输入金额
+  const [payData, setPayData] = useState<PayAisleListData>(null) //当前数据
+  const [payBigData, setPayBigData] = useState<PayAisleData>(null) //总数据
+
+
+  useEffect(() => {
+    //重新绘制银行选择界面
+    if (payData != null) {
+      let curChannel = payData?.channel[selPayChannel]
+      let banks = curChannel?.para?.bankList?.map(
+        (item, index) =>
+          ({
+            label: item.name, value: item.code,
+          }))
+      !anyEmpty(banks) && setAccountItems(banks)
+      !anyEmpty(banks) && setCurSelBank(banks[0].value)
+      setMoneyOption(payBigData?.quickAmount)
+      if(!anyEmpty(curChannel?.para?.fixedAmount)) {
+        const moneyOp = curChannel?.para?.fixedAmount?.split(' ')
+        if (!anyEmpty(moneyOp)) {
+          setMoneyOption(moneyOp)
+        }
+      }
+    }
+  }, [selPayChannel, payData])
 
   /**
    * 开始存款
@@ -50,7 +76,14 @@ const UseOnlinePay = () => {
   }
 
   return {
+    setPayData,
+    setPayBigData,
+    curSelBank,
+    setCurSelBank,
+    accountItems,
+    setAccountItems,
     moneyOption,
+    setMoneyOption,
     inputMoney,
     setInputMoney,
     selPayChannel,
