@@ -103,11 +103,11 @@ export const Res = {
   xync_num_20: img_assets('ball/xync_num_20'),
 
   // 游戏大厅
-  lottery_ticket: img_assets('lottery/lottery_ticket'),
-  game: img_assets('lottery/game'),
-  fish: img_assets('lottery/fish'),
+  lottery_ticket: img_assets('lottery/lo'),
+  game: img_assets('lottery/ga'),
+  fish: img_assets('lottery/fi'),
   chess: img_assets('lottery/chess'),
-  dj: img_assets('lottery/dj'),
-  real_person: img_assets('lottery/real_person'),
-  sports: img_assets('lottery/sports'),
+  dj: img_assets('lottery/d'),
+  real_person: img_assets('lottery/re'),
+  sports: img_assets('lottery/sp'),
 }
