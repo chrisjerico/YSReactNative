@@ -5,7 +5,7 @@ import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerifi
 import { AgentType, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
-import {LEFThemeColor} from "../../theme/colors/LEFThemeColor";
+import { skinColors } from '../../theme/const/UGSkinColor'
 
 interface Show {
   showRecommendGuy: boolean;
@@ -151,7 +151,7 @@ const SignUpFormList = ({
         leftIconTitle={'登录密码'}
         rightIconStyle={
           {
-            highColor: LEFThemeColor.乐FUN.textColor2,
+            highColor: skinColors.textColor2.乐FUN,
           }
         }
       />
@@ -166,7 +166,7 @@ const SignUpFormList = ({
         leftIconTitle={'确认密码'}
         rightIconStyle={
           {
-            highColor: LEFThemeColor.乐FUN.textColor2,
+            highColor: skinColors.textColor2.乐FUN,
           }
         }
       />
@@ -190,7 +190,7 @@ const SignUpFormList = ({
         leftIconTitle={'取款密码'}
         rightIconStyle={
           {
-            highColor: LEFThemeColor.乐FUN.textColor2,
+            highColor: skinColors.textColor2.乐FUN,
           }
         }
       />

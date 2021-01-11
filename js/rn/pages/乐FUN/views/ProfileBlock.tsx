@@ -1,12 +1,11 @@
 import React from 'react'
 import {StyleSheet, Text, View, ViewStyle} from 'react-native'
-import {BZHThemeColor} from '../../../public/theme/colors/BZHThemeColor'
 import {scale} from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/temp/Avatar'
 import LinearBadge from '../../../public/views/temp/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/temp/ReLoadBalanceComponent'
-import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 import CommStyles from "../../base/CommStyles";
+import { skinColors } from '../../../public/theme/const/UGSkinColor'
 
 interface ProfileBlockProps {
   balance: string | number;
@@ -44,8 +43,8 @@ const ProfileBlock = ({
                 containerStyle={{borderRadius: scale(5), width: scale(80)}}
                 textStyle={{paddingHorizontal: scale(10)}}
                 title={level}
-                colors={[LEFThemeColor.乐FUN.textColor2,
-                  LEFThemeColor.乐FUN.themeColor]}
+                colors={[skinColors.textColor2.乐FUN,
+                  skinColors.themeColor.乐FUN]}
                 showIcon={false}
               />
             </View>
@@ -56,7 +55,7 @@ const ProfileBlock = ({
                 animatedContainerStyle={{marginTop: scale(3)}}
                 titleStyle={{fontSize: scale(26)}}
                 titleHintStyle={{
-                  color: LEFThemeColor.乐FUN.textColor2,
+                  color: skinColors.textColor2.乐FUN,
                   fontSize: scale(22)
                 }}
                 titleHint={'元'}
@@ -65,7 +64,7 @@ const ProfileBlock = ({
                   color: 'red',
                   fontSize: scale(22)
                 }}
-                color={LEFThemeColor.乐FUN.textColor2}
+                color={skinColors.textColor2.乐FUN}
                 size={24}
               />
             </View>
@@ -82,7 +81,7 @@ const ProfileBlock = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.乐FUN,
     paddingBottom: scale(30)
   },
   profileContainer: {
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: scale(26),
     paddingHorizontal: scale(35),
-    backgroundColor: LEFThemeColor.乐FUN.themeColor,
+    backgroundColor: skinColors.themeColor.乐FUN,
   },
   avatarContainer: {
     flex: 1,
@@ -132,22 +131,22 @@ const styles = StyleSheet.create({
   },
   possessions_left_text: {
     fontSize: scale(22),
-    color: LEFThemeColor.乐FUN.textColor2,
+    color: skinColors.textColor2.乐FUN,
   },
   possessions_right_text: {
     fontSize: scale(22),
-    color: LEFThemeColor.乐FUN.themeColor,
+    color: skinColors.themeColor.乐FUN,
   },
   text: {
     fontSize: scale(24),
     fontWeight: '400',
-    color: LEFThemeColor.乐FUN.textColor2,
+    color: skinColors.textColor2.乐FUN,
     paddingRight: scale(10)
   },
   text_money_title: {
     fontSize: scale(22),
     fontWeight: '400',
-    color: LEFThemeColor.乐FUN.textColor2,
+    color: skinColors.textColor2.乐FUN,
   },
   infoContainer: {
     flex: 1,

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { pop } from '../../public/navigation/RootNavigation'
-import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { ToastError } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
@@ -19,7 +18,7 @@ const LHTPreferencePage = ({ route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} containerStyle={{ paddingHorizontal: scale(10) }}>
+      <SafeAreaHeader headerColor={skinColors.themeColor.六合厅} containerStyle={{ paddingHorizontal: scale(10) }}>
         <MineHeader title={'偏好设置'} onPressBackBtn={pop} showRightTitle={false} showBackBtn={true} />
       </SafeAreaHeader>
       <View style={{ flex: 1, backgroundColor: '#E0E0E0' }}>

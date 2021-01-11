@@ -6,7 +6,6 @@ import RefreshControlComponent from '../../public/components/temp/RefreshControl
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/temp/useMinePage'
 import {PageName} from '../../public/navigation/Navigation'
-import {BZHThemeColor} from '../../public/theme/colors/BZHThemeColor'
 import {scale} from '../../public/tools/Scale'
 import {useHtml5Image} from '../../public/tools/tars'
 import BottomGap from '../../public/views/temp/BottomGap'
@@ -18,11 +17,11 @@ import {UGUserCenterType} from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import {ugLog} from "../../public/tools/UgLog";
-import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {pop, push} from "../../public/navigation/RootNavigation";
 import HomeHeader from "./views/HomeHeader";
 import MineHeader from "../../public/views/temp/MineHeader";
 import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 
 const LEFMinePage = () => {
   const {getHtml5Image} = useHtml5Image()
@@ -66,11 +65,11 @@ const LEFMinePage = () => {
   return (
     <>
       <SafeAreaHeader
-        headerColor={LEFThemeColor.乐FUN.themeColor}
+        headerColor={skinColors.themeColor.乐FUN}
       >
         <MineHeader
           title={'会员中心'}
-          titleColor={LEFThemeColor.乐FUN.textColor2}
+          titleColor={skinColors.textColor2.乐FUN}
           onPressBackBtn={pop}
           showBackBtn={Platform.OS=='ios'}
           showCustomerService={true}
@@ -83,7 +82,7 @@ const LEFMinePage = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+          backgroundColor: skinColors.homeContentSubColor.乐FUN,
         }}
         // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
@@ -115,7 +114,7 @@ const LEFMinePage = () => {
                   flexDirection: 'row',
                   borderRadius: scale(999),
                   borderWidth: scale(2),
-                  borderColor: LEFThemeColor.乐FUN.textColor2,
+                  borderColor: skinColors.textColor2.乐FUN,
                 }}
                 imageContainerStyle={{width: '50%'}
                 }
