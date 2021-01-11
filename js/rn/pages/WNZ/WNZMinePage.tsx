@@ -7,7 +7,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
@@ -101,7 +101,7 @@ const WNZMinePage = () => {
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
     <>
-      <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
+      <SafeAreaHeader headerColor={skinColors.themeColor.威尼斯}>
         <BackBtnComponent
           homePage={PageName.WNZHomePage}
           renderHeader={(props) => {

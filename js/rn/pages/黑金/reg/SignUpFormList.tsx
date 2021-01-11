@@ -5,7 +5,7 @@ import {SlideCode} from "../../../public/models/Interface";
 import AgentButtonComponent from "../../../public/components/temp/AgentButtonComponent";
 import {scale} from "../../../public/tools/Scale";
 import ReloadSlidingVerification from "../../../public/components/temp/ReloadSlidingVerification";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
+import { skinColors } from '../../../public/theme/const/UGSkinColor';
 
 interface Show {
   showRecommendGuy: boolean;
@@ -135,7 +135,7 @@ const SignUpFormList = ({
           fontSize: scale(24)
         }}
         leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
       />
@@ -152,7 +152,7 @@ const SignUpFormList = ({
           fontSize: scale(24)
         }}
         leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
       />
@@ -172,11 +172,11 @@ const SignUpFormList = ({
           fontSize: scale(24)
         }}
         leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
         rightIconStyle={{
-          highColor: HJThemeColor.黑金.themeColor,
+          highColor: skinColors.themeColor.黑金,
           color: '#d9d9d9',
         }}
       />
@@ -195,11 +195,11 @@ const SignUpFormList = ({
           fontSize: scale(24)
         }}
         leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
         rightIconStyle={{
-          highColor: HJThemeColor.黑金.themeColor,
+          highColor: skinColors.themeColor.黑金,
           color: '#d9d9d9',
         }}
       />
@@ -216,7 +216,7 @@ const SignUpFormList = ({
           fontSize: scale(24)
         }}
         leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
       />
@@ -236,11 +236,11 @@ const SignUpFormList = ({
           fontSize: scale(24)
         }}
         leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
         rightIconStyle={{
-          highColor: HJThemeColor.黑金.themeColor,
+          highColor: skinColors.themeColor.黑金,
           color: '#d9d9d9',
         }}
       />
@@ -258,7 +258,7 @@ const SignUpFormList = ({
         leftIcon={{
           name: 'QQ',
           type: 'antdesign',
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
       />
@@ -276,7 +276,7 @@ const SignUpFormList = ({
         leftIcon={{
           name: 'wechat',
           type: 'font-awesome',
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
       />
@@ -293,7 +293,7 @@ const SignUpFormList = ({
           fontSize: scale(24)
         }}
         leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
       />
@@ -311,7 +311,7 @@ const SignUpFormList = ({
         leftIcon={{
           type: 'material-community',
           name: 'email-outline',
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
       />
@@ -330,7 +330,7 @@ const SignUpFormList = ({
           fontSize: scale(24)
         }}
         leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(36),
         }}
       />

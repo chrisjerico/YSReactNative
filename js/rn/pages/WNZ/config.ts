@@ -1,8 +1,8 @@
+import { skinColors } from './../../public/theme/const/UGSkinColor';
 import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
-import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
@@ -77,31 +77,31 @@ const config = {
     {
       title: '真人视讯',
       onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '真人视讯', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 42 })
+        navigate(PageName.SeriesLobbyPage, { name: '真人视讯', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 42 })
       },
     },
     {
       title: '电子游艺',
       onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '电子游艺', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 44 })
+        navigate(PageName.SeriesLobbyPage, { name: '电子游艺', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 44 })
       },
     },
     {
       title: '捕鱼达人',
       onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '捕鱼达人', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 48 })
+        navigate(PageName.SeriesLobbyPage, { name: '捕鱼达人', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 48 })
       },
     },
     {
       title: '体育游戏',
       onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '体育游戏', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 45 })
+        navigate(PageName.SeriesLobbyPage, { name: '体育游戏', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 45 })
       },
     },
     {
       title: '棋牌游戏',
       onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '棋牌游戏', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 43 })
+        navigate(PageName.SeriesLobbyPage, { name: '棋牌游戏', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 43 })
       },
     },
     {

@@ -243,7 +243,7 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         {Object.keys(pageComponents).map((key) => {
           // ugLog('tab page key=', key)
-          return <Router.TabScreen name={key} component={UGPage(pageComponents[key])} />
+          return <Router.TabScreen name={key} key={key} component={UGPage(pageComponents[key])} />
         })}
       </Router.TabNavigator>
     )
@@ -260,7 +260,7 @@ const StackScreens = () => {
         .filter((value) => value.indexOf('Home') <= 0) //过滤掉首页
         .map((key) => {
           // ugLog('stack page key=', key)
-          return <Router.StackScreen options={{ headerShown: false }} name={key} component={UGPage(pageComponents[key])} />
+          return <Router.StackScreen options={{ headerShown: false }} name={key} key={key} component={UGPage(pageComponents[key])} />
         })}
     </Router.StackNavigator>
   )
