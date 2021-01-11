@@ -51,8 +51,11 @@ interface Promotion<Color> {
 // const aaa1: { [key in UGSkinColor]?: any }
 
 /**
- * 主要适配模板：经典1、GPK0
- * 这几个适配完其他模板就没什么大问题了
+ * 主要适配模板：经典1蓝、GPK0
+ * 这几个适配完其他模板一般没什么大问题了
+ * 
+ * 最多人用的模板：经典1蓝（占80%以上）
+ * 其他多人用的模板：威尼斯、六合资料、经典18灰、GPK
  */
 export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
   themeColor: {
