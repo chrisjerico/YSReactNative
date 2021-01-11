@@ -54,6 +54,8 @@ const TransferPayPage = ({ navigation, route }) => {
   const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
+    setPayData,
+    setPayBigData,
     moneyOption,
     inputMoney,
     setInputMoney,
@@ -66,6 +68,11 @@ const TransferPayPage = ({ navigation, route }) => {
     transName,
     requestPayData,
   } = UseTransferPay()
+
+  useEffect(()=>{
+    setPayBigData(payBigData)
+    setPayData(payData)
+  }, [])
 
   useEffect(()=>{
     if (!anyEmpty(goPage)) {
@@ -87,7 +94,7 @@ const TransferPayPage = ({ navigation, route }) => {
    */
   const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
-      moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
+      !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
           <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>

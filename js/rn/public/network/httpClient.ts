@@ -148,7 +148,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data })
   devConfig.isTest() && (config.orParams = params)
-  
+
   let { isEncrypt = true } = config
   let encryptData = await encryptParams(params, isEncrypt);
 

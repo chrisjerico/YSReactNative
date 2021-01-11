@@ -42,15 +42,19 @@ interface IRouteParams {
  */
 const OnlinePayPage = ({ navigation, route }) => {
 
-  const [curSelBank, setCurSelBank] = useState(null) //选择了哪个银行
-  const [accountItems, setAccountItems] = useState(null) //账户有哪些
-
   const { payData, payBigData, refreshTabPage }: IRouteParams = route?.params
 
   let bankController //银行选择
 
   const {
+    setPayData,
+    setPayBigData,
+    curSelBank,
+    setCurSelBank,
+    accountItems,
+    setAccountItems,
     moneyOption,
+    setMoneyOption,
     inputMoney,
     setInputMoney,
     selPayChannel,
@@ -58,16 +62,14 @@ const OnlinePayPage = ({ navigation, route }) => {
     requestPayData,
   } = UseOnlinePay()
 
+  useEffect(()=>{
+    setPayBigData(payBigData)
+    setPayData(payData)
+  }, [])
+
   useEffect(() => {
     //重新绘制银行选择界面
     bankController?.close()
-    let banks = payData?.channel[selPayChannel]?.para?.bankList?.map(
-      (item, index) =>
-        ({
-          label: item.name, value: item.code,
-        }))
-    !anyEmpty(banks) && setAccountItems(banks)
-    !anyEmpty(banks) && setCurSelBank(banks[0].value)
   }, [selPayChannel])
 
   /**
@@ -83,7 +85,7 @@ const OnlinePayPage = ({ navigation, route }) => {
    */
   const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
-      moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
+      !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
           <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>

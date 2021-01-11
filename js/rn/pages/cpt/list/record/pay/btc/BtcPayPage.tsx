@@ -68,6 +68,8 @@ const BtcPayPage = ({ navigation, route }) => {
     setSelPayChannel,
     payData,
     setPayData,
+    payBigData,
+    setPayBigData,
     requestPayData,
   } = UseBtcPay()
 
@@ -79,6 +81,7 @@ const BtcPayPage = ({ navigation, route }) => {
   }, [goPage])
 
   useEffect(()=>{
+    setPayBigData(intentData?.payBigData)
     setPayData(intentData?.payData)
   }, [])
 
@@ -122,7 +125,7 @@ const BtcPayPage = ({ navigation, route }) => {
    */
   const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
-      moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
+      !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
           <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>
