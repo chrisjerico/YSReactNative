@@ -14,16 +14,25 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
 import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
-import LotteryConst, { LHC_Tab } from '../../const/LotteryConst'
 
 
 /**
- * 六合彩正特
+ * 六合彩 正特 正码 等等
  * @constructor
  */
 const UseLhcZT = () => {
 
   const {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
+    playOddData,
+    setPlayOddData,
+    lotteryCode,
+    setLotteryCode,
     nextIssueData,
     playOddDetailData,
     curPlayOddData,
@@ -33,28 +42,12 @@ const UseLhcZT = () => {
     zodiacBallIds,
   } = UseLotteryHelper()
 
-  const [dataZT, setDataZT] = useState<Array<Array<PlayGroupData>>>(null) //当前重组后的正特数据列表
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
 
-  const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，TAB_A 和 TAB_B
-
-  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
-
-  const [curData, setCurData] = useState<Array<PlayGroupData>>(null) //当前选中的TAB数据
-
   useEffect(() => {
-    !anyEmpty(dataZT) && setCurData(dataZT[tabIndex])
-  }, [tabIndex, dataZT])
+    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
+  }, [tabIndex, pageData])
 
-  /**
-   * 找出当前彩种数据
-   */
-  useEffect(() => {
-    setPlayOddData(playOddDetailData()?.playOdds?.find(
-      (item) => item?.code == LotteryConst.ZT))
-  }, [playOddDetailData()])
-
-  // ugLog('playOddData=', playOddData)
   useEffect(() => {
     if (arrayLength(playOddData?.playGroups) % 2 == 0) {//长度是偶数
       let newData = new Array<Array<PlayGroupData>>()
@@ -67,7 +60,7 @@ const UseLhcZT = () => {
         }
       })
       //ugLog('newData=', JSON.stringify(newData))
-      setDataZT(newData)
+      setPageData(newData)
 
     }
   }, [playOddData])
@@ -76,8 +69,10 @@ const UseLhcZT = () => {
     tabIndex,
     setTabIndex,
     curData,
-    dataZT,
-    setDataZT,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,

@@ -85,10 +85,6 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
       err = '请输入' + inviteCode.displayWord + '数量';
     }
 
-    console.log('v?.length ==', v?.length);
-    console.log('v?.number ==', v?.number);
-    console.log('err ==', err);
-
     if (err) {
       showMessage(err);
       return;

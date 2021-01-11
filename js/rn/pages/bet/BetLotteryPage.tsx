@@ -1,42 +1,26 @@
-import {
-  FlatList, Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import UseBetLottery from './UseBetLottery'
-import Modal from 'react-native-modal'
 import { useEffect, useState } from 'react'
+import UseBetLottery from './UseBetLottery'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
 import { scale } from '../../public/tools/Scale'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { pop } from '../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../base/CommStyles'
-import { ugLog } from '../../public/tools/UgLog'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
-import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import TimeComponent from './tm/TimeComponent'
 import LotteryConst from './const/LotteryConst'
-import LhcLMComponent from './lhc/lm/LhcLMComponent'
-import LhcZMComponent from './lhc/zm/LhcZMComponent'
-import LhcZM1T6Component from './lhc/zm1t6/LhcZM1T6Component'
 import LhcZTComponent from './lhc/zt/LhcZTComponent'
-import { getBankIcon } from '../bank/list/UseManageBankList'
-import { Res } from '../../Res/icon/Res'
-import { BankConst } from '../bank/const/BankConst'
 import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
 import LhcSBComponent from './lhc/sb/LhcSBComponent'
+import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
+import LhcHXComponent from './lhc/hx/LhcHXComponent'
+import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
+import BetBoardComponent from './board/BetBoardComponent'
+import { anyEmpty } from '../../public/tools/Ext'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -52,6 +36,8 @@ const BetLotteryPage = ({ navigation, route }) => {
   const { lotteryId } = route?.params
 
   const {
+    userInfo,
+    systemInfo,
     setLotteryId,
     nextIssueData,
     playOddDetailData,
@@ -88,9 +74,9 @@ const BetLotteryPage = ({ navigation, route }) => {
           color={Skin1.navBarTitleColor}/>
     <View style={CommStyles.flex}/>
     <Text style={[_styles.top_money,
-      { color: Skin1.navBarTitleColor }]}>{'1002'}</Text>
+      { color: Skin1.navBarTitleColor }]}>{!anyEmpty(userInfo) && userInfo?.balance}</Text>
     <Icon size={scale(24)}
-          name={'undo'}
+          name={'refresh'}
           color={Skin1.navBarTitleColor}/>
     <TouchableOpacity onPress={() => pop()}>
       <View style={_styles.back_bt_container}>
@@ -148,7 +134,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     //                   key={LotteryConst.TM}/>
     //   <LhcLMComponent style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
     //                   key={LotteryConst.LM}/>
-    //   <LhcZMComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
+    //   <LhcHXComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
     //                   key={LotteryConst.ZM}/>
     //   <LhcSBComponent style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
     //                      key={LotteryConst.ZM1_6}/>
@@ -157,26 +143,44 @@ const BetLotteryPage = ({ navigation, route }) => {
     // </View>
 
     switch (lotteryCode) {
-      case LotteryConst.TM: {
-        return <LhcTMComponent/>
+      case LotteryConst.TM: { //特码
+        return <LhcTMComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.LM: {
-        return <LhcLMComponent/>
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT: { //正特
+        return <LhcZTComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.ZM: {
-        return <LhcZMComponent/>
+      case LotteryConst.LMA: { //连码
+        return <LhcLMAComponent key={lotteryCode}
+                                lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.ZM1_6: {
-        return <LhcZM1T6Component/>
+      case LotteryConst.LM: //两面
+      case LotteryConst.ZM1_6: //正码1T6
+      case LotteryConst.SB: //色波
+      case LotteryConst.ZOX://总肖
+      case LotteryConst.WX:{ //五行
+        return <LhcSBComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.ZT: {
-        return <LhcZTComponent/>
+      case LotteryConst.YX: //平特一肖
+      case LotteryConst.WS: //平特尾数
+      case LotteryConst.TWS: //头尾数
+      case LotteryConst.TX: //特肖
+      case LotteryConst.LX: //连肖
+      case LotteryConst.LW: //连尾
+      case LotteryConst.ZX: { //正肖
+        return <LhcPTYXComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.LMA: {
-        return <LhcLMAComponent/>
+      case LotteryConst.HX: { //合肖
+        return <LhcHXComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
       }
-      case LotteryConst.SB: {
-        return <LhcSBComponent/>
+      case LotteryConst.ZXBZ: { //自选不中
+        return <LhcZXBZComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
       }
 
     }
@@ -256,13 +260,14 @@ const BetLotteryPage = ({ navigation, route }) => {
           [
             renderTopBar(),
             renderGameTab(),
-            <TimeComponent key={nextIssueData?.curIssue}/>,
-            <View style={{ flexDirection: 'row', flex: 1 }}>
-              {renderLeftColumn()}
-              {renderRightContent()}
-            </View>,
+            <TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>,
           ]
         }
+        <View style={{ flexDirection: 'row', flex: 1 }}>
+          {renderLeftColumn()}
+          {renderRightContent()}
+        </View>
+        <BetBoardComponent/>
       </BaseScreen>
     </BetLotteryContext.Provider>
 

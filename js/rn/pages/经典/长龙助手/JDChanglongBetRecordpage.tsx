@@ -37,7 +37,7 @@ const JDChanglongBetRecordpage = () => {
   )
 
     /**
-* 钱是否隐藏adsfdasf
+* 钱是否隐藏
 * 
 */
 function isHide(item: any) {

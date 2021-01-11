@@ -26,8 +26,8 @@ export class api_game {
   }
 
   // 长龙助手
-  static changlong() {
-    return this.c.get('changlong');
+  static changlong(id: string) {
+    return this.c.get('changlong',{ id: id });
   }
 
   // 彩票规则

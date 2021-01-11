@@ -29,16 +29,17 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { PageName } from '../../../public/navigation/Navigation';
 import { push } from '../../../public/navigation/RootNavigation';
 
-interface JDPromotionIncomePage {
+interface JDRecommendedIncomePage {
   tabNames?: Array<string>//tab界面名称数据
 }
 
-const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
+const 
+JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
 
   //调用sysConf
   const { inviteCode } = UGStore.globalProps.sysConf
 
-  let { current: v } = useRef<JDPromotionIncomePage>(
+  let { current: v } = useRef<JDRecommendedIncomePage>(
     {
       tabNames: [
         PromotionConst.推荐信息,
@@ -126,7 +127,7 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
           arrayEmpty(v.tabNames)
             ? <EmptyView style={{ flex: 1 }} />
             : <ScrollableTabView
-              // key={'ScrollableTabView' + refreshCount}
+              key={'ScrollableTabView'}
               initialPage={tabIndex}//初始化时被选中的Tab下标，默认是0（即第一页）
               onChangeTab={value => {
                 ugLog('tab index=', value?.from, value?.i)
@@ -187,4 +188,5 @@ const styles = StyleSheet.create({
 });
 
 
-export default JDPromotionIncomePage
+export default 
+JDRecommendedIncomePage

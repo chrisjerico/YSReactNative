@@ -30,7 +30,7 @@ export enum PageName {
   TransferPayPage = 'TransferPayPage',
   JDRedEnveloperPage = 'JDRedEnveloperPage',
   JDAgentPage = "JDAgentPage",
-  JDPromotionIncomePage = "JDPromotionIncomePage",
+  JDRecommendedIncomePage = "JDRecommendedIncomePage",
   TaskCenterPage = 'TaskCenterPage',
   JDPromotionCodeListPage = 'JDPromotionCodeListPage',
   JDChanglongBetRecordpage =  'JDChanglongBetRecordpage',
