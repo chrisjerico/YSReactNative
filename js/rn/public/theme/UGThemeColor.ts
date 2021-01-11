@@ -86,10 +86,12 @@ export enum UGColor {
   RedColor5 = '#e3080c',
   YellowColor1 = '#ffce54',
   YellowColor2 = '#f6bb42',
+  YellowColor3 = '#eda321',
   GreenColor1 = '#a0d468',
   GreenColor2 = '#8cc152',
   GreenColor3 = '#48cfad',
   GreenColor4 = '#37bc9b',
+  GreenColor5 = '#8fbf73',
   BlueColor1 = '#4fc1e9',
   BlueColor2 = '#3bafda',
   BlueColor3 = '#5d9cec',
@@ -112,6 +114,7 @@ export enum UGColor {
   BackgroundColor3 = '#dedede',
   BackgroundColor4 = '#F4F4F4',
   BackgroundColor5 = '#00000066',
+  BackgroundColor6 = '#00000099',
 
   // 文字颜色
   TextColor1 = '#222',
