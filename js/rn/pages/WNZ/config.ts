@@ -120,6 +120,12 @@ const config = {
       title: '长龙排行',
       onPress: goToUserCenterType.长龙助手,
     },
+    {
+      title: '游戏大厅',
+      onPress: () => {
+        navigate(PageName.GameLobbyPage, {})
+      }
+    },
   ],
   menuSignIn: [
     {

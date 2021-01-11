@@ -12,15 +12,15 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import APIRouter from '../../../../public/network/APIRouter'
 import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
-import ISelBall, { isSelectedBall, isSelectedBallOnId } from '../../const/ISelBall'
+import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
-import LotteryConst from '../../const/LotteryConst'
+
 
 /**
- * 色波, 两面, 正码1-6, 总肖, 五行
+ * 六合彩 自选不中
  * @constructor
  */
-const UseLhcSB = () => {
+const UseLhcZXBZ = () => {
 
   const {
     tabIndex,
@@ -39,29 +39,58 @@ const UseLhcSB = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    zodiacBallIds,
   } = UseLotteryHelper()
 
-  useEffect(() => {
-    !anyEmpty(playOddData?.playGroups) && setPageData([playOddData?.playGroups])
-  }, [playOddData])
+  const [ballArray, setBallArray] = useState<Array<ILMABallArray>>(null) //当前生成的数据
 
   useEffect(() => {
-    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
+    if (!anyEmpty(pageData) && !anyEmpty(pageData[tabIndex][0].plays)) {
+      const data = pageData[tabIndex][0]
+
+      const play0 = data?.plays[0]
+      let arr = new Array(
+        49,
+      ).fill(0).map((item, index) => {
+        let ballIndex = ('0' + index).slice(-2)
+        return (
+          {
+            id: play0?.id + ballIndex,
+            name: ballIndex,
+          }
+        )
+      })
+
+      setBallArray(arr)
+      setCurData(pageData[tabIndex])
+    }
   }, [tabIndex, pageData])
 
+  useEffect(() => {
+    setPageData(playOddData?.playGroups?.map((item) => [item]))
+  }, [playOddData])
+
   return {
+    setLotteryCode,
+    ballArray,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
-    setLotteryCode,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   }
 }
 
-export default UseLhcSB
+interface ILMABallArray {
+  id: string//球的id + 编号组成
+  name?: string
+  odds?: string
+}
+
+export default UseLhcZXBZ
+export { ILMABallArray }
 
