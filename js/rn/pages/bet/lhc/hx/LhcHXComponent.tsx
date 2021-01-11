@@ -22,103 +22,88 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcZM from './UseLhcZM'
+import UseLhcHX from './UseLhcHX'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import {
   PlayData,
   PlayGroupData,
   PlayOddData,
-  PlayOddDetailData,
+  PlayOddDetailData, ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import BetLotteryContext from '../../BetLotteryContext'
 import EBall from '../../../../public/components/view/lottery/EBall'
-import { arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-
-interface IRouteParams {
-  style?: StyleProp<ViewStyle>
-}
+import LotteryLineEBall from '../../widget/LotteryLineEBall'
+import { ILotteryRouteParams } from '../../const/LotteryConst'
+import { findZodiacByName } from '../../util/LotteryUtil'
 
 /**
- * 六合彩正码
+ * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
  *
  * @param navigation
  * @constructor
  */
-const LhcZMComponent = ({ style }: IRouteParams) => {
+const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
   const {
-    dataZM,
-    setDataZM,
-    selectedZodiac,
-    setSelectedZodiac,
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
+    zodiacData,
+    setZodiacData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseLhcZM()
+  } = UseLhcHX()
+
+  useEffect(()=>{
+    setLotteryCode(lotteryCode)
+  }, [])
 
   /**
-   * 绘制 方格式
+   * 绘制 生肖和球
    * @param item
    */
-  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
-                                                         item={item}
+  const renderEBall = (item?: ZodiacNum) => !anyEmpty(zodiacData) &&  <LotteryLineEBall key={item?.id + item?.name}
+                                                         item={{
+                                                           id: item?.id,
+                                                           name: item?.name,
+                                                           zodiacItem: findZodiacByName(zodiacData, {name: item?.name})
+                                                         }}
                                                          selectedBalls={selectedBalls}
                                                          callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
-   * 绘制 球
-   * @param item
-   */
-  const renderEBall = (item?: PlayData) => <LotteryEBall key={item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
-
-  /**
-   * 绘制 正码
+   * 绘制 一行球
    * @param groupData
    */
-  const renderTM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
+  const renderLineBall = (groupData?: PlayGroupData) => !anyEmpty(groupData) && <View key={groupData?.id + groupData?.alias}
                                                         style={CommStyles.flex}>
 
     <View key={groupData?.alias}
           style={_styles.sub_title_container}>
       <Text key={groupData?.alias}
-            style={_styles.sub_title_text}>{groupData?.alias}</Text>
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
     </View>
 
     <View style={_styles.ball_container}>
       {
-        groupData?.plays?.map((item) => renderEBall(item))
-      }
-    </View>
-  </View>
-
-
-  /**
-   * 绘制 连码B/A
-   * @param groupData
-   */
-  const renderLM = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
-                                                        style={CommStyles.flex}>
-
-    <View key={groupData?.alias}
-          style={_styles.sub_title_container}>
-      <Text key={groupData?.alias}
-            style={_styles.sub_title_text}>{groupData?.alias}</Text>
-    </View>
-
-    <View style={_styles.ball_container}>
-      {
-        groupData?.plays?.map((item) => renderERect(item))
+        zodiacData?.map((item) => renderEBall(item))
       }
     </View>
   </View>
@@ -128,8 +113,7 @@ const LhcZMComponent = ({ style }: IRouteParams) => {
    */
   const renderAllBall = () => <ScrollView style={CommStyles.flex}
                                           showsVerticalScrollIndicator={false}>
-    {arrayLength(dataZM) > 0 && renderTM(dataZM[0])}
-    {arrayLength(dataZM) > 1 && renderLM(dataZM[1])}
+    {arrayLength(curData) > 0 && renderLineBall(curData[0])}
   </ScrollView>
 
   return (
@@ -153,11 +137,39 @@ const _styles = StyleSheet.create({
     paddingHorizontal: scale(1),
   },
   ball_container: {
+    padding: scale(4),
+  },
+  rect_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     padding: scale(4),
+    flex: 1,
+  },
+  tab_title_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: UGColor.LineColor3,
+    borderRadius: scale(8),
+  },
+  sv_container: {
+    flex: 1,
+  },
+  tab_title_content: {
+    flexDirection: 'row',
+  },
+  tab_item: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(8),
+    paddingVertical: scale(8),
+    paddingHorizontal: scale(30),
+  },
+  tab_title_item_text: {
+    color: UGColor.TextColor3,
+    fontSize: scale(22),
+    paddingLeft: scale(6),
   },
 })
 
-export default LhcZMComponent
+export default LhcHXComponent

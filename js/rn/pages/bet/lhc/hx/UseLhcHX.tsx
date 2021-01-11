@@ -15,14 +15,25 @@ import BetLotteryContext from '../../BetLotteryContext'
 import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 import LotteryConst from '../../const/LotteryConst'
+import LotteryData from '../../const/LotteryData'
 
 /**
- * 六合彩特码
+ * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
  * @constructor
  */
-const UseLhcZM = () => {
+const UseLhcHX = () => {
 
   const {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
+    playOddData,
+    setPlayOddData,
+    lotteryCode,
+    setLotteryCode,
     nextIssueData,
     playOddDetailData,
     curPlayOddData,
@@ -31,37 +42,42 @@ const UseLhcZM = () => {
     addOrRemoveBall,
   } = UseLotteryHelper()
 
-  const [dataZM, setDataZM] = useState<Array<PlayGroupData>>(null) //当前正码数据列表
-  const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
+  const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //选中了生肖数据
 
-  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
-
-  /**
-   * 找出当前彩种数据
-   */
   useEffect(() => {
-    setPlayOddData(playOddDetailData()?.playOdds?.find(
-      (item) => item?.code == LotteryConst.ZM))
-  }, [playOddDetailData()])
+    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
+  }, [tabIndex, pageData])
 
-  // ugLog('playOddData=', playOddData)
   useEffect(() => {
-    //特码取前3个数据
+    //平特一肖 和 平特尾数 只有1个数组，头尾数有2个
     if (!anyEmpty(playOddData?.playGroups)) {
-      setDataZM(playOddData?.playGroups)
+      setPageData([playOddData?.playGroups])
     }
   }, [playOddData])
 
+  useEffect(() => {
+    //取出生肖数据，生成对应的数据
+    !anyEmpty(curData) && setZodiacData(playOddDetailData()?.setting?.zodiacNums?.map((item) => ({
+      ...item,
+      id: curData[0]?.id + item?.name
+    })))
+  }, [curData])
+
   return {
-    dataZM,
-    setDataZM,
-    selectedZodiac,
-    setSelectedZodiac,
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
+    zodiacData,
+    setZodiacData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   }
 }
 
-export default UseLhcZM
+export default UseLhcHX
 
