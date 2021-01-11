@@ -22,6 +22,10 @@ import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 
 import SegmentedControl from "rn-segmented-control";
+import moment from 'moment';
+
+
+import { number } from 'prop-types';
 interface JDSegmentPage {
 
 }
@@ -34,6 +38,22 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     console.log('index ==',index);
     
     setTabIndex(index);
+
+    // var date = moment('2016-10-11 18:06:03')
+    //     console.log('date ==',date);
+
+    //     let timestamp = moment(date).format("X");
+    //     console.log('timestamp ==',timestamp);
+    
+
+
+
+    // console.log('相差多少年',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'years'))
+    // console.log('相差多少月',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'months'))
+    // console.log('相差多少天',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'days'))
+    // console.log('相差多少分',moment('2016-10-11 18:09:03').diff(moment('2016-10-11 18:06:03'), 'minutes')) 
+    console.log('相差多少秒',moment('2016-10-11 18:07:03').diff(moment('2016-10-11 18:06:03'), 'seconds')) 
+
   };
   /**
  * 初始化
@@ -44,6 +64,10 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     setProps({
       navbarOpstions: { hidden: false, title: '红包扫雷', back: true },
       didFocus: () => {
+
+        
+        
+        
       }
     })
 

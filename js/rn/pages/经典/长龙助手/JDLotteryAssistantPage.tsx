@@ -22,6 +22,7 @@ import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 import { UGBetItemModel, UGChanglongaideModel } from '../Model/UGChanglongaideModel';
+import CountDown from 'react-native-countdown-component';
 
 interface JDLotteryAssistantPage {
   bottomH?: number,//底部的高度
@@ -58,9 +59,9 @@ const JDLotteryAssistantPage = () => {
     obj = obj.replace(/^\./g, "");//保证只有出现一个.而没有多个. 
     obj = obj.replace(/\.{2,}/g, ".");//保证.只出现一次，而不能出现两次以上 
     obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-    obj = obj.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+    obj = obj.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数
     return obj;
-}
+  }
 
 
 
@@ -324,6 +325,8 @@ const JDLotteryAssistantPage = () => {
   }
 
 
+
+
   /**
 * 渲染列表项
 * 
@@ -346,13 +349,27 @@ const JDLotteryAssistantPage = () => {
               </Text>
             </View>
             {/* 文字2 */}
-            <View style={[{ flexDirection: 'row', }]}>
+            <View style={[{ flexDirection: 'row',  alignItems: 'center', height:28,backgroundColor:'blue'}]}>
               <Text style={{ fontSize: 13, color: Skin1.textColor1 }}>
-                {!anyEmpty(item.displayNumber)?item.displayNumber:item.issue}
+                {!anyEmpty(item.displayNumber) ? item.displayNumber : item.issue}
               </Text>
-              <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+              {/* <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
                 {'00:03:32'}
-              </Text>
+              </Text> */}
+              {/* 倒计时 */}
+              <CountDown
+                size={10}
+                until={1000}
+                onFinish={() => alert('Finished')}
+                digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#1CC625' }}
+                digitTxtStyle={{ color: '#1CC625' }}
+                timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
+                separatorStyle={{ color: '#1CC625' }}
+                timeToShow={['H', 'M', 'S']}
+                timeLabels={{ m: null, s: null }}
+                showSeparator
+              />
+
             </View>
             {/* 图标 */}
             <View style={[{ flexDirection: 'row', }]}>
@@ -520,7 +537,7 @@ const JDLotteryAssistantPage = () => {
             <View style={{ flex: 1 }}></View>
             <TextInput style={{ height: 30, width: 140, backgroundColor: Skin1.textColor4, marginRight: 10, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
               placeholder={'   投注金额'}
-              value={v.amountLabel} 
+              value={v.amountLabel}
               placeholderTextColor={Skin1.textColor3}
               onChangeText={(text) => {
                 console.log('投注金额==', text);
@@ -529,7 +546,7 @@ const JDLotteryAssistantPage = () => {
                   v.betDetailViewhidden = false;
                   setProps()
                 }
-                else{
+                else {
                   v.betDetailViewhidden = true;
                   setProps()
                 }
@@ -589,7 +606,7 @@ const styles = StyleSheet.create({
   },
   viewItem: {
     flexDirection: 'column',
-    height: scale(90),
+    height: scale(96),
   },
   listEmpty: {
     fontSize: scale(22),
