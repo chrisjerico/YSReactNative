@@ -20,6 +20,7 @@ import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
 import LhcHXComponent from './lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
 import BetBoardComponent from './board/BetBoardComponent'
+import { anyEmpty } from '../../public/tools/Ext'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -35,6 +36,8 @@ const BetLotteryPage = ({ navigation, route }) => {
   const { lotteryId } = route?.params
 
   const {
+    userInfo,
+    systemInfo,
     setLotteryId,
     nextIssueData,
     playOddDetailData,
@@ -71,9 +74,9 @@ const BetLotteryPage = ({ navigation, route }) => {
           color={Skin1.navBarTitleColor}/>
     <View style={CommStyles.flex}/>
     <Text style={[_styles.top_money,
-      { color: Skin1.navBarTitleColor }]}>{'1002'}</Text>
+      { color: Skin1.navBarTitleColor }]}>{!anyEmpty(userInfo) && userInfo?.balance}</Text>
     <Icon size={scale(24)}
-          name={'undo'}
+          name={'refresh'}
           color={Skin1.navBarTitleColor}/>
     <TouchableOpacity onPress={() => pop()}>
       <View style={_styles.back_bt_container}>

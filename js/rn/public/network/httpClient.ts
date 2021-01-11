@@ -79,7 +79,7 @@ httpClient.interceptors.response.use(
       OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [config?.url], args2: [Object.assign({token:UGUserModel.getToken()}, config?.orParams)], args3: [data] }]);
     }
 
-    //ugLog("http ful filled res 2 = ", JSON.stringify(response))
+    ugLog("http ful filled res 5 = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {
     //   if (config?.expiredTime < 1000000000000000) {
@@ -148,7 +148,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data })
   devConfig.isTest() && (config.orParams = params)
-  
+
   let { isEncrypt = true } = config
   let encryptData = await encryptParams(params, isEncrypt);
 

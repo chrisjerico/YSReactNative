@@ -18,7 +18,7 @@ import * as Animatable from 'react-native-animatable'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { pop } from '../../../public/navigation/RootNavigation'
-import Icon from 'react-native-vector-icons/AntDesign'
+import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import CommStyles from '../../base/CommStyles'
 import { ugLog } from '../../../public/tools/UgLog'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -65,15 +65,19 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
 
   const renderSliderArea = () => <View style={_styles.slider_container}>
 
+    <Icon size={scale(28)}
+          color={'white'}
+          name={'arrow-down'}/>
+
     <Text style={_styles.sub_title_text}>{'退水: 0%'}</Text>
 
     <Icon size={scale(36)}
-          color={Skin1.themeColor}
-          name={'minuscircleo'}/>
+          color={'white'}
+          name={'plus'}/>
 
     <Icon size={scale(36)}
-          color={Skin1.themeColor}
-          name={'pluscircleo'}/>
+          color={'white'}
+          name={'minus'}/>
 
   </View>
   return (
@@ -88,13 +92,17 @@ const _styles = StyleSheet.create({
   slider_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: UGColor.LineColor3,
+    backgroundColor: UGColor.BackgroundColor5,
     padding: scale(6),
+    borderTopLeftRadius: scale(16),
+    borderTopRightRadius: scale(16),
   },
   sub_title_text: {
-    color: UGColor.TextColor2,
+    flex: 1,
+    color: 'white',
     fontSize: scale(22),
     paddingHorizontal: scale(1),
+    textAlign: 'right',
   },
   ball_container: {
     flexDirection: 'row',
