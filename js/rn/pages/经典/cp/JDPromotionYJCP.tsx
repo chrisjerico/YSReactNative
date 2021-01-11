@@ -34,7 +34,8 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
     falseItem()
     item.isPress = true
     setSelItemContent(item.content)
-    props?.onRoad()
+
+    props?.onRoad && props?.onRoad()
   }
 
   /**
@@ -62,7 +63,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
           {list?.map((obj, idx) => {
             return (
 
-              <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', borderBottomWidth: scale(1), borderColor: Skin1.textColor3, height: 35, backgroundColor: obj?.isPress ? Skin1.CLBgColor : '#C4CBCC', }}
+              <TouchableOpacity key={'key'+idx} style={{ alignItems: 'center', justifyContent: 'center', borderBottomWidth: scale(1), borderColor: Skin1.textColor3, height: 35, backgroundColor: obj?.isPress ? Skin1.CLBgColor : '#C4CBCC', }}
                 onPress={() => {
                   onPressItem(obj)
                 }}>

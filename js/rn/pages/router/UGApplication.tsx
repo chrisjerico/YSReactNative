@@ -98,7 +98,7 @@ import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
-import JDPromotionIncomePage from '../经典/推荐收益/JDPromotionIncomePage'
+import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
 import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import BetLotteryPage from '../bet/BetLotteryPage'
@@ -156,7 +156,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferView, //额度转页-经典版
   TransferLineView, //额度转页-天空蓝版
   TransferTKLMainView, //额度转页-新版
-  JDPromotionIncomePage,//推荐收益
+  JDRecommendedIncomePage,//推荐收益
   JDPromotionCodeListPage,//邀请码
   JDChanglongBetRecordpage,//我的下注记录
   JDLotteryAssistantPage,//最新长龙
