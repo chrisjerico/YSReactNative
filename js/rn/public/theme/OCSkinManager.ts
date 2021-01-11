@@ -34,20 +34,74 @@ interface OCSkinConf<String, Number, Boolean> {
   skitType: String // 皮肤类型 String
   skitString: String// 皮肤类型 String
   isBlack: Boolean // 是否是黑色主题
-  is23: Boolean// 是否是经典23黑模板
+  is23: Boolean// 是否是经典21黑模板
+  isGPK: Boolean// 是否是GPK模板
 }
 
 
 const ocConfig: OCSkinConf<st<string>, st<number>, st<boolean>> = {
-  skitType: UGSkinType1,
-  skitString: UGSkinType1,
+  skitType: {
+    ...UGSkinType1,
+    经典1蓝: '经典',
+    经典2红: '经典',
+    经典3金: '经典',
+    经典4绿: '经典',
+    经典5褐: '经典',
+    经典6淡蓝: '经典',
+    经典7深蓝: '经典',
+    经典8紫: '经典',
+    经典9深红: '经典',
+    经典10橘黄: '经典',
+    经典11橘红: '经典',
+    经典12星空蓝: '经典',
+    经典13紫: '经典',
+    经典14粉: '经典',
+    经典15淡蓝: '经典',
+    经典16深紫: '经典',
+    经典17金黄: '经典',
+    经典18天空灰: '经典',
+    经典19忧郁蓝: '经典',
+    经典20科技绿: '经典',
+    经典21黑: '经典',
+    经典22白: '经典',
+    香槟金0金: '香槟金',
+    香槟金1黑: '香槟金',
+    香槟金2紫: '香槟金',
+    香槟金3红: '香槟金',
+    香槟金4浅蓝: '香槟金',
+    香槟金5绿: '香槟金',
+    香槟金6蓝: '香槟金',
+    香槟金7小红: '香槟金',
+    香槟金8白: '香槟金',
+    金沙: '金沙主题',
+    简约0蓝: '简约模板',
+    简约1红: '简约模板',
+    简约2黑: '简约模板',
+    GPK0黑: 'GPK版',
+    GPK1金: 'GPK版',
+  },
+  skitString: {
+    ...UGSkinType1,
+    经典1蓝: '经典 1蓝色',
+    经典21黑: '经典 21黑色',
+    GPK1金: 'GPK版香槟金',
+
+  },
   isBlack: {
     默认: false,
     GPK0黑: true,
     香槟金1黑: true,
     尊龙: true,
   },
-  is23: { 默认: false },
+  is23: {
+    默认: false,
+    经典21黑: true
+  },
+  isGPK: {
+    默认: false,
+    GPK1金: true,
+    GPK0黑: true,
+  }
 }
 
 const ocColors: OCSkinColor<st<string>, st<string[]>> = {
