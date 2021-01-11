@@ -76,17 +76,19 @@ const games = {
 
     return (
       <TouchableWithoutFeedback onPress={() => {
-        if (systemInfo?.mobileGameHall == '1') {//新彩票大厅
-          push(PageName.GameHallPage, { showBackButton: true })
+        if (item.category == 'lottery') {
+          if (systemInfo?.mobileGameHall == '1') {//新彩票大厅
+            push(PageName.GameHallPage, { showBackButton: true })
 
-        } else if (systemInfo?.mobileGameHall == '2') {//自由彩票大厅
-          push(PageName.FreedomHallPage, { showBackButton: true })
+          } else if (systemInfo?.mobileGameHall == '2') {//自由彩票大厅
+            push(PageName.FreedomHallPage, { showBackButton: true })
 
+          }
         } else {
           push(PageName.SeriesLobbyPage,
             { gameId: 0,
               subId: games.subId[item.category],
-              name,
+              name: item.categoryName,
               headerColor: Skin1.themeColor,
               homePage: PageName.WNZHomePage })
         }

@@ -4,7 +4,7 @@ import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
-import { SeriesId } from '../models/Enum'
+import { GameType, SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
 import { PageName } from '../navigation/Navigation'
 import { navigate, popToRoot, push } from '../navigation/RootNavigation'
@@ -137,6 +137,11 @@ export default class PushHelper {
           // return
         }
         if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
+
+        if (game?.subId == GameType.游戏大厅) {  //游戏大厅
+          push(PageName.GameLobbyPage, { showBackButton: true })
+          return 
+        }
 
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break

@@ -358,13 +358,7 @@ const WNZHomePage = () => {
                     if (onPress) {
                       onPress()
                     } else {
-                      ugLog('GameType item=', JSON.stringify(item))
-                      const { subId } = item
-                      if (subId == GameType.游戏大厅) {  //游戏大厅
-                        push(PageName.GameLobbyPage, { showBackButton: true })
-                      } else {
-                        PushHelper.pushHomeGame(item)
-                      }
+                      PushHelper.pushHomeGame(item)
                     }
                   }
                 }}
