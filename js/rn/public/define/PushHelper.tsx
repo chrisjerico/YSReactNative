@@ -4,7 +4,7 @@ import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
-import { SeriesId } from '../models/Enum'
+import { GameType, SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
 import { PageName } from '../navigation/Navigation'
 import { navigate, popToRoot, push } from '../navigation/RootNavigation'
@@ -23,6 +23,7 @@ import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
 import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
+import { Skin1 } from '../theme/UGSkinManagers'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -136,6 +137,11 @@ export default class PushHelper {
           // return
         }
         if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
+
+        if (game?.subId == GameType.游戏大厅) {  //游戏大厅
+          push(PageName.GameLobbyPage, { showBackButton: true })
+          return 
+        }
 
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
@@ -596,8 +602,8 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.资金明细: {
-            // if (B_DEBUG) {
-            push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
+            // if (B_DEBUG) {r
+            push(PageName.CapitalPage, { showBackButton: true })
             return
             // }
             // subId = MenuType.ZHGL
@@ -619,8 +625,10 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.游戏大厅: {
-            subId = MenuType.GCDT
-            break
+            // subId = MenuType.GCDT
+            ugLog("游戏大厅")
+            push(PageName.GameLobbyPage, { headerColor: Skin1.themeColor })
+            return
           }
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return

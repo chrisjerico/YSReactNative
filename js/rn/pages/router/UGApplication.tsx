@@ -46,6 +46,7 @@ import CapitalPage from '../cpt/list/CapitalPage'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
+import GameLobbyPage from '../hall/GameLobbyPage'
 import GameHallPage from '../hall/new/GameHallPage'
 import JXHHomePage from '../JXH/JXHHomePage'
 import JXHMinePage from '../JXH/JXHMinePage'
@@ -119,6 +120,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
   // 彩票大厅-默认
+  GameLobbyPage,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版

@@ -222,6 +222,7 @@ const WNZHomePage = () => {
                   circleContainerStyle = {{ width: '85%'}}
                   circleColor={'transparent'}
                   onPress={() => {
+                    ugLog("TEST onPRess")
                     if (AppDefine.siteId == 'c245') {
                       if (gameId == 'tryPlay') {
                         tryPlay()
