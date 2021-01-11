@@ -28,7 +28,8 @@ export async function setRnPageInfo(force = false) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
       vcName: 'UGPromotionIncomeController',
-      rnName: PageName.JDLotteryAssistantPage,
+      // rnName: PageName.JDLotteryAssistantPage,
+      rnName: PageName.JDRecommendedIncomePage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -64,7 +65,7 @@ export async function setRnPageInfo(force = false) {
     // 推荐信息
     pages.push({
       vcName: 'UGPromotionIncomeController',
-      rnName: PageName.JDPromotionIncomePage,
+      rnName: PageName.JDRecommendedIncomePage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -118,7 +119,7 @@ export async function setRnPageInfo(force = false) {
   // 推荐信息
   pages.push({
     vcName: 'UGPromotionIncomeController',
-    rnName: PageName.JDPromotionIncomePage,
+    rnName: PageName.JDRecommendedIncomePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: false,
     允许未登录访问: false,

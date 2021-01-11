@@ -36,25 +36,167 @@ const JDLotteryAssistantPage = () => {
       bottomH: 60,
       items: [],
       isRefreshing: true,
-      imgLoading: 'https://appstatic.guolaow.com/assets/load.png'
+      imgLoading: 'https://appstatic.guolaow.com/web/images/loading.png'
     }
   )
 
-    /**
- * 根据数据是数组还是字典返回数据
- * 
- */
-function playNameColor(item: any) {
- if (item.playName == '小' || item.playName == '大') {
-   return '#76B473'
- }
- else if (item.playName == '单' || item.playName == '双') {
-  return '#800080'
- }
- else if (item.playName == '龙' || item.playName == '虎') {
-  return '#DC143C	'
- }
-}
+
+
+  /**
+* cell 按钮点击
+* 
+*/
+  function betItemSelect(item: any, index: number) {
+    let obj = item.betList[index];
+    obj.select = !obj.select;
+
+  }
+
+
+  /**
+* cell img的显示数据
+* 
+*/
+  function cellImg(item: any, index: number) {
+
+    if (anyEmpty(item.logo)) {
+
+      return v.imgLoading;
+    } else {
+      return item.logo
+    }
+
+  }
+  /**
+* betView2 的颜色
+* 
+*/
+  function betView2Color(item: any) {
+    if (!arrayEmpty(item.betList)) {
+      let length = item.betList.length - 1;
+      let obj = item.betList[length]
+      if (obj.select) {
+        return Skin1.themeColor
+      } else {
+        return 'white'
+      }
+    }
+  }
+
+  /**
+*  betView1 的颜色
+* 
+*/
+  function betView1Color(item: any) {
+    if (!arrayEmpty(item.betList)) {
+      let obj = item.betList[0]
+      if (obj.select) {
+        return Skin1.themeColor
+      } else {
+        return 'white'
+      }
+    }
+
+  }
+
+  /**
+* oddsLabel2 playNameLabel2 的颜色
+* 
+*/
+  function lastLabelColor(item: any) {
+    if (!arrayEmpty(item.betList)) {
+      let length = item.betList.length - 1;
+      let obj = item.betList[length]
+      if (obj.select) {
+        return 'white'
+      } else {
+        return 'black'
+      }
+    }
+    else {
+      return Skin1.textColor1
+    }
+  }
+
+  /**
+* oddsLabel1 playNameLabel1 的颜色
+* 
+*/
+  function fastLabelColor(item: any) {
+    if (!arrayEmpty(item.betList)) {
+      let obj = item.betList[0]
+      if (obj.select) {
+        return 'white'
+      } else {
+        return 'black'
+      }
+    }
+    else {
+      return Skin1.textColor1
+    }
+  }
+
+
+  /**
+* 根据oddsLabel2 的显示数据
+* 
+*/
+  function oddsLabel2(item: any) {
+    if (!arrayEmpty(item.betList)) {
+      let length = item.betList.length - 1;
+      return item.betList[length].odds;
+    }
+  }
+
+  /**
+* 根据playNameLabel2 的显示数据
+* 
+*/
+  function playName2(item: any) {
+    if (!arrayEmpty(item.betList)) {
+      let length = item.betList.length - 1;
+      return item.betList[length].playName;
+    }
+  }
+
+
+  /**
+* 根据oddsLabel1 的显示数据
+* 
+*/
+  function oddsLabel1(item: any) {
+    if (!arrayEmpty(item.betList)) {
+      return item.betList[0].odds;
+    }
+  }
+
+  /**
+* 根据playNameLabel1 的显示数据
+* 
+*/
+  function playName1(item: any) {
+    if (!arrayEmpty(item.betList)) {
+      return item.betList[0].playName;
+    }
+  }
+
+
+
+  /**
+* 根据数据是数组还是字典返回数据
+* 
+*/
+  function playNameColor(item: any) {
+    if (item.playName == '小' || item.playName == '大') {
+      return '#76B473'
+    }
+    else if (item.playName == '单' || item.playName == '双') {
+      return '#800080'
+    }
+    else if (item.playName == '龙' || item.playName == '虎') {
+      return '#DC143C	'
+    }
+  }
 
   /**
  * 根据数据是数组还是字典返回数据
@@ -82,7 +224,7 @@ function playNameColor(item: any) {
     console.log('长龙助手===');
     api.game.changlong('60').useSuccess(({ data }) => {
 
-      console.log('data =', data);
+      // console.log('data =', data);
 
       if (anyEmpty(data)) {
         return
@@ -130,11 +272,12 @@ function playNameColor(item: any) {
 */
   const _renderItem = ({ index, item }) => {
     {
+
       return (
         <View style={[styles.viewItem, { alignItems: 'center', marginHorizontal: 10, flexDirection: 'row', }]}>
           {/* 图片 */}
           <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-            <Image style={[styles.itemImageImageStyle,]} source={{ uri: item.logo ? item.logo : v.imgLoading }} />
+            <Image style={[styles.itemImageImageStyle,]} source={{ uri: cellImg(item, index) }} />
           </View>
           {/* 内容 */}
           <View style={[{ flexDirection: 'column', marginLeft: 10, }]}>
@@ -155,42 +298,52 @@ function playNameColor(item: any) {
             </View>
             {/* 图标 */}
             <View style={[{ flexDirection: 'row', }]}>
-              <View style={{  backgroundColor: '#A9A9A9', borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal:5,marginVertical:3}}>
+              <View style={{ backgroundColor: '#A9A9A9', borderRadius: 3, }}>
+                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.playCateName}
                 </Text>
               </View>
-              <View style={{ marginLeft:10, backgroundColor: playNameColor(item), borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal:5,marginVertical:3}}>
+              <View style={{ marginLeft: 10, backgroundColor: playNameColor(item), borderRadius: 3, }}>
+                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.playName}
                 </Text>
               </View>
-              <View style={{ marginLeft:10, backgroundColor: '#DC143C'	, borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal:5,marginVertical:3}}>
+              <View style={{ marginLeft: 10, backgroundColor: '#DC143C', borderRadius: 3, }}>
+                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.count}
                 </Text>
               </View>
-             
+
             </View>
           </View >
           {/* 多余 */}
-          <View style={[{ flex:1}]}></View>
+          <View style={[{ flex: 1 }]}></View>
           {/* 按钮 */}
-          <View style={[{ flexDirection: 'row',  }]}>
-            <View style={[{ flexDirection: 'column',  alignItems: 'center',width:46,height:46,borderRadius:4,borderColor:Skin1.textColor1,borderWidth:1}]}>
-              <Text style={{ fontSize: 15, color: Skin1.textColor1,marginTop:5 }}>
-                {'大'}
+          <View style={[{ flexDirection: 'row', }]}>
+            <TouchableOpacity style={[{
+              flexDirection: 'column', alignItems: 'center', width: 46, height: 46, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
+              backgroundColor: betView1Color(item)
+            }]}
+              onPress={() => {
+
+              }}
+            >
+              <Text style={{ fontSize: 15, color: fastLabelColor(item), marginTop: 5 }}>
+                {playName1(item)}
               </Text>
-              <Text style={{ fontSize: 13, color: Skin1.textColor1,marginTop:2 }}>
-                {'1.980'}
+              <Text style={{ fontSize: 12, color: fastLabelColor(item), marginTop: 4 }}>
+                {oddsLabel1(item)}
               </Text>
-            </View>
-            <View style={[{marginLeft:15, flexDirection: 'column',  alignItems: 'center',width:46,height:46,borderRadius:4,borderColor:Skin1.textColor1,borderWidth:1}]}>
-              <Text style={{ fontSize: 15, color: Skin1.textColor1,marginTop:5 }}>
-                {'大'}
+            </TouchableOpacity>
+            <View style={[{
+              marginLeft: 15, flexDirection: 'column', alignItems: 'center', width: 46, height: 46, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
+              backgroundColor: betView2Color(item)
+            }]}>
+              <Text style={{ fontSize: 15, color: lastLabelColor(item), marginTop: 5 }}>
+                {playName2(item)}
               </Text>
-              <Text style={{ fontSize: 13, color: Skin1.textColor1,marginTop:2 }}>
-                {'1.980'}
+              <Text style={{ fontSize: 12, color: lastLabelColor(item), marginTop: 4 }}>
+                {oddsLabel2(item)}
               </Text>
             </View>
           </View>
@@ -213,6 +366,7 @@ function playNameColor(item: any) {
 
       didFocus: () => {
         v.bottomH = 60;
+        v.imgLoading = 'https://appstatic.guolaow.com/web/images/loading.png'
         onHeaderRefresh()
       }
     })
@@ -221,7 +375,7 @@ function playNameColor(item: any) {
 
 
   return (
-    <View style={[styles.container, { backgroundColor: Skin1.CLBgColor }]}>
+    <View style={[styles.container, { backgroundColor: Skin1.isBlack ? Skin1.CLBgColor : Skin1.textColor4 }]}>
       <View style={{ marginTop: 0, flex: 1, }}>
         {/* 列表 */}
         <View style={{ height: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH }}>

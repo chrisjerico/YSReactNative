@@ -29,16 +29,17 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { PageName } from '../../../public/navigation/Navigation';
 import { push } from '../../../public/navigation/RootNavigation';
 
-interface JDPromotionIncomePage {
+interface JDRecommendedIncomePage {
   tabNames?: Array<string>//tab界面名称数据
 }
 
-const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
+const 
+JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
 
   //调用sysConf
   const { inviteCode } = UGStore.globalProps.sysConf
 
-  let { current: v } = useRef<JDPromotionIncomePage>(
+  let { current: v } = useRef<JDRecommendedIncomePage>(
     {
       tabNames: [
         PromotionConst.推荐信息,
@@ -187,4 +188,5 @@ const styles = StyleSheet.create({
 });
 
 
-export default JDPromotionIncomePage
+export default 
+JDRecommendedIncomePage

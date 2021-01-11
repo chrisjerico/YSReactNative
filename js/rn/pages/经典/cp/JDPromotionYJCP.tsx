@@ -34,7 +34,8 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
     falseItem()
     item.isPress = true
     setSelItemContent(item.content)
-    props?.onRoad()
+
+    props?.onRoad && props?.onRoad()
   }
 
   /**
