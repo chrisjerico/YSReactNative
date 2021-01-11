@@ -21,12 +21,20 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
+import { UGBetItemModel, UGChanglongaideModel } from '../Model/UGChanglongaideModel';
 
 interface JDLotteryAssistantPage {
   bottomH?: number,//底部的高度
   items?: Array<any>//界面数据
   isRefreshing?: boolean//下拉刷新开始结束 
   imgLoading?: string //默认图片
+  selAideModel?: UGChanglongaideModel //
+  selBetItem?: UGBetItemModel//投注
+  betCount?: number //下注数
+  amountLabel?: string//投注金额
+  betDetailViewhidden?: boolean//提示是否隐藏
+  betDetailLabel?: string//提示文字
+  betDetail2Label?: string//提示2文字
 }
 
 const JDLotteryAssistantPage = () => {
@@ -41,14 +49,64 @@ const JDLotteryAssistantPage = () => {
   )
 
 
+  /**
+* 限制只能输入数字和小数
+* 
+*/
+  function chkPrice(obj) { //方法1
+    obj = obj.replace(/[^\d.]/g, ""); //清除"数字"和"."以外的字符
+    obj = obj.replace(/^\./g, "");//保证只有出现一个.而没有多个. 
+    obj = obj.replace(/\.{2,}/g, ".");//保证.只出现一次，而不能出现两次以上 
+    obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    obj = obj.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+    return obj;
+}
+
+
 
   /**
 * cell 按钮点击
 * 
 */
-  function betItemSelect(item: any, index: number) {
-    let obj = item.betList[index];
+  function betItemSelect(item?: any, index?: number) {
+    let obj = item?.betList[index];
     obj.select = !obj.select;
+    for (let index = 0; index < v.items.length; index++) {
+      const aideModel = v.items[index];
+      for (let i = 0; i < aideModel.betList.length; i++) {
+        const bet = aideModel.betList[i];
+        if (bet != obj) {
+          bet.select = false;
+        }
+      }
+    }
+
+    if (obj.select) {
+      console.log('item==', item);
+      console.log('obj==', obj);
+
+      v.selAideModel = item;
+      v.selBetItem = obj;
+      v.betCount = 1;
+
+
+      if (anyEmpty(v.amountLabel)) {
+        v.betDetailViewhidden = true;
+        setProps()
+        return;
+      }
+      v.betDetailViewhidden = false;
+      let total: number = parseFloat(v.amountLabel) * parseFloat(obj.odds)
+      v.betDetailLabel = v.selAideModel?.title + ', '
+        + v.selAideModel?.playCateName + ', '
+        + v.selBetItem?.playName;
+      v.betDetail2Label = ' 奖金:' + total?.toFixed(4)
+    } else {
+      v.betDetailViewhidden = true;
+      v.selAideModel = null
+      v.betCount = 0;
+    }
+    setProps()
 
   }
 
@@ -284,13 +342,13 @@ const JDLotteryAssistantPage = () => {
             {/* 文字1 */}
             <View>
               <Text style={{ fontSize: 15, color: Skin1.textColor1, }}>
-                {'幸运飞艇'}
+                {item.title}
               </Text>
             </View>
             {/* 文字2 */}
             <View style={[{ flexDirection: 'row', }]}>
               <Text style={{ fontSize: 13, color: Skin1.textColor1 }}>
-                {'20190511009'}
+                {!anyEmpty(item.displayNumber)?item.displayNumber:item.issue}
               </Text>
               <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
                 {'00:03:32'}
@@ -325,7 +383,7 @@ const JDLotteryAssistantPage = () => {
               backgroundColor: betView1Color(item)
             }]}
               onPress={() => {
-
+                betItemSelect(item, 0)
               }}
             >
               <Text style={{ fontSize: 15, color: fastLabelColor(item), marginTop: 5 }}>
@@ -335,17 +393,21 @@ const JDLotteryAssistantPage = () => {
                 {oddsLabel1(item)}
               </Text>
             </TouchableOpacity>
-            <View style={[{
+            <TouchableOpacity style={[{
               marginLeft: 15, flexDirection: 'column', alignItems: 'center', width: 46, height: 46, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
               backgroundColor: betView2Color(item)
-            }]}>
+            }]}
+              onPress={() => {
+                betItemSelect(item, 1)
+              }}
+            >
               <Text style={{ fontSize: 15, color: lastLabelColor(item), marginTop: 5 }}>
                 {playName2(item)}
               </Text>
               <Text style={{ fontSize: 12, color: lastLabelColor(item), marginTop: 4 }}>
                 {oddsLabel2(item)}
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -367,6 +429,13 @@ const JDLotteryAssistantPage = () => {
       didFocus: () => {
         v.bottomH = 60;
         v.imgLoading = 'https://appstatic.guolaow.com/web/images/loading.png'
+        v.selAideModel = null
+        v.selBetItem = null
+        v.betCount = 0
+        v.amountLabel = ''
+        v.betDetailViewhidden = true
+        v.betDetailLabel = ''
+        v.betDetail2Label = ''
         onHeaderRefresh()
       }
     })
@@ -403,7 +472,7 @@ const JDLotteryAssistantPage = () => {
 
         </View>
         {/* 下注详情 */}
-        <View style={{
+        {!v.betDetailViewhidden && <View style={{
           position: 'absolute',
           marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH - 40,
           marginLeft: 10,
@@ -412,12 +481,17 @@ const JDLotteryAssistantPage = () => {
           width: 310,
           justifyContent: 'center',
           alignItems: 'center',
+          flexDirection: 'row',
+          borderRadius: 3,
         }}>
           <Text style={{ fontSize: 14, color: 'black' }}>
-            {'幸运飞艇，第三，小 奖金：199'}
+            {v.betDetailLabel}
+          </Text>
+          <Text style={{ fontSize: 14, color: '#DC143C' }}>
+            {v.betDetail2Label}
           </Text>
 
-        </View>
+        </View>}
         {/* 底部 */}
         <View style={{
           position: 'absolute',
@@ -438,7 +512,7 @@ const JDLotteryAssistantPage = () => {
               {'共'}
             </Text>
             <Text style={{ fontSize: 18, color: '#DC143C' }}>
-              {'0'}
+              {v.betCount}
             </Text>
             <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 2 }}>
               {'注'}
@@ -446,9 +520,19 @@ const JDLotteryAssistantPage = () => {
             <View style={{ flex: 1 }}></View>
             <TextInput style={{ height: 30, width: 140, backgroundColor: Skin1.textColor4, marginRight: 10, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
               placeholder={'   投注金额'}
+              value={v.amountLabel} 
               placeholderTextColor={Skin1.textColor3}
               onChangeText={(text) => {
-
+                console.log('投注金额==', text);
+                v.amountLabel = chkPrice(text).trim()
+                if (!anyEmpty(v.amountLabel) && !anyEmpty(v.selBetItem) && !anyEmpty(v.selAideModel)) {
+                  v.betDetailViewhidden = false;
+                  setProps()
+                }
+                else{
+                  v.betDetailViewhidden = true;
+                  setProps()
+                }
               }}
             ></TextInput>
 
