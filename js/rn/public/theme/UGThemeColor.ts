@@ -115,8 +115,6 @@ export enum UGColor {
   BackgroundColor2 = '#F7F7F7',
   BackgroundColor3 = '#dedede',
   BackgroundColor4 = '#F4F4F4',
-  BackgroundColor5 = '#00000066',
-  BackgroundColor6 = '#00000099',
 
   // 文字颜色
   TextColor1 = '#222',
@@ -143,6 +141,8 @@ export enum UGColor {
   // 透明背景色
   transparent = '#00000000',
   transparent2 = '#ffffff44',
+  transparent3 = '#000000aa',
+  transparent4 = '#000000cc',
 
   // 禁用
   disableColor1 = '#EFF3F8',

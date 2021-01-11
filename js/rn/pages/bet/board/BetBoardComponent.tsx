@@ -118,7 +118,7 @@ const _styles = StyleSheet.create({
   slider_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: UGColor.BackgroundColor5,
+    backgroundColor: UGColor.transparent3,
     paddingHorizontal: scale(12),
     borderTopLeftRadius: scale(16),
     borderTopRightRadius: scale(16),
@@ -187,7 +187,7 @@ const _styles = StyleSheet.create({
   input_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: UGColor.BackgroundColor6,
+    backgroundColor: UGColor.transparent4,
     padding: scale(12),
   },
   middle_container: {
