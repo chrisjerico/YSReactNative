@@ -42,8 +42,8 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   const { showBackButton } = route?.params
 
-  const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
+  const [isSetData, setIsSetData] = useState(false) //是否存取過數據
   const [gameData, setGameData] = useState<Array<Data>>([])//所有数据
 
   const {
@@ -78,6 +78,7 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
       ugLog('data res=', res)
       if (res?.code == 0) {
         let resData = res?.data
+        setIsSetData(true)
         refreshUI(res?.data)
       } else {
         Toast(res?.msg)
@@ -101,11 +102,14 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
    */
   const renderAllData = () => {
     return (
+      isSetData
+      ?
       anyEmpty(gameData)
         ? <EmptyView style={{ flex: 1 }}/>
         : <ScrollView>
           {renderDataList(gameData)}
         </ScrollView>
+      : <View></View>
     )
   }
 

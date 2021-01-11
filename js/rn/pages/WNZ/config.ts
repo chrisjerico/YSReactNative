@@ -122,7 +122,9 @@ const config = {
     },
     {
       title: '游戏大厅',
-      onPress: goToUserCenterType.游戏大厅,
+      onPress: () => {
+        navigate(PageName.GameLobbyPage, {})
+      }
     },
   ],
   menuSignIn: [
