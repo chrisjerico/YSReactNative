@@ -83,6 +83,12 @@ export const Res = {
   a10k: img_assets('chip/a10k'),
   clr: img_assets('chip/clr'),
 
+  //彩票功能跳转图片
+  tv1: img_assets('tv/tv'),
+  tv_long: img_assets('tv/long'),
+  tv_data: img_assets('tv/data'),
+  tv_trophy: img_assets('tv/trophy'),
+
   //虚拟币教程
   hbjc_img: img_assets('tutorial/hbjc_img', 'jpg'),
   c012_virtualcoin_icon: img_assets('tutorial/c012_virtualcoin_icon', 'jpg'),
