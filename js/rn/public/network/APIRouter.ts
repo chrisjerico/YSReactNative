@@ -34,6 +34,7 @@ import { RegisterModel } from './Model/RegisterModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { SystemConfigModel } from './Model/SystemConfigModel'
+import { TaskCenterModel } from './Model/TaskCenterModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { TaskCreditsLogModel } from './Model/TaskCreditsLogModel'
 import { TicketHistoryModel } from './Model/TicketHistoryModel'
@@ -72,6 +73,21 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static task_center = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.get<TaskCenterModel>('c=task&a=center&category=1&rows=1000&token=' + tokenParams + '&page=1')
+  }
+
   static task_creditsLog = async () => {
     let tokenParams = ''
     switch (Platform.OS) {
