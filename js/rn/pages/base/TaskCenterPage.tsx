@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Image, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -31,7 +31,9 @@ const ExpBar = () => {
 }
 
 const CommonTaskTab = ({ tabLabel }) => {
-  return <View></View>
+  return (
+    <List uniqueKey={'CommonTaskTab'} data={[]} renderItem={() => null} ListHeaderComponent={() => <Image source={{ uri: 'type2' }} style={{ width: '100%', height: 50 }} resizeMode={'cover'} />} />
+  )
 }
 
 const TaskLobbyTab = ({ tabLabel }) => {
@@ -172,13 +174,19 @@ const TaskCenterPage = () => {
         </View>
         <View style={{ flex: 1, justifyContent: 'space-around', paddingVertical: 50 }}>
           <TouchableWithoutFeedback>
-            <Image source={{ uri: 'usercenter0' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+            <ImageBackground source={{ uri: 'usercenter0' }} style={styles.badgeConatiner} resizeMode={'contain'}>
+              <Text style={{ color: '#ffffff', fontSize: 10, marginRight: 20 }}>{'会员中心'}</Text>
+            </ImageBackground>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback>
-            <Image source={{ uri: 'usercenter01' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+            <ImageBackground source={{ uri: 'dailysign' }} style={styles.badgeConatiner} resizeMode={'contain'}>
+              <Text style={{ color: '#ffffff', fontSize: 10, marginRight: 20 }}>{'会员中心'}</Text>
+            </ImageBackground>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback>
-            <Image source={{ uri: 'usercenter03' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+            <ImageBackground source={{ uri: 'usercenter03' }} style={styles.badgeConatiner} resizeMode={'contain'}>
+              <Text style={{ color: '#ffffff', fontSize: 10, marginRight: 20 }}>{'会员中心'}</Text>
+            </ImageBackground>
           </TouchableWithoutFeedback>
         </View>
       </View>
@@ -212,6 +220,12 @@ const styles = StyleSheet.create({
   listRow: {
     flex: 1,
     textAlign: 'center',
+  },
+  badgeConatiner: {
+    width: 100,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 export default TaskCenterPage
