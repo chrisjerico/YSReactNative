@@ -10,11 +10,11 @@ import Button from '../../public/views/temp/Button'
 import MineHeader from '../../public/views/temp/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import {UGUserCenterType} from '../../redux/model/全局/UGSysConfModel'
-import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import CommStyles from "../base/CommStyles";
 import FastImage from "react-native-fast-image";
 import {UGStore} from "../../redux/store/UGStore";
 import SignInFormList from "./reg/SignInFormList";
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 
 /**
  * 登录
@@ -43,7 +43,7 @@ const HJLoginPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={HJThemeColor.黑金.bgColor[0]}>
+      <SafeAreaHeader headerColor={skinColors.bgColor.黑金[0]}>
         <MineHeader
           showBackBtn={true}
           onPressBackBtn={pop}
@@ -59,7 +59,7 @@ const HJLoginPage = () => {
 
           <SignInFormList
             slideCodeRef={slideCodeRef}
-            slideCodeColor={HJThemeColor.黑金.bgColor[0]}
+            slideCodeColor={skinColors.bgColor.黑金[0]}
             show={show}
             onChange={onChange}
             value={value}
@@ -131,7 +131,7 @@ const SignInForm = (props: FormComponentProps) => (
 const _styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: HJThemeColor.黑金.bgColor[0],
+    backgroundColor: skinColors.bgColor.黑金[0],
   },
   formContainer: {
     margin: scale(32),
@@ -156,7 +156,7 @@ const _styles = StyleSheet.create({
     borderRadius: 999,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: HJThemeColor.黑金.themeColor,
+    borderColor: skinColors.themeColor.黑金,
     borderWidth: scale(1),
     marginTop: scale(16)
   },

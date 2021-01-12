@@ -30,10 +30,11 @@ export enum PageName {
   TransferPayPage = 'TransferPayPage',
   JDRedEnveloperPage = 'JDRedEnveloperPage',
   JDAgentPage = "JDAgentPage",
-  JDPromotionIncomePage = "JDPromotionIncomePage",
+  JDRecommendedIncomePage = "JDRecommendedIncomePage",
   TaskCenterPage = 'TaskCenterPage',
   JDPromotionCodeListPage = 'JDPromotionCodeListPage',
-  JDSegmentPage =  'JDSegmentPage',
+  JDChanglongBetRecordpage =  'JDChanglongBetRecordpage',
+  JDLotteryAssistantPage = 'JDLotteryAssistantPage',
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
   LHTPreferencePage = 'LHTPreferencePage',
@@ -87,7 +88,8 @@ export enum PageName {
   LEFMinePage = 'LEFMinePage',
   LEFSignInPage = 'LEFSignInPage',
   LEFSignUpPage = 'LEFSignUpPage',
-
+  
+  GameLobbyPage = 'GameLobbyPage',
   GameHallPage = 'GameHallPage',
   FreedomHallPage = 'FreedomHallPage',
 

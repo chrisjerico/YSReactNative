@@ -82,7 +82,7 @@ export class api_team {
   }
 
   //邀请码列表
-  static inviteCodeList(page = 1, rows = 20) {
+  static inviteCodeList(page = 1, rows = 10) {
     return this.c.get('inviteCodeList', { page: page, rows: rows });
   }
   // 生成邀请码

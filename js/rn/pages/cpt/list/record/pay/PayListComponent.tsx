@@ -33,7 +33,7 @@ const PayListComponent = ({ navigation, route }) => {
 
   const {
     refreshCT,
-    payData,
+    payBigData,
     requestPayData,
   } = UsePayList()
 
@@ -76,6 +76,7 @@ const PayListComponent = ({ navigation, route }) => {
               //   requestManageBankData(null)
               // },
               payData: item,
+              payBigData: payBigData,
               refreshTabPage: refreshTabPage,
 
             })
@@ -101,12 +102,14 @@ const PayListComponent = ({ navigation, route }) => {
           case 'liaobei_transfer'://"聊呗转账"
             push(PageName.TransferPayPage, {
               payData: item,
+              payBigData: payBigData,
               refreshTabPage: refreshTabPage,
             })
             break
           case 'xnb_transfer'://虚拟币充值
             push(PageName.BtcPayPage, {
               payData: item,
+              payBigData: payBigData,
               refreshTabPage: refreshTabPage,
             })
             break
@@ -140,11 +143,11 @@ const PayListComponent = ({ navigation, route }) => {
   return (
     <View style={CommStyles.flex}>
       {
-        anyEmpty(payData)
+        anyEmpty(payBigData)
           ? <EmptyView style={{ flex: 1 }}/>
           : <FlatList refreshControl={refreshCT}
                       keyExtractor={(item, index) => `${item}-${index}`}
-                      data={payData?.payment}
+                      data={payBigData?.payment}
                       showsVerticalScrollIndicator={false}
                       renderItem={({ item, index }) => {
                         return (

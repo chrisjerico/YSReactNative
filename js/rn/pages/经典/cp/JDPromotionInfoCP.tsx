@@ -193,7 +193,12 @@ const JDPromotionInfoCP = () => {
         content={inviteInfoModel?.link_i}
         imgUrl={inviteInfoModel?.link_i}
       />
-      <JDPromotionYJCP list={v.list} selItemContent ={v.selItemContent }/>
+      <JDPromotionYJCP list={v.list} selItemContent ={v.selItemContent } 
+         onRoad={() => {
+          setProps()
+
+        }}
+      />
       <JDPromotionInfoText1CP title={'本月推荐收益:'} content={inviteInfoModel?.month_earn} />
       <JDPromotionInfoText1CP title={'本月推荐会员:'} content={inviteInfoModel?.total_member} textAlign='left' />
       <JDPromotionInfoText1CP title={'推荐会员总计:'} content={inviteInfoModel?.month_member} textAlign='left' />

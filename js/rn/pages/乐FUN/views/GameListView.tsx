@@ -5,7 +5,6 @@ import PushHelper from "../../../public/define/PushHelper";
 import {fillArray} from "../../利来/utils/fillArray";
 import {ImageButton} from "../../利来/component/ImageButton";
 import {scale} from "../../../public/tools/Scale";
-import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 import CommStyles from "../../base/CommStyles";
 import FastImage from "react-native-fast-image";
 import {ugLog} from "../../../public/tools/UgLog";
@@ -15,6 +14,7 @@ import {anyEmpty, anyLength} from "../../../public/tools/Ext";
 import {useEffect, useState} from "react";
 import {useDimensions} from "@react-native-community/hooks";
 import {PushHomeGame} from "../../../public/models/Interface";
+import { skinColors } from "../../../public/theme/const/UGSkinColor";
 // import {ImageButton} from "../../../../乐橙/component/ImageButton";
 // import {fillArray} from "../../../utils/fillArray";
 // import {List} from "../../../../../public/network/Model/HomeGamesModel";
@@ -300,7 +300,7 @@ const _styles = StyleSheet.create({
   },
   list_title: {
     fontSize: scale(24),
-    color: LEFThemeColor.乐FUN.textColor1,
+    color: skinColors.textColor1.乐FUN,
   },
   list_hint: {
     fontSize: scale(18),
@@ -329,6 +329,6 @@ const _styles = StyleSheet.create({
   },
   sub_title: {
     fontSize: scale(18),
-    color: LEFThemeColor.乐FUN.textColor1,
+    color: skinColors.textColor1.乐FUN,
   },
 })

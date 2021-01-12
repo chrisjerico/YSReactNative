@@ -56,6 +56,7 @@ export enum AnnouncementType {
 
 export enum GameType {
   大厅 = 0,
+  游戏大厅 = 19,
   登出 = 31,
   APP版本号 = 27,
   优惠活动 = 9,

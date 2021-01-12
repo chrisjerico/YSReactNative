@@ -38,12 +38,9 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { LHC_Tab } from '../../const/LotteryConst'
+import { ILotteryRouteParams } from '../../const/LotteryConst'
 import { doc } from 'prettier'
 
-interface IRouteParams {
-  style?: StyleProp<ViewStyle>
-}
 
 /**
  * 六合彩连码
@@ -51,22 +48,25 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcLMAComponent = ({ style }: IRouteParams) => {
-
+const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   const {
     tabIndex,
     setTabIndex,
     curData,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
     ballArray,
-    dataLMA,
-    setDataLMA,
-    selectedZodiac,
-    setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   } = UseLhcLMA()
+
+  useEffect(() => {
+    setLotteryCode(lotteryCode)
+  }, [])
 
   /**
    * 绘制tab
@@ -77,11 +77,11 @@ const LhcLMAComponent = ({ style }: IRouteParams) => {
                 horizontal={true}>
       <View style={_styles.tab_title_content}>
         {
-          dataLMA?.map((item, index) =>
-            <TouchableOpacity key={item?.alias}
+          pageData?.map((item, index) =>
+            <TouchableOpacity key={item[0]?.alias}
                               style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>
-              <View key={item?.alias}
+              <View key={item[0]?.alias}
                     style={[
                       _styles.tab_item,
                       index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
@@ -89,7 +89,7 @@ const LhcLMAComponent = ({ style }: IRouteParams) => {
                 <Text style={[
                   _styles.tab_title_item_text,
                   index == tabIndex ? { color: `white` } : null,
-                ]}>{item?.alias}</Text>
+                ]}>{item[0]?.alias}</Text>
               </View>
             </TouchableOpacity>)
         }
@@ -108,19 +108,19 @@ const LhcLMAComponent = ({ style }: IRouteParams) => {
   const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
 
     return (
-      <LotteryEBall key={item?.id}
+      <LotteryEBall key={ballInfo?.id}
                     item={{
                       ...item?.plays[0],
                       ...ballInfo,
                     }}
                     selectedBalls={selectedBalls}
-                    ballStyle={{flexDirection: 'column'}}
-                    callback={() => addOrRemoveBall(item?.id)}/>
+                    ballStyle={{ flexDirection: 'column' }}
+                    callback={() => addOrRemoveBall(ballInfo?.id)}/>
     )
   }
 
   /**
-   * 绘制 特码B/A
+   * 绘制 连码
    * @param groupData
    */
   const renderLMA = (groupData?: PlayGroupData) => {
@@ -130,7 +130,10 @@ const LhcLMAComponent = ({ style }: IRouteParams) => {
             style={CommStyles.flex}>
 
         <View style={_styles.sub_title_container}>
-          <Text style={_styles.sub_title_text}>{groupData?.alias}</Text>
+          <Text style={[
+            _styles.sub_title_text,
+            { color: Skin1.themeColor },
+          ]}>{groupData?.alias}</Text>
         </View>
 
         <View style={_styles.ball_container}>
@@ -146,7 +149,7 @@ const LhcLMAComponent = ({ style }: IRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    {renderLMA(curData)}
+    {!anyEmpty(curData) && renderLMA(curData[0])}
   </ScrollView>
 
   return (

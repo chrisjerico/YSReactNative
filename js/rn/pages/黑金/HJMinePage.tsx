@@ -17,10 +17,10 @@ import Button from "../../public/views/temp/Button";
 import BottomGap from "../../public/views/temp/BottomGap";
 import PickAvatarComponent from "../../public/components/temp/PickAvatarComponent";
 import ProfileBlock from "./view/ProfileBlock";
-import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import CommStyles from "../base/CommStyles";
 import {pop} from "../../public/navigation/RootNavigation";
+import { skinColors } from "../../public/theme/const/UGSkinColor"
 
 /**
  * 个人中心
@@ -65,7 +65,7 @@ const HJMinePage = () => {
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
           }}
-          headerColor={HJThemeColor.黑金.themeColor}
+          headerColor={skinColors.themeColor.黑金}
         >
         </SafeAreaHeader> : null
       }
@@ -74,7 +74,7 @@ const HJMinePage = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          backgroundColor: HJThemeColor.黑金.homeContentSubColor,
+          backgroundColor: skinColors.homeContentSubColor.黑金,
         }}
         // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
@@ -97,7 +97,7 @@ const HJMinePage = () => {
                 titleStyle={{
                   fontSize: scale(22),
                   fontWeight: '300',
-                  color: HJThemeColor.黑金.textColor3
+                  color: skinColors.textColor3.黑金
                 }}
                 title={name}
                 onPress={() => PushHelper.pushUserCenterType(code)}
@@ -106,7 +106,7 @@ const HJMinePage = () => {
           }}
         />
 
-        <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={HJThemeColor.黑金.progressBgColor}
+        <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={skinColors.progressBgColor.黑金}
                         style={_styles.featureBlock}>
           {
             listUserCenterItems?.map((item, index) => {
@@ -121,7 +121,7 @@ const HJMinePage = () => {
                   arrowColor={'transparent'}
                   titleStyle={{
                     fontSize: scale(22),
-                    color: HJThemeColor.黑金.textColor3
+                    color: skinColors.textColor3.黑金
                   }}
                   title={name}
                   logo={logo}
@@ -136,7 +136,7 @@ const HJMinePage = () => {
           }
         </LinearGradient>
 
-        <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={HJThemeColor.黑金.menuHeadViewColor}
+        <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={skinColors.menuHeadViewColor.黑金}
                         style={_styles.log_out}
         >
           <Button
@@ -171,7 +171,7 @@ const HJMinePage = () => {
       </View>
       <PickAvatarComponent
         ref={pickAvatarComponentRef}
-        color={HJThemeColor.黑金.themeColor}
+        color={skinColors.themeColor.黑金}
         initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
         onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
@@ -272,7 +272,7 @@ const _styles = StyleSheet.create({
   },
   feature_bt: {
     width: '25%',
-    borderLeftColor: HJThemeColor.黑金.textColor3,
+    borderLeftColor: skinColors.textColor3.黑金,
     borderLeftWidth: 1
   },
   server: {

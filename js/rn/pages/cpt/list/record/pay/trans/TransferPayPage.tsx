@@ -38,7 +38,8 @@ import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
 
 interface IRouteParams {
-  payData?: PayAisleListData, //当前的账户数据
+  payData?: PayAisleListData, //当前的条目数据
+  payBigData?: PayAisleData, //总数据
   refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
@@ -49,11 +50,13 @@ interface IRouteParams {
  */
 const TransferPayPage = ({ navigation, route }) => {
 
-  const { payData, refreshTabPage }: IRouteParams = route?.params
+  const { payData, payBigData, refreshTabPage }: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
   const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
+    setPayData,
+    setPayBigData,
     moneyOption,
     inputMoney,
     setInputMoney,
@@ -66,6 +69,11 @@ const TransferPayPage = ({ navigation, route }) => {
     transName,
     requestPayData,
   } = UseTransferPay()
+
+  useEffect(()=>{
+    setPayBigData(payBigData)
+    setPayData(payData)
+  }, [])
 
   useEffect(()=>{
     if (!anyEmpty(goPage)) {
@@ -87,7 +95,7 @@ const TransferPayPage = ({ navigation, route }) => {
    */
   const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
-      moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
+      !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
           <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>
@@ -127,7 +135,7 @@ const TransferPayPage = ({ navigation, route }) => {
     let nameHint: ITransName = transName(payData, payChannelBean)
 
     return <View>
-      <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
+      <Text style={_styles.choose_result_hint}>{payBigData?.depositPrompt}</Text>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
           <Text style={_styles.choose_result_title}>{nameHint?.bank_name + nameHint?.bank_name_des}</Text>
