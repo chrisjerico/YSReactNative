@@ -9,7 +9,7 @@ import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native
 import { UGColor } from '../../public/theme/UGThemeColor'
 import EmptyView from '../../public/components/view/empty/EmptyView'
 import HallGameListComponent from './new/games/HallGameListComponent'
-import { HomeRecommendModel, Data } from '../../public/network/Model/HomeRecommendModel'
+import { HomeRecommendModel, Data, TwoLevelType } from '../../public/network/Model/HomeRecommendModel'
 import APIRouter from '../../public/network/APIRouter'
 import { ugLog } from '../../public/tools/UgLog'
 import { Toast } from '../../public/tools/ToastUtils'
@@ -33,6 +33,7 @@ import { PayAisleListData } from '../../public/network/Model/wd/PayAisleModel'
 import LobbyGameListComponent from './new/games/LobbyGameListComponent'
 import { ScrollView } from 'react-native-gesture-handler'
 import { PushHomeGame } from '../../public/models/Interface'
+import TwoLevelListComponent from './new/games/TwoLevelListComponent'
 
 interface TwoLevelProps {
   showBackButton: Boolean,
@@ -50,7 +51,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
-  const [gameData, setGameData] = useState<Array<Data>>([])//所有数据
+  const [gameData, setGameData] = useState<Array<TwoLevelType>>([])//所有数据
 
   const {
     systemInfo,
@@ -74,17 +75,19 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
     setRefreshing(true)
 
     // 刷新UI
-    function refreshUI(data: Data[]) {
+    function refreshUI(data: TwoLevelType[]) {
       setRefreshing(false)
       setGameData(data)
     }
-
+    
     // 获取彩票数据
-    APIRouter.game_homeRecommend().then(({ data: res }) => {
+    APIRouter.game_realGameTypes(game.gameId, "").then(({ data: res }) => {
       ugLog('data res=', res)
       if (res?.code == 0) {
-        let resData = res?.data
         setIsSetData(true)
+        res?.data.forEach((v) => {
+          v.id = game.gameId
+        })
         refreshUI(res?.data)
       } else {
         Toast(res?.msg)
@@ -98,10 +101,11 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
    * 绘制各Tab列表
    * @param item
    */
-  const renderDataList = (item: Array<Data>) =>
-    <LobbyGameListComponent refreshing={refreshing}
-                           gameData={item}
-                           requestGameData={requestGameData}/>
+  const renderDataList = (item: Array<TwoLevelType>) =>
+    <TwoLevelListComponent 
+      refreshing={refreshing}
+      gameData={item}
+      requestGameData={requestGameData}/>
 
   /**
    * 绘制所有的数据
@@ -128,7 +132,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                 pop()
             }
           }
-          title={game.title}
+          title={game.name}
         />
       </SafeAreaHeader>
       {

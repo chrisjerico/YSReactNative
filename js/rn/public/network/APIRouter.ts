@@ -15,7 +15,7 @@ import { FloatADModel } from './Model/FloatADModel'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
-import { HomeRecommendModel } from './Model/HomeRecommendModel'
+import { HomeRecommendModel, TwoLevelGame } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
 import { LottoGamesModel, UGNextIssueModel } from './Model/LottoGamesModel'
@@ -178,6 +178,16 @@ class APIRouter {
   static game_homeRecommend = async () => {
     return httpClient.get<HomeRecommendModel>('c=game&a=homeRecommend')
   }
+
+  static game_realGameTypes = async (gameId: string, searchText: string) => {
+    let tokenParams = await APIRouter.encryptGetParams({
+      search_text: searchText,
+      id: gameId,
+    })
+    
+    return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes' + tokenParams)
+  }
+
   /**
    * 首頁遊戲資料
    */
