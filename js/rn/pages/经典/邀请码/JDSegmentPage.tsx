@@ -52,12 +52,14 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     // console.log('相差多少月',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'months'))
     // console.log('相差多少天',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'days'))
     // console.log('相差多少分',moment('2016-10-11 18:09:03').diff(moment('2016-10-11 18:06:03'), 'minutes')) 
-    console.log('相差多少秒',moment('2016-10-11 18:07:03').diff(moment('2016-10-11 18:06:03'), 'seconds')) 
-
-    let diff =   moment('2016-10-11 18:07:02') >= moment('2016-10-11 18:07:03')
-    console.log('diff==',diff);
+    // console.log('相差多少秒',moment('2016-10-11 18:07:03').diff(moment('2016-10-11 18:06:03'), 'seconds')) 
+    // let diff =   moment('2016-10-11 18:07:02') >= moment('2016-10-11 18:07:03')
+    // console.log('diff==',diff);
     
+    var str="1.900"
 
+    console.log(str.split('.'));
+    
   };
   /**
  * 初始化
