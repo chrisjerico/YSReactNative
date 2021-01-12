@@ -111,10 +111,7 @@ const LCHomePage = ({ setProps }) => {
                              }}
                              textList={noticeFormat} />
         </View>
-        {midBanners.length > 0 &&
-        <Banner onlineNum={onlineNum} bannerData={midBanners} interval={midBannerTimer} showOnlineCount={false}
-                customHeight={150} />}
-        {navs.length > 0 && (
+        {navs && navs.length > 0 && (
           <NavBlock
             info={info}
             navs={navs}
@@ -147,6 +144,9 @@ const LCHomePage = ({ setProps }) => {
             }}
           />
         )}
+        {midBanners && midBanners.length > 0 &&
+        <Banner onlineNum={onlineNum} bannerData={midBanners} interval={midBannerTimer} showOnlineCount={false}
+                customHeight={150} />}
         <HomeTabView homeGames={homeGames} sysInfo={sysInfo} />
         {showCoupon && <>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 }}>
@@ -329,7 +329,7 @@ const Banner = ({ bannerData, onlineNum = 0, showOnlineCount = true, customHeigh
                 <FastImage onLoad={(e) => {
                   setHeight(e.nativeEvent.height * ((width) / e.nativeEvent.width))
                 }} key={'banner' + index} style={{ width: width, height: height }}
-                           source={{ uri: res.pic }}>
+                           source={{ uri: res.pic || res.image }}>
 
                 </FastImage>
               </TouchableWithoutFeedback>)
