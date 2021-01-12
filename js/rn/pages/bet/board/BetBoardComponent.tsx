@@ -1,17 +1,23 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import UseLhcBoard, { CHIP_OPTION } from './UseLhcBoard'
-import { IBetBoardParams } from '../const/LotteryConst'
 import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
-import { Toast } from '../../../public/tools/ToastUtils'
 
+/**
+ * 彩票功能区入参
+ */
+interface IBetBoardParams {
+  locked?: boolean // 是否封盘中
+  lockStr?: string // 封盘文字提醒
+  style?: StyleProp<ViewStyle>
+}
 
 /**
  * 彩票下注 功能面板
@@ -19,7 +25,7 @@ import { Toast } from '../../../public/tools/ToastUtils'
  * @param navigation
  * @constructor
  */
-const BetBoardComponent = ({ style }: IBetBoardParams) => {
+const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
     showSlider,
@@ -46,7 +52,9 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
         <View style={_styles.slider_container}>
 
           <Icon size={scale(28)}
-                onPress={() => { setShowSlider(!showSlider) }}
+                onPress={() => {
+                  setShowSlider(!showSlider)
+                }}
                 style={_styles.slider_arrow}
                 color={'white'}
                 name={'chevron-down'}/>
@@ -133,13 +141,29 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
 
   </View>
 
+  /**
+   * 绘制封盘中
+   */
+  const renderLock = (item?: string) => {
+    return <View style={_styles.lock_container}>
+      <View style={_styles.lock_content}>
+        <Text style={_styles.lock_text}>
+          {item}
+        </Text>
+      </View>
+    </View>
+  }
 
   return (
     <View style={[_styles.bet_container, style]}>
       {renderSliderArea()}
       {renderInputArea()}
+      {
+        locked ?
+          renderLock(lockStr) :
+          null
+      }
     </View>
-
   )
 }
 
@@ -147,6 +171,7 @@ const _styles = StyleSheet.create({
   bet_container: {
     position: 'absolute',
     width: '100%',
+    justifyContent: 'flex-end',
   },
   extra_container: {
     flex: 1,
@@ -323,8 +348,27 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: scale(2),
   },
+  lock_container: {
+    position: 'absolute',
+    width: '100%',
+    height: scale(120),
+    justifyContent: 'flex-end',
+  },
+  lock_content: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: UGColor.transparent3,
+    position: 'absolute',
+  },
+  lock_text: {
+    color: 'white',
+    fontSize: scale(30),
+  },
 
 
 })
 
 export default BetBoardComponent
+export { IBetBoardParams }

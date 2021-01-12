@@ -274,7 +274,8 @@ const BetLotteryPage = ({ navigation, route }) => {
             {renderLeftColumn()}
             {renderRightContent()}
           </View>
-          <BetBoardComponent/>
+          <BetBoardComponent locked={true}
+                             lockStr={'封盘中...'}/>
         </View>
       </BaseScreen>
     </BetLotteryContext.Provider>
