@@ -25,6 +25,9 @@ export class UGChanglongaideModel {
   preIsOpen?: boolean;  /**<   */
   betList?: Array<UGBetItemModel>; 
 
+  //自定义参数
+  diffsecond?:number;/**<  服务器时间比开奖时间相差多少秒  */
+  currentSecond?:number ;/**<  当前多少秒  默认为1 */
 }
 
 

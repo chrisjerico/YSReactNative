@@ -22,11 +22,13 @@ import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 import { UGBetItemModel, UGChanglongaideModel } from '../Model/UGChanglongaideModel';
-import CountDown from 'react-native-countdown-component';
+
+import moment from 'moment';
+import { number } from 'prop-types';
 
 interface JDLotteryAssistantPage {
   bottomH?: number,//底部的高度
-  items?: Array<any>//界面数据
+  items?: Array<UGChanglongaideModel>//界面数据
   isRefreshing?: boolean//下拉刷新开始结束 
   imgLoading?: string //默认图片
   selAideModel?: UGChanglongaideModel //
@@ -36,6 +38,10 @@ interface JDLotteryAssistantPage {
   betDetailViewhidden?: boolean//提示是否隐藏
   betDetailLabel?: string//提示文字
   betDetail2Label?: string//提示2文字
+  timer? : any;//每秒刷新一次界面
+  dataTimer? :any;//每20获取一次数据
+  timeIsOpen?:boolean//timer 是否已经 启动
+  dataTimeIsOpen?:boolean//dataTimer 是否已经 启动
 }
 
 const JDLotteryAssistantPage = () => {
@@ -83,8 +89,6 @@ const JDLotteryAssistantPage = () => {
     }
 
     if (obj.select) {
-      console.log('item==', item);
-      console.log('obj==', obj);
 
       v.selAideModel = item;
       v.selBetItem = obj;
@@ -255,6 +259,9 @@ const JDLotteryAssistantPage = () => {
     else if (item.playName == '龙' || item.playName == '虎') {
       return '#DC143C	'
     }
+    else{
+      return '#76B473'
+    }
   }
 
   /**
@@ -275,12 +282,12 @@ const JDLotteryAssistantPage = () => {
 */
   const onHeaderRefresh = () => {
     v.isRefreshing = true
-    console.log('下拉刷新');
+    // console.log('下拉刷新');
     getChanglong()
   }
 
   function getChanglong() {
-    console.log('长龙助手===');
+    // console.log('长龙助手===');
     api.game.changlong('60').useSuccess(({ data }) => {
 
       // console.log('data =', data);
@@ -290,7 +297,7 @@ const JDLotteryAssistantPage = () => {
       }
       let arrayData = returnData(data);
       if (arrayData.length == 0) {
-        console.log('进来了：==================');
+        // console.log('进来了：==================');
         v.isRefreshing = false;
         v.items.length = 0
         setProps();
@@ -299,6 +306,8 @@ const JDLotteryAssistantPage = () => {
       v.isRefreshing = false
       v.items.length = 0
       v.items = JSON.parse(JSON.stringify(arrayData))
+
+
       for (let index = 0; index < arrayData.length; index++) {
         const clm1 = arrayData[index];
         for (let i = 0; i < clm1.betList.length; i++) {
@@ -320,10 +329,138 @@ const JDLotteryAssistantPage = () => {
 
         }
       }
+
+
+      for (let index = 0; index < v.items.length; index++) {
+        const element = v.items[index];
+        element.currentSecond = 1;
+        if (moment(element.closeTime) >= moment(element.serverTime)) {
+          element.diffsecond = moment(element.closeTime).diff(moment(element.serverTime), 'seconds');
+          // console.log('时间差 ==',element.diffsecond);
+        }
+        else{
+          element.diffsecond = 0;
+          // console.log('时间差 ==',element.diffsecond);
+        }
+      }
       setProps()
+
+      if (!v.timeIsOpen) {
+        v.timer = setInterval(() => {
+          v.timeIsOpen = true;
+          setProps();
+        }, 1000)
+      }
+    
+      if (!v.dataTimeIsOpen) {
+        v.dataTimer = setInterval(() => {
+          v.dataTimeIsOpen = true;
+          getChanglong()
+        }, 1000*20)
+      }
+     
     });
   }
 
+  /**
+* 渲染定时器
+* 
+*/
+  const _renderTimeItem = ({ index, item }) => {
+
+    item.currentSecond++;
+    if (moment(item.serverTime) >= moment(item.closeTime)) {
+ 
+      return (
+        <View style={{}}>
+          <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+            {'已封盘'}
+          </Text>
+        </View>
+      );
+    } else {
+      // console.log('item.currentSecond >= item.diffsecond) =', item.currentSecond >= item.diffsecond);
+      // console.log('item.currentSecond == ',item.currentSecond);
+      // console.log('item.diffsecond == ',item.diffsecond);
+      if (item.currentSecond >= item.diffsecond) {
+        return (
+          <View style={{}}>
+            <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+              {'已封盘'}
+            </Text>
+          </View>
+        );
+      } else {
+     
+        let days: number = ~~((item.diffsecond - item.currentSecond) / (60 * 60 * 24));
+        // console.log('days =', days);
+        let hours: number = ~~((item.diffsecond - item.currentSecond) / (60 * 60));
+        // console.log('hours =', hours);
+        let minutes: number = ~~((item.diffsecond - item.currentSecond - hours * 3600) / (60));
+        // console.log('minutes =', minutes);
+        let seconds: number = ~~((item.diffsecond - item.currentSecond - hours * 3600 - minutes * 60));
+        // console.log('seconds =', seconds);
+
+        let dayStr: string; let hoursStr: string; let minutesStr: string; let secondsStr: string;
+        dayStr = '' +  days;
+        if (hours < 10) {
+          hoursStr = '0' + hours;
+        } else {
+          if (days) {
+            hoursStr =  '' + (hours - 24 * days);
+          } else {
+            hoursStr =  '' + (hours);
+          }
+        }
+        if (minutes < 10) {
+          minutesStr = '0' + minutes;
+        } else {
+          minutesStr =  '' + (minutes);
+        }
+        if (seconds < 10) {
+          secondsStr = '0' + seconds;
+        } else {
+          secondsStr =  '' + (seconds);
+        }
+
+        if (days<=0 && hours<=0 && minutes<=0 && seconds<=0) {
+          return (
+            <View style={{}}>
+              <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+                {'已封盘'}
+              </Text>
+            </View>
+          );
+        }
+
+        if (days) {
+          return (
+            <View style={{}}>
+              <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+                {dayStr+'天'+hoursStr+':'+minutesStr+':'+secondsStr}
+              </Text>
+            </View>
+          );
+        }
+        if (hours) {
+          return (
+            <View style={{}}>
+              <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+                {hoursStr+':'+minutesStr+':'+secondsStr}
+              </Text>
+            </View>
+          );
+        }
+        return (
+          <View style={{}}>
+            <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+              {minutesStr+':'+secondsStr}
+            </Text>
+          </View>
+        );
+      }
+    }
+  }
 
 
 
@@ -349,26 +486,12 @@ const JDLotteryAssistantPage = () => {
               </Text>
             </View>
             {/* 文字2 */}
-            <View style={[{ flexDirection: 'row',  alignItems: 'center', height:28,backgroundColor:'blue'}]}>
+            <View style={[{ flexDirection: 'row', alignItems: 'center', height: 28, }]}>
               <Text style={{ fontSize: 13, color: Skin1.textColor1 }}>
                 {!anyEmpty(item.displayNumber) ? item.displayNumber : item.issue}
               </Text>
-              {/* <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-                {'00:03:32'}
-              </Text> */}
               {/* 倒计时 */}
-              <CountDown
-                size={10}
-                until={1000}
-                onFinish={() => alert('Finished')}
-                digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#1CC625' }}
-                digitTxtStyle={{ color: '#1CC625' }}
-                timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
-                separatorStyle={{ color: '#1CC625' }}
-                timeToShow={['H', 'M', 'S']}
-                timeLabels={{ m: null, s: null }}
-                showSeparator
-              />
+              <_renderTimeItem index={index} item={item} />
 
             </View>
             {/* 图标 */}
@@ -453,10 +576,18 @@ const JDLotteryAssistantPage = () => {
         v.betDetailViewhidden = true
         v.betDetailLabel = ''
         v.betDetail2Label = ''
+        v.timeIsOpen = false;
+        v.dataTimeIsOpen = false;
+
         onHeaderRefresh()
       }
     })
 
+    return (() => {
+      clearInterval(v.timer)
+      clearInterval(v.dataTimer)
+       console.log("长龙我的投注销毁了，调用了clearInterval")
+  })
   }, [])
 
 
@@ -540,7 +671,7 @@ const JDLotteryAssistantPage = () => {
               value={v.amountLabel}
               placeholderTextColor={Skin1.textColor3}
               onChangeText={(text) => {
-                console.log('投注金额==', text);
+                // console.log('投注金额==', text);
                 v.amountLabel = chkPrice(text).trim()
                 if (!anyEmpty(v.amountLabel) && !anyEmpty(v.selBetItem) && !anyEmpty(v.selAideModel)) {
                   v.betDetailViewhidden = false;
