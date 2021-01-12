@@ -25,7 +25,6 @@ import { getGameList } from '../../../public/utils/getGameList'
 import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import { LEFThemeColor } from '../../../public/theme/colors/LEFThemeColor'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
 import {
@@ -36,7 +35,7 @@ import {
 } from '../../../public/network/Model/bank/ManageBankCardModel'
 import UseAddBank from './UseAddBank'
 import { ugLog } from '../../../public/tools/UgLog'
-import { UGColor, UGThemeColor } from '../../../public/theme/UGThemeColor'
+import { UGColor } from '../../../public/theme/UGThemeColor'
 import { Res } from '../../../Res/icon/Res'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -443,9 +442,5 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default AddBankPage

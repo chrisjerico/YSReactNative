@@ -1,12 +1,11 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import MineHeaderComponent from '../../public/components/temp/MineHeaderComponent'
-import {RefreshControl, ScrollView} from 'react-native'
+import {Platform, RefreshControl, ScrollView} from 'react-native'
 import PickAvatarComponent from '../../public/components/temp/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/temp/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/temp/useMinePage'
 import {PageName} from '../../public/navigation/Navigation'
-import {BZHThemeColor} from '../../public/theme/colors/BZHThemeColor'
 import {scale} from '../../public/tools/Scale'
 import {useHtml5Image} from '../../public/tools/tars'
 import BottomGap from '../../public/views/temp/BottomGap'
@@ -18,10 +17,11 @@ import {UGUserCenterType} from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import {ugLog} from "../../public/tools/UgLog";
-import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {pop, push} from "../../public/navigation/RootNavigation";
 import HomeHeader from "./views/HomeHeader";
 import MineHeader from "../../public/views/temp/MineHeader";
+import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 
 const LEFMinePage = () => {
   const {getHtml5Image} = useHtml5Image()
@@ -35,7 +35,7 @@ const LEFMinePage = () => {
     homePage: PageName.LEFHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
-
+  const { current: v } = useRef<{} & JDAvatarListCP>({});
   const {
     balance,
     taskRewardTotal,
@@ -65,12 +65,13 @@ const LEFMinePage = () => {
   return (
     <>
       <SafeAreaHeader
-        headerColor={LEFThemeColor.乐FUN.themeColor}
+        headerColor={skinColors.themeColor.乐FUN}
       >
         <MineHeader
           title={'会员中心'}
-          titleColor={LEFThemeColor.乐FUN.textColor2}
+          titleColor={skinColors.textColor2.乐FUN}
           onPressBackBtn={pop}
+          showBackBtn={Platform.OS=='ios'}
           showCustomerService={true}
           customerIcon={'menu-fold'}
           onPressCustomerService={()=>{
@@ -81,14 +82,16 @@ const LEFMinePage = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+          backgroundColor: skinColors.homeContentSubColor.乐FUN,
         }}
         // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
         <ProfileBlock
           balance={balance}
           taskRewardTotal={taskRewardTotal}
-          onPressAvatar={onPressAvatar}
+          onPressAvatar={() => {
+            v?.showAvatarList && v?.showAvatarList();
+          }}
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           name={usr}
@@ -111,11 +114,11 @@ const LEFMinePage = () => {
                   flexDirection: 'row',
                   borderRadius: scale(999),
                   borderWidth: scale(2),
-                  borderColor: LEFThemeColor.乐FUN.textColor2,
+                  borderColor: skinColors.textColor2.乐FUN,
                 }}
                 imageContainerStyle={{width: '50%'}
                 }
-                titleContainerStyle={{aspectRatio: 3.5}}
+                titleContainerStyle={{aspectRatio: 3}}
                 titleStyle={{fontSize: scale(24), fontWeight: '300'}}
                 enableCircle={false}
                 logo={logo}
@@ -162,12 +165,7 @@ const LEFMinePage = () => {
         />
         <BottomGap/>
       </ScrollView>
-      <PickAvatarComponent
-        ref={pickAvatarComponentRef}
-        color={LEFThemeColor.乐FUN.themeColor}
-        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-        onSaveAvatarSuccess={onSaveAvatarSuccess}
-      />
+      <JDAvatarListCP c_ref={v} />
     </>
   )
 }

@@ -121,7 +121,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
       page: v.pageNumber,
     }
     console.log('页码===', v.pageNumber);
-    api.chat.redBagLogPage(params).setCompletionBlock(({ data }) => {
+    api.chat.redBagLogPage(params).useSuccess(({ data }) => {
       let dicData = data;
       let arrayData = dicData['list'];
       if (v.pageNumber == 1) {
@@ -143,9 +143,11 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
 
       setProps()
 
-    }, (err) => {
+    }).useFailure((err) => {
       console.log('err = ', err);
-      // setProps()
+      v.state.isRefreshing = false
+      v.state.showFoot = 2
+      setProps()
       // Toast(err.message)
     });
   }

@@ -30,7 +30,7 @@ export const JDSalaryListCP = ({ c_ref }: { c_ref: JDSalaryListCP }) => {
         if (!v.list) {
           // 俸禄数据
           showLoading()
-          api.task.getMissionBonusList().setCompletionBlock(({ data: list }) => {
+          api.task.getMissionBonusList().useSuccess(({ data: list }) => {
             hideLoading()
             v.list = list
             v.show = !v.show
@@ -86,7 +86,7 @@ const SalaryCell = ({ item }: ListRenderItemInfo<SalaryModel>) => {
             titleStyle={{ fontSize: 11 }}
             onPress={() => {
               showLoading()
-              api.task.sendMissionBonus(item.bonsId).setCompletionBlock(() => {
+              api.task.sendMissionBonus(item.bonsId).useSuccess(() => {
                 showSuccess('领取成功')
               })
             }}

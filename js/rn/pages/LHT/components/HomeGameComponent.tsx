@@ -3,7 +3,6 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp 
 import FastImage from 'react-native-fast-image'
 import TabComponent from '../../../public/components/tars/TabComponent'
 import { Game } from '../../../public/models/Interface'
-import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import List from '../../../public/views/tars/List'
 import { LotteryType } from '../../../redux/model/全局/UGLotteryModel'
@@ -88,7 +87,7 @@ const HomeGameComponent = ({
         <TabComponent
           numColumns={3}
           initialTabIndex={0}
-          focusTabColor={LHThemeColor.六合厅.themeColor}
+          focusTabColor={skinColors.themeColor.六合厅}
           tabGames={rightGames}
           itemHeight={itemHeight}
           renderScene={renderScene}

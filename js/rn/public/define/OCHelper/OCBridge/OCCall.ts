@@ -64,7 +64,7 @@ export class OCCall extends UGBridge {
         ugLog('iOS call=', JSON.stringify(array))
         break;
     }
-    return this.core.performSelectors(array);
+    return this.core.performSelectors && this.core.performSelectors(array);
   }
 }
 

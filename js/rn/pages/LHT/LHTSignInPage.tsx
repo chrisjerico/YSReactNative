@@ -3,8 +3,8 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, popToRoot } from '../../public/navigation/RootNavigation'
-import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
+import { popToRoot, pop } from '../../public/navigation/RootNavigation'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -22,8 +22,8 @@ const LHTSignInPage = () => {
   const { signIn, tryPlay } = sign
   return (
     <>
-      <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <MineHeader showBackBtn={true} onPressBackBtn={pop} title={'登录'} />
+      <SafeAreaHeader headerColor={skinColors.themeColor.六合厅}>
+        <MineHeader showBackBtn={true} onPressBackBtn={popToRoot} title={'登录'} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
@@ -34,7 +34,7 @@ const LHTSignInPage = () => {
             containerStyle={[
               styles.button,
               {
-                backgroundColor: LHThemeColor.六合厅.themeColor,
+                backgroundColor: skinColors.themeColor.六合厅,
                 marginTop: scale(20),
               },
             ]}
@@ -61,7 +61,7 @@ const SignInForm = (props: SignInRenderFormProps) => <FormComponent {...props} c
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: LHThemeColor.六合厅.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.六合厅,
   },
   formContainer: {
     backgroundColor: '#ffffff',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#dedede',
   },
   buttonTitleStyle: {
-    color: LHThemeColor.六合厅.themeColor,
+    color: skinColors.themeColor.六合厅,
     fontSize: scale(23),
   },
 })

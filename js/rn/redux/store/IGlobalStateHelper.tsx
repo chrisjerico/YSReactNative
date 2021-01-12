@@ -7,8 +7,8 @@ import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine";
 import { setProps } from '../../pages/base/UGPage';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
-export const AsyncStorageKey = {
-  IGlobalState: 'IGlobalState',
+export enum AsyncStorageKey {
+  IGlobalState = 'IGlobalState',
 }
 
 export async function updateUserInfo() {

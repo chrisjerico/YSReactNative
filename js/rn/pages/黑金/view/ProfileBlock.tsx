@@ -9,13 +9,11 @@ import {
   View,
   ViewStyle
 } from 'react-native'
-import {BZHThemeColor} from '../../../public/theme/colors/BZHThemeColor'
 import {scale} from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/temp/Avatar'
 import LinearBadge from '../../../public/views/temp/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/temp/ReLoadBalanceComponent'
 import LinearGradient from "react-native-linear-gradient";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {colorEnum} from "../../尊龙/enum/colorEnum";
 import {Icon} from "react-native-elements";
 import {navigate} from "../../../public/navigation/RootNavigation";
@@ -25,6 +23,7 @@ import {UGUserCenterItem, UGUserCenterType} from "../../../redux/model/全局/UG
 import FastImage from "react-native-fast-image";
 import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
+import { skinColors } from '../../../public/theme/const/UGSkinColor'
 
 interface ProfileBlockProps {
   balance: string | number;
@@ -49,7 +48,7 @@ const ProfileBlock = ({
                       }: ProfileBlockProps) => {
   return (
     <View style={[_styles.container, containerStyle]}>
-      <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={HJThemeColor.黑金.menuHeadViewColor}
+      <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={skinColors.menuHeadViewColor.黑金}
                       style={_styles.hjTopBlock}/>
       <View style={_styles.whiteBlock}>
         <LinearBadge
@@ -101,7 +100,7 @@ const ProfileBlock = ({
         <View style={_styles.flex}/>
 
         <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}}
-                        colors={HJThemeColor.黑金.progressBgColor}
+                        colors={skinColors.progressBgColor.黑金}
                         style={_styles.featureBlock}>
           <View style={_styles.featureContainer}>
             {
@@ -123,7 +122,7 @@ const _styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 500 / 350,
-    backgroundColor: HJThemeColor.黑金.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.黑金,
     paddingBottom: scale(30),
   },
   hjTopBlock: {

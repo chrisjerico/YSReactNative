@@ -9,7 +9,6 @@ import useHomePage from '../../public/hooks/temp/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getActivityPosition } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/temp/BannerBlock'
@@ -29,11 +28,11 @@ import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
-import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
 import {HomeTabView} from "./views/HomeTabView";
 import {FuncTab} from "./views/FuncTab";
 import Activitys from "../../public/views/tars/Activitys";
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 
 const LEFHomePage = ({navigation, setProps}) => {
 
@@ -94,14 +93,14 @@ const LEFHomePage = ({navigation, setProps}) => {
   if (loading) {
     return (
       <>
-        <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor} />
+        <SafeAreaHeader headerColor={skinColors.themeColor.乐FUN} />
         <ProgressCircle />
       </>
     )
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
+        <SafeAreaHeader headerColor={skinColors.themeColor.乐FUN}>
           <HomeHeader
             easyRememberDomain={easyRememberDomain}
             logo={mobile_logo}
@@ -112,7 +111,9 @@ const LEFHomePage = ({navigation, setProps}) => {
             onPressSignIn={() => push(PageName.LEFSignInPage)}
             onPressSignUp={() => push(PageName.LEFSignUpPage)}
             onPressUser={() => {
-              // PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+              if (Platform.OS == 'ios') {
+                PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+              }
               ANHelper.callAsync(CMD.OPEN_RIGHT_MENU)
             }}
           />

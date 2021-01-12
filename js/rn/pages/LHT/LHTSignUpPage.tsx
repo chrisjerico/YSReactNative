@@ -4,7 +4,7 @@ import FormComponent from '../../public/components/tars/FormComponent'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { popToRoot, push } from '../../public/navigation/RootNavigation'
-import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
@@ -22,7 +22,7 @@ const LHTSignUpPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
+      <SafeAreaHeader headerColor={skinColors.themeColor.六合厅}>
         <MineHeader title={'注册'} showBackBtn={true} onPressBackBtn={popToRoot} showRightTitle={true} onPressRightTitle={goToUserCenterType.在线客服} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -43,7 +43,7 @@ const LHTSignUpPage = () => {
             containerStyle={[
               styles.button,
               {
-                backgroundColor: LHThemeColor.六合厅.themeColor,
+                backgroundColor: skinColors.themeColor.六合厅,
               },
             ]}
             disabledContainerStyle={styles.button}
@@ -72,7 +72,7 @@ const SignUpForm = (props: SignUpRenderFormProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: LHThemeColor.六合厅.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.六合厅,
   },
   formContainer: {
     backgroundColor: '#ffffff',
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#dedede',
   },
   buttonTitleStyle: {
-    color: LHThemeColor.六合厅.themeColor,
+    color: skinColors.themeColor.六合厅,
     fontSize: scale(23),
   },
 })

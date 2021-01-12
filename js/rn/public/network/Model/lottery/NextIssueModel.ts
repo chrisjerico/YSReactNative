@@ -31,7 +31,7 @@ export interface NextIssueData {
   adGameType?: string
   adLinkType?: string
   isClose?: string
-  isInstant?: string//：1=是，0=否
+  isInstant?: string//：是否是即开彩：1=是，0=否
   serverTimestamp?: string
   zodiacNums?: ZodiacNumsData[]
   fiveElements?: ZodiacNumsData[]

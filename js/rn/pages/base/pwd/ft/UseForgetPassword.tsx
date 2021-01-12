@@ -22,8 +22,8 @@ const UseForgetPassword = () => {
   const [phoneNumber, setPhoneNumber] = useState(null) //请输入手机号
   const [smsNumber, setSmsNumber] = useState(null) //请输入手机号验证码
   const [fundPassword, setFundPassword] = useState(null) //设置资金密码
-  const [firstImage, setFirstImage] = useState(null) //设置第一张图片
-  const [secondImage, setSecondImage] = useState(null) //设置第2张图片
+  const [firstImage, setFirstImage] = useState<IUploadIdentify>(null) //设置第一张图片
+  const [secondImage, setSecondImage] = useState<IUploadIdentify>(null) //设置第2张图片
   const [countDown, setCountDown] = useState(-1) //倒计时次数
   const [startCount, setStartCount] = useState(false) //是否开始倒计时
 
@@ -64,7 +64,7 @@ const UseForgetPassword = () => {
       Toast('请输入您的4位数字提款密码')
       return
     } else if (systemInfo?.coinPwdAuditOptionAry?.includes('id') &&
-      (anyEmpty(firstImage) || anyEmpty(secondImage))) {
+      (firstImage == null || secondImage == null)) {
       Toast('请上传身份证的正反面图片')
       return
     }
@@ -75,7 +75,7 @@ const UseForgetPassword = () => {
       coinpwd: fundPassword,
       mobile: phoneNumber,
       smsCode: smsNumber,
-      identityPathDot: `${firstImage},${secondImage}`
+      identityPathDot: `${firstImage?.path},${secondImage?.path}`
     })
 
     hideLoading()

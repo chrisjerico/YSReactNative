@@ -9,7 +9,7 @@ import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import HallGameListComponent from './games/HallGameListComponent'
-import { HallGameData } from '../../../public/network/Model/game/HallGameModel'
+import { HallGameData, GroupGameData, HallGameModel1 } from '../../../public/network/Model/game/HallGameModel'
 import APIRouter from '../../../public/network/APIRouter'
 import { ugLog } from '../../../public/tools/UgLog'
 import { Toast } from '../../../public/tools/ToastUtils'
@@ -20,14 +20,14 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import PushHelper from '../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader'
-import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
 import BackBtnComponent from '../../../public/components/tars/BackBtnComponent'
 import { PageName } from '../../../public/navigation/Navigation'
 import MineHeader from '../../../public/views/tars/MineHeader'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
-import { setProps } from '../../base/UGPage'
+import { setProps, UGBasePageProps } from '../../base/UGPage'
 import { pop } from '../../../public/navigation/RootNavigation'
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
 
 interface IRouteParams {
@@ -39,13 +39,17 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const GameHallPage = ({ navigation, route }) => {
+const GameHallPage = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   const { showBackButton }: IRouteParams = route?.params
 
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
+  const { current: v } = useRef<{
+    hallGames?: HallGameData[]
+    isGroup: boolean
+  }>({ isGroup: true });
 
   const {
     systemInfo,
@@ -67,6 +71,64 @@ const GameHallPage = ({ navigation, route }) => {
    */
   const requestGameData = async () => {
     setRefreshing(true)
+
+    // 处理分组数据
+    function groupGameToHallGame(groups: GroupGameData[]): HallGameData[] {
+      const temp: { [x: string]: HallGameData } = {}
+      const array : HallGameData[] = []
+      groups?.forEach((group) => {
+        group?.lotteries?.forEach((l) => {
+          v.hallGames?.forEach((hall) => {
+            hall?.list?.forEach((g) => {
+              g.pic = g.pic ?? l.logo
+              if (l?.id != g?.id) return
+              if (temp[group?.id] == undefined) {
+                array.push(temp[group?.id] = { gameType: hall.gameType, gameTypeName: group.name, list: [] })
+              }
+              temp[group?.id].list?.push(g)
+            })
+          })
+        })
+      })
+      return array
+    }
+
+    // 刷新UI
+    function refreshUI(data: HallGameData[]) {
+      setRefreshing(false)
+
+      // 是否显示分类
+      if (systemInfo?.picTypeshow != '1') {
+        let temp: HallGameModel1[] = []
+        data?.forEach(element => {
+          temp = temp.concat(element?.list)
+        });
+        data[0].list = temp
+        setGameData([data?.[0]])
+      } else {
+        setGameData(data)
+      }
+    }
+
+    // 获取分组数据
+    function getGroup() {
+      api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
+        sm.noShowErrorHUD = true
+        
+        // 若只有一个“其他“分组，则不显示分组
+        const other = data?.filter((v) => v.id == '0')[0]
+        data = data?.filter((v) => v.id != '0')
+        if (data?.length) {
+          data.push(other)
+          refreshUI(groupGameToHallGame(data))
+        } else {
+          v.isGroup = false
+          refreshUI(v.hallGames)
+        }
+      })
+    }
+
+    // 获取彩票数据
     APIRouter.game_lotteryHallGames().then(({ data: res }) => {
       let resData = res?.data
       //ugLog('data res=', res)
@@ -77,30 +139,12 @@ const GameHallPage = ({ navigation, route }) => {
             item.parentGameType = parentItem.gameType
           })
         })
-
-        if (!arrayEmpty(resData)) {
-          let allList = []
-          //Tab显示还是隐藏
-          if (systemInfo?.picTypeshow != '1') {
-            resData.map((parentItem) => {
-              if (!arrayEmpty(parentItem?.list)) {
-                allList = allList.concat(parentItem.list)
-              }
-            })
-
-            ugLog('alllIST=', allList)
-
-            //所有元素组合在一起
-            let newArr = resData.slice(0, 1)
-            newArr[0].list = allList
-            resData = newArr
-          }
-
+        v.hallGames = resData
+        if (v.isGroup) {
+          getGroup()
+        } else {
+          refreshUI(resData)
         }
-
-
-        setGameData(resData)
-
       } else {
         Toast(res?.msg)
       }
@@ -138,7 +182,7 @@ const GameHallPage = ({ navigation, route }) => {
             tabBarUnderlineStyle={[_styles.tab_bar_underline,
               { backgroundColor: Skin1.themeColor }]}
             tabBarActiveTextColor={Skin1.themeColor}
-            tabBarInactiveTextColor={Skin1.textColor1}
+            tabBarInactiveTextColor={'#111'}
             tabBarTextStyle={{ fontSize: scale(20) }}
             style={[{ flex: 1 }]}
             renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>

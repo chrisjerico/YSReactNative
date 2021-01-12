@@ -1,12 +1,14 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
+import { colors } from 'react-native-elements'
 import TabComponent from '../../public/components/tars/TabComponent'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
+import { skin1 } from '../../public/theme/UGSkinManagers'
 import { scale } from '../../public/tools/Scale'
 import BottomGap from '../../public/views/tars/BottomGap'
 import GameButton from '../../public/views/tars/GameButton'
@@ -33,7 +35,7 @@ const BZHGameLobbyPage = ({ route }) => {
           baseHeight={scale(130)}
           itemHeight={scale(130)}
           tabGames={gameLobby}
-          focusTabColor={BZHThemeColor.宝石红.themeColor}
+          focusTabColor={skinColors.themeColor.宝石红}
           tabTextStyle={{ fontSize: scale(20) }}
           renderScene={({ item, tab, index }) => {
             return (
@@ -93,7 +95,7 @@ const BZHGameLobbyPage = ({ route }) => {
 }
 
 const GameLobbyPageHeader = () => (
-  <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+  <SafeAreaHeader headerColor={skinColors.themeColor.宝石红}>
     <MineHeader
       showBackBtn={true}
       onPressBackBtn={() => {
@@ -110,7 +112,7 @@ const GameLobbyPageHeader = () => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.宝石红,
     // marginBottom: scale(20),
   },
   gameContainer: {

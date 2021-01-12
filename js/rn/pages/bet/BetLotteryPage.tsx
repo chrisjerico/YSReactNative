@@ -1,28 +1,26 @@
-import {
-  FlatList, Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import UseBetLottery from './UseBetLottery'
-import Modal from 'react-native-modal'
 import { useEffect, useState } from 'react'
+import UseBetLottery from './UseBetLottery'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
 import { scale } from '../../public/tools/Scale'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { pop } from '../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../base/CommStyles'
-import { ugLog } from '../../public/tools/UgLog'
 import { UGColor } from '../../public/theme/UGThemeColor'
+import LhcTMComponent from './lhc/tm/LhcTMComponent'
+import BetLotteryContext from './BetLotteryContext'
+import TimeComponent from './tm/TimeComponent'
+import LotteryConst from './const/LotteryConst'
+import LhcZTComponent from './lhc/zt/LhcZTComponent'
+import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
+import LhcSBComponent from './lhc/sb/LhcSBComponent'
+import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
+import LhcHXComponent from './lhc/hx/LhcHXComponent'
+import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
+import BetBoardComponent from './board/BetBoardComponent'
+import { anyEmpty } from '../../public/tools/Ext'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -36,25 +34,10 @@ interface IRouteParams {
 const BetLotteryPage = ({ navigation, route }) => {
 
   const { lotteryId } = route?.params
-  // const [bigPic, setBigPic] = useState(null) //是否有大图片
-  // const [smallPic, setSmallPic] = useState(null) //当前小图
-  // const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
-    // newRate,
-    // newUsd,
-    // moneyOption,
-    // inputMoney,
-    // setInputMoney,
-    // btcMoney,
-    // setBtcMoney,
-    // inputRemark,
-    // setInputRemark,
-    // selPayChannel,
-    // setSelPayChannel,
-    // payData,
-    // setPayData,
-    // requestPayData,
+    userInfo,
+    systemInfo,
     setLotteryId,
     nextIssueData,
     playOddDetailData,
@@ -66,162 +49,16 @@ const BetLotteryPage = ({ navigation, route }) => {
     setLotteryId(lotteryId)
   }, [lotteryId])
 
-  // useEffect(()=>{
-  //   if (!anyEmpty(goPage)) {
-  //     intentData?.refreshTabPage(goPage)
-  //     pop()
-  //   }
-  // }, [goPage])
-  //
-  // useEffect(()=>{
-  //   setPayData(intentData?.payData)
-  // }, [])
-  //
-  // useEffect(() => {
-  //   setSmallPic(AppDefine?.host + '/lib/phpqrcode/image.php?url=' + payData?.channel[selPayChannel]?.account)
-  // }, [selPayChannel, payData])
-  //
-  // /**
-  //  * 输入金额
-  //  */
-  // const renderInputMoney = () => <View style={_styles.btc_input_info_container}>
-  //   <TextInput style={_styles.input_money}
-  //              value={inputMoney}
-  //              keyboardType={'numeric'}
-  //              onChangeText={(text) => setInputMoney(text)}
-  //              placeholder={'请填写存款金额'}/>
-  //   <View style={_styles.btc_hint_container}>
-  //     <Text style={_styles.choose_result_title}>{`虚拟币金额: ${btcMoney}`}</Text>
-  //     <Text style={_styles.btc_type}>{payData?.channel[selPayChannel]?.domain}</Text>
-  //     <TouchableOpacity onPress={() => {
-  //       switch (Platform.OS) {
-  //         case 'ios':
-  //           //TODO iOS 复制 title 到粘贴板
-  //           break
-  //         case 'android':
-  //           ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: btcMoney })
-  //           break
-  //       }
-  //       Toast('复制成功')
-  //     }}>
-  //       <Text style={_styles.choose_result_copy}>复制</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  //   <View style={_styles.btc_hint_container}>
-  //     <Text style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newUsd}CNY`}</Text>
-  //   </View>
-  // </View>
-  //
-  // /**
-  //  * 选择金额
-  //  */
-  // const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
-  //   {
-  //     moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
-  //       <View style={_styles.choose_channel_item_container}>
-  //         <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
-  //       </View>
-  //     </TouchableOpacity>)
-  //   }
-  // </View>
-  //
-  // /**
-  //  * 已选择的渠道单个条目
-  //  */
-  // const renderSelectedChannelItem = (title: string, copyText: string) => <View style={_styles.choose_result_title_item}>
-  //   <Text style={_styles.choose_result_title}>{title + copyText}</Text>
-  //   <TouchableOpacity onPress={() => {
-  //     switch (Platform.OS) {
-  //       case 'ios':
-  //         //TODO iOS 复制 title 到粘贴板
-  //         break
-  //       case 'android':
-  //         ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })
-  //         break
-  //     }
-  //     Toast('复制成功')
-  //   }}>
-  //     <Text style={_styles.choose_result_copy}>复制</Text>
-  //   </TouchableOpacity>
-  // </View>
-  //
-  // /**
-  //  * 已选择的渠道
-  //  */
-  // const renderSelectedChannel = () => {
-  //   const payChannelBean = payData?.channel[selPayChannel]
-  //   return <View>
-  //     <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
-  //     <View style={_styles.choose_result_container}>
-  //       <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
-  //         <Text style={_styles.choose_result_title}>{'币种: ' + payChannelBean?.domain}</Text>
-  //       </View>
-  //       {
-  //         [
-  //           renderSelectedChannelItem('链名称: ', payChannelBean?.address),
-  //           renderSelectedChannelItem('充值地址: ', payChannelBean?.account),
-  //           anyEmpty(smallPic) ?
-  //             null :
-  //             <TouchableImage
-  //               pic={smallPic}
-  //               containerStyle={{ aspectRatio: 1, width: scale(240) }}
-  //               resizeMode={'contain'}
-  //               onPress={() => {
-  //                 setBigPic(smallPic)
-  //               }}
-  //             />,
-  //         ]
-  //       }
-  //     </View>
-  //   </View>
-  // }
-  //
-  // /**
-  //  * 选择渠道
-  //  */
-  // const renderAllChannel = () => <View style={_styles.select_channel_container}>
-  //   {
-  //     payData?.channel?.map((item, index) => <TouchableOpacity
-  //       onPress={() => setSelPayChannel(index)}>
-  //       <View style={[_styles.select_channel_item,
-  //         index != 0 ? null : { borderTopWidth: 0 }]}>
-  //         {
-  //           index == selPayChannel ?
-  //             <Icon size={scale(32)} name={'check'}/> :
-  //             <Icon size={scale(32)} name={'circle-o'}/>
-  //         }
-  //         <Text style={_styles.select_channel_text}>{item?.payeeName}</Text>
-  //       </View>
-  //     </TouchableOpacity>)
-  //   }
-  // </View>
-  //
-  // /**
-  //  * 输入转账信息
-  //  */
-  // const renderInputInfo = () => {
-  //
-  //   return <View style={_styles.input_info_container}>
-  //     <View style={_styles.date_info_container}>
-  //       <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
-  //       <Icon size={scale(20)} name={'calendar'}/>
-  //     </View>
-  //     <TextInput style={_styles.input_info}
-  //                value={inputRemark}
-  //                onChangeText={(text) => setInputRemark(text)}
-  //                placeholder={'请填写备注信息'}/>
-  //   </View>
-  // }
-
   const [textSize, setTextSize] = useState(scale(22))
   const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，投注0 还是游戏1
+  const [gameTabIndex, setGameTabIndex] = useState(0) // 彩票和聊天切换TAB
   const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
 
 
   /**
    * 绘制顶部的标题栏
    */
-  const renderTopBar = () => <View style={[_styles.top_bar_container,
+  const renderTopBar = () => <View key={'renderTopBar'} style={[_styles.top_bar_container,
     { backgroundColor: Skin1.themeColor }]}>
     <TouchableOpacity onPress={() => pop()}>
       <View style={_styles.back_bt_container}>
@@ -231,15 +68,15 @@ const BetLotteryPage = ({ navigation, route }) => {
       </View>
     </TouchableOpacity>
     <Text style={[_styles.top_game_name,
-      { color: Skin1.navBarTitleColor }]}>{'彩票'}</Text>
+      { color: Skin1.navBarTitleColor }]}>{nextIssueData?.title}</Text>
     <Icon size={scale(28)}
           name={'caret-down'}
           color={Skin1.navBarTitleColor}/>
     <View style={CommStyles.flex}/>
     <Text style={[_styles.top_money,
-      { color: Skin1.navBarTitleColor }]}>{'1002'}</Text>
+      { color: Skin1.navBarTitleColor }]}>{!anyEmpty(userInfo) && userInfo?.balance}</Text>
     <Icon size={scale(24)}
-          name={'undo'}
+          name={'refresh'}
           color={Skin1.navBarTitleColor}/>
     <TouchableOpacity onPress={() => pop()}>
       <View style={_styles.back_bt_container}>
@@ -254,12 +91,12 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制左边列表 特码 双面 正码 等等
    */
-  const renderLeftColumn = () => <View
-    >
+  const renderLeftColumn = () => <View key={playOddDetailData?.playOdds?.toString()}>
     <ScrollView showsVerticalScrollIndicator={false}>
       {
         playOddDetailData?.playOdds?.map((item, index) => {
-          return <TouchableOpacity onPress={() => setLeftColumnIndex(index)}>
+          return <TouchableOpacity key={item?.code}
+                                   onPress={() => setLeftColumnIndex(index)}>
             <View style={[
               {
                 width: scale(140),
@@ -267,11 +104,11 @@ const BetLotteryPage = ({ navigation, route }) => {
                 justifyContent: 'center',
                 height: scale(52),
                 borderRadius: scale(8),
-                borderWidth: leftColumnIndex == index ? scale(3) : scale(1)
+                borderWidth: leftColumnIndex == index ? scale(3) : scale(1),
               },
               {
-                borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4
-              }
+                borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
+              },
             ]}>
               <Text style={{
                 color: UGColor.TextColor7,
@@ -287,81 +124,152 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制右边彩票区域，彩球 等等
    */
-  const renderRightContent = () => <View style={{ flex: 1 }}>
-    <ScrollView showsVerticalScrollIndicator={false}
-    >
-      {
-        playOddDetailData?.playOdds[0]?.playGroups[0]?.plays?.map((item) => {
-          return <View>
-            <Text>{item.name}</Text>
-          </View>
-        })
+  const renderRightContent = () => {
+    // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
+
+    let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
+
+    // return <View style={CommStyles.flex}>
+    //   <LhcTMComponent style={lotteryCode == LotteryConst.TM ? null : { display: 'none' }}
+    //                   key={LotteryConst.TM}/>
+    //   <LhcLMComponent style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
+    //                   key={LotteryConst.LM}/>
+    //   <LhcHXComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
+    //                   key={LotteryConst.ZM}/>
+    //   <LhcSBComponent style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
+    //                      key={LotteryConst.ZM1_6}/>
+    //   <LhcLMAComponent style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
+    //                   key={LotteryConst.ZT}/>
+    // </View>
+
+    switch (lotteryCode) {
+      case LotteryConst.TM: { //特码
+        return <LhcTMComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
-    </ScrollView>
-  </View>
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT: { //正特
+        return <LhcZTComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.LMA: { //连码
+        return <LhcLMAComponent key={lotteryCode}
+                                lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.LM: //两面
+      case LotteryConst.ZM1_6: //正码1T6
+      case LotteryConst.SB: //色波
+      case LotteryConst.ZOX://总肖
+      case LotteryConst.WX:{ //五行
+        return <LhcSBComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.YX: //平特一肖
+      case LotteryConst.WS: //平特尾数
+      case LotteryConst.TWS: //头尾数
+      case LotteryConst.TX: //特肖
+      case LotteryConst.LX: //连肖
+      case LotteryConst.LW: //连尾
+      case LotteryConst.ZX: { //正肖
+        return <LhcPTYXComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.HX: { //合肖
+        return <LhcHXComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.ZXBZ: { //自选不中
+        return <LhcZXBZComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
+      }
+
+    }
+
+    return null
+  }
 
   /**
    * 绘制游戏聊天切换tab
    */
-  const renderGameTab = () => <View style={[_styles.game_tab_container,
-    { backgroundColor: `${Skin1.themeColor}cc` }]}>
+  const renderGameTab = () => <View key={'renderGameTab'} style={[_styles.game_tab_container,
+    { backgroundColor: Skin1.themeColor }]}>
 
-    <View style={[_styles.game_tab, _styles.game_tab_left, { backgroundColor: '#ffffff44' }]}>
-      <Text style={_styles.tab_text}>{'投注区'}</Text>
-    </View>
-    <View style={[_styles.game_tab, _styles.game_tab_right]}>
-      <Text style={_styles.tab_text}>{'主房间'}</Text>
-    </View>
+    <TouchableOpacity style={CommStyles.flex}
+                      onPress={() => setGameTabIndex(0)}>
+      <View style={[
+        _styles.game_tab,
+        _styles.game_tab_left,
+        gameTabIndex == 0 ? { backgroundColor: '#ffffff44' } : null]}>
+        <Text style={_styles.tab_text}>{'投注区'}</Text>
+      </View>
+    </TouchableOpacity>
+    <TouchableOpacity style={CommStyles.flex}
+                      onPress={() => setGameTabIndex(1)}>
+      <View style={[
+        _styles.game_tab,
+        _styles.game_tab_right,
+        gameTabIndex == 1 ? { backgroundColor: '#ffffff44' } : null]}>
+        <Text style={_styles.tab_text}>{'主房间'}</Text>
+      </View>
+    </TouchableOpacity>
 
   </View>
 
   return (
-    <BaseScreen screenName={''}
-                style={{ backgroundColor: UGColor.BackgroundColor1 }}
-                hideBar={true}>
+    <BetLotteryContext.Provider value={{
+      nextIssueData: () => nextIssueData,
+      playOddDetailData: () => playOddDetailData,
+      curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
+    }}>
+      <BaseScreen screenName={''}
+                  style={{ backgroundColor: UGColor.BackgroundColor1 }}
+                  hideBar={true}>
 
-      {/*<Text>{lotteryId}</Text>*/}
-      {/*<Animatable.Text animation="pulse" easing="linear" iterationDelay={1000} iterationCount="infinite" style={{ textAlign: 'center', backgroundColor: 'yellow' }}>{new Date().format('yyyy年MM月dd日 hh时mm分')}️</Animatable.Text>*/}
+        {/*<Text>{lotteryId}</Text>*/}
+        {/*<Animatable.Text animation="pulse" easing="linear" iterationDelay={1000} iterationCount="infinite" style={{ textAlign: 'center', backgroundColor: 'yellow' }}>{new Date().format('yyyy年MM月dd日 hh时mm分')}️</Animatable.Text>*/}
 
-      {/*<Animatable.Text style={{backgroundColor: 'red'}} animation="slideInDown" iterationCount="infinite" direction="alternate">Up and down you go</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="zoomInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeIn" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInDown" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInDownBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInUpBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInLeft" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInLeftBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInRight" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
-      {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInRightBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'red'}} animation="slideInDown" iterationCount="infinite" direction="alternate">Up and down you go</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="zoomInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeIn" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInDown" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInDownBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInUpBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInLeft" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInLeftBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInRight" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
+        {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeInRightBig" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
 
-      {/*<TouchableOpacity onPress={() => setTextSize(textSize + 5)}>*/}
-      {/*  <Animatable.Text transition="fontSize" style={{fontSize: textSize}}>Size me up, Scotty</Animatable.Text>*/}
-      {/*</TouchableOpacity>*/}
+        {/*<TouchableOpacity onPress={() => setTextSize(textSize + 5)}>*/}
+        {/*  <Animatable.Text transition="fontSize" style={{fontSize: textSize}}>Size me up, Scotty</Animatable.Text>*/}
+        {/*</TouchableOpacity>*/}
 
-      {/*<Modal isVisible={!anyEmpty(bigPic)}*/}
-      {/*       style={_styles.modal_content}*/}
-      {/*       onBackdropPress={() => setBigPic(null)}*/}
-      {/*       onBackButtonPress={() => setBigPic(null)}*/}
-      {/*       animationIn={'fadeIn'}*/}
-      {/*       animationOut={'fadeOut'}*/}
-      {/*       backdropOpacity={0.3}>*/}
-      {/*  <FastImage source={{ uri: bigPic }}*/}
-      {/*             style={{ aspectRatio: 1, width: scale(500) }}*/}
-      {/*             resizeMode={'contain'}/>*/}
-      {/*</Modal>*/}
+        {/*<Modal isVisible={!anyEmpty(bigPic)}*/}
+        {/*       style={_styles.modal_content}*/}
+        {/*       onBackdropPress={() => setBigPic(null)}*/}
+        {/*       onBackButtonPress={() => setBigPic(null)}*/}
+        {/*       animationIn={'fadeIn'}*/}
+        {/*       animationOut={'fadeOut'}*/}
+        {/*       backdropOpacity={0.3}>*/}
+        {/*  <FastImage source={{ uri: bigPic }}*/}
+        {/*             style={{ aspectRatio: 1, width: scale(500) }}*/}
+        {/*             resizeMode={'contain'}/>*/}
+        {/*</Modal>*/}
 
-      {
-        [
-          renderTopBar(),
-          renderGameTab(),
-          <View style={{ flexDirection: 'row', flex: 1, }}>
-            {renderLeftColumn()}
-            {renderRightContent()}
-          </View>,
-        ]
-      }
-    </BaseScreen>
+        {
+          [
+            renderTopBar(),
+            renderGameTab(),
+            <TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>,
+          ]
+        }
+        <View style={{ flexDirection: 'row', flex: 1 }}>
+          {renderLeftColumn()}
+          {renderRightContent()}
+        </View>
+        <BetBoardComponent/>
+      </BaseScreen>
+    </BetLotteryContext.Provider>
 
   )
 }
@@ -377,163 +285,6 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // container: {
-  //   padding: scale(16),
-  //   backgroundColor: UGColor.BackgroundColor1,
-  //   flex: 1,
-  // },
-  // input_money: {
-  //   width: '100%',
-  //   padding: scale(12),
-  //   borderWidth: scale(1),
-  //   borderRadius: scale(8),
-  //   borderColor: UGColor.LineColor4,
-  //   fontSize: scale(22),
-  // },
-  // choose_channel_container: {
-  //   alignItems: 'center',
-  //   flexDirection: 'row',
-  //   flexWrap: 'wrap',
-  //   marginBottom: scale(16),
-  // },
-  // choose_result_container: {
-  //   flex: 1,
-  //   marginBottom: scale(16),
-  //   borderBottomLeftRadius: scale(8),
-  //   borderBottomRightRadius: scale(8),
-  //   borderWidth: scale(1),
-  //   borderColor: UGColor.LineColor4,
-  //   paddingVertical: scale(8),
-  // },
-  // choose_result_title_item: {
-  //   flex: 1,
-  //   color: UGColor.TextColor2,
-  //   fontSize: scale(24),
-  //   flexDirection: 'row',
-  //   paddingHorizontal: scale(16),
-  //   paddingVertical: scale(8),
-  //   // borderTopWidth: scale(1),
-  //   // borderTopColor: UGColor.LineColor4,
-  // },
-  // btc_input_info_container: {
-  //   flex: 1,
-  //   borderWidth: scale(1),
-  //   borderRadius: scale(8),
-  //   borderColor: UGColor.LineColor4,
-  // },
-  // btc_hint_container: {
-  //   flex: 1,
-  //   flexDirection: 'row',
-  //   paddingHorizontal: scale(16),
-  //   paddingVertical: scale(8),
-  //   justifyContent: 'center',
-  //   // borderTopWidth: scale(1),
-  //   // borderTopColor: UGColor.LineColor4,
-  // },
-  // choose_result_title: {
-  //   flex: 1,
-  //   color: UGColor.TextColor2,
-  //   fontSize: scale(24),
-  // },
-  // btc_type: {
-  //   color: UGColor.TextColor2,
-  //   fontSize: scale(24),
-  //   fontStyle: 'italic',
-  // },
-  // choose_result_copy: {
-  //   color: UGColor.RedColor2,
-  //   fontSize: scale(24),
-  //   paddingLeft: scale(16),
-  // },
-  // choose_result_hint: {
-  //   color: 'white',
-  //   backgroundColor: UGColor.RedColor2,
-  //   fontSize: scale(20),
-  //   paddingVertical: scale(4),
-  //   paddingHorizontal: scale(8),
-  //   borderTopLeftRadius: scale(8),
-  //   borderTopRightRadius: scale(8),
-  // },
-  // choose_channel_item_container: {
-  //   width: scale(168),
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // choose_channel_item_text: {
-  //   width: '90%',
-  //   color: UGColor.TextColor2,
-  //   fontSize: scale(22),
-  //   textAlign: 'center',
-  //   marginTop: scale(8),
-  //   padding: scale(8),
-  //   borderColor: UGColor.LineColor4,
-  //   borderWidth: scale(1),
-  //   borderRadius: scale(8),
-  //   backgroundColor: UGColor.BackgroundColor4,
-  // },
-  // select_channel_container: {
-  //   flex: 1,
-  //   marginTop: scale(16),
-  //   marginBottom: scale(16),
-  //   borderRadius: scale(8),
-  //   borderWidth: scale(1),
-  //   borderColor: UGColor.LineColor4,
-  // },
-  // select_channel_item: {
-  //   flex: 1,
-  //   borderTopWidth: scale(1),
-  //   borderTopColor: UGColor.LineColor4,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   padding: scale(16),
-  // },
-  // select_channel_text: {
-  //   color: UGColor.TextColor3,
-  //   fontSize: scale(22),
-  //   paddingHorizontal: scale(16),
-  // },
-  // select_channel_hint: {
-  //   color: UGColor.TextColor3,
-  //   fontSize: scale(20),
-  //   paddingVertical: scale(4),
-  //   paddingHorizontal: scale(8),
-  // },
-  // input_info_container: {
-  //   flex: 1,
-  //   paddingVertical: scale(12),
-  //   marginBottom: scale(32),
-  // },
-  // input_info: {
-  //   flex: 1,
-  //   padding: scale(12),
-  //   borderWidth: scale(1),
-  //   borderRadius: scale(8),
-  //   borderColor: UGColor.LineColor4,
-  //   fontSize: scale(22),
-  //   color: UGColor.TextColor2,
-  // },
-  // date_info_container: {
-  //   flexDirection: 'row',
-  //   padding: scale(12),
-  //   borderWidth: scale(1),
-  //   borderRadius: scale(8),
-  //   borderColor: UGColor.LineColor4,
-  //   alignItems: 'center',
-  // },
-  // date_info: {
-  //   flex: 1,
-  //   fontSize: scale(22),
-  //   color: UGColor.TextColor2,
-  // },
-  // submit_text: {
-  //   fontSize: scale(22),
-  //   color: 'white',
-  // },
-  // submit_bt: {
-  //   width: '100%',
-  //   height: scale(66),
-  //   borderRadius: scale(8),
-  // },
   top_bar_container: {
     width: scale(540),
     height: scale(72),
@@ -570,7 +321,10 @@ const _styles = StyleSheet.create({
     borderTopRightRadius: scale(12),
     borderBottomRightRadius: scale(12),
   },
-  game_tab_right: {},
+  game_tab_right: {
+    borderTopLeftRadius: scale(12),
+    borderBottomLeftRadius: scale(12),
+  },
   tab_text: {
     fontSize: scale(22),
     color: 'white',

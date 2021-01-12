@@ -1,3 +1,4 @@
+import { GroupGameData } from '../../Model/game/HallGameModel';
 import { CCSessionReq, SampleAPI } from './../CCSessionModel';
 
 
@@ -25,8 +26,8 @@ export class api_game {
   }
 
   // 长龙助手
-  static changlong() {
-    return this.c.get('changlong');
+  static changlong(id: string) {
+    return this.c.get('changlong',{ id: id });
   }
 
   // 彩票规则
@@ -51,7 +52,7 @@ export class api_game {
 
   // 彩票分组列表
   static lotteryGroupGames() {
-    return this.c.get('lotteryGroupGames');
+    return this.c.get<GroupGameData[]>('lotteryGroupGames');
   }
 
   // 获取彩票号码和赔率

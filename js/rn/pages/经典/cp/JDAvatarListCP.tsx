@@ -42,7 +42,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
       if (!v.list) {
         // 俸禄数据
         showLoading();
-        api.user.getAvatarSetting().setCompletionBlock(async ({ data }) => {
+        api.user.getAvatarSetting().useSuccess(async ({ data }) => {
           hideLoading();
           if (Platform.OS == 'ios') {
             const iosCanUpload = await OCHelper.call('AppDefine.shared.isCanUploadAvatar')
@@ -51,7 +51,6 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
             v.isAcceptUpload = data?.isAcceptUpload;
           }
           v.list = data?.publicAvatarList;
-          v.selected = v.list[0];
           v.show = true;
           setState({});
         });
@@ -83,7 +82,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
                 OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, ({ 0: imgs }: { 0: string[] }) => {
                   if (imgs?.length) {
                     showLoading()
-                    api.user.uploadAvatar(imgs[0]).setCompletionBlock(({ data, msg }) => {
+                    api.user.uploadAvatar(imgs[0]).useSuccess(({ data, msg }) => {
                       showSuccess(msg)
                       v.show = false;
                       setState({})
@@ -100,7 +99,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
           </View>
         )}
         <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center' }}>
-          <FastImage source={{ uri: v.selected?.url }} style={{ width: 95, height: 95, backgroundColor: '#fff', borderRadius: 50 }} />
+          <FastImage source={{ uri: v.selected?.url ?? UGStore.globalProps?.userInfo?.avatar }} style={{ width: 95, height: 95, backgroundColor: '#fff', borderRadius: 50 }} />
         </View>
         <Text style={{ marginTop: 9, textAlign: 'center', color: '#fff' }}>头像预览</Text>
         <View style={{ marginTop: 12, flexDirection: 'row', height: 100, paddingHorizontal: 12 }}>
@@ -134,7 +133,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
           <Button title="保存头像" titleStyle={{ fontSize: 14 }} buttonStyle={{ width: 100, backgroundColor:UGColor.RedColor3 }} onPress={() => {
             if (!v.selected) return;
             showLoading();
-            api.user.updateAvatar(v.selected.id).setCompletionBlock((res) => {
+            api.user.updateAvatar(v.selected.id).useSuccess((res) => {
               showSuccess(res.msg);
               v.show = false;
               UGStore.dispatch({ type: 'merge', userInfo: { avatar: v.selected.url } });

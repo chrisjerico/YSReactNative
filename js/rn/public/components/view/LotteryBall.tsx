@@ -68,22 +68,27 @@ const LotteryBall = ({
     switch (type) {
       case BallType.colorful:
         return [
-          <FastImage style={[
-            _styles.colorful_ball_item,
-            { width: width }]}
+          <FastImage key={ballUrl}
+                     style={[
+                       _styles.colorful_ball_item,
+                       { width: width }]}
                      resizeMode={'contain'}
                      source={{ uri: ballUrl }}/>,
-          <Text style={[_styles.ball_colorful_text, { color: txColor, fontSize: width * 3 / 7 }]}>{ballNumber}</Text>,
+          <Text style={[_styles.ball_colorful_text,
+            { color: txColor, fontSize: width * 3 / 7 }]}>{ballNumber}</Text>,
         ]
       case BallType.sz:
       case BallType.vegetable:
-        return <FastImage style={[
-          _styles.colorful_ball_item,
-          { width: width }]}
+        return <FastImage key={ballUrl}
+                          style={[
+                            _styles.colorful_ball_item,
+                            { width: width }]}
                           resizeMode={'contain'}
                           source={{ uri: ballUrl }}/>
       default:
-        return <Text style={[_styles.ball_text, { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
+        return <Text key={ballNumber}
+                     style={[_styles.ball_text,
+                       { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
     }
   }
 
@@ -137,4 +142,4 @@ const BallType = {
 }
 
 export default LotteryBall
-export { BallType }
+export { BallType, ILotteryBall }

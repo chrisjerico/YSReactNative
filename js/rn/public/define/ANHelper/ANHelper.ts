@@ -25,7 +25,7 @@ export class ANHelper extends ANEvent {
    * @param data 参数
    */
   static callSync(type: CMD, data?: { [x: string]: any }): any | null {
-    return this.core.executeSync(
+    return this.core.executeSync && this.core.executeSync(
       JSON.stringify({
         type: type,
         ...data,
@@ -40,7 +40,7 @@ export class ANHelper extends ANEvent {
    * @param data 参数
    */
   static callAsync(type: CMD, data?: { [x: string]: any }): Promise<any | null> {
-    return this.core.executeCmd(
+    return this.core.executeCmd && this.core.executeCmd(
       JSON.stringify({
         type: type,
         ...data,

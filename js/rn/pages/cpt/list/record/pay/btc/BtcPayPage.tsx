@@ -37,7 +37,8 @@ import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { CapitalConst } from '../../../../const/CapitalConst'
 
 interface IRouteParams {
-  payData?: PayAisleListData, //当前的账户数据
+  payData?: PayAisleListData, //当前的条目数据
+  payBigData?: PayAisleData, //总数据
   refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
@@ -67,6 +68,8 @@ const BtcPayPage = ({ navigation, route }) => {
     setSelPayChannel,
     payData,
     setPayData,
+    payBigData,
+    setPayBigData,
     requestPayData,
   } = UseBtcPay()
 
@@ -78,6 +81,7 @@ const BtcPayPage = ({ navigation, route }) => {
   }, [goPage])
 
   useEffect(()=>{
+    setPayBigData(intentData?.payBigData)
     setPayData(intentData?.payData)
   }, [])
 
@@ -121,7 +125,7 @@ const BtcPayPage = ({ navigation, route }) => {
    */
   const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
-      moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
+      !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
           <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>
@@ -155,7 +159,7 @@ const BtcPayPage = ({ navigation, route }) => {
   const renderSelectedChannel = () => {
     const payChannelBean = payData?.channel[selPayChannel]
     return <View>
-      <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
+      <Text style={_styles.choose_result_hint}>{intentData?.payBigData?.depositPrompt}</Text>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
           <Text style={_styles.choose_result_title}>{'币种: ' + payChannelBean?.domain}</Text>
@@ -343,7 +347,6 @@ const _styles = StyleSheet.create({
   btc_type: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
-    fontStyle: 'italic',
   },
   choose_result_copy: {
     color: UGColor.RedColor2,

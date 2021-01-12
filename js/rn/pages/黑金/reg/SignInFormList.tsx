@@ -3,7 +3,7 @@ import {FormComponentProps} from "../../../public/components/temp/FormComponent"
 import CheckBox from "../../../public/views/temp/CheckBox";
 import {scale} from "../../../public/tools/Scale";
 import ReloadSlidingVerification from "../../../public/components/temp/ReloadSlidingVerification";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
+import { skinColors } from '../../../public/theme/const/UGSkinColor';
 
 interface SignInFormListProps {
   slideCodeColor?: string;
@@ -42,7 +42,7 @@ const SignInFormList = ({
         leftIcon={{
           name: 'user-circle',
           type: 'font-awesome',
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(40),
         }}
         placeholderTextColor={'white'}
@@ -59,7 +59,7 @@ const SignInFormList = ({
         leftIcon={{
           name: 'unlock-alt',
           type: 'font-awesome',
-          color: HJThemeColor.黑金.themeColor,
+          color: skinColors.themeColor.黑金,
           size: scale(40),
         }}
         placeholderTextColor={'white'}
@@ -71,7 +71,7 @@ const SignInFormList = ({
         rightIconType={'eye'}
         leftIconTitle={'密码'}
         rightIconStyle={{
-          highColor: HJThemeColor.黑金.themeColor,
+          highColor: skinColors.themeColor.黑金,
           color: '#d9d9d9',
         }}
       />

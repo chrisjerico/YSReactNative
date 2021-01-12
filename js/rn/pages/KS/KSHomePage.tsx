@@ -5,9 +5,9 @@ import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
-import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
@@ -20,7 +20,7 @@ import MoreGameButton from './views/MoreGameButton'
 import ProfileBlock from './views/ProfileBlock'
 
 const buttonHeight = scale(82)
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
+const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
 const KSHomePage = () => {
   const { goTo, refresh, info, sign } = useHomePage({})
@@ -46,8 +46,8 @@ const KSHomePage = () => {
       refresh={refresh}
       refreshTintColor={'#ffffff'}
       pagekey={'KSHomePage'}
-      containerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor }}
-      headerColor={KSThemeColor.凯时.themeColor}
+      containerStyle={{ backgroundColor: skinColors.themeColor.凯时 }}
+      headerColor={skinColors.themeColor.凯时}
       couponBlockStyles={couponBlockStyles}
       couponStyles={couponStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
 })
 
 const noticeBlockStyles = StyleSheet.create({
-  containerStyle: { backgroundColor: KSThemeColor.凯时.themeColor, borderRadius: 0 },
-  bgContainerStyle: { backgroundColor: KSThemeColor.凯时.themeColor },
+  containerStyle: { backgroundColor: skinColors.themeColor.凯时, borderRadius: 0 },
+  bgContainerStyle: { backgroundColor: skinColors.themeColor.凯时 },
   logoTextStyle: {
     color: '#95979f',
     fontSize: scale(20),
