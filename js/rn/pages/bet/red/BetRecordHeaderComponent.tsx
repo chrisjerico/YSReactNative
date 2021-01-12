@@ -309,7 +309,7 @@ const _styles = StyleSheet.create({
     marginHorizontal: scale(4),
     alignItems: 'center',
     justifyContent: 'center',
-    width: scale(40),
+    width: scale(38),
     aspectRatio: 1,
   },
   zodiac_text: {

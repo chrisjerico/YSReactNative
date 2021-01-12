@@ -118,7 +118,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(24),
   },
   tv_img: {
-    width: scale(44),
+    width: scale(36),
     marginHorizontal: scale(8),
     aspectRatio: 1,
   },

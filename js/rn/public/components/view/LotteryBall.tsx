@@ -33,7 +33,7 @@ const LotteryBall = ({
                        style,
                      }: ILotteryBall) => {
 
-  const width = anyEmpty(size) ? scale(44) : size //球的大小
+  const width = anyEmpty(size) ? scale(42) : size //球的大小
   let txColor = !anyEmpty(textColor) ? textColor : 'white' //文字的颜色
   let bColor //球的颜色
   let ballUrl //球的url
