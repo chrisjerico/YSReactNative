@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
-import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
+import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
 
@@ -66,7 +66,7 @@ const NavBlock = ({
         </View>
         <View style={styles.topRightContainer}>
           <Button title={'充值'} containerStyle={[styles.button, { backgroundColor: '#ff8610' }]} titleStyle={styles.title} onPress={onPressSavePoint} />
-          <Button title={'提现'} containerStyle={[styles.button, { backgroundColor: LHThemeColor.六合厅.themeColor }]} titleStyle={styles.title} onPress={onPressGetPoint} />
+          <Button title={'提现'} containerStyle={[styles.button, { backgroundColor: skinColors.themeColor.六合厅 }]} titleStyle={styles.title} onPress={onPressGetPoint} />
           <TouchableWithoutFeedback onPress={onPressSmileLogo}>
             <View style={styles.smileImageContainer}>
               <FastImage

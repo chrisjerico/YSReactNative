@@ -46,6 +46,7 @@ import CapitalPage from '../cpt/list/CapitalPage'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
+import GameLobbyPage from '../hall/GameLobbyPage'
 import GameHallPage from '../hall/new/GameHallPage'
 import JXHHomePage from '../JXH/JXHHomePage'
 import JXHMinePage from '../JXH/JXHMinePage'
@@ -98,12 +99,13 @@ import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
-import JDPromotionIncomePage from '../经典/推荐收益/JDPromotionIncomePage'
+import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
 import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import BetLotteryPage from '../bet/BetLotteryPage'
 import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
-import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
+import JDChanglongBetRecordpage from '../经典/长龙助手/JDChanglongBetRecordpage'
+import JDLotteryAssistantPage from '../经典/长龙助手/JDLotteryAssistantPage'
 
 
 
@@ -118,6 +120,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
   // 彩票大厅-默认
+  GameLobbyPage,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
@@ -155,10 +158,10 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferView, //额度转页-经典版
   TransferLineView, //额度转页-天空蓝版
   TransferTKLMainView, //额度转页-新版
-  JDPromotionIncomePage,//推荐收益
+  JDRecommendedIncomePage,//推荐收益
   JDPromotionCodeListPage,//邀请码
-  JDSegmentPage,//测试segment
-
+  JDChanglongBetRecordpage,//我的下注记录
+  JDLotteryAssistantPage,//最新长龙
 
   // ———————————— 模板页面 —————————————
 
@@ -242,7 +245,7 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         {Object.keys(pageComponents).map((key) => {
           // ugLog('tab page key=', key)
-          return <Router.TabScreen name={key} component={UGPage(pageComponents[key])} />
+          return <Router.TabScreen name={key} key={key} component={UGPage(pageComponents[key])} />
         })}
       </Router.TabNavigator>
     )
@@ -259,7 +262,7 @@ const StackScreens = () => {
         .filter((value) => value.indexOf('Home') <= 0) //过滤掉首页
         .map((key) => {
           // ugLog('stack page key=', key)
-          return <Router.StackScreen options={{ headerShown: false }} name={key} component={UGPage(pageComponents[key])} />
+          return <Router.StackScreen options={{ headerShown: false }} name={key} key={key} component={UGPage(pageComponents[key])} />
         })}
     </Router.StackNavigator>
   )

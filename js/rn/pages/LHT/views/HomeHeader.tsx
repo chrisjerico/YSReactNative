@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
+import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
@@ -39,7 +39,7 @@ const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', sho
               title={'退出'}
               colors={['#ffffff', '#ffffff']}
               containerStyle={styles.badgeContainer}
-              textStyle={{ color: LHThemeColor.六合厅.themeColor, fontSize: scale(20) }}
+              textStyle={{ color: skinColors.themeColor.六合厅, fontSize: scale(20) }}
               onPress={onPressSignOut}
             />
             <Text style={styles.text}>{' | '}</Text>

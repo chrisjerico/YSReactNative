@@ -188,11 +188,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://83f9.com',
   ],
   'c092': [
-    'https://2013asd-555.com',
-    'https://2013tgb-555.com',
-    'https://2013qwe-555.com',
     'https://2013qaz-555.com',
     'https://2013wsx-555.com',
+    'https://2013yhn-555.com',
+    'https://2013jkl-555.com',
+    'https://2013egm-555.com',
   ],
   'c105b': [
     'https://390qp8.com',
@@ -233,10 +233,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'https://jz8444.com',
-    'https://jz5444.com',
-    'https://jz7444.com',
-    'https://jz6444.com',
+    'https://jz0222.com',
+    'https://jz0444.com',
+    'https://jz1444.com',
+    'https://jz2444.com',
+    'https://jz2111.com',
   ],
   'c126b': [
     'https://bc44698.com',
@@ -343,9 +344,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://450-c213-app.me',
-    'https://450-xpj-app.cc',
-    'https://450-xpj-app.co',
+    'https://450-xpj-app.com',
+    'https://450-xpj-app.live',
+    'https://450-xpj-app.me',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -477,12 +478,12 @@ const notifyDomainChanged = async (siteId?: string) => {
   for (const k in DomainUrls) {
     sites[k.toLowerCase()] = DomainUrls[k]
   }
-  const host = anyEmpty(siteId) ? null : sites[siteId.toLowerCase()].trim()
+  const host = anyEmpty(siteId) ? null : sites[siteId.toLowerCase()]?.trim()
   host?.length && ANHelper.refreshHost(host)
 
   switch (Platform.OS) {
     case 'ios':
-      host.length && OCHelper.call('AppDefine.shared.setHost:', [host])
+      host?.length && OCHelper.call('AppDefine.shared.setHost:', [host])
       break
     case 'android':
       await ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);

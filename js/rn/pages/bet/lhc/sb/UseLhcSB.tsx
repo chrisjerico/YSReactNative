@@ -17,12 +17,22 @@ import UseLotteryHelper from '../../util/UseLotteryHelper'
 import LotteryConst from '../../const/LotteryConst'
 
 /**
- * 色波
+ * 色波, 两面, 正码1-6, 总肖, 五行
  * @constructor
  */
 const UseLhcSB = () => {
 
   const {
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
+    playOddData,
+    setPlayOddData,
+    lotteryCode,
+    setLotteryCode,
     nextIssueData,
     playOddDetailData,
     curPlayOddData,
@@ -31,30 +41,22 @@ const UseLhcSB = () => {
     addOrRemoveBall,
   } = UseLotteryHelper()
 
-  const [dataSB, setDataSB] = useState<Array<PlayGroupData>>(null) //当前特码A数据列表
-
-  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据，特码，连码 等等
-
-  /**
-   * 找出当前彩种数据
-   */
   useEffect(() => {
-    setPlayOddData(playOddDetailData()?.playOdds?.find(
-      (item) => item?.code == LotteryConst.SB))
-  }, [playOddDetailData()])
-
-  // ugLog('playOddData=', playOddData)
-  useEffect(() => {
-    //ugLog('dataTMB 2 =', JSON.stringify(playOddData))
-    //特码取前3个数据
-    if (!anyEmpty(playOddData?.playGroups)) {
-      setDataSB(playOddData?.playGroups)
-    }
+    !anyEmpty(playOddData?.playGroups) && setPageData([playOddData?.playGroups])
   }, [playOddData])
 
+  useEffect(() => {
+    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
+  }, [tabIndex, pageData])
+
   return {
-    dataSB,
-    setDataSB,
+    tabIndex,
+    setTabIndex,
+    curData,
+    setCurData,
+    pageData,
+    setPageData,
+    setLotteryCode,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,

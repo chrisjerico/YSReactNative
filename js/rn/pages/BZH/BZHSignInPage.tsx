@@ -4,7 +4,7 @@ import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
@@ -24,7 +24,7 @@ const BZHSignInPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+      <SafeAreaHeader headerColor={skinColors.themeColor.宝石红}>
         <MineHeader title={'登录'} showBackBtn={true} onPressBackBtn={pop} showRightTitle={true} onPressRightTitle={goToUserCenterType.在线客服} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -36,7 +36,7 @@ const BZHSignInPage = () => {
             containerStyle={[
               styles.button,
               {
-                backgroundColor: BZHThemeColor.宝石红.themeColor,
+                backgroundColor: skinColors.themeColor.宝石红,
               },
             ]}
             disabledContainerStyle={styles.button}
@@ -63,7 +63,7 @@ const SignInForm = (props: SignInRenderFormProps) => <FormComponent {...props} c
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.宝石红,
   },
   formContainer: {
     backgroundColor: '#ffffff',

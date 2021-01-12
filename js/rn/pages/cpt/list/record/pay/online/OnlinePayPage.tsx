@@ -30,7 +30,8 @@ import { useEffect, useState } from 'react'
 import { getBankIcon } from '../../../../../bank/list/UseManageBankList'
 
 interface IRouteParams {
-  payData?: PayAisleListData, //当前的账户数据
+  payData?: PayAisleListData, //当前的条目数据
+  payBigData?: PayAisleData, //总数据
   refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
@@ -41,15 +42,19 @@ interface IRouteParams {
  */
 const OnlinePayPage = ({ navigation, route }) => {
 
-  const [curSelBank, setCurSelBank] = useState(null) //选择了哪个银行
-  const [accountItems, setAccountItems] = useState(null) //账户有哪些
-
-  const { payData, refreshTabPage }: IRouteParams = route?.params
+  const { payData, payBigData, refreshTabPage }: IRouteParams = route?.params
 
   let bankController //银行选择
 
   const {
+    setPayData,
+    setPayBigData,
+    curSelBank,
+    setCurSelBank,
+    accountItems,
+    setAccountItems,
     moneyOption,
+    setMoneyOption,
     inputMoney,
     setInputMoney,
     selPayChannel,
@@ -57,16 +62,14 @@ const OnlinePayPage = ({ navigation, route }) => {
     requestPayData,
   } = UseOnlinePay()
 
+  useEffect(()=>{
+    setPayBigData(payBigData)
+    setPayData(payData)
+  }, [])
+
   useEffect(() => {
     //重新绘制银行选择界面
     bankController?.close()
-    let banks = payData?.channel[selPayChannel]?.para?.bankList?.map(
-      (item, index) =>
-        ({
-          label: item.name, value: item.code,
-        }))
-    !anyEmpty(banks) && setAccountItems(banks)
-    !anyEmpty(banks) && setCurSelBank(banks[0].value)
   }, [selPayChannel])
 
   /**
@@ -82,7 +85,7 @@ const OnlinePayPage = ({ navigation, route }) => {
    */
   const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
-      moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
+      !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
           <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>
@@ -99,7 +102,7 @@ const OnlinePayPage = ({ navigation, route }) => {
         payData.channel[selPayChannel]?.payeeName :
         payData.channel[selPayChannel]?.fcomment
     }</Text>
-    <Text style={_styles.choose_channel_hint}>UG集团你梦想的起航！来UG成就的你梦想</Text>
+    <Text style={_styles.choose_channel_hint}>{payBigData?.transferPrompt}</Text>
   </View>
 
   /**

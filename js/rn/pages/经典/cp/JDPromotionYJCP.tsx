@@ -10,6 +10,7 @@ import { anyEmpty } from "../../../public/tools/Ext";
 interface JDPromotionYJCP {
   list?: Array<UGinviteInfoModel>,//tab界面名称数据
   selItemContent?: string,
+  onRoad?:() => void,
 }
 
 
@@ -20,8 +21,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
   //初始化
   useEffect(() => {
     setList(props?.list)
-    console.log('AppDefine.siteId ==',AppDefine.siteId );
-    
+
   }, [])
 
 
@@ -34,6 +34,8 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
     falseItem()
     item.isPress = true
     setSelItemContent(item.content)
+
+    props?.onRoad && props?.onRoad()
   }
 
   /**
@@ -61,7 +63,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
           {list?.map((obj, idx) => {
             return (
 
-              <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', borderBottomWidth: scale(1), borderColor: Skin1.textColor3, height: 35, backgroundColor: obj?.isPress ? Skin1.CLBgColor : '#C4CBCC', }}
+              <TouchableOpacity key={'key'+idx} style={{ alignItems: 'center', justifyContent: 'center', borderBottomWidth: scale(1), borderColor: Skin1.textColor3, height: 35, backgroundColor: obj?.isPress ? Skin1.CLBgColor : '#C4CBCC', }}
                 onPress={() => {
                   onPressItem(obj)
                 }}>
