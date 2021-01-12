@@ -172,13 +172,13 @@ const TaskCenterPage = () => {
         </View>
         <View style={{ flex: 1, justifyContent: 'space-around', paddingVertical: 50 }}>
           <TouchableWithoutFeedback>
-            <Image source={{ uri: 'lqfl' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+            <Image source={{ uri: 'usercenter0' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback>
-            <Image source={{ uri: 'lqfl' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+            <Image source={{ uri: 'usercenter01' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback>
-            <Image source={{ uri: 'lqfl' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
+            <Image source={{ uri: 'usercenter03' }} style={{ width: 100, height: 20 }} resizeMode={'contain'} />
           </TouchableWithoutFeedback>
         </View>
       </View>

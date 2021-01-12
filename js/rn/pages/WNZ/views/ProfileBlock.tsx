@@ -1,6 +1,5 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
-import FastImage from 'react-native-fast-image'
+import { Image, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
 
 interface ProfileBlockProps {
@@ -59,7 +58,7 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
           <View style={{ flex: 3 }}>
             {showBonsTag && (
               <TouchableWithoutFeedback onPress={onPressBonsTag}>
-                <FastImage source={{ uri: 'http://test60f.fhptcdn.com/images/lqfl.png' }} style={{ width: '100%', height: scale(30), marginTop: scale(10) }} resizeMode={'contain'} />
+                <Image source={{ uri: 'lqfl' }} style={{ width: '100%', height: scale(30), marginTop: scale(10) }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
             )}
             <TouchableWithoutFeedback onPress={onPressSign}>
