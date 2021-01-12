@@ -127,7 +127,7 @@ const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 const _styles = StyleSheet.create({
   content_container: {
-    paddingBottom: scale(200),
+    paddingBottom: scale(220),
     flex: 1,
   },
   sub_title_container: {

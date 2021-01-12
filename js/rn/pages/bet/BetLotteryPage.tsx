@@ -333,7 +333,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
   },
   left_column_content: {
-    marginBottom: scale(200),
+    paddingBottom: scale(220),
   },
   left_column_item: {
     width: scale(140),

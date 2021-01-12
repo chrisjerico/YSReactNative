@@ -1,14 +1,16 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
-import UseLhcBoard from './UseLhcBoard'
+import UseLhcBoard, { CHIP_OPTION } from './UseLhcBoard'
 import { IBetBoardParams } from '../const/LotteryConst'
 import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
+import FastImage from 'react-native-fast-image'
+import { Toast } from '../../../public/tools/ToastUtils'
 
 
 /**
@@ -37,40 +39,65 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
   /**
    * 绘制退水
    */
-  const renderSliderArea = () => showSlider ?
-    <View style={_styles.slider_container}>
+  const renderSliderArea = () => <View style={_styles.extra_container}
+                                       pointerEvents={'box-none'}>
+    {
+      showSlider ?
+        <View style={_styles.slider_container}>
 
-      <Icon size={scale(28)}
-            onPress={() => {setShowSlider(!showSlider)}}
-            color={'white'}
-            name={'chevron-down'}/>
+          <Icon size={scale(28)}
+                onPress={() => {
+                  setShowSlider(!showSlider)
+                }}
+                color={'white'}
+                name={'chevron-down'}/>
 
-      <Text style={_styles.sub_title_text}>{'退水: 0%'}</Text>
+          <Text style={_styles.sub_title_text}>{'退水: 0%'}</Text>
 
-      <Icon size={scale(36)}
-            color={'white'}
-            name={'plus-circle'}/>
+          <Icon size={scale(36)}
+                color={'white'}
+                name={'plus-circle'}/>
 
-      <Slider
-        style={_styles.slider}
-        minimumValue={0}
-        maximumValue={100}
-        minimumTrackTintColor={Skin1.themeColor}
-        thumbTintColor={Skin1.themeColor}
-        maximumTrackTintColor={UGColor.LineColor4}/>
+          <Slider
+            style={_styles.slider}
+            minimumValue={0}
+            maximumValue={100}
+            minimumTrackTintColor={Skin1.themeColor}
+            thumbTintColor={Skin1.themeColor}
+            maximumTrackTintColor={UGColor.LineColor4}/>
 
-      <Icon size={scale(36)}
-            color={'white'}
-            name={'minus-circle'}/>
-    </View> :
-    <View>
-      <Icon size={scale(28)}
-            style={_styles.slider_button}
-            onPress={() => {setShowSlider(!showSlider)}}
-            color={Skin1.themeColor}
-            name={'chevron-up'}/>
-    </View>
+          <Icon size={scale(36)}
+                color={'white'}
+                name={'minus-circle'}/>
+        </View> :
+        <View>
+          <Icon size={scale(28)}
+                style={_styles.slider_button}
+                onPress={() => {
+                  setShowSlider(!showSlider)
+                }}
+                color={Skin1.themeColor}
+                name={'chevron-up'}/>
+        </View>
 
+    }
+    {
+      showChip ?
+        <View style={_styles.chip_container}>
+          <View style={_styles.chip_content}>
+            {
+              Object.keys(CHIP_OPTION).map((money) => <TouchableOpacity onPress={() =>
+                setInputMoney(money == 'c' ? '0' : money)}>
+                <FastImage source={{ uri: CHIP_OPTION[money] }}
+                           style={_styles.chip_img}
+                           resizeMode={'contain'}/>
+              </TouchableOpacity>)
+            }
+          </View>
+        </View> :
+        null
+    }
+  </View>
   /**
    * 绘制输入功能区
    */
@@ -87,9 +114,13 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
         <Text style={_styles.lottery_count_count}>0</Text>
         <Text style={_styles.lottery_count_hint}>注</Text>
         <View style={CommStyles.flex}/>
-        <Text style={_styles.lottery_count_chip}>筹码</Text>
+        <TouchableOpacity onPress={() => setShowChip(!showChip)}>
+          <Text style={_styles.lottery_count_chip}>筹码</Text>
+        </TouchableOpacity>
       </View>
       <TextInput style={_styles.input_text}
+                 defaultValue={inputMoney}
+                 onChangeText={(s) => setInputMoney(s)}
                  keyboardType={'numeric'}/>
     </View>
 
@@ -114,6 +145,26 @@ const _styles = StyleSheet.create({
   bet_container: {
     position: 'absolute',
     width: '100%',
+  },
+  extra_container: {
+    flex: 1,
+    height: scale(128),
+    justifyContent: 'flex-end',
+  },
+  chip_container: {
+    width: '100%',
+    position: 'absolute',
+    alignItems: 'flex-end',
+  },
+  chip_content: {
+    backgroundColor: UGColor.transparent3,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    borderRadius: scale(48),
+  },
+  chip_img: {
+    width: scale(96),
+    aspectRatio: 1,
   },
   slider_container: {
     flexDirection: 'row',
