@@ -31,9 +31,10 @@ import { navigate, pop } from '../../public/navigation/RootNavigation'
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1'
 import { PayAisleListData } from '../../public/network/Model/wd/PayAisleModel'
 import LobbyGameListComponent from './new/games/LobbyGameListComponent'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { PushHomeGame } from '../../public/models/Interface'
 import TwoLevelListComponent from './new/games/TwoLevelListComponent'
+import Button from '../../public/views/temp/Button'
 
 interface TwoLevelProps {
   showBackButton: Boolean,
@@ -52,6 +53,8 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
   const [gameData, setGameData] = useState<Array<TwoLevelType>>([])//所有数据
+  const [filterData, setFilterData] = useState<Array<TwoLevelType>>([])
+  const [searchText, setSearchText] = useState("")  //搜尋二級遊戲
 
   const {
     systemInfo,
@@ -78,6 +81,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
     function refreshUI(data: TwoLevelType[]) {
       setRefreshing(false)
       setGameData(data)
+      setFilterData(data)
     }
     
     // 获取彩票数据
@@ -102,10 +106,33 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
    * @param item
    */
   const renderDataList = (item: Array<TwoLevelType>) =>
-    <TwoLevelListComponent 
-      refreshing={refreshing}
-      gameData={item}
-      requestGameData={requestGameData}/>
+    <>
+      <View style={_styles.searchView}>
+        <Text style={_styles.searchText}>全部游戏</Text>
+        <TextInput 
+            style={_styles.searchInput}
+            onChangeText={ (text) => {
+                setSearchText(text)
+            }}
+            />
+        <Button
+            title={'搜索'}
+            containerStyle={_styles.searchButton}
+            titleStyle={{ 
+              color: '#ffffff',
+              fontSize: scale(23)
+            }}
+            onPress={() => {
+              setFilterData(gameData.filter((v) => {
+                return v.name.includes(searchText)
+              }))
+            }} /> 
+      </View>
+      <TwoLevelListComponent 
+        refreshing={refreshing}
+        gameData={item}
+        requestGameData={requestGameData}/>
+    </>
 
   /**
    * 绘制所有的数据
@@ -117,7 +144,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       anyEmpty(gameData)
         ? <EmptyView style={{ flex: 1 }}/>
         : <ScrollView>
-          {renderDataList(gameData)}
+          {renderDataList(filterData)}
         </ScrollView>
       : <View></View>
     )
@@ -143,54 +170,36 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 }
 
 const _styles = StyleSheet.create({
-  container: {},
-  tab_bar: {
-    backgroundColor: '#f4f4f4',
-  },
-  tab_bar_underline: {
-    height: scale(3),
-  },
-  item_container: {
-    paddingHorizontal: scale(32),
-    paddingVertical: scale(16),
-  },
-  item_content: {
-    borderWidth: scale(1),
-    borderColor: UGColor.LineColor1,
-    borderRadius: scale(22),
-    padding: scale(16),
-  },
-  bank_name_container: {
+  searchView: { 
     flexDirection: 'row',
-    color: UGColor.TextColor1,
-    fontSize: scale(24),
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: scale(10)
   },
-  bank_name_icon: {
-    width: scale(36),
-    height: scale(36),
+  searchText: { 
+    fontSize: scale(23),
+    color: Skin1.themeColor, 
+    marginRight: scale(15), 
   },
-  bank_name: {
-    flex: 1,
-    color: UGColor.TextColor1,
-    fontSize: scale(22),
-    marginLeft: scale(16),
+  searchInput: { 
+    width: scale(250),
+    height: scale(50),
+    fontSize: scale(23),
+    color: Skin1.textColor1, 
+    marginRight: scale(15), 
+    borderColor: Skin1.textColor1, 
+    borderRadius: scale(5),
+    borderWidth: scale(1),
+    textAlignVertical: 'center',
+    paddingVertical: scale(0),
+    paddingLeft: scale(10),
   },
-  bank_name_edit: {
-    width: scale(28),
-    height: scale(28),
-  },
-  bank_user_name: {
-    color: UGColor.TextColor3,
-    fontSize: scale(20),
-    paddingTop: scale(16),
-  },
-  right_button: {
-    color: 'white',
-    fontSize: scale(20),
-    padding: scale(8),
-  },
-
+  searchButton: { 
+    backgroundColor: Skin1.themeColor, 
+    width: scale(85), 
+    aspectRatio: 1.8, 
+    borderRadius: scale(2) 
+  }
 })
 
 export default TwoLevelGames
