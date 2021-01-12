@@ -1,6 +1,5 @@
-import { UGSkinStyle } from './UGSkinStyle';
-import UGSkinManagers, { skin1, Skin1 } from '../UGSkinManagers';
-import { convertToSkinType, st } from './UGSkinConf';
+import { skin1, Skin1 } from '../UGSkinManagers';
+import { st } from './UGSkinConf';
 export interface UGSkinColor<Color, Colors> {
   // 根据主题色自动生成色值
   themeColor?: Color // 主题色
