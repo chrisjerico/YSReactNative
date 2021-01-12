@@ -21,6 +21,8 @@ import LhcHXComponent from './lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
 import BetBoardComponent from './board/BetBoardComponent'
 import { anyEmpty } from '../../public/tools/Ext'
+import BetRecordListComponent from './red/BetRecordListComponent'
+import BetRecordHeaderComponent from './red/BetRecordHeaderComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -41,6 +43,8 @@ const BetLotteryPage = ({ navigation, route }) => {
     setLotteryId,
     nextIssueData,
     playOddDetailData,
+    historyData,
+    setHistoryData,
     requestNextData,
     requestLotteryData,
   } = UseBetLottery()
@@ -53,7 +57,6 @@ const BetLotteryPage = ({ navigation, route }) => {
   const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，投注0 还是游戏1
   const [gameTabIndex, setGameTabIndex] = useState(0) // 彩票和聊天切换TAB
   const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
-
 
   /**
    * 绘制顶部的标题栏
@@ -208,6 +211,15 @@ const BetLotteryPage = ({ navigation, route }) => {
 
   </View>
 
+  /**
+   * 绘制游戏开奖记录
+   */
+  const renderHistory = () => (
+    <BetRecordHeaderComponent key={'' + nextIssueData + historyData}
+                              nextData={nextIssueData}
+                              historyData={historyData}/>
+  )
+
   return (
     <BetLotteryContext.Provider value={{
       nextIssueData: () => nextIssueData,
@@ -254,6 +266,7 @@ const BetLotteryPage = ({ navigation, route }) => {
             [
               renderTopBar(),
               renderGameTab(),
+              renderHistory(),
               <TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>,
             ]
           }

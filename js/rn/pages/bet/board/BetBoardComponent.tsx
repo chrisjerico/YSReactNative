@@ -46,16 +46,16 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
         <View style={_styles.slider_container}>
 
           <Icon size={scale(28)}
-                onPress={() => {
-                  setShowSlider(!showSlider)
-                }}
+                onPress={() => { setShowSlider(!showSlider) }}
+                style={_styles.slider_arrow}
                 color={'white'}
                 name={'chevron-down'}/>
 
           <Text style={_styles.sub_title_text}>{'退水: 0%'}</Text>
 
-          <Icon size={scale(36)}
+          <Icon size={scale(48)}
                 color={'white'}
+                style={_styles.slider_plus}
                 name={'plus-circle'}/>
 
           <Slider
@@ -66,8 +66,9 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
             thumbTintColor={Skin1.themeColor}
             maximumTrackTintColor={UGColor.LineColor4}/>
 
-          <Icon size={scale(36)}
+          <Icon size={scale(48)}
                 color={'white'}
+                style={_styles.slider_minus}
                 name={'minus-circle'}/>
         </View> :
         <View>
@@ -86,12 +87,13 @@ const BetBoardComponent = ({ style }: IBetBoardParams) => {
         <View style={_styles.chip_container}>
           <View style={_styles.chip_content}>
             {
-              Object.keys(CHIP_OPTION).map((money) => <TouchableOpacity onPress={() =>
-                setInputMoney(money == 'c' ? '0' : money)}>
-                <FastImage source={{ uri: CHIP_OPTION[money] }}
-                           style={_styles.chip_img}
-                           resizeMode={'contain'}/>
-              </TouchableOpacity>)
+              Object.keys(CHIP_OPTION).map((money) =>
+                <TouchableOpacity key={money}
+                                  onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
+                  <FastImage source={{ uri: CHIP_OPTION[money] }}
+                             style={_styles.chip_img}
+                             resizeMode={'contain'}/>
+                </TouchableOpacity>)
             }
           </View>
         </View> :
@@ -170,19 +172,25 @@ const _styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: UGColor.transparent3,
-    paddingHorizontal: scale(12),
     borderTopLeftRadius: scale(16),
     borderTopRightRadius: scale(16),
   },
+  slider_arrow: {
+    padding: scale(12),
+  },
+  slider_plus: {
+    paddingLeft: scale(12),
+  },
+  slider_minus: {
+    paddingRight: scale(12),
+  },
   slider_button: {
-    paddingHorizontal: scale(12),
-    paddingVertical: scale(12),
+    padding: scale(12),
   },
   sub_title_text: {
     flex: 1,
     color: 'white',
     fontSize: scale(24),
-    paddingHorizontal: scale(16),
     textAlign: 'right',
   },
   ball_container: {

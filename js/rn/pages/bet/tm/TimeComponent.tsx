@@ -43,12 +43,14 @@ const TimeComponent = ({}: IRouteParams) => {
 
 
   return (
-    <View style={_styles.container}>
-      <Text style={_styles.issue_text}>{`${nextIssueData()?.displayNumber}期`}</Text>
-      <Text style={_styles.close_text}>{'封盘:'}</Text>
-      <Text style={_styles.close_time}>{displayCloseTime}</Text>
-      <Text style={_styles.close_text}>{'开盘:'}</Text>
-      <Text style={_styles.open_time}>{displayOpenTime}</Text>
+    <View>
+      <View style={_styles.container}>
+        <Text style={_styles.issue_text}>{`${nextIssueData()?.displayNumber}期`}</Text>
+        <Text style={_styles.close_text}>{'封盘:'}</Text>
+        <Text style={_styles.close_time}>{displayCloseTime}</Text>
+        <Text style={_styles.close_text}>{'开盘:'}</Text>
+        <Text style={_styles.open_time}>{displayOpenTime}</Text>
+      </View>
     </View>
 
   )
@@ -58,6 +60,8 @@ const _styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: UGColor.LineColor3,
+    paddingVertical: scale(8),
   },
   issue_text: {
     color: UGColor.TextColor3,
@@ -71,11 +75,11 @@ const _styles = StyleSheet.create({
   },
   close_time: {
     color: UGColor.RedColor2,
-    fontSize: scale(22),
+    fontSize: scale(24),
   },
   open_time: {
     color: UGColor.WarnningColor1,
-    fontSize: scale(22),
+    fontSize: scale(24),
   },
 
 })

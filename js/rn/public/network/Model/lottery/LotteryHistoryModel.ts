@@ -9,9 +9,9 @@ export interface PlayData {
 
 export interface LotteryHistoryData {
   list: PlayData[];
-  redBalls: number[];
-  greenBalls: number[];
-  blueBalls: number[];
+  redBalls?: number[];
+  greenBalls?: number[];
+  blueBalls?: number[];
 }
 
 /**

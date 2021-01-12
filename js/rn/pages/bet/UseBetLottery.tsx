@@ -26,7 +26,6 @@ const UseBetLottery = () => {
   useEffect(() => {
     requestNextData(lotteryId)
     requestLotteryData(lotteryId)
-    requestHistory(lotteryId)
   }, [lotteryId])
 
   /**
@@ -41,6 +40,7 @@ const UseBetLottery = () => {
 
     if (res?.code == 0) {
       setNextIssueData(res?.data)
+      requestHistory(lotteryId)
     }
 
     return res?.code
@@ -52,14 +52,15 @@ const UseBetLottery = () => {
   const requestHistory = async (id?: string) => {
     if (anyEmpty(id)) return null
 
-    const pms = nextIssueData?.lowFreq != '1' ?
+    const pms = //nextIssueData?.lowFreq != '1' ?
       {
         id: lotteryId,
-      } :
-      {
-        id: lotteryId,
-        date: moment().format('YYYY-MM-DD'),
       }
+    // :
+    //   {
+    //     id: lotteryId,
+    //     date: moment().format('YYYY-MM-DD'),
+    //   }
 
     showLoading()
 
@@ -70,7 +71,15 @@ const UseBetLottery = () => {
     hideLoading()
 
     if (res?.code == 0) {
-      setHistoryData(res?.data)
+      let data = res?.data
+      //抹去生肖数据，历史记录不显示生肖
+      setHistoryData({
+        ...data,
+        list: data?.list?.map((item) => ({
+          ...item,
+          result: null,
+        }))
+      })
     }
 
 
@@ -100,6 +109,8 @@ const UseBetLottery = () => {
     setLotteryId,
     nextIssueData,
     playOddDetailData,
+    historyData,
+    setHistoryData,
     requestNextData,
     requestLotteryData,
   }
