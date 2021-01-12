@@ -138,8 +138,12 @@ export default class PushHelper {
         }
         if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
 
-        if (game?.subId == GameType.游戏大厅) {  //游戏大厅
+        if (game?.seriesId == 7 && game?.subId == GameType.游戏大厅) {  //游戏大厅
           push(PageName.GameLobbyPage, { showBackButton: true })
+          return 
+        }
+        if (game?.isPopup == 1) {  //二级游戏分类
+          push(PageName.TwoLevelGames, { game: game, showBackButton: true })
           return 
         }
 
