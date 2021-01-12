@@ -22,10 +22,10 @@ const TimeComponent = ({}: IRouteParams) => {
   const { nextIssueData, playOddDetailData, curPlayOddData } = useContext(BetLotteryContext)
 
   const {
-    gotoOpenNet,
-    gotoLive,
     displayCloseTime,
     displayOpenTime,
+    gotoOpenNet,
+    gotoLive,
   } = UseTime()
 
   /**

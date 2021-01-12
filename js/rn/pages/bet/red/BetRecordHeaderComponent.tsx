@@ -18,10 +18,10 @@ import EBall from '../../../public/components/view/lottery/EBall'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
 import BetRecordListComponent from './BetRecordListComponent'
+import { useContext } from 'react'
+import BetLotteryContext from '../BetLotteryContext'
 
 interface IHallGameList {
-  nextData?: NextIssueData //下期数据
-  historyData?: LotteryHistoryData //所有数据
 }
 
 /**
@@ -29,16 +29,18 @@ interface IHallGameList {
  * @param navigation
  * @constructor
  */
-const BetRecordHeaderComponent = ({
-                                    nextData,
-                                    historyData,
-                                  }: IHallGameList) => {
+const BetRecordHeaderComponent = ({ }: IHallGameList) => {
+
+  const { nextIssueData, playOddDetailData, curPlayOddData} = useContext(BetLotteryContext)
 
   const {
     showHistory,
     setShowHistory,
+    historyData,
+    setHistoryData,
     systemInfo,
     userInfo,
+    toggleHistory,
   } = UseBetHistoryList()
 
   /**
@@ -199,7 +201,7 @@ const BetRecordHeaderComponent = ({
           }
           <Icon size={scale(48)}
                 key={'' + showHistory}
-                onPress={() => setShowHistory(!showHistory)}
+                onPress={() => toggleHistory()}
                 style={_styles.issue_arrow}
                 color={Skin1.themeColor}
                 name={showHistory ? 'angle-double-up' : 'angle-double-down'}/>
@@ -214,7 +216,7 @@ const BetRecordHeaderComponent = ({
 
   return (
     <View>
-      {renderItemContent(nextData)}
+      {renderItemContent(nextIssueData())}
       {
         showHistory ?
           <View style={_styles.history_list_container}>

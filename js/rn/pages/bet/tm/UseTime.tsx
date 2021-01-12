@@ -9,6 +9,10 @@ import { ugLog } from '../../../public/tools/UgLog'
 import moment from 'moment'
 import PushHelper from '../../../public/define/PushHelper'
 import AppDefine from '../../../public/define/AppDefine'
+import { LotteryHistoryData } from '../../../public/network/Model/lottery/LotteryHistoryModel'
+import { anyEmpty } from '../../../public/tools/Ext'
+import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
+import APIRouter from '../../../public/network/APIRouter'
 
 /**
  * 开奖时间显示
@@ -89,12 +93,11 @@ const UseTime = () => {
     )
   }
 
-
   return {
-    gotoOpenNet,
-    gotoLive,
     displayCloseTime,
     displayOpenTime,
+    gotoOpenNet,
+    gotoLive,
   }
 }
 

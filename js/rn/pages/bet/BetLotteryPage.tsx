@@ -43,8 +43,6 @@ const BetLotteryPage = ({ navigation, route }) => {
     setLotteryId,
     nextIssueData,
     playOddDetailData,
-    historyData,
-    setHistoryData,
     requestNextData,
     requestLotteryData,
   } = UseBetLottery()
@@ -215,9 +213,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制游戏开奖记录
    */
   const renderHistory = () => (
-    <BetRecordHeaderComponent key={'' + nextIssueData + historyData}
-                              nextData={nextIssueData}
-                              historyData={historyData}/>
+    <BetRecordHeaderComponent key={'' + nextIssueData}/>
   )
 
   return (
@@ -274,7 +270,7 @@ const BetLotteryPage = ({ navigation, route }) => {
             {renderLeftColumn()}
             {renderRightContent()}
           </View>
-          <BetBoardComponent locked={true}
+          <BetBoardComponent locked={false}
                              lockStr={'封盘中...'}/>
         </View>
       </BaseScreen>

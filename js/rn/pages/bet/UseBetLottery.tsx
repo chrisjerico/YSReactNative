@@ -18,8 +18,7 @@ const UseBetLottery = () => {
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
-  const [lotteryId, setLotteryId] = useState(null)
-  const [historyData, setHistoryData] = useState<LotteryHistoryData>(null) //当前期数据
+  const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
   const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //当前期数据
   const [playOddDetailData, setPlayOddDetailData] = useState<PlayOddDetailData>(null) //彩票数据
 
@@ -40,48 +39,7 @@ const UseBetLottery = () => {
 
     if (res?.code == 0) {
       setNextIssueData(res?.data)
-      requestHistory(lotteryId)
     }
-
-    return res?.code
-  }
-
-  /**
-   * 开奖记录
-   */
-  const requestHistory = async (id?: string) => {
-    if (anyEmpty(id)) return null
-
-    const pms = //nextIssueData?.lowFreq != '1' ?
-      {
-        id: lotteryId,
-      }
-    // :
-    //   {
-    //     id: lotteryId,
-    //     date: moment().format('YYYY-MM-DD'),
-    //   }
-
-    showLoading()
-
-    const res = await APIRouter.game_lotteryHistory(pms)
-      .then(({ data: res }) => res)
-    // ugLog('requestHistory data res=', JSON.stringify(res?.data))
-
-    hideLoading()
-
-    if (res?.code == 0) {
-      let data = res?.data
-      //抹去生肖数据，历史记录不显示生肖
-      setHistoryData({
-        ...data,
-        list: data?.list?.map((item) => ({
-          ...item,
-          result: null,
-        }))
-      })
-    }
-
 
     return res?.code
   }
@@ -109,8 +67,6 @@ const UseBetLottery = () => {
     setLotteryId,
     nextIssueData,
     playOddDetailData,
-    historyData,
-    setHistoryData,
     requestNextData,
     requestLotteryData,
   }
