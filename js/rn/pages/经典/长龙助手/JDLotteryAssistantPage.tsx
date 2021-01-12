@@ -304,12 +304,12 @@ const JDLotteryAssistantPage = () => {
         return;
       }
       v.isRefreshing = false
-      v.items.length = 0
+      let temp : Array<UGChanglongaideModel> =  v.items;
       v.items = JSON.parse(JSON.stringify(arrayData))
 
 
-      for (let index = 0; index < arrayData.length; index++) {
-        const clm1 = arrayData[index];
+      for (let index = 0; index < temp.length; index++) {
+        const clm1 = temp[index];
         for (let i = 0; i < clm1.betList.length; i++) {
           const bet1 = clm1.betList[i];
           if (bet1.select) {
@@ -580,7 +580,12 @@ const JDLotteryAssistantPage = () => {
         v.dataTimeIsOpen = false;
 
         onHeaderRefresh()
-      }
+      },
+      didBlur:() => {
+        clearInterval(v.timer)
+        clearInterval(v.dataTimer)
+         console.log("长龙我的投注销毁了，调用了clearInterval")
+      },
     })
 
     return (() => {
