@@ -79,15 +79,6 @@ export const LLRegisterPage = () => {
         }}
                          placeholder={recommendGuyPlaceholder || '推荐人或上级代理'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-reco.png'} />
-        {showRecommendGuy && inviter == '' && <View style={{ flexDirection: 'row' }}>
-          <Text style={{
-            color: 'red',
-            fontSize: 12,
-            textAlign: 'left',
-            flex: 1,
-            paddingVertical: 4,
-          }}>*请填写推荐人ID</Text>
-        </View>}
         <LLRegisterInput maxLength={15} isPwd={false} onChangeText={(text) => {
           setAcc(text)
           onChangeAccount(text)
@@ -198,7 +189,7 @@ export const LLRegisterPage = () => {
               push(PageName.LLLoginPage)
             }}>马上登录</Text>
           </View>
-          <Text style={{ color: '#666', marginTop: 16, fontSize: 14 }}>Copyright ©2012-2020 All Right
+          <Text style={{ color: '#666', marginTop: 16, fontSize: 14 }}>Copyright ©2012-2021 All Right
             Reserved</Text>
         </View>
       </ScrollView>
