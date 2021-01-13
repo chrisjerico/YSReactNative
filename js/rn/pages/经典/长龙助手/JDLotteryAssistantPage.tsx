@@ -179,7 +179,7 @@ const JDLotteryAssistantPage = () => {
  
     // console.log('dict=',dict);
     onHeaderRefresh();
-    api.user.bet(dicMode).useSuccess(({ data, msg }) => {
+    api.user.userBetWithParams(dicMode).useSuccess(({ data, msg }) => {
       showSuccess(msg)
 
     }).useFailure((err) => {

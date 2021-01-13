@@ -10,6 +10,7 @@ import { Data } from "../../Model/RegisterModel";
 import { AvatarSettingModel } from '../../Model/SystemAvatarListModel';
 import AppDefine from '../../../define/AppDefine';
 import { UGStore } from '../../../../redux/store/UGStore';
+import { BetMode } from '../../../../pages/经典/Model/UGChanglongaideModel';
 
 
 
@@ -99,10 +100,10 @@ export class api_user {
   }
 
   // 注单投注
-  static userBetWithParams(params: {}) {
+  static userBetWithParams(params: BetMode){
 
     if (UGStore.globalProps.userInfo?.isTest) {//是测试账号
-      if (anyEmpty(params['isInstant'])||params['isInstant']==false) {
+      if (anyEmpty(params.isInstant)||params.isInstant==false) {
         return api_user.guestBet(params);
       }
       else{
