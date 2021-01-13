@@ -9,7 +9,6 @@ import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native
 import { UGColor } from '../../public/theme/UGThemeColor'
 import EmptyView from '../../public/components/view/empty/EmptyView'
 import HallGameListComponent from './new/games/HallGameListComponent'
-import { HomeRecommendModel, Data, TwoLevelType } from '../../public/network/Model/HomeRecommendModel'
 import APIRouter from '../../public/network/APIRouter'
 import { ugLog } from '../../public/tools/UgLog'
 import { Toast } from '../../public/tools/ToastUtils'
@@ -20,7 +19,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import PushHelper from '../../public/define/PushHelper'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import { PageName } from '../../public/navigation/Navigation'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -33,8 +31,9 @@ import { PayAisleListData } from '../../public/network/Model/wd/PayAisleModel'
 import LobbyGameListComponent from './new/games/LobbyGameListComponent'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { PushHomeGame } from '../../public/models/Interface'
-import TwoLevelListComponent from './new/games/TwoLevelListComponent'
 import Button from '../../public/views/temp/Button'
+import TwoLevelType from '../../public/network/Model/HomeRecommendModel'
+import TwoLevelListComponent from '../hall/new/games/TwoLevelListComponent'
 
 interface TwoLevelProps {
   showBackButton: Boolean,
@@ -108,7 +107,10 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
   const renderDataList = (item: Array<TwoLevelType>) =>
     <>
       <View style={_styles.searchView}>
-        <Text style={_styles.searchText}>全部游戏</Text>
+        <Text style={{ 
+          fontSize: scale(23),
+          color: Skin1.themeColor, 
+          marginRight: scale(15), }}>全部游戏</Text>
         <TextInput 
             style={_styles.searchInput}
             onChangeText={ (text) => {
@@ -117,7 +119,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
             />
         <Button
             title={'搜索'}
-            containerStyle={_styles.searchButton}
+            containerStyle={[_styles.searchButton, {backgroundColor: Skin1.themeColor}]}
             titleStyle={{ 
               color: '#ffffff',
               fontSize: scale(23)
@@ -176,11 +178,6 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
     padding: scale(10)
   },
-  searchText: { 
-    fontSize: scale(23),
-    color: Skin1.themeColor, 
-    marginRight: scale(15), 
-  },
   searchInput: { 
     width: scale(250),
     height: scale(50),
@@ -195,9 +192,8 @@ const _styles = StyleSheet.create({
     paddingLeft: scale(10),
   },
   searchButton: { 
-    backgroundColor: Skin1.themeColor, 
     width: scale(85), 
-    aspectRatio: 1.8, 
+    height: scale(50),
     borderRadius: scale(2) 
   }
 })
