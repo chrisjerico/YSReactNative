@@ -170,8 +170,8 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <View style={_styles.content_container}>
-    {arrayLength(curData) > 0 && renderZT1(curData[0])}
-    {arrayLength(curData) > 1 && renderZT2(curData[1])}
+    {/*{arrayLength(curData) > 0 && renderZT1(curData[0])}*/}
+    {/*{arrayLength(curData) > 1 && renderZT2(curData[1])}*/}
   </View>
 
   return (

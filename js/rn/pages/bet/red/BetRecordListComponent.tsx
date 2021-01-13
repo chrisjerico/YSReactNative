@@ -44,21 +44,25 @@ const BetRecordListComponent = ({
     let lastZodiac = zodiacs.pop() //最后一个球
 
     return (
-      <View style={_styles.zodiac_container}>
+      <View key={'BetRecordListComponent renderZodiac'}
+            style={_styles.zodiac_container}>
         {
-          [
-            zodiacs?.map((item) => (
-              <View key={zodiacStr + item} style={_styles.zodiac_text_container}>
-                <Text style={_styles.zodiac_text}>{item}</Text>
-              </View>
-            )),
-            lastZodiac && <Text key={zodiacStr + '+'}
-                                style={_styles.text_content_plus}>{'+'}</Text>,
-            lastZodiac && <View key={zodiacStr + lastZodiac}
-                                style={_styles.zodiac_text_container}>
-              <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
-            </View>,
-          ]
+          zodiacs?.map((item) => (
+            <View key={'BetRecordListComponent renderZodiac' + zodiacStr + item}
+                  style={_styles.zodiac_text_container}>
+              <Text style={_styles.zodiac_text}>{item}</Text>
+            </View>
+          ))
+        }
+        {
+          lastZodiac && <Text key={'BetRecordListComponent renderZodiac' + zodiacStr + '+'}
+                              style={_styles.text_content_plus}>{'+'}</Text>
+        }
+        {
+          lastZodiac && <View key={'BetRecordListComponent renderZodiac' + zodiacStr + lastZodiac}
+                              style={_styles.zodiac_text_container}>
+            <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
+          </View>
         }
       </View>
     )
@@ -77,14 +81,16 @@ const BetRecordListComponent = ({
     ballStyle = anyEmpty(ballStyle) ? BallStyles['lhc'] : ballStyle
 
     let ballView
+    const key = 'header red renderBalls' + gameType
     switch (gameType) {
       case 'bjkl8'://北京快8
         ballView = (
           [
-            <View style={_styles.ball_wrap_container}>
+            <View key={key + ballStr + 'ct'}
+                  style={_styles.ball_wrap_container}>
               {
 
-                [...balls, lastBall]?.map((item) => <LotteryBall key={ballStr + item}
+                [...balls, lastBall]?.map((item) => <LotteryBall key={key + ballStr + item}
                                                                  type={ballStyle}
                                                                  size={scale(38)}
                                                                  ballNumber={item}/>)
@@ -98,10 +104,12 @@ const BetRecordListComponent = ({
       case 'pk10nn'://牛牛系列
         ballView = (
           [
-            <View style={CommStyles.flex}/>,
-            <View style={_styles.ball_container}>
+            <View key={key + ballStr + 'line'}
+                  style={CommStyles.flex}/>,
+            <View key={key + ballStr + 'ct'}
+                  style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item) => <LotteryBall key={ballStr + item}
+                [...balls, lastBall]?.map((item) => <LotteryBall key={key + ballStr + item}
                                                                  type={ballStyle}
                                                                  size={scale(39)}
                                                                  ballNumber={item}/>)
@@ -113,10 +121,12 @@ const BetRecordListComponent = ({
       case 'dlt'://大乐透系列
         ballView = (
           [
-            <View style={CommStyles.flex}/>,
-            <View style={_styles.ball_container}>
+            <View key={key + ballStr + 'line'}
+                  style={CommStyles.flex}/>,
+            <View key={key + ballStr + 'ct'}
+                  style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item, index) => <LotteryBall key={ballStr + item}
+                [...balls, lastBall]?.map((item, index) => <LotteryBall key={key + ballStr + item}
                                                                         type={ballStyle}
                                                                         ballColor={index < balls.length - 1 ?
                                                                           UGColor.RedColor5 :
@@ -136,12 +146,12 @@ const BetRecordListComponent = ({
                   style={_styles.ball_container}>
               {
                 [
-                  balls?.map((item) => <LotteryBall key={ballStr + item}
+                  balls?.map((item) => <LotteryBall key={key + ballStr + item}
                                                     type={ballStyle}
                                                     ballNumber={item}/>),
-                  lastBall && <Text key={ballStr + lastBall + '+'}
+                  lastBall && <Text key={key + ballStr + lastBall + '+'}
                                     style={_styles.text_content_plus}>{'+'}</Text>,
-                  lastBall && <LotteryBall key={ballStr + lastBall}
+                  lastBall && <LotteryBall key={key + ballStr + lastBall}
                                            type={ballStyle}
                                            ballNumber={lastBall}/>,
                 ]
@@ -153,10 +163,12 @@ const BetRecordListComponent = ({
       default:
         ballView = (
           [
-            <View style={CommStyles.flex}/>,
-            <View style={_styles.ball_container}>
+            <View key={key + ballStr + 'line'}
+                  style={CommStyles.flex}/>,
+            <View key={key + ballStr + 'ct'}
+                  style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item) => <LotteryBall key={ballStr + item}
+                [...balls, lastBall]?.map((item) => <LotteryBall key={key + ballStr + item}
                                                                  type={ballStyle}
                                                                  ballNumber={item}/>)
               }
@@ -175,13 +187,15 @@ const BetRecordListComponent = ({
    */
   const renderItemContent = (item: PlayData) => {
     return (
-      <View style={_styles.ball_item_container}>
+      <View key={'red renderItemContent'}
+            style={_styles.ball_item_container}>
         {
           anyEmpty(item?.displayNumber) ? null :
-            <Text style={_styles.text_content_issue}
+            <Text key={'red renderItemContent' + item.displayNumber}
+                  style={_styles.text_content_issue}
                   numberOfLines={2}>{item.displayNumber + '期'}</Text>
         }
-        <View>
+        <View key={'renderItemContent red result'}>
           {renderBalls(item?.gameType, item?.num)}
           {renderZodiac(item?.result)}
         </View>
@@ -196,7 +210,9 @@ const BetRecordListComponent = ({
     return (
       arrayLength(historyData?.list) == 1 ?
         renderItemContent(historyData?.list[0]) :
-        <FlatList showsVerticalScrollIndicator={false}
+        <FlatList key={'renderDataList' + historyData?.list}
+                  showsVerticalScrollIndicator={false}
+                  nestedScrollEnabled={true}
                   keyExtractor={(item, index) => `${item}-${index}`}
                   data={historyData?.list}
                   renderItem={({ item, index }) => {
@@ -208,10 +224,11 @@ const BetRecordListComponent = ({
   }
 
   return (
-    <View style={CommStyles.flex}>
+    <View key={'bet record list'}>
       {
         anyEmpty(historyData?.list)
-          ? <EmptyView style={{ paddingBottom: 0, paddingTop: scale(64) }}/>
+          ? <EmptyView key={'bet content empty'}
+                       style={{ paddingBottom: 0, paddingTop: scale(64) }}/>
           : renderDataList()
       }
     </View>

@@ -63,27 +63,37 @@ const BetLotteryPage = ({ navigation, route }) => {
    */
   const renderTopBar = () => <View key={'renderTopBar'} style={[_styles.top_bar_container,
     { backgroundColor: Skin1.themeColor }]}>
-    <TouchableOpacity onPress={() => pop()}>
-      <View style={_styles.back_bt_container}>
-        <Icon size={scale(32)}
+    <TouchableOpacity key={'renderTopBar left back'}
+                      onPress={() => pop()}>
+      <View key={'renderTopBar left back'}
+            style={_styles.back_bt_container}>
+        <Icon key={'renderTopBar left back'}
+              size={scale(32)}
               name={'angle-left'}
               color={Skin1.navBarTitleColor}/>
       </View>
     </TouchableOpacity>
-    <Text style={[_styles.top_game_name,
-      { color: Skin1.navBarTitleColor }]}>{nextIssueData?.title}</Text>
-    <Icon size={scale(28)}
+    <Text key={'renderTopBar title' + nextIssueData?.title}
+          style={[_styles.top_game_name,
+            { color: Skin1.navBarTitleColor }]}>{nextIssueData?.title}</Text>
+    <Icon key={'renderTopBar down'}
+          size={scale(28)}
           name={'caret-down'}
           color={Skin1.navBarTitleColor}/>
-    <View style={CommStyles.flex}/>
-    <Text style={[_styles.top_money,
-      { color: Skin1.navBarTitleColor }]}>{!anyEmpty(userInfo) && userInfo?.balance}</Text>
-    <Icon size={scale(24)}
+    <View key={'renderTopBar space'}
+          style={CommStyles.flex}/>
+    <Text key={'renderTopBar money' + userInfo?.balance}
+          style={[_styles.top_money,
+            { color: Skin1.navBarTitleColor }]}>{!anyEmpty(userInfo) && userInfo?.balance}</Text>
+    <Icon key={'renderTopBar refresh'}
+          size={scale(24)}
           name={'refresh'}
           color={Skin1.navBarTitleColor}/>
-    <TouchableOpacity onPress={() => pop()}>
+    <TouchableOpacity key={'renderTopBar bar'}
+                      onPress={() => pop()}>
       <View style={_styles.back_bt_container}>
-        <Icon size={scale(32)}
+        <Icon key={'renderTopBar bar'}
+              size={scale(32)}
               name={'bars'}
               color={Skin1.navBarTitleColor}/>
       </View>
@@ -97,7 +107,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   const renderLeftColumn = () => <View key={playOddDetailData?.playOdds?.toString()}
                                        style={[
                                          _styles.left_column_container,
-                                         {height: LEFT_ITEM_HEIGHT * arrayLength(playOddDetailData?.playOdds)}
+                                         { height: LEFT_ITEM_HEIGHT * arrayLength(playOddDetailData?.playOdds) },
                                        ]}>
     <ScrollView key={playOddDetailData?.playOdds?.toString()}
                 nestedScrollEnabled={true}
@@ -106,16 +116,18 @@ const BetLotteryPage = ({ navigation, route }) => {
             style={_styles.left_column_content}>
         {
           playOddDetailData?.playOdds?.map((item, index) => {
-            return <TouchableOpacity key={item?.code}
+            return <TouchableOpacity key={'renderLeftColumn' + item?.code}
                                      onPress={() => setLeftColumnIndex(index)}>
-              <View style={[
-                _styles.left_column_item,
-                {
-                  borderWidth: leftColumnIndex == index ? scale(3) : scale(1),
-                  borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
-                },
-              ]}>
-                <Text style={_styles.left_column_text}>{item.name}</Text>
+              <View key={'renderLeftColumn' + item?.code}
+                    style={[
+                      _styles.left_column_item,
+                      {
+                        borderWidth: leftColumnIndex == index ? scale(3) : scale(1),
+                        borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
+                      },
+                    ]}>
+                <Text key={'renderLeftColumn' + item?.code}
+                      style={_styles.left_column_text}>{item.name}</Text>
               </View>
             </TouchableOpacity>
           })
@@ -140,21 +152,24 @@ const BetLotteryPage = ({ navigation, route }) => {
     const key = targetLotteryCode + isEqual
     ugLog('current key key={key} =', targetLotteryCode, currentLotteryCode, key)
     switch (targetLotteryCode) {
-      case LotteryConst.TM: { //特码
-        return <LhcTMComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}/>
-      }
+      // case LotteryConst.TM: { //特码
+      //   return <LhcTMComponent key={targetLotteryCode}
+      //                          lotteryCode={targetLotteryCode}
+      //                          style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+      //   />
+      // }
       case LotteryConst.ZM: //正码
       case LotteryConst.ZT: { //正特
         return <LhcZTComponent key={targetLotteryCode}
                                lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}/>
+          //style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+        />
       }
       // case LotteryConst.LMA: { //连码
-      //   return <LhcLMAComponent key={key}
+      //   return <LhcLMAComponent key={targetLotteryCode}
       //                           lotteryCode={targetLotteryCode}
-      //                           style={isEqual ? null : { display: 'none' }}/>
+      //                           style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+      //   />
       // }
       // case LotteryConst.LM: //两面
       // case LotteryConst.ZM1_6: //正码1T6
@@ -163,7 +178,8 @@ const BetLotteryPage = ({ navigation, route }) => {
       // case LotteryConst.WX: { //五行
       //   return <LhcSBComponent key={key}
       //                          lotteryCode={targetLotteryCode}
-      //                          style={isEqual ? null : { display: 'none' }}/>
+      //                          //style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+      //   />
       // }
       // case LotteryConst.YX: //平特一肖
       // case LotteryConst.WS: //平特尾数
@@ -174,17 +190,20 @@ const BetLotteryPage = ({ navigation, route }) => {
       // case LotteryConst.ZX: { //正肖
       //   return <LhcPTYXComponent key={key}
       //                            lotteryCode={targetLotteryCode}
-      //                            style={isEqual ? null : { display: 'none' }}/>
+      //                            //style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+      //   />
       // }
       // case LotteryConst.HX: { //合肖
       //   return <LhcHXComponent key={key}
       //                          lotteryCode={targetLotteryCode}
-      //                          style={isEqual ? null : { display: 'none' }}/>
+      //                          //style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+      //   />
       // }
       // case LotteryConst.ZXBZ: { //自选不中
       //   return <LhcZXBZComponent key={key}
       //                            lotteryCode={targetLotteryCode}
-      //                            style={isEqual ? null : { display: 'none' }}/>
+      //                            //style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+      //   />
       // }
 
     }
@@ -257,82 +276,88 @@ const BetLotteryPage = ({ navigation, route }) => {
     //                     lotteryCode={LotteryConst.ZXBZ}/>
     // </View>
 
-    // ugLog('---------------------------------------------------')
-    // return <View style={CommStyles.flex}>
-    //   {
-    //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode) )
+    ugLog('---------------------------------------------------')
+    return <View style={CommStyles.flex}>
+      {
+        Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
+      }
+    </View>
+
+
+    // switch (lotteryCode) {
+    //   case LotteryConst.TM: { //特码
+    //     return <LhcTMComponent key={lotteryCode}
+    //                            lotteryCode={lotteryCode}/>
     //   }
-    // </View>
-
-
-    switch (lotteryCode) {
-      case LotteryConst.TM: { //特码
-        return <LhcTMComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT: { //正特
-        return <LhcZTComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.LMA: { //连码
-        return <LhcLMAComponent key={lotteryCode}
-                                lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX: { //五行
-        return <LhcSBComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.YX: //平特一肖
-      case LotteryConst.WS: //平特尾数
-      case LotteryConst.TWS: //头尾数
-      case LotteryConst.TX: //特肖
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZX: { //正肖
-        return <LhcPTYXComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.HX: { //合肖
-        return <LhcHXComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.ZXBZ: { //自选不中
-        return <LhcZXBZComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
-      }
-
-    }
-
-    return null
+    //   case LotteryConst.ZM: //正码
+    //   case LotteryConst.ZT: { //正特
+    //     return <LhcZTComponent key={lotteryCode}
+    //                            lotteryCode={lotteryCode}/>
+    //   }
+    //   case LotteryConst.LMA: { //连码
+    //     return <LhcLMAComponent key={lotteryCode}
+    //                             lotteryCode={lotteryCode}/>
+    //   }
+    //   case LotteryConst.LM: //两面
+    //   case LotteryConst.ZM1_6: //正码1T6
+    //   case LotteryConst.SB: //色波
+    //   case LotteryConst.ZOX://总肖
+    //   case LotteryConst.WX: { //五行
+    //     return <LhcSBComponent key={lotteryCode}
+    //                            lotteryCode={lotteryCode}/>
+    //   }
+    //   case LotteryConst.YX: //平特一肖
+    //   case LotteryConst.WS: //平特尾数
+    //   case LotteryConst.TWS: //头尾数
+    //   case LotteryConst.TX: //特肖
+    //   case LotteryConst.LX: //连肖
+    //   case LotteryConst.LW: //连尾
+    //   case LotteryConst.ZX: { //正肖
+    //     return <LhcPTYXComponent key={lotteryCode}
+    //                              lotteryCode={lotteryCode}/>
+    //   }
+    //   case LotteryConst.HX: { //合肖
+    //     return <LhcHXComponent key={lotteryCode}
+    //                            lotteryCode={lotteryCode}/>
+    //   }
+    //   case LotteryConst.ZXBZ: { //自选不中
+    //     return <LhcZXBZComponent key={lotteryCode}
+    //                              lotteryCode={lotteryCode}/>
+    //   }
+    //
+    // }
+    //
+    // return null
   }
 
   /**
    * 绘制游戏聊天切换tab
    */
-  const renderGameTab = () => <View key={'renderGameTab'} style={[_styles.game_tab_container,
-    { backgroundColor: Skin1.themeColor }]}>
+  const renderGameTab = () => <View key={'renderGameTab'}
+                                    style={[_styles.game_tab_container, { backgroundColor: Skin1.themeColor }]}>
 
-    <TouchableOpacity style={CommStyles.flex}
+    <TouchableOpacity key={'renderGameTab left'}
+                      style={CommStyles.flex}
                       onPress={() => setGameTabIndex(0)}>
-      <View style={[
-        _styles.game_tab,
-        _styles.game_tab_left,
-        gameTabIndex == 0 ? { backgroundColor: UGColor.transparent2 } : null]}>
-        <Text style={_styles.tab_text}>{'投注区'}</Text>
+      <View key={'renderGameTab left'}
+            style={[
+              _styles.game_tab,
+              _styles.game_tab_left,
+              gameTabIndex == 0 ? { backgroundColor: UGColor.transparent2 } : null]}>
+        <Text key={'renderGameTab 投注区'}
+              style={_styles.tab_text}>{'投注区'}</Text>
       </View>
     </TouchableOpacity>
-    <TouchableOpacity style={CommStyles.flex}
+    <TouchableOpacity key={'renderGameTab right'}
+                      style={CommStyles.flex}
                       onPress={() => setGameTabIndex(1)}>
-      <View style={[
+      <View key={'renderGameTab right'}
+            style={[
         _styles.game_tab,
         _styles.game_tab_right,
         gameTabIndex == 1 ? { backgroundColor: UGColor.transparent2 } : null]}>
-        <Text style={_styles.tab_text}>{'主房间'}</Text>
+        <Text key={'renderGameTab 主房间'}
+              style={_styles.tab_text}>{'主房间'}</Text>
       </View>
     </TouchableOpacity>
 
@@ -342,7 +367,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制游戏开奖记录
    */
   const renderHistory = () => (
-    <BetRecordHeaderComponent key={'' + nextIssueData}/>
+    <BetRecordHeaderComponent key={'renderHistory=' + nextIssueData}/>
   )
 
   return (
@@ -386,18 +411,19 @@ const BetLotteryPage = ({ navigation, route }) => {
         {/*             resizeMode={'contain'}/>*/}
         {/*</Modal>*/}
         <View style={_styles.bs_container}>
-        {renderTopBar()}
-        {renderGameTab()}
-        <ScrollView style={CommStyles.flex}>
-          {renderHistory()}
-          {<TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>}
-          <View style={{flexDirection: 'row'}}>
-            {renderLeftColumn()}
-            {renderRightContent()}
-          </View>
-        </ScrollView>
-        <BetBoardComponent locked={false}
-                           lockStr={'封盘中...'}/>
+          {renderTopBar()}
+          {renderGameTab()}
+          <ScrollView key={'middle content'}
+                      style={CommStyles.flex}>
+            {renderHistory()}
+            {<TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>}
+            <View style={{ flexDirection: 'row' }}>
+              {renderLeftColumn()}
+              {renderRightContent()}
+            </View>
+          </ScrollView>
+          <BetBoardComponent locked={false}
+                             lockStr={'封盘中...'}/>
         </View>
       </BaseScreen>
     </BetLotteryContext.Provider>
@@ -464,9 +490,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: 'white',
   },
-  left_column_container: {
-
-  },
+  left_column_container: {},
   left_column_content: {
     paddingBottom: LEFT_ITEM_HEIGHT * 10,
   },
