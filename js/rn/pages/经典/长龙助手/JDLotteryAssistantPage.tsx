@@ -21,11 +21,12 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
-import { UGBetItemModel, UGChanglongaideModel } from '../Model/UGChanglongaideModel';
+import { UGBetItemModel, UGbetListModel, UGbetParamModel, UGChanglongaideModel } from '../Model/UGChanglongaideModel';
 
 import moment from 'moment';
 import { number } from 'prop-types';
 import { showError } from '../../../public/widget/UGLoadingCP';
+import { push } from 'object-path';
 
 interface JDLotteryAssistantPage {
   bottomH?: number,//底部的高度
@@ -150,6 +151,7 @@ const JDLotteryAssistantPage = () => {
   function shareBettingData(betModel?: UGChanglongaideModel, amount?: string) {
 
     let betS: UGBetItemModel;
+    let list:Array<any>;
     for (let index = 0; index < betModel.betList.length; index++) {
       const bet = betModel.betList[index];
       if (bet.select) {
@@ -160,7 +162,16 @@ const JDLotteryAssistantPage = () => {
 
     let name :string = betModel.playCateName+'_'+betS.playName;
     // 组装list 
-    
+    let betList :UGbetListModel;
+    betList.betMoney = amount;
+    betList.index = '0';
+    betList.odds = betS.odds;
+    betList.name = name;
+    list.push(betList);
+
+   // 组装betParams
+   let betParams : Array<UGbetParamModel>
+
 
 
     return {}

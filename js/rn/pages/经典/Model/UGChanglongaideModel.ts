@@ -38,3 +38,20 @@ export class UGBetItemModel {
   playName?: string;/**<    */
   select?: boolean;  /**<   */
 }
+
+
+export class UGbetListModel {
+  clsName?: string = "UGbetListModel";
+  betMoney?: string; /**<   下注金额*/
+  index?: string; /**<  索引*/
+  name?: string;/**<   鼠,牛 */
+  odds?: string;/**<   赔率*/
+}
+
+export class UGbetParamModel {
+  clsName?: string = "UGbetParamModel";
+  money?: string; /**<   下注金额*/
+  playId?: string; /**<  */
+  name?: string;/**<   鼠,牛 */
+  odds?: string;/**<   赔率*/
+}
