@@ -119,7 +119,9 @@ export class CCSessionReq {
         }
         return this.http.post<ResponseObject<T>>(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       } else {
-        console.log('我来了==');
+        console.log('post我来了==');
+        console.log('post url==',url);
+        console.log('post params==',params);
         
         return this.http.post<ResponseObject<T>>(url, params,{ headers: { 'Content-Type': 'application/json' } });
       }

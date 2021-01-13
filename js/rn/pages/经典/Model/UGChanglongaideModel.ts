@@ -99,3 +99,23 @@ export class jsDic {
   list?: any;  /**<   */
   jsonStr?: any;  /**<   */
 }
+
+export class BetMode {
+  
+  gameId?: string ;  /**<   */
+  betIssue?: string;  /**<   */
+  totalNum?: string ;  /**<   */
+  endTime?: string;  /**<   */
+  totalMoney?: string ;  /**<   */
+  tag?: string;  /**<   */
+  betBean?:  Array<BetBean>; /**<   */
+
+}
+
+export class BetBean {
+  
+  playId?: string ;  /**<   */
+  money?: string ;  /**<   */
+  betInfo?: string ;  /**<   */
+  playIds?: string ;  /**<   */
+}

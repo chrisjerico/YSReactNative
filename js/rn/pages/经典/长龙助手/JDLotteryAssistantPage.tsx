@@ -21,7 +21,7 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
-import { jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UGbetParamModel, UGChanglongaideModel, UGplayNameModel } from '../Model/UGChanglongaideModel';
+import { BetBean, BetMode, jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UGbetParamModel, UGChanglongaideModel, UGplayNameModel } from '../Model/UGChanglongaideModel';
 
 import moment from 'moment';
 import { number } from 'prop-types';
@@ -147,25 +147,45 @@ const JDLotteryAssistantPage = () => {
       v.jsDic = shareBettingData(v.betModel, v.amount);
     }
 
-    let dict  = {
-      // 'token':UGStore.globalProps.userInfo?.sessid,
-      'gameId':v.betModel.gameId,
-      'betIssue':v.betModel.issue,
-      'totalNum':"1",
-      'totalMoney':v.amount,
-      'endTime':    moment(v.betModel.closeTime).format("X"),
-      'tag':'1',
-      'betBean[0][playId]':betItem.playId,
-      'betBean[0][money]':v.amount,
-      'betBean[0][betInfo]':v.betModel.playName+','+v.betModel.playCateName,
-      'betBean[0][playIds]':'', 
-    }
+    // let dict  = {
+    //   // 'token':UGStore.globalProps.userInfo?.sessid,
+    //   'gameId':v.betModel.gameId,
+    //   'betIssue':v.betModel.issue,
+    //   'totalNum':"1",
+    //   'totalMoney':v.amount,
+    //   'endTime':    moment(v.betModel.closeTime).format("X"),
+    //   'tag':'1',
+    //   'betBean[0][playId]':betItem.playId,
+    //   'betBean[0][money]':v.amount,
+    //   'betBean[0][betInfo]':v.betModel.playName+','+v.betModel.playCateName,
+    //   'betBean[0][playIds]':'', 
+    // }
 
+    let dicMode = new BetMode();
+    dicMode.gameId = v.betModel.gameId
+    dicMode.betIssue = v.betModel.issue
+    dicMode.totalNum = "1"
+    dicMode.totalMoney = v.amount
+    dicMode.endTime = moment(v.betModel.closeTime).format("X")
+    dicMode.tag = '1'
+    let betBean = new BetBean();
+    betBean.playId = betItem.playId
+    betBean.money = v.amount
+    betBean.betInfo = v.betModel.playName+','+v.betModel.playCateName
+    betBean.playIds = betItem.playId
+    let arr = new Array<BetBean>();
+    arr.push(betBean)
+    dicMode.betBean = arr
+ 
     // console.log('dict=',dict);
     onHeaderRefresh();
-    api.user.bet(dict).useSuccess(({ data, msg }) => {
+    api.user.bet(dicMode).useSuccess(({ data, msg }) => {
       showSuccess(msg)
 
+    }).useFailure((err) => {
+      console.log('err = ', err);
+
+      // Toast(err.message)
     });
     return;
 
