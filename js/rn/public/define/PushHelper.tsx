@@ -143,6 +143,11 @@ export default class PushHelper {
           return 
         }
 
+        if (game?.seriesId == 5 && game?.gameId && game?.gameCode) {  //第三方遊戲
+          push(PageName.Game3rdView, { game: game })
+          return 
+        }
+
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }

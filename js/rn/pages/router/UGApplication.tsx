@@ -15,6 +15,7 @@ import { TransferRecordView } from '../../public/components/transfer/TransferRec
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import { TransferView } from '../../public/components/transfer/TransferView'
 import TrendView from '../../public/components/TrendView'
+import Game3rdView from '../../public/components/Game3rdView'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { Router } from '../../public/navigation/Router'
@@ -115,6 +116,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionPage, //优惠活动
   // 彩票大厅-默认
   GameLobbyPage,
+  Game3rdView,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
