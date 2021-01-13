@@ -36,16 +36,17 @@ interface JDLotteryAssistantPage {
   selBetItem?: UGBetItemModel//投注
   betCount?: number //下注数
   amountLabel?: string//投注金额
-  amount?:string//投注金额(上传)
+  amount?: string//投注金额(上传)
   betDetailViewhidden?: boolean//提示是否隐藏
   betDetailLabel?: string//提示文字
   betDetail2Label?: string//提示2文字
-  timer? : any;//每秒刷新一次界面
-  dataTimer? :any;//每20获取一次数据
-  timeIsOpen?:boolean//timer 是否已经 启动
-  secondIsCanAdd?:boolean//是否可以读秒  ++
-  dataTimeIsOpen?:boolean//dataTimer 是否已经 启动
-  betModel?:UGChanglongaideModel//选中注单
+  timer?: any;//每秒刷新一次界面
+  dataTimer?: any;//每20获取一次数据
+  timeIsOpen?: boolean//timer 是否已经 启动
+  secondIsCanAdd?: boolean//是否可以读秒  ++
+  dataTimeIsOpen?: boolean//dataTimer 是否已经 启动
+  betModel?: UGChanglongaideModel//选中注单
+  jsDic?: {}//上传的字典数据
 }
 
 const JDLotteryAssistantPage = () => {
@@ -78,76 +79,101 @@ const JDLotteryAssistantPage = () => {
 * 下注
 * 
 */
-function betClick() { 
-  let count :number = 0;
-  for (let index = 0; index < v.items.length; index++) {
-    const element = v.items[index];
-    for (let i = 0; i < element.betList.length; i++) {
-      const bet = element.betList[i];
-      if (bet.select) {
-        count +=1;
-        break;
-      }  
+  function betClick() {
+    let count: number = 0;
+    for (let index = 0; index < v.items.length; index++) {
+      const element = v.items[index];
+      for (let i = 0; i < element.betList.length; i++) {
+        const bet = element.betList[i];
+        if (bet.select) {
+          count += 1;
+          break;
+        }
+      }
     }
-  }
 
-  if (!count) {
-    showError('请选择您的注单')
-    return;
-  }
-  if (anyEmpty(v.amountLabel)) {
-    showError('请输入投注金额')
-    return;
-  }
-
-  if (v.amountLabel.indexOf(".") != -1 ) {
-    let amountArray = v.amountLabel.split('.')
-    const a1 :string = amountArray[0];
-    const a2 :string = amountArray[1];
-    if (a2.length == 1) {
-      v.amount = a1+'.'+a2;
-    }
-    else if (a2.length == 2) {
-      v.amount = v.amountLabel;
-    }
-     else {
-      showError('金额格式有误')
+    if (!count) {
+      showError('请选择您的注单')
       return;
     }
-  }
-  else{
-    v.amount = v.amountLabel+'.00';
-  }
-
-  
-  if (arrayEmpty(v.items)) {
-    showError('请输入投注金额')
-    return
-  }
-  //文字框获得焦点
-  let betItem:UGBetItemModel;
-  for (let index = 0; index < v.items.length; index++) {
-    const element = v.items[index];
-    for (let i = 0; i < element.betList.length; i++) {
-      const bet = element.betList[i];
-      
+    if (anyEmpty(v.amountLabel)) {
+      showError('请输入投注金额')
+      return;
     }
-    
+
+    if (v.amountLabel.indexOf(".") != -1) {
+      let amountArray = v.amountLabel.split('.')
+      const a1: string = amountArray[0];
+      const a2: string = amountArray[1];
+      if (a2.length == 1) {
+        v.amount = a1 + '.' + a2;
+      }
+      else if (a2.length == 2) {
+        v.amount = v.amountLabel;
+      }
+      else {
+        showError('金额格式有误')
+        return;
+      }
+    }
+    else {
+      v.amount = v.amountLabel + '.00';
+    }
+
+
+    if (arrayEmpty(v.items)) {
+      showError('请输入投注金额')
+      return
+    }
+    //文字框获得焦点
+    let betItem: UGBetItemModel;
+    for (let index = 0; index < v.items.length; index++) {
+      const element = v.items[index];
+      for (let i = 0; i < element.betList.length; i++) {
+        const bet = element.betList[i];
+        v.betModel = element;
+      }
+
+    }
+
+    v.jsDic = shareBettingData(v.betModel, v.amount);
+
+
+
+
   }
-
-
-  
-
-}
 
   /**
-* 刷新界面 （不影响定时器）
+* 拼装字典用来上传
 * 
 */
-function reloadPage() { 
-  v.secondIsCanAdd = false;
-  setProps()
-}
+  function shareBettingData(betModel?: UGChanglongaideModel, amount?: string) {
+
+    let betS: UGBetItemModel;
+    for (let index = 0; index < betModel.betList.length; index++) {
+      const bet = betModel.betList[index];
+      if (bet.select) {
+        betS = bet;
+        break;
+      }
+    }
+
+    let name :string = betModel.playCateName+'_'+betS.playName;
+    // 组装list 
+    
+
+
+    return {}
+  }
+
+  /**
+* 刷新界面 （不影响定时器++）
+* 
+*/
+  function reloadPage() {
+    v.secondIsCanAdd = false;
+    setProps()
+  }
 
 
   /**
@@ -325,7 +351,7 @@ function reloadPage() {
 
 
   /**
-* 根据数据是数组还是字典返回数据
+* 根据数据playNameColor返回颜色数据
 * 
 */
   function playNameColor(item: any) {
@@ -338,7 +364,7 @@ function reloadPage() {
     else if (item.playName == '龙' || item.playName == '虎') {
       return '#DC143C	'
     }
-    else{
+    else {
       return '#76B473'
     }
   }
@@ -383,7 +409,7 @@ function reloadPage() {
         return;
       }
       v.isRefreshing = false
-      let temp : Array<UGChanglongaideModel> =  v.items;
+      let temp: Array<UGChanglongaideModel> = v.items;
       v.items = JSON.parse(JSON.stringify(arrayData))
 
       for (let index = 0; index < temp.length; index++) {
@@ -416,7 +442,7 @@ function reloadPage() {
           element.diffsecond = moment(element.closeTime).diff(moment(element.serverTime), 'seconds');
           // console.log('时间差 ==',element.diffsecond);
         }
-        else{
+        else {
           element.diffsecond = 0;
           // console.log('时间差 ==',element.diffsecond);
         }
@@ -431,15 +457,15 @@ function reloadPage() {
           setProps();
         }, 1000)
       }
-    
+
       if (!v.dataTimeIsOpen) {
         v.dataTimer = setInterval(() => {
           v.dataTimeIsOpen = true;
           v.secondIsCanAdd = false;
           getChanglong()
-        }, 1000*20)
+        }, 1000 * 20)
       }
-     
+
     });
   }
 
@@ -453,9 +479,9 @@ function reloadPage() {
     if (v.secondIsCanAdd) {
       item.currentSecond++;
     }
-   
+
     if (moment(item.serverTime) >= moment(item.closeTime)) {
- 
+
       return (
         <View style={{}}>
           <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
@@ -476,7 +502,7 @@ function reloadPage() {
           </View>
         );
       } else {
-     
+
         let days: number = ~~((item.diffsecond - item.currentSecond) / (60 * 60 * 24));
         // console.log('days =', days);
         let hours: number = ~~((item.diffsecond - item.currentSecond) / (60 * 60));
@@ -487,28 +513,28 @@ function reloadPage() {
         // console.log('seconds =', seconds);
 
         let dayStr: string; let hoursStr: string; let minutesStr: string; let secondsStr: string;
-        dayStr = '' +  days;
+        dayStr = '' + days;
         if (hours < 10) {
           hoursStr = '0' + hours;
         } else {
           if (days) {
-            hoursStr =  '' + (hours - 24 * days);
+            hoursStr = '' + (hours - 24 * days);
           } else {
-            hoursStr =  '' + (hours);
+            hoursStr = '' + (hours);
           }
         }
         if (minutes < 10) {
           minutesStr = '0' + minutes;
         } else {
-          minutesStr =  '' + (minutes);
+          minutesStr = '' + (minutes);
         }
         if (seconds < 10) {
           secondsStr = '0' + seconds;
         } else {
-          secondsStr =  '' + (seconds);
+          secondsStr = '' + (seconds);
         }
 
-        if (days<=0 && hours<=0 && minutes<=0 && seconds<=0) {
+        if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
           return (
             <View style={{}}>
               <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
@@ -522,7 +548,7 @@ function reloadPage() {
           return (
             <View style={{}}>
               <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-                {dayStr+'天'+hoursStr+':'+minutesStr+':'+secondsStr}
+                {dayStr + '天' + hoursStr + ':' + minutesStr + ':' + secondsStr}
               </Text>
             </View>
           );
@@ -531,7 +557,7 @@ function reloadPage() {
           return (
             <View style={{}}>
               <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-                {hoursStr+':'+minutesStr+':'+secondsStr}
+                {hoursStr + ':' + minutesStr + ':' + secondsStr}
               </Text>
             </View>
           );
@@ -539,7 +565,7 @@ function reloadPage() {
         return (
           <View style={{}}>
             <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-              {minutesStr+':'+secondsStr}
+              {minutesStr + ':' + secondsStr}
             </Text>
           </View>
         );
@@ -664,22 +690,23 @@ function reloadPage() {
         v.timeIsOpen = false;
         v.secondIsCanAdd = false;
         v.dataTimeIsOpen = false;
-        v.amount =''
+        v.amount = ''
         v.betModel = null
+        v.jsDic = null
         onHeaderRefresh()
       },
-      didBlur:() => {
+      didBlur: () => {
         clearInterval(v.timer)
         clearInterval(v.dataTimer)
-         console.log("长龙我的投注销毁了，调用了clearInterval")
+        console.log("长龙我的投注销毁了，调用了clearInterval")
       },
     })
 
     return (() => {
       clearInterval(v.timer)
       clearInterval(v.dataTimer)
-       console.log("长龙我的投注销毁了，调用了clearInterval")
-  })
+      console.log("长龙我的投注销毁了，调用了clearInterval")
+    })
   }, [])
 
 
@@ -780,7 +807,7 @@ function reloadPage() {
           </View>
           <TouchableOpacity style={{ height: v.bottomH, width: 100, backgroundColor: '#1E90FF', alignItems: 'center', justifyContent: 'center', }}
             onPress={() => {
-             
+
             }}
           >
             <Text style={{ fontSize: 18, color: 'white' }}>
