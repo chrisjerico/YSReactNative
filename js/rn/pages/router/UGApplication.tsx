@@ -47,6 +47,7 @@ import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import GameLobbyPage from '../hall/GameLobbyPage'
+import TwoLevelGames from '../hall/TwoLevelGames'
 import GameHallPage from '../hall/new/GameHallPage'
 import JXHHomePage from '../JXH/JXHHomePage'
 import JXHMinePage from '../JXH/JXHMinePage'
@@ -121,6 +122,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionPage, //优惠活动
   // 彩票大厅-默认
   GameLobbyPage,
+  TwoLevelGames,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
