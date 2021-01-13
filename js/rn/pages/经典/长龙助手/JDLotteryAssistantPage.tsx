@@ -148,7 +148,7 @@ const JDLotteryAssistantPage = () => {
     }
 
     let dict  = {
-      'token':UGStore.globalProps.userInfo?.sessid,
+      // 'token':UGStore.globalProps.userInfo?.sessid,
       'gameId':v.betModel.gameId,
       'betIssue':v.betModel.issue,
       'totalNum':"1",
@@ -157,7 +157,7 @@ const JDLotteryAssistantPage = () => {
       'tag':'1',
       'betBean[0][playId]':betItem.playId,
       'betBean[0][money]':v.amount,
-      'betBean[0][betInfo]':v.betModel.playName,
+      'betBean[0][betInfo]':v.betModel.playName+','+v.betModel.playCateName,
       'betBean[0][playIds]':'', 
     }
 
@@ -891,21 +891,22 @@ const JDLotteryAssistantPage = () => {
                 // console.log('投注金额==', text);
             
                 if ( anyEmpty(v.selBetItem)) {
+                   console.log('=============111');
                   return;
                 }
                 v.amountLabel = chkPrice(text).trim()
                 if (!anyEmpty(v.amountLabel) && !anyEmpty(v.selBetItem) && !anyEmpty(v.selAideModel)) {
                   v.betDetailViewhidden = false;
-
-                  reloadPage()
-                }
-                else {
-
                   let total: number = parseFloat(v.amountLabel) * parseFloat( v.selBetItem.odds)
                   v.betDetailLabel = v.selAideModel?.title + ', '
                     + v.selAideModel?.playCateName + ', '
                     + v.selBetItem?.playName;
                   v.betDetail2Label = ' 奖金:' + total?.toFixed(4)
+                  reloadPage()
+                }
+                else {
+
+        
                   v.betDetailViewhidden = true;
                   reloadPage()
                 }

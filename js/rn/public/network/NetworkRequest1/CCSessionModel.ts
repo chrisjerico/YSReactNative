@@ -75,7 +75,7 @@ export class CCSessionReq {
   private static http = axios.create({
     baseURL: AppDefine?.host,
     // timeout: 30000, // 0 no limit
-    headers: { 'Content-Type': 'www-form-urlencoded', }
+    headers: { 'Content-Type': 'application/json', }
   });
 
   static request<T>(path: string, params: object = {}, isPost: boolean = false, files?: { [x: string]: string }): CCSessionModel<T> {
@@ -119,7 +119,9 @@ export class CCSessionReq {
         }
         return this.http.post<ResponseObject<T>>(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       } else {
-        return this.http.post<ResponseObject<T>>(url, params);
+        console.log('我来了==');
+        
+        return this.http.post<ResponseObject<T>>(url, params,{ headers: { 'Content-Type': 'application/json' } });
       }
     }).then((res) => {
       // 接口请求成功
