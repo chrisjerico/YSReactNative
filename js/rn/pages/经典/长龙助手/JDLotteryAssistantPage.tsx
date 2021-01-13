@@ -147,20 +147,6 @@ const JDLotteryAssistantPage = () => {
       v.jsDic = shareBettingData(v.betModel, v.amount);
     }
 
-    // let dict  = {
-    //   // 'token':UGStore.globalProps.userInfo?.sessid,
-    //   'gameId':v.betModel.gameId,
-    //   'betIssue':v.betModel.issue,
-    //   'totalNum':"1",
-    //   'totalMoney':v.amount,
-    //   'endTime':    moment(v.betModel.closeTime).format("X"),
-    //   'tag':'1',
-    //   'betBean[0][playId]':betItem.playId,
-    //   'betBean[0][money]':v.amount,
-    //   'betBean[0][betInfo]':v.betModel.playName+','+v.betModel.playCateName,
-    //   'betBean[0][playIds]':'', 
-    // }
-
     let dicMode = new BetMode();
     dicMode.gameId = v.betModel.gameId
     dicMode.betIssue = v.betModel.issue
@@ -171,28 +157,19 @@ const JDLotteryAssistantPage = () => {
     let betBean = new BetBean();
     betBean.playId = betItem.playId
     betBean.money = v.amount
-    betBean.betInfo = v.betModel.playName+','+v.betModel.playCateName
-    betBean.playIds = betItem.playId
+    betBean.betInfo = ''
+    betBean.playIds = ''
     let arr = new Array<BetBean>();
     arr.push(betBean)
     dicMode.betBean = arr
- 
-    // console.log('dict=',dict);
-    onHeaderRefresh();
+
     api.user.userBetWithParams(dicMode).useSuccess(({ data, msg }) => {
       showSuccess(msg)
-
     }).useFailure((err) => {
       console.log('err = ', err);
-
       // Toast(err.message)
     });
     return;
-
-    api.user.userBetWithParams(dict).useSuccess(({ data, msg }) => {
-      showSuccess(msg)
-
-    });
 
 
 
@@ -903,7 +880,7 @@ const JDLotteryAssistantPage = () => {
               {'注'}
             </Text>
             <View style={{ flex: 1 }}></View>
-            <TextInput style={{ height: 30, width: 140, backgroundColor: Skin1.textColor4, marginRight: 10, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
+            <TextInput style={{ height: 30, width: 130, backgroundColor: Skin1.textColor4, marginRight: 10, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
               placeholder={'   投注金额'}
               value={v.amountLabel}
               placeholderTextColor={Skin1.textColor3}
@@ -934,7 +911,7 @@ const JDLotteryAssistantPage = () => {
             ></TextInput>
 
           </View>
-          <TouchableOpacity style={{ height: v.bottomH, width: 100, backgroundColor: '#1E90FF', alignItems: 'center', justifyContent: 'center', }}
+          <TouchableOpacity style={{ height: v.bottomH, width: 90, backgroundColor: '#1E90FF', alignItems: 'center', justifyContent: 'center', }}
             onPress={() => {
               betClick()
             }}
