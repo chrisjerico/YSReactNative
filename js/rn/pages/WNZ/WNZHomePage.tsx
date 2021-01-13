@@ -29,6 +29,7 @@ import TabBar from './views/TabBar'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { ugLog } from '../../public/tools/UgLog'
 import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
+import { getParentsTagsRecursively } from 'react-native-render-html'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -52,6 +53,15 @@ const WNZHomePage = () => {
   const { signOut, tryPlay } = sign
 
   const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists } = homeInfo
+
+  const getNavs = () => {
+
+  if (AppDefine.siteId == 'c245')
+    return uid ? config.c245AuthNavs : config.c245UnAuthNavs
+  if (AppDefine.siteId.includes('c108') && !uid)
+    return config.c108UnAuthNavs
+  return navs
+  }
 
   const { uid, usr, balance } = userInfo
 
@@ -197,7 +207,7 @@ const WNZHomePage = () => {
             visible={navs?.length > 0}
             navCounts={5}
             containerStyle={{ alignItems: 'center' }}
-            navs={AppDefine.siteId == 'c245' ? (uid ? config.c245AuthNavs : config.c245UnAuthNavs) : navs}
+            navs={getNavs()}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId, onPress } = item
               return (
@@ -222,8 +232,9 @@ const WNZHomePage = () => {
                   circleContainerStyle = {{ width: '85%'}}
                   circleColor={'transparent'}
                   onPress={() => {
-                    ugLog("TEST onPRess")
-                    if (AppDefine.siteId == 'c245') {
+                    ugLog("TEST onPRess: " + item.gameId)
+                    if (AppDefine.siteId == 'c245' 
+                      || (AppDefine.siteId.includes('c108') && !uid) ) {
                       if (gameId == 'tryPlay') {
                         tryPlay()
                       } else {
@@ -358,7 +369,13 @@ const WNZHomePage = () => {
                     if (onPress) {
                       onPress()
                     } else {
-                      PushHelper.pushHomeGame(item)
+                      ugLog('GameType item=', JSON.stringify(item))
+                      const { subId } = item
+                      if (subId == GameType.游戏大厅) {  //游戏大厅
+                        push(PageName.GameLobbyPage, { showBackButton: true })
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
                     }
                   }
                 }}
