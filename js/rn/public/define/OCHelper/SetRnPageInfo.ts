@@ -100,6 +100,46 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: false,
       允许未登录访问: false,
     })
+    //站内信
+    pages.push({
+      rnName: PageName.UserMessagePage,
+      userCenterItemCode: 9,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    //安全中心
+    pages.push({
+      rnName: PageName.SafeCenterPage,
+      userCenterItemCode: 10,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    //活动彩金
+    pages.push({
+      rnName: PageName.ActivityRewardPage,
+      userCenterItemCode: 15,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 彩票注单记录
+    pages.push({
+      rnName: PageName.LotteryHistoryPage,
+      userCenterItemCode: 6,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 任务中心
+    pages.push({
+      rnName: PageName.TaskCenterPage,
+      userCenterItemCode: 11,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
