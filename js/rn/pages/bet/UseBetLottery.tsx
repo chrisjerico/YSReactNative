@@ -21,6 +21,7 @@ const UseBetLottery = () => {
   const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
   const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //当前期数据
   const [playOddDetailData, setPlayOddDetailData] = useState<PlayOddDetailData>(null) //彩票数据
+  const [loadedLottery, setLoadedLottery] = useState<Array<string>>([])//需要加载进来的彩票列表
 
   useEffect(() => {
     requestNextData(lotteryId)
@@ -67,6 +68,8 @@ const UseBetLottery = () => {
     setLotteryId,
     nextIssueData,
     playOddDetailData,
+    loadedLottery,
+    setLoadedLottery,
     requestNextData,
     requestLotteryData,
   }
