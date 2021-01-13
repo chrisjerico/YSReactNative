@@ -1,4 +1,3 @@
-import { BallType } from '../../../public/components/view/LotteryBall'
 import { StyleProp, ViewStyle } from 'react-native'
 
 
@@ -34,12 +33,5 @@ interface ILotteryRouteParams {
   style?: StyleProp<ViewStyle>
 }
 
-/**
- * 彩票功能区入参
- */
-interface IBetBoardParams {
-  style?: StyleProp<ViewStyle>
-}
-
 export default LotteryConst
-export { ILotteryRouteParams, IBetBoardParams }
+export { ILotteryRouteParams}
