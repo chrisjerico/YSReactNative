@@ -49,7 +49,7 @@ const EmptyView = ({
 const _styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingBottom: scale(200),
+    paddingBottom: scale(201),
     alignItems: 'center',
     justifyContent: 'center',
   },

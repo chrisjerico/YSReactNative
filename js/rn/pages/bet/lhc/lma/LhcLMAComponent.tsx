@@ -149,7 +149,9 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    {!anyEmpty(curData) && renderLMA(curData[0])}
+    <View style={_styles.content_container}>
+      {!anyEmpty(curData) && renderLMA(curData[0])}
+    </View>
   </ScrollView>
 
   return (
@@ -162,6 +164,10 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 }
 
 const _styles = StyleSheet.create({
+  content_container: {
+    paddingBottom: scale(220),
+    flex: 1,
+  },
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,

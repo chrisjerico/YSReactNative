@@ -169,8 +169,10 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    {arrayLength(curData) > 0 && renderZT1(curData[0])}
-    {arrayLength(curData) > 1 && renderZT2(curData[1])}
+    <View style={_styles.content_container}>
+      {arrayLength(curData) > 0 && renderZT1(curData[0])}
+      {arrayLength(curData) > 1 && renderZT2(curData[1])}
+    </View>
   </ScrollView>
 
   return (
@@ -183,6 +185,10 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 }
 
 const _styles = StyleSheet.create({
+  content_container: {
+    paddingBottom: scale(220),
+    flex: 1,
+  },
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,

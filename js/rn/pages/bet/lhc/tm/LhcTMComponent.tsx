@@ -189,11 +189,12 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView style={CommStyles.flex}
-                                          showsVerticalScrollIndicator={false}>
-    {arrayLength(curData) > 0 && renderTM(curData[0])}
-    {arrayLength(curData) > 1 && renderLM(curData[1])}
-    {arrayLength(curData) > 2 && renderSB(curData[2])}
+  const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={_styles.content_container}>
+      {arrayLength(curData) > 0 && renderTM(curData[0])}
+      {arrayLength(curData) > 1 && renderLM(curData[1])}
+      {arrayLength(curData) > 2 && renderSB(curData[2])}
+    </View>
   </ScrollView>
 
   return (
@@ -207,6 +208,10 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 }
 
 const _styles = StyleSheet.create({
+  content_container: {
+    paddingBottom: scale(220),
+    flex: 1,
+  },
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
