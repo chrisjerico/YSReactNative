@@ -1,4 +1,4 @@
-import { UGStore } from './../../../redux/store/UGStore';
+import { UGStore } from './../../../redux/store/UGStore'
 import { devConfig } from '../../../../../config'
 import { Platform } from 'react-native'
 import { releaseConfig } from '../../../../../config'
@@ -7,7 +7,6 @@ import { Router, RouterType } from '../../navigation/Router'
 import AppDefine from '../AppDefine'
 import { Skin1 } from './../../theme/UGSkinManagers'
 import { OCHelper } from './OCHelper'
-
 
 let __launchFinish = false
 
@@ -34,7 +33,6 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: true,
       允许未登录访问: true,
     })
-
   }
 
   // 测试环境（未上线的内容）
@@ -60,7 +58,7 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(BYPages)
     }
     if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
+      pages = pages.concat(KSPages) // [pages addObjectsFromArray:多个页面]
     }
     // 推荐信息
     pages.push({
@@ -94,7 +92,14 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    
+    //个人讯息頁
+    pages.push({
+      rnName: PageName.UserInfoPage,
+      userCenterItemCode: 12,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -102,9 +107,9 @@ export async function setRnPageInfo(force = false) {
   // 彩票大厅（新版、自由版）
   {
     const { mobileGameHall } = sysConf
-    let page: PageName = undefined;
-    page = mobileGameHall == '1' ? PageName.GameHallPage : page;
-    page = mobileGameHall == '2' ? PageName.FreedomHallPage : page;
+    let page: PageName = undefined
+    page = mobileGameHall == '1' ? PageName.GameHallPage : page
+    page = mobileGameHall == '2' ? PageName.FreedomHallPage : page
     if (page) {
       pages.push({
         vcName: 'UGLotteryHomeController,NewLotteryHomeViewController',
@@ -174,8 +179,8 @@ export async function setRnPageInfo(force = false) {
   pages.push({
     rnName: PageName.TrendView,
     userCenterItemCode: 18,
-    linkCategory: 7,//导航链接
-    linkPosition: 54,//导航链接ID
+    linkCategory: 7, //导航链接
+    linkPosition: 54, //导航链接ID
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -211,7 +216,6 @@ export async function setRnPageInfo(force = false) {
       允许未登录访问: false,
     })
   }
-
 
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)

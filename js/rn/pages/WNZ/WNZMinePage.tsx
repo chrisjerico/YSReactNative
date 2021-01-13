@@ -197,7 +197,6 @@ const WNZMinePage = () => {
                           },
                         ])
                       } else {
-                        // if (__DEV__) {
                         if (code == UGUserCenterType.个人信息) {
                           push(PageName.UserInfoPage)
                         } else if (code == UGUserCenterType.站内信) {
@@ -213,9 +212,6 @@ const WNZMinePage = () => {
                         } else {
                           PushHelper.pushUserCenterType(code)
                         }
-                        // } else {
-                        //   PushHelper.pushUserCenterType(code)
-                        // }
                       }
                     }}
                   />
