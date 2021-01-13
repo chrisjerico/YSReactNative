@@ -97,4 +97,5 @@ export class jsDic {
   
   betModel?: any;  /**<   */
   list?: any;  /**<   */
+  jsonStr?: any;  /**<   */
 }

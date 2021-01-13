@@ -75,7 +75,7 @@ export class CCSessionReq {
   private static http = axios.create({
     baseURL: AppDefine?.host,
     // timeout: 30000, // 0 no limit
-    headers: { 'Content-Type': 'application/json', }
+    headers: { 'Content-Type': 'www-form-urlencoded', }
   });
 
   static request<T>(path: string, params: object = {}, isPost: boolean = false, files?: { [x: string]: string }): CCSessionModel<T> {

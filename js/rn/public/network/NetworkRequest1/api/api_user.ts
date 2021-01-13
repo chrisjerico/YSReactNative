@@ -1,3 +1,4 @@
+import { anyEmpty } from './../../../tools/Ext';
 import { CCSessionModel, CCSessionReq, SampleAPI } from './../CCSessionModel';
 import { Platform } from "react-native";
 import SlideCodeModel from "../../../../redux/model/other/SlideCodeModel";
@@ -7,6 +8,8 @@ import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
 import { OCHelper } from "../../../define/OCHelper/OCHelper";
 import { Data } from "../../Model/RegisterModel";
 import { AvatarSettingModel } from '../../Model/SystemAvatarListModel';
+import AppDefine from '../../../define/AppDefine';
+import { UGStore } from '../../../../redux/store/UGStore';
 
 
 
@@ -19,8 +22,8 @@ export class api_user {
   }
 
   // 登录
-  static login(uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel, fullName?:string) {
-    return this.c.post<UGLoginModel>('login', { usr: uname, pwd: pwd, ggCode: googleCode, slideCode: slideCode, fullName:fullName });
+  static login(uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel, fullName?: string) {
+    return this.c.post<UGLoginModel>('login', { usr: uname, pwd: pwd, ggCode: googleCode, slideCode: slideCode, fullName: fullName });
   }
 
   // 注册
@@ -71,53 +74,82 @@ export class api_user {
   }
 
   // 获取站内消息列表
-  static msgList(page=1, rows=20) {
-    return this.c.get('msgList', {page:page,rows:rows});
+  static msgList(page = 1, rows = 20) {
+    return this.c.get('msgList', { page: page, rows: rows });
   }
 
   // 获取资金明细
-  static fundLogs(startTime:string, endTime?:string, page=1, rows=20) {
-    return this.c.get('fundLogs', {startTime:startTime, endTime:endTime, page:page, rows:rows});
+  static fundLogs(startTime: string, endTime?: string, page = 1, rows = 20) {
+    return this.c.get('fundLogs', { startTime: startTime, endTime: endTime, page: page, rows: rows });
   }
 
   // 设置取款密码
-  static addFundPwd(login_pwd:string, fund_pwd:string) {
-    return this.c.post('addFundPwd', {login_pwd:login_pwd, fund_pwd:fund_pwd});
+  static addFundPwd(login_pwd: string, fund_pwd: string) {
+    return this.c.post('addFundPwd', { login_pwd: login_pwd, fund_pwd: fund_pwd });
   }
 
   // 修改登录密码
-  static changeLoginPwd(old_pwd:string, new_pwd:string) {
-    return this.c.post('changeLoginPwd', {old_pwd:old_pwd, new_pwd:new_pwd});
+  static changeLoginPwd(old_pwd: string, new_pwd: string) {
+    return this.c.post('changeLoginPwd', { old_pwd: old_pwd, new_pwd: new_pwd });
   }
 
   // 修改取款密码
-  static changeFundPwd(old_pwd:string, new_pwd:string) {
-    return this.c.post('changeFundPwd', {old_pwd:old_pwd, new_pwd:new_pwd});
+  static changeFundPwd(old_pwd: string, new_pwd: string) {
+    return this.c.post('changeFundPwd', { old_pwd: old_pwd, new_pwd: new_pwd });
   }
 
+  // 注单投注
+  static userBetWithParams(params: {}) {
+
+    if (UGStore.globalProps.userInfo?.isTest) {//是测试账号
+      if (anyEmpty(params['isInstant'])||params['isInstant']==false) {
+        return api_user.guestBet(params);
+      }
+      else{
+        return api_user.instantBet(params);
+      }
+    }
+    else{//不是测试账号
+      if (anyEmpty(params['isInstant'])||params['isInstant']==false) {
+        return api_user.bet(params);
+      }
+      else{
+       
+        return api_user.instantBet(params);
+      }
+    }
+
+  }
+
+
   // 取消注单
-  static cancelBet(orderId:string) {
-    return this.c.post('cancelBet', {orderId:orderId});
+  static cancelBet(orderId: string) {
+    return this.c.post('cancelBet', { orderId: orderId });
   }
 
   // 游客投注（待完善）
-  static guestBet() {
-    return this.c.post('guestBet');
+  static guestBet(params: {}) {
+
+    console.log('guestBet  params ===',params);
+    return this.c.post('guestBet',params);
   }
 
   // 用户投注（待完善）
-  static bet() {
-    return this.c.post('bet');
+  static bet(params: {}) {
+    console.log('bet  params ===',params);
+    return this.c.post('bet',params);
   }
 
   // 即时投注（待完善）
-  static instantBet() {
-    return this.c.post('instantBet');
+  static instantBet(params: {}) {
+    console.log('instantBet  params ===',params);
+
+    return this.c.post('instantBet',params);
   }
 
   // 提交反馈
-  static addFeedback(type:string, pid:string, content:string, imgPaths:string[]) {
-    return this.c.post('addFeedback', {type:type, pid:pid, content:content , imgPaths:imgPaths?.toString});
+  static addFeedback(type: string, pid: string, content: string, imgPaths: string[]) {
+    return this.c.post('addFeedback', { type: type, pid: pid, content: content, imgPaths: imgPaths?.toString });
   }
 
   // 刪除全部站內信
@@ -126,8 +158,8 @@ export class api_user {
   }
 
   // 反馈列表
-  static myFeedback(type:number, date:string, isReply:boolean, page=1, rows=20) {
-    return this.c.get('myFeedback', {type:type, date:date, isReply:isReply, page:page, rows:rows});
+  static myFeedback(type: number, date: string, isReply: boolean, page = 1, rows = 20) {
+    return this.c.get('myFeedback', { type: type, date: date, isReply: isReply, page: page, rows: rows });
   }
 
   // 全部站內信全部已读
@@ -136,13 +168,13 @@ export class api_user {
   }
 
   // 反馈详情
-  static feedbackDetail(pid:string) {
-    return this.c.get('feedbackDetail', {pid:pid});
+  static feedbackDetail(pid: string) {
+    return this.c.get('feedbackDetail', { pid: pid });
   }
 
   // 单条消息已读
-  static readMsg(id:string) {
-    return this.c.post('readMsg', {id:id});
+  static readMsg(id: string) {
+    return this.c.post('readMsg', { id: id });
   }
 
   // 常用登录地点列表
@@ -156,13 +188,13 @@ export class api_user {
   }
 
   // 删除常用登录地点
-  static delAddress(id:string) {
-    return this.c.post('delAddress', {id:id});
+  static delAddress(id: string) {
+    return this.c.post('delAddress', { id: id });
   }
 
   // 下注明细列表
-  static lotteryDayStat(date:string) {//日期2020-06-27
-    return this.c.post('lotteryDayStat', {date:date});
+  static lotteryDayStat(date: string) {//日期2020-06-27
+    return this.c.post('lotteryDayStat', { date: date });
   }
 
   // 我的提款账户列表
@@ -171,8 +203,8 @@ export class api_user {
   }
 
   // 设置真实姓名
-  static profileName(fullName:string) {
-    return this.c.post('profileName', {fullName:fullName});
+  static profileName(fullName: string) {
+    return this.c.post('profileName', { fullName: fullName });
   }
 
   // // 绑定提款账户
@@ -191,28 +223,28 @@ export class api_user {
   }
 
   // 修改头像
-  static updateAvatar(publicAvatarId:string) {// 公用头像ID
-    return this.c.post('updateAvatar', {publicAvatarId:publicAvatarId});
+  static updateAvatar(publicAvatarId: string) {// 公用头像ID
+    return this.c.post('updateAvatar', { publicAvatarId: publicAvatarId });
   }
 
   // 上传头像
   static uploadAvatar(files: string) {// 图片文件路径
-    return this.c.post<{isReview:boolean}>('uploadAvatar', {}, {files:files});
+    return this.c.post<{ isReview: boolean }>('uploadAvatar', {}, { files: files });
   }
 
   // 上传身份证
   static uploadIdentity(files: string) {// 图片文件路径
-    return this.c.post<IUploadIdentify>('uploadIdentity', {}, {files:files});
+    return this.c.post<IUploadIdentify>('uploadIdentity', {}, { files: files });
   }
 
 
   // 上传建议反馈图片
   static uploadFeedback(files: string[]) {// 图片文件路径
     const fs = {}
-    files.forEach((v, i)=>{
+    files.forEach((v, i) => {
       fs['files[' + i + ']'] = v
     })
-    return this.c.post<{isReview:boolean}>('uploadFeedback', {}, fs);
+    return this.c.post<{ isReview: boolean }>('uploadFeedback', {}, fs);
   }
 
 }

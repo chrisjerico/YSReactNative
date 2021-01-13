@@ -35,18 +35,18 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
   const [tabIndex, setTabIndex] = React.useState(1);
 
   const handleTabsChange = (index:number) => {
-    console.log('index ==',index);
+    // console.log('index ==',index);
     
     setTabIndex(index);
 
-    var date = moment('2016-10-11 18:06:03')
-        console.log('date ==',date);
+    // var date = moment('2016-10-11 18:06:03')
+    //     console.log('date ==',date);
 
-        let timestamp = moment(date).format("X");
-        console.log('timestamp ==',timestamp);
+    //     let timestamp = moment(date).format("X");
+    //     console.log('timestamp ==',timestamp);
 
-        let timestamp2 = moment('2016-10-11 18:06:03').format("X");
-        console.log('timestamp2 ==',timestamp2);
+    //     let timestamp2 = moment('2016-10-11 18:06:03').format("X");
+    //     console.log('timestamp2 ==',timestamp2);
     
 
 
@@ -59,9 +59,17 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     // let diff =   moment('2016-10-11 18:07:02') >= moment('2016-10-11 18:07:03')
     // console.log('diff==',diff);
     
-    var str="1.900"
+    // var str="1.900"
 
-    console.log(str.split('.'));
+    // console.log(str.split('.'));
+
+    let dic :{} = {
+      'a':'aaaa',
+      // 'b':1,
+    }
+
+    console.log('b==', anyEmpty(dic['b'])||dic['b']==false);
+    
     
   };
   /**

@@ -25,7 +25,7 @@ import { jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UGbetParamModel, UGC
 
 import moment from 'moment';
 import { number } from 'prop-types';
-import { showError } from '../../../public/widget/UGLoadingCP';
+import { showError, showReload, showSuccess } from '../../../public/widget/UGLoadingCP';
 import { push } from 'object-path';
 
 interface JDLotteryAssistantPage {
@@ -84,8 +84,8 @@ const JDLotteryAssistantPage = () => {
     let count: number = 0;
     for (let index = 0; index < v.items.length; index++) {
       const element = v.items[index];
-      for (let i = 0; i < element.betList.length; i++) {
-        const bet = element.betList[i];
+      for (let i = 0; i < element?.betList.length; i++) {
+        const bet = element?.betList[i];
         if (bet.select) {
           count += 1;
           break;
@@ -127,18 +127,52 @@ const JDLotteryAssistantPage = () => {
       return
     }
     //文字框获得焦点
-    let betItem: UGBetItemModel;
+    let betItem: UGBetItemModel = new  UGBetItemModel();
     for (let index = 0; index < v.items.length; index++) {
-      const element = v.items[index];
-      for (let i = 0; i < element.betList.length; i++) {
-        const bet = element.betList[i];
-        v.betModel = element;
+      const aideModel = v.items[index];
+      for (let i = 0; i < aideModel.betList.length; i++) {
+        const bet = aideModel.betList[i];
+        if (bet.select) {
+          //                bet.select = NO;
+          v.betModel = aideModel;
+          betItem = bet;
+      }
+       
       }
 
     }
 
-    v.jsDic = shareBettingData(v.betModel, v.amount);
+    
+    if (!anyEmpty(v.betModel)) {
+      v.jsDic = shareBettingData(v.betModel, v.amount);
+    }
 
+    let dict  = {
+      'token':UGStore.globalProps.userInfo?.sessid,
+      'gameId':v.betModel.gameId,
+      'betIssue':v.betModel.issue,
+      'totalNum':"1",
+      'totalMoney':v.amount,
+      'endTime':    moment(v.betModel.closeTime).format("X"),
+      'tag':'1',
+      'betBean[0][playId]':betItem.playId,
+      'betBean[0][money]':v.amount,
+      'betBean[0][betInfo]':v.betModel.playName,
+      'betBean[0][playIds]':'', 
+    }
+
+    // console.log('dict=',dict);
+    onHeaderRefresh();
+    api.user.bet(dict).useSuccess(({ data, msg }) => {
+      showSuccess(msg)
+
+    });
+    return;
+
+    api.user.userBetWithParams(dict).useSuccess(({ data, msg }) => {
+      showSuccess(msg)
+
+    });
 
 
 
@@ -150,8 +184,8 @@ const JDLotteryAssistantPage = () => {
 */
   function shareBettingData(betModel?: UGChanglongaideModel, amount?: string) {
 
-    let betS: UGBetItemModel;
-    let list: Array<any>;
+    let betS: UGBetItemModel = new  UGBetItemModel();
+    let list: Array<any> = new Array<any>();
     for (let index = 0; index < betModel.betList.length; index++) {
       const bet = betModel.betList[index];
       if (bet.select) {
@@ -160,10 +194,11 @@ const JDLotteryAssistantPage = () => {
       }
     }
 
-    let name: string = betModel.playCateName + '_' + betS.playName;
+
+    let name: string = betModel?.playCateName + '_' + betS?.playName;
     // 组装list 
     {
-      let betList: UGbetListModel;
+      let betList: UGbetListModel = new UGbetListModel();
       betList.betMoney = amount;
       betList.index = '0';
       betList.odds = betS.odds;
@@ -171,11 +206,11 @@ const JDLotteryAssistantPage = () => {
       list.push(betList);
     }
 
-    let betObj: UGbetModel;
+    let betObj: UGbetModel = new UGbetModel();
     // 组装betParams
     {
-      let betParams: Array<UGbetParamModel>
-      let betList: UGbetParamModel;
+      let betParams: Array<UGbetParamModel> = new  Array<UGbetParamModel> ();
+      let betList: UGbetParamModel = new UGbetParamModel();
       betList.money = amount;
       betList.name = name;
       betList.odds = betS.odds;
@@ -186,8 +221,8 @@ const JDLotteryAssistantPage = () => {
 
     //组装 playNameArray
     {
-      let playNameArray: Array<UGplayNameModel>
-      let betList: UGplayNameModel;
+      let playNameArray: Array<UGplayNameModel> = new  Array<UGplayNameModel> ();
+      let betList: UGplayNameModel = new UGplayNameModel();
       betList.playName1 = betModel.title + '-' + betModel.playCateName;
       betList.playName2 = betS.playName;
       playNameArray.push(betList)
@@ -207,15 +242,26 @@ const JDLotteryAssistantPage = () => {
       betObj.specialPlay = false;
     }
 
-
-    let js: jsDic = {};
+    let js :jsDic = new jsDic();
     js.betModel = betObj;
     js.list = list;
 
-    js = { 'betModel': betObj, 'list': list }
+    //以字符串形式导出
+    let paramsjsonString: string = JSON.stringify(betObj);
+    // console.log('paramsjsonString  ===', paramsjsonString);
 
+    let listjsonString: string = JSON.stringify(list);
+    // console.log('listjsonString  ===', listjsonString);
 
-    return {}
+    let jsonStr: string = 'shareBet(' + listjsonString + ',' + paramsjsonString + ')';
+
+    // console.log('jsonStr ====', jsonStr);
+
+    js.jsonStr = jsonStr;
+
+    // console.log('js ====', js);
+
+    return js;
   }
 
   /**
@@ -748,16 +794,16 @@ const JDLotteryAssistantPage = () => {
         onHeaderRefresh()
       },
       didBlur: () => {
-        clearInterval(v.timer)
-        clearInterval(v.dataTimer)
-        console.log("长龙我的投注销毁了，调用了clearInterval")
+        // clearInterval(v.timer)
+        // clearInterval(v.dataTimer)
+        console.log("长龙我的投注销毁了22222，调用了clearInterval")
       },
     })
 
     return (() => {
       clearInterval(v.timer)
       clearInterval(v.dataTimer)
-      console.log("长龙我的投注销毁了，调用了clearInterval")
+      console.log("长龙我的投注销毁了1111，调用了clearInterval")
     })
   }, [])
 
@@ -843,6 +889,10 @@ const JDLotteryAssistantPage = () => {
               placeholderTextColor={Skin1.textColor3}
               onChangeText={(text) => {
                 // console.log('投注金额==', text);
+            
+                if ( anyEmpty(v.selBetItem)) {
+                  return;
+                }
                 v.amountLabel = chkPrice(text).trim()
                 if (!anyEmpty(v.amountLabel) && !anyEmpty(v.selBetItem) && !anyEmpty(v.selAideModel)) {
                   v.betDetailViewhidden = false;
@@ -850,6 +900,12 @@ const JDLotteryAssistantPage = () => {
                   reloadPage()
                 }
                 else {
+
+                  let total: number = parseFloat(v.amountLabel) * parseFloat( v.selBetItem.odds)
+                  v.betDetailLabel = v.selAideModel?.title + ', '
+                    + v.selAideModel?.playCateName + ', '
+                    + v.selBetItem?.playName;
+                  v.betDetail2Label = ' 奖金:' + total?.toFixed(4)
                   v.betDetailViewhidden = true;
                   reloadPage()
                 }
@@ -859,7 +915,7 @@ const JDLotteryAssistantPage = () => {
           </View>
           <TouchableOpacity style={{ height: v.bottomH, width: 100, backgroundColor: '#1E90FF', alignItems: 'center', justifyContent: 'center', }}
             onPress={() => {
-
+              betClick()
             }}
           >
             <Text style={{ fontSize: 18, color: 'white' }}>
