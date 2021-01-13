@@ -104,15 +104,15 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制左边列表 特码 双面 正码 等等
    */
-  const renderLeftColumn = () => <View key={playOddDetailData?.playOdds?.toString()}
+  const renderLeftColumn = () => <View key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
                                        style={[
                                          _styles.left_column_container,
                                          { height: LEFT_ITEM_HEIGHT * arrayLength(playOddDetailData?.playOdds) },
                                        ]}>
-    <ScrollView key={playOddDetailData?.playOdds?.toString()}
+    <ScrollView key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
                 nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={false}>
-      <View key={playOddDetailData?.playOdds?.toString()}
+      <View key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
             style={_styles.left_column_content}>
         {
           playOddDetailData?.playOdds?.map((item, index) => {
@@ -152,17 +152,17 @@ const BetLotteryPage = ({ navigation, route }) => {
     const key = targetLotteryCode + isEqual
     ugLog('current key key={key} =', targetLotteryCode, currentLotteryCode, key)
     switch (targetLotteryCode) {
-      // case LotteryConst.TM: { //特码
-      //   return <LhcTMComponent key={targetLotteryCode}
-      //                          lotteryCode={targetLotteryCode}
-      //                          style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-      //   />
-      // }
+      case LotteryConst.TM: { //特码
+        return <LhcTMComponent key={targetLotteryCode}
+                               lotteryCode={targetLotteryCode}
+                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+        />
+      }
       case LotteryConst.ZM: //正码
       case LotteryConst.ZT: { //正特
         return <LhcZTComponent key={targetLotteryCode}
                                lotteryCode={targetLotteryCode}
-          //style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+          style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
         />
       }
       // case LotteryConst.LMA: { //连码
@@ -376,7 +376,8 @@ const BetLotteryPage = ({ navigation, route }) => {
       playOddDetailData: () => playOddDetailData,
       curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
     }}>
-      <BaseScreen screenName={''}
+      <BaseScreen key={'lottery BaseScreen'}
+                  screenName={''}
                   style={{ backgroundColor: UGColor.BackgroundColor1 }}
                   hideBar={true}>
 
@@ -410,19 +411,22 @@ const BetLotteryPage = ({ navigation, route }) => {
         {/*             style={{ aspectRatio: 1, width: scale(500) }}*/}
         {/*             resizeMode={'contain'}/>*/}
         {/*</Modal>*/}
-        <View style={_styles.bs_container}>
+        <View key={'lottery content'}
+              style={_styles.bs_container}>
           {renderTopBar()}
           {renderGameTab()}
-          <ScrollView key={'middle content'}
+          <ScrollView key={'lottery middle content'}
                       style={CommStyles.flex}>
             {renderHistory()}
             {<TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>}
-            <View style={{ flexDirection: 'row' }}>
+            <View key={'lottery bet content'}
+                  style={{ flexDirection: 'row' }}>
               {renderLeftColumn()}
               {renderRightContent()}
             </View>
           </ScrollView>
-          <BetBoardComponent locked={false}
+          <BetBoardComponent key={'lottery board'}
+                             locked={false}
                              lockStr={'封盘中...'}/>
         </View>
       </BaseScreen>

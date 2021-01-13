@@ -23,18 +23,18 @@ const EBall = ({
                  oddsStyle,
                  style
                }: IEBall) => {
-
+  const key = 'EBall=' + ballType?.ballNumber
 
   return (
-    <View key={ballType?.ballNumber + odds}
+    <View key={key}
           style={[
             _styles.container,
             style
           ]}>
-      <LotteryBall key={ballType?.ballNumber}
+      <LotteryBall key={key + 'ct'}
                    {...ballType}/>
       {
-        !anyEmpty(odds) && <Text key={odds}
+        !anyEmpty(odds) && <Text key={key + 'text'}
               style={[_styles.ball_odds, oddsStyle]}>{odds}</Text>
       }
     </View>

@@ -54,14 +54,14 @@ const TimeComponent = ({}: IRouteParams) => {
           style={_styles.container}>
       <View key={'time sub container'}
             style={_styles.time_container}>
-        <Text key={'time container' + nextIssueData()?.displayNumber}
+        <Text key={'time container 1' + nextIssueData()?.displayNumber}
               style={_styles.issue_text}>{`${nextIssueData()?.displayNumber}期`}</Text>
         <Text key={'time container close'}
               style={_styles.close_text}>{'封盘:'}</Text>
-        <Text key={'time container' + displayCloseTime} style={_styles.close_time}>{displayCloseTime}</Text>
+        <Text key={'time container 2' + displayCloseTime} style={_styles.close_time}>{displayCloseTime}</Text>
         <Text key={'time container open'}
               style={_styles.close_text}>{'开盘:'}</Text>
-        <Text key={'time container' + displayOpenTime}
+        <Text key={'time container 3' + displayOpenTime}
               style={_styles.open_time}>{displayOpenTime}</Text>
       </View>
       <View key={'time sub2 container'}
