@@ -108,6 +108,7 @@ export class BetMode {
   endTime?: string;  /**<   */
   totalMoney?: string ;  /**<   */
   tag?: string;  /**<   */
+  isInstant?: boolean = false; /**<   */
   betBean?:  Array<BetBean>; /**<   */
 
 }

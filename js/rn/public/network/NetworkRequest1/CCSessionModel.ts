@@ -96,7 +96,7 @@ export class CCSessionReq {
       }
 
       console.log('【发起请求】', url);
-
+      console.log('【发起请求加密参数】',params);
       // 若是GET请求则拼接参数到URL
       if (!isPost) {
         for (const key in params) {
@@ -119,9 +119,7 @@ export class CCSessionReq {
         }
         return this.http.post<ResponseObject<T>>(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       } else {
-        console.log('post我来了==');
-        console.log('post url==',url);
-        console.log('post params==',params);
+       
         
         return this.http.post<ResponseObject<T>>(url, params,{ headers: { 'Content-Type': 'application/json' } });
       }
