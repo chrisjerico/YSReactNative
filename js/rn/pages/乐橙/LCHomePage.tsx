@@ -117,16 +117,22 @@ const LCHomePage = ({ setProps }) => {
             navs={navs}
             containerStyle={{ alignItems: 'center' }}
             renderNav={(item, index) => {
-              const { icon, name, logo, gameId } = item
+              const { title, logo, icon, name, subtitle, tipFlag, hotIcon, subType, gameId } = item
+              const showFlag = parseInt(tipFlag)
               return (
                 <GameButton
-                  showSecondLevelIcon={false}
+                  showRightTopFlag={showFlag > 0 && showFlag < 4}
+                  showCenterFlag={showFlag == 4}
+                  showSecondLevelIcon={!!subType}
+                  resizeMode={'contain'}
                   key={index}
                   imageContainerStyle={{ width: '45%' }}
                   enableCircle={false}
-                  logo={icon ? icon : logo}
-                  title={name}
-                  titleStyle={{ fontSize: scale(25) }}
+                  logo={icon || logo}
+                  title={name || title}
+                  flagIcon={hotIcon}
+                  containerStyle={{width: AppDefine.width / 5 -5, paddingTop: 4}}
+                  titleStyle={{ fontSize: scale(18) }}
                   titleContainerStyle={{ aspectRatio: 3 }}
                   onPress={() => {
                     if (gameId == 9) {
