@@ -58,7 +58,6 @@ const LCMinePage = () => {
             data={UGUserCenterItem}
             renderItem={({ item }) => (
               <TouchableWithoutFeedback style={{ flexDirection: 'row', flex: 1 }} onPress={() => {
-                console.log(item.code)
                 PushHelper.pushUserCenterType(item.code)
               }}>
                 <View style={{
