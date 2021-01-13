@@ -39,11 +39,14 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     
     setTabIndex(index);
 
-    // var date = moment('2016-10-11 18:06:03')
-    //     console.log('date ==',date);
+    var date = moment('2016-10-11 18:06:03')
+        console.log('date ==',date);
 
-    //     let timestamp = moment(date).format("X");
-    //     console.log('timestamp ==',timestamp);
+        let timestamp = moment(date).format("X");
+        console.log('timestamp ==',timestamp);
+
+        let timestamp2 = moment('2016-10-11 18:06:03').format("X");
+        console.log('timestamp2 ==',timestamp2);
     
 
 

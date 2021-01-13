@@ -55,3 +55,46 @@ export class UGbetParamModel {
   name?: string;/**<   鼠,牛 */
   odds?: string;/**<   赔率*/
 }
+
+
+export class UGplayNameModel {
+  clsName?: string = "UGplayNameModel";
+  playName1?: string;/**<   二连肖-鼠,牛*/
+  playName2?: string;/**<   鼠,牛*/
+}
+
+export class UGselectSubModel {
+  clsName?: string = "UGselectSubModel";
+  id?: string;/**玩法id*/
+  max?: string;/**<   最大选择数*/
+  min?: string;/**<   最小选择数*/
+  text?: string;/**<   玩法名称*/
+  type?: string; /**<   连码*/
+
+}
+
+
+export class UGbetModel {
+  clsName?: string = "UGbetModel";
+  gameName?: string;  /**<   游戏名称*/
+  gameId?: string;  /**<   游戏id*/
+  code?: string;/**<   游戏icode  */
+  ftime?: string; /**<   当期期封盘时间  时间挫*/
+  roomId?: string; /**<   房间id*/
+  totalMoney?: string;  /**<   下注金额*/
+  totalNums?: string;  /**<   下注数量*/
+  turnNum?: string; /**<   当前期号*/
+  displayNumber?: string; /**<    开奖期数  自营优先使用*/
+  activeReturnCoinRatio?: string; /**<   */
+  specialPlay?: boolean; /**<   */
+  betParams?: Array<UGbetParamModel>; /**<   */
+  playNameArray?:  Array<UGplayNameModel>; /**<   */
+  selectSub?: UGselectSubModel;/**<   用于电脑版*/
+
+}
+
+export class jsDic {
+  
+  betModel?: any;  /**<   */
+  list?: any;  /**<   */
+}

@@ -21,7 +21,7 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
-import { UGBetItemModel, UGbetListModel, UGbetParamModel, UGChanglongaideModel } from '../Model/UGChanglongaideModel';
+import { jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UGbetParamModel, UGChanglongaideModel, UGplayNameModel } from '../Model/UGChanglongaideModel';
 
 import moment from 'moment';
 import { number } from 'prop-types';
@@ -151,7 +151,7 @@ const JDLotteryAssistantPage = () => {
   function shareBettingData(betModel?: UGChanglongaideModel, amount?: string) {
 
     let betS: UGBetItemModel;
-    let list:Array<any>;
+    let list: Array<any>;
     for (let index = 0; index < betModel.betList.length; index++) {
       const bet = betModel.betList[index];
       if (bet.select) {
@@ -160,18 +160,59 @@ const JDLotteryAssistantPage = () => {
       }
     }
 
-    let name :string = betModel.playCateName+'_'+betS.playName;
+    let name: string = betModel.playCateName + '_' + betS.playName;
     // 组装list 
-    let betList :UGbetListModel;
-    betList.betMoney = amount;
-    betList.index = '0';
-    betList.odds = betS.odds;
-    betList.name = name;
-    list.push(betList);
+    {
+      let betList: UGbetListModel;
+      betList.betMoney = amount;
+      betList.index = '0';
+      betList.odds = betS.odds;
+      betList.name = name;
+      list.push(betList);
+    }
 
-   // 组装betParams
-   let betParams : Array<UGbetParamModel>
+    let betObj: UGbetModel;
+    // 组装betParams
+    {
+      let betParams: Array<UGbetParamModel>
+      let betList: UGbetParamModel;
+      betList.money = amount;
+      betList.name = name;
+      betList.odds = betS.odds;
+      betList.playId = betS.playId;
+      betParams.push(betList);
+      betObj.betParams = betParams;
+    }
 
+    //组装 playNameArray
+    {
+      let playNameArray: Array<UGplayNameModel>
+      let betList: UGplayNameModel;
+      betList.playName1 = betModel.title + '-' + betModel.playCateName;
+      betList.playName2 = betS.playName;
+      playNameArray.push(betList)
+      betObj.playNameArray = playNameArray;
+    }
+
+    //组装 其他数据
+    {
+      betObj.displayNumber = betModel.displayNumber;
+      betObj.gameName = betModel.title;
+      betObj.gameId = betModel.gameId;
+      betObj.totalNums = '1';
+      betObj.totalMoney = amount;
+      betObj.turnNum = betModel.issue;
+      betObj.ftime = moment(betModel.closeTime).format("X");
+      betObj.code = '';
+      betObj.specialPlay = false;
+    }
+
+
+    let js: jsDic = {};
+    js.betModel = betObj;
+    js.list = list;
+
+    js = { 'betModel': betObj, 'list': list }
 
 
     return {}
