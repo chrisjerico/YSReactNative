@@ -39,7 +39,7 @@ import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
-import { ILotteryRouteParams } from '../../const/LotteryConst'
+import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
 
 /**
@@ -111,11 +111,9 @@ const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={_styles.content_container}>
-      {arrayLength(curData) > 0 && renderLineBall(curData[0])}
-    </View>
-  </ScrollView>
+  const renderAllBall = () => <View style={_styles.content_container}>
+    {arrayLength(curData) > 0 && renderLineBall(curData[0])}
+  </View>
 
   return (
     <View style={[CommStyles.flex, style]}>
@@ -127,7 +125,7 @@ const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 const _styles = StyleSheet.create({
   content_container: {
-    paddingBottom: scale(220),
+    paddingBottom: LEFT_ITEM_HEIGHT * 6,
     flex: 1,
   },
   sub_title_container: {

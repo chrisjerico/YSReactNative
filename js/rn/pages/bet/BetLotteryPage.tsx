@@ -12,7 +12,7 @@ import { UGColor } from '../../public/theme/UGThemeColor'
 import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
 import TimeComponent from './tm/TimeComponent'
-import LotteryConst from './const/LotteryConst'
+import LotteryConst, { LEFT_ITEM_HEIGHT } from './const/LotteryConst'
 import LhcZTComponent from './lhc/zt/LhcZTComponent'
 import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
 import LhcSBComponent from './lhc/sb/LhcSBComponent'
@@ -20,8 +20,7 @@ import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
 import LhcHXComponent from './lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
 import BetBoardComponent from './board/BetBoardComponent'
-import { anyEmpty } from '../../public/tools/Ext'
-import BetRecordListComponent from './red/BetRecordListComponent'
+import { anyEmpty, arrayLength } from '../../public/tools/Ext'
 import BetRecordHeaderComponent from './red/BetRecordHeaderComponent'
 import { ugLog } from '../../public/tools/UgLog'
 
@@ -95,9 +94,16 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制左边列表 特码 双面 正码 等等
    */
-  const renderLeftColumn = () => <View key={playOddDetailData?.playOdds?.toString()}>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={_styles.left_column_content}>
+  const renderLeftColumn = () => <View key={playOddDetailData?.playOdds?.toString()}
+                                       style={[
+                                         _styles.left_column_container,
+                                         {height: LEFT_ITEM_HEIGHT * arrayLength(playOddDetailData?.playOdds)}
+                                       ]}>
+    <ScrollView key={playOddDetailData?.playOdds?.toString()}
+                nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}>
+      <View key={playOddDetailData?.playOdds?.toString()}
+            style={_styles.left_column_content}>
         {
           playOddDetailData?.playOdds?.map((item, index) => {
             return <TouchableOpacity key={item?.code}
@@ -379,22 +385,19 @@ const BetLotteryPage = ({ navigation, route }) => {
         {/*             style={{ aspectRatio: 1, width: scale(500) }}*/}
         {/*             resizeMode={'contain'}/>*/}
         {/*</Modal>*/}
-
         <View style={_styles.bs_container}>
-          {
-            [
-              renderTopBar(),
-              renderGameTab(),
-              renderHistory(),
-              <TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>,
-            ]
-          }
-          <View style={{ flexDirection: 'row', flex: 1 }}>
+        {renderTopBar()}
+        {renderGameTab()}
+        <ScrollView style={CommStyles.flex}>
+          {renderHistory()}
+          {<TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>}
+          <View style={{flexDirection: 'row'}}>
             {renderLeftColumn()}
             {renderRightContent()}
           </View>
-          <BetBoardComponent locked={false}
-                             lockStr={'封盘中...'}/>
+        </ScrollView>
+        <BetBoardComponent locked={false}
+                           lockStr={'封盘中...'}/>
         </View>
       </BaseScreen>
     </BetLotteryContext.Provider>
@@ -461,18 +464,21 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: 'white',
   },
+  left_column_container: {
+
+  },
+  left_column_content: {
+    paddingBottom: LEFT_ITEM_HEIGHT * 10,
+  },
   left_column_text: {
     color: UGColor.TextColor7,
     fontSize: scale(22),
-  },
-  left_column_content: {
-    paddingBottom: scale(220),
   },
   left_column_item: {
     width: scale(140),
     alignItems: 'center',
     justifyContent: 'center',
-    height: scale(52),
+    height: LEFT_ITEM_HEIGHT,
     borderRadius: scale(8),
   },
 

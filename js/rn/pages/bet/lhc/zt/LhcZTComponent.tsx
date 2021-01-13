@@ -38,6 +38,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
+import { LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 
 interface ILotteryRouteParams {
   lotteryCode?: string, //当前的彩票CODE，正码、正特 等等
@@ -168,12 +169,10 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={_styles.content_container}>
-      {arrayLength(curData) > 0 && renderZT1(curData[0])}
-      {arrayLength(curData) > 1 && renderZT2(curData[1])}
-    </View>
-  </ScrollView>
+  const renderAllBall = () => <View style={_styles.content_container}>
+    {arrayLength(curData) > 0 && renderZT1(curData[0])}
+    {arrayLength(curData) > 1 && renderZT2(curData[1])}
+  </View>
 
   return (
     <View style={[CommStyles.flex, style]}>
@@ -186,7 +185,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 const _styles = StyleSheet.create({
   content_container: {
-    paddingBottom: scale(220),
+    paddingBottom: LEFT_ITEM_HEIGHT * 6,
     flex: 1,
   },
   sub_title_container: {

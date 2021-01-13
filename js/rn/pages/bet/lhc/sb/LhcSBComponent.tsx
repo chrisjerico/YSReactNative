@@ -11,7 +11,7 @@ import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams } from '../../const/LotteryConst'
+import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行
@@ -53,33 +53,29 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的格子
    */
-  const renderAllBall = () => <View>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={_styles.content_container}>
-        {
-          curData?.map((groupData) => {
-            return <View key={groupData?.id + groupData?.alias}
-                         style={CommStyles.flex}>
+  const renderAllBall = () => <View style={_styles.content_container}>
+    {
+      curData?.map((groupData) => {
+        return <View key={groupData?.id + groupData?.alias}
+                     style={CommStyles.flex}>
 
-              <View key={groupData?.alias}
-                    style={_styles.sub_title_container}>
-                <Text style={[
-                  _styles.sub_title_text,
-                  { color: Skin1.themeColor },
-                ]}>{groupData?.alias}</Text>
-              </View>
+          <View key={groupData?.alias}
+                style={_styles.sub_title_container}>
+            <Text style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
+          </View>
 
-              <View style={_styles.rect_container}>
-                {
-                  groupData?.plays?.map((item) => renderERect(item))
-                }
-              </View>
+          <View style={_styles.rect_container}>
+            {
+              groupData?.plays?.map((item) => renderERect(item))
+            }
+          </View>
 
-            </View>
-          })
-        }
-      </View>
-    </ScrollView>
+        </View>
+      })
+    }
   </View>
 
   return (
@@ -92,7 +88,7 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 const _styles = StyleSheet.create({
   content_container: {
-    paddingBottom: scale(220),
+    paddingBottom: LEFT_ITEM_HEIGHT * 6,
     flex: 1,
   },
   sub_title_container: {

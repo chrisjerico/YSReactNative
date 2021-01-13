@@ -11,7 +11,7 @@ import { PlayData, PlayGroupData } from '../../../../public/network/Model/lotter
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams } from '../../const/LotteryConst'
+import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 
 /**
  * 六合彩特码
@@ -189,13 +189,11 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={_styles.content_container}>
-      {arrayLength(curData) > 0 && renderTM(curData[0])}
-      {arrayLength(curData) > 1 && renderLM(curData[1])}
-      {arrayLength(curData) > 2 && renderSB(curData[2])}
-    </View>
-  </ScrollView>
+  const renderAllBall = () => <View style={_styles.content_container}>
+    {arrayLength(curData) > 0 && renderTM(curData[0])}
+    {arrayLength(curData) > 1 && renderLM(curData[1])}
+    {arrayLength(curData) > 2 && renderSB(curData[2])}
+  </View>
 
   return (
     <View style={[CommStyles.flex, style]}>
@@ -209,7 +207,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 const _styles = StyleSheet.create({
   content_container: {
-    paddingBottom: scale(220),
+    paddingBottom: LEFT_ITEM_HEIGHT * 6,
     flex: 1,
   },
   sub_title_container: {
