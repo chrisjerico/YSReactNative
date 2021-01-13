@@ -49,6 +49,7 @@ import { NewRateModel } from './Model/wd/NewRateModel'
 import { NextIssueModel } from './Model/lottery/NextIssueModel'
 import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
 import PushHelper from '../define/PushHelper'
+import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -576,6 +577,7 @@ class APIRouter {
 
     return httpClient.post<any>('c=user&a=logout', tokenParams)
   }
+
   static getTrendData = async (id: string) => {
     return httpClient.get(`c=game&a=lotteryHistory`, {
       params: {
@@ -584,6 +586,7 @@ class APIRouter {
       },
     })
   }
+
   static secure_imgCaptcha = async () => {
     let accessToken = ''
     switch (Platform.OS) {
@@ -671,6 +674,15 @@ class APIRouter {
     })
 
     return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds' + tokenParams)
+  }
+
+  /**
+   * 游戏开奖记录
+   */
+  static game_lotteryHistory = async (params: IGameHistory): Promise<AxiosResponse<LotteryHistoryModel>> => {
+    ugLog('game_lotteryHistory=', JSON.stringify(params))
+    let tokenParams = await APIRouter.encryptGetParams(params)
+    return httpClient.get<LotteryHistoryModel>('c=game&a=lotteryHistory' + tokenParams)
   }
 
   /**

@@ -7,7 +7,7 @@ import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
-import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
@@ -46,7 +46,7 @@ const WNZSignInPage = () => {
   const { showFacebookSignIn } = show
   return (
     <>
-      <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
+      <SafeAreaHeader headerColor={skinColors.themeColor.威尼斯}>
         <SignHeader onPressLeftTool={pop} onPressMenu={openMenu} onPressSign={navigateToSignUpPage} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -115,7 +115,7 @@ const SignInForm = (props: SignInRenderFormProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: WNZThemeColor.威尼斯.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.威尼斯,
   },
   formContainer: {
     flex: 1,

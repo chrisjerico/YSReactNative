@@ -6,7 +6,6 @@ import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, pop } from '../../public/navigation/RootNavigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import BottomGap from '../../public/views/temp/BottomGap'
 import GameButton from '../../public/views/temp/GameButton'
@@ -14,7 +13,7 @@ import List from '../../public/views/temp/List'
 import MineHeader from '../../public/views/temp/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGStore } from '../../redux/store/UGStore'
-import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 
 const LEFGameLobbyPage = ({ route }) => {
   const gameLobby = UGStore.globalProps.gameLobby
@@ -36,7 +35,7 @@ const LEFGameLobbyPage = ({ route }) => {
           baseHeight={scale(130)}
           itemHeight={scale(130)}
           tabGames={gameLobby}
-          focusTabColor={LEFThemeColor.乐FUN.themeColor}
+          focusTabColor={skinColors.themeColor.乐FUN}
           tabTextStyle={{ fontSize: scale(20) }}
           renderScene={({ item, tab, index }) => {
             return (
@@ -96,7 +95,7 @@ const LEFGameLobbyPage = ({ route }) => {
 }
 
 const GameLobbyPageHeader = () => (
-  <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
+  <SafeAreaHeader headerColor={skinColors.themeColor.乐FUN}>
     <MineHeader
       showBackBtn={true}
       onPressBackBtn={() => {
@@ -113,7 +112,7 @@ const GameLobbyPageHeader = () => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.乐FUN,
     // marginBottom: scale(20),
   },
   gameContainer: {

@@ -11,8 +11,7 @@ import LotteryBall, { BallType } from '../../../../public/components/view/Lotter
 import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
-import { SeriesId } from '../../../../public/models/Enum'
-import UseGameHall from '../UseGameHall'
+import UseHallGameList from './UseHallGameList'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -34,7 +33,7 @@ const HallGameListComponent = ({
   const {
     systemInfo,
     userInfo,
-  } = UseGameHall()
+  } = UseHallGameList()
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}

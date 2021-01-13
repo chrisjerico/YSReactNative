@@ -3,8 +3,8 @@ import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import {scale} from '../../../public/tools/Scale'
 import Button from '../../../public/views/temp/Button'
-import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 import { TouchableHighlight, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler'
+import { skinColors } from '../../../public/theme/const/UGSkinColor'
 
 interface HomeHeaderProps {
   name: string;
@@ -119,11 +119,11 @@ const _styles = StyleSheet.create({
   },
   left_text: {
     fontSize: scale(18),
-    color: LEFThemeColor.乐FUN.textColor2,
+    color: skinColors.textColor2.乐FUN,
   },
   buttonTitle: {
     fontSize: scale(26),
-    color: LEFThemeColor.乐FUN.textColor2,
+    color: skinColors.textColor2.乐FUN,
   },
   logo: {
     width: '100%',

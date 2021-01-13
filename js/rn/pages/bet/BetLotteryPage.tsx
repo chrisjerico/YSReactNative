@@ -21,6 +21,9 @@ import LhcHXComponent from './lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
 import BetBoardComponent from './board/BetBoardComponent'
 import { anyEmpty } from '../../public/tools/Ext'
+import BetRecordListComponent from './red/BetRecordListComponent'
+import BetRecordHeaderComponent from './red/BetRecordHeaderComponent'
+import { ugLog } from '../../public/tools/UgLog'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -41,6 +44,8 @@ const BetLotteryPage = ({ navigation, route }) => {
     setLotteryId,
     nextIssueData,
     playOddDetailData,
+    loadedLottery,
+    setLoadedLottery,
     requestNextData,
     requestLotteryData,
   } = UseBetLottery()
@@ -53,7 +58,6 @@ const BetLotteryPage = ({ navigation, route }) => {
   const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，投注0 还是游戏1
   const [gameTabIndex, setGameTabIndex] = useState(0) // 彩票和聊天切换TAB
   const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
-
 
   /**
    * 绘制顶部的标题栏
@@ -93,33 +97,94 @@ const BetLotteryPage = ({ navigation, route }) => {
    */
   const renderLeftColumn = () => <View key={playOddDetailData?.playOdds?.toString()}>
     <ScrollView showsVerticalScrollIndicator={false}>
-      {
-        playOddDetailData?.playOdds?.map((item, index) => {
-          return <TouchableOpacity key={item?.code}
-                                   onPress={() => setLeftColumnIndex(index)}>
-            <View style={[
-              {
-                width: scale(140),
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: scale(52),
-                borderRadius: scale(8),
-                borderWidth: leftColumnIndex == index ? scale(3) : scale(1),
-              },
-              {
-                borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
-              },
-            ]}>
-              <Text style={{
-                color: UGColor.TextColor7,
-                fontSize: scale(22),
-              }}>{item.name}</Text>
-            </View>
-          </TouchableOpacity>
-        })
-      }
+      <View style={_styles.left_column_content}>
+        {
+          playOddDetailData?.playOdds?.map((item, index) => {
+            return <TouchableOpacity key={item?.code}
+                                     onPress={() => setLeftColumnIndex(index)}>
+              <View style={[
+                _styles.left_column_item,
+                {
+                  borderWidth: leftColumnIndex == index ? scale(3) : scale(1),
+                  borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
+                },
+              ]}>
+                <Text style={_styles.left_column_text}>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
+          })
+        }
+      </View>
     </ScrollView>
   </View>
+
+  /**
+   * 加载彩票对象
+   * @param targetLotteryCode 目标彩票
+   * @param currentLotteryCode 当前选中的彩票
+   * @constructor
+   */
+  const LotteryComponent = (targetLotteryCode?: string, currentLotteryCode?: string) => {
+
+    // <LhcTMComponent key={LotteryConst.TM + (LotteryConst.TM == targetLotteryCode)}
+    //                 style={targetLotteryCode == LotteryConst.TM ? null : { display: 'none' }}
+    //                 targetLotteryCode={LotteryConst.TM}/>
+
+    const isEqual = targetLotteryCode == currentLotteryCode //加载的彩票和选中的彩票是否相同
+    const key = targetLotteryCode + isEqual
+    ugLog('current key key={key} =', targetLotteryCode, currentLotteryCode, key)
+    switch (targetLotteryCode) {
+      case LotteryConst.TM: { //特码
+        return <LhcTMComponent key={targetLotteryCode}
+                               lotteryCode={targetLotteryCode}
+                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}/>
+      }
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT: { //正特
+        return <LhcZTComponent key={targetLotteryCode}
+                               lotteryCode={targetLotteryCode}
+                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}/>
+      }
+      // case LotteryConst.LMA: { //连码
+      //   return <LhcLMAComponent key={key}
+      //                           lotteryCode={targetLotteryCode}
+      //                           style={isEqual ? null : { display: 'none' }}/>
+      // }
+      // case LotteryConst.LM: //两面
+      // case LotteryConst.ZM1_6: //正码1T6
+      // case LotteryConst.SB: //色波
+      // case LotteryConst.ZOX://总肖
+      // case LotteryConst.WX: { //五行
+      //   return <LhcSBComponent key={key}
+      //                          lotteryCode={targetLotteryCode}
+      //                          style={isEqual ? null : { display: 'none' }}/>
+      // }
+      // case LotteryConst.YX: //平特一肖
+      // case LotteryConst.WS: //平特尾数
+      // case LotteryConst.TWS: //头尾数
+      // case LotteryConst.TX: //特肖
+      // case LotteryConst.LX: //连肖
+      // case LotteryConst.LW: //连尾
+      // case LotteryConst.ZX: { //正肖
+      //   return <LhcPTYXComponent key={key}
+      //                            lotteryCode={targetLotteryCode}
+      //                            style={isEqual ? null : { display: 'none' }}/>
+      // }
+      // case LotteryConst.HX: { //合肖
+      //   return <LhcHXComponent key={key}
+      //                          lotteryCode={targetLotteryCode}
+      //                          style={isEqual ? null : { display: 'none' }}/>
+      // }
+      // case LotteryConst.ZXBZ: { //自选不中
+      //   return <LhcZXBZComponent key={key}
+      //                            lotteryCode={targetLotteryCode}
+      //                            style={isEqual ? null : { display: 'none' }}/>
+      // }
+
+    }
+
+    return null
+  }
 
   /**
    * 绘制右边彩票区域，彩球 等等
@@ -130,17 +195,69 @@ const BetLotteryPage = ({ navigation, route }) => {
     let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
 
     // return <View style={CommStyles.flex}>
-    //   <LhcTMComponent style={lotteryCode == LotteryConst.TM ? null : { display: 'none' }}
-    //                   key={LotteryConst.TM}/>
-    //   <LhcLMComponent style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
-    //                   key={LotteryConst.LM}/>
-    //   <LhcHXComponent style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
-    //                   key={LotteryConst.ZM}/>
-    //   <LhcSBComponent style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
-    //                      key={LotteryConst.ZM1_6}/>
-    //   <LhcLMAComponent style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
-    //                   key={LotteryConst.ZT}/>
+    //   <LhcTMComponent key={LotteryConst.TM + (LotteryConst.TM == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.TM ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.TM}/>
+    //   <LhcZTComponent key={LotteryConst.ZM + (LotteryConst.ZM == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.ZM}/>
+    //   <LhcZTComponent key={LotteryConst.ZT + (LotteryConst.ZT == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.ZT}/>
+    //   <LhcLMAComponent key={LotteryConst.LMA + (LotteryConst.LMA == lotteryCode)}
+    //                    style={lotteryCode == LotteryConst.LMA ? null : { display: 'none' }}
+    //                    lotteryCode={LotteryConst.LMA}/>
+    //   <LhcSBComponent key={LotteryConst.LM + (LotteryConst.LM == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.LM}/>
+    //   <LhcSBComponent key={LotteryConst.ZM1_6 + (LotteryConst.ZM1_6 == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.ZM1_6}/>
+    //   <LhcSBComponent key={LotteryConst.SB + (LotteryConst.SB == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.SB ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.SB}/>
+    //   <LhcSBComponent key={LotteryConst.ZOX + (LotteryConst.ZOX == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.ZOX ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.ZOX}/>
+    //   <LhcSBComponent key={LotteryConst.WX + (LotteryConst.WX == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.WX ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.WX}/>
+    //   <LhcPTYXComponent key={LotteryConst.YX + (LotteryConst.YX == lotteryCode)}
+    //                     style={lotteryCode == LotteryConst.YX ? null : { display: 'none' }}
+    //                     lotteryCode={LotteryConst.YX}/>
+    //   <LhcPTYXComponent key={LotteryConst.WS + (LotteryConst.WS == lotteryCode)}
+    //                     style={lotteryCode == LotteryConst.WS ? null : { display: 'none' }}
+    //                     lotteryCode={LotteryConst.WS}/>
+    //   <LhcPTYXComponent key={LotteryConst.TWS + (LotteryConst.TWS == lotteryCode)}
+    //                     style={lotteryCode == LotteryConst.TWS ? null : { display: 'none' }}
+    //                     lotteryCode={LotteryConst.TWS}/>
+    //   <LhcPTYXComponent key={LotteryConst.TX + (LotteryConst.TX == lotteryCode)}
+    //                     style={lotteryCode == LotteryConst.TX ? null : { display: 'none' }}
+    //                     lotteryCode={LotteryConst.TX}/>
+    //   <LhcPTYXComponent key={LotteryConst.LX + (LotteryConst.LX == lotteryCode)}
+    //                     style={lotteryCode == LotteryConst.LX ? null : { display: 'none' }}
+    //                     lotteryCode={LotteryConst.LX}/>
+    //   <LhcPTYXComponent key={LotteryConst.LW + (LotteryConst.LW == lotteryCode)}
+    //                     style={lotteryCode == LotteryConst.LW ? null : { display: 'none' }}
+    //                     lotteryCode={LotteryConst.LW}/>
+    //   <LhcPTYXComponent key={LotteryConst.ZX + (LotteryConst.ZX == lotteryCode)}
+    //                     style={lotteryCode == LotteryConst.ZX ? null : { display: 'none' }}
+    //                     lotteryCode={LotteryConst.ZX}/>
+    //   <LhcHXComponent key={LotteryConst.HX + (LotteryConst.HX == lotteryCode)}
+    //                   style={lotteryCode == LotteryConst.HX ? null : { display: 'none' }}
+    //                   lotteryCode={LotteryConst.HX}/>
+    //   <LhcZXBZComponent key={LotteryConst.ZXBZ + (LotteryConst.ZXBZ == lotteryCode)}
+    //                     style={lotteryCode == LotteryConst.ZXBZ ? null : { display: 'none' }}
+    //                     lotteryCode={LotteryConst.ZXBZ}/>
     // </View>
+
+    // ugLog('---------------------------------------------------')
+    // return <View style={CommStyles.flex}>
+    //   {
+    //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode) )
+    //   }
+    // </View>
+
 
     switch (lotteryCode) {
       case LotteryConst.TM: { //特码
@@ -160,7 +277,7 @@ const BetLotteryPage = ({ navigation, route }) => {
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:{ //五行
+      case LotteryConst.WX: { //五行
         return <LhcSBComponent key={lotteryCode}
                                lotteryCode={lotteryCode}/>
       }
@@ -176,7 +293,7 @@ const BetLotteryPage = ({ navigation, route }) => {
       }
       case LotteryConst.HX: { //合肖
         return <LhcHXComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.ZXBZ: { //自选不中
         return <LhcZXBZComponent key={lotteryCode}
@@ -199,7 +316,7 @@ const BetLotteryPage = ({ navigation, route }) => {
       <View style={[
         _styles.game_tab,
         _styles.game_tab_left,
-        gameTabIndex == 0 ? { backgroundColor: '#ffffff44' } : null]}>
+        gameTabIndex == 0 ? { backgroundColor: UGColor.transparent2 } : null]}>
         <Text style={_styles.tab_text}>{'投注区'}</Text>
       </View>
     </TouchableOpacity>
@@ -208,12 +325,19 @@ const BetLotteryPage = ({ navigation, route }) => {
       <View style={[
         _styles.game_tab,
         _styles.game_tab_right,
-        gameTabIndex == 1 ? { backgroundColor: '#ffffff44' } : null]}>
+        gameTabIndex == 1 ? { backgroundColor: UGColor.transparent2 } : null]}>
         <Text style={_styles.tab_text}>{'主房间'}</Text>
       </View>
     </TouchableOpacity>
 
   </View>
+
+  /**
+   * 绘制游戏开奖记录
+   */
+  const renderHistory = () => (
+    <BetRecordHeaderComponent key={'' + nextIssueData}/>
+  )
 
   return (
     <BetLotteryContext.Provider value={{
@@ -256,18 +380,22 @@ const BetLotteryPage = ({ navigation, route }) => {
         {/*             resizeMode={'contain'}/>*/}
         {/*</Modal>*/}
 
-        {
-          [
-            renderTopBar(),
-            renderGameTab(),
-            <TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>,
-          ]
-        }
-        <View style={{ flexDirection: 'row', flex: 1 }}>
-          {renderLeftColumn()}
-          {renderRightContent()}
+        <View style={_styles.bs_container}>
+          {
+            [
+              renderTopBar(),
+              renderGameTab(),
+              renderHistory(),
+              <TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>,
+            ]
+          }
+          <View style={{ flexDirection: 'row', flex: 1 }}>
+            {renderLeftColumn()}
+            {renderRightContent()}
+          </View>
+          <BetBoardComponent locked={false}
+                             lockStr={'封盘中...'}/>
         </View>
-        <BetBoardComponent/>
       </BaseScreen>
     </BetLotteryContext.Provider>
 
@@ -275,6 +403,10 @@ const BetLotteryPage = ({ navigation, route }) => {
 }
 
 const _styles = StyleSheet.create({
+  bs_container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
   modal_content: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -328,6 +460,20 @@ const _styles = StyleSheet.create({
   tab_text: {
     fontSize: scale(22),
     color: 'white',
+  },
+  left_column_text: {
+    color: UGColor.TextColor7,
+    fontSize: scale(22),
+  },
+  left_column_content: {
+    paddingBottom: scale(220),
+  },
+  left_column_item: {
+    width: scale(140),
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: scale(52),
+    borderRadius: scale(8),
   },
 
 

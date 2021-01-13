@@ -1,13 +1,13 @@
 import {FlatList, Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native"
 import React from 'react'
 import SafeAreaHeader from "../../../public/views/tars/SafeAreaHeader";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import CommStyles from "../../base/CommStyles";
 import PushHelper from "../../../public/define/PushHelper";
 import FastImage from "react-native-fast-image";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {pop} from "../../../public/navigation/RootNavigation";
+import { skinColors } from "../../../public/theme/const/UGSkinColor";
 
 /**
  * 所有分类
@@ -42,7 +42,7 @@ const HJGameCategoryPage = (props: any) => {
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
           }}
-          headerColor={HJThemeColor.黑金.themeColor}
+          headerColor={skinColors.themeColor.黑金}
         >
         </SafeAreaHeader> : null
       }
@@ -98,7 +98,7 @@ const _styles = StyleSheet.create({
   list: {
     flex: 1,
     paddingHorizontal: scale(12),
-    backgroundColor: HJThemeColor.黑金.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.黑金,
   },
   item: {
     flex: 1,

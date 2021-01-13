@@ -10,7 +10,6 @@ import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType, RankingListType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
@@ -30,6 +29,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { ugLog } from '../../public/tools/UgLog'
 import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
 import { getParentsTagsRecursively } from 'react-native-render-html'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -183,7 +183,7 @@ const WNZHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'WNZHomePage'}
-      headerColor={WNZThemeColor.威尼斯.themeColor}
+      headerColor={skinColors.themeColor.威尼斯}
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
@@ -233,7 +233,7 @@ const WNZHomePage = () => {
                   circleColor={'transparent'}
                   onPress={() => {
                     ugLog("TEST onPRess: " + item.gameId)
-                    if (AppDefine.siteId == 'c245' 
+                    if (AppDefine.siteId == 'c245'
                       || (AppDefine.siteId.includes('c108') && !uid) ) {
                       if (gameId == 'tryPlay') {
                         tryPlay()
@@ -295,7 +295,7 @@ const WNZHomePage = () => {
               }}
               enableMinWidth={false}
               showIndicator={false}
-              focusTabColor={WNZThemeColor.威尼斯.themeColor}
+              focusTabColor={skinColors.themeColor.威尼斯}
               renderScene={({ item }) => renderGameSubTypeComponent(item)}
             />
           ) : (
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
     marginLeft: '2.5%',
     marginRight: '2.5%',
     marginBottom: scale(20),
-    backgroundColor: WNZThemeColor.威尼斯.themeColor,
+    backgroundColor: skinColors.themeColor.威尼斯,
     paddingVertical: scale(20),
     borderRadius: scale(5),
   },

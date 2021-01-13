@@ -93,6 +93,9 @@ export interface PlayOddDetailData {
   game: PlayOddGame;
 }
 
+/**
+ * 彩票数据
+ */
 export interface PlayOddDetailModel {
   code: number;
   msg: string;
