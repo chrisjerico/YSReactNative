@@ -21,6 +21,8 @@ const TimeComponent = ({}: IRouteParams) => {
 
   const { nextIssueData, playOddDetailData, curPlayOddData } = useContext(BetLotteryContext)
 
+  const key = 'TimeComponent'
+
   const {
     displayCloseTime,
     displayOpenTime,
@@ -50,39 +52,40 @@ const TimeComponent = ({}: IRouteParams) => {
   }
 
   return (
-    <View key={'time container'}
+    <View key={key}
           style={_styles.container}>
-      <View key={'time sub container'}
+      <View key={key + 'time sub container'}
             style={_styles.time_container}>
-        <Text key={'time container 1' + nextIssueData()?.displayNumber}
+        <Text key={key + 'time container 1' + nextIssueData()?.displayNumber}
               style={_styles.issue_text}>{`${nextIssueData()?.displayNumber}期`}</Text>
-        <Text key={'time container close'}
+        <Text key={key + 'time container close'}
               style={_styles.close_text}>{'封盘:'}</Text>
-        <Text key={'time container 2' + displayCloseTime} style={_styles.close_time}>{displayCloseTime}</Text>
-        <Text key={'time container open'}
+        <Text key={key + 'time container 2' + displayCloseTime}
+              style={_styles.close_time}>{displayCloseTime}</Text>
+        <Text key={key + 'time container open'}
               style={_styles.close_text}>{'开盘:'}</Text>
-        <Text key={'time container 3' + displayOpenTime}
+        <Text key={key + 'time container 3' + displayOpenTime}
               style={_styles.open_time}>{displayOpenTime}</Text>
       </View>
-      <View key={'time sub2 container'}
+      <View key={key + 'time sub2 container'}
             style={_styles.fc_container}>
         {
-          showTv() && <TouchableOpacity key={'time sub show tv'}
+          showTv() && <TouchableOpacity key={key + 'time sub show tv'}
                                         onPress={gotoLive}>
-            <FastImage key={'time sub show tv'}
+            <FastImage key={key + 'time sub show tv'}
                        source={{ uri: Res.tv1 }}
                        style={_styles.tv_img}/>
           </TouchableOpacity>
         }
         {
-          showLong() && <TouchableOpacity key={'time sub show long'}>
-            <FastImage key={'time sub show long'}
+          showLong() && <TouchableOpacity key={key + 'time sub show long'}>
+            <FastImage key={key + 'time sub show long'}
                        source={{ uri: Res.tv_long }}
                        style={_styles.tv_img}/>
           </TouchableOpacity>
         }
         {
-          showTrophy() && <TouchableOpacity key={'time sub show net'}
+          showTrophy() && <TouchableOpacity key={key + 'time sub show net'}
                                             onPress={gotoOpenNet}>
             <FastImage key={'time sub show net'}
                        source={{ uri: Res.tv_trophy }}

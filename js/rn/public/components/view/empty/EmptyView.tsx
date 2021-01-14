@@ -11,6 +11,7 @@ import { CapitalConst } from '../../../../pages/cpt/const/CapitalConst'
 
 interface EmptyViewProps {
   text?: string, //提示文字
+  imgUrl?: string, //图片链接
   buttonText?: string, //按钮
   buttonCallback?: () => void, //按钮回调
   style?: StyleProp<TextStyle>
@@ -21,6 +22,7 @@ interface EmptyViewProps {
  */
 const EmptyView = ({
                      text,
+                     imgUrl,
                      buttonText,
                      buttonCallback,
                      style,
@@ -30,7 +32,7 @@ const EmptyView = ({
 
   return (
     <View style={[_styles.container, style]}>
-      <FastImage source={{ uri: Res.empty }}
+      <FastImage source={{ uri: anyEmpty(imgUrl) ? Res.empty : imgUrl }}
                  resizeMode={'contain'}
                  style={_styles.empty_text_icon}/>
       <Text style={_styles.empty_text_name}>{textContent}</Text>
