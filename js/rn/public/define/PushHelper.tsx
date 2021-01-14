@@ -148,7 +148,9 @@ export default class PushHelper {
 
         if (game?.seriesId && ["2", "3", "4", "5", "6", "8"].includes(game.seriesId+'') && game?.gameId) {  //第三方遊戲
           console.log('第三方遊戲')
-          push(PageName.Game3rdView, { game: game })
+          if (UGUserModel.checkLogin()) {
+            push(PageName.Game3rdView, { game: game })
+          }
           return 
         }
 

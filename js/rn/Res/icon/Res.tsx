@@ -110,4 +110,7 @@ export const Res = {
   dj: img_assets('lottery/d'),
   real_person: img_assets('lottery/re'),
   sports: img_assets('lottery/sp'),
+
+  //第三方遊戲返回
+  back_home: img_assets('back_home'),
 }

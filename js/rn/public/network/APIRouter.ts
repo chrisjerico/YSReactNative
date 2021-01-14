@@ -180,10 +180,11 @@ class APIRouter {
   }
 
   static real_gotoGame = async (id) => {
-    let tokenParams = await APIRouter.encryptGetParams({
+    let params = await APIRouter.encryptGetParams({
       id: id
     })
-    return httpClient.get<GameUrlModel>('c=real&a=gameUrl' + tokenParams)
+    ugLog("params: " + params)
+    return httpClient.get<GameUrlModel>('c=real&a=gotoGame' + params)
   }
   /**
    * 首頁遊戲資料

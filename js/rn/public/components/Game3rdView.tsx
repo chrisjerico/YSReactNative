@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View, Image, Alert } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { UGBasePageProps } from '../../pages/base/UGPage'
@@ -26,13 +26,15 @@ import { OCHelper } from '../define/OCHelper/OCHelper'
 import { navigate, pop } from '../navigation/RootNavigation'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { PayAisleListData } from '../network/Model/wd/PayAisleModel'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import UseGameHall from '../../pages/hall/new/UseGameHall'
 import CommStyles from '../../pages/base/CommStyles'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import AppDefine from '../define/AppDefine'
 import { ANHelper } from '../define/ANHelper/ANHelper'
 import { CMD } from '../define/ANHelper/hp/CmdDefine'
+import { WebViewNavigationEvent } from 'react-native-webview/lib/WebViewTypes'
+import { Res } from '../../Res/icon/Res'
 
 /**
  * 第三方遊戲畫面
@@ -57,11 +59,31 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
   }, [])
 
   const updateData = async () => {
-    let params = await APIRouter.encryptGetParams({
-      id: game.gameId,
+    APIRouter.real_gotoGame(game.gameId).then(async ({ data: res }) => {
+      if (res?.code == 0) {
+        let params: any
+        if (game.gameCode == -1) {
+          ugLog('gameId=' + game.gameId)
+          params = await APIRouter.encryptGetParams({
+            id: game.gameId,
+            game: ''
+          })
+        } else {
+          ugLog('gameId=' + game.gameId + ", gameCode=" + game.gameCode)
+          params = await APIRouter.encryptGetParams({
+            id: game.gameId,
+            game: game.gameCode
+          })
+        }
+        ugLog("realGame: " + AppDefine.host + '/wjapp/api.php?c=real&a=gameUrl' + params)
+        setPath(AppDefine.host + '/wjapp/api.php?c=real&a=gameUrl' + params )
+        // setPath(resData)
+        webViewRef.current.reload()
+      } else {
+        Toast(res?.msg)
+      }
+    }).finally(() => {
     })
-    ugLog("realGame: " + AppDefine.host + '?c=real&a=gameUrl' + params)
-    setPath(AppDefine.host + '?c=real&a=gameUrl' + params )
   }
 
   let state = {
@@ -79,12 +101,32 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
   let setWebViewUrlChanged = webviewState => {
     if (webviewState.url !== path) {
       state.isWebViewUrlChanged = true
+      if (webviewState.url.includes('mobile/#/home')) 
+        pop()
+      if (webviewState.url.toString() == 'about:blank')  {
+        ugLog("url: " + webviewState.url.toString())
+        return
+      }
+      ugLog("setPath: " + webviewState.url.toString())
+      setPath(webviewState.url)
+      resetWebViewToInitialUrl()
     }
   };
 
+  let onPress = () => {
+    Alert.alert("提示讯息", "是否退出?", [
+      { text: "取消", onPress: () => { } },
+      { text: "确认", onPress: () => { pop(); }, }
+    ])
+  }
 
   return (
-    <View style={CommStyles.flex}>
+    <View style={[CommStyles.flex, {alignItems: 'flex-end'}]}>
+      <TouchableOpacity
+        onPress={onPress}>
+        <Image style={{ width: scale(60), height: scale(70), resizeMode: 'stretch', position: 'relative', marginRight: 5, marginTop: 5 }} 
+        source={{ uri: Res.back_home }} />
+      </TouchableOpacity>
       <WebView
         ref={webViewRef}
         style={_styles.webview}
@@ -94,6 +136,9 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
           ugLog("onMessage:" + e?.nativeEvent?.data)
         }}
         onNavigationStateChange={ setWebViewUrlChanged }
+        // onLoadStart={(e: WebViewNavigationEvent) => {
+        //   ugLog("onLoadStart:" + e)
+        // }}
       />
     </View>
   )
