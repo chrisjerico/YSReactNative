@@ -9,6 +9,7 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
+import { anyEmpty } from '../../../public/tools/Ext'
 
 /**
  * 彩票功能区入参
@@ -77,7 +78,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
             key={'renderSliderArea slider bar'}
             style={_styles.slider}
             minimumValue={0}
-            maximumValue={100}
+            maximumValue={systemInfo?.activeReturnCoinRatio ?? 0}
             minimumTrackTintColor={Skin1.themeColor}
             thumbTintColor={Skin1.themeColor}
             maximumTrackTintColor={UGColor.LineColor4}/>
@@ -186,7 +187,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   return (
     <View key={'bet board content'}
           style={[_styles.bet_container, style]}>
-      {renderSliderArea()}
+      {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
       {renderInputArea()}
       {
         locked ?
