@@ -41,3 +41,9 @@ export interface HomeRecommendModel {
   data: Data[];
   info: Info;
 }
+
+export interface GameUrlModel {
+  code: number;
+  msg: string;
+  data: string;
+}

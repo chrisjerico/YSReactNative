@@ -29,8 +29,10 @@ import { PayAisleListData } from '../network/Model/wd/PayAisleModel'
 import { ScrollView } from 'react-native-gesture-handler'
 import UseGameHall from '../../pages/hall/new/UseGameHall'
 import CommStyles from '../../pages/base/CommStyles'
-import WebView from 'react-native-webview'
+import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import AppDefine from '../define/AppDefine'
+import { ANHelper } from '../define/ANHelper/ANHelper'
+import { CMD } from '../define/ANHelper/hp/CmdDefine'
 
 /**
  * 第三方遊戲畫面
@@ -41,7 +43,7 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
 
   const { game } = route?.params
 
-  const [uri, setUri] = useState("")
+  const [path, setPath] = useState("")
 
   const webViewRef = useRef<WebView>()
 
@@ -51,17 +53,47 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
   } = UseGameHall()
 
   useEffect(() => {
-    setUri(AppDefine.host + '?c=real&a=gameUrl&id=' + game.gameId + '&game=' + game.gameCode + '&token=%s')
+    updateData()
   }, [])
-  
+
+  const updateData = async () => {
+    let params = await APIRouter.encryptGetParams({
+      id: game.gameId,
+    })
+    ugLog("realGame: " + AppDefine.host + '?c=real&a=gameUrl' + params)
+    setPath(AppDefine.host + '?c=real&a=gameUrl' + params )
+  }
+
+  let state = {
+    key: 1,
+    isWebViewUrlChanged: false
+  };
+
+  let resetWebViewToInitialUrl = () => {
+    if (state.isWebViewUrlChanged) {
+      state.key = state.key + 1
+      state.isWebViewUrlChanged = false
+    }
+  };
+
+  let setWebViewUrlChanged = webviewState => {
+    if (webviewState.url !== path) {
+      state.isWebViewUrlChanged = true
+    }
+  };
+
+
   return (
     <View style={CommStyles.flex}>
       <WebView
         ref={webViewRef}
         style={_styles.webview}
-        javaScriptEnabled
-        startInLoadingState
-        source={{ uri: `${AppDefine.host}/dist/index.html#/swiperverify?platform=native` }}
+        key={ state.key }
+        source={{ uri: path }}
+        onMessage={(e: WebViewMessageEvent) => {
+          ugLog("onMessage:" + e?.nativeEvent?.data)
+        }}
+        onNavigationStateChange={ setWebViewUrlChanged }
       />
     </View>
   )
