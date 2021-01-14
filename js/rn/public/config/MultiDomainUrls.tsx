@@ -257,7 +257,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://7033005.com',
   ],
   'c150': [
-    'https://0187488.com',
+    'https://0187655.com',
+    'https://0187688.com',
+    'https://0187388.com',
+    'https://0187611.com',
   ],
   'c151': [
     'https://xpj501501401401.vip',
@@ -344,7 +347,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://450-xpj-app.com',
+    'https://c213-app-450.com',
     'https://c213-appapp.me',
     'https://c213-app-450.cc',
   ],
