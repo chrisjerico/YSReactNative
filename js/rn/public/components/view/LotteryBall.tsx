@@ -33,6 +33,8 @@ const LotteryBall = ({
                        style,
                      }: ILotteryBall) => {
 
+  const key = 'renderBalls' + type + ballNumber
+
   const width = anyEmpty(size) ? scale(42) : size //球的大小
   let txColor = !anyEmpty(textColor) ? textColor : 'white' //文字的颜色
   let bColor //球的颜色
@@ -68,32 +70,36 @@ const LotteryBall = ({
     switch (type) {
       case BallType.colorful:
         return [
-          <FastImage key={ballUrl}
+          <FastImage key={key + ballUrl}
                      style={[
                        _styles.colorful_ball_item,
                        { width: width }]}
                      resizeMode={'contain'}
                      source={{ uri: ballUrl }}/>,
-          <Text style={[_styles.ball_colorful_text,
-            { color: txColor, fontSize: width * 3 / 7 }]}>{ballNumber}</Text>,
+          <Text key={key}
+                style={[
+                  _styles.ball_colorful_text,
+                  { color: txColor, fontSize: width * 3 / 7 },
+                ]}>{ballNumber}</Text>,
         ]
       case BallType.sz:
       case BallType.vegetable:
-        return <FastImage key={ballUrl}
+        return <FastImage key={key + ballUrl}
                           style={[
                             _styles.colorful_ball_item,
                             { width: width }]}
                           resizeMode={'contain'}
                           source={{ uri: ballUrl }}/>
       default:
-        return <Text key={ballNumber}
+        return <Text key={key + 'text'}
                      style={[_styles.ball_text,
                        { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
     }
   }
 
   return (
-    <View style={[_styles.ball_item,
+    <View key={key + 'content'}
+          style={[_styles.ball_item,
       {
         backgroundColor: bColor,
         borderRadius: round,
