@@ -29,11 +29,12 @@ const LotteryERect = ({
                         callback,
                       }: ILotteryERect) => {
 
+  const key = 'LotteryERect'
   let isSel = isSelectedBallOnId(selectedBalls, item?.id)
   return (
-    <TouchableOpacity key={item?.id + item?.name}
+    <TouchableOpacity key={key + item?.id}
                       onPress={() => callback && callback()}>
-      <View key={item?.id + item?.name}
+      <View key={key + item?.id}
             style={[
               _styles.ball_item_lm,
               {
@@ -43,7 +44,7 @@ const LotteryERect = ({
                     null,
               },
             ]}>
-        <ERect key={item?.id + item?.name}
+        <ERect key={key + item?.id}
                title={item?.name}
                titleStyle={{
                  color: isSel ?
