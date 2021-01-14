@@ -16,6 +16,7 @@ import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
 import UseLotteryHelper from '../util/UseLotteryHelper'
 import { bool } from 'prop-types'
 import { Res } from '../../../Res/icon/Res'
+import { UGStore } from '../../../redux/store/UGStore'
 
 
 /**
@@ -28,11 +29,15 @@ const UseLhcBoard = () => {
   const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
+  const userInfo = UGStore.globalProps.userInfo //用户信息
+  const systemInfo = UGStore.globalProps.sysConf //系统信息
 
   useEffect(() => {
   }, [])
 
   return {
+    userInfo,
+    systemInfo,
     showSlider,
     setShowSlider,
     sliderValue,

@@ -28,6 +28,8 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    userInfo,
+    systemInfo,
     showSlider,
     setShowSlider,
     sliderValue,
