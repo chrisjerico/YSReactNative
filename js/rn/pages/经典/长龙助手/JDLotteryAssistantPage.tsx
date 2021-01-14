@@ -171,10 +171,10 @@ const JDLotteryAssistantPage = () => {
     api.user.userBetWithParams(dicMode).useSuccess(({ data, msg }) => {
       showSuccess(msg)
       const {  userInfo } = UGStore.globalProps
+      const { chatMinFollowAmount = '0' } = systemInfo
 
-      let amountfloat: number = parseFloat(v.amount)
-      let webAmountfloat: number = parseFloat(systemInfo?.chatMinFollowAmount)
-      webAmountfloat = 0;
+      const amountfloat: number = parseFloat(v.amount)
+      const webAmountfloat: number = parseFloat(chatMinFollowAmount)
       console.log('!userInfo.isTest ==',!userInfo.isTest);
       console.log('userInfo.chatShareBet ==',userInfo.chatShareBet);
       console.log('amountfloat >= webAmountfloat) ==',(amountfloat >= webAmountfloat));
@@ -192,7 +192,7 @@ const JDLotteryAssistantPage = () => {
             onPress: () => {
               switch (Platform.OS) {
                 case 'ios':
-                  // goLotteryBetAndChatVC() 
+                  goLotteryBetAndChatVC() 
                   break
                 case 'android':
                   //TODO android 去聊天室下注页
@@ -297,6 +297,7 @@ function clearClick() {
     // 组装list 
     {
       let betList: UGbetListModel = new UGbetListModel();
+      betList.clsName = undefined;  // 原生要的数据不需要转成Class
       betList.betMoney = amount;
       betList.index = '0';
       betList.odds = betS.odds;
