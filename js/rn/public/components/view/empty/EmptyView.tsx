@@ -11,6 +11,7 @@ import { CapitalConst } from '../../../../pages/cpt/const/CapitalConst'
 
 interface EmptyViewProps {
   text?: string, //提示文字
+  subText?: string, //二级提示文字
   imgUrl?: string, //图片链接
   buttonText?: string, //按钮
   buttonCallback?: () => void, //按钮回调
@@ -22,6 +23,7 @@ interface EmptyViewProps {
  */
 const EmptyView = ({
                      text,
+                     subText,
                      imgUrl,
                      buttonText,
                      buttonCallback,
@@ -36,7 +38,9 @@ const EmptyView = ({
                  resizeMode={'contain'}
                  style={_styles.empty_text_icon}/>
       <Text style={_styles.empty_text_name}>{textContent}</Text>
-
+      {
+        !anyEmpty(subText) && <Text style={_styles.empty_sub_text_name}>{subText}</Text>
+      }
       {
         buttonText && <Button title={buttonText ? buttonText : '确定'}
                               titleStyle={_styles.submit_text}
@@ -61,8 +65,14 @@ const _styles = StyleSheet.create({
   },
   empty_text_name: {
     color: UGColor.TextColor3,
-    fontSize: scale(22),
+    fontSize: scale(24),
     paddingTop: scale(24),
+    textAlign: 'center',
+  },
+  empty_sub_text_name: {
+    color: UGColor.TextColor4,
+    fontSize: scale(22),
+    paddingTop: scale(4),
     textAlign: 'center',
   },
   submit_text: {
