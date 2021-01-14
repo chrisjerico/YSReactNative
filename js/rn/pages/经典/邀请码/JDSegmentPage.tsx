@@ -62,15 +62,15 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     // var str="1.900"
 
     // console.log(str.split('.'));
+    var now = moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
 
-    let dic :{} = {
-      'a':'aaaa',
-      // 'b':1,
-    }
+    var now2 = moment().format('YYYY-MM-DD HH:mm:ss');
+    
+    // console.log('now',now);
+    // console.log('now2',now2);
 
-    console.log('b==', anyEmpty(dic['b'])||dic['b']==false);
-    
-    
+    console.log('相差多少秒',moment('2021-01-14 12:51:30').diff(moment(now2), 'seconds')) 
+    console.log('相差多少秒',moment(now2).diff(moment('2021-01-14 12:51:30'), 'seconds')) 
   };
   /**
  * 初始化

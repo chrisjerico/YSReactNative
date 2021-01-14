@@ -48,6 +48,7 @@ interface JDLotteryAssistantPage {
   dataTimeIsOpen?: boolean//dataTimer 是否已经 启动
   betModel?: UGChanglongaideModel//选中注单
   jsDic?: {}//上传的字典数据
+  curDatadiff?:number //当前本地时间和服务器时间相差多少秒
 }
 
 const JDLotteryAssistantPage = () => {
@@ -165,6 +166,7 @@ const JDLotteryAssistantPage = () => {
 
     api.user.userBetWithParams(dicMode).useSuccess(({ data, msg }) => {
       showSuccess(msg)
+      
     }).useFailure((err) => {
       console.log('err = ', err);
       // Toast(err.message)
@@ -529,17 +531,15 @@ const JDLotteryAssistantPage = () => {
         }
       }
 
-
+      const element = v.items[0];
+      //当前时间：
+      var nowData = moment().format('YYYY-MM-DD HH:mm:ss');
+      //当前本地时间和服务器时间相差多少秒
       for (let index = 0; index < v.items.length; index++) {
         const element = v.items[index];
-        element.currentSecond = 1;
-        if (moment(element.closeTime) >= moment(element.serverTime)) {
-          element.diffsecond = moment(element.closeTime).diff(moment(element.serverTime), 'seconds');
-          // console.log('时间差 ==',element.diffsecond);
-        }
-        else {
-          element.diffsecond = 0;
-          // console.log('时间差 ==',element.diffsecond);
+        if (!anyEmpty(element.serverTime)) {
+          v.curDatadiff = moment(nowData).diff(moment(element.serverTime), 'seconds')
+          break;
         }
       }
 
@@ -725,32 +725,32 @@ const JDLotteryAssistantPage = () => {
           {/* 按钮 */}
           <View style={[{ flexDirection: 'row', }]}>
             <TouchableOpacity style={[{
-              flexDirection: 'column', alignItems: 'center', width: 46, height: 46, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
+              flexDirection: 'column', alignItems: 'center', width: 50, height: 50, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
               backgroundColor: betView1Color(item)
             }]}
               onPress={() => {
                 betItemSelect(item, 0)
               }}
             >
-              <Text style={{ fontSize: 15, color: fastLabelColor(item), marginTop: 5 }}>
+              <Text style={{ fontSize: 14, color: fastLabelColor(item), marginTop: 6 }}>
                 {playName1(item)}
               </Text>
-              <Text style={{ fontSize: 12, color: fastLabelColor(item), marginTop: 4 }}>
+              <Text style={{ fontSize: 12, color: fastLabelColor(item), marginTop: 8 }}>
                 {oddsLabel1(item)}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity style={[{
-              marginLeft: 15, flexDirection: 'column', alignItems: 'center', width: 46, height: 46, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
+              marginLeft: 15, flexDirection: 'column', alignItems: 'center', width: 50, height: 50, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
               backgroundColor: betView2Color(item)
             }]}
               onPress={() => {
                 betItemSelect(item, 1)
               }}
             >
-              <Text style={{ fontSize: 15, color: lastLabelColor(item), marginTop: 5 }}>
+              <Text style={{ fontSize: 14, color: lastLabelColor(item), marginTop: 6 }}>
                 {playName2(item)}
               </Text>
-              <Text style={{ fontSize: 12, color: lastLabelColor(item), marginTop: 4 }}>
+              <Text style={{ fontSize: 12, color: lastLabelColor(item), marginTop: 8 }}>
                 {oddsLabel2(item)}
               </Text>
             </TouchableOpacity>
@@ -788,6 +788,7 @@ const JDLotteryAssistantPage = () => {
         v.amount = ''
         v.betModel = null
         v.jsDic = null
+        v.curDatadiff = 0
         onHeaderRefresh()
       },
       didBlur: () => {
