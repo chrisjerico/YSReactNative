@@ -29,7 +29,7 @@ import { navigate, pop } from '../../public/navigation/RootNavigation'
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1'
 import { PayAisleListData } from '../../public/network/Model/wd/PayAisleModel'
 import LobbyGameListComponent from './new/games/LobbyGameListComponent'
-import { ScrollView, TextInput } from 'react-native-gesture-handler'
+import { ScrollView, TextInput, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler'
 import { PushHomeGame } from '../../public/models/Interface'
 import Button from '../../public/views/temp/Button'
 import TwoLevelType from '../../public/network/Model/HomeRecommendModel'
@@ -106,30 +106,6 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
    */
   const renderDataList = (item: Array<TwoLevelType>) =>
     <>
-      <View style={_styles.searchView}>
-        <Text style={{ 
-          fontSize: scale(23),
-          color: Skin1.themeColor, 
-          marginRight: scale(15), }}>全部游戏</Text>
-        <TextInput 
-            style={_styles.searchInput}
-            onChangeText={ (text) => {
-                setSearchText(text)
-            }}
-            />
-        <Button
-            title={'搜索'}
-            containerStyle={[_styles.searchButton, {backgroundColor: Skin1.themeColor}]}
-            titleStyle={{ 
-              color: '#ffffff',
-              fontSize: scale(23)
-            }}
-            onPress={() => {
-              setFilterData(gameData.filter((v) => {
-                return v.name.includes(searchText)
-              }))
-            }} /> 
-      </View>
       <TwoLevelListComponent 
         refreshing={refreshing}
         gameData={item}
@@ -145,9 +121,41 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       ?
       anyEmpty(gameData)
         ? <EmptyView style={{ flex: 1 }}/>
-        : <ScrollView>
-          {renderDataList(filterData)}
-        </ScrollView>
+        : 
+          <View>
+            <View style={_styles.searchView}>
+            <TouchableOpacity 
+              onPress={() => {
+                  setFilterData(gameData)
+              }}>
+              <Text style={{ 
+                fontSize: scale(23),
+                color: Skin1.themeColor, 
+                marginRight: scale(15), }}>全部游戏</Text>
+            </TouchableOpacity>
+            <TextInput 
+                style={_styles.searchInput}
+                onChangeText={ (text) => {
+                    setSearchText(text)
+                }}
+                />
+            <Button
+                title={'搜索'}
+                containerStyle={[_styles.searchButton, {backgroundColor: Skin1.themeColor}]}
+                titleStyle={{ 
+                  color: '#ffffff',
+                  fontSize: scale(23)
+                }}
+                onPress={() => {
+                  setFilterData(gameData.filter((v) => {
+                    return v.name.includes(searchText)
+                  }))
+                }} /> 
+          </View>
+          <ScrollView>
+            {renderDataList(filterData)}
+          </ScrollView>
+        </View>
       : <View></View>
     )
   }
