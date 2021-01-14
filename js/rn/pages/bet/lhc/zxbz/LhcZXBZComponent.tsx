@@ -50,6 +50,8 @@ import { doc } from 'prettier'
  */
 const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
+  const key = 'lottery page' + lotteryCode
+
   const {
     tabIndex,
     setTabIndex,
@@ -76,7 +78,7 @@ const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
 
     return (
-      <LotteryEBall key={ballInfo?.id}
+      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
                     item={{
                       ...ballInfo,
                     }}
@@ -93,17 +95,20 @@ const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderLMA = (groupData?: PlayGroupData) => {
 
     return (
-      <View key={groupData?.id + groupData?.alias}
+      <View key={key + 'renderLMA' + groupData?.id}
             style={CommStyles.flex}>
 
-        <View style={_styles.sub_title_container}>
-          <Text style={[
+        <View key={key + 'render LMA sub' + groupData?.id}
+              style={_styles.sub_title_container}>
+          <Text key={key + 'render LMA text' + groupData?.id}
+                style={[
             _styles.sub_title_text,
             { color: Skin1.themeColor },
           ]}>{groupData?.alias}</Text>
         </View>
 
-        <View style={_styles.ball_container}>
+        <View key={key + 'render LMA sub2' + groupData?.id}
+              style={_styles.ball_container}>
           {
             ballArray?.map((item, index) => renderEBall(groupData, item))
           }
@@ -115,12 +120,14 @@ const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <View style={_styles.content_container}>
+  const renderAllBall = () => <View key={key + 'render all ball'}
+                                    style={_styles.content_container}>
     {!anyEmpty(curData) && renderLMA(curData[0])}
   </View>
 
   return (
-    <View style={[CommStyles.flex, style]}>
+    <View key={key}
+          style={[CommStyles.flex, style]}>
       {renderAllBall()}
     </View>
 

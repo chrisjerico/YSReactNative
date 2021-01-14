@@ -74,6 +74,21 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     setLotteryCode(lotteryCode)
   }, [])
 
+  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableOpacity key={key + item[0]?.alias}
+                                                                                         onPress={() => setTabIndex(index)}>
+    <View key={key + item[0]?.id}
+          style={[
+            _styles.tab_item,
+            index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+          ]}>
+      <Text key={key + item[0]?.id}
+            style={[
+              _styles.tab_title_item_text,
+              index == tabIndex ? { color: `white` } : null,
+            ]}>{item[0]?.alias}</Text>
+    </View>
+  </TouchableOpacity>
+
   /**
    * 绘制tab，只有1个数据不绘制Tab
    */
@@ -86,22 +101,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
       <View key={key + 'content'}
             style={_styles.tab_title_content}>
         {
-          pageData?.map((item, index) =>
-            <TouchableOpacity key={key + item[0]?.alias}
-                              style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
-              <View key={key + item[0]?.alias}
-                    style={[
-                      _styles.tab_item,
-                      index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-                    ]}>
-                <Text key={key + item[0]?.alias}
-                      style={[
-                        _styles.tab_title_item_text,
-                        index == tabIndex ? { color: `white` } : null,
-                      ]}>{item[0]?.alias}</Text>
-              </View>
-            </TouchableOpacity>)
+          pageData?.map(renderTabItem)
         }
       </View>
     </ScrollView>
@@ -133,19 +133,19 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 正特
    * @param groupData
    */
-  const renderZT1 = (groupData?: PlayGroupData) => <View key={key + 'renderZT1'}
+  const renderZT1 = (groupData?: PlayGroupData) => <View key={key + 'renderZT1' + groupData?.id}
                                                          style={CommStyles.flex}>
 
-    <View key={key + ' sub renderZT1'}
+    <View key={key + ' sub renderZT1' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderZT1 text'}
+      <Text key={key + ' sub renderZT1 text' + groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
             ]}>{groupData?.alias}</Text>
     </View>
 
-    <View key={key + ' sub2 renderZT1'}
+    <View key={key + ' sub2 renderZT1' + groupData?.id}
           style={_styles.ball_container}>
       {
         groupData?.plays?.map((item) => renderEBall(item))
@@ -158,19 +158,19 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 正特
    * @param groupData
    */
-  const renderZT2 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
+  const renderZT2 = (groupData?: PlayGroupData) => <View key={key + 'renderZT2' + groupData?.id}
                                                          style={CommStyles.flex}>
 
-    <View key={key + ' sub renderZT2'}
+    <View key={key + ' sub renderZT2' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderZT2' + groupData?.alias}
+      <Text key={key + ' sub renderZT2' +  + groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
             ]}>{groupData?.alias}</Text>
     </View>
 
-    <View key={key + ' sub2 renderZT2'}
+    <View key={key + ' sub2 renderZT2' + groupData?.id}
           style={_styles.ball_container}>
       {
         groupData?.plays?.map((item) => renderERect(item))
@@ -181,9 +181,10 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <View style={_styles.content_container}>
+  const renderAllBall = () => <View key={key + 'renderAllBall'}
+                                    style={_styles.content_container}>
     {arrayLength(curData) > 0 && renderZT1(curData[0])}
-    {/*{arrayLength(curData) > 1 && renderZT2(curData[1])}*/}
+    {arrayLength(curData) > 1 && renderZT2(curData[1])}
   </View>
 
   return (
@@ -251,6 +252,14 @@ const _styles = StyleSheet.create({
     borderRadius: scale(8),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
+  },
+  tab_item2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(8),
+    paddingVertical: scale(8),
+    paddingHorizontal: scale(30),
+    backgroundColor: 'red'
   },
   tab_title_item_text: {
     color: UGColor.TextColor3,

@@ -209,16 +209,16 @@ const _styles = StyleSheet.create({
   chip_container: {
     width: '100%',
     position: 'absolute',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   chip_content: {
     backgroundColor: UGColor.transparent3,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     borderRadius: scale(48),
   },
   chip_img: {
-    width: scale(96),
+    width: scale(76),
     aspectRatio: 1,
   },
   slider_container: {

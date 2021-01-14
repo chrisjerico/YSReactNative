@@ -80,7 +80,9 @@ export const Res = {
   a10: img_assets('chip/a10'),
   a100: img_assets('chip/a100'),
   a1k: img_assets('chip/a1k'),
+  a5k: img_assets('chip/a5k'),
   a10k: img_assets('chip/a10k'),
+  a50k: img_assets('chip/a50k'),
   clr: img_assets('chip/clear'),
 
   //彩票功能跳转图片

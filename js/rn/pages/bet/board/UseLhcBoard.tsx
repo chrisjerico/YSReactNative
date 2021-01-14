@@ -49,7 +49,9 @@ const CHIP_OPTION = {
   10: Res.a10,
   100: Res.a100,
   1000: Res.a1k,
+  5000: Res.a5k,
   10000: Res.a10k,
+  50000: Res.a50k,
   'c': Res.clr,
 }
 
