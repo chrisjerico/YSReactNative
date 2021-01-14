@@ -15,6 +15,7 @@ export interface UGNavigationBarProps extends HeaderProps {
   gradientColor?: string[]; // 背景渐变色
   hideUnderline?: boolean; // 隐藏下划线
   leftComponent?: ReactElement<any>;
+  onBackPress?: () => void
 }
 
 // 默认Props
@@ -41,7 +42,7 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
   // 左侧按钮
   p.leftComponent = (
     <View style={{ flexDirection: 'row' }}>
-      <BackButton style={{ height: props.back ? 40 : 0 }} />
+      <BackButton style={{ height: props.back ? 40 : 0 }} onBackPress={props.onBackPress} />
       {props.leftComponent}
     </View>
   )
@@ -61,20 +62,20 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
       },
     })
   }
-  
-  return <Header {...p} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top-2, height: useSafeArea()?.top + 45 }} />
+
+  return <Header {...p} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top - 2, height: useSafeArea()?.top + 45 }} />
 }
 
 
 
 // 返回按钮
-const BackButton = ({ style }: ViewProps) => {
+const BackButton = ({ style, onBackPress }: ViewProps & { onBackPress?: () => void }) => {
   return (
     <Button
       icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
       buttonStyle={Object.assign({ backgroundColor: 'transparent', marginLeft: -8, }, style)}
       onPress={() => {
-        pop();
+        onBackPress ? onBackPress() : pop();
       }}
     />
   )

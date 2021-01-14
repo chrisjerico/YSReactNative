@@ -1,3 +1,4 @@
+import { H5Router } from './../../../pages/base/H5页面/H5WebPage';
 import { UGStore } from './../../../redux/store/UGStore';
 import { devConfig } from '../../../../../config'
 import { Platform } from 'react-native'
@@ -70,14 +71,6 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    //红包扫雷
-    pages.push({
-      vcName: 'RedEnvelopeVCViewController',
-      rnName: PageName.JDRedEnveloperPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    })
     //利息宝页
     pages.push({
       rnName: PageName.AlipayView,
@@ -86,15 +79,15 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: false,
       允许未登录访问: false,
     })
-    // 申请代理
+    //露珠
     pages.push({
-      vcName: 'UGAgentViewController',
-      rnName: PageName.JDAgentPage,
+      rnName: PageName.JSLuzhuPage,
+      linkCategory: 7,//导航链接
+      linkPosition: 1101,//导航链接ID
       fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
+      允许游客访问: false,
+      允许未登录访问: false,
     })
-    
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————

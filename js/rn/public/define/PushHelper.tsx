@@ -24,6 +24,7 @@ import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
 import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
 import { Skin1 } from '../theme/UGSkinManagers'
+import { H5Router } from '../../pages/base/H5页面/H5WebPage'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -290,6 +291,11 @@ export default class PushHelper {
     PushHelper.openWebView(AppDefine.host + '/index2.php')
   }
 
+  // 跳转到H5页面
+  static pushH5WebPage(router: H5Router) {
+    push(PageName.H5WebPage, { router })
+  }
+
   // 我的页按钮跳转
   static pushUserCenterType(code: UGUserCenterType) {
     ugLog('pushUserCenterType code=', code)
@@ -464,6 +470,10 @@ export default class PushHelper {
           }
           case UGUserCenterType.优惠活动: {
             push(PageName.JDPromotionListPage)
+            break
+          }
+          case UGUserCenterType.露珠: {
+            push(PageName.JSLuzhuPage)
             break
           }
           default: {

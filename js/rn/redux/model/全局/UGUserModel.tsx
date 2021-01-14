@@ -79,6 +79,7 @@ export default class UGUserModel extends UGLoginModel {
     return false;
   }
 
+  username?: string// 用户名
   uid?: string; // 用户ID
   avatar?: string; // 头像
   balance?: string; // 余额
