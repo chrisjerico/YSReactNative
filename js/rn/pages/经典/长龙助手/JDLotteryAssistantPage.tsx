@@ -536,6 +536,10 @@ const JDLotteryAssistantPage = () => {
         const element = v.items[index];
         if (!anyEmpty(element.serverTime)) {
           v.curDatadiff = moment(nowData).diff(moment(element.serverTime), 'seconds')
+          console.log('nowData == ',nowData);
+          console.log('element.serverTime == ',element.serverTime);
+          console.log('v.curDatadiff == ',v.curDatadiff);
+          
           break;
         }
       }
@@ -605,11 +609,7 @@ const JDLotteryAssistantPage = () => {
         if (hours < 10) {
           hoursStr = '0' + hours;
         } else {
-          if (days) {
-            hoursStr = '' + (hours - 24 * days);
-          } else {
             hoursStr = '' + (hours);
-          }
         }
         if (minutes < 10) {
           minutesStr = '0' + minutes;
