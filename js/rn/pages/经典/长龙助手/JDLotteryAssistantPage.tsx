@@ -174,7 +174,7 @@ const JDLotteryAssistantPage = () => {
 
       let amountfloat: number = parseFloat(v.amount)
       let webAmountfloat: number = parseFloat(systemInfo?.chatMinFollowAmount)
-
+      webAmountfloat = 0;
       console.log('!userInfo.isTest ==',!userInfo.isTest);
       console.log('userInfo.chatShareBet ==',userInfo.chatShareBet);
       console.log('amountfloat >= webAmountfloat) ==',(amountfloat >= webAmountfloat));
@@ -192,7 +192,7 @@ const JDLotteryAssistantPage = () => {
             onPress: () => {
               switch (Platform.OS) {
                 case 'ios':
-                  goLotteryBetAndChatVC() 
+                  // goLotteryBetAndChatVC() 
                   break
                 case 'android':
                   //TODO android 去聊天室下注页
@@ -248,9 +248,10 @@ function clearClick() {
       args1: [true],
     }, true])
 
+ 
     setTimeout(() => {
      let dic = {
-       'jsDic':v.jsDic
+       'jsDic': v.jsDic
      }
      OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:userInfo:', ['NSSelectChatRoom_share',null,dic]);
     }, 1000);
@@ -339,7 +340,7 @@ function clearClick() {
       betObj.specialPlay = false;
     }
 
-    let js: jsDic = new jsDic();
+    let js: jsDic = {};
     js.betModel = betObj;
     js.list = list;
 
@@ -351,8 +352,12 @@ function clearClick() {
     // console.log('listjsonString  ===', listjsonString);
 
     let jsonStr: string = 'shareBet(' + listjsonString + ',' + paramsjsonString + ')';
-
-    // console.log('jsonStr ====', jsonStr);
+// {
+  // clsName:'UGbetModel',
+//   name:'fish',
+//   number:123
+// }
+    console.log('jsonStr ====', jsonStr);
 
     js.jsonStr = jsonStr;
 
