@@ -218,116 +218,58 @@ const BetLotteryPage = ({ navigation, route }) => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
     let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
-
+    // ugLog('---------------------------------------------------')
     // return <View style={CommStyles.flex}>
-    //   <LhcTMComponent key={LotteryConst.TM + (LotteryConst.TM == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.TM ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.TM}/>
-    //   <LhcZTComponent key={LotteryConst.ZM + (LotteryConst.ZM == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.ZM ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.ZM}/>
-    //   <LhcZTComponent key={LotteryConst.ZT + (LotteryConst.ZT == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.ZT ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.ZT}/>
-    //   <LhcLMAComponent key={LotteryConst.LMA + (LotteryConst.LMA == lotteryCode)}
-    //                    style={lotteryCode == LotteryConst.LMA ? null : { display: 'none' }}
-    //                    lotteryCode={LotteryConst.LMA}/>
-    //   <LhcSBComponent key={LotteryConst.LM + (LotteryConst.LM == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.LM ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.LM}/>
-    //   <LhcSBComponent key={LotteryConst.ZM1_6 + (LotteryConst.ZM1_6 == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.ZM1_6 ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.ZM1_6}/>
-    //   <LhcSBComponent key={LotteryConst.SB + (LotteryConst.SB == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.SB ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.SB}/>
-    //   <LhcSBComponent key={LotteryConst.ZOX + (LotteryConst.ZOX == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.ZOX ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.ZOX}/>
-    //   <LhcSBComponent key={LotteryConst.WX + (LotteryConst.WX == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.WX ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.WX}/>
-    //   <LhcPTYXComponent key={LotteryConst.YX + (LotteryConst.YX == lotteryCode)}
-    //                     style={lotteryCode == LotteryConst.YX ? null : { display: 'none' }}
-    //                     lotteryCode={LotteryConst.YX}/>
-    //   <LhcPTYXComponent key={LotteryConst.WS + (LotteryConst.WS == lotteryCode)}
-    //                     style={lotteryCode == LotteryConst.WS ? null : { display: 'none' }}
-    //                     lotteryCode={LotteryConst.WS}/>
-    //   <LhcPTYXComponent key={LotteryConst.TWS + (LotteryConst.TWS == lotteryCode)}
-    //                     style={lotteryCode == LotteryConst.TWS ? null : { display: 'none' }}
-    //                     lotteryCode={LotteryConst.TWS}/>
-    //   <LhcPTYXComponent key={LotteryConst.TX + (LotteryConst.TX == lotteryCode)}
-    //                     style={lotteryCode == LotteryConst.TX ? null : { display: 'none' }}
-    //                     lotteryCode={LotteryConst.TX}/>
-    //   <LhcPTYXComponent key={LotteryConst.LX + (LotteryConst.LX == lotteryCode)}
-    //                     style={lotteryCode == LotteryConst.LX ? null : { display: 'none' }}
-    //                     lotteryCode={LotteryConst.LX}/>
-    //   <LhcPTYXComponent key={LotteryConst.LW + (LotteryConst.LW == lotteryCode)}
-    //                     style={lotteryCode == LotteryConst.LW ? null : { display: 'none' }}
-    //                     lotteryCode={LotteryConst.LW}/>
-    //   <LhcPTYXComponent key={LotteryConst.ZX + (LotteryConst.ZX == lotteryCode)}
-    //                     style={lotteryCode == LotteryConst.ZX ? null : { display: 'none' }}
-    //                     lotteryCode={LotteryConst.ZX}/>
-    //   <LhcHXComponent key={LotteryConst.HX + (LotteryConst.HX == lotteryCode)}
-    //                   style={lotteryCode == LotteryConst.HX ? null : { display: 'none' }}
-    //                   lotteryCode={LotteryConst.HX}/>
-    //   <LhcZXBZComponent key={LotteryConst.ZXBZ + (LotteryConst.ZXBZ == lotteryCode)}
-    //                     style={lotteryCode == LotteryConst.ZXBZ ? null : { display: 'none' }}
-    //                     lotteryCode={LotteryConst.ZXBZ}/>
+    //   {
+    //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
+    //   }
     // </View>
 
-    ugLog('---------------------------------------------------')
-    return <View style={CommStyles.flex}>
-      {
-        Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
+
+    switch (lotteryCode) {
+      case LotteryConst.TM: { //特码
+        return <LhcTMComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
-    </View>
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT: { //正特
+        return <LhcZTComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.LMA: { //连码
+        return <LhcLMAComponent key={lotteryCode}
+                                lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.LM: //两面
+      case LotteryConst.ZM1_6: //正码1T6
+      case LotteryConst.SB: //色波
+      case LotteryConst.ZOX://总肖
+      case LotteryConst.WX: { //五行
+        return <LhcSBComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.YX: //平特一肖
+      case LotteryConst.WS: //平特尾数
+      case LotteryConst.TWS: //头尾数
+      case LotteryConst.TX: //特肖
+      case LotteryConst.LX: //连肖
+      case LotteryConst.LW: //连尾
+      case LotteryConst.ZX: { //正肖
+        return <LhcPTYXComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.HX: { //合肖
+        return <LhcHXComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
+      }
+      case LotteryConst.ZXBZ: { //自选不中
+        return <LhcZXBZComponent key={lotteryCode}
+                                 lotteryCode={lotteryCode}/>
+      }
 
+    }
 
-    // switch (lotteryCode) {
-    //   case LotteryConst.TM: { //特码
-    //     return <LhcTMComponent key={lotteryCode}
-    //                            lotteryCode={lotteryCode}/>
-    //   }
-    //   case LotteryConst.ZM: //正码
-    //   case LotteryConst.ZT: { //正特
-    //     return <LhcZTComponent key={lotteryCode}
-    //                            lotteryCode={lotteryCode}/>
-    //   }
-    //   case LotteryConst.LMA: { //连码
-    //     return <LhcLMAComponent key={lotteryCode}
-    //                             lotteryCode={lotteryCode}/>
-    //   }
-    //   case LotteryConst.LM: //两面
-    //   case LotteryConst.ZM1_6: //正码1T6
-    //   case LotteryConst.SB: //色波
-    //   case LotteryConst.ZOX://总肖
-    //   case LotteryConst.WX: { //五行
-    //     return <LhcSBComponent key={lotteryCode}
-    //                            lotteryCode={lotteryCode}/>
-    //   }
-    //   case LotteryConst.YX: //平特一肖
-    //   case LotteryConst.WS: //平特尾数
-    //   case LotteryConst.TWS: //头尾数
-    //   case LotteryConst.TX: //特肖
-    //   case LotteryConst.LX: //连肖
-    //   case LotteryConst.LW: //连尾
-    //   case LotteryConst.ZX: { //正肖
-    //     return <LhcPTYXComponent key={lotteryCode}
-    //                              lotteryCode={lotteryCode}/>
-    //   }
-    //   case LotteryConst.HX: { //合肖
-    //     return <LhcHXComponent key={lotteryCode}
-    //                            lotteryCode={lotteryCode}/>
-    //   }
-    //   case LotteryConst.ZXBZ: { //自选不中
-    //     return <LhcZXBZComponent key={lotteryCode}
-    //                              lotteryCode={lotteryCode}/>
-    //   }
-    //
-    // }
-    //
-    // return null
+    return null
   }
 
   /**

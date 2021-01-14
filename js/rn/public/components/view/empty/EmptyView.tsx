@@ -42,7 +42,7 @@ const EmptyView = ({
         !anyEmpty(subText) && <Text style={_styles.empty_sub_text_name}>{subText}</Text>
       }
       {
-        buttonText && <Button title={buttonText ? buttonText : '确定'}
+        !anyEmpty(buttonText) && <Button title={buttonText ? buttonText : '确定'}
                               titleStyle={_styles.submit_text}
                               containerStyle={[_styles.submit_bt,
                                 { backgroundColor: Skin1.themeColor }]}
