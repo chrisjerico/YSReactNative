@@ -48,6 +48,7 @@ export default class ExtUGApplication {
     PageName.LEFMinePage,
     PageName.UpdateVersionPage,    
     PageName.GameLobbyPage,
+    PageName.TwoLevelGames,
   ]
 
   //在Application初始化之前使用，只能手动初始化 stack列表
