@@ -344,9 +344,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://app-450-xpj.cc',
-    'https://app-450-xpj.co',
-    'https://app-450-xpj.com',
+    'https://c213-app-450.com',
+    'https://c213-appapp.me',
+    'https://c213-app-450.cc',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
