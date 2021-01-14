@@ -145,6 +145,8 @@ export default class UGSysConfModel {
   static updateFromNetwork(completed?: () => void) {
     return api.system.config().useSuccess(({ data }, sm) => {
       sm.noShowErrorHUD = true
+      console.log('系统配置数据：',data);
+      
       UGStore.dispatch({ type: 'merge', sysConf: data })
       completed && completed()
     }).promise
@@ -191,7 +193,7 @@ export default class UGSysConfModel {
   switchCoinPwdSms?: string // 资金密码开启短信验证
   switchCoinPwd?: string // 是否打开忘记密码
   coinPwdAuditOptionAry?: Array<string> //忘记密码有哪些选项 mobile, bank, id
-
+  chatShareBetMinAmount?: string /**<   聊天室 注单分享最小金额限制*/
   // 邀请码
   inviteCode ?: InviteCodeConfigModel
   // 注册页

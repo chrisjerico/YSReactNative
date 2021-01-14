@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform, TextInput } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform, TextInput, Alert } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
@@ -27,6 +27,8 @@ import moment from 'moment';
 import { number } from 'prop-types';
 import { showError, showReload, showSuccess } from '../../../public/widget/UGLoadingCP';
 import { push } from 'object-path';
+import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
+
 
 interface JDLotteryAssistantPage {
   bottomH?: number,//底部的高度
@@ -47,7 +49,8 @@ interface JDLotteryAssistantPage {
   dataTimeIsOpen?: boolean//dataTimer 是否已经 启动
   betModel?: UGChanglongaideModel//选中注单
   jsDic?: {}//上传的字典数据
-  curDatadiff?:number //当前本地时间和服务器时间相差多少秒
+  curDatadiff?: number //当前本地时间和服务器时间相差多少秒
+
 }
 
 const JDLotteryAssistantPage = () => {
@@ -60,7 +63,9 @@ const JDLotteryAssistantPage = () => {
       imgLoading: 'https://appstatic.guolaow.com/web/images/loading.png'
     }
   )
+  const [text,setText] = React.useState('');
 
+  const systemInfo = UGStore.globalProps.sysConf //系统信息
 
   /**
 * 限制只能输入数字和小数
@@ -127,7 +132,7 @@ const JDLotteryAssistantPage = () => {
       return
     }
     //文字框获得焦点
-    let betItem: UGBetItemModel = new  UGBetItemModel();
+    let betItem: UGBetItemModel = new UGBetItemModel();
     for (let index = 0; index < v.items.length; index++) {
       const aideModel = v.items[index];
       for (let i = 0; i < aideModel.betList.length; i++) {
@@ -136,13 +141,13 @@ const JDLotteryAssistantPage = () => {
           //                bet.select = NO;
           v.betModel = aideModel;
           betItem = bet;
-      }
-       
+        }
+
       }
 
     }
 
-    
+
     if (!anyEmpty(v.betModel)) {
       v.jsDic = shareBettingData(v.betModel, v.amount);
     }
@@ -165,15 +170,109 @@ const JDLotteryAssistantPage = () => {
 
     api.user.userBetWithParams(dicMode).useSuccess(({ data, msg }) => {
       showSuccess(msg)
-      
+      const {  userInfo } = UGStore.globalProps
+
+      let amountfloat: number = parseFloat(v.amount)
+      let webAmountfloat: number = parseFloat(systemInfo?.chatMinFollowAmount)
+
+      console.log('!userInfo.isTest ==',!userInfo.isTest);
+      console.log('userInfo.chatShareBet ==',userInfo.chatShareBet);
+      console.log('amountfloat >= webAmountfloat) ==',(amountfloat >= webAmountfloat));
+      console.log('amountfloat ) ==',(amountfloat ));
+      console.log('webAmountfloat ) ==', systemInfo?.chatMinFollowAmount);
+      console.log('isBetMin(amountfloat) ) ==',(isBetMin(amountfloat) ));
+
+      if (!userInfo.isTest && userInfo.chatShareBet && (amountfloat >= webAmountfloat) && isBetMin(amountfloat)) {
+        Alert.alert('分享注单', '是否分享到聊天室', [
+          {
+            text: '取消',
+          },
+          {
+            text: '分享',
+            onPress: () => {
+              switch (Platform.OS) {
+                case 'ios':
+                  goLotteryBetAndChatVC() 
+                  break
+                case 'android':
+                  //TODO android 去聊天室下注页
+                  break
+              }
+
+            },
+          },
+        ])
+      }
+      OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationGetUserInfo']);
+      betItem.select = false;
+      v.selBetItem = null;
+      setProps();
+
+
     }).useFailure((err) => {
       console.log('err = ', err);
       // Toast(err.message)
     });
-    return;
 
+  }
 
+  /**
+* 清空方法
+* 
+*/
+function clearClick() {
+  for (let index = 0; index < v.items.length; index++) {
+    const aideModel = v.items[index];
+    for (let i = 0; i < aideModel.betList.length; i++) {
+      const bet = aideModel.betList[i];
+      bet.select = false;
+    }
+  }
 
+  v.betDetailViewhidden = true;
+  v.betCount = 0;
+  v.amountLabel = '';
+  setText('');
+  setProps()
+  infoAction();
+}
+
+  /**
+* 去聊天室下注页
+* 
+*/
+  async function goLotteryBetAndChatVC() {
+    await OCHelper.call('UGSystemConfigModel.currentConfig.setHasShare:', [true])
+    await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
+      selectors: 'LotteryBetAndChatVC.new[setSelectChat:]',
+      args1: [true],
+    }, true])
+
+    setTimeout(() => {
+     let dic = {
+       'jsDic':v.jsDic
+     }
+     OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:userInfo:', ['NSSelectChatRoom_share',null,dic]);
+    }, 1000);
+
+  }
+
+  /**
+* 最小下注数
+* 
+*/
+  function isBetMin(amountfloat?: number) {
+
+    if (anyEmpty(systemInfo.chatShareBetMinAmount)) {
+      return true;
+    } else {
+      let chatShareBetMinAmountfloat: number = parseFloat(systemInfo?.chatShareBetMinAmount)
+      if (chatShareBetMinAmountfloat == 0) {
+        return true;
+      } else {
+        return (amountfloat >= chatShareBetMinAmountfloat);
+      }
+    }
   }
 
   /**
@@ -182,7 +281,7 @@ const JDLotteryAssistantPage = () => {
 */
   function shareBettingData(betModel?: UGChanglongaideModel, amount?: string) {
 
-    let betS: UGBetItemModel = new  UGBetItemModel();
+    let betS: UGBetItemModel = new UGBetItemModel();
     let list: Array<any> = new Array<any>();
     for (let index = 0; index < betModel.betList.length; index++) {
       const bet = betModel.betList[index];
@@ -207,7 +306,7 @@ const JDLotteryAssistantPage = () => {
     let betObj: UGbetModel = new UGbetModel();
     // 组装betParams
     {
-      let betParams: Array<UGbetParamModel> = new  Array<UGbetParamModel> ();
+      let betParams: Array<UGbetParamModel> = new Array<UGbetParamModel>();
       let betList: UGbetParamModel = new UGbetParamModel();
       betList.money = amount;
       betList.name = name;
@@ -219,7 +318,7 @@ const JDLotteryAssistantPage = () => {
 
     //组装 playNameArray
     {
-      let playNameArray: Array<UGplayNameModel> = new  Array<UGplayNameModel> ();
+      let playNameArray: Array<UGplayNameModel> = new Array<UGplayNameModel>();
       let betList: UGplayNameModel = new UGplayNameModel();
       betList.playName1 = betModel.title + '-' + betModel.playCateName;
       betList.playName2 = betS.playName;
@@ -240,7 +339,7 @@ const JDLotteryAssistantPage = () => {
       betObj.specialPlay = false;
     }
 
-    let js :jsDic = new jsDic();
+    let js: jsDic = new jsDic();
     js.betModel = betObj;
     js.list = list;
 
@@ -476,6 +575,35 @@ const JDLotteryAssistantPage = () => {
     }
   }
 
+
+  /**
+ *  备注页控制
+ * 
+ */
+function infoAction(){
+  if (anyEmpty(v.selBetItem)) {
+    console.log('=============111');
+    return;
+  }
+
+  // reloadPage()
+  console.log('=============v.amountLabel==',v.amountLabel);
+  if (!anyEmpty(v.amountLabel) && !anyEmpty(v.selBetItem) && !anyEmpty(v.selAideModel)) {
+    v.betDetailViewhidden = false;
+    let total: number = parseFloat(v.amountLabel) * parseFloat(v.selBetItem.odds)
+    v.betDetailLabel = v.selAideModel?.title + ', '
+      + v.selAideModel?.playCateName + ', '
+      + v.selBetItem?.playName;
+    v.betDetail2Label = ' 奖金:' + total?.toFixed(4)
+    reloadPage()
+  }
+  else {
+    v.betDetailViewhidden = true;
+    reloadPage()
+  }
+
+}
+
   /**
 * 下拉刷新
 * 
@@ -536,10 +664,10 @@ const JDLotteryAssistantPage = () => {
         const element = v.items[index];
         if (!anyEmpty(element.serverTime)) {
           v.curDatadiff = moment(nowData).diff(moment(element.serverTime), 'seconds')
-          console.log('nowData == ',nowData);
-          console.log('element.serverTime == ',element.serverTime);
-          console.log('v.curDatadiff == ',v.curDatadiff);
-          
+          console.log('nowData == ', nowData);
+          console.log('element.serverTime == ', element.serverTime);
+          console.log('v.curDatadiff == ', v.curDatadiff);
+
           break;
         }
       }
@@ -564,6 +692,7 @@ const JDLotteryAssistantPage = () => {
   }
 
 
+  
   /**
 * 渲染定时器
 * 
@@ -597,11 +726,11 @@ const JDLotteryAssistantPage = () => {
 
         let days: number = moment(item.closeTime).diff(moment(severNowTime), 'days');
         // console.log('days =', days);
-        let hours: number =  moment(item.closeTime).diff(moment(severNowTime), 'hours') - days*24 ;
+        let hours: number = moment(item.closeTime).diff(moment(severNowTime), 'hours') - days * 24;
         // console.log('hours =', hours);
-        let minutes: number = moment(item.closeTime).diff(moment(severNowTime), 'minutes') - days*24*60 - hours * 60;
+        let minutes: number = moment(item.closeTime).diff(moment(severNowTime), 'minutes') - days * 24 * 60 - hours * 60;
         // console.log('minutes =', minutes);
-        let seconds: number =  moment(item.closeTime).diff(moment(severNowTime), 'seconds') - days*24*3600 - hours * 3600 - minutes *60;
+        let seconds: number = moment(item.closeTime).diff(moment(severNowTime), 'seconds') - days * 24 * 3600 - hours * 3600 - minutes * 60;
         // console.log('seconds =', seconds);
 
         let dayStr: string; let hoursStr: string; let minutesStr: string; let secondsStr: string;
@@ -609,7 +738,7 @@ const JDLotteryAssistantPage = () => {
         if (hours < 10) {
           hoursStr = '0' + hours;
         } else {
-            hoursStr = '' + (hours);
+          hoursStr = '' + (hours);
         }
         if (minutes < 10) {
           minutesStr = '0' + minutes;
@@ -781,6 +910,7 @@ const JDLotteryAssistantPage = () => {
         v.betModel = null
         v.jsDic = null
         v.curDatadiff = 0
+       
         onHeaderRefresh()
       },
       didBlur: () => {
@@ -857,11 +987,15 @@ const JDLotteryAssistantPage = () => {
           backgroundColor: '#333333',
           height: v.bottomH + AppDefine.safeArea.bottom,
         }}>
-          <View style={{ height: v.bottomH, width: 80, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: 'white', }}>
+          <TouchableOpacity style={{ height: v.bottomH, width: 80, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: 'white', }}
+          onPress={() => {
+            clearClick()
+          }}
+          >
             <Text style={{ fontSize: 18, color: '#FF8C00' }}>
               {'清空'}
             </Text>
-          </View>
+          </TouchableOpacity>
           <View style={{ height: v.bottomH, flex: 1, flexDirection: 'row', alignItems: 'center', }}>
             <Text style={{ fontSize: 16, color: 'white', marginRight: 2, marginLeft: 10 }}>
               {'共'}
@@ -875,31 +1009,15 @@ const JDLotteryAssistantPage = () => {
             <View style={{ flex: 1 }}></View>
             <TextInput style={{ height: 30, width: 130, backgroundColor: Skin1.textColor4, marginRight: 10, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
               placeholder={'   投注金额'}
-              value={v.amountLabel}
+              // value={v.amountLabel}text
+               value={text}
               placeholderTextColor={Skin1.textColor3}
               onChangeText={(text) => {
-                // console.log('投注金额==', text);
-            
-                if ( anyEmpty(v.selBetItem)) {
-                   console.log('=============111');
-                  return;
-                }
-                v.amountLabel = chkPrice(text).trim()
-                if (!anyEmpty(v.amountLabel) && !anyEmpty(v.selBetItem) && !anyEmpty(v.selAideModel)) {
-                  v.betDetailViewhidden = false;
-                  let total: number = parseFloat(v.amountLabel) * parseFloat( v.selBetItem.odds)
-                  v.betDetailLabel = v.selAideModel?.title + ', '
-                    + v.selAideModel?.playCateName + ', '
-                    + v.selBetItem?.playName;
-                  v.betDetail2Label = ' 奖金:' + total?.toFixed(4)
-                  reloadPage()
-                }
-                else {
-
-        
-                  v.betDetailViewhidden = true;
-                  reloadPage()
-                }
+                console.log('投注金额==', text);
+                setText(chkPrice(text).trim())
+                v.amountLabel  = chkPrice(text).trim()
+                infoAction();
+                
               }}
             ></TextInput>
 
