@@ -44,7 +44,6 @@ interface JDLotteryAssistantPage {
   timer?: any;//每秒刷新一次界面
   dataTimer?: any;//每20获取一次数据
   timeIsOpen?: boolean//timer 是否已经 启动
-  secondIsCanAdd?: boolean//是否可以读秒  ++
   dataTimeIsOpen?: boolean//dataTimer 是否已经 启动
   betModel?: UGChanglongaideModel//选中注单
   jsDic?: {}//上传的字典数据
@@ -264,11 +263,10 @@ const JDLotteryAssistantPage = () => {
   }
 
   /**
-* 刷新界面 （不影响定时器++）
+* 刷新界面 （
 * 
 */
   function reloadPage() {
-    v.secondIsCanAdd = false;
     setProps()
   }
 
@@ -531,7 +529,6 @@ const JDLotteryAssistantPage = () => {
         }
       }
 
-      const element = v.items[0];
       //当前时间：
       var nowData = moment().format('YYYY-MM-DD HH:mm:ss');
       //当前本地时间和服务器时间相差多少秒
@@ -548,7 +545,6 @@ const JDLotteryAssistantPage = () => {
       if (!v.timeIsOpen) {
         v.timer = setInterval(() => {
           v.timeIsOpen = true;
-          v.secondIsCanAdd = true;
           setProps();
         }, 1000)
       }
@@ -556,7 +552,6 @@ const JDLotteryAssistantPage = () => {
       if (!v.dataTimeIsOpen) {
         v.dataTimer = setInterval(() => {
           v.dataTimeIsOpen = true;
-          v.secondIsCanAdd = false;
           getChanglong()
         }, 1000 * 20)
       }
@@ -571,10 +566,6 @@ const JDLotteryAssistantPage = () => {
 */
   const _renderTimeItem = ({ index, item }) => {
 
-    if (v.secondIsCanAdd) {
-      item.currentSecond++;
-    }
-
     if (moment(item.serverTime) >= moment(item.closeTime)) {
 
       return (
@@ -585,10 +576,12 @@ const JDLotteryAssistantPage = () => {
         </View>
       );
     } else {
-      // console.log('item.currentSecond >= item.diffsecond) =', item.currentSecond >= item.diffsecond);
-      // console.log('item.currentSecond == ',item.currentSecond);
-      // console.log('item.diffsecond == ',item.diffsecond);
-      if (item.currentSecond >= item.diffsecond) {
+
+      //服务器时间转换成当地时间 服务器时间  =  当前本地时间 - curDatadiff；
+
+      let severNowTime = moment().subtract(v.curDatadiff, 's').format('YYYY-MM-DD HH:mm:ss');
+
+      if (moment(severNowTime) >= moment(item.closeTime)) {
         return (
           <View style={{}}>
             <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
@@ -598,13 +591,13 @@ const JDLotteryAssistantPage = () => {
         );
       } else {
 
-        let days: number = ~~((item.diffsecond - item.currentSecond) / (60 * 60 * 24));
+        let days: number = moment(item.closeTime).diff(moment(severNowTime), 'days');
         // console.log('days =', days);
-        let hours: number = ~~((item.diffsecond - item.currentSecond) / (60 * 60));
+        let hours: number =  moment(item.closeTime).diff(moment(severNowTime), 'hours') - days*24 ;
         // console.log('hours =', hours);
-        let minutes: number = ~~((item.diffsecond - item.currentSecond - hours * 3600) / (60));
+        let minutes: number = moment(item.closeTime).diff(moment(severNowTime), 'minutes') - days*24*60 - hours * 60;
         // console.log('minutes =', minutes);
-        let seconds: number = ~~((item.diffsecond - item.currentSecond - hours * 3600 - minutes * 60));
+        let seconds: number =  moment(item.closeTime).diff(moment(severNowTime), 'seconds') - days*24*3600 - hours * 3600 - minutes *60;
         // console.log('seconds =', seconds);
 
         let dayStr: string; let hoursStr: string; let minutesStr: string; let secondsStr: string;
@@ -783,7 +776,6 @@ const JDLotteryAssistantPage = () => {
         v.betDetailLabel = ''
         v.betDetail2Label = ''
         v.timeIsOpen = false;
-        v.secondIsCanAdd = false;
         v.dataTimeIsOpen = false;
         v.amount = ''
         v.betModel = null

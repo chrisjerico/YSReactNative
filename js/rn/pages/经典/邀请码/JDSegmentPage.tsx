@@ -53,7 +53,7 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
 
     // console.log('相差多少年',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'years'))
     // console.log('相差多少月',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'months'))
-    // console.log('相差多少天',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'days'))
+    console.log('相差多少小时',moment('2015-10-11 19:07:03').diff(moment('2015-10-11 21:06:03'), 'hours'))
     // console.log('相差多少分',moment('2016-10-11 18:09:03').diff(moment('2016-10-11 18:06:03'), 'minutes')) 
     // console.log('相差多少秒',moment('2016-10-11 18:07:03').diff(moment('2016-10-11 18:06:03'), 'seconds')) 
     // let diff =   moment('2016-10-11 18:07:02') >= moment('2016-10-11 18:07:03')
@@ -62,15 +62,24 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     // var str="1.900"
 
     // console.log(str.split('.'));
-    var now = moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
+    // var now = moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
 
-    var now2 = moment().format('YYYY-MM-DD HH:mm:ss');
+    // var now2 = moment().format('YYYY-MM-DD HH:mm:ss');
     
     // console.log('now',now);
     // console.log('now2',now2);
 
-    console.log('相差多少秒',moment('2021-01-14 12:51:30').diff(moment(now2), 'seconds')) 
-    console.log('相差多少秒',moment(now2).diff(moment('2021-01-14 12:51:30'), 'seconds')) 
+    // console.log('相差多少秒',moment('2021-01-14 12:51:30').diff(moment(now2), 'seconds')) 
+    // console.log('相差多少秒',moment(now2).diff(moment('2021-01-14 12:51:30'), 'seconds')) 
+    // var now3 = moment().add(7, 'd');
+
+    // console.log('now3',now3);
+
+    var now4 = moment().subtract(7, 's').format('YYYY-MM-DD HH:mm:ss');
+    // console.log('now',now);
+    // console.log('now4',now4);
+
+    // console.log('相差多少天',moment(now4).diff(moment('2015-10-11 18:06:03'), 'days'))
   };
   /**
  * 初始化
