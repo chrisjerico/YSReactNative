@@ -222,7 +222,7 @@ const WNZHomePage = () => {
                     justifyContent: 'center',
                   }}
                   imageContainerStyle={{
-                    width: '80%',
+                    width: '75%',
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
