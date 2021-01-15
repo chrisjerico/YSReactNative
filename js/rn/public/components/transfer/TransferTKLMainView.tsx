@@ -31,6 +31,7 @@ import useHomePage from '../../hooks/tars/useHomePage'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { httpClient } from '../../network/httpClient'
 import { PageName } from '../../navigation/Navigation'
+import { showLoading, showSuccess } from '../../widget/UGLoadingCP'
 
 const tab = [
   { title: '真人', category: 'real' },
@@ -91,10 +92,20 @@ export const TransferTKLMainView = () => {
   }
 
   const autoTransfer = async () => {
-    api.real.autoTransferOut().useSuccess((data) => {
-      Alert.alert(data.msg)
-      UGUserModel.updateFromNetwork()
-      getData()
+    showLoading()
+    let __cnt = 0
+    api.real.oneKeyTransferOut().useSuccess(({ data }) => {
+      data?.games?.forEach((ele) => {
+        api.real.quickTransferOut(ele?.id?.toString()).useCompletion((res, err, sm) => {
+          sm.noShowErrorHUD = true
+          __cnt++
+          if (__cnt >= data?.games?.length) {
+            showSuccess('一键提取完成')
+            UGUserModel.updateFromNetwork()
+            getData()
+          }
+        })
+      })
     })
   }
 
