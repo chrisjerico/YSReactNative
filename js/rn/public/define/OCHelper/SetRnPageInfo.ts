@@ -1,7 +1,7 @@
 import { UGStore } from './../../../redux/store/UGStore';
 import { devConfig } from '../../../../../config'
 import { Platform } from 'react-native'
-import { releaseConfig } from '../../../../../config'
+import { appConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
 import AppDefine from '../AppDefine'
@@ -20,7 +20,7 @@ export async function setRnPageInfo(force = false) {
   let pages: Array<RnPageModel> = []
 
   let skitType = Skin1.skitType
-  skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType
+  skitType = appConfig.skinKeys[AppDefine.siteId] ?? skitType
   console.log('------------------skitType------------------', skitType)
 
   // 本地编译
