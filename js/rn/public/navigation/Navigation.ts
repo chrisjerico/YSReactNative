@@ -34,9 +34,8 @@ export enum PageName {
   JDRecommendedIncomePage = "JDRecommendedIncomePage",
   TaskCenterPage = 'TaskCenterPage',
   JDPromotionCodeListPage = 'JDPromotionCodeListPage',
-  JDChanglongBetRecordpage =  'JDChanglongBetRecordpage',
-  JDLotteryAssistantPage = 'JDLotteryAssistantPage',
   JDSegmentPage = 'JDSegmentPage',
+  JDChangLongPage = 'JDChangLongPage',
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
   LHTPreferencePage = 'LHTPreferencePage',

@@ -1,36 +1,27 @@
 
-import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform, TextInput, Alert } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform, TextInput, Alert } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
-import DateUtil from '../../../public/tools/andrew/DateUtil';
-import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
-import { setProps, UGBasePageProps } from '../../base/UGPage';
+import { setProps } from '../../base/UGPage';
 import { scale } from "../../../public/tools/Scale";
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view';
 
-import EmptyView from '../../../public/components/view/empty/EmptyView';
 import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
-import { ugLog } from '../../../public/tools/UgLog';
-import { PromotionConst } from '../const/PromotionConst';
-import { Badge, Button } from 'react-native-elements';
-import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
-import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
-import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 import { BetBean, BetMode, jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UGbetParamModel, UGChanglongaideModel, UGplayNameModel } from '../Model/UGChanglongaideModel';
 
 import moment from 'moment';
-import { number } from 'prop-types';
-import { showError, showReload, showSuccess } from '../../../public/widget/UGLoadingCP';
-import { push } from 'object-path';
-import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
+import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
 
 
-interface JDLotteryAssistantPage {
+export interface JDLotteryAssistantCPAction {
+  stopTime?: () => void
+  startTime?:() => void
+}
+
+interface JDLotteryAssistantCP {
   bottomH?: number,//底部的高度
   items?: Array<UGChanglongaideModel>//界面数据
   isRefreshing?: boolean//下拉刷新开始结束 
@@ -53,9 +44,37 @@ interface JDLotteryAssistantPage {
 
 }
 
-const JDLotteryAssistantPage = () => {
+const JDLotteryAssistantCP = ( { c_ref }: { c_ref: JDLotteryAssistantCPAction }) => {
 
-  let { current: v } = useRef<JDLotteryAssistantPage>(
+    /**
+ * 初始化
+ * @param item
+ */
+useEffect(() => {
+  console.log('useEffect=========================================================');
+  c_ref &&
+  (c_ref.stopTime = () => {
+    console.log('关闭定时器=========================================================');
+    destoryTimer()
+  })
+  c_ref &&
+  (c_ref.startTime = () => {
+    console.log(' 开启定时器=========================================================');
+      starttime()
+
+  })
+
+
+  initDate()
+  onHeaderRefresh()
+
+  return (() => {
+    destoryTimer()
+   
+  })
+}, [])
+
+  let { current: v } = useRef<JDLotteryAssistantCP>(
     {
       bottomH: 60,
       items: [],
@@ -64,7 +83,7 @@ const JDLotteryAssistantPage = () => {
     }
   )
   const [text,setText] = React.useState('');
-
+  const itemHeight = 96
   const systemInfo = UGStore.globalProps.sysConf //系统信息
 
   /**
@@ -138,7 +157,6 @@ const JDLotteryAssistantPage = () => {
       for (let i = 0; i < aideModel.betList.length; i++) {
         const bet = aideModel.betList[i];
         if (bet.select) {
-          //                bet.select = NO;
           v.betModel = aideModel;
           betItem = bet;
         }
@@ -168,19 +186,12 @@ const JDLotteryAssistantPage = () => {
     arr.push(betBean)
     dicMode.betBean = arr
 
-    api.user.userBetWithParams(dicMode).useSuccess(({ data, msg }) => {
+    api.user.userBetWithParams(dicMode).useSuccess(({ msg }) => {
       showSuccess(msg)
       const {  userInfo } = UGStore.globalProps
       const { chatMinFollowAmount = '0' } = systemInfo
-
       const amountfloat: number = parseFloat(v.amount)
       const webAmountfloat: number = parseFloat(chatMinFollowAmount)
-      console.log('!userInfo.isTest ==',!userInfo.isTest);
-      console.log('userInfo.chatShareBet ==',userInfo.chatShareBet);
-      console.log('amountfloat >= webAmountfloat) ==',(amountfloat >= webAmountfloat));
-      console.log('amountfloat ) ==',(amountfloat ));
-      console.log('webAmountfloat ) ==', systemInfo?.chatMinFollowAmount);
-      console.log('isBetMin(amountfloat) ) ==',(isBetMin(amountfloat) ));
 
       if (!userInfo.isTest && userInfo.chatShareBet && (amountfloat >= webAmountfloat) && isBetMin(amountfloat)) {
         Alert.alert('分享注单', '是否分享到聊天室', [
@@ -353,11 +364,7 @@ function clearClick() {
     // console.log('listjsonString  ===', listjsonString);
 
     let jsonStr: string = 'shareBet(' + listjsonString + ',' + paramsjsonString + ')';
-// {
-  // clsName:'UGbetModel',
-//   name:'fish',
-//   number:123
-// }
+
     console.log('jsonStr ====', jsonStr);
 
     js.jsonStr = jsonStr;
@@ -366,15 +373,6 @@ function clearClick() {
 
     return js;
   }
-
-  /**
-* 刷新界面 （
-* 
-*/
-  function reloadPage() {
-    setProps()
-  }
-
 
   /**
 * cell 按钮点击
@@ -402,7 +400,7 @@ function clearClick() {
 
       if (anyEmpty(v.amountLabel)) {
         v.betDetailViewhidden = true;
-        reloadPage()
+        setProps()
         return;
       }
       v.betDetailViewhidden = false;
@@ -416,7 +414,7 @@ function clearClick() {
       v.selAideModel = null
       v.betCount = 0;
     }
-    reloadPage()
+    setProps()
 
   }
 
@@ -425,7 +423,7 @@ function clearClick() {
 * cell img的显示数据
 * 
 */
-  function cellImg(item: any, index: number) {
+  function cellImg(item: any) {
 
     if (anyEmpty(item.logo)) {
 
@@ -592,7 +590,7 @@ function infoAction(){
     return;
   }
 
-  // reloadPage()
+  // setProps
   console.log('=============v.amountLabel==',v.amountLabel);
   if (!anyEmpty(v.amountLabel) && !anyEmpty(v.selBetItem) && !anyEmpty(v.selAideModel)) {
     v.betDetailViewhidden = false;
@@ -601,11 +599,11 @@ function infoAction(){
       + v.selAideModel?.playCateName + ', '
       + v.selBetItem?.playName;
     v.betDetail2Label = ' 奖金:' + total?.toFixed(4)
-    reloadPage()
+    setProps()
   }
   else {
     v.betDetailViewhidden = true;
-    reloadPage()
+    setProps()
   }
 
 }
@@ -634,7 +632,7 @@ function infoAction(){
         // console.log('进来了：==================');
         v.isRefreshing = false;
         v.items.length = 0
-        reloadPage();
+        setProps();
         return;
       }
       v.isRefreshing = false
@@ -670,40 +668,39 @@ function infoAction(){
         const element = v.items[index];
         if (!anyEmpty(element.serverTime)) {
           v.curDatadiff = moment(nowData).diff(moment(element.serverTime), 'seconds')
-          console.log('nowData == ', nowData);
-          console.log('element.serverTime == ', element.serverTime);
-          console.log('v.curDatadiff == ', v.curDatadiff);
-
           break;
         }
       }
 
-      reloadPage()
-
-      if (!v.timeIsOpen) {
-        v.timer = setInterval(() => {
-          v.timeIsOpen = true;
-          setProps();
-        }, 1000)
-      }
-
-      if (!v.dataTimeIsOpen) {
-        v.dataTimer = setInterval(() => {
-          v.dataTimeIsOpen = true;
-          getChanglong()
-        }, 1000 * 20)
-      }
+      setProps()
+       starttime()      
 
     });
   }
 
+ function starttime(){
+  if (!v.timeIsOpen) {
+    console.log('=========定时器开启======== ========================');
+    v.timer = setInterval(() => {
+      v.timeIsOpen = true;
+      setProps();
+    }, 1000)
+  }
 
+  if (!v.dataTimeIsOpen) {
+    v.dataTimer = setInterval(() => {
+      v.dataTimeIsOpen = true;
+      getChanglong()
+    }, 1000 * 20)
+  }
+
+ }
   
   /**
 * 渲染定时器
 * 
 */
-  const _renderTimeItem = ({ index, item }) => {
+  const _renderTimeItem = ({ item }) => {
 
     if (moment(item.serverTime) >= moment(item.closeTime)) {
 
@@ -809,7 +806,7 @@ function infoAction(){
         <View style={[styles.viewItem, { alignItems: 'center', marginHorizontal: 10, flexDirection: 'row', }]}>
           {/* 图片 */}
           <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-            <Image style={[styles.itemImageImageStyle,]} source={{ uri: cellImg(item, index) }} />
+            <Image style={[styles.itemImageImageStyle,]} source={{ uri: cellImg(item) }} />
           </View>
           {/* 内容 */}
           <View style={[{ flexDirection: 'column', marginLeft: 10, }]}>
@@ -889,65 +886,55 @@ function infoAction(){
   }
 
 
+  function initDate(){
+    v.bottomH = 60;
+    v.imgLoading = 'https://appstatic.guolaow.com/web/images/loading.png'
+    v.selAideModel = null
+    v.selBetItem = null
+    v.betCount = 0
+    v.amountLabel = ''
+    v.betDetailViewhidden = true
+    v.betDetailLabel = ''
+    v.betDetail2Label = ''
+    v.timeIsOpen = false;
+    v.dataTimeIsOpen = false;
+    v.amount = ''
+    v.betModel = null
+    v.jsDic = null
+    v.curDatadiff = 0
+    v.isRefreshing= true
 
-  /**
- * 初始化
- * @param item
- */
-  useEffect(() => {
-    setProps({
-      navbarOpstions: {
-        hidden: false, title: '我的投注', back: true
-      },
+  }
 
-      didFocus: () => {
-        v.bottomH = 60;
-        v.imgLoading = 'https://appstatic.guolaow.com/web/images/loading.png'
-        v.selAideModel = null
-        v.selBetItem = null
-        v.betCount = 0
-        v.amountLabel = ''
-        v.betDetailViewhidden = true
-        v.betDetailLabel = ''
-        v.betDetail2Label = ''
-        v.timeIsOpen = false;
-        v.dataTimeIsOpen = false;
-        v.amount = ''
-        v.betModel = null
-        v.jsDic = null
-        v.curDatadiff = 0
-       
-        onHeaderRefresh()
-      },
-      didBlur: () => {
-        // clearInterval(v.timer)
-        // clearInterval(v.dataTimer)
-        console.log("长龙我的投注销毁了22222，调用了clearInterval")
-      },
-    })
+  function destoryTimer(){
+    clearInterval(v.timer)
+    clearInterval(v.dataTimer)
+    v.timeIsOpen = false;
+    v.dataTimeIsOpen = false;
+    
+    console.log('停止定时器=========================================================');
+    // onHeaderRefresh()
+  }
 
-    return (() => {
-      clearInterval(v.timer)
-      clearInterval(v.dataTimer)
-      console.log("长龙我的投注销毁了1111，调用了clearInterval")
-    })
-  }, [])
+
 
 
   return (
     <View style={[styles.container, { backgroundColor: Skin1.isBlack ? Skin1.CLBgColor : Skin1.textColor4 }]}>
-      <View style={{ marginTop: 0, flex: 1, }}>
+      <View style={{ marginTop: 10, flex: 1, }}>
         {/* 列表 */}
-        <View style={{ height: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH }}>
+        <View style={{ height: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH -50 }}>
           <FlatList
             data={v.items}
             renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
-            initialNumToRender={1} // 首批渲染的元素数量
-            windowSize={1} // 渲染区域高度
-            removeClippedSubviews={Platform.OS === 'android'} // 是否裁剪子视图
-            debug // 开启 debug 模式
-            // ItemSeparatorComponent ={_renderItemSeparator}
             keyExtractor={(item, index) => index.toString()}
+            getItemLayout={(_, index) => ({
+              length: v.items.length,
+              offset: itemHeight * index,
+              index,
+          })}
+          initialNumToRender ={8}
+
             //下拉刷新
             //设置下拉刷新样式
             refreshControl={
@@ -969,7 +956,7 @@ function infoAction(){
         {/* 下注详情 */}
         {!v.betDetailViewhidden && <View style={{
           position: 'absolute',
-          marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH - 40,
+          marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH - 40-50,
           marginLeft: 10,
           backgroundColor: '#FFD9A3',
           height: 35,
@@ -990,7 +977,7 @@ function infoAction(){
         {/* 底部 */}
         <View style={{
           position: 'absolute',
-          marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH,
+          marginTop: AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - v.bottomH -50,
           justifyContent: 'center',
           flexDirection: 'row',
           width: '100%',
@@ -1110,4 +1097,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDLotteryAssistantPage
+export default JDLotteryAssistantCP

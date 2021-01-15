@@ -28,7 +28,7 @@ export async function setRnPageInfo(force = false) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
       vcName: 'UGPromotionIncomeController',
-      rnName: PageName.JDLotteryAssistantPage,
+      rnName: PageName.JDChangLongPage,
       // rnName: PageName.JDSegmentPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
