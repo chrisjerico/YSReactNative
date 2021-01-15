@@ -72,7 +72,7 @@ httpClient.interceptors.response.use(
     //@ts-ignore
     const { config }: { config: CustomAxiosConfig } = response
 
-    if (devConfig.isTest() && Platform.OS == 'ios') {
+    if (Platform.OS == 'ios' && OCHelper.ocTest) {
       // api请求信息添加到iOS下拉调试页面
       const data = JSON.parse(JSON.stringify(response?.data))
       data.info = undefined;

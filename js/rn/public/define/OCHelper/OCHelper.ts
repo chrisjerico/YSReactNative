@@ -13,6 +13,8 @@ import { setRnPageInfo } from './SetRnPageInfo'
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey ?? ''
 
+  static ocTest: boolean
+
   // 调用OC函数
   static call = OCCall.call
 
@@ -33,6 +35,7 @@ export class OCHelper extends OCEvent {
       super.setup()
 
       // 获取系统配置信息
+      this.ocTest = await OCHelper.call('AppDefine.shared.Test')
       const siteId = await OCHelper.call('AppDefine.shared.SiteId')
       const host = DomainUrls[siteId] ?? await OCHelper.call('AppDefine.shared.Host')
       const appVersion = await OCHelper.call('AppDefine.shared.Version')
