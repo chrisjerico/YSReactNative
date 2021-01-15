@@ -102,11 +102,17 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               console.log('rn热更新出错❌')
               setProps({ progress: 1, text: '更新出错...' })
 
-              // 更新出错时无限重试
-              Platform.OS == 'ios' &&
-                setTimeout(() => {
-                  CodePushSync(options)
-                }, 1000)
+              switch (Platform.OS) {
+                case 'ios':
+                  // 更新出错时无限重试
+                  setTimeout(() => {
+                    CodePushSync(options)
+                  }, 1000)
+                  break;
+                case 'android':
+                  isNewest = true
+                  break;
+              }
               break
             case CodePush.SyncStatus.UPDATE_INSTALLED:
               console.log('rn热更新安装成功，正在重启RN')

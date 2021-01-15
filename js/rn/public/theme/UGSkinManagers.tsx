@@ -22,7 +22,7 @@ export default class UGSkinManagers {
     if (devConfig.isDebug) {
       devConfig?.skinKey && (skinType = devConfig?.skinKey)
     }
-    // 这里必须写两遍（因为第一遍时 getter 取的 skin1 值是空的）
+    // 这里必须写两遍（因为第一遍时 skin1 还是空的，获取不到 getter 的 skin1.themeColor 值）
     skin1 = Skin1 = this.getSkinValue(skinType)
     skin1 = Skin1 = this.getSkinValue(skinType)
     // console.log('rnSkinColor = ', skin1);

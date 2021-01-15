@@ -396,7 +396,7 @@ const JDSigInPage = () => {
 
                                 <View style={[]}>
                                     <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus2}</Text>
-                                    <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
+                                    <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到7天即可领取'}</Text>
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}

@@ -29,6 +29,7 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, F = any> {
 
   // —————————— 配置UI ——————————
   didFocus?: (p: F) => void // 成为焦点时回调
+  didBlur?: () => void // 失去焦点时回调
   backgroundColor?: string[] // 背景色
   backgroundImage?: string
   navbarOpstions?: UGNavigationBarProps
@@ -59,6 +60,13 @@ export default (Page: Function) => {
           didFocus && didFocus({})
         }
         this.setProps({})
+      })
+      navigation.removeListener('blur', null)
+      navigation.addListener('blur', () => {
+        const { name } = this.props.route
+        const { didBlur } = this.newProps
+        console.log('失去焦点', name)
+        didBlur && didBlur()
       })
       navigation.removeListener('transitionEnd', null)
       navigation.addListener('transitionEnd', (e) => {

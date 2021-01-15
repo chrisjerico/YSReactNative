@@ -26,17 +26,21 @@ export enum UGColor {
   RedColor3 = '#fc6e51',
   RedColor4 = '#e9573f',
   RedColor5 = '#e3080c',
+  RedColor6 = '#d3573f',
   YellowColor1 = '#ffce54',
   YellowColor2 = '#f6bb42',
+  YellowColor3 = '#eda321',
   GreenColor1 = '#a0d468',
   GreenColor2 = '#8cc152',
   GreenColor3 = '#48cfad',
   GreenColor4 = '#37bc9b',
+  GreenColor5 = '#8fbf73',
   BlueColor1 = '#4fc1e9',
   BlueColor2 = '#3bafda',
   BlueColor3 = '#5d9cec',
   BlueColor4 = '#4a89dc',
   BlueColor6 = '#0a5196',
+  BlueColor7 = '#4574c2',
   PurpleColor1 = '#ac92ec',
   PurpleColor2 = '#967adc',
   PinkColor1 = '#ec87c0',
@@ -53,7 +57,6 @@ export enum UGColor {
   BackgroundColor2 = '#F7F7F7',
   BackgroundColor3 = '#dedede',
   BackgroundColor4 = '#F4F4F4',
-  BackgroundColor5 = '#00000066',
 
   // 文字颜色
   TextColor1 = '#222',
@@ -79,6 +82,9 @@ export enum UGColor {
 
   // 透明背景色
   transparent = '#00000000',
+  transparent2 = '#ffffff44',
+  transparent3 = '#000000aa',
+  transparent4 = '#000000cc',
 
   // 禁用
   disableColor1 = '#EFF3F8',
