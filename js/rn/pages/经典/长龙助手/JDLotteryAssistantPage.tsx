@@ -382,6 +382,10 @@ const JDLotteryAssistantPage = () => {
           <FlatList
             data={v.items}
             renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
+            initialNumToRender={1} // 首批渲染的元素数量
+            windowSize={1} // 渲染区域高度
+            removeClippedSubviews={Platform.OS === 'android'} // 是否裁剪子视图
+            debug // 开启 debug 模式
             // ItemSeparatorComponent ={_renderItemSeparator}
             keyExtractor={(item, index) => index.toString()}
             //下拉刷新

@@ -1,7 +1,6 @@
 /**
  * 下一期彩票数据
  */
-
 export interface NextIssueModel {
   code?: number
   msg?: string

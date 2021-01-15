@@ -8,6 +8,7 @@ import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
 import { anyEmpty } from '../../../public/tools/Ext'
+import { ugLog } from '../../../public/tools/UgLog'
 
 interface ILotteryEBall {
   item?: ILotteryEBallItem // 要绘制的数据
@@ -18,6 +19,9 @@ interface ILotteryEBall {
   callback?: () => void // 按压回调
 }
 
+/**
+ * 绘制内容
+ */
 const renderContent = ({
                          item,
                          ballProps,
@@ -29,7 +33,7 @@ const renderContent = ({
   let isSel = isSelectedBallOnId(selectedBalls, item?.id)
 
   return (
-    <View key={item?.id + item?.name}
+    <View key={'e ball content' + item?.id}
           style={[
             _styles.ball_item_tm,
             {
@@ -40,7 +44,7 @@ const renderContent = ({
             },
             containerStyle,
           ]}>
-      <EBall key={item?.id + item?.odds}
+      <EBall key={'e ball content e' + item?.id}
              ballType={{
                type: BallStyles.lhc,
                ballNumber: item?.name,
@@ -69,8 +73,9 @@ const renderContent = ({
  */
 const LotteryEBall = (iBall: ILotteryEBall) => {
   const { item, callback } = iBall
+
   return (
-    callback != null ? <TouchableOpacity key={item?.id + item?.name}
+    callback != null ? <TouchableOpacity key={'LotteryEBall' + item?.id}
                                          onPress={() => callback && callback()}>
         {renderContent(iBall)}
       </TouchableOpacity> :

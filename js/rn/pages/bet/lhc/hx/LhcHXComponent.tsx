@@ -39,7 +39,7 @@ import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
-import { ILotteryRouteParams } from '../../const/LotteryConst'
+import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
 
 /**
@@ -49,6 +49,8 @@ import { findZodiacByName } from '../../util/LotteryUtil'
  * @constructor
  */
 const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+
+  const key = 'lottery page' + lotteryCode
 
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
@@ -68,56 +70,61 @@ const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcHX()
 
-  useEffect(()=>{
+  useEffect(() => {
     setLotteryCode(lotteryCode)
   }, [])
 
   /**
    * 绘制 生肖和球
    * @param item
+   * @param index
    */
-  const renderEBall = (item?: ZodiacNum) => !anyEmpty(zodiacData) &&  <LotteryLineEBall key={item?.id + item?.name}
-                                                         item={{
-                                                           id: item?.id,
-                                                           name: item?.name,
-                                                           zodiacItem: findZodiacByName(zodiacData, {name: item?.name})
-                                                         }}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderEBall = (item?: ZodiacNum, index?: number) =>
+    !anyEmpty(zodiacData) && <LotteryLineEBall key={key + 'renderEBall' + item?.id}
+                                               item={{
+                                                 id: item?.id,
+                                                 name: item?.name,
+                                                 zodiacItem: findZodiacByName(zodiacData, { name: item?.name }),
+                                               }}
+                                               selectedBalls={selectedBalls}
+                                               callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 一行球
    * @param groupData
    */
-  const renderLineBall = (groupData?: PlayGroupData) => !anyEmpty(groupData) && <View key={groupData?.id + groupData?.alias}
-                                                        style={CommStyles.flex}>
+  const renderLineBall = (groupData?: PlayGroupData) =>
+    !anyEmpty(groupData) && <View key={key + groupData?.id}
+                                  style={CommStyles.flex}>
 
-    <View key={groupData?.alias}
-          style={_styles.sub_title_container}>
-      <Text key={groupData?.alias}
-            style={[
-              _styles.sub_title_text,
-              { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
-    </View>
+      <View key={key + 'renderLineBall' + groupData?.id}
+            style={_styles.sub_title_container}>
+        <Text key={key + 'renderLineBall text' + groupData?.id}
+              style={[
+                _styles.sub_title_text,
+                { color: Skin1.themeColor },
+              ]}>{groupData?.alias}</Text>
+      </View>
 
-    <View style={_styles.ball_container}>
-      {
-        zodiacData?.map((item) => renderEBall(item))
-      }
+      <View key={key + 'renderLineBall sub' + groupData?.id}
+            style={_styles.ball_container}>
+        {
+          zodiacData?.map(renderEBall)
+        }
+      </View>
     </View>
-  </View>
 
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView style={CommStyles.flex}
-                                          showsVerticalScrollIndicator={false}>
+  const renderAllBall = () => <View key={key + 'renderAllBall'}
+                                    style={_styles.content_container}>
     {arrayLength(curData) > 0 && renderLineBall(curData[0])}
-  </ScrollView>
+  </View>
 
   return (
-    <View style={[CommStyles.flex, style]}>
+    <View key={key}
+          style={[CommStyles.flex, style]}>
       {renderAllBall()}
     </View>
 
@@ -125,6 +132,10 @@ const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 }
 
 const _styles = StyleSheet.create({
+  content_container: {
+    paddingBottom: LEFT_ITEM_HEIGHT * 6,
+    flex: 1,
+  },
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,

@@ -1,11 +1,13 @@
 import { skinColors } from './../../public/theme/const/UGSkinColor';
 import PushHelper from '../../public/define/PushHelper'
-import { SeriesId } from '../../public/models/Enum'
+import { GameType, SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
+import { UGStore } from '../../redux/store/UGStore'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
+const { isTest = false, uid = '' } = UGStore.globalProps.userInfo
 
 const config = {
   defaultUserCenterLogos: {
@@ -202,6 +204,46 @@ const config = {
       name: '投注记录',
       icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/tzjl.png',
       onPress: goToUserCenterType.彩票注单记录,
+    },
+  ],
+  c108UnAuthNavs: [
+    {
+      name: '充值取款',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/2021.png',
+      onPress: () => {
+        if (!uid)  {
+          push(PageName.WNZSignInPage)
+          return
+        }
+        goToUserCenterType.存款
+      },
+    },
+    {
+      name: '优惠活动',
+      gameId: GameType.优惠活动,
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/niu.png',
+      onPress: () => {
+        push(PageName.PromotionPage, {
+          showBackBtn: true,
+        })
+      },
+    },
+    {
+      name: '在线客服',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/qi.png',
+      onPress: goToUserCenterType.在线客服,
+    },
+    {
+      name: '登入/注册',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/sign.png',
+      onPress: () => {
+        push(PageName.WNZSignInPage)
+      },
+    },
+    {
+      gameId: 'tryPlay',
+      name: '试玩',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/tourist.png',
     },
   ],
 }
