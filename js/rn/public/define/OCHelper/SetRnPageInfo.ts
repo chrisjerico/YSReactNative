@@ -83,7 +83,7 @@ export async function setRnPageInfo(force = false) {
     pages.push({
       rnName: PageName.JSLuzhuPage,
       linkCategory: 7,//导航链接
-      linkPosition: 1101,//导航链接ID
+      linkPosition: 55,//导航链接ID
       fd_prefersNavigationBarHidden: true,
       允许游客访问: false,
       允许未登录访问: false,
