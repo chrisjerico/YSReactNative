@@ -5,7 +5,7 @@ import * as React from 'react'
 import {UGStore} from "../../redux/store/UGStore"
 
 const RankListCP = ({ranks, width, height = 200, titleVisible = true, backgroundColor = 'white', textColor = "black", timing = 10000, titleTextStyle}:
-                        { ranks: any[], width: number, height?: number, titleVisible?: boolean, backgroundColor?: string, textColor: string, timing: number, titleTextStyle?: TextStyle }) => {
+                        { ranks: any[], width: number, height?: number, titleVisible?: boolean, backgroundColor?: string, textColor: string, timing: number, titleTextStyle?: TextStyle}) => {
   const [currentY] = useState(new Animated.Value(height))
   const {rankingListSwitch} = UGStore.globalProps.sysConf;
   useEffect(() => {
@@ -63,7 +63,7 @@ const RankListCP = ({ranks, width, height = 200, titleVisible = true, background
                     textAlign: "center",
                     paddingVertical: 6,
                     fontWeight: "bold"
-                  }}>中奖金额</Text>
+                  }}>{rankingListSwitch === 2 ? '投注金额' : '中奖金额'}</Text>
                 </View> : null}
             <View style={{width: width, height: height, overflow: "hidden"}}>
               <Animated.View style={{
