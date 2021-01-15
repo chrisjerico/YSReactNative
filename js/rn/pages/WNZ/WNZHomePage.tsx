@@ -30,6 +30,7 @@ import { ugLog } from '../../public/tools/UgLog'
 import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
 import { getParentsTagsRecursively } from 'react-native-render-html'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
+import { appConfig } from '../../../../config'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -178,7 +179,7 @@ const WNZHomePage = () => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
-      rankingListType={AppDefine.siteId == 'c245' ? RankingListType.不顯示 : rankingListType}
+      rankingListType={appConfig.isWNZBottomTabHot() ? RankingListType.不顯示 : rankingListType}
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
@@ -222,7 +223,7 @@ const WNZHomePage = () => {
                     justifyContent: 'center',
                   }}
                   imageContainerStyle={{
-                    width: '80%',
+                    width: '75%',
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
@@ -309,10 +310,10 @@ const WNZHomePage = () => {
             initialTabIndex={1}
             baseHeight={scale(82)}
             itemHeight={scale(100)}
-            fixedHeight={AppDefine.siteId == 'c245' ? [null, 350] : []}
+            fixedHeight={appConfig.isWNZBottomTabHot() ? [null, 350] : []}
             renderTabBar={TabBar}
             renderScene={({ item, index: sceneIndex }) => {
-              if (AppDefine.siteId == 'c245' && sceneIndex) {
+              if (appConfig.isWNZBottomTabHot() && sceneIndex) {
                 return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} iconTitleContainerStyle={{ height: 0 }} />
               } else {
                 return (
@@ -332,7 +333,7 @@ const WNZHomePage = () => {
                           logo={pic}
                           name={title}
                           desc={openCycle}
-                          logoBallText={sceneIndex ? '信' : AppDefine.siteId == 'c245' ? '热' : '官'}
+                          logoBallText={sceneIndex ? '信' : appConfig.isWNZBottomTabHot() ? '热' : '官'}
                           onPress={
                             title == '更多游戏'
                               ? goToUserCenterType.游戏大厅

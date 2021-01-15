@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { appConfig } from '../../../../../config'
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import { UGImageHost, useHtml5Image } from '../../../public/tools/tars'
@@ -34,9 +35,9 @@ const Tab = ({ logo, name, focused, onPress, index }) => {
       <View style={styles.tabContainer}>
         <View style={styles.titleContainer}>
           <ImageBackground source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1, justifyContent:'center', alignItems:'center' }} resizeMode={'contain'} >
-            <Text style={{marginTop:1,marginLeft:1, padding:1, color:'white', fontSize:14, backgroundColor:index ? '#C84C4E' : '#80c025'}}>{AppDefine.siteId == 'c245' ? (index ? '榜' : '热') : (index ? '信' : '官') }</Text>
+            <Text style={{marginTop:1,marginLeft:1, padding:1, color:'white', fontSize:14, backgroundColor:index ? '#C84C4E' : '#80c025'}}>{appConfig.isWNZBottomTabHot() ? (index ? '榜' : '热') : (index ? '信' : '官') }</Text>
           </ImageBackground>
-          <Text style={styles.titleText}>{AppDefine.siteId == 'c245' ? c245Names[index] : name}</Text>
+          <Text style={styles.titleText}>{appConfig.isWNZBottomTabHot() ? c245Names[index] : name}</Text>
         </View>
         {!index && <View style={styles.grayLineContainer} />}
         <View

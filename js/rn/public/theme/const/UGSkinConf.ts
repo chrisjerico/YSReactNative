@@ -76,16 +76,23 @@ export class UGSkinType<T> {
   constructor(props?: UGSkinType<T>) {
     if (!props) return this
 
+    // 从props初始化
     for (const k in props) {
-      this[k] = props[k]
+      const { get, value } = Object.getOwnPropertyDescriptor(props, k)
+      if (get) {
+        Object.defineProperty(this, k, { get });
+      } else {
+        this[k] = value
+      }
     }
+
     // 若不存在值就取默认的
-    Object.keys(this).forEach((k1) => {
+    for (const k1 in this) {
       const hasKey = Object.keys(props).filter((k2) => k1 == k2)?.length
       if (!hasKey) {
         Object.defineProperty(this, k1, { get: function () { return this.默认 } });
       }
-    })
+    }
   }
 }
 export type st<T> = UGSkinType<T>

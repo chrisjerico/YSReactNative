@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Image, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { BaseScreen } from './component/BaseScreen'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -7,10 +7,6 @@ import { PageName } from '../../public/navigation/Navigation'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import CheckBox from '../../public/views/tars/CheckBox'
 import APIRouter from '../../public/network/APIRouter'
-import { ugLog } from '../../public/tools/UgLog'
-import WebView, { WebViewMessageEvent } from 'react-native-webview'
-import { EventRegister } from 'react-native-event-listeners'
-import AppDefine from '../../public/define/AppDefine'
 import { httpClient } from '../../public/network/httpClient'
 import NeedNameInputComponent from '../../public/components/tars/NeedNameInputComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
@@ -150,47 +146,3 @@ const LCLoginPage = () => {
 }
 
 export default LCLoginPage
-
-const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) => {
-  const webViewScript = `setTimeout(function() {
-            document.getElementById('app').style.background = 'white'
-            window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
-          }, 500);
-          true;`
-  const [webviewHeight, setWebViewHeight] = useState(0)
-  const hadnleMessage = (e: WebViewMessageEvent) => {
-    let eData = e?.nativeEvent?.data
-    console.log('sliding response: ' + eData)
-
-    if (typeof eData == 'string') {
-      setWebViewHeight(parseInt(eData) * 1.5)
-    } else {
-      onChange(eData)
-    }
-  }
-  const webViewRef = useRef<WebView>()
-  useEffect(() => {
-    const listener = EventRegister.addEventListener('reload', (data) => {
-      webViewRef?.current?.reload()
-    })
-    return () => EventRegister.removeEventListener(this.listener)
-  }, [])
-
-  let slidingUrl = `${AppDefine.host}/dist/index.html#/swiperverify?platform=native`
-  ugLog('slidingUrl=' + slidingUrl)
-
-  return (
-    <View style={{ height: webviewHeight }}>
-      <WebView
-        ref={webViewRef}
-        style={{ minHeight: webviewHeight, backgroundColor: 'white' }}
-        containerStyle={{ backgroundColor: 'white', height: 10 }}
-        javaScriptEnabled
-        injectedJavaScript={webViewScript}
-        startInLoadingState
-        source={{ uri: slidingUrl }}
-        onMessage={hadnleMessage}
-      />
-    </View>
-  )
-}

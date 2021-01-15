@@ -25,7 +25,7 @@ export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getDat
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ borderBottomWidth: 1, borderBottomColor: '#dddddd' }}>
+      <View style={{ borderBottomWidth: 0.5, borderBottomColor: '#dddddd' }}>
         <View style={{
           marginHorizontal: 120,
           paddingVertical: 12,
@@ -42,7 +42,7 @@ export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getDat
       </View>
       <View style={{ backgroundColor: Skin1.themeColor, paddingHorizontal: 12, paddingVertical: 8, marginTop: 12 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ flex: 1 / 3 }}>提款金额：</Text>
+          <Text style={{ flex: 1 / 3, color: Skin1.isBlack ? "#fff" : "#111"}}>提款金额：</Text>
           <TextInput
             style={{ backgroundColor: '#ffffff', flex: 1, borderWidth: 1, borderColor: '#dddddd', height: 30 }}
             keyboardType={'numeric'}
