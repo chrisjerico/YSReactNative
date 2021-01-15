@@ -472,7 +472,7 @@ export default class PushHelper {
             push(PageName.JDPromotionListPage)
             break
           }
-          case UGUserCenterType.露珠: {
+          case UGUserCenterType.路珠: {
             push(PageName.JSLuzhuPage)
             break
           }

@@ -40,7 +40,7 @@ export const JSLuzhuPage = ({ setProps }: UGBasePageProps) => {
   }, [])
 
   return <View style={{ flex: 1 }}>
-    <UGNavigationBar title='露珠' gradientColor={skin1.navBarBgColor} back onBackPress={() => {
+    <UGNavigationBar title='路珠' gradientColor={skin1.navBarBgColor} back onBackPress={() => {
       pop()
     }} />
     <WebView

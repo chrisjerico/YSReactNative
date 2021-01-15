@@ -11,7 +11,7 @@ import PushHelper from '../../../public/define/PushHelper';
 
 export type H5Router = [string, string]
 export const H5Router: { [x: string]: H5Router } = {
-  露珠: ['露珠', 'lottery/luZhu/14',],
+  路珠: ['路珠', 'lottery/luZhu/70',],
   虚拟币充值教程c084: ['虚拟币充值教程', 'bank/showXnb_transferC084',],
   个人中心: ['个人中心', 'ucenter/index',],
   个人资料: ['个人资料', 'ucenter/myinfo',],

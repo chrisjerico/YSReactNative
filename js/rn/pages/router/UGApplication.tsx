@@ -166,7 +166,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDChanglongBetRecordpage,//我的下注记录
   JDLotteryAssistantPage,//最新长龙
   H5WebPage,  // H5页面
-  JSLuzhuPage, // 露珠
+  JSLuzhuPage, // 路珠
 
   // ———————————— 模板页面 —————————————
 

@@ -79,7 +79,7 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: false,
       允许未登录访问: false,
     })
-    //露珠
+    //路珠
     pages.push({
       rnName: PageName.JSLuzhuPage,
       linkCategory: 7,//导航链接
