@@ -81,6 +81,7 @@ export default class UGSkinManagers {
     return skin
   }
 
+  // 找到所有UGSkinType对象 new 一遍（new操作会配置getter）
   static convertToSkinType(data) {
     function convert(target) {
       for (const k1 in target) {
