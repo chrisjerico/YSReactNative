@@ -12,19 +12,23 @@ import {
 } from 'react-native'
 import { CardView } from './component/minePage/CardView'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { UGStore } from '../../redux/store/UGStore'
-import useMemberItems from '../../public/hooks/useMemberItems'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import { PageName } from '../../public/navigation/Navigation'
 import LinearGradient from 'react-native-linear-gradient'
+import useMinePage from '../../public/hooks/tars/useMinePage'
+import config from '../BZH/config'
 
 const LCMinePage = () => {
-  const userStore = UGStore.globalProps.userInfo
-  const { uid = '', unreadMsg } = userStore
-  const { UGUserCenterItem } = useMemberItems()
+  const { pickAvatarComponentRef, info } = useMinePage({
+    homePage: PageName.LCHomePage,
+    defaultUserCenterLogos: config?.defaultUserCenterLogos,
+  })
+  const { userInfo, sysInfo } = info
+  const { unreadMsg, uid } = userInfo
+  const { userCenterItems } = sysInfo
   useEffect(() => {
-    userStore && uid == '' && PushHelper.pushLogin()
+    uid == '' && PushHelper.pushLogin()
   })
   const { loginOut } = useLoginOut(PageName.LCHomePage)
 
@@ -55,42 +59,44 @@ const LCMinePage = () => {
             scrollEnabled={false}
             style={{ borderTopWidth: 1, borderTopColor: '#E0E0E0' }}
             keyExtractor={(item, index) => `mine-${index}`}
-            data={UGUserCenterItem}
-            renderItem={({ item }) => (
-              <TouchableWithoutFeedback style={{ flexDirection: 'row', flex: 1 }} onPress={() => {
-                PushHelper.pushUserCenterType(item.code)
-              }}>
-                <View style={{
-                  flexDirection: 'row',
-                  flex: 1,
-                  marginLeft: 20,
-                  height: 47,
-                  alignItems: 'center',
-                  borderBottomWidth: 1,
-                  borderBottomColor: '#E0E0E0',
+            data={userCenterItems?.slice(4, userCenterItems?.length) || []}
+            renderItem={({ item }) => {
+              return (
+                <TouchableWithoutFeedback style={{ flexDirection: 'row', flex: 1 }} onPress={() => {
+                  PushHelper.pushUserCenterType(item.code)
                 }}>
-                  <Image style={{ height: 29, width: 29, marginRight: 10, resizeMode: 'stretch' }}
-                         source={{ uri: item.logo }} />
-                  <Text
-                    style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</Text>
-                  <View style={{ marginRight: 20 }}>
-                    <Icon size={20} name={'angle-right'} />
+                  <View style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    marginLeft: 20,
+                    height: 47,
+                    alignItems: 'center',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E0E0E0',
+                  }}>
+                    <Image style={{ height: 29, width: 29, marginRight: 10, resizeMode: 'stretch' }}
+                           source={{ uri: item.logo }} />
+                    <Text
+                      style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</Text>
+                    <View style={{ marginRight: 20 }}>
+                      <Icon size={20} name={'angle-right'} />
+                    </View>
+                    {item.name === '站内信' && unreadMsg > 0 && (
+                      <View style={{
+                        position: 'absolute',
+                        left: 85,
+                        backgroundColor: 'red',
+                        borderRadius: 30,
+                        justifyContent: 'center',
+                        width: 20,
+                        height: 20,
+                      }}>
+                        <Text style={{ alignSelf: 'center', color: 'white' }}>{unreadMsg}</Text>
+                      </View>)}
                   </View>
-                  {item.name === '站内信' && unreadMsg > 0 && (
-                    <View style={{
-                      position: 'absolute',
-                      left: 85,
-                      backgroundColor: 'red',
-                      borderRadius: 30,
-                      justifyContent: 'center',
-                      width: 20,
-                      height: 20,
-                    }}>
-                      <Text style={{ alignSelf: 'center', color: 'white' }}>{unreadMsg}</Text>
-                    </View>)}
-                </View>
-              </TouchableWithoutFeedback>
-            )} />
+                </TouchableWithoutFeedback>
+              )
+            }} />
           <LinearGradient
             style={{
               marginTop: 10,
@@ -108,7 +114,7 @@ const LCMinePage = () => {
                 alignItems: 'center',
                 borderRadius: 8,
               }}>
-              <Text style={{ color: 'white', fontSize: 21, alignSelf: 'center' }}>退出登录</Text>
+                <Text style={{ color: 'white', fontSize: 21, alignSelf: 'center' }}>退出登录</Text>
               </View>
             </TouchableWithoutFeedback>
           </LinearGradient>

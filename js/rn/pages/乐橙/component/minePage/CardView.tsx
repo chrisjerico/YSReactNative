@@ -1,24 +1,13 @@
-import {
-  Dimensions,
-  Image,
-  ImageStyle,
-  StyleProp,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { Dimensions, Image, ImageStyle, StyleProp, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { Icon } from 'react-native-elements'
+import { useEffect, useState } from 'react'
 import PushHelper from '../../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 import useMemberItems from '../../../../public/hooks/useMemberItems'
-import { useEffect, useState } from 'react'
-import { IGlobalState, UGStore } from '../../../../redux/store/UGStore'
+import { UGStore } from '../../../../redux/store/UGStore'
 import { httpClient } from '../../../../public/network/httpClient'
 import Animated, {
   block,
-  Clock,
   clockRunning,
   cond,
   debug,
