@@ -40,9 +40,6 @@ export async function setRnPageInfo(force = false) {
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
     // ezer
-    if (Skin1.skitType.indexOf('利来') != -1) {
-      pages = pages.concat(LLPages)
-    }
     if (skitType.indexOf('乐橙') != -1) {
       pages = pages.concat(LCPages)
     }
@@ -94,7 +91,7 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    
+
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -212,7 +209,6 @@ export async function setRnPageInfo(force = false) {
     })
   }
 
-
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
   }
@@ -227,6 +223,9 @@ export async function setRnPageInfo(force = false) {
   }
   if (skitType.indexOf('乐FUN') != -1) {
     pages = pages.concat(LEFPages)
+  }
+  if (skitType.indexOf('利来') != -1) {
+    pages = pages.concat(LLPages)
   }
   // 替换原生页面
   RnPageModel.pages = pages
