@@ -107,6 +107,7 @@ import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage
 import JDChanglongBetRecordpage from '../经典/长龙助手/JDChanglongBetRecordpage'
 import JDLotteryAssistantPage from '../经典/长龙助手/JDLotteryAssistantPage'
 import EmptyPage from '../common/ep/EmptyPage'
+import { OnlineService } from '../../public/components/OnlineService'
 
 
 
@@ -164,6 +165,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionCodeListPage,//邀请码
   JDChanglongBetRecordpage,//我的下注记录
   JDLotteryAssistantPage,//最新长龙
+  OnlineService,//在线客服
 
   // ———————————— 模板页面 —————————————
 
