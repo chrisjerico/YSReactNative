@@ -94,7 +94,11 @@ const JDChanglongBetRecordCP = () => {
       console.log('data =', data);
 
       if (anyEmpty(data)) {
-        return
+        console.log('进来了：==================');
+        v.isRefreshing = false;
+        v.items.length = 0
+        setProps();
+        return;
       }
       let arrayData = returnData(data);
       if (arrayData.length == 0) {
@@ -221,6 +225,14 @@ const JDChanglongBetRecordCP = () => {
   }
 
 
+  const _renderListEmptyComp = () => {
+    return (
+        <View >
+           
+        </View>
+    );
+}
+
   /**
  * 初始化
  * @param item
@@ -250,6 +262,7 @@ const JDChanglongBetRecordCP = () => {
           renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
           ItemSeparatorComponent={_renderItemSeparator}
           keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
           //下拉刷新
           //设置下拉刷新样式
           refreshControl={
