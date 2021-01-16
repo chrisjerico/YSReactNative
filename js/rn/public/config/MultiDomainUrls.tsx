@@ -188,11 +188,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://83f9.com',
   ],
   'c092': [
-    'https://2013qaz-555.com',
-    'https://2013wsx-555.com',
-    'https://2013yhn-555.com',
-    'https://2013jkl-555.com',
-    'https://2013egm-555.com',
+    'https://2013edc-555.com',
+    'https://2013rfv-555.com',
+    'https://2013ijn-555.com',
+    'https://2013uhb-555.com',
+    'https://2013ygc-555.com',
   ],
   'c105b': [
     'https://390qp8.com',
