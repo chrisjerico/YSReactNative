@@ -55,7 +55,7 @@ const UseVersion = ({
   }
 
   //查找最快的域名
-  const testSite = async () => {
+  const testSite = async (finish?: (succ: boolean) => void) => {
     // 站点编号
     let siteId = ''
     switch (Platform.OS) {
@@ -69,9 +69,6 @@ const UseVersion = ({
 
     //ugLog('site = siteId', siteId)
     let domains = MultiDomainUrls[siteId]
-
-    //域名多于2条才处理
-    if (anyLength(domains) < 2) return
     //ugLog('site = domains 7 ', domains)
 
     let firstUrl = '' //哪条速度最快用哪条
@@ -91,6 +88,7 @@ const UseVersion = ({
             firstUrl = url
             recombineDomain({ [siteId]: firstUrl })
             notifyDomainChanged(siteId)
+            finish && finish(true)
             //ugLog('site = firstUrl 6', url)
           }
           return res

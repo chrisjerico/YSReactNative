@@ -206,7 +206,12 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     }
 
     //测试哪个域名最快
-    testSite()
+    testSite((succ) => {
+      if (succ) {
+        console.log('域名更换成功，通知原生进入主页')
+        OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGDidDomainNameChange'])
+      }
+    })
 
     return () => {
       // ugLog("clear timer")
