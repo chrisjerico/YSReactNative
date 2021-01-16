@@ -219,7 +219,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     testSite((httpOk) =>
     {
       setProps({ networkOK: httpOk })
-      OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGDidDomainNameChange'])
+      httpOk && OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGDidDomainNameChange'])
     })
 
     return () => {

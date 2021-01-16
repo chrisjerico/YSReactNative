@@ -72,9 +72,6 @@ const UseVersion = ({
 
     //ugLog('site = siteId', siteId)
     let domains = MultiDomainUrls[siteId]
-
-    //域名多于2条才处理
-    // if (anyLength(domains) < 2) return
     //ugLog('site = domains 7 ', domains)
 
     let firstUrl = '' //哪条速度最快用哪条
