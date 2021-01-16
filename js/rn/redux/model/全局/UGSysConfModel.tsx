@@ -227,6 +227,9 @@ export default class UGSysConfModel {
   mobileMenu?: Array<UGTabbarItem> // 底部Tab按钮
   userCenter?: Array<UGUserCenterItem> // 我的页功能按钮
 
+  activeReturnCoinStatus?: boolean// 是否開啟拉條模式
+  activeReturnCoinRatio?: number// 拉條最大值
+
   // 登陸頁
   loginVCode?: boolean // 登录增加了滑动验证码配置  默认开
   login_to?: '0' | '1'
