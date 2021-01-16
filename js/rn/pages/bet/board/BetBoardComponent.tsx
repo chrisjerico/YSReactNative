@@ -1,6 +1,6 @@
 import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import * as React from 'react'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -9,6 +9,8 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
+import { anyEmpty } from '../../../public/tools/Ext'
+import BetLotteryContext from '../BetLotteryContext'
 
 /**
  * 彩票功能区入参
@@ -28,6 +30,8 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    userInfo,
+    systemInfo,
     showSlider,
     setShowSlider,
     sliderValue,
@@ -41,17 +45,40 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   useEffect(() => {
 
   }, [])
+  /**
+   * 加大拉条
+   */
+  const increaseSlider = () => {
+    let value = sliderValue + sliderStep
+    value = value > systemInfo?.activeReturnCoinRatio ?
+      systemInfo?.activeReturnCoinRatio : value
+    setSliderValue(value)
+  }
 
+  /**
+   * 减小拉条
+   */
+  const decreaseSlider = () => {
+    let value = sliderValue - sliderStep
+    value = value < 0 ? 0 : value
+    setSliderValue(value)
+  }
+
+  //拉条步进大小
+  const sliderStep = systemInfo?.activeReturnCoinRatio / 20
   /**
    * 绘制退水
    */
-  const renderSliderArea = () => <View style={_styles.extra_container}
+  const renderSliderArea = () => <View key={'renderSliderArea'}
+                                       style={_styles.extra_container}
                                        pointerEvents={'box-none'}>
     {
       showSlider ?
-        <View style={_styles.slider_container}>
+        <View key={'renderSliderArea slider'}
+              style={_styles.slider_container}>
 
-          <Icon size={scale(28)}
+          <Icon key={'renderSliderArea slider icon'}
+                size={scale(28)}
                 onPress={() => {
                   setShowSlider(!showSlider)
                 }}
@@ -59,28 +86,38 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 color={'white'}
                 name={'chevron-down'}/>
 
-          <Text style={_styles.sub_title_text}>{'退水: 0%'}</Text>
+          <Text key={'renderSliderArea slider tx'}
+                style={_styles.sub_title_text}>{`退水: ${sliderValue?.toFixed(2)}%`}</Text>
 
-          <Icon size={scale(48)}
+          <Icon key={'renderSliderArea slider icon2'}
+                size={scale(48)}
                 color={'white'}
+                onPress={decreaseSlider}
                 style={_styles.slider_plus}
-                name={'plus-circle'}/>
+                name={'minus-circle'}/>
 
           <Slider
+            key={'renderSliderArea slider bar'}
             style={_styles.slider}
             minimumValue={0}
-            maximumValue={100}
+            value={sliderValue}
+            step={sliderStep}
+            onValueChange={(value => setSliderValue(value))}
+            maximumValue={systemInfo?.activeReturnCoinRatio ?? 0}
             minimumTrackTintColor={Skin1.themeColor}
             thumbTintColor={Skin1.themeColor}
             maximumTrackTintColor={UGColor.LineColor4}/>
 
-          <Icon size={scale(48)}
+          <Icon key={'renderSliderArea slider icon 3'}
+                size={scale(48)}
                 color={'white'}
+                onPress={increaseSlider}
                 style={_styles.slider_minus}
-                name={'minus-circle'}/>
+                name={'plus-circle'}/>
         </View> :
-        <View>
-          <Icon size={scale(36)}
+        <View key={'renderSliderArea slider arrow up'}>
+          <Icon key={'renderSliderArea slider icon up'}
+                size={scale(36)}
                 style={_styles.slider_button}
                 onPress={() => {
                   setShowSlider(!showSlider)
@@ -92,13 +129,16 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     }
     {
       showChip ?
-        <View style={_styles.chip_container}>
-          <View style={_styles.chip_content}>
+        <View key={'renderSliderArea chip'}
+              style={_styles.chip_container}>
+          <View key={'renderSliderArea chip sub'}
+                style={_styles.chip_content}>
             {
               Object.keys(CHIP_OPTION).map((money) =>
-                <TouchableOpacity key={money}
+                <TouchableOpacity key={'renderSliderArea chip' + money}
                                   onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
-                  <FastImage source={{ uri: CHIP_OPTION[money] }}
+                  <FastImage key={'renderSliderArea chip' + money}
+                             source={{ uri: CHIP_OPTION[money] }}
                              style={_styles.chip_img}
                              resizeMode={'contain'}/>
                 </TouchableOpacity>)
@@ -111,32 +151,45 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   /**
    * 绘制输入功能区
    */
-  const renderInputArea = () => <View style={_styles.input_container}>
+  const renderInputArea = () => <View key={'renderInputArea'}
+                                      style={_styles.input_container}>
 
-    <View>
+    <View key={'renderInputArea 追号 机选'}>
       <Text style={_styles.bet_again}>追号</Text>
       <Text style={_styles.bet_again}>机选</Text>
     </View>
 
-    <View style={_styles.middle_container}>
-      <View style={_styles.bet_info}>
-        <Text style={_styles.lottery_count_hint}>已选中</Text>
-        <Text style={_styles.lottery_count_count}>0</Text>
-        <Text style={_styles.lottery_count_hint}>注</Text>
-        <View style={CommStyles.flex}/>
-        <TouchableOpacity onPress={() => setShowChip(!showChip)}>
-          <Text style={_styles.lottery_count_chip}>筹码</Text>
+    <View key={'renderInputArea middle'}
+          style={_styles.middle_container}>
+      <View key={'renderInputArea sub middle'}
+            style={_styles.bet_info}>
+        <Text key={'renderInputArea middle 已选中'}
+              style={_styles.lottery_count_hint}>已选中</Text>
+        <Text key={'renderInputArea middle 0'}
+              style={_styles.lottery_count_count}>0</Text>
+        <Text key={'renderInputArea middle 注'}
+              style={_styles.lottery_count_hint}>注</Text>
+        <View key={'renderInputArea ct'}
+              style={CommStyles.flex}/>
+        <TouchableOpacity key={'renderInputArea 筹码'}
+                          onPress={() => setShowChip(!showChip)}>
+          <Text key={'renderInputArea 筹码'}
+                style={_styles.lottery_count_chip}>筹码</Text>
         </TouchableOpacity>
       </View>
-      <TextInput style={_styles.input_text}
+      <TextInput key={'renderInputArea input'}
+                 style={_styles.input_text}
                  defaultValue={inputMoney}
                  onChangeText={(s) => setInputMoney(s)}
                  keyboardType={'numeric'}/>
     </View>
 
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Text style={_styles.start_bet}>下注</Text>
-      <Text style={_styles.start_reset}>重置</Text>
+    <View key={'renderInputArea input 下注 重置'}
+          style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Text key={'renderInputArea input 下注'}
+            style={_styles.start_bet}>下注</Text>
+      <Text key={'renderInputArea input 重置'}
+            style={_styles.start_reset}>重置</Text>
     </View>
 
   </View>
@@ -145,9 +198,12 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
    * 绘制封盘中
    */
   const renderLock = (item?: string) => {
-    return <View style={_styles.lock_container}>
-      <View style={_styles.lock_content}>
-        <Text style={_styles.lock_text}>
+    return <View key={'renderLock'}
+                 style={_styles.lock_container}>
+      <View key={'renderLock sub'}
+            style={_styles.lock_content}>
+        <Text key={'renderLock 封盘中'}
+              style={_styles.lock_text}>
           {item}
         </Text>
       </View>
@@ -155,8 +211,9 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   }
 
   return (
-    <View style={[_styles.bet_container, style]}>
-      {renderSliderArea()}
+    <View key={'bet board content'}
+          style={[_styles.bet_container, style]}>
+      {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
       {renderInputArea()}
       {
         locked ?
@@ -181,16 +238,16 @@ const _styles = StyleSheet.create({
   chip_container: {
     width: '100%',
     position: 'absolute',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   chip_content: {
     backgroundColor: UGColor.transparent3,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     borderRadius: scale(48),
   },
   chip_img: {
-    width: scale(96),
+    width: scale(76),
     aspectRatio: 1,
   },
   slider_container: {
@@ -264,7 +321,7 @@ const _styles = StyleSheet.create({
     paddingLeft: scale(6),
   },
   slider: {
-    width: scale(220),
+    width: scale(200),
     height: scale(56),
     marginHorizontal: scale(4),
   },

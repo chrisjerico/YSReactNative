@@ -38,7 +38,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams } from '../../const/LotteryConst'
+import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { doc } from 'prettier'
 
 
@@ -49,6 +49,8 @@ import { doc } from 'prettier'
  * @constructor
  */
 const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+
+  const key = 'lottery page' + lotteryCode
 
   const {
     tabIndex,
@@ -68,30 +70,36 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     setLotteryCode(lotteryCode)
   }, [])
 
+
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableOpacity key={key + item[0]?.alias}
+                                                                                    style={CommStyles.flex}
+                                                                                    onPress={() => setTabIndex(index)}>
+    <View key={key + item[0]?.alias}
+          style={[
+            _styles.tab_item,
+            index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+          ]}>
+      <Text key={key + item[0]?.alias}
+            style={[
+              _styles.tab_title_item_text,
+              index == tabIndex ? { color: `white` } : null,
+            ]}>{item[0]?.alias}</Text>
+    </View>
+  </TouchableOpacity>
+
   /**
    * 绘制tab
    */
-  const renderTab = () => <View style={_styles.tab_title_container}>
-    <ScrollView style={_styles.sv_container}
+  const renderTab = () => <View key={key + 'tab'}
+                                style={_styles.tab_title_container}>
+    <ScrollView key={key + 'sv'}
+                style={_styles.sv_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
-      <View style={_styles.tab_title_content}>
+      <View key={key + 'content'}
+            style={_styles.tab_title_content}>
         {
-          pageData?.map((item, index) =>
-            <TouchableOpacity key={item[0]?.alias}
-                              style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
-              <View key={item[0]?.alias}
-                    style={[
-                      _styles.tab_item,
-                      index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-                    ]}>
-                <Text style={[
-                  _styles.tab_title_item_text,
-                  index == tabIndex ? { color: `white` } : null,
-                ]}>{item[0]?.alias}</Text>
-              </View>
-            </TouchableOpacity>)
+          pageData?.map(renderTabItem)
         }
       </View>
     </ScrollView>
@@ -108,7 +116,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
 
     return (
-      <LotteryEBall key={ballInfo?.id}
+      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
                     item={{
                       ...item?.plays[0],
                       ...ballInfo,
@@ -123,39 +131,36 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 连码
    * @param groupData
    */
-  const renderLMA = (groupData?: PlayGroupData) => {
+  const renderLMA = (groupData?: PlayGroupData) =>
+    <View key={key + ' renderLMA' + groupData?.id}
+          style={CommStyles.flex}>
 
-    return (
-      <View key={groupData?.id + groupData?.alias}
-            style={CommStyles.flex}>
-
-        <View style={_styles.sub_title_container}>
-          <Text style={[
-            _styles.sub_title_text,
-            { color: Skin1.themeColor },
-          ]}>{groupData?.alias}</Text>
-        </View>
-
-        <View style={_styles.ball_container}>
-          {
-            ballArray?.map((item, index) => renderEBall(groupData, item))
-          }
-        </View>
+      <View key={key + ' sub renderLMA' + groupData?.id}
+            style={_styles.sub_title_container}>
+        <Text key={key + ' text renderLMA' + groupData?.id} style={[
+          _styles.sub_title_text,
+          { color: Skin1.themeColor },
+        ]}>{groupData?.alias}</Text>
       </View>
-    )
-  }
 
+      <View key={key + ' ball renderLMA' + groupData?.id}
+            style={_styles.ball_container}>
+        {
+          ballArray?.map((item, index) => renderEBall(groupData, item))
+        }
+      </View>
+    </View>
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={_styles.content_container}>
-      {!anyEmpty(curData) && renderLMA(curData[0])}
-    </View>
-  </ScrollView>
+  const renderAllBall = () => <View key={key + 'renderAllBall'}
+                                    style={_styles.content_container}>
+    {!anyEmpty(curData) && renderLMA(curData[0])}
+  </View>
 
   return (
-    <View style={[CommStyles.flex, style]}>
+    <View key={key}
+          style={[CommStyles.flex, style]}>
       {renderTab()}
       {renderAllBall()}
     </View>
@@ -165,7 +170,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 const _styles = StyleSheet.create({
   content_container: {
-    paddingBottom: scale(220),
+    paddingBottom: LEFT_ITEM_HEIGHT * 6,
     flex: 1,
   },
   sub_title_container: {

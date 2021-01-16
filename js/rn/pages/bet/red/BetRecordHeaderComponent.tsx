@@ -29,9 +29,9 @@ interface IHallGameList {
  * @param navigation
  * @constructor
  */
-const BetRecordHeaderComponent = ({ }: IHallGameList) => {
+const BetRecordHeaderComponent = ({}: IHallGameList) => {
 
-  const { nextIssueData, playOddDetailData, curPlayOddData} = useContext(BetLotteryContext)
+  const { nextIssueData, playOddDetailData, curPlayOddData } = useContext(BetLotteryContext)
 
   const {
     showHistory,
@@ -53,22 +53,25 @@ const BetRecordHeaderComponent = ({ }: IHallGameList) => {
     let lastZodiac = zodiacs.pop() //最后一个球
 
     return (
-      <View style={_styles.zodiac_container}>
+      <View key={'renderZodiac' + zodiacStr}
+            style={_styles.zodiac_container}>
         {
-          [
-            zodiacs?.map((item, index) => (
-              <View key={'header' + zodiacStr + item + index}
-                    style={_styles.zodiac_text_container}>
-                <Text style={_styles.zodiac_text}>{item}</Text>
-              </View>
-            )),
-            lastZodiac && <Text key={'header' + zodiacStr + '+'}
-                                style={_styles.text_content_plus}>{'+'}</Text>,
-            lastZodiac && <View key={'header' + zodiacStr + lastZodiac}
-                                style={_styles.zodiac_text_container}>
-              <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
-            </View>,
-          ]
+          zodiacs?.map((item, index) => (
+            <View key={'renderZodiac' + zodiacStr + item + index}
+                  style={_styles.zodiac_text_container}>
+              <Text style={_styles.zodiac_text}>{item}</Text>
+            </View>
+          ))
+        }
+        {
+          lastZodiac && <Text key={'renderZodiac' + zodiacStr + '+'}
+                              style={_styles.text_content_plus}>{'+'}</Text>
+        }
+        {
+          lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
+                              style={_styles.zodiac_text_container}>
+            <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
+          </View>
         }
       </View>
     )
@@ -81,24 +84,27 @@ const BetRecordHeaderComponent = ({ }: IHallGameList) => {
    */
   const renderBalls = (gameType?: string,
                        ballStr?: string) => {
-    let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
+    let balls = anyEmpty(ballStr) ? [] :
+      ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
     let lastBall = balls.pop() //最后一个球
     let ballStyle = BallStyles[gameType] //球的样式
     ballStyle = anyEmpty(ballStyle) ? BallStyles['lhc'] : ballStyle
 
     let ballView
+    const key = 'header renderBalls' + gameType
     switch (gameType) {
       case 'bjkl8'://北京快8
         ballView = (
           [
-            <View key={ballStr + 'ct'}
+            <View key={key + ballStr + 'ct'}
                   style={_styles.ball_wrap_container}>
               {
 
-                [...balls, lastBall]?.map((item, index) => <LotteryBall key={ballStr + item + index}
-                                                                 type={ballStyle}
-                                                                 size={scale(38)}
-                                                                 ballNumber={item}/>)
+                [...balls, lastBall]?.map((item, index) =>
+                  <LotteryBall key={key + ballStr + item + index}
+                               type={ballStyle}
+                               size={scale(38)}
+                               ballNumber={item}/>)
               }
             </View>,
           ]
@@ -109,15 +115,16 @@ const BetRecordHeaderComponent = ({ }: IHallGameList) => {
       case 'pk10nn'://牛牛系列
         ballView = (
           [
-            <View key={ballStr + 'line'}
+            <View key={key + ballStr + 'line'}
                   style={CommStyles.flex}/>,
-            <View key={ballStr + 'ct'}
+            <View key={key + ballStr + 'ct'}
                   style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item, index) => <LotteryBall key={ballStr + item + index}
-                                                                 type={ballStyle}
-                                                                 size={scale(39)}
-                                                                 ballNumber={item}/>)
+                [...balls, lastBall]?.map((item, index) =>
+                  <LotteryBall key={key + ballStr + item + index}
+                               type={ballStyle}
+                               size={scale(39)}
+                               ballNumber={item}/>)
               }
             </View>,
           ]
@@ -126,17 +133,18 @@ const BetRecordHeaderComponent = ({ }: IHallGameList) => {
       case 'dlt'://大乐透系列
         ballView = (
           [
-            <View key={ballStr + 'line'}
+            <View key={key + ballStr + 'line'}
                   style={CommStyles.flex}/>,
-            <View key={ballStr + 'ct'}
+            <View key={key + ballStr + 'ct'}
                   style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item, index) => <LotteryBall key={ballStr + item + index}
-                                                                        type={ballStyle}
-                                                                        ballColor={index < balls.length - 1 ?
-                                                                          UGColor.RedColor5 :
-                                                                          UGColor.BlueColor6}
-                                                                        ballNumber={item}/>)
+                [...balls, lastBall]?.map((item, index) =>
+                  <LotteryBall key={key + ballStr + item + index}
+                               type={ballStyle}
+                               ballColor={index < balls.length - 1 ?
+                                 UGColor.RedColor5 :
+                                 UGColor.BlueColor6}
+                               ballNumber={item}/>)
               }
             </View>,
           ]
@@ -151,12 +159,13 @@ const BetRecordHeaderComponent = ({ }: IHallGameList) => {
                   style={_styles.ball_container}>
               {
                 [
-                  balls?.map((item, index) => <LotteryBall key={ballStr + item + index}
-                                                    type={ballStyle}
-                                                    ballNumber={item}/>),
-                  lastBall && <Text key={ballStr + '+'}
+                  balls?.map((item, index) =>
+                    <LotteryBall key={key + ballStr + item + index}
+                                 type={ballStyle}
+                                 ballNumber={item}/>),
+                  lastBall && <Text key={key + ballStr + '+'}
                                     style={_styles.text_content_plus}>{'+'}</Text>,
-                  lastBall && <LotteryBall key={ballStr + lastBall}
+                  lastBall && <LotteryBall key={key + ballStr + lastBall}
                                            type={ballStyle}
                                            ballNumber={lastBall}/>,
                 ]
@@ -168,14 +177,15 @@ const BetRecordHeaderComponent = ({ }: IHallGameList) => {
       default:
         ballView = (
           [
-            <View key={ballStr + 'line'}
-                  style={CommStyles.flex} />,
-            <View key={ballStr + 'ct'}
+            <View key={key + ballStr + 'line'}
+                  style={CommStyles.flex}/>,
+            <View key={key + ballStr + 'ct'}
                   style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item, index) => <LotteryBall key={ballStr + item + index}
-                                                                 type={ballStyle}
-                                                                 ballNumber={item}/>)
+                [...balls, lastBall]?.map((item, index) =>
+                  <LotteryBall key={key + ballStr + item + index}
+                               type={ballStyle}
+                               ballNumber={item}/>)
               }
             </View>,
           ]
@@ -192,35 +202,40 @@ const BetRecordHeaderComponent = ({ }: IHallGameList) => {
    */
   const renderItemContent = (item: NextIssueData) => {
     return (
-      <View style={_styles.ball_item_container}>
-        <View style={_styles.issue_container}>
+      <View key={'renderItemContent ball_item_container'}
+            style={_styles.ball_item_container}>
+        <View key={'renderItemContent issue_container'}
+              style={_styles.issue_container}>
           {
             anyEmpty(item?.displayNumber) ? null :
-              <Text style={_styles.text_content_issue}
+              <Text key={'renderItemContent issue_container' + item.displayNumber}
+                    style={_styles.text_content_issue}
                     numberOfLines={2}>{item.displayNumber + '期'}</Text>
           }
-          <Icon size={scale(48)}
-                key={'' + showHistory}
+          <Icon key={'renderItemContent issue_container' + showHistory}
+                size={scale(48)}
                 onPress={() => toggleHistory()}
                 style={_styles.issue_arrow}
                 color={Skin1.themeColor}
                 name={showHistory ? 'angle-double-up' : 'angle-double-down'}/>
         </View>
-        <View>
-          { renderBalls(item?.gameType, item?.preNum) }
-          { renderZodiac(item?.preResult) }
+        <View key={'renderItemContent result'}>
+          {renderBalls(item?.gameType, item?.preNum)}
+          {renderZodiac(item?.preResult)}
         </View>
       </View>
     )
   }
 
   return (
-    <View>
+    <View key={'bet record header'}>
       {renderItemContent(nextIssueData())}
       {
         showHistory ?
-          <View style={_styles.history_list_container}>
-            <BetRecordListComponent historyData={historyData}/>
+          <View key={'BetRecordListComponent container'}
+                style={_styles.history_list_container}>
+            <BetRecordListComponent key={'BetRecordListComponent container' + historyData}
+                                    historyData={historyData}/>
           </View> :
           null
       }

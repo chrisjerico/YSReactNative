@@ -107,6 +107,7 @@ import BetLotteryPage from '../bet/BetLotteryPage'
 import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
 import JDChanglongBetRecordpage from '../经典/长龙助手/JDChanglongBetRecordpage'
 import JDLotteryAssistantPage from '../经典/长龙助手/JDLotteryAssistantPage'
+import EmptyPage from '../common/ep/EmptyPage'
 
 
 
@@ -143,6 +144,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDFeedBackPage, //建议反馈
   OnlinePayPage, //在线支付
   TransferPayPage, //银行支付
+  EmptyPage, //空界面
   BetLotteryPage, //彩票下注
   BtcPayPage, //虚拟币支付
   BtcTutorialPage, //虚拟币教程
