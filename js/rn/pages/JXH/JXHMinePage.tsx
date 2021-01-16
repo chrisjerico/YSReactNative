@@ -46,7 +46,7 @@ const JXHMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={'#000000'} />
-      <ImageBackground style={{ flex: 1 }} source={require('./jxhbackground.png')}>
+      <ImageBackground style={{ flex: 1 }} source={{uri:config.homeBg}}>
         <List
           uniqueKey={'JXHMinePage'}
           scrollEnabled={true}
