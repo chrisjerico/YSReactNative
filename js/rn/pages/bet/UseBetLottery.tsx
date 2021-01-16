@@ -9,12 +9,19 @@ import moment from 'moment'
 import { LotteryHistoryData } from '../../public/network/Model/lottery/LotteryHistoryModel'
 import { ugLog } from '../../public/tools/UgLog'
 import { hideLoading, showLoading } from '../../public/widget/UGLoadingCP'
+import LotteryListModelModel from '../../redux/model/game/LotteryListModel'
+import UseParseLotteryDataHelper from './util/UseParseLotteryDataHelper'
 
 /**
  * 彩票下注
  * @constructor
  */
 const UseBetLottery = () => {
+
+  const {
+    lotteryListData,
+    parseData,
+  } = UseParseLotteryDataHelper()
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
@@ -27,6 +34,13 @@ const UseBetLottery = () => {
     requestNextData(lotteryId)
     requestLotteryData(lotteryId)
   }, [lotteryId])
+
+  /**
+   * 数据发生变化时重新组合列表数据
+   */
+  useEffect(() => {
+    parseData(playOddDetailData)
+  }, [playOddDetailData])
 
   /**
    * 下一期的数据

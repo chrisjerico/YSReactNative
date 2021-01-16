@@ -280,6 +280,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                 style={_styles.right_content_list}
                 showsVerticalScrollIndicator={false}
                 nestedScrollEnabled={true}
+                initialNumToRender={2}
                 keyExtractor={(item, index) => `${item?.code}-${index}`}
                 data={playOddDetailData?.playOdds}
                 renderItem={({ item, index }) => (renderRightContent(item?.code))}/>
