@@ -68,8 +68,10 @@ export enum UGImageHost {
   test10 = 'http://test10.6yc.com',
   t132f = 'http://t132f.fhptcdn.com',
 
+//   https://appstatic.guolongling.com
+// https://appstatic.qijun2099.com
   // git仓库的图片
-  git = 'https://appstatic.guolaow.com',
+  git = 'https://appstatic.guolongling.com',
 }
 
 export const useHtml5Image = (host?: UGImageHost) => {
