@@ -1,10 +1,8 @@
 import { StyleProp, ViewStyle } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
 
-/**
- * 左侧栏单个高度
- */
-const LEFT_ITEM_HEIGHT = scale(52)
+const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
+const BALL_CONTENT_HEIGHT = scale(720) //投注区域球的总体高度
 
 /**
  * 彩种
@@ -39,4 +37,4 @@ interface ILotteryRouteParams {
 }
 
 export default LotteryConst
-export { ILotteryRouteParams, LEFT_ITEM_HEIGHT }
+export { ILotteryRouteParams, LEFT_ITEM_HEIGHT, BALL_CONTENT_HEIGHT }
