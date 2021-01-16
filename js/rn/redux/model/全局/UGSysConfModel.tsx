@@ -90,6 +90,7 @@ export class UGUserCenterItem {
   logo?: string
   name?: string
   isDefaultLogo?: boolean
+  user_center_category: string //分类ID
 
   // 默认图标
   static defaultLogos: { [x: number]: string } = {
@@ -234,6 +235,7 @@ export default class UGSysConfModel {
   appDownloadUrl?: string
   // 我的頁
   userCenterItems?: Array<userCenterItems>
+  userCenterCategoryList: [{ id: number, name: string }]//个人中心页分类列表
 
 }
 
