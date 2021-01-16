@@ -5,12 +5,12 @@ import {
   PlayOddData,
   PlayOddDetailData,
   ZodiacNum,
-} from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../public/tools/Ext'
-import BetLotteryContext from '../BetLotteryContext'
-import { isSelectedBallOnId } from '../const/ISelBall'
-import LotteryListMode from '../../../redux/model/game/LotteryListModel'
-import LotteryConst from '../const/LotteryConst'
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import BetLotteryContext from '../../BetLotteryContext'
+import { isSelectedBallOnId } from '../../const/ISelBall'
+import LotteryListMode from '../../../../redux/model/game/LotteryListModel'
+import LotteryConst from '../../const/LotteryConst'
 
 /**
  * 彩票公共处理类

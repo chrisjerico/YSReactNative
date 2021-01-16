@@ -10,7 +10,7 @@ import { LotteryHistoryData } from '../../public/network/Model/lottery/LotteryHi
 import { ugLog } from '../../public/tools/UgLog'
 import { hideLoading, showLoading } from '../../public/widget/UGLoadingCP'
 import LotteryListModelModel from '../../redux/model/game/LotteryListModel'
-import UseParseLotteryDataHelper from './util/UseParseLotteryDataHelper'
+import UseParseLotteryDataHelper from './util/lt/UseParseLotteryDataHelper'
 
 /**
  * 彩票下注
