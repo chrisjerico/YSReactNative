@@ -14,8 +14,7 @@ import { BetBean, BetMode, jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UG
 
 import moment from 'moment';
 import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
-import FastImage from 'react-native-fast-image';
-import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
+
 
 export interface JDLotteryAssistantCPAction {
   stopTime?: () => void
