@@ -18,6 +18,13 @@ export interface Data {
   games: Game[];
 }
 
+export interface TwoLevelType {
+  id: string;
+  code: string;
+  name: string;
+  pic: string;
+}
+
 export interface TraceBack {
   loader: string;
   initDi: string;
@@ -39,5 +46,12 @@ export interface HomeRecommendModel {
   code: number;
   msg: string;
   data: Data[];
+  info: Info;
+}
+
+export interface TwoLevelGame {
+  code: number;
+  msg: string;
+  data: TwoLevelType[];
   info: Info;
 }

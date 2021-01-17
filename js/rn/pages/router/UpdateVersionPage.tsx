@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import CodePush, { SyncOptions } from 'react-native-code-push'
 import * as Progress from 'react-native-progress'
 import { useSafeArea } from 'react-native-safe-area-context'
@@ -19,6 +19,9 @@ import { UGStore } from '../../redux/store/UGStore'
 import { DefaultMenu } from '../../Res/DefaultMenu'
 import { UGBasePageProps } from '../base/UGPage'
 import UseVersion from './us/UseVersion'
+import { Toast } from '../../public/tools/ToastUtils'
+import { navigate } from '../../public/navigation/RootNavigation'
+import { PageName } from '../../public/navigation/Navigation'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -26,13 +29,17 @@ export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> 
   text?: string
   bCodePush?: boolean //codepush是否OK
   bBanner?: boolean //banner是否播放完
+  networkOK?: boolean //域名是否都正常
+  codeStatus?: CodePush.SyncStatus //code push状态
   counter?: number //计数器
   clickCount?: number //点击倒计时次数
   showNetwork?: string //显示网络状态
 }
+
 const MAX_TIME = 8 //最多8秒倒计时
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
-  const { setProps, progress = 0, counter = 0, clickCount = 0, showNetwork = '', text = '正在努力更新中...', bCodePush = false, bBanner = false } = props
+  const { setProps, progress = 0, counter = 0, clickCount = 0, showNetwork = '', text = '正在努力更新中...',
+    bCodePush = false, bBanner = false, networkOK = false, codeStatus } = props
 
   // 保存安全区域
   AppDefine.safeArea = useSafeArea()
@@ -46,18 +53,18 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   const { testNetwork, testSite } = UseVersion({ testResult })
 
   useEffect(() => {
-    // 超时时间20秒
-    const timer = setTimeout(() => {
-      clearTimeout(timer)
-
-      switch (Platform.OS) {
-        case 'ios':
-          break
-        case 'android':
-          ANHelper.callAsync(CMD.LAUNCH_GO)
-          break
-      }
-    }, 8000)
+    // // 超时时间20秒
+    // const timer = setTimeout(() => {
+    //   clearTimeout(timer)
+    //
+    //   switch (Platform.OS) {
+    //     case 'ios':
+    //       break
+    //     case 'android':
+    //       ANHelper.callAsync(CMD.LAUNCH_GO)
+    //       break
+    //   }
+    // }, 8000)
 
     setProps({
       navbarOpstions: { hidden: true },
@@ -68,6 +75,8 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         options,
         (status) => {
           let isNewest = false
+
+          setProps({ codeStatus: status })
           switch (status) {
             case CodePush.SyncStatus.SYNC_IN_PROGRESS:
               console.log('当前已经在更新了，无须重复执行')
@@ -91,12 +100,12 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
               console.log('rn正在下载热更新')
               //此时不能强制跳转
-              clearTimeout(timer)
+              // clearTimeout(timer)
               break
             case CodePush.SyncStatus.INSTALLING_UPDATE:
               console.log('rn正在安装热更新')
               //此时不能强制跳转
-              clearTimeout(timer)
+              // clearTimeout(timer)
               break
             case CodePush.SyncStatus.UNKNOWN_ERROR:
               console.log('rn热更新出错❌')
@@ -110,8 +119,8 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                   }, 1000)
                   break;
                 case 'android':
-                  isNewest = true
-                  break;
+                  // isNewest = true
+                  break
               }
               break
             case CodePush.SyncStatus.UPDATE_INSTALLED:
@@ -145,9 +154,10 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         (update) => {
           const verInfo = '(' + update.appVersion + ') ' + update.description
           console.log('发现新的热更新包：', verInfo)
-        }
+        },
       )
     }
+
     if (Platform.OS == 'ios') {
       // 重新启动后直接进入首页（优化CodePush访问慢用户的体验）
       OCHelper.call('AppDefine.shared.rnVersion').then(async (rnVersion: string) => {
@@ -206,11 +216,15 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     }
 
     //测试哪个域名最快
-    testSite()
+    testSite((httpOk) =>
+    {
+      setProps({ networkOK: httpOk })
+      httpOk && OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGDidDomainNameChange'])
+    })
 
     return () => {
       // ugLog("clear timer")
-      clearTimeout(timer)
+      // clearTimeout(timer)
     }
   }, [])
 
@@ -220,15 +234,43 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       case 'ios':
         break
       case 'android':
-        bCodePush && bBanner && ANHelper.callAsync(CMD.LAUNCH_GO)
+        ugLog('bCodePush bCodePush networkOK = ', bCodePush, bBanner, networkOK)
+        bCodePush && bBanner && networkOK && ANHelper.callAsync(CMD.LAUNCH_GO)
         break
     }
-  }, [bCodePush, bBanner])
+  }, [bCodePush, bBanner, networkOK])
 
   useEffect(() => {
     //设置一个计数器给用户倒计时
     const interval = setInterval(() => {
-      // ugLog('counter=', counter)
+
+      // ugLog('bCodePush bCodePush networkOK = ', bCodePush, bBanner, networkOK)
+
+      switch (Platform.OS) {
+        case 'ios':
+          //TODO
+          break;
+        case 'android':
+          //倒计时也到了, 请求没给正常结果，codePush也检查完毕 就判定域名有问题，如果codePush正在升级安装，就不管
+          if (counter == MAX_TIME && !networkOK &&
+            (codeStatus == CodePush.SyncStatus.UNKNOWN_ERROR || //codePush出错
+              codeStatus == CodePush.SyncStatus.UPDATE_IGNORED || //忽略此热更新
+              codeStatus == CodePush.SyncStatus.UP_TO_DATE)) { //已是最新版本
+            Alert.alert("温馨提示",
+              "访问出现异常，请联系客服...",
+              [
+                {
+                  text: '退出',
+                  onPress: () => {
+                    ANHelper.callAsync(CMD.FINISH_ACTIVITY)
+                  }, style: 'destructive',
+                },
+              ]);
+            //倒计时完了，请求还没有结果，就判定域名有问题，或者网速实在太慢
+          }
+          break;
+      }
+
       counter <= MAX_TIME && setProps({ counter: counter + 1 })
     }, 1000)
     return () => {

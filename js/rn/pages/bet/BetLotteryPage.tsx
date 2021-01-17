@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import UseBetLottery from './UseBetLottery'
@@ -12,7 +12,7 @@ import { UGColor } from '../../public/theme/UGThemeColor'
 import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
 import TimeComponent from './tm/TimeComponent'
-import LotteryConst, { LEFT_ITEM_HEIGHT } from './const/LotteryConst'
+import LotteryConst, { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from './const/LotteryConst'
 import LhcZTComponent from './lhc/zt/LhcZTComponent'
 import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
 import LhcSBComponent from './lhc/sb/LhcSBComponent'
@@ -105,10 +105,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制左边列表 特码 双面 正码 等等
    */
   const renderLeftColumn = () => <View key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
-                                       style={[
-                                         _styles.left_column_container,
-                                         { height: LEFT_ITEM_HEIGHT * arrayLength(playOddDetailData?.playOdds) },
-                                       ]}>
+                                       style={_styles.left_column_container}>
     <ScrollView key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
                 nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={false}>
@@ -214,11 +211,11 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制右边彩票区域，彩球 等等
    */
-  const renderRightContent = () => {
+  const renderRightContent = (lotteryCode?: string) => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
-    let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
-    // ugLog('---------------------------------------------------')
+    // let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
+    ugLog('------------------lotteryCode---------------------------------', lotteryCode)
     // return <View style={CommStyles.flex}>
     //   {
     //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
@@ -270,6 +267,23 @@ const BetLotteryPage = ({ navigation, route }) => {
     }
 
     return null
+  }
+
+  /**
+   * 绘制右边彩票区域，彩球 等等
+   */
+  const renderRightContentList = () => {
+    ugLog('---------------------------------------------------')
+
+    return (
+      <FlatList key={'page balls renderDataList'}
+                style={_styles.right_content_list}
+                showsVerticalScrollIndicator={false}
+                nestedScrollEnabled={true}
+                keyExtractor={(item, index) => `${item?.code}-${index}`}
+                data={playOddDetailData?.playOdds}
+                renderItem={({ item, index }) => (renderRightContent(item?.code))}/>
+    )
   }
 
   /**
@@ -358,14 +372,15 @@ const BetLotteryPage = ({ navigation, route }) => {
           {renderTopBar()}
           {renderGameTab()}
           <ScrollView key={'lottery middle content'}
-                      style={CommStyles.flex}>
+                      style={_styles.sv_container}>
             {renderHistory()}
             {<TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>}
             <View key={'lottery bet content'}
-                  style={{ flexDirection: 'row' }}>
+                  style={_styles.middle_content_container}>
               {renderLeftColumn()}
-              {renderRightContent()}
+              {renderRightContentList()}
             </View>
+            <View style={{height: scale(240), backgroundColor: 'red'}}/>
           </ScrollView>
           <BetBoardComponent key={'lottery board'}
                              locked={false}
@@ -382,6 +397,13 @@ const _styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
+  sv_container: {
+    flex: 1,
+  },
+  middle_content_container: {
+    flexDirection: 'row',
+    height: BALL_CONTENT_HEIGHT,
+  },
   modal_content: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -393,7 +415,7 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
   },
   top_bar_container: {
-    width: scale(540),
+    width: '100%',
     height: scale(72),
     flexDirection: 'row',
     alignItems: 'center',
@@ -436,9 +458,14 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: 'white',
   },
-  left_column_container: {},
+  left_column_container: {
+    height: BALL_CONTENT_HEIGHT,
+  },
+  right_content_list: {
+    height: BALL_CONTENT_HEIGHT,
+  },
   left_column_content: {
-    paddingBottom: LEFT_ITEM_HEIGHT * 10,
+
   },
   left_column_text: {
     color: UGColor.TextColor7,
@@ -451,8 +478,6 @@ const _styles = StyleSheet.create({
     height: LEFT_ITEM_HEIGHT,
     borderRadius: scale(8),
   },
-
-
 })
 
 export default BetLotteryPage

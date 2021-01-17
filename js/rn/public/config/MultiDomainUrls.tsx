@@ -188,11 +188,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://83f9.com',
   ],
   'c092': [
-    'https://2013qaz-555.com',
-    'https://2013wsx-555.com',
-    'https://2013yhn-555.com',
-    'https://2013jkl-555.com',
-    'https://2013egm-555.com',
+    'https://2013edc-555.com',
+    'https://2013rfv-555.com',
+    'https://2013ijn-555.com',
+    'https://2013uhb-555.com',
+    'https://2013ygc-555.com',
   ],
   'c105b': [
     'https://390qp8.com',
@@ -259,6 +259,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c150': [
     'https://0187655.com',
     'https://0187688.com',
+    'https://0187388.com',
+    'https://0187611.com',
   ],
   'c151': [
     'https://xpj501501401401.vip',
@@ -345,10 +347,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://c213-app-450.com',
-    'https://450-xpj-app.com',
-    'https://app-450-xpj.co',
-    'https://c213-app-450.cc',
+    'https://c213-appapp.com',
+    'https://c213-app-450.co',
+    'https://app-450-xpj.me',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -392,9 +393,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2420app.app',
   ],
   'c252': [
-    'https://xg344app.com',
-    'https://xggjapp7.com',
-    'https://xggjapp9.com',
+    'https://344app.vip',
+    'https://3444app.com',
+    'https://344app3.com',
+    'https://344app5.com',
+
   ],
   'c254': [
     'https://677888c.com',

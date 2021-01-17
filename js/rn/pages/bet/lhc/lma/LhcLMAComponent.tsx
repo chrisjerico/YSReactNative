@@ -170,7 +170,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 const _styles = StyleSheet.create({
   content_container: {
-    paddingBottom: LEFT_ITEM_HEIGHT * 6,
+
     flex: 1,
   },
   sub_title_container: {
