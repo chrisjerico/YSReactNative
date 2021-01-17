@@ -818,11 +818,9 @@ function infoAction(){
           {/* 内容 */}
           <View style={[{ flexDirection: 'column', marginLeft: 10, }]}>
             {/* 文字1 */}
-            <View>
               <Text style={{ fontSize: 15, color: Skin1.textColor1, }}>
                 {item.title}
               </Text>
-            </View>
             {/* 文字2 */}
             <View style={[{ flexDirection: 'row', alignItems: 'center', height: 28, }]}>
               <Text style={{ fontSize: 13, color: Skin1.textColor1 }}>

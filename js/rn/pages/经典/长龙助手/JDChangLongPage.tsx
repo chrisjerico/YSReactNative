@@ -110,6 +110,8 @@ const
         const { data } = await APIRouter.user_balance_token()
         const balance = data?.data?.balance
         setMoney(balance)
+
+        console.log('-------balance------', balance)
         UGStore.dispatch({ type: 'merge', userInfo: { balance } })
 
 

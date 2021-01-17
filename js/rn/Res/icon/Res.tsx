@@ -129,5 +129,7 @@ export const Res = {
   
   //导航 三根线
   gengduo: img_assets('gengduo'),
+  //长龙注单详情背景
+  betDetailBg: img_assets('betDetailBg'),
 
 }
