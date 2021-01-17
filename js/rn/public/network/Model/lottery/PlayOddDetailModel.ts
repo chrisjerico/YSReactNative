@@ -13,6 +13,10 @@ export interface PlayData {
   isBan: string;//0
   enable: string;//1
   from_id: string;//0
+
+  exId?: string //本地定义 id
+  exName?: string//本地定义 名字
+  exOdds?: string//本地定义 赔率
 }
 
 export interface PlayGroupData {

@@ -4,7 +4,7 @@
 import { PlayData, PlayGroupData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 
 interface LotteryListMode {
-  data?: PlayGroupData | Array<PlayGroupData> | Array<PlayData> | Array<ZodiacNum> // 根据实际情况来，一个 list 里面套了不同的类型
+  data?: PlayGroupData | Array<PlayGroupData> | Array<PlayData> | Array<ZodiacNum> | Array<Array<PlayData>> // 根据实际情况来，一个 list 里面套了不同的类型
   code?: string //属于哪类，特码 两面 正码 等等
   type?: ItemType
 }
