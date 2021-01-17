@@ -16,7 +16,7 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import APIRouter from '../../../public/network/APIRouter';
-
+import { Res } from '../../../Res/icon/Res';
 interface JDChangLongPage {
   tabNames?: Array<string>//tab界面名称数据
   inAnimated?: boolean
@@ -135,7 +135,7 @@ const
             <TouchableOpacity style={{ alignItems: 'center', flexDirection: 'row', }} onPress={() => {
               refreshBalance()
             }}>
-              <Text style={{ color: 'white', fontSize: 12, marginRight: 2 }}>
+              <Text style={{ color: 'white', fontSize: 14, marginRight: 2 }}>
                 {money}
               </Text>
               <Animated.View style={[{ width: scale(25) }, { transform: [{ rotateZ: spin }] }]}>
@@ -147,7 +147,7 @@ const
               rightClicked()
             }}>
 
-              <Image style={[styles.itemImageImageStyle, { height: 30, width: 24, }]} source={{ uri: 'https://appstatic.guolaow.com/assets/gengduo.png' }} />
+              <Image style={[styles.itemImageImageStyle, { height: 30, width: 24, }]} source={{ uri: Res.gengduo }} />
             </TouchableOpacity>
           </View>
         );
