@@ -4,7 +4,7 @@ import {
   PlayOddData,
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryListMode, { ItemType } from '../../../../redux/model/game/LotteryListModel'
+import { ItemType, LotteryListData } from '../../../../redux/model/game/LotteryListModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { ugLog } from '../../../../public/tools/UgLog'
 import LotteryData from '../../const/LotteryData'
@@ -24,11 +24,11 @@ interface IPXGroupData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
-const parsePXGroupData = ({ groupArray, data, zodiacNums }: IPXGroupData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parsePXGroupData = ({ groupArray, data, zodiacNums }: IPXGroupData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
   groupArray?.map((groupData) => {
     //标题栏
-    const labelList: LotteryListMode = {
+    const labelList: LotteryListData = {
       type: ItemType.LABEL,
       code: data?.code,
       data: groupData,
@@ -36,7 +36,7 @@ const parsePXGroupData = ({ groupArray, data, zodiacNums }: IPXGroupData): Array
     tmArray.push(labelList)
 
     //标题 生肖球数据
-    const newData: Array<LotteryListMode> = groupData?.plays?.map((playData, index) => {
+    const newData: Array<LotteryListData> = groupData?.plays?.map((playData, index) => {
       //生肖数据从服务器还是从本地取
       const nums = !anyEmpty(zodiacNums) ?
         zodiacNums?.find((zodiac) => zodiac?.name == playData?.name || zodiac?.name == playData?.alias)?.nums?.map((item) => ('0' + item).slice(-2)) :
@@ -77,11 +77,11 @@ interface IGroupData {
   N?: number
   ballType?: ItemType
 }
-const parseGroupData = ({ groupArray, data, N, ballType }: IGroupData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseGroupData = ({ groupArray, data, N, ballType }: IGroupData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
   groupArray?.map((groupData) => {
     //标题栏
-    const labelList: LotteryListMode = {
+    const labelList: LotteryListData = {
       type: ItemType.LABEL,
       code: data?.code,
       data: groupData,
@@ -111,8 +111,8 @@ interface IBallData {
   N?: number
   ballType?: ItemType
 }
-const parseBallData = ({ playDataArray, data, N, ballType }: IBallData): Array<LotteryListMode> => {
-  const playArray: Array<LotteryListMode> = []
+const parseBallData = ({ playDataArray, data, N, ballType }: IBallData): Array<LotteryListData> => {
+  const playArray: Array<LotteryListData> = []
 
   const endCount = arrayLength(playDataArray) % N //不是N的整数倍，有遗漏数据，比如 漏了2个
   const lastIndex = endCount > 0 ? arrayLength(playDataArray) - 1 : -1 // //不是N的整数倍，有遗漏数据
@@ -157,11 +157,11 @@ interface ITMData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
-const parseTMData = ({ tmB, data, zodiacNums }: ITMData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseTMData = ({ tmB, data, zodiacNums }: ITMData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
   if (arrayLength(data?.playGroups) == 6) {
     //特码B A Tab
-    const tabs: LotteryListMode = {
+    const tabs: LotteryListData = {
       type: ItemType.TAB,
       code: data?.code,
       data: [data?.playGroups[0], data?.playGroups[3]],
@@ -169,7 +169,7 @@ const parseTMData = ({ tmB, data, zodiacNums }: ITMData): Array<LotteryListMode>
     tmArray.push(tabs)
 
     //12生肖
-    const zodiacList: LotteryListMode = {
+    const zodiacList: LotteryListData = {
       type: ItemType.ZODIAC,
       code: data?.code,
       data: zodiacNums,
@@ -199,8 +199,8 @@ const parseTMData = ({ tmB, data, zodiacNums }: ITMData): Array<LotteryListMode>
 interface ILMData {
   data?: PlayOddData
 }
-const parseLMData = ({ data }: ILMData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseLMData = ({ data }: ILMData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
   //格子数据
   tmArray.push(...parseGroupData({ groupArray: data?.playGroups, data: data, N: 2, ballType: ItemType.LATTICE }))
 
@@ -218,12 +218,12 @@ const parseLMData = ({ data }: ILMData): Array<LotteryListMode> => {
 interface IZMData {
   data?: PlayOddData
 }
-const parseZMData = ({ data }: IZMData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseZMData = ({ data }: IZMData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
 
   if (arrayLength(data?.playGroups) % 2 == 0) {//长度是偶数
     if (arrayLength(data?.playGroups) > 2) {//多余2条的数据，有标题TAB
-      const tabs: LotteryListMode = {
+      const tabs: LotteryListData = {
         type: ItemType.TAB,
         code: data?.code,
         data: data?.playGroups?.filter((item, index) => index % 2 == 0),
@@ -257,12 +257,12 @@ const parseZMData = ({ data }: IZMData): Array<LotteryListMode> => {
 interface ILMAData {
   data?: PlayOddData
 }
-const parseLMAData = ({ data }: ILMAData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseLMAData = ({ data }: ILMAData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
 
   if (!anyEmpty(data?.playGroups)) {
     //标题TAB
-    const tabs: LotteryListMode = {
+    const tabs: LotteryListData = {
       type: ItemType.TAB,
       code: data?.code,
       data: data?.playGroups,
@@ -313,8 +313,8 @@ interface IPTYXData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
-const parsePTYXData = ({ data, zodiacNums }: IPTYXData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parsePTYXData = ({ data, zodiacNums }: IPTYXData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
 
   if (arrayLength(data?.playGroups) == 1) {
     tmArray.push(...parsePXGroupData({
@@ -339,12 +339,12 @@ interface ILXData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
-const parseLXData = ({ data, zodiacNums }: ILXData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseLXData = ({ data, zodiacNums }: ILXData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
 
   if (arrayLength(data?.playGroups) > 0) {
     //tab
-    const tabs: LotteryListMode = {
+    const tabs: LotteryListData = {
       type: ItemType.TAB,
       code: data?.code,
       data: data?.playGroups,
@@ -374,8 +374,8 @@ const parseLXData = ({ data, zodiacNums }: ILXData): Array<LotteryListMode> => {
 interface IPTWSData {
   data?: PlayOddData
 }
-const parsePTWSData = ({ data }: IPTWSData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parsePTWSData = ({ data }: IPTWSData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
 
   if (arrayLength(data?.playGroups) == 1) {
     //标题 生肖球数据
@@ -400,12 +400,12 @@ const parsePTWSData = ({ data }: IPTWSData): Array<LotteryListMode> => {
 interface ILWData {
   data?: PlayOddData
 }
-const parseLWData = ({ data }: ILWData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseLWData = ({ data }: ILWData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
 
   if (arrayLength(data?.playGroups) > 0) {
     //tab
-    const tabs: LotteryListMode = {
+    const tabs: LotteryListData = {
       type: ItemType.TAB,
       code: data?.code,
       data: data?.playGroups,
@@ -434,8 +434,8 @@ const parseLWData = ({ data }: ILWData): Array<LotteryListMode> => {
 interface ITWSData {
   data?: PlayOddData
 }
-const parseTWSData = ({ data }: ITWSData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseTWSData = ({ data }: ITWSData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
 
   if (arrayLength(data?.playGroups) == 2) {
 
@@ -464,19 +464,19 @@ interface IHXData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
-const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
 
   if (arrayLength(data?.playGroups) == 1) {
     //标题栏
-    const labelList: LotteryListMode = {
+    const labelList: LotteryListData = {
       type: ItemType.LABEL,
       code: data?.code,
       data: data?.playGroups[0],
     }
     tmArray.push(labelList)
 
-    const arr: Array<LotteryListMode> = zodiacNums?.map((zodiac) => ({
+    const arr: Array<LotteryListData> = zodiacNums?.map((zodiac) => ({
         ...zodiac,
         nums: zodiac?.nums?.filter((item) => item != '49'),
       } as ZodiacNum
@@ -484,7 +484,7 @@ const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListMode> => {
       type: ItemType.TITLE_AND_BALL,
       code: data?.code,
       data: item,
-    } as LotteryListMode))
+    } as LotteryListData))
 
     //格子数据
     tmArray.push(...arr)
@@ -507,11 +507,11 @@ const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListMode> => {
 interface IZXBZGroupData {
   data?: PlayOddData
 }
-const parseZXBZGroupData = ({ data }: IZXBZGroupData): Array<LotteryListMode> => {
-  const tmArray: Array<LotteryListMode> = []
+const parseZXBZGroupData = ({ data }: IZXBZGroupData): Array<LotteryListData> => {
+  const tmArray: Array<LotteryListData> = []
   data?.playGroups?.map((groupData) => {
     //标题栏
-    const labelList: LotteryListMode = {
+    const labelList: LotteryListData = {
       type: ItemType.LABEL,
       code: data?.code,
       data: groupData,

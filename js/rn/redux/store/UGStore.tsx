@@ -14,7 +14,7 @@ import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
-import LotteryListMode from '../model/game/LotteryListModel'
+import LotteryListModel, {LotteryListData} from '../model/game/LotteryListModel'
 
 // 整个State的树结构
 
@@ -28,7 +28,7 @@ export interface IGlobalState {
   rightMenu?: UGRightMenuModel[] // 又選單 陣列
   banner?: UGBannerModel
   selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
-  lotteryArray?: Array<LotteryListMode> //游戏列表数据
+  lotteryModel?: LotteryListModel //游戏列表数据
   sys?: UGSystemModel
   // value?: any;
 }
@@ -51,7 +51,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 
     //彩票数据
     act.selectedLotteryData && (state.selectedLotteryData = act.selectedLotteryData)
-    act.lotteryArray && (state.lotteryArray = [...act.lotteryArray])
+    act.lotteryModel && (state.lotteryModel = act.lotteryModel)
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
     state.userInfo = { ...state.userInfo, ...act.userInfo }
@@ -59,7 +59,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.banner = { ...state.banner, ...act.banner }
     //彩票数据
     state.selectedLotteryData = {selectedData: { ...state.selectedLotteryData?.selectedData, ...act.selectedLotteryData?.selectedData }}
-    state.lotteryArray = [ ...state.lotteryArray, ...act.lotteryArray ]
+    state.lotteryModel = { ...state.lotteryModel, ...act.lotteryModel }
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
     // 陣列
@@ -84,7 +84,7 @@ export interface UGAction<P = {}> extends Action {
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳
   banner?: UGBannerModel
   selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
-  lotteryArray?: Array<LotteryListMode> //游戏列表数据
+  lotteryModel?: LotteryListModel //游戏列表数据
   sys?: UGSystemModel
   rightMenu?: UGRightMenuModel[]
   // value?: any;// 其他 example

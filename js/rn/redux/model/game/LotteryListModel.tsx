@@ -6,7 +6,15 @@ import { PlayData, PlayGroupData, ZodiacNum } from '../../../public/network/Mode
 /**
  * 一行数据
  */
-interface LotteryListMode {
+interface LotteryListModel {
+  data?: Array<LotteryListData> //列表数据
+  code?: string //属于香港六合彩，幸运飞艇 还是其它
+}
+
+/**
+ * 一行数据
+ */
+interface LotteryListData {
   data?: PlayData | PlayGroupData | Array<PlayGroupData> | Array<PlayData> | Array<ZodiacNum> | Array<Array<PlayData>> // 根据实际情况来，一个 list 里面套了不同的类型
   code?: string //属于哪类，特码 两面 正码 等等
   type?: ItemType
@@ -24,5 +32,5 @@ enum ItemType {
   TITLE_AND_BALL = 'TITLE_AND_BALL',  //标题和N个格子一行
 }
 
-export default LotteryListMode
-export {ItemType}
+export default LotteryListModel
+export {ItemType, LotteryListData}

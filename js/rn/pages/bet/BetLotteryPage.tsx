@@ -23,7 +23,7 @@ import BetBoardComponent from './board/BetBoardComponent'
 import { anyEmpty, arrayLength } from '../../public/tools/Ext'
 import BetRecordHeaderComponent from './red/BetRecordHeaderComponent'
 import { ugLog } from '../../public/tools/UgLog'
-import LotteryListMode, { ItemType } from '../../redux/model/game/LotteryListModel'
+import { ItemType, LotteryListData } from '../../redux/model/game/LotteryListModel'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -41,7 +41,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   const {
     userInfo,
     systemInfo,
-    lotteryArray,
+    lotteryModel,
     setLotteryId,
     nextIssueData,
     playOddDetailData,
@@ -213,7 +213,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制右边彩票区域，彩球 等等
    */
-  const renderRightContent = (listMode?: LotteryListMode) => {
+  const renderRightContent = (listMode?: LotteryListData) => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
     // let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
@@ -246,7 +246,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContentList = () => {
-    // ugLog('----------------------2-----------------------------', lotteryArray)
+    // ugLog('----------------------2-----------------------------', lotteryModel)
 
     return (
       <FlatList key={'page balls renderDataList'}
@@ -254,7 +254,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                 showsVerticalScrollIndicator={false}
                 nestedScrollEnabled={true}
                 keyExtractor={(item, index) => `${item?.code}-${index}`}
-                data={lotteryArray}
+                data={lotteryModel?.data}
                 renderItem={({ item, index }) => (renderRightContent(item))}/>
     )
   }

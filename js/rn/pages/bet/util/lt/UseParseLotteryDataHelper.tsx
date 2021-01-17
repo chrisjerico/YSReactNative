@@ -9,7 +9,7 @@ import {
 import { anyEmpty } from '../../../../public/tools/Ext'
 import BetLotteryContext from '../../BetLotteryContext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
-import LotteryListMode from '../../../../redux/model/game/LotteryListModel'
+import LotteryListModel, {LotteryListData} from '../../../../redux/model/game/LotteryListModel'
 import LotteryConst from '../../const/LotteryConst'
 import {
   parseHXData,
@@ -43,7 +43,7 @@ const UseParseLotteryDataHelper = () => {
    * @param data
    */
   const parseData = (data?: PlayOddDetailData) => {
-    const listData: Array<LotteryListMode> = []
+    const listData: Array<LotteryListData> = []
     data?.playOdds?.map((playOdds) => {
       const code = playOdds?.code
       const zodiacNum = data?.setting?.zodiacNums
@@ -103,8 +103,12 @@ const UseParseLotteryDataHelper = () => {
       }
     })
 
+    const lhcData: LotteryListModel = {
+      code: data?.lotteryLimit?.gameType,
+      data: listData
+    }
     // setLotteryListData(listData)
-    UGStore.dispatch({ type: 'reset', lotteryArray: listData })
+    UGStore.dispatch({ type: 'reset', lotteryModel: lhcData })
     // ugLog('parse data listData=', listData)
   }
 

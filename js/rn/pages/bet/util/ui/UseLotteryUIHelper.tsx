@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import LotteryListMode from '../../../../redux/model/game/LotteryListModel'
+import { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
 
 /**
  * 彩票UI协助类，专门绘制各类小组件
@@ -8,7 +8,7 @@ import LotteryListMode from '../../../../redux/model/game/LotteryListModel'
  */
 const UseLotteryUIHelper = () => {
 
-  const renderTab = (listMode?: LotteryListMode) => {
+  const renderTab = (listMode?: LotteryListData) => {
 
   }
 
