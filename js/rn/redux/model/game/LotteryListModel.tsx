@@ -17,7 +17,8 @@ interface LotteryListModel {
 interface LotteryListData {
   data?: PlayData | PlayGroupData | Array<PlayGroupData> | Array<PlayData> | Array<ZodiacNum> | Array<Array<PlayData>> // 根据实际情况来，一个 list 里面套了不同的类型
   code?: string //属于哪类，特码 两面 正码 等等
-  type?: ItemType
+  type?: ItemType //当前类型
+  selectedTabIndex?: number // 当前选中的Tab
 }
 
 /**
