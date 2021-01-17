@@ -299,7 +299,7 @@ const JDSigInPage = () => {
     const _renderListEmptyComp = () => {
         return (
             <View>
-                <Text>没有数据时显示本段文字</Text>
+                <Text>没有数据!</Text>
             </View>
         );
     }

@@ -621,11 +621,13 @@ function infoAction(){
   function getChanglong() {
     // console.log('长龙助手===');
     api.game.changlong('60').useSuccess(({ data }) => {
-
       // console.log('data =', data);
-
       if (anyEmpty(data)) {
-        return
+        console.log('进来了：==================');
+        v.isRefreshing = false;
+        v.items.length = 0
+        setProps();
+        return;
       }
       let arrayData = returnData(data);
       if (arrayData.length == 0) {
