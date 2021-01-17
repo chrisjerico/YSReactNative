@@ -27,6 +27,8 @@ import LhcSBComponent from '../../lhc/sb/LhcSBComponent'
 import LhcPTYXComponent from '../../lhc/ptyx/LhcPTYXComponent'
 import LhcHXComponent from '../../lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from '../../lhc/zxbz/LhcZXBZComponent'
+import { ugLog } from '../../../../public/tools/UgLog'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 /**
  * 彩票公共处理类
@@ -34,14 +36,14 @@ import LhcZXBZComponent from '../../lhc/zxbz/LhcZXBZComponent'
  */
 const UseParseLotteryDataHelper = () => {
 
-  const [lotteryListData, setLotteryListData] = useState<Array<LotteryListMode>>([]) //重新缓存的列表数据
+  // const [lotteryListData, setLotteryListData] = useState<Array<LotteryListMode>>([]) //重新缓存的列表数据
 
   /**
    * 解析重新组合列表数据
    * @param data
    */
   const parseData = (data?: PlayOddDetailData) => {
-    const listData = []
+    const listData: Array<LotteryListMode> = []
     data?.playOdds?.map((playOdds) => {
       const code = playOdds?.code
       const zodiacNum = data?.setting?.zodiacNums
@@ -98,14 +100,15 @@ const UseParseLotteryDataHelper = () => {
           listData.push(...parseZXBZGroupData({ data: playOdds }))
 
           break
-
-
       }
     })
+
+    // setLotteryListData(listData)
+    UGStore.dispatch({ type: 'reset', lotteryArray: listData })
+    // ugLog('parse data listData=', listData)
   }
 
   return {
-    lotteryListData,
     parseData,
   }
 }

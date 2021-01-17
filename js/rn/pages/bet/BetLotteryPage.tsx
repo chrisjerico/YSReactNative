@@ -23,6 +23,7 @@ import BetBoardComponent from './board/BetBoardComponent'
 import { anyEmpty, arrayLength } from '../../public/tools/Ext'
 import BetRecordHeaderComponent from './red/BetRecordHeaderComponent'
 import { ugLog } from '../../public/tools/UgLog'
+import LotteryListMode, { ItemType } from '../../redux/model/game/LotteryListModel'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -40,6 +41,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   const {
     userInfo,
     systemInfo,
+    lotteryArray,
     setLotteryId,
     nextIssueData,
     playOddDetailData,
@@ -211,79 +213,49 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制右边彩票区域，彩球 等等
    */
-  const renderRightContent = (lotteryCode?: string) => {
+  const renderRightContent = (listMode?: LotteryListMode) => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
     // let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
-    ugLog('------------------lotteryCode---------------------------------', lotteryCode)
+    // ugLog('------------------lotteryCode---------------------------------', JSON.stringify(listMode))
     // return <View style={CommStyles.flex}>
     //   {
     //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
     //   }
     // </View>
 
-
-    switch (lotteryCode) {
-      case LotteryConst.TM: { //特码
-        return <LhcTMComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT: { //正特
-        return <LhcZTComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.LMA: { //连码
-        return <LhcLMAComponent key={lotteryCode}
-                                lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX: { //五行
-        return <LhcSBComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.YX: //平特一肖
-      case LotteryConst.WS: //平特尾数
-      case LotteryConst.TWS: //头尾数
-      case LotteryConst.TX: //特肖
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZX: { //正肖
-        return <LhcPTYXComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.HX: { //合肖
-        return <LhcHXComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.ZXBZ: { //自选不中
-        return <LhcZXBZComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
-      }
-
+    ugLog('renderRightContent=', JSON.stringify(listMode))
+    switch (listMode?.type) {
+      case ItemType.BALLS:
+        return <Text>{JSON.stringify(listMode)}</Text>
+      case ItemType.LABEL:
+        return <Text>{JSON.stringify(listMode)}</Text>
+      case ItemType.LATTICE:
+        return <Text>{JSON.stringify(listMode)}</Text>
+      case ItemType.TAB:
+        return <Text>{JSON.stringify(listMode)}</Text>
+      case ItemType.TITLE_AND_BALL:
+        return <Text>{JSON.stringify(listMode)}</Text>
+      case ItemType.ZODIAC:
+        return <Text>{JSON.stringify(listMode)}</Text>
     }
 
-    return null
   }
 
   /**
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContentList = () => {
-    ugLog('---------------------------------------------------')
+    // ugLog('----------------------2-----------------------------', lotteryArray)
 
     return (
       <FlatList key={'page balls renderDataList'}
                 style={_styles.right_content_list}
                 showsVerticalScrollIndicator={false}
                 nestedScrollEnabled={true}
-                initialNumToRender={2}
                 keyExtractor={(item, index) => `${item?.code}-${index}`}
-                data={playOddDetailData?.playOdds}
-                renderItem={({ item, index }) => (renderRightContent(item?.code))}/>
+                data={lotteryArray}
+                renderItem={({ item, index }) => (renderRightContent(item))}/>
     )
   }
 

@@ -132,7 +132,7 @@ const parseBallData = ({ playDataArray, data, N, ballType }: IBallData): Array<L
       for (let i = forStart; i >= 0; i--) {
         trio.push(array[index - i])
       }
-      //ugLog('trio = ', JSON.stringify(trio))
+      ////ugLog('trio = ', JSON.stringify(trio))
       playArray.push({
           type: ballType ?? ItemType.BALLS,
           code: data?.code,
@@ -186,7 +186,7 @@ const parseTMData = ({ tmB, data, zodiacNums }: ITMData): Array<LotteryListMode>
 
   }
 
-  ugLog(`parseTMData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parseTMData ${data?.name} tmArray = `, JSON.stringify(tmArray))
   return tmArray
 }
 
@@ -204,7 +204,7 @@ const parseLMData = ({ data }: ILMData): Array<LotteryListMode> => {
   //格子数据
   tmArray.push(...parseGroupData({ groupArray: data?.playGroups, data: data, N: 2, ballType: ItemType.LATTICE }))
 
-  ugLog(`parseLMData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parseLMData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -243,7 +243,7 @@ const parseZMData = ({ data }: IZMData): Array<LotteryListMode> => {
     })
   }
 
-  ugLog(`parseZMData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parseZMData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -298,7 +298,7 @@ const parseLMAData = ({ data }: ILMAData): Array<LotteryListMode> => {
     })
   }
 
-  ugLog(`parseLMAData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parseLMAData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -324,7 +324,7 @@ const parsePTYXData = ({ data, zodiacNums }: IPTYXData): Array<LotteryListMode> 
     }))
   }
 
-  ugLog(`parsePTYXData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parsePTYXData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -360,7 +360,7 @@ const parseLXData = ({ data, zodiacNums }: ILXData): Array<LotteryListMode> => {
 
   }
 
-  ugLog(`parsePTYXData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parsePTYXData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -386,7 +386,7 @@ const parsePTWSData = ({ data }: IPTWSData): Array<LotteryListMode> => {
 
   }
 
-  ugLog(`parsePTWSData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parsePTWSData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -420,7 +420,7 @@ const parseLWData = ({ data }: ILWData): Array<LotteryListMode> => {
 
   }
 
-  ugLog(`parsePTYXData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parsePTYXData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -449,7 +449,7 @@ const parseTWSData = ({ data }: ITWSData): Array<LotteryListMode> => {
     }))
   }
 
-  ugLog(`parseTWSData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parseTWSData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -491,7 +491,7 @@ const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListMode> => {
 
   }
 
-  ugLog(`parseHXData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parseHXData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
@@ -535,7 +535,7 @@ const parseZXBZGroupData = ({ data }: IZXBZGroupData): Array<LotteryListMode> =>
 
   })
 
-  ugLog(`parseZXBZGroupData ${data?.name} tmArray = `, JSON.stringify(tmArray))
+  //ugLog(`parseZXBZGroupData ${data?.name} tmArray = `, JSON.stringify(tmArray))
 
   return tmArray
 }
