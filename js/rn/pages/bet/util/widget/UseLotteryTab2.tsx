@@ -9,31 +9,28 @@ import { scale } from '../../../../public/tools/Scale'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 /**
- * 彩票UI协助类，专门绘制各类小组件
+ * 绘制 2个 tab
  * @constructor
  */
-const UseLotteryUIHelper = () => {
+const UseLotteryTab2 = () => {
 
-
-  // const renderTab = (listData?: LotteryListData) => {
-  //
-  // }
   /**
    * 绘制 2个Tab 容器 Tab
+   *
+   * @param selectedTabIndex 当前选中哪一个
+   * @param tabIndex 当前TAB索引
+   * @param groupData 当前TAB数据
    */
-  const renderTab2Item = (groupData?: PlayGroupData) =>
+  const renderTab2Item = (selectedTabIndex?: number, tabIndex?: number, groupData?: PlayGroupData) =>
     <View style={[
             _styles.tab_item,
-            tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+      selectedTabIndex == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
           ]}>
-      <TouchableOpacity key={key + 'renderTabItem Text'}
-                        onPress={() => setTabIndex(tab)}
-                        style={_styles.tab_title_tb}>
-        <Text key={key + 'renderTabItem Text'}
-              style={[
+      <TouchableOpacity style={_styles.tab_title_tb}>
+        <Text style={[
                 _styles.tab_title,
-                tabIndex == tab ? { color: 'white' } : null,
-              ]}>{!anyEmpty(pageData) && pageData[tab][0].alias}</Text>
+                selectedTabIndex == tabIndex ? { color: 'white' } : null,
+              ]}>{groupData?.alias}</Text>
       </TouchableOpacity>
     </View>
 
@@ -41,11 +38,12 @@ const UseLotteryUIHelper = () => {
    * 绘制 2个Tab 容器
    */
   const renderTab2 = (listData?: LotteryListData) => <View style={_styles.tab_container}>
-    {renderTab2Item(listData[0])}
-    {renderTab2Item(listData[1])}
+    {renderTab2Item(listData?.selectedTabIndex, 0, listData[0])}
+    {renderTab2Item(listData?.selectedTabIndex, 1, listData[1])}
   </View>
 
   return {
+    renderTab2
   }
 }
 
@@ -73,5 +71,5 @@ const _styles = StyleSheet.create({
 })
 
 
-export default UseLotteryUIHelper
+export default UseLotteryTab2
 
