@@ -139,7 +139,7 @@ const WNZHomePage = () => {
                 if (subType) {
                   showGameSubType(index)
                 } else {
-                  ugLog('GameType item=', JSON.stringify(item))
+                  //ugLog('GameType item=', JSON.stringify(item))
                   if (gameId == GameType.大厅
                   && (subId != MenuType.CQK &&
                       subId != MenuType.CZ &&
@@ -370,7 +370,7 @@ const WNZHomePage = () => {
                     if (onPress) {
                       onPress()
                     } else {
-                      ugLog('GameType item=', JSON.stringify(item))
+                      //ugLog('GameType item=', JSON.stringify(item))
                       const { subId } = item
                       if (subId == GameType.游戏大厅) {  //游戏大厅
                         push(PageName.GameLobbyPage, { showBackButton: true })

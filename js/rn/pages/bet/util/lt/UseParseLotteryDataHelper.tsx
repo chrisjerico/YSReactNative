@@ -12,12 +12,13 @@ import { isSelectedBallOnId } from '../../const/ISelBall'
 import LotteryListMode from '../../../../redux/model/game/LotteryListModel'
 import LotteryConst from '../../const/LotteryConst'
 import {
+  parseHXData,
   parseLMAData,
   parseLMData, parseLWData, parseLXData,
   parsePTWSData,
   parsePTYXData,
   parseTMData, parseTWSData,
-  parseZMData,
+  parseZMData, parseZXBZGroupData,
 } from './LotteryParseDataUtil'
 import LhcTMComponent from '../../lhc/tm/LhcTMComponent'
 import LhcZTComponent from '../../lhc/zt/LhcZTComponent'
@@ -43,18 +44,20 @@ const UseParseLotteryDataHelper = () => {
     const listData = []
     data?.playOdds?.map((playOdds) => {
       const code = playOdds?.code
+      const zodiacNum = data?.setting?.zodiacNums
+
       switch (code) {
         case LotteryConst.TM:  //特码
-          listData.push(...parseTMData(true, playOdds, data?.setting?.zodiacNums))
+          listData.push(...parseTMData({ tmB: true, data: playOdds, zodiacNums: zodiacNum }))
           break
 
         case LotteryConst.ZM: //正码
         case LotteryConst.ZT:  //正特
-          listData.push(...parseZMData(playOdds))
+          listData.push(...parseZMData({ data: playOdds }))
           break
 
         case LotteryConst.LMA:  //连码
-          listData.push(...parseLMAData(playOdds))
+          listData.push(...parseLMAData({ data: playOdds }))
           break
 
         case LotteryConst.LM: //两面
@@ -62,34 +65,38 @@ const UseParseLotteryDataHelper = () => {
         case LotteryConst.SB: //色波
         case LotteryConst.ZOX://总肖
         case LotteryConst.WX:  //五行
-          listData.push(...parseLMData(playOdds))
+          listData.push(...parseLMData({ data: playOdds }))
           break
 
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
         case LotteryConst.ZX:  //正肖
-          listData.push(...parsePTYXData({ data: playOdds }))
+          listData.push(...parsePTYXData({ data: playOdds, zodiacNums: zodiacNum }))
 
           break
         case LotteryConst.WS: //平特尾数
-          listData.push(...parsePTWSData(playOdds))
+          listData.push(...parsePTWSData({ data: playOdds }))
 
           break
         case LotteryConst.TWS: //头尾数
-          listData.push(...parseTWSData(playOdds))
+          listData.push(...parseTWSData({ data: playOdds }))
 
           break;
         case LotteryConst.LX: //连肖
-          listData.push(...parseLXData({ data: playOdds }))
+          listData.push(...parseLXData({ data: playOdds, zodiacNums: zodiacNum }))
           break
         case LotteryConst.LW: //连尾
-          listData.push(...parseLWData(playOdds))
+          listData.push(...parseLWData({ data: playOdds }))
 
           break
         case LotteryConst.HX:  //合肖
+          listData.push(...parseHXData({ data: playOdds, zodiacNums: zodiacNum }))
+
           break
 
         case LotteryConst.ZXBZ:  //自选不中
+          listData.push(...parseZXBZGroupData({ data: playOdds }))
+
           break
 
 
