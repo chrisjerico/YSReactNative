@@ -11,7 +11,14 @@ import BetLotteryContext from '../../BetLotteryContext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
 import LotteryListMode from '../../../../redux/model/game/LotteryListModel'
 import LotteryConst from '../../const/LotteryConst'
-import { parseLMAData, parseLMData, parseTMData, parseZMData } from './LotteryParseDataUtil'
+import {
+  parseLMAData,
+  parseLMData, parseLWData, parseLXData,
+  parsePTWSData,
+  parsePTYXData,
+  parseTMData, parseTWSData,
+  parseZMData,
+} from './LotteryParseDataUtil'
 import LhcTMComponent from '../../lhc/tm/LhcTMComponent'
 import LhcZTComponent from '../../lhc/zt/LhcZTComponent'
 import LhcLMAComponent from '../../lhc/lma/LhcLMAComponent'
@@ -37,43 +44,54 @@ const UseParseLotteryDataHelper = () => {
     data?.playOdds?.map((playOdds) => {
       const code = playOdds?.code
       switch (code) {
-        case LotteryConst.TM: { //特码
+        case LotteryConst.TM:  //特码
           listData.push(...parseTMData(true, playOdds, data?.setting?.zodiacNums))
-          break;
-        }
+          break
+
         case LotteryConst.ZM: //正码
-        case LotteryConst.ZT: { //正特
+        case LotteryConst.ZT:  //正特
           listData.push(...parseZMData(playOdds))
-          break;
-        }
-        case LotteryConst.LMA: { //连码
+          break
+
+        case LotteryConst.LMA:  //连码
           listData.push(...parseLMAData(playOdds))
-          break;
-        }
+          break
+
         case LotteryConst.LM: //两面
         case LotteryConst.ZM1_6: //正码1T6
         case LotteryConst.SB: //色波
         case LotteryConst.ZOX://总肖
-        case LotteryConst.WX: { //五行
+        case LotteryConst.WX:  //五行
           listData.push(...parseLMData(playOdds))
-          break;
-        }
+          break
+
         case LotteryConst.YX: //平特一肖
-        case LotteryConst.WS: //平特尾数
-        case LotteryConst.TWS: //头尾数
         case LotteryConst.TX: //特肖
-        case LotteryConst.LX: //连肖
-        case LotteryConst.LW: //连尾
-        case LotteryConst.ZX: { //正肖
+        case LotteryConst.ZX:  //正肖
+          listData.push(...parsePTYXData({ data: playOdds }))
+
+          break
+        case LotteryConst.WS: //平特尾数
+          listData.push(...parsePTWSData(playOdds))
+
+          break
+        case LotteryConst.TWS: //头尾数
+          listData.push(...parseTWSData(playOdds))
 
           break;
-        }
-        case LotteryConst.HX: { //合肖
-          break;
-        }
-        case LotteryConst.ZXBZ: { //自选不中
-          break;
-        }
+        case LotteryConst.LX: //连肖
+          listData.push(...parseLXData({ data: playOdds }))
+          break
+        case LotteryConst.LW: //连尾
+          listData.push(...parseLWData(playOdds))
+
+          break
+        case LotteryConst.HX:  //合肖
+          break
+
+        case LotteryConst.ZXBZ:  //自选不中
+          break
+
 
       }
     })

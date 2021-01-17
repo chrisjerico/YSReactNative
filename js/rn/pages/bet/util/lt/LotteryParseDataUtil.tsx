@@ -7,6 +7,7 @@ import {
 import LotteryListMode, { ItemType } from '../../../../redux/model/game/LotteryListModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { ugLog } from '../../../../public/tools/UgLog'
+import LotteryData from '../../const/LotteryData'
 
 /**
  * 解析六合彩 特码数据
@@ -74,7 +75,6 @@ const parseZMData = (data?: PlayOddData): Array<LotteryListMode> => {
   const tmArray: Array<LotteryListMode> = []
 
   if (arrayLength(data?.playGroups) % 2 == 0) {//长度是偶数
-
     if (arrayLength(data?.playGroups) > 2) {//多余2条的数据，有标题TAB
       const tabs: LotteryListMode = {
         type: ItemType.TAB,
@@ -141,13 +141,208 @@ const parseLMAData = (data?: PlayOddData): Array<LotteryListMode> => {
           return ball
         })
 
-        tmArray.push(...parseGroupData([{...groupData, plays: arr}], data, 3))
+        tmArray.push(...parseGroupData([{ ...groupData, plays: arr }], data, 3))
       }
 
     })
   }
 
-  ugLog('parseZMData tmArray = ', JSON.stringify(tmArray))
+  ugLog('parseLMAData tmArray = ', JSON.stringify(tmArray))
+
+  return tmArray
+}
+
+/**
+ * 解析六合彩 平特一肖 等规则数据
+ *
+ * @param data 数据
+ * @param zodiacNums 生肖数据
+ */
+interface IParsePTYXData {
+  data?: PlayOddData
+  zodiacNums?: ZodiacNum[]
+}
+const parsePTYXData = ({ data, zodiacNums }: IParsePTYXData): Array<LotteryListMode> => {
+  const tmArray: Array<LotteryListMode> = []
+
+  if (arrayLength(data?.playGroups) == 1) {
+    tmArray.push(...parsePXGroupData([data?.playGroups[0]], data, ItemType.TITLE_AND_BALL, zodiacNums))
+  }
+
+  ugLog('parsePTYXData tmArray = ', JSON.stringify(tmArray))
+
+  return tmArray
+}
+
+/**
+ * 解析六合彩 连肖 等规则数据
+ *
+ * @param data 数据
+ * @param zodiacNums 生肖数据
+ */
+interface IParseLXData {
+  data?: PlayOddData
+  zodiacNums?: ZodiacNum[]
+}
+const parseLXData = ({ data, zodiacNums }: IParseLXData): Array<LotteryListMode> => {
+  const tmArray: Array<LotteryListMode> = []
+
+  if (arrayLength(data?.playGroups) > 0) {
+    //tab
+    const tabs: LotteryListMode = {
+      type: ItemType.TAB,
+      code: data?.code,
+      data: data?.playGroups,
+    }
+    tmArray.push(tabs)
+
+    //标题 生肖球数据
+    tmArray.push(...parsePXGroupData([data?.playGroups[0]], data, ItemType.TITLE_AND_BALL, zodiacNums))
+
+  }
+
+  ugLog('parsePTYXData tmArray = ', JSON.stringify(tmArray))
+
+  return tmArray
+}
+
+/**
+ * 解析六合彩 平特尾数 等规则数据
+ *
+ * @param data 数据
+ */
+const parsePTWSData = (data?: PlayOddData): Array<LotteryListMode> => {
+  const tmArray: Array<LotteryListMode> = []
+
+  if (arrayLength(data?.playGroups) == 1) {
+    //标题 生肖球数据
+    tmArray.push(...parsePXGroupData([data?.playGroups[0]], data, ItemType.TITLE_AND_BALL))
+
+  }
+
+  ugLog('parsePTWSData tmArray = ', JSON.stringify(tmArray))
+
+  return tmArray
+}
+
+/**
+ * 解析六合彩 连尾 等规则数据
+ *
+ * @param data 数据
+ * @param zodiacNums 生肖数据
+ */
+const parseLWData = (data?: PlayOddData): Array<LotteryListMode> => {
+  const tmArray: Array<LotteryListMode> = []
+
+  if (arrayLength(data?.playGroups) > 0) {
+    //tab
+    const tabs: LotteryListMode = {
+      type: ItemType.TAB,
+      code: data?.code,
+      data: data?.playGroups,
+    }
+    tmArray.push(tabs)
+
+    //标题 生肖球数据
+    tmArray.push(...parsePXGroupData([data?.playGroups[0]], data, ItemType.TITLE_AND_BALL))
+
+  }
+
+  ugLog('parsePTYXData tmArray = ', JSON.stringify(tmArray))
+
+  return tmArray
+}
+
+/**
+ * 解析六合彩 头尾数 等规则数据
+ *
+ * @param data 数据
+ */
+const parseTWSData = (data?: PlayOddData): Array<LotteryListMode> => {
+  const tmArray: Array<LotteryListMode> = []
+
+  if (arrayLength(data?.playGroups) == 2) {
+
+    //格子数据
+    tmArray.push(...parseGroupData([data?.playGroups[0]], data, 2, ItemType.LATTICE))
+
+    //标题 生肖球数据
+    tmArray.push(...parsePXGroupData([data?.playGroups[0]], data, ItemType.TITLE_AND_BALL))
+  }
+
+  ugLog('parseTWSData tmArray = ', JSON.stringify(tmArray))
+
+  return tmArray
+}
+
+/**
+ * 解析六合彩 合肖 等规则数据
+ *
+ * @param data 数据
+ */
+const parseHXData = (data?: PlayOddData,
+                     zodiacNums?: ZodiacNum[]): Array<LotteryListMode> => {
+  const tmArray: Array<LotteryListMode> = []
+
+  if (arrayLength(data?.playGroups) == 2) {
+
+    //格子数据
+    tmArray.push(...parseGroupData([data?.playGroups[0]], data, 2, ItemType.LATTICE))
+
+    //标题 生肖球数据
+    tmArray.push(...parsePTWSData({ ...data, playGroups: [data?.playGroups[1]] }))
+  }
+
+  ugLog('parseTWSData tmArray = ', JSON.stringify(tmArray))
+
+  return tmArray
+}
+
+/**
+ * 解析六合彩 一组平特数据，如 平特一肖
+ *
+ * @param groupArray 数据列表
+ * @param data 特码数据
+ * @param zodiacNums 使用设置里面的生肖数据
+ * @param ballType 当前是球还是格子 还是 其它
+ *
+ * return 标题 + 球或格子
+ */
+const parsePXGroupData = (groupArray?: Array<PlayGroupData>,
+                          data?: PlayOddData,
+                          ballType?: ItemType,
+                          zodiacNums?: ZodiacNum[]): Array<LotteryListMode> => {
+  const tmArray: Array<LotteryListMode> = []
+  groupArray?.map((groupData) => {
+    //标题栏
+    const labelList: LotteryListMode = {
+      type: ItemType.LABEL,
+      code: data?.code,
+      data: groupData,
+    }
+    tmArray.push(labelList)
+
+    //标题 生肖球数据
+    const newData: Array<LotteryListMode> = groupData?.plays?.map((playData, index) => {
+      //生肖数据从服务器还是从本地取
+      const nums = !anyEmpty(zodiacNums) ?
+        zodiacNums?.find((zodiac) => zodiac?.name == playData?.name || zodiac?.name == playData?.alias)?.nums?.map((item) => ('0' + item).slice(-2)) :
+        index < LotteryData.WS.length ? LotteryData.WS[index] : null
+      const newPlayData: PlayData = {
+        ...playData, exNums: nums,
+      }
+
+      return ({
+        type: ItemType.TITLE_AND_BALL,
+        code: data?.code,
+        data: newPlayData,
+      })
+    })
+
+    //每行N个球排列
+    tmArray.push(...newData)
+
+  })
 
   return tmArray
 }
@@ -155,7 +350,7 @@ const parseLMAData = (data?: PlayOddData): Array<LotteryListMode> => {
 /**
  * 解析六合彩 一组数据，如 特码标题栏+球数据
  *
- * @param groupArray 特码B A 数据列表
+ * @param groupArray 数据列表
  * @param data 特码数据
  * @param N N个数为一组，必须大于 0
  * @param ballType 当前是球还是格子 还是 其它
@@ -229,4 +424,14 @@ const parseBallData = (playData?: Array<PlayData>,
   return playArray
 }
 
-export { parseTMData, parseLMData, parseZMData, parseLMAData }
+export {
+  parseTMData,
+  parseLMData,
+  parseZMData,
+  parseLMAData,
+  parsePTYXData,
+  parseLXData,
+  parsePTWSData,
+  parseLWData,
+  parseTWSData,
+}

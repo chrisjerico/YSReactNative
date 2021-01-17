@@ -17,6 +17,8 @@ export interface PlayData {
   exId?: string //本地定义 id
   exName?: string//本地定义 名字
   exOdds?: string//本地定义 赔率
+  exNums?: string[]; //["1","13","25","37","49"] //本地定义 对应的生肖数据
+
 }
 
 export interface PlayGroupData {
