@@ -394,6 +394,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c252': [
     'https://344app.vip',
+    'https://3444app.com',
+    'https://344app3.com',
+    'https://344app5.com',
+
   ],
   'c254': [
     'https://677888c.com',
