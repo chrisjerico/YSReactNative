@@ -109,6 +109,7 @@ import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomeP
 import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
 import EmptyPage from '../common/ep/EmptyPage'
 import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
+import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
 
 
 /**
@@ -167,6 +168,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDRecommendedIncomePage,//推荐收益
   JDPromotionCodeListPage,//邀请码
   JDChangLongPage,//长龙主页
+  JDBetRecordDetailPage,//长龙注单详情
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页
