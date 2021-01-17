@@ -79,7 +79,7 @@ export const JDCLText = (props: JDCLText) => {
     </View>
     {/* 多余 */}
     <View style={[{ flex: 1 }]}></View>
-    <Text style={{ fontSize: scale(22), paddingVertical: scale(10), color: 'red', }}>{'已中奖'}</Text>
+    <Text style={{ fontSize: scale(22), paddingVertical: scale(10), color: 'red', }}>{''}</Text>
 
 
   </View>
@@ -93,6 +93,7 @@ export const JDCLText = (props: JDCLText) => {
 interface JDCLView {
   title?: string     //左边👉文本内容
   content?: string      // 右边👉文本内容
+  btnHide?:Boolean     // 隐藏按钮
   onPress?:() => void, //点击
 }
 
@@ -113,8 +114,9 @@ export const JDCLView = (props: JDCLView) => {
           {'我的投注'}
         </Text>
         <View style={[{ flex: 1 }]}></View>
-        <Button title={'撤单'} containerStyle={{ width: 70, height: 30, borderRadius: 5, overflow: 'hidden' ,marginRight:20}} titleStyle={{ color: 'white', fontSize: 13 }}
-          onPress={props.onPress} />
+
+        {!props?.btnHide && <Button title={'撤单'} containerStyle={{ width: 70, height: 30, borderRadius: 5, overflow: 'hidden' ,marginRight:20}} titleStyle={{ color: 'white', fontSize: 13 }}
+          onPress={props.onPress&&props.onPress} />}
       </View>
       <ImageBackground style={{marginTop:10 ,borderRadius: 5, overflow: 'hidden',width:AppDefine.width - 40,height:(AppDefine.width - 40)/4.8 }} source={{ uri: Res.betDetailBg }}>
       <Text style={{marginTop:10, fontSize: scale(22), paddingVertical: scale(10), color: Skin1.textColor3, marginLeft: scale(30) }}>

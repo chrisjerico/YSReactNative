@@ -17,6 +17,9 @@ import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import APIRouter from '../../../public/network/APIRouter';
 import { Res } from '../../../Res/icon/Res';
+import JDBetRecordDetailPage from './JDBetRecordDetailPage';
+
+
 interface JDChangLongPage {
   tabNames?: Array<string>//tab界面名称数据
   inAnimated?: boolean
