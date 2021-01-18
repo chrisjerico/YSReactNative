@@ -8,11 +8,15 @@ import { UGColor } from '../../../../public/theme/UGThemeColor'
 import { scale } from '../../../../public/tools/Scale'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
+interface IUseLotteryTab2Params {
+  listData?: LotteryListData
+}
+
 /**
  * 绘制 2个 tab
  * @constructor
  */
-const UseLotteryTab2 = () => {
+const UseLotteryTab2 = ({ listData }: IUseLotteryTab2Params) => {
 
   /**
    * 绘制 2个Tab 容器 Tab
@@ -23,28 +27,21 @@ const UseLotteryTab2 = () => {
    */
   const renderTab2Item = (selectedTabIndex?: number, tabIndex?: number, groupData?: PlayGroupData) =>
     <View style={[
-            _styles.tab_item,
+      _styles.tab_item,
       selectedTabIndex == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-          ]}>
+    ]}>
       <TouchableOpacity style={_styles.tab_title_tb}>
         <Text style={[
-                _styles.tab_title,
-                selectedTabIndex == tabIndex ? { color: 'white' } : null,
-              ]}>{groupData?.alias}</Text>
+          _styles.tab_title,
+          selectedTabIndex == tabIndex ? { color: 'white' } : null,
+        ]}>{groupData?.alias}</Text>
       </TouchableOpacity>
     </View>
 
-  /**
-   * 绘制 2个Tab 容器
-   */
-  const renderTab2 = (listData?: LotteryListData) => <View style={_styles.tab_container}>
+  return (<View style={_styles.tab_container}>
     {renderTab2Item(listData?.selectedTabIndex, 0, listData[0])}
     {renderTab2Item(listData?.selectedTabIndex, 1, listData[1])}
-  </View>
-
-  return {
-    renderTab2
-  }
+  </View>)
 }
 
 const _styles = StyleSheet.create({

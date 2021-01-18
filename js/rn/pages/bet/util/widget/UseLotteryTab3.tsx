@@ -10,11 +10,15 @@ import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddD
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 
+interface IUseLotteryTab3Params {
+  listData?: LotteryListData
+}
+
 /**
  * 绘制 3个及以上 tab
  * @constructor
  */
-const UseLotteryTab3 = () => {
+const UseLotteryTab3 = ({ listData }: IUseLotteryTab3Params) => {
 
   /**
    * 绘制 2个Tab 容器 Tab
@@ -36,10 +40,7 @@ const UseLotteryTab3 = () => {
       </View>
     </TouchableOpacity>
 
-  /**
-   * 绘制 2个Tab 容器
-   */
-  const renderTab3 = (listData?: LotteryListData) => <View style={_styles.tab_title_container}>
+  return (<View style={_styles.tab_title_container}>
     <ScrollView style={_styles.sv_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
@@ -54,11 +55,7 @@ const UseLotteryTab3 = () => {
     <Icon size={scale(36)}
           color={Skin1.themeColor}
           name={'angle-double-left'}/>
-  </View>
-
-  return {
-    renderTab3,
-  }
+  </View>)
 }
 
 const _styles = StyleSheet.create({

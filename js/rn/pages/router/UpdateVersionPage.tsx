@@ -222,7 +222,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       case 'ios':
         break
       case 'android':
-        ugLog('bCodePush bCodePush networkOK = ', bCodePush, bBanner, networkOK)
+        //ugLog('bCodePush bCodePush networkOK = ', bCodePush, bBanner, networkOK)
         bCodePush && bBanner && networkOK && ANHelper.callAsync(CMD.LAUNCH_GO)
         break
     }

@@ -24,6 +24,7 @@ interface IPXGroupData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
+
 const parsePXGroupData = ({ groupArray, data, zodiacNums }: IPXGroupData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
   groupArray?.map((groupData) => {
@@ -41,8 +42,15 @@ const parsePXGroupData = ({ groupArray, data, zodiacNums }: IPXGroupData): Array
       const nums = !anyEmpty(zodiacNums) ?
         zodiacNums?.find((zodiac) => zodiac?.name == playData?.name || zodiac?.name == playData?.alias)?.nums?.map((item) => ('0' + item).slice(-2)) :
         index < LotteryData.WS.length ? LotteryData.WS[index] : null
+      let exZodiac: ZodiacNum
+      if (!anyEmpty(zodiacNums)) {
+        const result = zodiacNums?.find((zodiac) => zodiac?.name == playData?.name || zodiac?.name == playData?.alias)
+        exZodiac = { ...result, nums: result?.nums.map((item) => ('0' + item).slice(-2)) }
+      } else {
+        exZodiac = { nums: index < LotteryData.WS.length ? LotteryData.WS[index] : null }
+      }
       const newPlayData: PlayData = {
-        ...playData, exNums: nums,
+        ...playData, exZodiac: exZodiac,
       }
 
       return ({
@@ -77,6 +85,7 @@ interface IGroupData {
   N?: number
   ballType?: ItemType
 }
+
 const parseGroupData = ({ groupArray, data, N, ballType }: IGroupData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
   groupArray?.map((groupData) => {
@@ -111,6 +120,7 @@ interface IBallData {
   N?: number
   ballType?: ItemType
 }
+
 const parseBallData = ({ playDataArray, data, N, ballType }: IBallData): Array<LotteryListData> => {
   const playArray: Array<LotteryListData> = []
 
@@ -157,6 +167,7 @@ interface ITMData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
+
 const parseTMData = ({ tmB, data, zodiacNums }: ITMData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
   if (arrayLength(data?.playGroups) == 6) {
@@ -199,6 +210,7 @@ const parseTMData = ({ tmB, data, zodiacNums }: ITMData): Array<LotteryListData>
 interface ILMData {
   data?: PlayOddData
 }
+
 const parseLMData = ({ data }: ILMData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
   //格子数据
@@ -218,6 +230,7 @@ const parseLMData = ({ data }: ILMData): Array<LotteryListData> => {
 interface IZMData {
   data?: PlayOddData
 }
+
 const parseZMData = ({ data }: IZMData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
 
@@ -238,7 +251,12 @@ const parseZMData = ({ data }: IZMData): Array<LotteryListData> => {
         //彩球数据
         tmArray.push(...parseGroupData({ groupArray: [array[index]], data: data, N: 3 }))
         //格子数据
-        tmArray.push(...parseGroupData({ groupArray: [array[index + 1]], data: data, N: 2, ballType: ItemType.LATTICE }))
+        tmArray.push(...parseGroupData({
+          groupArray: [array[index + 1]],
+          data: data,
+          N: 2,
+          ballType: ItemType.LATTICE,
+        }))
       }
     })
   }
@@ -257,6 +275,7 @@ const parseZMData = ({ data }: IZMData): Array<LotteryListData> => {
 interface ILMAData {
   data?: PlayOddData
 }
+
 const parseLMAData = ({ data }: ILMAData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
 
@@ -313,6 +332,7 @@ interface IPTYXData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
+
 const parsePTYXData = ({ data, zodiacNums }: IPTYXData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
 
@@ -320,7 +340,7 @@ const parsePTYXData = ({ data, zodiacNums }: IPTYXData): Array<LotteryListData> 
     tmArray.push(...parsePXGroupData({
       groupArray: [data?.playGroups[0]],
       data: data,
-      zodiacNums: zodiacNums
+      zodiacNums: zodiacNums,
     }))
   }
 
@@ -339,6 +359,7 @@ interface ILXData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
+
 const parseLXData = ({ data, zodiacNums }: ILXData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
 
@@ -355,7 +376,7 @@ const parseLXData = ({ data, zodiacNums }: ILXData): Array<LotteryListData> => {
     tmArray.push(...parsePXGroupData({
       groupArray: [data?.playGroups[0]],
       data: data,
-      zodiacNums: zodiacNums
+      zodiacNums: zodiacNums,
     }))
 
   }
@@ -374,6 +395,7 @@ const parseLXData = ({ data, zodiacNums }: ILXData): Array<LotteryListData> => {
 interface IPTWSData {
   data?: PlayOddData
 }
+
 const parsePTWSData = ({ data }: IPTWSData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
 
@@ -381,7 +403,7 @@ const parsePTWSData = ({ data }: IPTWSData): Array<LotteryListData> => {
     //标题 生肖球数据
     tmArray.push(...parsePXGroupData({
       groupArray: [data?.playGroups[0]],
-      data: data
+      data: data,
     }))
 
   }
@@ -400,6 +422,7 @@ const parsePTWSData = ({ data }: IPTWSData): Array<LotteryListData> => {
 interface ILWData {
   data?: PlayOddData
 }
+
 const parseLWData = ({ data }: ILWData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
 
@@ -415,7 +438,7 @@ const parseLWData = ({ data }: ILWData): Array<LotteryListData> => {
     //标题 生肖球数据
     tmArray.push(...parsePXGroupData({
       groupArray: [data?.playGroups[0]],
-      data: data
+      data: data,
     }))
 
   }
@@ -434,6 +457,7 @@ const parseLWData = ({ data }: ILWData): Array<LotteryListData> => {
 interface ITWSData {
   data?: PlayOddData
 }
+
 const parseTWSData = ({ data }: ITWSData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
 
@@ -445,7 +469,7 @@ const parseTWSData = ({ data }: ITWSData): Array<LotteryListData> => {
     //标题 生肖球数据
     tmArray.push(...parsePXGroupData({
       groupArray: [data?.playGroups[1]],
-      data: data
+      data: data,
     }))
   }
 
@@ -464,6 +488,7 @@ interface IHXData {
   data?: PlayOddData
   zodiacNums?: ZodiacNum[]
 }
+
 const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
 
@@ -507,6 +532,7 @@ const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListData> => {
 interface IZXBZGroupData {
   data?: PlayOddData
 }
+
 const parseZXBZGroupData = ({ data }: IZXBZGroupData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
   data?.playGroups?.map((groupData) => {

@@ -21,6 +21,18 @@ interface ILotteryEBall {
 }
 
 /**
+ * 和 PlayData 结构类似
+ */
+interface ILotteryLineEBallItem {
+  id: string; //708501
+  name: string; //01
+  alias?: string;//特码A"
+  code?: string;//01
+  odds?: string;//42.5500
+  zodiacItem: ZodiacNum
+}
+
+/**
  * 一行彩票球+点击回调
  * @param item 条目数据
  * @param ballProps 球的类型
@@ -104,18 +116,6 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
   },
 })
-
-/**
- * 和 PlayData 结构类似
- */
-interface ILotteryLineEBallItem {
-  id: string; //708501
-  name: string; //01
-  alias?: string;//特码A"
-  code?: string;//01
-  odds?: string;//42.5500
-  zodiacItem: ZodiacNum
-}
 
 export default LotteryLineEBall
 export { ILotteryLineEBallItem }
