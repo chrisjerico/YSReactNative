@@ -19,7 +19,6 @@ const UseBetLottery = () => {
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
-  const lotteryModel = UGStore.globalProps.lotteryModel //彩票信息
   const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
   const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //当前期数据
   const [playOddDetailData, setPlayOddDetailData] = useState<PlayOddDetailData>(null) //彩票数据
@@ -74,7 +73,6 @@ const UseBetLottery = () => {
   return {
     userInfo,
     systemInfo,
-    lotteryModel,
     setLotteryId,
     nextIssueData,
     playOddDetailData,

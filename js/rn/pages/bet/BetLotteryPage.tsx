@@ -33,6 +33,7 @@ import LotteryLabelComponent from './util/widget/LotteryLabelComponent'
 import LotteryLatticeComponent from './util/widget/LotteryLatticeComponent'
 import LotteryLabelAndBallComponent from './util/widget/LotteryLabelAndBallComponent'
 import LeftColumnComponent from './menu/LeftColumnComponent'
+import LotteryListComponent from './list/LotteryListComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -50,7 +51,6 @@ const BetLotteryPage = ({ navigation, route }) => {
   const {
     userInfo,
     systemInfo,
-    lotteryModel,
     setLotteryId,
     nextIssueData,
     playOddDetailData,
@@ -115,6 +115,11 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制左边列表 特码 双面 正码 等等
    */
   const renderLeftColumn = () => <LeftColumnComponent/>
+
+  /**
+   * 绘制游戏列表
+   */
+  const renderRightList = () => <LotteryListComponent/>
 
   // /**
   //  * 加载彩票对象
@@ -191,68 +196,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   //   return null
   // }
 
-  /**
-   * 绘制右边彩票区域，彩球 等等
-   *
-   * @param listData
-   * @param isLastIndex 是否最后一个
-   */
-  const renderRightContent = (listData?: LotteryListData, isLastIndex?: boolean) => {
-    // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
-    // let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
-    // ugLog('------------------lotteryCode---------------------------------', JSON.stringify(listData))
-    // return <View style={CommStyles.flex}>
-    //   {
-    //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
-    //   }
-    // </View>
-
-    const lastStyle = isLastIndex ? { paddingBottom: scale(240) } : null
-    // ugLog('renderRightContent=', JSON.stringify(listData))
-    switch (listData?.type) {
-      case ItemType.BALLS:
-        return <LotteryBallComponent listData={listData}
-                                     style={lastStyle}/>
-      case ItemType.LABEL:
-        return <LotteryLabelComponent listData={listData}
-                                      style={lastStyle}/>
-      case ItemType.LATTICE:
-        return <LotteryLatticeComponent listData={listData}
-                                        style={lastStyle}/>
-      case ItemType.TAB:
-        return arrayLength(listData?.data as Array<PlayGroupData>) == 2 ?
-          <LotteryTab2Component listData={listData}
-                                style={lastStyle}/> :
-          <LotteryTab3Component listData={listData}
-                                style={lastStyle}/>
-      case ItemType.LABEL_AND_BALL:
-        return <LotteryLabelAndBallComponent listData={listData}
-                                             style={lastStyle}/>
-      case ItemType.ZODIAC:
-        return <LotteryZodiacComponent listData={listData}
-                                       style={lastStyle}/>
-    }
-
-  }
-
-  /**
-   * 绘制右边彩票区域，彩球 等等
-   */
-  const renderRightContentList = () => {
-    ugLog('---------------------------------------------------')
-
-    return (
-      <FlatList key={'page balls renderRightContentList'}
-                style={_styles.right_content_list}
-                showsVerticalScrollIndicator={false}
-                nestedScrollEnabled={true}
-                keyExtractor={(item, index) => `${item?.code}-${index}`}
-                data={lotteryModel?.data}
-                renderItem={({ item, index }) =>
-                  (renderRightContent(item, index == arrayLength(lotteryModel?.data) - 1))}/>
-    )
-  }
 
   /**
    * 绘制游戏聊天切换tab
@@ -346,7 +290,7 @@ const BetLotteryPage = ({ navigation, route }) => {
             <View key={'lottery bet content'}
                   style={_styles.middle_content_container}>
               {renderLeftColumn()}
-              {renderRightContentList()}
+              {renderRightList()}
             </View>
             {/*<View style={{height: scale(240), backgroundColor: 'red'}}/>*/}
           </ScrollView>
@@ -424,10 +368,6 @@ const _styles = StyleSheet.create({
   tab_text: {
     fontSize: scale(22),
     color: 'white',
-  },
-  right_content_list: {
-    flex: 1,
-    height: BALL_CONTENT_HEIGHT,
   },
 })
 

@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 
 /**
- * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
+ * 六合彩 左侧菜单列表
  *
  * @param navigation
  * @constructor
