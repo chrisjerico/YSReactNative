@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
 import { UGStore } from '../../../redux/store/UGStore'
 import APIRouter from '../../network/APIRouter'
-import { ToastError, ToastSuccess } from '../../tools/tars'
+import { ToastError, ToastSuccess } from '../../../Res/icon'
 import Avatar from '../../views/tars/Avatar'
 import ProgressCircle from '../../views/tars/ProgressCircle'
 

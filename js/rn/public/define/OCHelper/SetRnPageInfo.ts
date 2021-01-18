@@ -1,3 +1,4 @@
+import { UGImageHost } from '../../../Res/icon/index';
 import { UGStore } from './../../../redux/store/UGStore';
 import { devConfig } from '../../../../../config'
 import { Platform } from 'react-native'
@@ -255,7 +256,7 @@ export async function setRnPageInfo(force = false) {
 
       // 替换原生页面
       await OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages])
-      await OCHelper.call('AppDefine.shared.setImageHost:', ['https://appstatic.guolaow.com'])
+      await OCHelper.call('AppDefine.shared.setImageHost:', [UGImageHost.git])
       break
     case 'android':
       break

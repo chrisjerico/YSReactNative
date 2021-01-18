@@ -5,7 +5,7 @@ import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
+import { ToastError, ToastStatus, ToastSuccess } from '../../../Res/icon'
 import {
   hideLoading,
   showLoading,

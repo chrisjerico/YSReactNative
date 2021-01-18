@@ -147,7 +147,7 @@ const
               <Animated.View style={[{ width: scale(25) }, { transform: [{ rotateZ: spin }] }]}>
                 <FontAwesome name={'refresh'} size={scale(25)} color={'white'} />
               </Animated.View>
-              {/* <Animated.Image style={[styles.itemImageImageStyle, { height: 25, width: 25, transform: [{ rotateZ: spin }] }]} source={{ uri: 'https://appstatic.guolaow.com/assets/shuaxin.png' }} /> */}
+              {/* <Animated.Image style={[styles.itemImageImageStyle, { height: 25, width: 25, transform: [{ rotateZ: spin }] }]} source={{ uri: img_assets('shuaxin') }} /> */}
             </TouchableOpacity>
             <View style={{flex:1}}></View>
             <TouchableOpacity style={{ marginLeft:1,marginRight:10 }}  onPress={() => {

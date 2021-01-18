@@ -4,7 +4,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
 import APIRouter, { UserReg } from '../network/APIRouter'
-import { ToastSuccess, ToastError, ToastStatus } from '../tools/tars'
+import { ToastSuccess, ToastError, ToastStatus } from '../../Res/icon'
 import {ANHelper} from "../define/ANHelper/ANHelper";
 import {CMD} from "../define/ANHelper/hp/CmdDefine";
 import {NA_DATA} from "../define/ANHelper/hp/DataDefine";

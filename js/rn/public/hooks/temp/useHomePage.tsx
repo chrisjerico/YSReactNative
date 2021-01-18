@@ -4,7 +4,7 @@ import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { ToastError, ToastSuccess } from '../../tools/tars'
+import { ToastError, ToastSuccess } from '../../../Res/icon'
 import {
   hideLoading,
   showLoading,

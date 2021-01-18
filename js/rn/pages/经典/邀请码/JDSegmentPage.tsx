@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import SegmentedControl from "rn-segmented-control";
 import AppDefine from '../../../public/define/AppDefine';
-import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
+import { UGImageHost, useHtml5Image } from '../../../Res/icon';
 import { Res } from '../../../Res/icon/Res';
 import { UGBasePageProps } from '../../base/UGPage';
 import { JDCLInfoText, JDCLText, JDCLView } from '../cp/JDCLInfoText';

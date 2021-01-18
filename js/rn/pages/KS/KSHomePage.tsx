@@ -7,7 +7,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
@@ -18,6 +18,7 @@ import CoverButton from './views/CoverButton'
 import HomeHeader from './views/HomeHeader'
 import MoreGameButton from './views/MoreGameButton'
 import ProfileBlock from './views/ProfileBlock'
+import { goToUserCenterType } from '../../public/tools/tars'
 
 const buttonHeight = scale(82)
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)

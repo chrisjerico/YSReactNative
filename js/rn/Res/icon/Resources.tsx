@@ -4,34 +4,36 @@
  *
  */
 
+import { img_assets } from "."
+
 /**
  * 普通资源
  */
 export const Res = {
   back: { uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg' },
   home: { uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg' },
-  zryl: { uri: 'https://appstatic.guolaow.com/assets/zhenrenyule.png' },
-  qpyo: { uri: 'https://appstatic.guolaow.com/assets/qipaiyouxi.png' },
-  ck: { uri: 'https://appstatic.guolaow.com/assets/cunkuan.png' },
-  qk: { uri: 'https://appstatic.guolaow.com/assets/qukuan.png' },
-  dzjj: { uri: 'https://appstatic.guolaow.com/assets/dianzijingji.png' },
-  edzh: { uri: 'https://appstatic.guolaow.com/assets/eduzhuanhuan.png' },
-  cptz: { uri: 'https://appstatic.guolaow.com/assets/caipiaotouzhu.png' },
-  bydw: { uri: 'https://appstatic.guolaow.com/assets/buyudianwan.png' },
-  tyyx: { uri: 'https://appstatic.guolaow.com/assets/tiyuyouxi.png' },
-  zjmx: { uri: 'https://appstatic.guolaow.com/assets/zijinmingxi.png' },
-  yhhdArraw: { uri: 'https://appstatic.guolaow.com/assets/image.png' },
-  yh: { uri: 'https://appstatic.guolaow.com/assets/youhui.png' },
-  zy: { uri: 'https://appstatic.guolaow.com/assets/shouye.png' },
-  kf: { uri: 'https://appstatic.guolaow.com/assets/kefu.png' },
-  wd: { uri: 'https://appstatic.guolaow.com/assets/wode.png' },
-  zd: { uri: 'https://appstatic.guolaow.com/assets/zhudan.png' },
-  gd: { uri: 'https://appstatic.guolaow.com/assets/gonggao.png' },
-  zhtyLoginSponsor: { uri: 'https://appstatic.guolaow.com/assets/logo1.png' },
-  zhtyMineBg: { uri: 'https://appstatic.guolaow.com/assets/floor-bg-bottom.png' },
-  加载中: { uri: 'https://appstatic.guolaow.com/assets/gif/loading-1.gif' },
-  加载成功: { uri: 'https://appstatic.guolaow.com/assets/success@3x.png' },
-  加载失败: { uri: 'https://appstatic.guolaow.com/assets/error@3x.png' },
+  zryl: { uri: img_assets('zhenrenyule') },
+  qpyo: { uri: img_assets('qipaiyouxi') },
+  ck: { uri: img_assets('cunkuan') },
+  qk: { uri: img_assets('qukuan') },
+  dzjj: { uri: img_assets('dianzijingji') },
+  edzh: { uri: img_assets('eduzhuanhuan') },
+  cptz: { uri: img_assets('caipiaotouzhu') },
+  bydw: { uri: img_assets('buyudianwan') },
+  tyyx: { uri: img_assets('tiyuyouxi') },
+  zjmx: { uri: img_assets('zijinmingxi') },
+  yhhdArraw: { uri: img_assets('image') },
+  yh: { uri: img_assets('youhui') },
+  zy: { uri: img_assets('shouye') },
+  kf: { uri: img_assets('kefu') },
+  wd: { uri: img_assets('wode') },
+  zd: { uri: img_assets('zhudan') },
+  gd: { uri: img_assets('gonggao') },
+  zhtyLoginSponsor: { uri: img_assets('logo1') },
+  zhtyMineBg: { uri: img_assets('floor-bg-bottom') },
+  加载中: { uri: img_assets('gif/loading-1', 'gif') },
+  加载成功: { uri: img_assets('success@3x') },
+  加载失败: { uri: img_assets('error@3x') },
 }
 
 /**

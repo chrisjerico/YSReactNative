@@ -14,6 +14,7 @@ import { BetBean, BetMode, jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UG
 
 import moment from 'moment';
 import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
+import { img_images } from '../../../Res/icon';
 
 
 export interface JDLotteryAssistantCPAction {
@@ -79,7 +80,7 @@ useEffect(() => {
       bottomH: 60,
       items: [],
       isRefreshing: true,
-      imgLoading: 'https://appstatic.guolaow.com/web/images/loading.png'
+      imgLoading: img_images('loading')
     }
   )
   const [text,setText] = React.useState('');
@@ -894,7 +895,7 @@ function infoAction(){
 
   function initDate(){
     v.bottomH = 60;
-    v.imgLoading = 'https://appstatic.guolaow.com/web/images/loading.png'
+    v.imgLoading = img_images('loading')
     v.selAideModel = null
     v.selBetItem = null
     v.betCount = 0

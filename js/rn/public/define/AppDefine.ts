@@ -1,4 +1,4 @@
-
+import { img_assets } from '../../Res/icon/index';
 import { EdgeInsets } from 'react-native-safe-area-context';
 import { YueBaoStatModel } from './../network/Model/YueBaoStatModel';
 import { ANHelper } from './ANHelper/ANHelper'
@@ -16,7 +16,7 @@ export default class AppDefine {
   static safeArea: EdgeInsets
   static iOS = Platform.OS == 'ios'
   static onePx = 1 / PixelRatio.get()
-  static defaultAvatar = 'https://appstatic.guolaow.com/assets/money-2.png'
+  static defaultAvatar = img_assets('money-2')
 
   static checkHeaderShowBackButton(callback: (show: boolean) => void) {
     if (Platform.OS != 'ios') return

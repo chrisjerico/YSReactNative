@@ -8,7 +8,7 @@ import React, {
 import { Platform, ViewStyle } from 'react-native'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import AppDefine from '../../define/AppDefine'
-import { stringToNumber } from '../../tools/tars'
+import { stringToNumber } from '../../../Res/icon'
 import {ugLog} from "../../tools/UgLog";
 
 interface ReloadSlidingVerificationProps {

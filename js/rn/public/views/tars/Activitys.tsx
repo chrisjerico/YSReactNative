@@ -3,7 +3,7 @@ import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
+import { getActivityPosition, goToUserCenterType } from '../../../Res/icon'
 import { icon_任务弹窗, icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 

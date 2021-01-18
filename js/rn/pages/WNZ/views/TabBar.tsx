@@ -5,7 +5,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { appConfig } from '../../../../../config'
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
-import { UGImageHost, useHtml5Image } from '../../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../../Res/icon'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 

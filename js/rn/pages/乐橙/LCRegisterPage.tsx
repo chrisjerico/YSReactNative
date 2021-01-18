@@ -22,7 +22,7 @@ import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import AppDefine from '../../public/define/AppDefine'
 import { httpClient } from '../../public/network/httpClient'
 import { hideLoading, showLoading } from '../../public/widget/UGLoadingCP'
-import { ToastError, ToastSuccess } from '../../public/tools/tars'
+import { ToastError, ToastSuccess } from '../../Res/icon'
 import { AgentType } from '../../public/models/Enum'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 

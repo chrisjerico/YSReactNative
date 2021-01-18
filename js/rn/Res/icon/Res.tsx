@@ -1,8 +1,4 @@
-// 图片服务器域名：
-// https://appstatic.guolaow.com
-// https://appstatic.guolaow.com
-
-import { UGImageHost, useHtml5Image } from "../../public/tools/tars"
+import { UGImageHost, useHtml5Image } from "."
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 /**

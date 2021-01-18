@@ -9,7 +9,7 @@ import { pop } from '../../../public/navigation/RootNavigation';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { scale } from '../../../public/tools/Scale';
-import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
+import { UGImageHost, useHtml5Image } from '../../../Res/icon';
 import { Toast } from '../../../public/tools/ToastUtils';
 import { showSuccess } from '../../../public/widget/UGLoadingCP';
 import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";

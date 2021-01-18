@@ -48,7 +48,7 @@ import TouchableImage from "../../public/views/temp/TouchableImage";
 import CommStyles from "../base/CommStyles";
 import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
 import ActivityComponent from "../../public/components/temp/ActivityComponent";
-import {getActivityPosition} from "../../public/tools/tars";
+import {getActivityPosition} from "../../Res/icon";
 import {ROULETTE_LOGO} from "../../Res/icon/Res";
 import { skinColors } from "../../public/theme/const/UGSkinColor"
 

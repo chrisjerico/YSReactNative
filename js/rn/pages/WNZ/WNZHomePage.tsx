@@ -12,7 +12,6 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -31,6 +30,7 @@ import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
 import { getParentsTagsRecursively } from 'react-native-render-html'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { appConfig } from '../../../../config'
+import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
