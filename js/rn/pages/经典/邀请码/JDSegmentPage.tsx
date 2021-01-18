@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SegmentedControl from "rn-segmented-control";
 import AppDefine from '../../../public/define/AppDefine';
+import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { scale } from '../../../public/tools/Scale';
 import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
 import { Res } from '../../../Res/icon/Res';
@@ -21,7 +22,7 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
   const [tabIndex, setTabIndex] = React.useState(1);
   const { img_assets } = useHtml5Image(UGImageHost.test5)
   const [imgError, setImgError] = useState(false);
-  let [shwoDefaultImage, setShwoDefaultImage] = React.useState(false);
+  let [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
 
   const handleTabsChange = (index: number) => {
     // console.log('index ==',index);
@@ -122,7 +123,7 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
 
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Image
-          style={[{ width: 50, height: 50, zIndex: 1 },]}
+          style={[{ width: 50, height: 50,  },]}
           source={{
             uri: img_assets('money-2'),
             // uri: 'https://appstatic.guolaow.com/web/images/zxkf.png'
@@ -133,16 +134,20 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
             setImgError(true)
             setShwoDefaultImage(true)
           }}
+          onLoad={() => {
+            console.log('成功加载');
+            setImgError(false)
+            setShwoDefaultImage(false)
+          }}
+
         />
 
 
 
-
-            {/* // <Image source={{ uri: img_assets('load') }} style={[{ position: 'absolute', width: 50, height: 50, zIndex: 2 },]} /> */}
-        <View style={{ position: 'absolute', width: 50, height: 50, }}>
+        <View style={{ position: 'absolute', width: 50, height: 50,justifyContent: 'center', alignItems: 'center' }}>
           {shwoDefaultImage && <AntDesign
             name={'picture'}
-            color={'#FF69B4'}
+            color={'#808080'}
             size={scale(50)}
           />}
         </View>
