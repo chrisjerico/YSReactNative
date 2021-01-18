@@ -10,6 +10,9 @@ import { scale } from "../../../public/tools/Scale";
 import { anyEmpty } from '../../../public/tools/Ext';
 import { Button } from 'react-native-elements';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
+import JDBetRecordDetailPage from '../长龙助手/JDBetRecordDetailPage';
+import { PageName } from '../../../public/navigation/Navigation';
+import { push } from '../../../public/navigation/RootNavigation';
 
 interface JDChanglongBetRecordCP {
   items?: Array<any>//界面数据
@@ -128,14 +131,15 @@ const JDChanglongBetRecordCP = () => {
     
     item.clsName = 'UGChanglongBetRecordModel'
     item.pic = await OCHelper.call('UGNextIssueModel.modelWithGameId:model:.pic', [item.gameId])
-    await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-      {
-        selectors: 'AppDefine.viewControllerWithStoryboardID:[setItem:]',
-        args1: ['UGBetRecordDetailViewController'],
-        args2: [item]
-      },
-      true,
-    ])
+    // await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+    //   {
+    //     selectors: 'AppDefine.viewControllerWithStoryboardID:[setItem:]',
+    //     args1: ['UGBetRecordDetailViewController'],
+    //     args2: [item]
+    //   },
+    //   true,
+    // ])
+    push(PageName.JDBetRecordDetailPage, { item: item, showBackButton: true })
     
   }
 
@@ -243,9 +247,7 @@ const JDChanglongBetRecordCP = () => {
       //   hidden: false, title: '我的投注', back: true
       // },
       didFocus: () => {
-
-
-
+        onHeaderRefresh()
       }
     })
 
