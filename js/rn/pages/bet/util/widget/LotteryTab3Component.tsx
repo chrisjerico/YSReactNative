@@ -18,7 +18,7 @@ interface IUseLotteryTab3Params {
  * 绘制 3个及以上 tab
  * @constructor
  */
-const UseLotteryTab3 = ({ listData }: IUseLotteryTab3Params) => {
+const LotteryTab3Component = ({ listData }: IUseLotteryTab3Params) => {
 
   /**
    * 绘制 2个Tab 容器 Tab
@@ -96,5 +96,5 @@ const _styles = StyleSheet.create({
 })
 
 
-export default UseLotteryTab3
+export default LotteryTab3Component
 

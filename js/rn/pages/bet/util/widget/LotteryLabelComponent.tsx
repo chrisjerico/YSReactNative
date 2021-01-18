@@ -17,7 +17,7 @@ interface IUseLotteryLabelParams {
  * 绘制 生肖
  * @constructor
  */
-const UseLotteryLabel = ({ listData }: IUseLotteryLabelParams) => {
+const LotteryLabelComponent = ({ listData }: IUseLotteryLabelParams) => {
 
   return (<View style={_styles.sub_title_container}>
       <Text style={[
@@ -43,5 +43,5 @@ const _styles = StyleSheet.create({
 })
 
 
-export default UseLotteryLabel
+export default LotteryLabelComponent
 

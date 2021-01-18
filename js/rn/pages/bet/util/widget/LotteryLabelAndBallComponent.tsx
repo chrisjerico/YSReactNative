@@ -21,7 +21,7 @@ interface IUseLotteryLabelAndBallParams {
  * 绘制 一行彩球
  * @constructor
  */
-const UseLotteryLabelAndBall = ({ listData }: IUseLotteryLabelAndBallParams) => {
+const LotteryLabelAndBallComponent = ({ listData }: IUseLotteryLabelAndBallParams) => {
 
   const data = listData?.data as Array<PlayData>
 
@@ -67,5 +67,5 @@ const _styles = StyleSheet.create({
 })
 
 
-export default UseLotteryLabelAndBall
+export default LotteryLabelAndBallComponent
 

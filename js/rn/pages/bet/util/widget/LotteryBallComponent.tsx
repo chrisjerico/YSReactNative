@@ -18,7 +18,7 @@ interface IUseLotteryBallParams {
  * 绘制 彩球
  * @constructor
  */
-const UseLotteryBall = ({ listData }: IUseLotteryBallParams) => {
+const LotteryBallComponent = ({ listData }: IUseLotteryBallParams) => {
   /**
    * 绘制 球
    * @param item
@@ -44,5 +44,5 @@ const _styles = StyleSheet.create({
 })
 
 
-export default UseLotteryBall
+export default LotteryBallComponent
 

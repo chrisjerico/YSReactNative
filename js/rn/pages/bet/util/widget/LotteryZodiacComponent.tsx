@@ -23,7 +23,7 @@ interface IZodiacItem {
  * 绘制 生肖
  * @constructor
  */
-const UseLotteryZodiac = ({ listData }: IUseLotteryZodiacParams) => {
+const LotteryZodiacComponent = ({ listData }: IUseLotteryZodiacParams) => {
 
   /**
    * 绘制 生肖
@@ -77,5 +77,5 @@ const _styles = StyleSheet.create({
 })
 
 
-export default UseLotteryZodiac
+export default LotteryZodiacComponent
 

@@ -19,7 +19,7 @@ interface IUseLotteryLatticeParams {
  * 绘制 彩格子
  * @constructor
  */
-const UseLotteryLattice = ({ listData }: IUseLotteryLatticeParams) => {
+const LotteryLatticeComponent = ({ listData }: IUseLotteryLatticeParams) => {
   /**
    * 绘制 方格式
    * @param item
@@ -45,5 +45,5 @@ const _styles = StyleSheet.create({
 })
 
 
-export default UseLotteryLattice
+export default LotteryLatticeComponent
 
