@@ -6,7 +6,6 @@ import AppDefine from '../AppDefine'
 import { OCCall } from './OCBridge/OCCall'
 import { OCEvent } from './OCBridge/OCEvent'
 import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel'
-import { stringToNumber } from '../../../Res/icon'
 import { DomainUrls, initDomain } from '../../config/MultiDomainUrls'
 import { setRnPageInfo } from './SetRnPageInfo'
 

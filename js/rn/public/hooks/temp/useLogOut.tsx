@@ -4,7 +4,6 @@ import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
-import { ToastStatus } from '../../../Res/icon'
 
 interface Options {
   onStart?: () => any;

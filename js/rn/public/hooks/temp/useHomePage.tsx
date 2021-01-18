@@ -4,7 +4,7 @@ import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { ToastError, ToastSuccess } from '../../../Res/icon'
+import { ToastSuccess, ToastError } from '../../tools/tars'
 import {
   hideLoading,
   showLoading,
@@ -58,7 +58,7 @@ const useHomePage = ({
       onSuccessTryPlay && onSuccessTryPlay()
     },
     onError: (error) => {
-      ToastError(error ?? '試玩失败')
+      ToastError(error ?? '试玩失败')
     },
   })
 

@@ -5,7 +5,6 @@ import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError, ToastStatus, ToastSuccess } from '../../../Res/icon'
 import {
   hideLoading,
   showLoading,
@@ -19,6 +18,7 @@ import {ANHelper} from "../../define/ANHelper/ANHelper";
 import {CMD} from "../../define/ANHelper/hp/CmdDefine";
 import {Platform} from "react-native";
 import { OCHelper } from '../../define/OCHelper/OCHelper'
+import { ToastStatus, ToastSuccess, ToastError } from '../../tools/tars'
 
 interface SlidingVerification {
   nc_csessionid: string;

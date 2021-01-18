@@ -4,7 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { UGStore } from '../../../redux/store/UGStore'
 import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
-import { stringToFloat } from '../../../Res/icon'
+import { stringToFloat } from '../../tools/tars'
 
 interface ReLoadComponentProps {
   balance: string

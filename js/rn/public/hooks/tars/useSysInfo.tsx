@@ -1,6 +1,6 @@
 import { UGStore } from '../../../redux/store/UGStore'
 import { LoginTo, Necessity, PasswordStrength, RankingListType, AnnouncementType } from '../../models/Enum'
-import { stringToNumber } from '../../../Res/icon'
+import { stringToNumber } from '../../tools/tars'
 
 interface UseSys {
   defaultUserCenterLogos?: DefaultUserCenterLogos

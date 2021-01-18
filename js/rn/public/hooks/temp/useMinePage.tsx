@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError } from '../../../Res/icon'
+import { ToastError } from '../../tools/tars'
 import {
   hideLoading,
   showLoading,

@@ -5,7 +5,6 @@ import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
 import { navigate, pop } from '../../public/navigation/RootNavigation'
 import { scale } from '../../public/tools/Scale'
-import { stringToNumber } from '../../Res/icon'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import GameButton from '../../public/views/tars/GameButton'
@@ -16,6 +15,7 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGStore } from '../../redux/store/UGStore'
 import { anyEmpty } from '../../public/tools/Ext'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { stringToNumber } from '../../public/tools/tars'
 
 const subIds = {
   42: '真人',

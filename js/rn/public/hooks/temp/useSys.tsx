@@ -5,7 +5,7 @@ import {
   RankingListType,
   PasswordStrength,
 } from '../../models/Enum'
-import { stringToNumber } from '../../../Res/icon'
+import { stringToNumber } from '../../tools/tars';
 import {ugLog} from "../../tools/UgLog";
 
 interface UseSys {

@@ -7,7 +7,6 @@ import FastImage from 'react-native-fast-image'
 import { useEffect, useState } from 'react'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../../public/network/APIRouter'
-import { ToastError, ToastSuccess } from '../../../../Res/icon'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 
 export const RegisterItem = ({ sms = false, config, placeHolder, iconName, iconType = 'font-awesome', onChangeText, phoneNumber }:
