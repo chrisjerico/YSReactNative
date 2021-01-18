@@ -249,7 +249,8 @@ const BetLotteryPage = ({ navigation, route }) => {
                 nestedScrollEnabled={true}
                 keyExtractor={(item, index) => `${item?.code}-${index}`}
                 data={lotteryModel?.data}
-                renderItem={({ item, index }) => (renderRightContent(item, index == arrayLength(lotteryModel?.data) - 1))}/>
+                renderItem={({ item, index }) =>
+                  (renderRightContent(item, index == arrayLength(lotteryModel?.data) - 1))}/>
     )
   }
 
