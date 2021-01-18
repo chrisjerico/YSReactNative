@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
@@ -16,13 +16,14 @@ import { ugLog } from '../../../../public/tools/UgLog'
 
 interface IUseLotteryLabelAndBallParams {
   listData?: LotteryListData
+  style?: StyleProp<ViewStyle>
 }
 
 /**
  * 绘制 一行彩球
  * @constructor
  */
-const LotteryLabelAndBallComponent = ({ listData }: IUseLotteryLabelAndBallParams) => {
+const LotteryLabelAndBallComponent = ({ listData, style }: IUseLotteryLabelAndBallParams) => {
 
   const data = listData?.data as PlayData
 
@@ -41,7 +42,7 @@ const LotteryLabelAndBallComponent = ({ listData }: IUseLotteryLabelAndBallParam
                       //callback={() => addOrRemoveBall(item?.id)}
     />
 
-  return (<View style={_styles.ball_container}>
+  return (<View style={[_styles.ball_container, style]}>
     { renderEBall(data) }
   </View>)
 }

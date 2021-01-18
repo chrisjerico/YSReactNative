@@ -193,8 +193,11 @@ const BetLotteryPage = ({ navigation, route }) => {
 
   /**
    * 绘制右边彩票区域，彩球 等等
+   *
+   * @param listData
+   * @param isLastIndex 是否最后一个
    */
-  const renderRightContent = (listData?: LotteryListData) => {
+  const renderRightContent = (listData?: LotteryListData, isLastIndex?: boolean) => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
     // let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
@@ -205,22 +208,30 @@ const BetLotteryPage = ({ navigation, route }) => {
     //   }
     // </View>
 
+    const lastStyle = isLastIndex ? { paddingBottom: scale(240) } : null
     // ugLog('renderRightContent=', JSON.stringify(listData))
     switch (listData?.type) {
       case ItemType.BALLS:
-        return <LotteryBallComponent listData={listData} />
+        return <LotteryBallComponent listData={listData}
+                                     style={lastStyle}/>
       case ItemType.LABEL:
-        return <LotteryLabelComponent listData={listData} />
+        return <LotteryLabelComponent listData={listData}
+                                      style={lastStyle}/>
       case ItemType.LATTICE:
-        return <LotteryLatticeComponent listData={listData} />
+        return <LotteryLatticeComponent listData={listData}
+                                        style={lastStyle}/>
       case ItemType.TAB:
         return arrayLength(listData?.data as Array<PlayGroupData>) == 2 ?
-          <LotteryTab2Component listData={listData}/> :
-          <LotteryTab3Component listData={listData}/>
+          <LotteryTab2Component listData={listData}
+                                style={lastStyle}/> :
+          <LotteryTab3Component listData={listData}
+                                style={lastStyle}/>
       case ItemType.LABEL_AND_BALL:
-        return <LotteryLabelAndBallComponent listData={listData} />
+        return <LotteryLabelAndBallComponent listData={listData}
+                                             style={lastStyle}/>
       case ItemType.ZODIAC:
-        return <LotteryZodiacComponent listData={listData}/>
+        return <LotteryZodiacComponent listData={listData}
+                                       style={lastStyle}/>
     }
 
   }
@@ -238,7 +249,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                 nestedScrollEnabled={true}
                 keyExtractor={(item, index) => `${item?.code}-${index}`}
                 data={lotteryModel?.data}
-                renderItem={({ item, index }) => (renderRightContent(item))}/>
+                renderItem={({ item, index }) => (renderRightContent(item, index == arrayLength(lotteryModel?.data) - 1))}/>
     )
   }
 
@@ -336,7 +347,7 @@ const BetLotteryPage = ({ navigation, route }) => {
               {renderLeftColumn()}
               {renderRightContentList()}
             </View>
-            <View style={{height: scale(240), backgroundColor: 'red'}}/>
+            {/*<View style={{height: scale(240), backgroundColor: 'red'}}/>*/}
           </ScrollView>
           <BetBoardComponent key={'lottery board'}
                              locked={false}
@@ -358,7 +369,6 @@ const _styles = StyleSheet.create({
   },
   middle_content_container: {
     flexDirection: 'row',
-    height: BALL_CONTENT_HEIGHT,
   },
   modal_content: {
     alignItems: 'center',

@@ -95,7 +95,7 @@ const _styles = StyleSheet.create({
     height: BALL_CONTENT_HEIGHT,
   },
   left_column_content: {
-
+    paddingBottom: scale(240),
   },
   left_column_text: {
     color: UGColor.TextColor7,

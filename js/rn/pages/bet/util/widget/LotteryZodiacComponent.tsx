@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 interface IUseLotteryZodiacParams {
   listData?: LotteryListData
+  style?: StyleProp<ViewStyle>
 }
 
 interface IZodiacItem {
@@ -23,7 +24,7 @@ interface IZodiacItem {
  * 绘制 生肖
  * @constructor
  */
-const LotteryZodiacComponent = ({ listData }: IUseLotteryZodiacParams) => {
+const LotteryZodiacComponent = ({ listData, style }: IUseLotteryZodiacParams) => {
 
   /**
    * 绘制 生肖
@@ -45,17 +46,17 @@ const LotteryZodiacComponent = ({ listData }: IUseLotteryZodiacParams) => {
     </View>
   </TouchableOpacity>
 
-  return (<View >
-      <ScrollView showsHorizontalScrollIndicator={false}
-                  horizontal={true}>
-        <View style={_styles.zodiac_container}>
-          {
-            (listData?.data as Array<ZodiacNum>)?.map((item, index) =>
-              renderZodiacItem({ item: item, selectedTabIndex: listData?.selectedTabIndex, index: index }))
-          }
-        </View>
-      </ScrollView>
-    </View>
+  return (
+    <ScrollView showsHorizontalScrollIndicator={false}
+                style={style}
+                horizontal={true}>
+      <View style={_styles.zodiac_container}>
+        {
+          (listData?.data as Array<ZodiacNum>)?.map((item, index) =>
+            renderZodiacItem({ item: item, selectedTabIndex: listData?.selectedTabIndex, index: index }))
+        }
+      </View>
+    </ScrollView>
   )
 }
 

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
@@ -11,13 +11,14 @@ import { ugLog } from '../../../../public/tools/UgLog'
 
 interface IUseLotteryTab2Params {
   listData?: LotteryListData
+  style?: StyleProp<ViewStyle>
 }
 
 /**
  * 绘制 2个 tab
  * @constructor
  */
-const LotteryTab2Component = ({ listData }: IUseLotteryTab2Params) => {
+const LotteryTab2Component = ({ listData, style }: IUseLotteryTab2Params) => {
   /**
    * 绘制 2个Tab 容器 Tab
    *
@@ -30,7 +31,7 @@ const LotteryTab2Component = ({ listData }: IUseLotteryTab2Params) => {
       _styles.tab_item,
       selectedTabIndex == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
     ]}>
-      <TouchableOpacity style={_styles.tab_title_tb}>
+      <TouchableOpacity style={[_styles.tab_title_tb, style]}>
         <Text style={[
           _styles.tab_title,
           selectedTabIndex == tabIndex ? { color: 'white' } : null,
@@ -40,7 +41,7 @@ const LotteryTab2Component = ({ listData }: IUseLotteryTab2Params) => {
   }
 
 
-  return (<View style={_styles.tab_container}>
+  return (<View style={[_styles.tab_container, style]}>
     {renderTab2Item(listData?.selectedTabIndex, 0, listData.data[0])}
     {renderTab2Item(listData?.selectedTabIndex, 1, listData.data[1])}
   </View>)

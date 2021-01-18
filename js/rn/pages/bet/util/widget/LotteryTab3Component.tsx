@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
@@ -12,13 +12,14 @@ import CommStyles from '../../../base/CommStyles'
 
 interface IUseLotteryTab3Params {
   listData?: LotteryListData
+  style?: StyleProp<ViewStyle>
 }
 
 /**
  * 绘制 3个及以上 tab
  * @constructor
  */
-const LotteryTab3Component = ({ listData }: IUseLotteryTab3Params) => {
+const LotteryTab3Component = ({ listData, style }: IUseLotteryTab3Params) => {
 
   /**
    * 绘制 2个Tab 容器 Tab
@@ -41,7 +42,7 @@ const LotteryTab3Component = ({ listData }: IUseLotteryTab3Params) => {
       </View>
     </TouchableOpacity>
 
-  return (<View style={_styles.tab_title_container}>
+  return (<View style={[_styles.tab_title_container, style]}>
     <ScrollView style={_styles.sv_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>

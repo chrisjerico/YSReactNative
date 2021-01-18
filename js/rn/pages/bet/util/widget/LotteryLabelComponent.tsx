@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
@@ -11,15 +11,16 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 interface IUseLotteryLabelParams {
   listData?: LotteryListData
+  style?: StyleProp<ViewStyle>
 }
 
 /**
  * 绘制 生肖
  * @constructor
  */
-const LotteryLabelComponent = ({ listData }: IUseLotteryLabelParams) => {
+const LotteryLabelComponent = ({ listData, style }: IUseLotteryLabelParams) => {
 
-  return (<View style={_styles.sub_title_container}>
+  return (<View style={[_styles.sub_title_container, style]}>
       <Text style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },

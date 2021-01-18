@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
@@ -13,13 +13,14 @@ import LotteryERect from '../../widget/LotteryERect'
 
 interface IUseLotteryLatticeParams {
   listData?: LotteryListData
+  style?: StyleProp<ViewStyle>
 }
 
 /**
  * 绘制 彩格子
  * @constructor
  */
-const LotteryLatticeComponent = ({ listData }: IUseLotteryLatticeParams) => {
+const LotteryLatticeComponent = ({ listData, style }: IUseLotteryLatticeParams) => {
   /**
    * 绘制 方格式
    * @param item
@@ -31,7 +32,7 @@ const LotteryLatticeComponent = ({ listData }: IUseLotteryLatticeParams) => {
                                                                          //callback={() => addOrRemoveBall(item?.id)}
   />
 
-  return (<View style={_styles.ball_container}>
+  return (<View style={[_styles.ball_container, style]}>
     { (listData?.data as Array<PlayData>)?.map(renderERect) }
   </View>)
 }
