@@ -9,6 +9,7 @@ import { pop } from '../../../public/navigation/RootNavigation';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { scale } from '../../../public/tools/Scale';
+import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
 import { Toast } from '../../../public/tools/ToastUtils';
 import { showSuccess } from '../../../public/widget/UGLoadingCP';
 import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
@@ -20,6 +21,7 @@ interface JDAgentPage {
 }
 const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
 
+  const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
   const [agentApplyInfo, setAgentApplyInfo] = useState<UGAgentApplyInfo>()//数据（全部）
   const [qq, setQq] = useState("")
@@ -89,12 +91,12 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
       {show1(agentApplyInfo) && <View style={{}}>
         <JDAgentInput onChangeText={(text) => setQq(text)} placeholder={"请输入QQ"}
           backgroundColor= {Skin1.CLBgColor}
-          img={"https://appstatic.guolaow.com/assets/usrCenter_qq.png"}
+          img={img_assets('usrCenter_qq')} 
           content='QQ'
           editable={agentApplyInfo?.reviewStatus == 0 ? true : false}
           inputContent={agentApplyInfo?.reviewStatus == 0 ? '' : agentApplyInfo?.qq} />
         <JDAgentInput onChangeText={(text) => setPhone(text)} placeholder={"请输入联系电话"}
-          img={"https://appstatic.guolaow.com/assets/phone_icon.png"}
+          img={img_assets('phone_icon')}
           content='联系电话'
           editable={agentApplyInfo?.reviewStatus == 0 ? true : false}
           inputContent={agentApplyInfo?.reviewStatus == 0 ? '' : agentApplyInfo?.mobile} />
@@ -154,29 +156,29 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
       {/* 展示界面 */}
       {show2(agentApplyInfo) && <View style={{}}>
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
-          img={"https://appstatic.guolaow.com/assets/user_icon.png"}
+          img={img_assets('user_icon')} 
           content='用户'
           isInput={false}
           rightContent={agentApplyInfo?.username} />
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
           backgroundColor= {Skin1.CLBgColor}
-          img={"https://appstatic.guolaow.com/assets/usrCenter_qq.png"}
+          img={img_assets('usrCenter_qq')} 
           content='QQ'
           isInput={false}
           rightContent={agentApplyInfo?.qq} />
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
-          img={"https://appstatic.guolaow.com/assets/phone_icon.png"}
+          img={img_assets('phone_icon')} 
           content='联系电话'
           isInput={false}
           rightContent={agentApplyInfo?.mobile} />
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
           backgroundColor= {Skin1.CLBgColor}
-          img={"https://appstatic.guolaow.com/assets/status_icon.png"}
+          img={img_assets('status_icon')} 
           content='申请状态'
           isInput={false}
           rightContent={'代理审核拒绝'} />
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
-          img={"https://appstatic.guolaow.com/assets/refused_y_icon.png"}
+          img={img_assets('refused_y_icon')} 
           content='拒绝原因'
           isInput={false}
           rightContent={agentApplyInfo?.reviewResult} />
