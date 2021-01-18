@@ -24,6 +24,9 @@ import { anyEmpty, arrayLength } from '../../public/tools/Ext'
 import BetRecordHeaderComponent from './red/BetRecordHeaderComponent'
 import { ugLog } from '../../public/tools/UgLog'
 import { ItemType, LotteryListData } from '../../redux/model/game/LotteryListModel'
+import LotteryTab2Component from './util/widget/LotteryTab2Component'
+import LotteryTab3Component from './util/widget/LotteryTab3Component'
+import { PlayGroupData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -213,31 +216,34 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制右边彩票区域，彩球 等等
    */
-  const renderRightContent = (listMode?: LotteryListData) => {
+  const renderRightContent = (listData?: LotteryListData) => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
     // let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
-    // ugLog('------------------lotteryCode---------------------------------', JSON.stringify(listMode))
+    // ugLog('------------------lotteryCode---------------------------------', JSON.stringify(listData))
     // return <View style={CommStyles.flex}>
     //   {
     //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
     //   }
     // </View>
 
-    ugLog('renderRightContent=', JSON.stringify(listMode))
-    switch (listMode?.type) {
+    // ugLog('renderRightContent=', JSON.stringify(listData))
+    switch (listData?.type) {
       case ItemType.BALLS:
-        return <Text>{JSON.stringify(listMode)}</Text>
+        return <Text>{JSON.stringify(listData)}</Text>
       case ItemType.LABEL:
-        return <Text>{JSON.stringify(listMode)}</Text>
+        return <Text>{JSON.stringify(listData)}</Text>
       case ItemType.LATTICE:
-        return <Text>{JSON.stringify(listMode)}</Text>
+        return <Text>{JSON.stringify(listData)}</Text>
       case ItemType.TAB:
-        return <Text>{JSON.stringify(listMode)}</Text>
+        // return <Text>{JSON.stringify(listData)}</Text>
+        return arrayLength(listData?.data as Array<PlayGroupData>) == 2 ?
+          <LotteryTab2Component listData={listData}/> :
+          <LotteryTab3Component listData={listData}/>
       case ItemType.TITLE_AND_BALL:
-        return <Text>{JSON.stringify(listMode)}</Text>
+        return <Text>{JSON.stringify(listData)}</Text>
       case ItemType.ZODIAC:
-        return <Text>{JSON.stringify(listMode)}</Text>
+        return <Text>{JSON.stringify(listData)}</Text>
     }
 
   }
@@ -246,7 +252,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContentList = () => {
-    // ugLog('----------------------2-----------------------------', lotteryModel)
+    ugLog('---------------------------------------------------')
 
     return (
       <FlatList key={'page balls renderDataList'}

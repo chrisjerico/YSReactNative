@@ -7,6 +7,7 @@ import { anyEmpty } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import { scale } from '../../../../public/tools/Scale'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 interface IUseLotteryTab2Params {
   listData?: LotteryListData
@@ -17,7 +18,6 @@ interface IUseLotteryTab2Params {
  * @constructor
  */
 const LotteryTab2Component = ({ listData }: IUseLotteryTab2Params) => {
-
   /**
    * 绘制 2个Tab 容器 Tab
    *
@@ -25,8 +25,8 @@ const LotteryTab2Component = ({ listData }: IUseLotteryTab2Params) => {
    * @param tabIndex 当前TAB索引
    * @param groupData 当前TAB数据
    */
-  const renderTab2Item = (selectedTabIndex?: number, tabIndex?: number, groupData?: PlayGroupData) =>
-    <View style={[
+  const renderTab2Item = (selectedTabIndex?: number, tabIndex?: number, groupData?: PlayGroupData) => {
+    return (<View style={[
       _styles.tab_item,
       selectedTabIndex == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
     ]}>
@@ -36,11 +36,13 @@ const LotteryTab2Component = ({ listData }: IUseLotteryTab2Params) => {
           selectedTabIndex == tabIndex ? { color: 'white' } : null,
         ]}>{groupData?.alias}</Text>
       </TouchableOpacity>
-    </View>
+    </View>)
+  }
+
 
   return (<View style={_styles.tab_container}>
-    {renderTab2Item(listData?.selectedTabIndex, 0, listData[0])}
-    {renderTab2Item(listData?.selectedTabIndex, 1, listData[1])}
+    {renderTab2Item(listData?.selectedTabIndex, 0, listData.data[0])}
+    {renderTab2Item(listData?.selectedTabIndex, 1, listData.data[1])}
   </View>)
 }
 
