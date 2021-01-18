@@ -7,6 +7,7 @@ import UseLeftComponent from './UseLeftComponent'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../const/LotteryConst'
 import { useEffect } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
+import { ugLog } from '../../../public/tools/UgLog'
 
 /**
  * 六合彩 左侧菜单列表
@@ -19,11 +20,17 @@ const LeftColumnComponent = ({ style }: ILotteryRouteParams) => {
   const {
     leftColumnIndex,
     setLeftColumnIndex,
+    nextIssueData,
     playOddDetailData,
+    refLotteryList,
   } = UseLeftComponent()
 
   useEffect(() => {
-    UGStore.dispatch({ type: 'reset', lotteryColumnIndex: leftColumnIndex })
+    // UGStore.dispatch({ type: 'reset', lotteryColumnIndex: leftColumnIndex })
+    if (leftColumnIndex > 0) {
+      ugLog('leftColumnIndex = ', leftColumnIndex)
+      refLotteryList()?.current?.scrollTo(leftColumnIndex * 10)
+    }
   }, [leftColumnIndex])
 
   /**

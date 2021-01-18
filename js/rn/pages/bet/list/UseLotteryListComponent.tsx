@@ -30,11 +30,11 @@ const UseLotteryListComponent = () => {
     // curPlayOddData, //当前选中的，特码 连码 等等
   } = useContext(BetLotteryContext)
 
-  const lotteryColumnIndex = UGStore.globalProps.lotteryColumnIndex //彩票选中哪一个种类
+  // const lotteryColumnIndex = UGStore.globalProps.lotteryColumnIndex //彩票选中哪一个种类
   const lotteryModel = UGStore.globalProps.lotteryModel //彩票信息
 
   return {
-    lotteryColumnIndex,
+    // lotteryColumnIndex,
     lotteryModel,
     playOddDetailData,
   }

@@ -5,7 +5,7 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import UseLotteryListComponent from './UseLotteryListComponent'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../const/LotteryConst'
-import { useEffect } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { ItemType, LotteryListData } from '../../../redux/model/game/LotteryListModel'
 import LotteryBallComponent from '../util/widget/LotteryBallComponent'
@@ -26,17 +26,25 @@ import CommStyles from '../../base/CommStyles'
  * @param navigation
  * @constructor
  */
-const LotteryListComponent = ({ style }: ILotteryRouteParams) => {
+const LotteryListComponent = ({ style }: ILotteryRouteParams, ref: any) => {
 
   const {
-    lotteryColumnIndex,
+    // lotteryColumnIndex,
     lotteryModel,
     playOddDetailData,
   } = UseLotteryListComponent()
 
-  useEffect(() => {
-ugLog(' lotteryColumnIndex lotteryColumnIndex =', lotteryColumnIndex)
-  }, [lotteryColumnIndex])
+  const refListController = useRef<FlatList>()// 列表
+
+  useImperativeHandle(ref, () => ({
+    scrollTo: (index?: number) => {
+      refListController?.current?.scrollToIndex({ animated: true, index: index })
+    },
+  }))
+
+//   useEffect(() => {
+// ugLog(' lotteryColumnIndex lotteryColumnIndex =', lotteryColumnIndex)
+//   }, [lotteryColumnIndex])
 
   /**
    * 绘制右边彩票区域，彩球 等等
@@ -81,6 +89,7 @@ ugLog(' lotteryColumnIndex lotteryColumnIndex =', lotteryColumnIndex)
 
     return (
       <FlatList key={'page balls renderRightContentList'}
+                ref={refListController}
                 style={_styles.right_content_list}
                 showsVerticalScrollIndicator={false}
                 nestedScrollEnabled={true}
@@ -103,4 +112,4 @@ const _styles = StyleSheet.create({
   },
 })
 
-export default LotteryListComponent
+export default forwardRef(LotteryListComponent)

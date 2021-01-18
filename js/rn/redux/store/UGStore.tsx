@@ -31,7 +31,7 @@ export interface IGlobalState {
   //下注
   selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
   lotteryModel?: LotteryListModel //游戏列表数据
-  lotteryColumnIndex?: number //彩种索引
+  // lotteryColumnIndex?: number //彩种索引
 
   sys?: UGSystemModel
   // value?: any;
@@ -56,7 +56,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     //彩票数据
     act.selectedLotteryData && (state.selectedLotteryData = act.selectedLotteryData)
     act.lotteryModel && (state.lotteryModel = act.lotteryModel)
-    act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
+    // act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
 
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
@@ -95,7 +95,7 @@ export interface UGAction<P = {}> extends Action {
   //彩票数据
   selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
   lotteryModel?: LotteryListModel //游戏列表数据
-  lotteryColumnIndex?: number //彩种索引
+  // lotteryColumnIndex?: number //彩种索引
 
   sys?: UGSystemModel
   rightMenu?: UGRightMenuModel[]

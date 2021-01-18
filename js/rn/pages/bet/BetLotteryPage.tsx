@@ -49,6 +49,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   const { lotteryId } = route?.params
 
   const {
+    refListController,
     userInfo,
     systemInfo,
     setLotteryId,
@@ -119,7 +120,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制游戏列表
    */
-  const renderRightList = () => <LotteryListComponent/>
+  const renderRightList = () => <LotteryListComponent ref={refListController}/>
 
   // /**
   //  * 加载彩票对象
@@ -242,6 +243,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     <BetLotteryContext.Provider value={{
       nextIssueData: () => nextIssueData,
       playOddDetailData: () => playOddDetailData,
+      refLotteryList: () => refListController,
       // curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
     }}>
       <BaseScreen key={'lottery BaseScreen'}

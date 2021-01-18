@@ -26,6 +26,7 @@ const UseLeftComponent = () => {
   const {
     nextIssueData, // 下一期数据
     playOddDetailData, //彩票数据
+    refLotteryList, //彩票LIST
     // curPlayOddData, //当前选中的，特码 连码 等等
   } = useContext(BetLotteryContext)
 
@@ -34,7 +35,9 @@ const UseLeftComponent = () => {
   return {
     leftColumnIndex,
     setLeftColumnIndex,
+    nextIssueData,
     playOddDetailData,
+    refLotteryList,
   }
 }
 

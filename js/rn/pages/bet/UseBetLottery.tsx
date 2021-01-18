@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import APIRouter from '../../public/network/APIRouter'
 import { anyEmpty } from '../../public/tools/Ext'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
@@ -19,6 +19,8 @@ const UseBetLottery = () => {
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
+
+  const refListController = useRef()
   const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
   const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //当前期数据
   const [playOddDetailData, setPlayOddDetailData] = useState<PlayOddDetailData>(null) //彩票数据
@@ -71,6 +73,7 @@ const UseBetLottery = () => {
   }
 
   return {
+    refListController,
     userInfo,
     systemInfo,
     setLotteryId,
