@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import {Platform, StyleSheet, View } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { UGBasePageProps } from '../../base/UGPage';
@@ -24,6 +24,10 @@ import { Button } from 'react-native-elements';
 import { UGStore } from '../../../redux/store/UGStore';
 import { PageName } from '../../../public/navigation/Navigation';
 import { push } from '../../../public/navigation/RootNavigation';
+import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader';
+import { skinColors } from '../../../public/theme/const/UGSkinColor';
+import { UGNavigationBar } from '../../../public/widget/UGNavigationBar';
+
 
 interface JDRecommendedIncomePage {
   tabNames?: Array<string>//tab界面名称数据
@@ -60,13 +64,8 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
     setProps({
       navbarOpstions: {
         hidden: false, title: '推荐收益',
-        rightComponent:
-         <Button 
-         title={inviteCode.displayWord}
-         buttonStyle ={{backgroundColor:Skin1.themeColor,width:100,}}
-         titleStyle={{ fontSize:16 }}
-          onPress={() => rightClicked()}
-        />
+        rightComponent:ZLHeader(),
+        
       },
       didFocus: () => {
         console.log('AppDefine.siteId ========',AppDefine.siteId );
@@ -77,6 +76,34 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
     })
 
   }, [])
+
+  const ZLHeader = () => {
+    if (isHideBut()) {
+      return(
+        <View></View>
+      )
+    } else {
+      return(
+        <Button 
+         title={inviteCode.displayWord}
+         buttonStyle ={{backgroundColor:Skin1.themeColor,width:100,}}
+         titleStyle={{ fontSize:16 }}
+          onPress={() => rightClicked()}
+        /> 
+      )
+    }
+
+  }
+
+  function isHideBut(){
+    
+    if (AppDefine.siteId ==='c084') {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
   /**
      * 跳到邀请码界面
@@ -117,6 +144,7 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
   }
 
   return (
+    
     <View style={styles.container}>
       {
         [
