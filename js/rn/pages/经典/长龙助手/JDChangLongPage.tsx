@@ -51,6 +51,7 @@ const
      * @param item
      */
     useEffect(() => {
+      fetchBalance()
       setProps({
         navbarOpstions: {
           hidden: false, title: '长龙助手',
@@ -135,7 +136,7 @@ const
         })
 
         return (
-          <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1, }}>
+          <View style={{ alignItems: 'center', flexDirection: 'row', width:146}}>
 
             <TouchableOpacity style={{ alignItems: 'center', flexDirection: 'row', }} onPress={() => {
               refreshBalance()
@@ -148,10 +149,10 @@ const
               </Animated.View>
               {/* <Animated.Image style={[styles.itemImageImageStyle, { height: 25, width: 25, transform: [{ rotateZ: spin }] }]} source={{ uri: 'https://appstatic.guolaow.com/assets/shuaxin.png' }} /> */}
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
+            <View style={{flex:1}}></View>
+            <TouchableOpacity style={{ marginLeft:1,marginRight:10 }}  onPress={() => {
               rightClicked()
             }}>
-
               <Image style={[styles.itemImageImageStyle, { height: 30, width: 24, }]} source={{ uri: Res.gengduo }} />
             </TouchableOpacity>
           </View>

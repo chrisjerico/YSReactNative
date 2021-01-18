@@ -553,18 +553,19 @@ function clearClick() {
 * 
 */
   function playNameColor(item: any) {
-    if (item.playName == '小' || item.playName == '大') {
+    
+    if (item.playName === '小' || item.playName === '大') {
       return '#76B473'
     }
-    else if (item.playName == '单' || item.playName == '双') {
+    if (item.playName === '单' || item.playName === '双') {
       return '#800080'
     }
-    else if (item.playName == '龙' || item.playName == '虎') {
-      return '#DC143C	'
+    if ('龙' === item.playName  || item.playName === '虎') {
+      return '#DC143C'
     }
-    else {
-      return '#76B473'
-    }
+  
+    return '#76B473'
+    
   }
 
   /**
@@ -803,6 +804,7 @@ function infoAction(){
 */
   const _renderItem = ({ index, item }) => {
     {
+      
 
       return (
         <View style={[styles.viewItem, { alignItems: 'center', marginHorizontal: 10, flexDirection: 'row', }]}>
@@ -836,7 +838,7 @@ function infoAction(){
                   {item.playCateName}
                 </Text>
               </View>
-              <View style={{ marginLeft: 10, backgroundColor: playNameColor(item), borderRadius: 3, }}>
+               <View style={{ marginLeft: 10, backgroundColor: playNameColor(item), borderRadius: 3, }}>
                 <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.playName}
                 </Text>
