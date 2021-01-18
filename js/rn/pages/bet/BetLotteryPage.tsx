@@ -32,6 +32,7 @@ import LotteryBallComponent from './util/widget/LotteryBallComponent'
 import LotteryLabelComponent from './util/widget/LotteryLabelComponent'
 import LotteryLatticeComponent from './util/widget/LotteryLatticeComponent'
 import LotteryLabelAndBallComponent from './util/widget/LotteryLabelAndBallComponent'
+import LeftColumnComponent from './menu/LeftColumnComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -66,7 +67,6 @@ const BetLotteryPage = ({ navigation, route }) => {
   const [textSize, setTextSize] = useState(scale(22))
   const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，投注0 还是游戏1
   const [gameTabIndex, setGameTabIndex] = useState(0) // 彩票和聊天切换TAB
-  const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
 
   /**
    * 绘制顶部的标题栏
@@ -114,34 +114,7 @@ const BetLotteryPage = ({ navigation, route }) => {
   /**
    * 绘制左边列表 特码 双面 正码 等等
    */
-  const renderLeftColumn = () => <View key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
-                                       style={_styles.left_column_container}>
-    <ScrollView key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
-                nestedScrollEnabled={true}
-                showsVerticalScrollIndicator={false}>
-      <View key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
-            style={_styles.left_column_content}>
-        {
-          playOddDetailData?.playOdds?.map((item, index) => {
-            return <TouchableOpacity key={'renderLeftColumn' + item?.code}
-                                     onPress={() => setLeftColumnIndex(index)}>
-              <View key={'renderLeftColumn' + item?.code}
-                    style={[
-                      _styles.left_column_item,
-                      {
-                        borderWidth: leftColumnIndex == index ? scale(3) : scale(1),
-                        borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
-                      },
-                    ]}>
-                <Text key={'renderLeftColumn' + item?.code}
-                      style={_styles.left_column_text}>{item.name}</Text>
-              </View>
-            </TouchableOpacity>
-          })
-        }
-      </View>
-    </ScrollView>
-  </View>
+  const renderLeftColumn = () => <LeftColumnComponent/>
 
   // /**
   //  * 加载彩票对象
@@ -313,7 +286,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     <BetLotteryContext.Provider value={{
       nextIssueData: () => nextIssueData,
       playOddDetailData: () => playOddDetailData,
-      curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
+      // curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
     }}>
       <BaseScreen key={'lottery BaseScreen'}
                   screenName={''}
@@ -441,25 +414,9 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: 'white',
   },
-  left_column_container: {
-    height: BALL_CONTENT_HEIGHT,
-  },
   right_content_list: {
+    flex: 1,
     height: BALL_CONTENT_HEIGHT,
-  },
-  left_column_content: {
-
-  },
-  left_column_text: {
-    color: UGColor.TextColor7,
-    fontSize: scale(22),
-  },
-  left_column_item: {
-    width: scale(140),
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: LEFT_ITEM_HEIGHT,
-    borderRadius: scale(8),
   },
 })
 
