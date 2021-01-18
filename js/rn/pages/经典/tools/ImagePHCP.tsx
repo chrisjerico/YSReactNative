@@ -35,7 +35,7 @@ export const ImagePHCP = (props: ImagePHCP) => {
     {shwoDefaultImage && <FontAwesome
       name={'file-picture-o'}
       color={'#808080'}
-      size={scale(props.imgW)}
+      size={scale(Math.min(props.imgW,props.imgH))}
     />}
   </View>
 </View>
