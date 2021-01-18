@@ -7,7 +7,7 @@ import SegmentedControl from "rn-segmented-control";
 import AppDefine from '../../../public/define/AppDefine';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { scale } from '../../../public/tools/Scale';
-import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
+import { useHtml5Image, UGImageHost } from '../../../Res/icon';
 import { Res } from '../../../Res/icon/Res';
 import { UGBasePageProps } from '../../base/UGPage';
 import { JDCLInfoText, JDCLText, JDCLView } from '../cp/JDCLInfoText';
