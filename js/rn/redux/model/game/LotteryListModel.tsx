@@ -30,7 +30,7 @@ enum ItemType {
   LABEL = 'LABEL', //普通标题栏
   BALLS = 'BALLS', //N个球一行
   LATTICE = 'LATTICE',  //N个格子一行
-  TITLE_AND_BALL = 'TITLE_AND_BALL',  //标题和N个格子一行
+  LABEL_AND_BALL = 'LABEL_AND_BALL',  //标题和N个格子一行
 }
 
 export default LotteryListModel

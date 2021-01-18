@@ -244,7 +244,7 @@ const BetLotteryPage = ({ navigation, route }) => {
         return arrayLength(listData?.data as Array<PlayGroupData>) == 2 ?
           <LotteryTab2Component listData={listData}/> :
           <LotteryTab3Component listData={listData}/>
-      case ItemType.TITLE_AND_BALL:
+      case ItemType.LABEL_AND_BALL:
         return <LotteryLabelAndBallComponent listData={listData} />
       case ItemType.ZODIAC:
         return <LotteryZodiacComponent listData={listData}/>

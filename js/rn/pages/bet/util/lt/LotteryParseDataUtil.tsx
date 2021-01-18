@@ -53,7 +53,7 @@ const parsePXGroupData = ({ groupArray, data, zodiacNums }: IPXGroupData): Array
       }
 
       return ({
-        type: ItemType.TITLE_AND_BALL,
+        type: ItemType.LABEL_AND_BALL,
         code: data?.code,
         data: newPlayData,
       })
@@ -513,7 +513,7 @@ const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListData> => {
         exZodiac: item,
       }
       return ({
-        type: ItemType.TITLE_AND_BALL,
+        type: ItemType.LABEL_AND_BALL,
         code: data?.code,
         data: newItem,
       })
