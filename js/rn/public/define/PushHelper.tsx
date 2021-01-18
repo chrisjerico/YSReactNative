@@ -140,11 +140,11 @@ export default class PushHelper {
 
         if (game?.seriesId == 7 && game?.subId == GameType.游戏大厅) {  //游戏大厅
           push(PageName.GameLobbyPage, { showBackButton: true })
-          return 
+          return
         }
         if (game?.isPopup == 1) {  //二级游戏分类
           push(PageName.TwoLevelGames, { game: game, showBackButton: true })
-          return 
+          return
         }
 
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
