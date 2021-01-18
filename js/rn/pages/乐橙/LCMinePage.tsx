@@ -17,20 +17,20 @@ import useLoginOut from '../../public/hooks/useLoginOut'
 import { PageName } from '../../public/navigation/Navigation'
 import LinearGradient from 'react-native-linear-gradient'
 import useMinePage from '../../public/hooks/tars/useMinePage'
-import config from '../BZH/config'
+import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
 
 const LCMinePage = () => {
-  const { pickAvatarComponentRef, info } = useMinePage({
+  const { info } = useMinePage({
     homePage: PageName.LCHomePage,
-    defaultUserCenterLogos: config?.defaultUserCenterLogos,
+    defaultUserCenterLogos: MinePageImgConfig.defaultUserCenterLogos,
   })
   const { userInfo, sysInfo } = info
   const { unreadMsg, uid } = userInfo
   const { userCenterItems } = sysInfo
+  const { loginOut } = useLoginOut(PageName.LCHomePage)
   useEffect(() => {
     uid == '' && PushHelper.pushLogin()
-  })
-  const { loginOut } = useLoginOut(PageName.LCHomePage)
+  }, [uid])
 
   return (
     <View style={{ backgroundColor: '#ffffff', flex: 1 }}>
