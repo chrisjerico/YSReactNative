@@ -331,7 +331,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 
   return (
     <View style={_styles.container}>
-      <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="transparent" color="#00000033" height={height} width={AppDefine.width} />
+      <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="transparent" color="#00000055" height={height} width={AppDefine.width} />
       <Text style={_styles.title}>{textProgress}</Text>
       <View style={_styles.container_timer}>
         <Progress.Circle
