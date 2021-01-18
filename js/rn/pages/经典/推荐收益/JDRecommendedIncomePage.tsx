@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
-import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
-import DateUtil from '../../../public/tools/andrew/DateUtil';
-import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
 import { UGBasePageProps } from '../../base/UGPage';
 import { scale } from "../../../public/tools/Scale";
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import EmptyView from '../../../public/components/view/empty/EmptyView';
-import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
+import { arrayEmpty } from '../../../public/tools/Ext';
 import { ugLog } from '../../../public/tools/UgLog';
 import { PromotionConst } from '../const/PromotionConst';
 import JDPromotionTabMemberCP from '../cp/JDPromotionTabMemberCP';
@@ -25,7 +22,6 @@ import JDPromotionTabRealityRcordCP from '../cp/JDPromotionTabRealityRcordCP';
 import JDPromotionInfoCP from '../cp/JDPromotionInfoCP';
 import { Button } from 'react-native-elements';
 import { UGStore } from '../../../redux/store/UGStore';
-import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { PageName } from '../../../public/navigation/Navigation';
 import { push } from '../../../public/navigation/RootNavigation';
 
@@ -34,7 +30,7 @@ interface JDRecommendedIncomePage {
 }
 
 const 
-JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
+JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
 
   //调用sysConf
   const { inviteCode } = UGStore.globalProps.sysConf
@@ -55,7 +51,7 @@ JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
         PromotionConst.真人记录
       ]
     })
-  const [tabIndex, setTabIndex] = useState<number>(0)
+  const [tabIndex] = useState<number>(0)
   /**
    * 初始化
    * @param item
@@ -142,7 +138,7 @@ JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
               style={[{ flex: 1 ,}]}
               renderTabBar={() => <ScrollableTabBar style={styles.tab_bar} />}>
               {
-                v.tabNames?.map((tabItem, index) => {
+                v.tabNames?.map((tabItem) => {
                   return (
                     renderRecordList(tabItem)
                   )

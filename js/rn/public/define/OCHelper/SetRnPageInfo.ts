@@ -28,8 +28,8 @@ export async function setRnPageInfo(force = false) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
       vcName: 'UGPromotionIncomeController',
-      // rnName: PageName.JDLotteryAssistantPage,
-      rnName: PageName.JDRecommendedIncomePage,
+      rnName: PageName.JDChangLongPage,
+      // rnName: PageName.JDSegmentPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -59,6 +59,15 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
+    // 长龙助手
+    pages.push({
+      vcName: 'UGChangLongController',
+      rnName: PageName.JDChangLongPage,
+      fd_prefersNavigationBarHidden: true,
+      tabbarItemPath: '/changLong',
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 推荐信息
     pages.push({
       vcName: 'UGPromotionIncomeController',

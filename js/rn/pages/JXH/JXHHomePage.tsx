@@ -11,6 +11,7 @@ import { goToUserCenterType } from '../../public/tools/tars'
 import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import TouchableImage from '../../public/views/tars/TouchableImage'
+import config from './config'
 import PopularGameTabPage from './views/PopularGameTabPage'
 import ProfileBlock from './views/ProfileBlock'
 
@@ -48,7 +49,7 @@ const JXHHomePage = () => {
   }
 
   return (
-    <ImageBackground source={require('./jxhbackground.png')} style={{ flex: 1 }}>
+    <ImageBackground source={{uri:config.homeBg}} style={{ flex: 1 }}>
       <HomePage
         {...homeInfo}
         {...userInfo}

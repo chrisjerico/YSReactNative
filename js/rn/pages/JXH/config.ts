@@ -1,5 +1,5 @@
 import { UGImageHost, useHtml5Image } from '../../public/tools/tars'
-const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test10)
+const { getHtml5Image, img_platform, img_mobileTemplate } = useHtml5Image(UGImageHost.test10)
 
 const config = {
   defaultUserCenterLogos: {
@@ -24,6 +24,8 @@ const config = {
     19: img_platform('c091', 'qqkf'), // QQ客服
     20: img_platform('c006', 'kjw'), // 開獎網
   },
+
+  homeBg:img_mobileTemplate(18, 'bg-black')
 }
 
 export default config

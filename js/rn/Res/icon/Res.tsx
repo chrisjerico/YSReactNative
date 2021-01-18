@@ -15,6 +15,7 @@ export const icon_刮刮乐 = img_assets('gyg')    //大转盘
 export const icon_任务弹窗 = img_assets('task_home')    //任务弹框
 
 export const Res = {
+  
   bankhl1: img_assets('bankhl1'),
   btc: img_assets('btc'),
   empty: img_assets('empty'),
@@ -125,4 +126,8 @@ export const Res = {
   dj: img_assets('lottery/d'),
   real_person: img_assets('lottery/re'),
   sports: img_assets('lottery/sp'),
+  
+  //导航 三根线
+  gengduo: img_assets('gengduo'),
+
 }
