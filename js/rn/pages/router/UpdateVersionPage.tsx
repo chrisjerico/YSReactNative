@@ -327,11 +327,12 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   circleProgress = circleProgress < 0 ? 0 : circleProgress
 
   const height = Platform.OS == 'ios' ? useSafeArea()?.top + 20 : useSafeArea()?.top
+  const textProgress = '  ' + text + (progress > 1 ? `${progress}%...` : '') + showNetwork
 
   return (
     <View style={_styles.container}>
-      <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="transparent" color="#00000033" height={height} width={AppDefine.width} />
-      <Text style={_styles.title}>{'  ' + text + showNetwork}</Text>
+      <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="transparent" color="#00000055" height={height} width={AppDefine.width} />
+      <Text style={_styles.title}>{textProgress}</Text>
       <View style={_styles.container_timer}>
         <Progress.Circle
           progress={circleProgress / 10}
