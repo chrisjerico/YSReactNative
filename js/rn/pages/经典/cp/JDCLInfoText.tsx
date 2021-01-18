@@ -6,7 +6,7 @@ import { scale } from "../../../public/tools/Scale";
 import { Button } from "react-native-elements";
 import { Res } from "../../../Res/icon/Res";
 import AppDefine from "../../../public/define/AppDefine";
-import { JDImagePH } from "../tools/JDImagePH";
+import { ImagePHCP } from "../tools/ImagePHCP";
 
 interface JDCLInfoText {
   title?: string     //左边👉文本内容
@@ -57,7 +57,7 @@ export const JDCLText = (props: JDCLText) => {
 
     {/* 图片 */}
     <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-      <JDImagePH
+      <ImagePHCP
         style={{
           height: scale(80),
           width: scale(80),

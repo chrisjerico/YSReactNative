@@ -4,13 +4,13 @@ import { scale } from "../../../public/tools/Scale";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-interface JDImagePH {
+interface ImagePHCP {
   style?: StyleProp<ImageStyle>;
   url?: string          //图片地址
   imgW?: number      //
   imgH?: number  //icon 是否显示    
 }
-export const JDImagePH = (props: JDImagePH) => {
+export const ImagePHCP = (props: ImagePHCP) => {
 
   let [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
   return   <View style={{ justifyContent: 'center', alignItems: 'center' }}>
