@@ -1,13 +1,17 @@
 
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Image } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import SegmentedControl from "rn-segmented-control";
 import AppDefine from '../../../public/define/AppDefine';
-import { UGImageHost, useHtml5Image } from '../../../Res/icon';
+import { Skin1 } from '../../../public/theme/UGSkinManagers';
+import { scale } from '../../../public/tools/Scale';
+import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
 import { Res } from '../../../Res/icon/Res';
 import { UGBasePageProps } from '../../base/UGPage';
 import { JDCLInfoText, JDCLText, JDCLView } from '../cp/JDCLInfoText';
-
+const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 
 
@@ -17,11 +21,15 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
 
   const [tabIndex, setTabIndex] = React.useState(1);
   const { img_assets } = useHtml5Image(UGImageHost.test5)
+  const [imgError, setImgError] = useState(false);
+  let [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
+
   const handleTabsChange = (index: number) => {
     // console.log('index ==',index);
 
     setTabIndex(index);
 
+    // setShwoDefaultImage(!shwoDefaultImage)
     // var date = moment('2016-10-11 18:06:03')
     //     console.log('date ==',date);
 
@@ -67,6 +75,13 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
 
     console.log('图片路径：', img_assets('gengduo'));
     console.log('图片路径：', Res.gengduo);
+
+
+
+    Image.getSize('https://appstatic.guolaow.com/web/images/zxkf.png', (width, height) => {
+      console.log('width==', width);
+
+    })
   };
   /**
  * 初始化
@@ -86,6 +101,7 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
 
   }, [])
 
+
   return (
     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
       <SegmentedControl
@@ -103,11 +119,42 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
         }}
         theme={'DARK'}
       />
-      <JDCLText title='六合彩' content='第XXXXX期' />
-      <JDCLInfoText title='投注时间' content='2021-01-17 13:49:50' />
-      <JDCLInfoText title='投注单号' content='6655558768768' />
-      <JDCLInfoText title='投注金额' content='1元' contentColor='red' />
-      <JDCLView  title='投注金额' content='XXXXXXX元' />
+
+
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Image
+          style={[{ width: 50, height: 50,  },]}
+          source={{
+            uri: img_assets('money-2'),
+            // uri: 'https://appstatic.guolaow.com/web/images/zxkf.png'
+
+          }}
+          onError={() => {
+            console.log('onError:true');
+            setImgError(true)
+            setShwoDefaultImage(true)
+          }}
+          onLoad={() => {
+            console.log('成功加载');
+            setImgError(false)
+            setShwoDefaultImage(false)
+          }}
+
+        />
+
+
+
+        <View style={{ position: 'absolute', width: 50, height: 50,justifyContent: 'center', alignItems: 'center' }}>
+          {shwoDefaultImage && <AntDesign
+            name={'picture'}
+            color={'#808080'}
+            size={scale(50)}
+          />}
+        </View>
+
+
+
+      </View>
     </View >
   )
 

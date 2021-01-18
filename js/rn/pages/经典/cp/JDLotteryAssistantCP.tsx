@@ -14,7 +14,7 @@ import { BetBean, BetMode, jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UG
 
 import moment from 'moment';
 import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
-import { img_images } from '../../../Res/icon';
+import { JDImagePH } from '../tools/JDImagePH';
 
 
 export interface JDLotteryAssistantCPAction {
@@ -80,7 +80,7 @@ useEffect(() => {
       bottomH: 60,
       items: [],
       isRefreshing: true,
-      imgLoading: img_images('loading')
+      imgLoading: 'https://appstatic.guolaow.com/web/images/loading.png'
     }
   )
   const [text,setText] = React.useState('');
@@ -811,11 +811,12 @@ function infoAction(){
         <View style={[styles.viewItem, { alignItems: 'center', marginHorizontal: 10, flexDirection: 'row', }]}>
           {/* 图片 */}
           <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-            <Image 
-
-            defaultSource={require('./load.png')} //默认图片
+            <JDImagePH 
             style={[styles.itemImageImageStyle,]}
-             source={{ uri: cellImg(item) }}  />
+             url={ cellImg(item) }
+             imgH = {50}
+             imgW = {50}
+             />
           </View>
           {/* 内容 */}
           <View style={[{ flexDirection: 'column', marginLeft: 10, }]}>
@@ -895,7 +896,7 @@ function infoAction(){
 
   function initDate(){
     v.bottomH = 60;
-    v.imgLoading = img_images('loading')
+    v.imgLoading = 'https://appstatic.guolaow.com/web/images/loading.png'
     v.selAideModel = null
     v.selBetItem = null
     v.betCount = 0
