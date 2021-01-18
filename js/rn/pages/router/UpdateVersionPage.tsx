@@ -36,7 +36,8 @@ export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> 
   showNetwork?: string //显示网络状态
 }
 
-const MAX_TIME = 8 //最多8秒倒计时
+const MAX_TIME = 12 //最多N秒倒计时
+
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
   const { setProps, progress = 0, counter = 0, clickCount = 0, showNetwork = '', text = '正在努力更新中...',
     bCodePush = false, bBanner = false, networkOK = false, codeStatus } = props
@@ -53,19 +54,6 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   const { testNetwork, testSite } = UseVersion({ testResult })
 
   useEffect(() => {
-    // // 超时时间20秒
-    // const timer = setTimeout(() => {
-    //   clearTimeout(timer)
-    //
-    //   switch (Platform.OS) {
-    //     case 'ios':
-    //       break
-    //     case 'android':
-    //       ANHelper.callAsync(CMD.LAUNCH_GO)
-    //       break
-    //   }
-    // }, 8000)
-
     setProps({
       navbarOpstions: { hidden: true },
     })
@@ -252,21 +240,25 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           break;
         case 'android':
           //倒计时也到了, 请求没给正常结果，codePush也检查完毕 就判定域名有问题，如果codePush正在升级安装，就不管
-          if (counter == MAX_TIME && !networkOK &&
-            (codeStatus == CodePush.SyncStatus.UNKNOWN_ERROR || //codePush出错
+          if (counter == MAX_TIME) {
+            if (networkOK) { //时间到了，网络OK 不管如何都放用户进去
+              // ANHelper.callAsync(CMD.LAUNCH_GO)
+            } else if(codeStatus == CodePush.SyncStatus.UNKNOWN_ERROR || //codePush出错
               codeStatus == CodePush.SyncStatus.UPDATE_IGNORED || //忽略此热更新
-              codeStatus == CodePush.SyncStatus.UP_TO_DATE)) { //已是最新版本
-            Alert.alert("温馨提示",
-              "访问出现异常，请联系客服...",
-              [
-                {
-                  text: '退出',
-                  onPress: () => {
-                    ANHelper.callAsync(CMD.FINISH_ACTIVITY)
-                  }, style: 'destructive',
-                },
-              ]);
-            //倒计时完了，请求还没有结果，就判定域名有问题，或者网速实在太慢
+              codeStatus == CodePush.SyncStatus.UP_TO_DATE //已是最新版本
+            ) {
+              Alert.alert('温馨提示',
+                '访问出现异常，请联系客服...',
+                [
+                  {
+                    text: '退出',
+                    onPress: () => {
+                      ANHelper.callAsync(CMD.FINISH_ACTIVITY)
+                    }, style: 'destructive',
+                  },
+                ])
+            }
+
           }
           break;
       }
@@ -335,7 +327,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       <Text style={_styles.title}>{textProgress}</Text>
       <View style={_styles.container_timer}>
         <Progress.Circle
-          progress={circleProgress / 10}
+          progress={circleProgress / MAX_TIME}
           size={scale(56)}
           thickness={scale(2)}
           allowFontScaling={true}
