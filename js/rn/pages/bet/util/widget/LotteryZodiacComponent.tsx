@@ -31,7 +31,7 @@ const LotteryZodiacComponent = ({ listData }: IUseLotteryZodiacParams) => {
    * @param selectedTabIndex 当前选中的条目
    * @param index 当前索引
    */
-  const renderZodiacItem = ({ item, selectedTabIndex, index }: IZodiacItem) => <TouchableOpacity >
+  const renderZodiacItem = ({ item, selectedTabIndex, index }: IZodiacItem) => <TouchableOpacity key={'renderZodiacItem=' + item?.id + index}>
     <View style={_styles.zodiac_item}>
       {
         selectedTabIndex == index ?

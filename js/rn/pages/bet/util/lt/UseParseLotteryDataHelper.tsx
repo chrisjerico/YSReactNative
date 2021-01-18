@@ -1,33 +1,20 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import {
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-  ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../../public/tools/Ext'
-import BetLotteryContext from '../../BetLotteryContext'
-import { isSelectedBallOnId } from '../../const/ISelBall'
-import LotteryListModel, {LotteryListData} from '../../../../redux/model/game/LotteryListModel'
+import { PlayOddDetailData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import LotteryListModel, { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
 import LotteryConst from '../../const/LotteryConst'
 import {
   parseHXData,
   parseLMAData,
-  parseLMData, parseLWData, parseLXData,
+  parseLMData,
+  parseLWData,
+  parseLXData,
   parsePTWSData,
   parsePTYXData,
-  parseTMData, parseTWSData,
-  parseZMData, parseZXBZGroupData,
+  parseTMData,
+  parseTWSData,
+  parseZMData,
+  parseZXBZGroupData,
 } from './LotteryParseDataUtil'
-import LhcTMComponent from '../../lhc/tm/LhcTMComponent'
-import LhcZTComponent from '../../lhc/zt/LhcZTComponent'
-import LhcLMAComponent from '../../lhc/lma/LhcLMAComponent'
-import LhcSBComponent from '../../lhc/sb/LhcSBComponent'
-import LhcPTYXComponent from '../../lhc/ptyx/LhcPTYXComponent'
-import LhcHXComponent from '../../lhc/hx/LhcHXComponent'
-import LhcZXBZComponent from '../../lhc/zxbz/LhcZXBZComponent'
-import { ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
 
 /**

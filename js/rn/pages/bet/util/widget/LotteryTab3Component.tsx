@@ -28,7 +28,8 @@ const LotteryTab3Component = ({ listData }: IUseLotteryTab3Params) => {
    * @param groupData 当前TAB数据
    */
   const renderTab3Item = (selectedTabIndex?: number, tabIndex?: number, groupData?: PlayGroupData) =>
-    <TouchableOpacity style={CommStyles.flex}>
+    <TouchableOpacity key={'renderTab3Item=' + groupData?.id + tabIndex}
+                      style={CommStyles.flex}>
       <View style={[
         _styles.tab_item,
         selectedTabIndex == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,

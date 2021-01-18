@@ -25,7 +25,8 @@ const LotteryLatticeComponent = ({ listData }: IUseLotteryLatticeParams) => {
    * @param item
    * @param index
    */
-  const renderERect = (item?: PlayData, index?: number) => <LotteryERect item={item}
+  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={'renderERect=' + item?.id + index}
+                                                                         item={item}
                                                                          //selectedBalls={selectedBalls}
                                                                          //callback={() => addOrRemoveBall(item?.id)}
   />

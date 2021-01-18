@@ -143,80 +143,80 @@ const BetLotteryPage = ({ navigation, route }) => {
     </ScrollView>
   </View>
 
-  /**
-   * 加载彩票对象
-   * @param targetLotteryCode 目标彩票
-   * @param currentLotteryCode 当前选中的彩票
-   * @constructor
-   */
-  const LotteryComponent = (targetLotteryCode?: string, currentLotteryCode?: string) => {
-
-    // <LhcTMComponent key={LotteryConst.TM + (LotteryConst.TM == targetLotteryCode)}
-    //                 style={targetLotteryCode == LotteryConst.TM ? null : { display: 'none' }}
-    //                 targetLotteryCode={LotteryConst.TM}/>
-
-    const isEqual = targetLotteryCode == currentLotteryCode //加载的彩票和选中的彩票是否相同
-    // const key = targetLotteryCode + isEqual
-    // ugLog('current key key={key} =', targetLotteryCode, currentLotteryCode, key)
-    switch (targetLotteryCode) {
-      case LotteryConst.TM: { //特码
-        return <LhcTMComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT: { //正特
-        return <LhcZTComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.LMA: { //连码
-        return <LhcLMAComponent key={targetLotteryCode}
-                                lotteryCode={targetLotteryCode}
-                                style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX: { //五行
-        return <LhcSBComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.YX: //平特一肖
-      case LotteryConst.WS: //平特尾数
-      case LotteryConst.TWS: //头尾数
-      case LotteryConst.TX: //特肖
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZX: { //正肖
-        return <LhcPTYXComponent key={targetLotteryCode}
-                                 lotteryCode={targetLotteryCode}
-                                 style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.HX: { //合肖
-        return <LhcHXComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.ZXBZ: { //自选不中
-        return <LhcZXBZComponent key={targetLotteryCode}
-                                 lotteryCode={targetLotteryCode}
-                                 style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-
-    }
-
-    return null
-  }
+  // /**
+  //  * 加载彩票对象
+  //  * @param targetLotteryCode 目标彩票
+  //  * @param currentLotteryCode 当前选中的彩票
+  //  * @constructor
+  //  */
+  // const LotteryComponent = (targetLotteryCode?: string, currentLotteryCode?: string) => {
+  //
+  //   // <LhcTMComponent key={LotteryConst.TM + (LotteryConst.TM == targetLotteryCode)}
+  //   //                 style={targetLotteryCode == LotteryConst.TM ? null : { display: 'none' }}
+  //   //                 targetLotteryCode={LotteryConst.TM}/>
+  //
+  //   const isEqual = targetLotteryCode == currentLotteryCode //加载的彩票和选中的彩票是否相同
+  //   // const key = targetLotteryCode + isEqual
+  //   // ugLog('current key key={key} =', targetLotteryCode, currentLotteryCode, key)
+  //   switch (targetLotteryCode) {
+  //     case LotteryConst.TM: { //特码
+  //       return <LhcTMComponent key={targetLotteryCode}
+  //                              lotteryCode={targetLotteryCode}
+  //                              style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+  //       />
+  //     }
+  //     case LotteryConst.ZM: //正码
+  //     case LotteryConst.ZT: { //正特
+  //       return <LhcZTComponent key={targetLotteryCode}
+  //                              lotteryCode={targetLotteryCode}
+  //                              style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+  //       />
+  //     }
+  //     case LotteryConst.LMA: { //连码
+  //       return <LhcLMAComponent key={targetLotteryCode}
+  //                               lotteryCode={targetLotteryCode}
+  //                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+  //       />
+  //     }
+  //     case LotteryConst.LM: //两面
+  //     case LotteryConst.ZM1_6: //正码1T6
+  //     case LotteryConst.SB: //色波
+  //     case LotteryConst.ZOX://总肖
+  //     case LotteryConst.WX: { //五行
+  //       return <LhcSBComponent key={targetLotteryCode}
+  //                              lotteryCode={targetLotteryCode}
+  //                              style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+  //       />
+  //     }
+  //     case LotteryConst.YX: //平特一肖
+  //     case LotteryConst.WS: //平特尾数
+  //     case LotteryConst.TWS: //头尾数
+  //     case LotteryConst.TX: //特肖
+  //     case LotteryConst.LX: //连肖
+  //     case LotteryConst.LW: //连尾
+  //     case LotteryConst.ZX: { //正肖
+  //       return <LhcPTYXComponent key={targetLotteryCode}
+  //                                lotteryCode={targetLotteryCode}
+  //                                style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+  //       />
+  //     }
+  //     case LotteryConst.HX: { //合肖
+  //       return <LhcHXComponent key={targetLotteryCode}
+  //                              lotteryCode={targetLotteryCode}
+  //                              style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+  //       />
+  //     }
+  //     case LotteryConst.ZXBZ: { //自选不中
+  //       return <LhcZXBZComponent key={targetLotteryCode}
+  //                                lotteryCode={targetLotteryCode}
+  //                                style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
+  //       />
+  //     }
+  //
+  //   }
+  //
+  //   return null
+  // }
 
   /**
    * 绘制右边彩票区域，彩球 等等
@@ -259,7 +259,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     ugLog('---------------------------------------------------')
 
     return (
-      <FlatList key={'page balls renderDataList'}
+      <FlatList key={'page balls renderRightContentList'}
                 style={_styles.right_content_list}
                 showsVerticalScrollIndicator={false}
                 nestedScrollEnabled={true}

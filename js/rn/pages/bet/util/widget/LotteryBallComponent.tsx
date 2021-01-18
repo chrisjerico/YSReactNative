@@ -30,10 +30,11 @@ const LotteryBallComponent = ({ listData }: IUseLotteryBallParams) => {
   const renderEBall = (item?: PlayData, index?: number) => {
     const itemData: PlayData = {
       ...item,
-      odds: listData?.code == 'ZXBZ' ? '' : item?.odds //自选不中 不需要显示赔率
+      odds: listData?.code == 'ZXBZ' ? '' : item?.odds, //自选不中 不需要显示赔率
     }
 
-    return (<LotteryEBall item={itemData}
+    return (<LotteryEBall key={'renderEBall=' + item?.id + index}
+                          item={itemData}
                           ballStyle={listData?.code == 'LMA' ? { flexDirection: 'column' } : null} //连码竖向排列
                           containerStyle={arrayLength(data) > 3 ? { width: scale(78) } : null}
       //selectedBalls={selectedBalls}
