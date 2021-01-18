@@ -242,7 +242,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           //倒计时也到了, 请求没给正常结果，codePush也检查完毕 就判定域名有问题，如果codePush正在升级安装，就不管
           if (counter == MAX_TIME) {
             if (networkOK) { //时间到了，网络OK 不管如何都放用户进去
-              // ANHelper.callAsync(CMD.LAUNCH_GO)
+              ANHelper.callAsync(CMD.LAUNCH_GO)
             } else if(codeStatus == CodePush.SyncStatus.UNKNOWN_ERROR || //codePush出错
               codeStatus == CodePush.SyncStatus.UPDATE_IGNORED || //忽略此热更新
               codeStatus == CodePush.SyncStatus.UP_TO_DATE //已是最新版本
