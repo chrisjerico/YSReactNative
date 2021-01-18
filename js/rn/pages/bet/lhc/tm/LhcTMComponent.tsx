@@ -141,7 +141,6 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    */
   const renderTM = (groupData?: PlayGroupData) => <View key={key + 'renderTM' + groupData?.id}
                                                         style={CommStyles.flex}>
-
     <View key={key + 'renderTM sub' + groupData?.id}
           style={_styles.sub_title_container}>
       <Text key={key + 'renderTM sub text' + groupData?.id}

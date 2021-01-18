@@ -42,7 +42,7 @@ const UseParseLotteryDataHelper = () => {
    * 解析重新组合列表数据
    * @param data
    */
-  const parseData = (data?: PlayOddDetailData) => {
+  const parseLotteryListData = (data?: PlayOddDetailData) => {
     const listData: Array<LotteryListData> = []
     data?.playOdds?.map((playOdds) => {
       const code = playOdds?.code
@@ -113,7 +113,7 @@ const UseParseLotteryDataHelper = () => {
   }
 
   return {
-    parseData,
+    parseLotteryListData,
   }
 }
 

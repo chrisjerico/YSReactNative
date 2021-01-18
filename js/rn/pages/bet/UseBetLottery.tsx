@@ -14,7 +14,7 @@ import UseParseLotteryDataHelper from './util/lt/UseParseLotteryDataHelper'
 const UseBetLottery = () => {
 
   const {
-    parseData,
+    parseLotteryListData,
   } = UseParseLotteryDataHelper()
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
@@ -34,7 +34,7 @@ const UseBetLottery = () => {
    * 数据发生变化时重新组合列表数据
    */
   useEffect(() => {
-    parseData(playOddDetailData)
+    parseLotteryListData(playOddDetailData)
   }, [playOddDetailData])
 
   /**

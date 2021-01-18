@@ -27,6 +27,11 @@ import { ItemType, LotteryListData } from '../../redux/model/game/LotteryListMod
 import LotteryTab2Component from './util/widget/LotteryTab2Component'
 import LotteryTab3Component from './util/widget/LotteryTab3Component'
 import { PlayGroupData } from '../../public/network/Model/lottery/PlayOddDetailModel'
+import LotteryZodiacComponent from './util/widget/LotteryZodiacComponent'
+import LotteryBallComponent from './util/widget/LotteryBallComponent'
+import LotteryLabelComponent from './util/widget/LotteryLabelComponent'
+import LotteryLatticeComponent from './util/widget/LotteryLatticeComponent'
+import LotteryLabelAndBallComponent from './util/widget/LotteryLabelAndBallComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -230,20 +235,19 @@ const BetLotteryPage = ({ navigation, route }) => {
     // ugLog('renderRightContent=', JSON.stringify(listData))
     switch (listData?.type) {
       case ItemType.BALLS:
-        return <Text>{JSON.stringify(listData)}</Text>
+        return <LotteryBallComponent listData={listData} />
       case ItemType.LABEL:
-        return <Text>{JSON.stringify(listData)}</Text>
+        return <LotteryLabelComponent listData={listData} />
       case ItemType.LATTICE:
-        return <Text>{JSON.stringify(listData)}</Text>
+        return <LotteryLatticeComponent listData={listData} />
       case ItemType.TAB:
-        // return <Text>{JSON.stringify(listData)}</Text>
         return arrayLength(listData?.data as Array<PlayGroupData>) == 2 ?
           <LotteryTab2Component listData={listData}/> :
           <LotteryTab3Component listData={listData}/>
       case ItemType.TITLE_AND_BALL:
-        return <Text>{JSON.stringify(listData)}</Text>
+        return <LotteryLabelAndBallComponent listData={listData} />
       case ItemType.ZODIAC:
-        return <Text>{JSON.stringify(listData)}</Text>
+        return <LotteryZodiacComponent listData={listData}/>
     }
 
   }

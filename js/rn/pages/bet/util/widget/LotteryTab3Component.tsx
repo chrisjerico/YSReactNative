@@ -46,8 +46,8 @@ const LotteryTab3Component = ({ listData }: IUseLotteryTab3Params) => {
                 horizontal={true}>
       <View style={_styles.tab_title_content}>
         {
-          // (listData?.data as Array<PlayGroupData>)?.map((item, index) =>
-          //   renderTab3Item(listData?.selectedTabIndex, index, item))
+          (listData?.data as Array<PlayGroupData>)?.map((item, index) =>
+            renderTab3Item(listData?.selectedTabIndex, index, item))
         }
       </View>
     </ScrollView>

@@ -6,7 +6,6 @@ import {
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ItemType, LotteryListData } from '../../../../redux/model/game/LotteryListModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import { ugLog } from '../../../../public/tools/UgLog'
 import LotteryData from '../../const/LotteryData'
 
 
@@ -187,13 +186,17 @@ const parseTMData = ({ tmB, data, zodiacNums }: ITMData): Array<LotteryListData>
     }
     tmArray.push(zodiacList)
 
-    //特码BA 有自己的分组方式
-    const tmBData = tmB ?
-      [data?.playGroups[3], data?.playGroups[4], data?.playGroups[5]] :
-      [data?.playGroups[0], data?.playGroups[1], data?.playGroups[2]]
+    if (tmB) {
+      tmArray.push(...parseGroupData({ groupArray: [data?.playGroups[3]], data: data, N: 3 })) //彩球
+      tmArray.push(...parseGroupData({ groupArray: [data?.playGroups[4]], data: data, N: 2, ballType: ItemType.LATTICE })) //格子
+      tmArray.push(...parseGroupData({ groupArray: [data?.playGroups[5]], data: data, N: 2, ballType: ItemType.LATTICE })) //格子
 
-    //标题+彩球
-    tmArray.push(...parseGroupData({ groupArray: tmBData, data: data, N: 3 }))
+    } else {
+      tmArray.push(...parseGroupData({ groupArray: [data?.playGroups[0]], data: data, N: 3 })) //彩球
+      tmArray.push(...parseGroupData({ groupArray: [data?.playGroups[1]], data: data, N: 2, ballType: ItemType.LATTICE })) //格子
+      tmArray.push(...parseGroupData({ groupArray: [data?.playGroups[2]], data: data, N: 2, ballType: ItemType.LATTICE })) //格子
+
+    }
 
   }
 
@@ -304,9 +307,8 @@ const parseLMAData = ({ data }: ILMAData): Array<LotteryListData> => {
           let ballIndex = ('0' + index).slice(-2)
           const ball: PlayData = {
             ...play0,
-            exId: play0?.id + ballIndex,
-            exName: ballIndex,
-            exOdds: odds,
+            name: ballIndex,
+            odds: odds,
           }
           return ball
         })
@@ -505,11 +507,17 @@ const parseHXData = ({ data, zodiacNums }: IHXData): Array<LotteryListData> => {
         ...zodiac,
         nums: zodiac?.nums?.filter((item) => item != '49'),
       } as ZodiacNum
-    )).map((item) => ({
-      type: ItemType.TITLE_AND_BALL,
-      code: data?.code,
-      data: item,
-    } as LotteryListData))
+    )).map((item) => {
+      const newItem: PlayData = {
+        name: item?.name,
+        exZodiac: item,
+      }
+      return ({
+        type: ItemType.TITLE_AND_BALL,
+        code: data?.code,
+        data: newItem,
+      })
+    })
 
     //格子数据
     tmArray.push(...arr)
@@ -536,23 +544,13 @@ interface IZXBZGroupData {
 const parseZXBZGroupData = ({ data }: IZXBZGroupData): Array<LotteryListData> => {
   const tmArray: Array<LotteryListData> = []
   data?.playGroups?.map((groupData) => {
-    //标题栏
-    const labelList: LotteryListData = {
-      type: ItemType.LABEL,
-      code: data?.code,
-      data: groupData,
-    }
-    tmArray.push(labelList)
-
     const play0 = groupData?.plays[0]
     const odds = ''
     const arr = new Array(49).fill(0).map((item, index) => {
       let ballIndex = ('0' + index).slice(-2)
       const ball: PlayData = {
         ...play0,
-        exId: play0?.id + ballIndex,
-        exName: ballIndex,
-        exOdds: odds,
+        name: ballIndex,
       }
       return ball
     })

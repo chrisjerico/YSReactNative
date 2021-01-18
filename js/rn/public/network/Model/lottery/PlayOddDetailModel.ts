@@ -1,18 +1,18 @@
 export interface PlayData {
-  id: string; //708501
-  name: string; //01
-  alias: string;//特码A"
-  rebate: string;//0.1000
-  code: string;//01
-  played_groupid: string;//85
-  odds: string;//42.5500
-  offlineOdds: string;//43.0000
-  minMoney: string;//1
-  maxMoney: string;//1000000
-  maxTurnMoney: string;//50000000
-  isBan: string;//0
-  enable: string;//1
-  from_id: string;//0
+  id?: string; //708501
+  name?: string; //01
+  alias?: string;//特码A"
+  rebate?: string;//0.1000
+  code?: string;//01
+  played_groupid?: string;//85
+  odds?: string;//42.5500
+  offlineOdds?: string;//43.0000
+  minMoney?: string;//1
+  maxMoney?: string;//1000000
+  maxTurnMoney?: string;//50000000
+  isBan?: string;//0
+  enable?: string;//1
+  from_id?: string;//0
 
   exId?: string //本地定义 id
   exName?: string//本地定义 名字

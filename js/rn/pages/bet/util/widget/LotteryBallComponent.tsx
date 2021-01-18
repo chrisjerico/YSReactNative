@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react'
 import { LotteryListData } from '../../../../redux/model/game/LotteryListModel'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import { anyEmpty } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import { scale } from '../../../../public/tools/Scale'
 import { PlayData, PlayGroupData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
@@ -19,18 +19,31 @@ interface IUseLotteryBallParams {
  * @constructor
  */
 const LotteryBallComponent = ({ listData }: IUseLotteryBallParams) => {
+
+  const data = listData?.data as Array<PlayData>
+
   /**
    * 绘制 球
    * @param item
    * @param index
    */
-  const renderEBall = (item?: PlayData, index?: number) => <LotteryEBall item={item}
-                                                                         //selectedBalls={selectedBalls}
-                                                                         //callback={() => addOrRemoveBall(item?.id)}
-  />
+  const renderEBall = (item?: PlayData, index?: number) => {
+    const itemData: PlayData = {
+      ...item,
+      odds: listData?.code == 'ZXBZ' ? '' : item?.odds //自选不中 不需要显示赔率
+    }
+
+    return (<LotteryEBall item={itemData}
+                          ballStyle={listData?.code == 'LMA' ? { flexDirection: 'column' } : null} //连码竖向排列
+                          containerStyle={arrayLength(data) > 3 ? { width: scale(78) } : null}
+      //selectedBalls={selectedBalls}
+      //callback={() => addOrRemoveBall(item?.id)}
+    />)
+  }
+
 
   return (<View style={_styles.ball_container}>
-    { (listData?.data as Array<PlayData>)?.map(renderEBall) }
+    {data?.map(renderEBall)}
   </View>)
 }
 

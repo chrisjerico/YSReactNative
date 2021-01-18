@@ -12,6 +12,7 @@ import LotteryEBall from '../../widget/LotteryEBall'
 import CommStyles from '../../../base/CommStyles'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
 import { findZodiacByName } from '../LotteryUtil'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 interface IUseLotteryLabelAndBallParams {
   listData?: LotteryListData
@@ -23,8 +24,9 @@ interface IUseLotteryLabelAndBallParams {
  */
 const LotteryLabelAndBallComponent = ({ listData }: IUseLotteryLabelAndBallParams) => {
 
-  const data = listData?.data as Array<PlayData>
+  const data = listData?.data as PlayData
 
+  //ugLog('LotteryLabelAndBallComponent=', JSON.stringify(data))
   /**
    * 绘制 生肖和球
    * @param item
@@ -40,9 +42,7 @@ const LotteryLabelAndBallComponent = ({ listData }: IUseLotteryLabelAndBallParam
     />
 
   return (<View style={_styles.ball_container}>
-    {
-      data?.map(renderEBall)
-    }
+    { renderEBall(data) }
   </View>)
 }
 
