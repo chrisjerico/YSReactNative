@@ -8,7 +8,7 @@ interface JDImagePH {
   style?: StyleProp<ImageStyle>;
   url?: string          //图片地址
   imgW?: number      //
-  imgH?: number  //icon 是否显示    默认true
+  imgH?: number  //icon 是否显示    
 }
 export const JDImagePH = (props: JDImagePH) => {
 
@@ -22,11 +22,11 @@ export const JDImagePH = (props: JDImagePH) => {
 
     }}
     onError={() => {
-      console.log('onError:true');
+      // console.log('onError:true');
       setShwoDefaultImage(true)
     }}
     onLoad={() => {
-      console.log('成功加载');
+      // console.log('成功加载');
       setShwoDefaultImage(false)
     }}
   />
