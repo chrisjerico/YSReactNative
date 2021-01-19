@@ -61,37 +61,15 @@ export const ToastStatus = (msg: any) => {
   }
 }
 
-export const useHtml5Image = (host: string = AppDefine.host) => {
-  const getHtml5Image = (id: number, path: string, type: 'png' | 'jpg' | 'gif' | 'svg' = 'png') => {
-    if (id) {
-      return host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.' + type
-    } else {
-      return host + '/images/' + path + '.' + type
-    }
-  }
-  const getHtml5ImagePlatform = (siteId: string, path: string, type: 'png' | 'jpg' | 'gif' | 'svg' = 'png') => {
-    if (siteId) {
-      return host + '/platform/' + siteId?.toString() + '/images/' + path + '.' + type
-    } else {
-      return host + '/' + path + '.' + type
-    }
-  }
-  return { getHtml5Image, getHtml5ImagePlatform }
-}
-
-export const getIbbImage = (path: string) => {
-  return 'https://i.ibb.co/' + path + '.png'
-}
-
 export const getActivityPosition = (position: number) => {
   if (position == 1) {
-    return { left: 0, top: scale(100) }
+    return { left: 0, top: scale(115) }
   } else if (position == 2) {
-    return { left: 0, bottom: scale(200) }
+    return { left: 0, top: scale(725) }
   } else if (position == 3) {
-    return { right: 0, top: scale(100) }
+    return { right: 0, top: scale(115) }
   } else if (position == 4) {
-    return { right: 0, bottom: scale(200) }
+    return { right: 0, top: scale(725) }
   } else {
     return {}
   }

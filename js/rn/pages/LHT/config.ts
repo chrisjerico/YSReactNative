@@ -1,8 +1,8 @@
-import { useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
-const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test05.6yc.com/')
+const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test5)
 
 const config = {
   defaultUserCenterLogos: {
@@ -19,13 +19,13 @@ const config = {
     11: getHtml5Image(3, 'center/task'), // 任务中心
     12: getHtml5Image(3, 'center/userInf'), // 个人信息
     13: getHtml5Image(3, 'center/menu-feedback'), // 建议反馈
-    14: getHtml5ImagePlatform('c087', 'zxkf'), // 在线客服 X
+    14: img_platform('c087', 'zxkf'), // 在线客服 X
     15: getHtml5Image(23, 'center/my_activity'), // 活动彩金
-    16: getHtml5ImagePlatform('c092', 'changlong_logo'), // 长龙助手
+    16: img_platform('c092', 'changlong_logo'), // 长龙助手
     17: getHtml5Image(3, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
-    19: getHtml5ImagePlatform('c064', 'qqkf'), // QQ客服
-    20: getHtml5ImagePlatform('c006', 'kjw'), // 開獎網
+    19: img_platform('c091', 'qqkf'), // QQ客服
+    20: img_platform('c006', 'kjw'), // 開獎網
   },
   preferences: [
     {

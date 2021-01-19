@@ -35,9 +35,11 @@ import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { CapitalConst, TransferConst } from '../../../../const/CapitalConst'
 import CapitalContext from '../../../CapitalContext'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
+import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
 
 interface IRouteParams {
-  payData?: PayAisleListData, //当前的账户数据
+  payData?: PayAisleListData, //当前的条目数据
+  payBigData?: PayAisleData, //总数据
   refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
@@ -48,11 +50,13 @@ interface IRouteParams {
  */
 const TransferPayPage = ({ navigation, route }) => {
 
-  const { payData, refreshTabPage }: IRouteParams = route?.params
+  const { payData, payBigData, refreshTabPage }: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
   const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
+    setPayData,
+    setPayBigData,
     moneyOption,
     inputMoney,
     setInputMoney,
@@ -65,6 +69,11 @@ const TransferPayPage = ({ navigation, route }) => {
     transName,
     requestPayData,
   } = UseTransferPay()
+
+  useEffect(()=>{
+    setPayBigData(payBigData)
+    setPayData(payData)
+  }, [])
 
   useEffect(()=>{
     if (!anyEmpty(goPage)) {
@@ -86,7 +95,7 @@ const TransferPayPage = ({ navigation, route }) => {
    */
   const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
-      moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
+      !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
           <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>
@@ -104,6 +113,9 @@ const TransferPayPage = ({ navigation, route }) => {
       switch (Platform.OS) {
         case 'ios':
           //TODO iOS 复制 title 到粘贴板
+          OCHelper.call('UIPasteboard.generalPasteboard.setString:', [copyText]).then(() => {
+              
+          })
           break
         case 'android':
           ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })
@@ -123,17 +135,17 @@ const TransferPayPage = ({ navigation, route }) => {
     let nameHint: ITransName = transName(payData, payChannelBean)
 
     return <View>
-      <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
+      <Text style={_styles.choose_result_hint}>{payBigData?.depositPrompt}</Text>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
           <Text style={_styles.choose_result_title}>{nameHint?.bank_name + nameHint?.bank_name_des}</Text>
         </View>
         {
           [
-            nameHint?.payee_des && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
-            nameHint?.bank_account_des && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
-            nameHint?.account_address_des && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
-            payChannelBean?.qrcode && <TouchableImage
+            !anyEmpty(nameHint?.payee_des) && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
+            !anyEmpty(nameHint?.bank_account_des) && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
+            !anyEmpty((nameHint?.account_address_des)) && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
+            !anyEmpty(payChannelBean?.qrcode) && <TouchableImage
               pic={payChannelBean?.qrcode}
               containerStyle={{ aspectRatio: 1, width: scale(240) }}
               resizeMode={'contain'}

@@ -1,11 +1,10 @@
 import {FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import * as React from "react";
-import {List, SubType} from "../../../public/network/Model/HomeGamesModel";
+import {HomeGameModel, List, SubType} from "../../../public/network/Model/HomeGamesModel";
 import PushHelper from "../../../public/define/PushHelper";
 import {fillArray} from "../../利来/utils/fillArray";
 import {ImageButton} from "../../利来/component/ImageButton";
 import {scale} from "../../../public/tools/Scale";
-import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 import CommStyles from "../../base/CommStyles";
 import FastImage from "react-native-fast-image";
 import {ugLog} from "../../../public/tools/UgLog";
@@ -15,6 +14,7 @@ import {anyEmpty, anyLength} from "../../../public/tools/Ext";
 import {useEffect, useState} from "react";
 import {useDimensions} from "@react-native-community/hooks";
 import {PushHomeGame} from "../../../public/models/Interface";
+import { skinColors } from "../../../public/theme/const/UGSkinColor";
 // import {ImageButton} from "../../../../乐橙/component/ImageButton";
 // import {fillArray} from "../../../utils/fillArray";
 // import {List} from "../../../../../public/network/Model/HomeGamesModel";
@@ -170,7 +170,7 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
    * @param index 点击的游戏索引
    * @param partIndex 点击了第几部分的游戏
    */
-  const renderItem = (item, index, partIndex) => {
+  const renderItem = (item : HomeGameModel, index, partIndex) => {
     return <TouchableWithoutFeedback key={'renderItem_' + index + "_" + partIndex}
                                      onPress={() => onPress(item, index, partIndex)}>
       <View style={[_styles.container_item, {width: width / 2}]}>
@@ -181,7 +181,7 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
                        source={{uri: item.icon}}/>
             <View style={CommStyles.flex}>
               <Text style={_styles.list_title}>
-                {anyEmpty(item?.title) ? item?.name : item?.title}
+                {anyEmpty(item?.name) ? item?.title : item?.name}
               </Text>
             </View>
             <AntDesign
@@ -213,7 +213,7 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
                                 }}>
         <View style={[_styles.sub_item_container, {width: width / 3}]}>
           <View style={_styles.sub_item}>
-            <Text style={_styles.sub_title}>{anyEmpty(item?.title) ? item?.name : item?.title}</Text>
+            <Text style={_styles.sub_title}>{anyEmpty(item?.name) ? item?.title : item?.name}</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -300,7 +300,7 @@ const _styles = StyleSheet.create({
   },
   list_title: {
     fontSize: scale(24),
-    color: LEFThemeColor.乐FUN.textColor1,
+    color: skinColors.textColor1.乐FUN,
   },
   list_hint: {
     fontSize: scale(18),
@@ -329,6 +329,6 @@ const _styles = StyleSheet.create({
   },
   sub_title: {
     fontSize: scale(18),
-    color: LEFThemeColor.乐FUN.textColor1,
+    color: skinColors.textColor1.乐FUN,
   },
 })

@@ -6,6 +6,9 @@ import {BALL_STYLES} from "../LotteryStyles";
 import {getHKballColor} from "../../lottoSetting";
 import {anyLength} from "../../../../../../public/tools/Ext";
 import FastImage from "react-native-fast-image";
+import { UGImageHost, useHtml5Image } from "../../../../../../Res/icon";
+
+const {img_assets} = useHtml5Image(UGImageHost.test5)
 
 const BALL_TYPE = {
   ROUND_LINE: '圆形边框',
@@ -72,11 +75,11 @@ const _roundBallPic = (text: string) => {
   const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
 
   if (redSet.includes(text)) {
-    return 'https://i.ibb.co/1rYQP0C/ball-red.png'
+    return img_assets('ball_red')
   } else if (blueSet.includes(text)) {
-    return 'https://i.ibb.co/vhd8GjJ/ball-blue.png'
+    return img_assets('ball_blue')
   } else {
-    return 'https://i.ibb.co/kS0DGvT/ball-green.png'
+    return img_assets('ball_green')
   }
 }
 

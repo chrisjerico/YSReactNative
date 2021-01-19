@@ -10,10 +10,8 @@ import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType, RankingListType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -28,6 +26,11 @@ import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { ugLog } from '../../public/tools/UgLog'
+import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
+import { getParentsTagsRecursively } from 'react-native-render-html'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
+import { appConfig } from '../../../../config'
+import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -51,6 +54,15 @@ const WNZHomePage = () => {
   const { signOut, tryPlay } = sign
 
   const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists } = homeInfo
+
+  const getNavs = () => {
+
+  if (AppDefine.siteId == 'c245')
+    return uid ? config.c245AuthNavs : config.c245UnAuthNavs
+  if (AppDefine.siteId.includes('c108') && !uid)
+    return config.c108UnAuthNavs
+  return navs
+  }
 
   const { uid, usr, balance } = userInfo
 
@@ -127,7 +139,14 @@ const WNZHomePage = () => {
                 if (subType) {
                   showGameSubType(index)
                 } else {
-                  if (gameId == GameType.大厅) {
+                  //ugLog('GameType item=', JSON.stringify(item))
+                  if (gameId == GameType.大厅
+                  && (subId != MenuType.CQK &&
+                      subId != MenuType.CZ &&
+                      subId != MenuType.TX &&
+                      subId != MenuType.ZHGL &&
+                      subId != MenuType.CZJL &&
+                      subId != MenuType.TXJL)) {
                     if (subId == 47 && sysInfo?.mobileGameHall == '1') {//新彩票大厅
                       push(PageName.GameHallPage, { showBackButton: true })
 
@@ -160,12 +179,12 @@ const WNZHomePage = () => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
-      rankingListType={AppDefine.siteId == 'c245' ? RankingListType.不顯示 : rankingListType}
+      rankingListType={appConfig.isWNZBottomTabHot() ? RankingListType.不顯示 : rankingListType}
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'WNZHomePage'}
-      headerColor={WNZThemeColor.威尼斯.themeColor}
+      headerColor={skinColors.themeColor.威尼斯}
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
@@ -189,7 +208,7 @@ const WNZHomePage = () => {
             visible={navs?.length > 0}
             navCounts={5}
             containerStyle={{ alignItems: 'center' }}
-            navs={AppDefine.siteId == 'c245' ? (uid ? config.c245AuthNavs : config.c245UnAuthNavs) : navs}
+            navs={getNavs()}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId, onPress } = item
               return (
@@ -204,17 +223,19 @@ const WNZHomePage = () => {
                     justifyContent: 'center',
                   }}
                   imageContainerStyle={{
-                    width: '100%',
+                    width: '75%',
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
-                    fontSize: scale(20),
+                    fontSize: scale(19),
                   }}
                   circleContainerStyle = {{ width: '85%'}}
                   circleColor={'transparent'}
                   onPress={() => {
-                    if (AppDefine.siteId == 'c245') {
+                    ugLog("TEST onPRess: " + item.gameId)
+                    if (AppDefine.siteId == 'c245'
+                      || (AppDefine.siteId.includes('c108') && !uid) ) {
                       if (gameId == 'tryPlay') {
                         tryPlay()
                       } else {
@@ -275,7 +296,7 @@ const WNZHomePage = () => {
               }}
               enableMinWidth={false}
               showIndicator={false}
-              focusTabColor={WNZThemeColor.威尼斯.themeColor}
+              focusTabColor={skinColors.themeColor.威尼斯}
               renderScene={({ item }) => renderGameSubTypeComponent(item)}
             />
           ) : (
@@ -289,10 +310,10 @@ const WNZHomePage = () => {
             initialTabIndex={1}
             baseHeight={scale(82)}
             itemHeight={scale(100)}
-            fixedHeight={AppDefine.siteId == 'c245' ? [null, 350] : []}
+            fixedHeight={appConfig.isWNZBottomTabHot() ? [null, 350] : []}
             renderTabBar={TabBar}
             renderScene={({ item, index: sceneIndex }) => {
-              if (AppDefine.siteId == 'c245' && sceneIndex) {
+              if (appConfig.isWNZBottomTabHot() && sceneIndex) {
                 return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} iconTitleContainerStyle={{ height: 0 }} />
               } else {
                 return (
@@ -312,7 +333,7 @@ const WNZHomePage = () => {
                           logo={pic}
                           name={title}
                           desc={openCycle}
-                          logoBallText={sceneIndex ? '信' : AppDefine.siteId == 'c245' ? '热' : '官'}
+                          logoBallText={sceneIndex ? '信' : appConfig.isWNZBottomTabHot() ? '热' : '官'}
                           onPress={
                             title == '更多游戏'
                               ? goToUserCenterType.游戏大厅
@@ -349,7 +370,13 @@ const WNZHomePage = () => {
                     if (onPress) {
                       onPress()
                     } else {
-                      PushHelper.pushHomeGame(item)
+                      //ugLog('GameType item=', JSON.stringify(item))
+                      const { subId } = item
+                      if (subId == GameType.游戏大厅) {  //游戏大厅
+                        push(PageName.GameLobbyPage, { showBackButton: true })
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
                     }
                   }
                 }}
@@ -381,7 +408,7 @@ const styles = StyleSheet.create({
     marginLeft: '2.5%',
     marginRight: '2.5%',
     marginBottom: scale(20),
-    backgroundColor: WNZThemeColor.威尼斯.themeColor,
+    backgroundColor: skinColors.themeColor.威尼斯,
     paddingVertical: scale(20),
     borderRadius: scale(5),
   },

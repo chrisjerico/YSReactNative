@@ -5,7 +5,6 @@ import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
 import {pop, popToRoot, push} from '../../public/navigation/RootNavigation'
-import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
@@ -15,8 +14,8 @@ import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import Menu from './views/Menu'
 import SignHeader from './views/SignHeader'
-import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import MineHeader from "../../public/views/temp/MineHeader";
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 
 const LEFSignUpPage = () => {
   const menu = useRef(null)
@@ -32,11 +31,11 @@ const LEFSignUpPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
+      <SafeAreaHeader headerColor={skinColors.themeColor.乐FUN}>
         <MineHeader
           title={'注册'}
           backTitle={'首页'}
-          titleColor={LEFThemeColor.乐FUN.textColor2}
+          titleColor={skinColors.textColor2.乐FUN}
           showBackBtn={true}
           onPressBackBtn={() => {
             popToRoot()
@@ -95,7 +94,7 @@ const SignUpForm = (props: FormComponentProps & { leftIconTitle: string }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.乐FUN,
   },
   formContainer: {
     flex: 1,
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     width: '100%',
-    backgroundColor: LEFThemeColor.乐FUN.textColor2,
+    backgroundColor: skinColors.textColor2.乐FUN,
     marginTop: scale(12),
     aspectRatio: 8,
     borderRadius: scale(5),

@@ -3,10 +3,10 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import {scale} from "../../../public/tools/Scale";
 import React from "react";
 import GameBlock from "./GameBlock";
-import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 import FastImage from "react-native-fast-image";
 import PushHelper from "../../../public/define/PushHelper";
 import {UGUserCenterType} from "../../../redux/model/全局/UGSysConfModel";
+import { skinColors } from "../../../public/theme/const/UGSkinColor";
 
 const icon1 = 'http://test61a.fhptcdn.com/views/mobileTemplate/30/images/recharge.png'
 const icon2 = 'http://test61a.fhptcdn.com/views/mobileTemplate/30/images/recharge.png'
@@ -54,7 +54,7 @@ const _styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     height: scale(70),
-    borderColor: LEFThemeColor.乐FUN.textColor3,
+    borderColor: skinColors.textColor3.乐FUN,
     borderBottomWidth: scale(1),
   },
   item: {
@@ -67,7 +67,7 @@ const _styles = StyleSheet.create({
   item_center: {
     borderLeftWidth: scale(1),
     borderRightWidth: scale(1),
-    borderColor: LEFThemeColor.乐FUN.textColor3,
+    borderColor: skinColors.textColor3.乐FUN,
   },
   icon: {
     width: scale(40),
@@ -76,7 +76,7 @@ const _styles = StyleSheet.create({
   title: {
     fontSize: scale(24),
     marginLeft: scale(4),
-    color: LEFThemeColor.乐FUN.textColor1,
+    color: skinColors.textColor1.乐FUN,
   },
 })
 

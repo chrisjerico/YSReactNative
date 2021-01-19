@@ -33,7 +33,9 @@ const LotteryBall = ({
                        style,
                      }: ILotteryBall) => {
 
-  const width = anyEmpty(size) ? scale(44) : size //球的大小
+  const key = 'renderBalls' + type + ballNumber
+
+  const width = anyEmpty(size) ? scale(42) : size //球的大小
   let txColor = !anyEmpty(textColor) ? textColor : 'white' //文字的颜色
   let bColor //球的颜色
   let ballUrl //球的url
@@ -68,27 +70,36 @@ const LotteryBall = ({
     switch (type) {
       case BallType.colorful:
         return [
-          <FastImage style={[
-            _styles.colorful_ball_item,
-            { width: width }]}
+          <FastImage key={key + ballUrl}
+                     style={[
+                       _styles.colorful_ball_item,
+                       { width: width }]}
                      resizeMode={'contain'}
                      source={{ uri: ballUrl }}/>,
-          <Text style={[_styles.ball_colorful_text, { color: txColor, fontSize: width * 3 / 7 }]}>{ballNumber}</Text>,
+          <Text key={key}
+                style={[
+                  _styles.ball_colorful_text,
+                  { color: txColor, fontSize: width * 3 / 7 },
+                ]}>{ballNumber}</Text>,
         ]
       case BallType.sz:
       case BallType.vegetable:
-        return <FastImage style={[
-          _styles.colorful_ball_item,
-          { width: width }]}
+        return <FastImage key={key + ballUrl}
+                          style={[
+                            _styles.colorful_ball_item,
+                            { width: width }]}
                           resizeMode={'contain'}
                           source={{ uri: ballUrl }}/>
       default:
-        return <Text style={[_styles.ball_text, { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
+        return <Text key={key + 'text'}
+                     style={[_styles.ball_text,
+                       { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
     }
   }
 
   return (
-    <View style={[_styles.ball_item,
+    <View key={key + 'content'}
+          style={[_styles.ball_item,
       {
         backgroundColor: bColor,
         borderRadius: round,
@@ -137,4 +148,4 @@ const BallType = {
 }
 
 export default LotteryBall
-export { BallType }
+export { BallType, ILotteryBall }

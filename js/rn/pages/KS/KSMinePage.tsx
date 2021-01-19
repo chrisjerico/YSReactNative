@@ -8,7 +8,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
-import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -18,8 +18,9 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
+import { goToUserCenterType } from '../../public/tools/tars'
 
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
+const { getHtml5Image, img_images } = useHtml5Image(UGImageHost.t132f)
 
 const KSMinePage = () => {
   const { info, sign } = useMinePage({
@@ -79,10 +80,10 @@ const KSMinePage = () => {
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
               <TouchableWithoutFeedback onPress={goToUserCenterType.任务中心}>
-                <FastImage source={{ uri: getIbbImage('dkQCr80/task') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
+                <FastImage source={{ uri: img_images('task2') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={goToUserCenterType.每日签到}>
-                <FastImage source={{ uri: getIbbImage('R4c4wv6/signup') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
+                <FastImage source={{ uri: img_images('signup') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
             </View>
           </View>

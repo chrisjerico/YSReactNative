@@ -4,7 +4,7 @@ import { Icon, Input } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
-import { ToastError, ToastSuccess } from '../../tools/tars'
+import { ToastSuccess, ToastError } from '../../tools/tars'
 import Button from '../../views/tars/Button'
 import { hideLoading, showLoading } from '../../widget/UGLoadingCP'
 

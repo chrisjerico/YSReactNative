@@ -1,59 +1,3 @@
-// 主题色
-export class UGThemeColor {
-  skitType = '默认'
-  skitString = '默认' // 皮肤类型
-  bgColor? = ['#7F9493', '#5389B3'] // 背景 渐变色
-  navBarBgColor? = ['#609AC5', '#609AC5'] // 导航条背景色
-  progressBgColor? = ['#d80000', '#fb5959'] // 进度条背景渐变色
-  menuHeadViewColor? = ['#5f9bc6', '#fb5959'] // 侧边栏顶部背景渐变色
-  tabBarBgColor? = '#8DA3B1' // Tabbar背景色
-  tabNoSelectColor? = '#525252' // Tabbar未选中颜色
-  tabSelectedColor? = '#010101' // Tabbar已选中颜色
-  cellBgColor? = '#C1CBC9' // Cell背景色
-  homeContentColor? = '#b2cde0' // 首页内容底色
-  homeContentSubColor? = '#ADC8D7' // 首页游戏列表二级菜单背景色
-  CLBgColor? = '#E6E6E6' // 长龙灰色背景底色
-  textColor1? = '#111' // 默认字颜色 黑色
-  textColor2? = '#555' // 占位字颜色 深灰色
-  textColor3? = '#c1c1c1' // 占位字颜色 淡灰色
-  textColor4? = '#fff' // 反差字体 白色
-  conversionCellColor? = '#7BA2C2' // 内容Cell
-  intoViewColor? = '#7BA2C2' // 转入View
-  moneyCellColor? = '#9BB8CB' // 金额Cell
-  navBarTitleColor? = '#fff'
-
-  // 根据主题色自动生成色值
-  themeColor?: string // 主题色
-  themeDarkColor?: string // 主题色加深
-  themeLightColor?: string // 主题色加浅
-  bgTextColor?: string // bgColor上的文本颜色
-
-  isBlack?: boolean = false
-  is23?: boolean
-  // 自定義
-  yubaoBgColor?: string
-  // progress
-  progress?: Progress
-  // promition
-  promotion?: Promotion
-}
-
-interface Progress {
-  tintColor?: string
-  bgColor: string
-}
-
-interface Promotion {
-  headerTintColor?: string
-  headerBgColor?: string
-  listBgColor?: string
-  couponTitleColor?: string
-  selectedTabBgColor?: string
-  tabBgColor?: string
-  tabTextColor?: string
-  selectedTabTextColor?: string
-}
-
 /**
  * 实用颜色
  */
@@ -82,17 +26,21 @@ export enum UGColor {
   RedColor3 = '#fc6e51',
   RedColor4 = '#e9573f',
   RedColor5 = '#e3080c',
+  RedColor6 = '#d3573f',
   YellowColor1 = '#ffce54',
   YellowColor2 = '#f6bb42',
+  YellowColor3 = '#eda321',
   GreenColor1 = '#a0d468',
   GreenColor2 = '#8cc152',
   GreenColor3 = '#48cfad',
   GreenColor4 = '#37bc9b',
+  GreenColor5 = '#8fbf73',
   BlueColor1 = '#4fc1e9',
   BlueColor2 = '#3bafda',
   BlueColor3 = '#5d9cec',
   BlueColor4 = '#4a89dc',
   BlueColor6 = '#0a5196',
+  BlueColor7 = '#4574c2',
   PurpleColor1 = '#ac92ec',
   PurpleColor2 = '#967adc',
   PinkColor1 = '#ec87c0',
@@ -118,6 +66,7 @@ export enum UGColor {
   TextColor5 = '#ddd',
   TextColor6 = '#fff',
   TextColor7 = '#666',
+  TextColor8 = '#eee',
 
   //
   LoadingColor1 = '#ccd1d9',
@@ -133,6 +82,9 @@ export enum UGColor {
 
   // 透明背景色
   transparent = '#00000000',
+  transparent2 = '#ffffff44',
+  transparent3 = '#000000aa',
+  transparent4 = '#000000cc',
 
   // 禁用
   disableColor1 = '#EFF3F8',

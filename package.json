@@ -28,7 +28,7 @@
     "global": "^4.4.0",
     "immer": "6.0.9",
     "lodash": "^4.17.15",
-    "moment": "^2.27.0",
+    "moment": "^2.29.1",
     "object-path": "^0.11.4",
     "react": "16.9.0",
     "react-hook-form": "^5.7.2",
@@ -40,6 +40,7 @@
     "react-native-banner-carousel": "^1.0.3",
     "react-native-code-push": "^6.1.0",
     "react-native-countdown-circle-timer": "^2.3.10",
+    "react-native-countdown-component": "^2.7.1",
     "react-native-dash": "^0.0.11",
     "react-native-dialog-input": "^1.0.8",
     "react-native-dropdown-picker": "^3.7.1",
@@ -58,7 +59,9 @@
     "react-native-picker": "^4.3.7",
     "react-native-plain-calendar": "^1.0.5",
     "react-native-progress": "^4.0.3",
+    "react-native-qrcode-svg": "^6.0.6",
     "react-native-reanimated": "^1.7.0",
+    "react-native-render-html": "^5.0.1",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.0.0-beta.4",
     "react-native-scrollable-tab-view": "^1.0.0",
@@ -81,7 +84,8 @@
     "redux-immer": "^1.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "rn-segmented-control": "^0.2.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

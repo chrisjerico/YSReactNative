@@ -15,12 +15,27 @@ import { hideLoading, showLoading } from '../../../../../../public/widget/UGLoad
  */
 const UseTransferPay = () => {
 
-  const moneyOption = ['1', '10', '50', '100', '500', '1000', '5000', '10000', '50000', '100000'] //金额选项
-
   const [inputMoney, setInputMoney] = useState(null) //输入金额
   const [inputName, setInputName] = useState(null) //输入姓名
   const [inputRemark, setInputRemark] = useState(null) //输入备注
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
+  const [moneyOption, setMoneyOption] = useState<Array<string>>(null) //输入金额
+  const [payData, setPayData] = useState<PayAisleListData>(null) //当前数据
+  const [payBigData, setPayBigData] = useState<PayAisleData>(null) //总数据
+
+  useEffect(() => {
+    //重新绘制银行选择界面
+    if (payData != null) {
+      let curChannel = payData?.channel[selPayChannel]
+      setMoneyOption(payBigData?.quickAmount)
+      if(!anyEmpty(curChannel?.para?.fixedAmount)) {
+        const moneyOp = curChannel?.para?.fixedAmount?.split(' ')
+        if (!anyEmpty(moneyOp)) {
+          setMoneyOption(moneyOp)
+        }
+      }
+    }
+  }, [selPayChannel, payData])
 
   /**
    * 开始存款
@@ -42,6 +57,8 @@ const UseTransferPay = () => {
   }
 
   return {
+    setPayData,
+    setPayBigData,
     moneyOption,
     inputMoney,
     setInputMoney,

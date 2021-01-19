@@ -40,7 +40,7 @@ export class OCEvent extends OCCall {
     })
 
     // 跳转到指定页面
-    this.emitter.addListener('SelectVC', (params: { vcName: PageName; rnAction: 'jump' | 'push' | 'refresh' }) => {
+    this.emitter.addListener('SelectVC', (params: { vcName: PageName; rnAction: 'jump' | 'push' | 'refresh' | 'blur' }) => {
       UGUserModel.updateFromYS()
       const page = RnPageModel.getPageName(params.vcName)
       const currentPage = getCurrentPage()
@@ -61,6 +61,11 @@ export class OCEvent extends OCCall {
         case 'jump':
           console.log('跳转到rn页面：', params.vcName, params)
           jumpTo(page, params, true)
+          break
+        case 'blur':
+          console.log('失去焦点：', currentPage, params)
+          const { didBlur } = UGStore.getPageProps(currentPage)
+          didBlur && didBlur(params)
           break
         case 'refresh':
         default:

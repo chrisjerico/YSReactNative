@@ -7,9 +7,9 @@ import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../Res/icon'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -39,7 +39,7 @@ const BZHMinePage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+      <SafeAreaHeader headerColor={skinColors.themeColor.宝石红}>
         <BackBtnComponent homePage={PageName.BZHHomePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} showRightTitle={false} onPressBackBtn={() =>
           OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])} />
         } />
@@ -47,7 +47,7 @@ const BZHMinePage = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+          backgroundColor: skinColors.homeContentSubColor.宝石红,
         }}
         // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
@@ -115,7 +115,7 @@ const BZHMinePage = () => {
       </ScrollView>
       <PickAvatarComponent
         ref={pickAvatarComponentRef}
-        color={BZHThemeColor.宝石红.themeColor}
+        color={skinColors.themeColor.宝石红}
         initAvatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
         onSaveAvatarSuccess={onSaveAvatarSuccess}
       />

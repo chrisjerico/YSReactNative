@@ -1,3 +1,6 @@
+import { img_assets } from '../../Res/icon/index';
+import { EdgeInsets } from 'react-native-safe-area-context';
+import { YueBaoStatModel } from './../network/Model/YueBaoStatModel';
 import { ANHelper } from './ANHelper/ANHelper'
 import { Dimensions, PixelRatio, Platform } from 'react-native'
 import { OCHelper } from './OCHelper/OCHelper'
@@ -10,9 +13,10 @@ export default class AppDefine {
   static siteId = '未知站点'
   static width = Dimensions.get('window').width
   static height = Dimensions.get('window').height
+  static safeArea: EdgeInsets
   static iOS = Platform.OS == 'ios'
   static onePx = 1 / PixelRatio.get()
-  static defaultAvatar = 'https://appstatic.guolaow.com/assets/money-2.png'
+  static defaultAvatar = img_assets('money-2')
 
   static checkHeaderShowBackButton(callback: (show: boolean) => void) {
     if (Platform.OS != 'ios') return
@@ -37,5 +41,14 @@ export default class AppDefine {
         ANHelper.setup()
         break
     }
+  }
+
+
+  /**
+   * 判断站点（多个站点用英文逗号隔开）
+   * @param site
+   */
+  static inSites(sites?: string): boolean {
+    return !!sites?.toLowerCase().split(',').filter((v) => v == AppDefine.siteId?.toLowerCase()).length
   }
 }

@@ -54,13 +54,17 @@ const UseVersion = ({
       })
   }
 
-  //查找最快的域名
-  const testSite = async () => {
+  /**
+   * 查找最快的域名
+   * @param callback 是否有正常的域名
+   */
+  const testSite = async (callback: (result?: boolean) => void) => {
     // 站点编号
     let siteId = ''
     switch (Platform.OS) {
       case 'ios':
         siteId = await OCHelper.call('AppDefine.shared.SiteId')
+        OCHelper.ocTest && callback && callback(true)
         break
       case 'android':
         siteId = await ANHelper.callAsync(CMD.APP_SITE)
@@ -69,9 +73,6 @@ const UseVersion = ({
 
     //ugLog('site = siteId', siteId)
     let domains = MultiDomainUrls[siteId]
-
-    //域名多于2条才处理
-    if (anyLength(domains) < 2) return
     //ugLog('site = domains 7 ', domains)
 
     let firstUrl = '' //哪条速度最快用哪条
@@ -88,6 +89,7 @@ const UseVersion = ({
           //ugLog('site = response 7 ', url, res?.data)
           //最快的那一条
           if (res?.status === 200 && res?.data?.code === 0 && anyEmpty(firstUrl)) {
+            callback && callback(true)
             firstUrl = url
             recombineDomain({ [siteId]: firstUrl })
             notifyDomainChanged(siteId)

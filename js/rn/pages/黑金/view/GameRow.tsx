@@ -3,7 +3,6 @@ import React, {useState} from "react";
 import {HomeGamesModel, Icon, List} from "../../../public/network/Model/HomeGamesModel";
 import GameRowItem from "./GameRowItem";
 import {anyLength} from "../../../public/tools/Ext";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import FastImage from "react-native-fast-image";
 import {gameLeftColumnHeight, gameLeftColumnTopPadding} from "./GameColumn";
@@ -11,6 +10,7 @@ import {ugLog} from "../../../public/tools/UgLog";
 import CommStyles from "../../base/CommStyles";
 import {navigate} from "../../../public/navigation/RootNavigation";
 import {PageName} from "../../../public/navigation/Navigation";
+import { skinColors } from "../../../public/theme/const/UGSkinColor";
 
 interface GameRowProps {
   games?: HomeGamesModel,
@@ -107,7 +107,7 @@ const _styles = StyleSheet.create({
     flexDirection: 'row',
     width: scale(8),
     height: scale(60),
-    backgroundColor: HJThemeColor.黑金.themeColor
+    backgroundColor: skinColors.themeColor.黑金
   },
   itemTitleFlag: {
     width: scale(60),
@@ -116,12 +116,12 @@ const _styles = StyleSheet.create({
   },
   itemTitleText: {
     fontSize: scale(28),
-    color: HJThemeColor.黑金.themeColor,
+    color: skinColors.themeColor.黑金,
     fontWeight: '300'
   },
   itemTitleRightText: {
     fontSize: scale(22),
-    color: HJThemeColor.黑金.textColor2
+    color: skinColors.textColor2.黑金
   },
 });
 

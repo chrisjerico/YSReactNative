@@ -20,7 +20,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import PushHelper from '../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader'
-import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
 import BackBtnComponent from '../../../public/components/tars/BackBtnComponent'
 import { PageName } from '../../../public/navigation/Navigation'
 import MineHeader from '../../../public/views/tars/MineHeader'
@@ -38,8 +37,11 @@ import { UGBasePageProps } from '../../base/UGPage'
  * @param navigation
  * @constructor
  */
-const FreedomHallPage = ({ navigation, setProps }: UGBasePageProps) => {
-
+interface IRouteParams {
+  showBackButton?: boolean //是否显示返回按钮
+}
+const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
+  const { showBackButton }: IRouteParams = route?.params
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
@@ -260,11 +262,12 @@ const FreedomHallPage = ({ navigation, setProps }: UGBasePageProps) => {
   return (
     <View style={CommStyles.flex}>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
-        <MineHeader title={'彩票大厅'}
+      <MineHeader title={'彩票大厅'}
                     showRightTitle={true}
                     rightButton={rightButton}
-                    onPressBackBtn={()=>{pop()}}
-                    showBackBtn={Platform.OS == 'ios'}/>
+                    onPressBackBtn={()=>{ pop() }}
+                    showBackBtn={Platform.OS == 'ios' || showBackButton}
+                    />
       </SafeAreaHeader>
       {
         renderAllData()

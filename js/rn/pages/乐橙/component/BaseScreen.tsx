@@ -39,11 +39,13 @@ export const BaseScreen = ({hideBar, children, screenName, style, icon, hideLeft
                             alignSelf: "center",
                             color: Skin1.navBarTitleColor //根据当前主题来
                         }}>{screenName}</Text>
-                        <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => pop()}>
-                            <Icon size={33} name={icon || 'angle-left'}
-                                  color={ Skin1.navBarTitleColor } //根据当前主题来
-                            />
-                        </TouchableOpacity>
+                          {
+                              !hideLeft && <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => pop()}>
+                                  <Icon size={33} name={icon || 'angle-left'}
+                                        color={ Skin1.navBarTitleColor } //根据当前主题来
+                                  />
+                              </TouchableOpacity>
+                          }
                         <View style={_styles.right_container}>
                             {
                                 rightButton

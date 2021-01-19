@@ -80,6 +80,22 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
           } else {
             dataArray.push({ category: k, title: title, list: temp[k] });
           }
+          
+
+          if (AppDefine.siteId == 'c217') {
+            for (let index = 0; index < dataArray.length; index++) {
+              const element = dataArray[index];
+              if (element.title == '视讯电子') {
+                element.title = '真人电子'
+              }
+              
+            }
+          }
+        
+
+
+          console.log('dataArray ==',dataArray);
+          
         }
         setProps({ style: data.style, dataArray: dataArray, showTopBar: dataArray.length > 1 });
       } else {
@@ -166,7 +182,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
 
   const noBgColor = props.style === '没有选中背景色'
   return ([
-    <View style={{ marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45 }}>
+    <View style={{ marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45 }} key='a111'>
       {titles.map((title, idx) => {
         return (
           <Text
@@ -197,6 +213,6 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
         );
       })}
     </View>,
-    <View style={{ height: noBgColor ? 1 : 0, backgroundColor: '#ccc', width: '100%' }} />
+    <View style={{ height: noBgColor ? 1 : 0, backgroundColor: '#ccc', width: '100%' }} key='a222' />
   ]);
 }

@@ -6,9 +6,9 @@ import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
-import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import TouchableImage from '../../public/views/tars/TouchableImage'
@@ -19,8 +19,9 @@ import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
+import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 
-const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
+const { getHtml5Image } = useHtml5Image(UGImageHost.test5)
 
 const LHTHomePage = () => {
   // states
@@ -60,7 +61,7 @@ const LHTHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'LHTHomePage'}
-      headerColor={LHThemeColor.六合厅.themeColor}
+      headerColor={skinColors.themeColor.六合厅}
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
@@ -112,7 +113,7 @@ const LHTHomePage = () => {
                   title={name}
                   onPress={() => {
                     if (gameId == GameType.大厅) {
-                      navigate(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: LHThemeColor.六合厅.themeColor, homePage: PageName.LHTHomePage })
+                      navigate(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: skinColors.themeColor.六合厅, homePage: PageName.LHTHomePage })
                     } else if (gameId == GameType.优惠活动) {
                       goToPromotionPage()
                     } else {
@@ -213,7 +214,7 @@ const LHTHomePage = () => {
                   subTitleStyle={{ fontSize: scale(23) }}
                   onPress={() => {
                     if (!gameId) {
-                      navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: LHThemeColor.六合厅.themeColor })
+                      navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: skinColors.themeColor.六合厅 })
                     } else {
                       PushHelper.pushHomeGame(item)
                     }
@@ -256,7 +257,7 @@ const LHTHomePage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: LHThemeColor.六合厅.homeContentSubColor,
+    backgroundColor: skinColors.homeContentSubColor.六合厅,
   },
   contentContainer: {
     paddingHorizontal: scale(10),

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
 import Dash from 'react-native-dash'
-import { WNZThemeColor } from '../../../public/theme/colors/WNZThemeColor'
+import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
 
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   menuTitle: {
     fontSize: scale(23),
-    color: WNZThemeColor.威尼斯.themeColor,
+    color: skinColors.themeColor.威尼斯,
   },
   dash: {
     width: '100%',
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     alignSelf: 'center',
-    color: WNZThemeColor.威尼斯.themeColor,
+    color: skinColors.themeColor.威尼斯,
     fontSize: scale(23),
     marginBottom: scale(10),
   },

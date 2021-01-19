@@ -12,11 +12,11 @@ import FastImage from 'react-native-fast-image'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
-import { ToastError, ToastSuccess } from '../../tools/tars'
 import Button from '../../views/tars/Button'
 import {anyEmpty} from "../../tools/Ext";
 import {ugLog} from "../../tools/UgLog";
 import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
+import { ToastSuccess, ToastError } from '../../tools/tars'
 
 export interface FormComponentProps {
   onChangeText?: any;

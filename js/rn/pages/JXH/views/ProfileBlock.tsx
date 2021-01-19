@@ -3,12 +3,12 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { scale } from '../../../public/tools/Scale'
-import { useHtml5Image } from '../../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../../Res/icon'
 import Avatar from '../../../public/views/tars/Avatar'
 import Button from '../../../public/views/tars/Button'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
+const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
 interface ProfileBlockProps {
   uid: string

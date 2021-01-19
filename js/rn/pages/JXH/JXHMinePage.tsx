@@ -8,7 +8,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
-import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 import Avatar from '../../public/views/tars/Avatar'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
@@ -17,8 +17,9 @@ import List from '../../public/views/tars/List'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
+import { goToUserCenterType } from '../../public/tools/tars'
 
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
+const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
 const JXHMinePage = () => {
   const { info, sign, pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess } = useMinePage({
@@ -46,7 +47,7 @@ const JXHMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={'#000000'} />
-      <ImageBackground style={{ flex: 1 }} source={require('./jxhbackground.png')}>
+      <ImageBackground style={{ flex: 1 }} source={{uri:config.homeBg}}>
         <List
           uniqueKey={'JXHMinePage'}
           scrollEnabled={true}

@@ -41,7 +41,6 @@ import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {anyEmpty, anyLength} from "../../public/tools/Ext";
 import GameRow, {gameRowContentHeight} from "./view/GameRow";
-import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import GameColumn from "./view/GameColumn";
 import {scale} from "../../public/tools/Scale";
 import GameButton from "../../public/views/temp/GameButton";
@@ -49,8 +48,9 @@ import TouchableImage from "../../public/views/temp/TouchableImage";
 import CommStyles from "../base/CommStyles";
 import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
 import ActivityComponent from "../../public/components/temp/ActivityComponent";
-import {getActivityPosition} from "../../public/tools/tars";
 import {ROULETTE_LOGO} from "../../Res/icon/Res";
+import { skinColors } from "../../public/theme/const/UGSkinColor"
+import { getActivityPosition } from "../../public/tools/tars"
 
 /**
  * 主页
@@ -127,7 +127,7 @@ const HJHomePage = ({navigation, setProps}) => {
   }
   useEffect(() => {
     setProps({
-      backgroundColor: HJThemeColor.黑金.bgColor,
+      backgroundColor: skinColors.bgColor.黑金,
       didFocus: async () => {
         //ugLog('home focus')
         _requestBalance()
