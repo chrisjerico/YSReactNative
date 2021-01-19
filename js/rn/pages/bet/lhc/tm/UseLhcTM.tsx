@@ -24,7 +24,7 @@ const UseLhcTM = () => {
     setLotteryCode,
     nextIssueData,
     playOddDetailData,
-    curPlayOddData,
+    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,

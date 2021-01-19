@@ -11,7 +11,7 @@ import { PlayData, PlayGroupData, ZodiacNum } from '../../../../public/network/M
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 
 /**
  * 六合彩特码
@@ -121,9 +121,9 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+                                                                         item={item}
+                                                                         selectedBalls={selectedBalls}
+                                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 球
@@ -131,9 +131,9 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderEBall = (item?: PlayData, index?: number) => <LotteryEBall key={key + 'renderEBall' + item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+                                                                         item={item}
+                                                                         selectedBalls={selectedBalls}
+                                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 特码B/A
@@ -218,20 +218,26 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   </View>
 
   return (
-    <View key={key}
-          style={[CommStyles.flex, style]}>
+    <ScrollView key={key}
+                showsVerticalScrollIndicator={false}
+                nestedScrollEnabled={true}
+                style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderZodiac()}
       {renderAllBall()}
-    </View>
+    </ScrollView>
 
   )
 }
 
 const _styles = StyleSheet.create({
-  content_container: {
-
+  sv_container: {
     flex: 1,
+    height: BALL_CONTENT_HEIGHT,
+  },
+  content_container: {
+    flex: 1,
+    paddingBottom: scale(240),
   },
   sub_title_container: {
     alignItems: 'center',

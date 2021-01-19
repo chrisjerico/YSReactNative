@@ -11,7 +11,7 @@ import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { PlayGroup } from '../../../../public/network/Model/PlayOddDataModel'
 
 /**
@@ -39,7 +39,7 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcSB()
 
-  useEffect(()=>{
+  useEffect(() => {
     setLotteryCode(lotteryCode)
   }, [])
 
@@ -49,17 +49,18 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+                                                                         item={item}
+                                                                         selectedBalls={selectedBalls}
+                                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 一组格子
    * @param groupData
    * @param index
    */
-  const renderGroupERect = (groupData?: PlayGroupData, index?: number) => <View key={key + 'renderAllBall' + groupData?.id + index}
-                                                                           style={CommStyles.flex}>
+  const renderGroupERect = (groupData?: PlayGroupData, index?: number) => <View
+    key={key + 'renderAllBall' + groupData?.id + index}
+    style={CommStyles.flex}>
 
     <View key={key + 'renderAllBall sub' + groupData?.id + index}
           style={_styles.sub_title_container}>
@@ -90,18 +91,23 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   </View>
 
   return (
-    <View key={key}
-          style={[CommStyles.flex, style]}>
+    <ScrollView key={key}
+                nestedScrollEnabled={true}
+                style={[_styles.sv_container, style]}>
       {renderAllBall()}
-    </View>
+    </ScrollView>
 
   )
 }
 
 const _styles = StyleSheet.create({
-  content_container: {
-
+  sv_container: {
     flex: 1,
+    height: BALL_CONTENT_HEIGHT,
+  },
+  content_container: {
+    flex: 1,
+    paddingBottom: scale(240),
   },
   sub_title_container: {
     alignItems: 'center',

@@ -61,6 +61,20 @@ export const ToastStatus = (msg: any) => {
   }
 }
 
+export const getActivityPosition = (position: number) => {
+  if (position == 1) {
+    return { left: 0, top: scale(115) }
+  } else if (position == 2) {
+    return { left: 0, top: scale(725) }
+  } else if (position == 3) {
+    return { right: 0, top: scale(115) }
+  } else if (position == 4) {
+    return { right: 0, top: scale(725) }
+  } else {
+    return {}
+  }
+}
+
 export const stringToNumber = (x: string) => {
   const parsed = parseInt(x)
   if (isNaN(parsed)) {

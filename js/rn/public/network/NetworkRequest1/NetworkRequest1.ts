@@ -44,6 +44,7 @@ export function CheckError(sm: CCSessionModel<any>): Error {
   if (sm.status == 401) {
     hideLoading();
     sm.noShowErrorHUD = true;
+    
     if (Platform.OS == 'ios') {
       OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationloginTimeout'])
     }
@@ -53,7 +54,8 @@ export function CheckError(sm: CCSessionModel<any>): Error {
   else if (sm.status == 402) {
     hideLoading();
     sm.noShowErrorHUD = true;
-    api.user.logout();
+    api.user.logout().noShowErrorHUD = true;
+
     if (Platform.OS == 'ios') {
       OCHelper.call('UGUserModel.setCurrentUser:', []).then(() => {
         OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then(() => {
@@ -74,6 +76,30 @@ export function CheckError(sm: CCSessionModel<any>): Error {
 }
 
 
+
+
+
+
+/**
+ * 使用帮助：
+ * 1. 支持链式请求 const {data} = await api.task.checkinList().promise
+ * 2. 请求返回成功但业务逻辑错误（返回的code != 0）时，会视为请求错误并回调 failure()，错误信息可在 CheckError()函数配置
+ * 3. 请求失败会自动调用showError(msg)，可以在 useFailure 或 useCompletion 设置 sm.noShowError = true 取消提示
+ * 4. 支持在iOS下拉调试界面查看请求结果和参数
+ * 5. 支持上传文件，使用方式参考 api.user.uploadAvatar() 上传单个文件、api.user.uploadFeedback() 上传多文件
+ * 
+ * （请求参数默认加密，不支持改为不加密）
+ * （不需要传token，公共参数里面有）
+ */
+
+/**
+ *  举个栗子：
+ *  showLoading()
+ *  api.task.checkinList().useSuccess(({ data, msg }) => {
+ *    showSuccess(msg)
+ *    ...
+ *  })
+ */
 export class api {
   // 活动
   static activity = api_activity;

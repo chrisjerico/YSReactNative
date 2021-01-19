@@ -35,7 +35,7 @@ const UseLhcZT = () => {
     setLotteryCode,
     nextIssueData,
     playOddDetailData,
-    curPlayOddData,
+    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
