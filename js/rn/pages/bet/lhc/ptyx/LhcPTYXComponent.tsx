@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -49,7 +49,7 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableOpacity
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback
     key={key + 'tab' + index + item[1]?.id}
     style={CommStyles.flex}
     onPress={() => setTabIndex(index)}>
@@ -64,7 +64,7 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
               index == tabIndex ? { color: `white` } : null,
             ]}>{item[1]?.alias}</Text>
     </View>
-  </TouchableOpacity>
+  </TouchableWithoutFeedback>
   /**
    * 绘制tab，只有1个数据不绘制Tab
    */

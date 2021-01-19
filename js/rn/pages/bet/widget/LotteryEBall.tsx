@@ -1,5 +1,5 @@
 import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
 import { BallStyles } from '../../hall/new/games/HallGameListComponent'
 import * as React from 'react'
@@ -75,10 +75,10 @@ const LotteryEBall = (iBall: ILotteryEBall) => {
   const { item, callback } = iBall
 
   return (
-    callback != null ? <TouchableOpacity key={'LotteryEBall' + item?.id}
+    callback != null ? <TouchableWithoutFeedback key={'LotteryEBall' + item?.id}
                                          onPress={() => callback && callback()}>
         {renderContent(iBall)}
-      </TouchableOpacity> :
+      </TouchableWithoutFeedback> :
       renderContent(iBall)
   )
 }

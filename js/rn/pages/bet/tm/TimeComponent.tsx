@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useContext, useEffect } from 'react'
 import FastImage from 'react-native-fast-image'
@@ -75,27 +75,27 @@ const TimeComponent = ({ nextIssueData }: IRouteParams) => {
       <View key={key + 'time sub2 container'}
             style={_styles.fc_container}>
         {
-          showTv() && <TouchableOpacity key={key + 'time sub show tv'}
+          showTv() && <TouchableWithoutFeedback key={key + 'time sub show tv'}
                                         onPress={gotoLive}>
             <FastImage key={key + 'time sub show tv'}
                        source={{ uri: Res.tv1 }}
                        style={_styles.tv_img}/>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         }
         {
-          showLong() && <TouchableOpacity key={key + 'time sub show long'}>
+          showLong() && <TouchableWithoutFeedback key={key + 'time sub show long'}>
             <FastImage key={key + 'time sub show long'}
                        source={{ uri: Res.tv_long }}
                        style={_styles.tv_img}/>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         }
         {
-          showTrophy() && <TouchableOpacity key={key + 'time sub show net'}
+          showTrophy() && <TouchableWithoutFeedback key={key + 'time sub show net'}
                                             onPress={gotoOpenNet}>
             <FastImage key={'time sub show net'}
                        source={{ uri: Res.tv_trophy }}
                        style={_styles.tv_img}/>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         }
       </View>
     </View>

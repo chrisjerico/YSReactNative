@@ -1,4 +1,13 @@
-import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -46,7 +55,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   }, [])
   const key = 'lottery page' + lotteryCode
 
-  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableOpacity key={key + item[0]?.alias}
+  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
                                                                                          onPress={() => setTabIndex(index)}>
     <View key={key + item[0]?.id}
           style={[
@@ -59,7 +68,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
               index == tabIndex ? { color: `white` } : null,
             ]}>{item[0]?.alias}</Text>
     </View>
-  </TouchableOpacity>
+  </TouchableWithoutFeedback>
 
   /**
    * 绘制tab，只有1个数据不绘制Tab

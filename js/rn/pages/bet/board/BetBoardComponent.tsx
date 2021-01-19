@@ -1,4 +1,13 @@
-import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native'
 import * as React from 'react'
 import { useContext, useEffect } from 'react'
 import { scale } from '../../../public/tools/Scale'
@@ -135,13 +144,13 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 style={_styles.chip_content}>
             {
               Object.keys(CHIP_OPTION).map((money) =>
-                <TouchableOpacity key={'renderSliderArea chip' + money}
+                <TouchableWithoutFeedback key={'renderSliderArea chip' + money}
                                   onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
                   <FastImage key={'renderSliderArea chip' + money}
                              source={{ uri: CHIP_OPTION[money] }}
                              style={_styles.chip_img}
                              resizeMode={'contain'}/>
-                </TouchableOpacity>)
+                </TouchableWithoutFeedback>)
             }
           </View>
         </View> :
@@ -171,11 +180,11 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
               style={_styles.lottery_count_hint}>注</Text>
         <View key={'renderInputArea ct'}
               style={CommStyles.flex}/>
-        <TouchableOpacity key={'renderInputArea 筹码'}
+        <TouchableWithoutFeedback key={'renderInputArea 筹码'}
                           onPress={() => setShowChip(!showChip)}>
           <Text key={'renderInputArea 筹码'}
                 style={_styles.lottery_count_chip}>筹码</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </View>
       <TextInput key={'renderInputArea input'}
                  style={_styles.input_text}

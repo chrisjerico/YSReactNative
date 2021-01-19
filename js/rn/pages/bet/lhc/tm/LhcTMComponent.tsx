@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -53,7 +53,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
             _styles.tab_item,
             tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
           ]}>
-      <TouchableOpacity key={key + 'renderTabItem Text'}
+      <TouchableWithoutFeedback key={key + 'renderTabItem Text'}
                         onPress={() => setTabIndex(tab)}
                         style={_styles.tab_title_tb}>
         <Text key={key + 'renderTabItem Text'}
@@ -61,7 +61,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
                 _styles.tab_title,
                 tabIndex == tab ? { color: 'white' } : null,
               ]}>{!anyEmpty(pageData) && pageData[tab][0].alias}</Text>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     </View>
 
   /**
@@ -77,7 +77,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 生肖
    * @param item
    */
-  const renderZodiacItem = (item?: ZodiacNum, index?: number) => <TouchableOpacity key={key + `${item?.name}_select`}
+  const renderZodiacItem = (item?: ZodiacNum, index?: number) => <TouchableWithoutFeedback key={key + `${item?.name}_select`}
                                                                                    onPress={() => addOrRemoveZodiac(item)}>
     <View key={key + `${item?.name}_select`}
           style={_styles.zodiac_item}>
@@ -94,7 +94,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
       <Text key={key + `${item?.name}_select name`}
             style={_styles.zodiac_item_text}>{item?.name}</Text>
     </View>
-  </TouchableOpacity>
+  </TouchableWithoutFeedback>
 
   /**
    * 绘制生肖

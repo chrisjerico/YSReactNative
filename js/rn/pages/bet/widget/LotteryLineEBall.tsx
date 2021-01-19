@@ -1,5 +1,5 @@
 import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
 import { BallStyles } from '../../hall/new/games/HallGameListComponent'
 import * as React from 'react'
@@ -53,7 +53,7 @@ const LotteryLineEBall = ({
 
   let showName = anyEmpty(item?.alias) ? item?.name : item?.alias
   return (
-    <TouchableOpacity key={'LotteryLineEBall' + item?.id}
+    <TouchableWithoutFeedback key={'LotteryLineEBall' + item?.id}
                       style={CommStyles.flex}
                       onPress={() => callback && callback()}>
       <View key={'LotteryLineEBall' + item?.id}
@@ -89,7 +89,7 @@ const LotteryLineEBall = ({
                           }}/>)
         }
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 }
 

@@ -3,7 +3,7 @@
  * @constructor
  */
 import UseListContent from './UseListContent'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import LotteryConst, { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
@@ -38,7 +38,7 @@ const ListContentComponent = () => {
       <View style={_styles.left_column_content}>
         {
           playOddDetailData()?.playOdds?.map((item, index) => {
-            return <TouchableOpacity key={'renderLeftColumn' + item?.code}
+            return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
                                      onPress={() => setLeftColumnIndex(index)}>
               <View key={'renderLeftColumn' + item?.code}
                     style={[
@@ -51,7 +51,7 @@ const ListContentComponent = () => {
                 <Text key={'renderLeftColumn' + item?.code}
                       style={_styles.left_column_text}>{item.name}</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           })
         }
       </View>
