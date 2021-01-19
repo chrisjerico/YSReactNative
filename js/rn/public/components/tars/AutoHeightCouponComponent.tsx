@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
+import { Image, Modal, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { ScrollView } from 'react-native-gesture-handler'
 import { scale } from '../../tools/Scale'
@@ -7,6 +7,7 @@ import TouchableImage from '../../views/tars/TouchableImage'
 import Button from '../../../public/views/tars/Button'
 import AppDefine from '../../define/AppDefine'
 import { Skin1 } from '../../theme/UGSkinManagers'
+import { Res } from '../../../Res/icon/Res'
 
 interface AutoHeightCouponAutoHeightCouponComponentProps {
   title: string
@@ -114,8 +115,16 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
   }
   </script>` +
                       content,
-                  }}
-                />
+                  }}/>
+                  <View style={{ flex: 1, width: '100%', alignItems: 'center'}}>
+                    <Image 
+                      source={{ uri: Res.promotion_more }} 
+                      style={{ width: scale(250), height: scale(60)}}
+                      onProgress={() => {
+                        
+                      }}
+                      />
+                  </View>
               </ScrollView>
             </View>
             <View style={styles.buttonContainer}>

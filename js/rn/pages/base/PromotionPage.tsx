@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import PromotionDialog from '../../public/components/PromotionDialog'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
@@ -27,8 +28,8 @@ const PromotionPage = (props: any) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1)
   const totalList = useRef([])
-  const showUnderline = Skin1?.skitType.indexOf('威尼斯') != -1
-  const showItemBorder = Skin1?.skitType.indexOf('威尼斯') != -1
+  const showUnderline = Skin1?.skitType?.indexOf('威尼斯') != -1
+  const showItemBorder = Skin1?.skitType?.indexOf('威尼斯') != -1
 
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
@@ -49,7 +50,6 @@ const PromotionPage = (props: any) => {
   const categoriesKey = Object.keys(categories)
 
   const handleOnPress = ({ setShowPop, item, index }) => {
-    ugLog("Promotion: " + setShowPop+ ", " + item)
     switch (Platform.OS) {
       case 'ios':
         switch (style) {
@@ -74,11 +74,13 @@ const PromotionPage = (props: any) => {
         }
         break
       case 'android':
-        ANHelper.callAsync(CMD.OPEN_COUPON, {
-          ...item,
-          style,
-        })
-        break
+        switch (style) {
+          // 弹框
+          case 'popup': {
+            setShowPop(true)
+            break
+          }
+        }
     }
   }
   if (loading) {
