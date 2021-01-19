@@ -1,6 +1,6 @@
-import { UGImageHost, useHtml5Image } from '../tools/tars'
-const { getHtml5Image } = useHtml5Image(UGImageHost.test10)
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 
+const { getHtml5Image } = useHtml5Image(UGImageHost.test10)
 export const MinePageImgConfig = {
   defaultUserCenterLogos: {
     1: getHtml5Image(23, 'chongzhi'), // 存款

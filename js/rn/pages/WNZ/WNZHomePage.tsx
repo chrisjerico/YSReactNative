@@ -12,7 +12,6 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -30,6 +29,8 @@ import { ugLog } from '../../public/tools/UgLog'
 import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
 import { getParentsTagsRecursively } from 'react-native-render-html'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
+import { appConfig } from '../../../../config'
+import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -138,7 +139,7 @@ const WNZHomePage = () => {
                 if (subType) {
                   showGameSubType(index)
                 } else {
-                  ugLog('GameType item=', JSON.stringify(item))
+                  //ugLog('GameType item=', JSON.stringify(item))
                   if (gameId == GameType.大厅
                   && (subId != MenuType.CQK &&
                       subId != MenuType.CZ &&
@@ -178,7 +179,7 @@ const WNZHomePage = () => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
-      rankingListType={AppDefine.siteId == 'c245' ? RankingListType.不顯示 : rankingListType}
+      rankingListType={appConfig.isWNZBottomTabHot() ? RankingListType.不顯示 : rankingListType}
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
@@ -222,7 +223,7 @@ const WNZHomePage = () => {
                     justifyContent: 'center',
                   }}
                   imageContainerStyle={{
-                    width: '80%',
+                    width: '75%',
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
@@ -309,10 +310,10 @@ const WNZHomePage = () => {
             initialTabIndex={1}
             baseHeight={scale(82)}
             itemHeight={scale(100)}
-            fixedHeight={AppDefine.siteId == 'c245' ? [null, 350] : []}
+            fixedHeight={appConfig.isWNZBottomTabHot() ? [null, 350] : []}
             renderTabBar={TabBar}
             renderScene={({ item, index: sceneIndex }) => {
-              if (AppDefine.siteId == 'c245' && sceneIndex) {
+              if (appConfig.isWNZBottomTabHot() && sceneIndex) {
                 return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} iconTitleContainerStyle={{ height: 0 }} />
               } else {
                 return (
@@ -332,7 +333,7 @@ const WNZHomePage = () => {
                           logo={pic}
                           name={title}
                           desc={openCycle}
-                          logoBallText={sceneIndex ? '信' : AppDefine.siteId == 'c245' ? '热' : '官'}
+                          logoBallText={sceneIndex ? '信' : appConfig.isWNZBottomTabHot() ? '热' : '官'}
                           onPress={
                             title == '更多游戏'
                               ? goToUserCenterType.游戏大厅
@@ -369,7 +370,7 @@ const WNZHomePage = () => {
                     if (onPress) {
                       onPress()
                     } else {
-                      ugLog('GameType item=', JSON.stringify(item))
+                      //ugLog('GameType item=', JSON.stringify(item))
                       const { subId } = item
                       if (subId == GameType.游戏大厅) {  //游戏大厅
                         push(PageName.GameLobbyPage, { showBackButton: true })

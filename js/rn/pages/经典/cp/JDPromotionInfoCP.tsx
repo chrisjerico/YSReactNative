@@ -12,6 +12,7 @@ import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
 import { scale } from '../../../public/tools/Scale';
+import { img_assets, useHtml5Image } from '../../../Res/icon';
 import { Toast } from '../../../public/tools/ToastUtils';
 import { showSuccess } from '../../../public/widget/UGLoadingCP';
 import UGinviteInfoModel from '../../../redux/model/全局/UGinviteInfoModel';
@@ -74,16 +75,16 @@ const JDPromotionInfoCP = () => {
   function headImg() {
     let returnStr: string;
     if ('c126b' == AppDefine.siteId) {
-      returnStr = 'https://appstatic.guolaow.com/assets/c126bHeaderBgImg.jpg'
+      returnStr = img_assets('c126bHeaderBgImg', 'jpg')
     }
     else if ('c126' == AppDefine.siteId) {
-      returnStr = 'https://appstatic.guolaow.com/assets/c126HeaderBgImg.png'
+      returnStr = img_assets('c126HeaderBgImg')
     }
     else if ('c186' == AppDefine.siteId) {
-      returnStr = 'https://appstatic.guolaow.com/assets/c186HeaderBgImg.png'
+      returnStr = img_assets('c186HeaderBgImg')
     }
     else {
-      returnStr = 'https://appstatic.guolaow.com/assets/promotioninfo.png'
+      returnStr = img_assets('promotioninfo')
     }
     return returnStr;
   }

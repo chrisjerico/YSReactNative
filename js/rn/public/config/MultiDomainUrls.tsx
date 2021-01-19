@@ -188,11 +188,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://83f9.com',
   ],
   'c092': [
-    'https://2013qaz-555.com',
-    'https://2013wsx-555.com',
-    'https://2013yhn-555.com',
-    'https://2013jkl-555.com',
-    'https://2013egm-555.com',
+    'https://2013edc-555.com',
+    'https://2013rfv-555.com',
+    'https://2013ijn-555.com',
+    'https://2013uhb-555.com',
+    'https://2013ygc-555.com',
   ],
   'c105b': [
     'https://390qp8.com',
@@ -216,11 +216,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615vv.com',
   ],
   'c116': [
-    'https://csj116app.com',
-    'https://csj116app.co',
-    'https://c116app.cc',
-    'https://csj116app.cc',
-    'https://app116csj.me',
+    'https://58933d.com',
+    'https://58933c.com',
+    'https://58922c.com',
+    'https://20801353.com',
   ],
   'c117': [
     'https://646482.com',
@@ -259,6 +258,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c150': [
     'https://0187655.com',
     'https://0187688.com',
+    'https://0187388.com',
+    'https://0187611.com',
   ],
   'c151': [
     'https://xpj501501401401.vip',
@@ -332,7 +333,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771771z.com',
+    'https://771bb771.com',
     'https://771771s.com',
     'https://771771i.com',
     'https://771771j.com',
@@ -345,10 +346,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://c213-app-450.com',
-    'https://450-xpj-app.com',
-    'https://c213-appapp.me',
-    'https://c213-app-450.cc',
+    'https://4503301.com',
+    'https://vip45033.com',
+    'https://4502205.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -392,9 +392,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2420app.app',
   ],
   'c252': [
-    'https://xg344app.com',
-    'https://xggjapp7.com',
-    'https://xggjapp9.com',
+    'https://344app3.com',
+    'https://3444app.com',
   ],
   'c254': [
     'https://677888c.com',

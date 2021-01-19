@@ -25,7 +25,7 @@ import { UGStore } from '../../../redux/store/UGStore'
  */
 const UseLhcBoard = () => {
 
-  const [sliderValue, setSliderValue] = useState<number>(0) //拉条进度
+  const [sliderValue, setSliderValue] = useState<number>(0) //拉条数据
   const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码

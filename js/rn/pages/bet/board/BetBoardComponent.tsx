@@ -1,6 +1,6 @@
 import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import * as React from 'react'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -9,6 +9,8 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
+import { anyEmpty } from '../../../public/tools/Ext'
+import BetLotteryContext from '../BetLotteryContext'
 
 /**
  * 彩票功能区入参
@@ -43,7 +45,27 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   useEffect(() => {
 
   }, [])
+  /**
+   * 加大拉条
+   */
+  const increaseSlider = () => {
+    let value = sliderValue + sliderStep
+    value = value > systemInfo?.activeReturnCoinRatio ?
+      systemInfo?.activeReturnCoinRatio : value
+    setSliderValue(value)
+  }
 
+  /**
+   * 减小拉条
+   */
+  const decreaseSlider = () => {
+    let value = sliderValue - sliderStep
+    value = value < 0 ? 0 : value
+    setSliderValue(value)
+  }
+
+  //拉条步进大小
+  const sliderStep = systemInfo?.activeReturnCoinRatio / 20
   /**
    * 绘制退水
    */
@@ -65,19 +87,23 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 name={'chevron-down'}/>
 
           <Text key={'renderSliderArea slider tx'}
-                style={_styles.sub_title_text}>{'退水: 0%'}</Text>
+                style={_styles.sub_title_text}>{`退水: ${sliderValue?.toFixed(2)}%`}</Text>
 
           <Icon key={'renderSliderArea slider icon2'}
                 size={scale(48)}
                 color={'white'}
+                onPress={decreaseSlider}
                 style={_styles.slider_plus}
-                name={'plus-circle'}/>
+                name={'minus-circle'}/>
 
           <Slider
             key={'renderSliderArea slider bar'}
             style={_styles.slider}
             minimumValue={0}
-            maximumValue={100}
+            value={sliderValue}
+            step={sliderStep}
+            onValueChange={(value => setSliderValue(value))}
+            maximumValue={systemInfo?.activeReturnCoinRatio ?? 0}
             minimumTrackTintColor={Skin1.themeColor}
             thumbTintColor={Skin1.themeColor}
             maximumTrackTintColor={UGColor.LineColor4}/>
@@ -85,8 +111,9 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           <Icon key={'renderSliderArea slider icon 3'}
                 size={scale(48)}
                 color={'white'}
+                onPress={increaseSlider}
                 style={_styles.slider_minus}
-                name={'minus-circle'}/>
+                name={'plus-circle'}/>
         </View> :
         <View key={'renderSliderArea slider arrow up'}>
           <Icon key={'renderSliderArea slider icon up'}
@@ -186,7 +213,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   return (
     <View key={'bet board content'}
           style={[_styles.bet_container, style]}>
-      {renderSliderArea()}
+      {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
       {renderInputArea()}
       {
         locked ?
@@ -294,7 +321,7 @@ const _styles = StyleSheet.create({
     paddingLeft: scale(6),
   },
   slider: {
-    width: scale(220),
+    width: scale(200),
     height: scale(56),
     marginHorizontal: scale(4),
   },

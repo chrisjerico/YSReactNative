@@ -4,11 +4,11 @@ import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
 import APIRouter, { UserReg } from '../network/APIRouter'
-import { ToastSuccess, ToastError, ToastStatus } from '../tools/tars'
 import {ANHelper} from "../define/ANHelper/ANHelper";
 import {CMD} from "../define/ANHelper/hp/CmdDefine";
 import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
 import {logoutAndroid} from "../define/ANHelper/InfoHelper";
+import { ToastStatus, ToastSuccess, ToastError } from '../tools/tars'
 
 interface Options {
   onSuccess?: () => any;

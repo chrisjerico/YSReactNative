@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import UseBetLottery from './UseBetLottery'
@@ -12,7 +12,7 @@ import { UGColor } from '../../public/theme/UGThemeColor'
 import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
 import TimeComponent from './tm/TimeComponent'
-import LotteryConst, { LEFT_ITEM_HEIGHT } from './const/LotteryConst'
+import LotteryConst, { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from './const/LotteryConst'
 import LhcZTComponent from './lhc/zt/LhcZTComponent'
 import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
 import LhcSBComponent from './lhc/sb/LhcSBComponent'
@@ -23,6 +23,7 @@ import BetBoardComponent from './board/BetBoardComponent'
 import { anyEmpty, arrayLength } from '../../public/tools/Ext'
 import BetRecordHeaderComponent from './red/BetRecordHeaderComponent'
 import { ugLog } from '../../public/tools/UgLog'
+import ListContentComponent from './list/ListContentComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -56,7 +57,6 @@ const BetLotteryPage = ({ navigation, route }) => {
   const [textSize, setTextSize] = useState(scale(22))
   const [tabIndex, setTabIndex] = useState(0) //当前选中哪个tab，投注0 还是游戏1
   const [gameTabIndex, setGameTabIndex] = useState(0) // 彩票和聊天切换TAB
-  const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
 
   /**
    * 绘制顶部的标题栏
@@ -101,176 +101,22 @@ const BetLotteryPage = ({ navigation, route }) => {
 
   </View>
 
-  /**
-   * 绘制左边列表 特码 双面 正码 等等
-   */
-  const renderLeftColumn = () => <View key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
-                                       style={[
-                                         _styles.left_column_container,
-                                         { height: LEFT_ITEM_HEIGHT * arrayLength(playOddDetailData?.playOdds) },
-                                       ]}>
-    <ScrollView key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
-                nestedScrollEnabled={true}
-                showsVerticalScrollIndicator={false}>
-      <View key={'renderLeftColumn' + playOddDetailData?.playOdds?.toString()}
-            style={_styles.left_column_content}>
-        {
-          playOddDetailData?.playOdds?.map((item, index) => {
-            return <TouchableOpacity key={'renderLeftColumn' + item?.code}
-                                     onPress={() => setLeftColumnIndex(index)}>
-              <View key={'renderLeftColumn' + item?.code}
-                    style={[
-                      _styles.left_column_item,
-                      {
-                        borderWidth: leftColumnIndex == index ? scale(3) : scale(1),
-                        borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
-                      },
-                    ]}>
-                <Text key={'renderLeftColumn' + item?.code}
-                      style={_styles.left_column_text}>{item.name}</Text>
-              </View>
-            </TouchableOpacity>
-          })
-        }
-      </View>
-    </ScrollView>
-  </View>
-
-  /**
-   * 加载彩票对象
-   * @param targetLotteryCode 目标彩票
-   * @param currentLotteryCode 当前选中的彩票
-   * @constructor
-   */
-  const LotteryComponent = (targetLotteryCode?: string, currentLotteryCode?: string) => {
-
-    // <LhcTMComponent key={LotteryConst.TM + (LotteryConst.TM == targetLotteryCode)}
-    //                 style={targetLotteryCode == LotteryConst.TM ? null : { display: 'none' }}
-    //                 targetLotteryCode={LotteryConst.TM}/>
-
-    const isEqual = targetLotteryCode == currentLotteryCode //加载的彩票和选中的彩票是否相同
-    // const key = targetLotteryCode + isEqual
-    // ugLog('current key key={key} =', targetLotteryCode, currentLotteryCode, key)
-    switch (targetLotteryCode) {
-      case LotteryConst.TM: { //特码
-        return <LhcTMComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT: { //正特
-        return <LhcZTComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.LMA: { //连码
-        return <LhcLMAComponent key={targetLotteryCode}
-                                lotteryCode={targetLotteryCode}
-                                style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX: { //五行
-        return <LhcSBComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.YX: //平特一肖
-      case LotteryConst.WS: //平特尾数
-      case LotteryConst.TWS: //头尾数
-      case LotteryConst.TX: //特肖
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZX: { //正肖
-        return <LhcPTYXComponent key={targetLotteryCode}
-                                 lotteryCode={targetLotteryCode}
-                                 style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.HX: { //合肖
-        return <LhcHXComponent key={targetLotteryCode}
-                               lotteryCode={targetLotteryCode}
-                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-      case LotteryConst.ZXBZ: { //自选不中
-        return <LhcZXBZComponent key={targetLotteryCode}
-                                 lotteryCode={targetLotteryCode}
-                                 style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-        />
-      }
-
-    }
-
-    return null
-  }
-
-  /**
-   * 绘制右边彩票区域，彩球 等等
-   */
-  const renderRightContent = () => {
-    // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
-
-    let lotteryCode = playOddDetailData?.playOdds[leftColumnIndex]?.code
-    // ugLog('---------------------------------------------------')
-    // return <View style={CommStyles.flex}>
-    //   {
-    //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
-    //   }
-    // </View>
-
-
-    switch (lotteryCode) {
-      case LotteryConst.TM: { //特码
-        return <LhcTMComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT: { //正特
-        return <LhcZTComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.LMA: { //连码
-        return <LhcLMAComponent key={lotteryCode}
-                                lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX: { //五行
-        return <LhcSBComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.YX: //平特一肖
-      case LotteryConst.WS: //平特尾数
-      case LotteryConst.TWS: //头尾数
-      case LotteryConst.TX: //特肖
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZX: { //正肖
-        return <LhcPTYXComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.HX: { //合肖
-        return <LhcHXComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.ZXBZ: { //自选不中
-        return <LhcZXBZComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
-      }
-
-    }
-
-    return null
-  }
+  // /**
+  //  * 绘制右边彩票区域，彩球 等等
+  //  */
+  // const renderRightContentList = () => {
+  //   ugLog('---------------------------------------------------')
+  //
+  //   return (
+  //     <FlatList key={'page balls renderDataList'}
+  //               style={_styles.right_content_list}
+  //               showsVerticalScrollIndicator={false}
+  //               nestedScrollEnabled={true}
+  //               keyExtractor={(item, index) => `${item?.code}-${index}`}
+  //               data={playOddDetailData?.playOdds}
+  //               renderItem={({ item, index }) => (renderRightContent(item?.code))}/>
+  //   )
+  // }
 
   /**
    * 绘制游戏聊天切换tab
@@ -316,7 +162,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     <BetLotteryContext.Provider value={{
       nextIssueData: () => nextIssueData,
       playOddDetailData: () => playOddDetailData,
-      curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
+      // curPlayOddData: () => playOddDetailData?.playOdds[leftColumnIndex],
     }}>
       <BaseScreen key={'lottery BaseScreen'}
                   screenName={''}
@@ -358,14 +204,10 @@ const BetLotteryPage = ({ navigation, route }) => {
           {renderTopBar()}
           {renderGameTab()}
           <ScrollView key={'lottery middle content'}
-                      style={CommStyles.flex}>
+                      style={_styles.sv_container}>
             {renderHistory()}
             {<TimeComponent key={'TimeComponent' + nextIssueData?.curIssue}/>}
-            <View key={'lottery bet content'}
-                  style={{ flexDirection: 'row' }}>
-              {renderLeftColumn()}
-              {renderRightContent()}
-            </View>
+            <ListContentComponent/>
           </ScrollView>
           <BetBoardComponent key={'lottery board'}
                              locked={false}
@@ -382,6 +224,9 @@ const _styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
+  sv_container: {
+    flex: 1,
+  },
   modal_content: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -393,7 +238,7 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
   },
   top_bar_container: {
-    width: scale(540),
+    width: '100%',
     height: scale(72),
     flexDirection: 'row',
     alignItems: 'center',
@@ -436,23 +281,6 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: 'white',
   },
-  left_column_container: {},
-  left_column_content: {
-    paddingBottom: LEFT_ITEM_HEIGHT * 10,
-  },
-  left_column_text: {
-    color: UGColor.TextColor7,
-    fontSize: scale(22),
-  },
-  left_column_item: {
-    width: scale(140),
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: LEFT_ITEM_HEIGHT,
-    borderRadius: scale(8),
-  },
-
-
 })
 
 export default BetLotteryPage

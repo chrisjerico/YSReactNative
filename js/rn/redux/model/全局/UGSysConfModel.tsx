@@ -1,6 +1,7 @@
 // 代理申请信息
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { anyEmpty } from '../../../public/tools/Ext'
+import { img_assets } from '../../../Res/icon'
 import { UGStore } from '../../store/UGStore'
 
 
@@ -93,25 +94,25 @@ export class UGUserCenterItem {
 
   // 默认图标
   static defaultLogos: { [x: number]: string } = {
-    1: 'https://appstatic.guolaow.com/assets/chongzhi@2x.png', // 存款
-    2: 'https://appstatic.guolaow.com/assets/tixian@2x.png', // 取款
-    3: 'https://appstatic.guolaow.com/assets/yinhangqia@2x.png', // 银行卡管理
-    4: 'https://appstatic.guolaow.com/assets/lixibao.png', // 利息宝
-    5: 'https://appstatic.guolaow.com/assets/shouyisel.png', // 推荐收益
-    6: 'https://appstatic.guolaow.com/assets/zdgl@2x.png', // 彩票注单记录
-    7: 'https://appstatic.guolaow.com/assets/zdgl@2x.png', // 其他注单记录
-    8: 'https://appstatic.guolaow.com/assets/change@2x.png', // 额度转换
-    9: 'https://appstatic.guolaow.com/assets/zhanneixin@2x.png', // 站内信
-    10: 'https://appstatic.guolaow.com/assets/ziyuan@2x.png', // 安全中心
-    11: 'https://appstatic.guolaow.com/assets/renwuzhongxin.png', // 任务中心
-    12: 'https://appstatic.guolaow.com/assets/gerenzhongxinxuanzhong.png', // 个人信息
-    13: 'https://appstatic.guolaow.com/assets/yijian.png', // 建议反馈
-    14: 'https://appstatic.guolaow.com/assets/zaixiankefu@2x.png', // 在线客服
-    15: 'https://appstatic.guolaow.com/assets/zdgl@2x.png', // 活动彩金
-    16: 'https://appstatic.guolaow.com/assets/changlong@2x.png', // 长龙助手
-    17: 'https://appstatic.guolaow.com/assets/menu-activity.png', // 全民竞猜
-    18: 'https://appstatic.guolaow.com/assets/kj_trend.png', // 开奖走势
-    19: 'https://appstatic.guolaow.com/assets/usrCenter_qq.png', // QQ客服
+    1: img_assets('chongzhi@2x'), // 存款
+    2: img_assets('tixian@2x'), // 取款
+    3: img_assets('yinhangqia@2x'), // 银行卡管理
+    4: img_assets('lixibao'), // 利息宝
+    5: img_assets('shouyisel'), // 推荐收益
+    6: img_assets('zdgl@2x'), // 彩票注单记录
+    7: img_assets('zdgl@2x'), // 其他注单记录
+    8: img_assets('change@2x'), // 额度转换
+    9: img_assets('zhanneixin@2x'), // 站内信
+    10: img_assets('ziyuan@2x'), // 安全中心
+    11: img_assets('renwuzhongxin'), // 任务中心
+    12: img_assets('gerenzhongxinxuanzhong'), // 个人信息
+    13: img_assets('yijian'), // 建议反馈
+    14: img_assets('zaixiankefu@2x'), // 在线客服
+    15: img_assets('zdgl@2x'), // 活动彩金
+    16: img_assets('changlong@2x'), // 长龙助手
+    17: img_assets('menu-activity'), // 全民竞猜
+    18: img_assets('kj_trend'), // 开奖走势
+    19: img_assets('usrCenter_qq'), // QQ客服
   }
 
   constructor(props: UGUserCenterItem) {
@@ -145,6 +146,8 @@ export default class UGSysConfModel {
   static updateFromNetwork(completed?: () => void) {
     return api.system.config().useSuccess(({ data }, sm) => {
       sm.noShowErrorHUD = true
+      console.log('系统配置数据：',data);
+      
       UGStore.dispatch({ type: 'merge', sysConf: data })
       completed && completed()
     }).promise
@@ -191,7 +194,7 @@ export default class UGSysConfModel {
   switchCoinPwdSms?: string // 资金密码开启短信验证
   switchCoinPwd?: string // 是否打开忘记密码
   coinPwdAuditOptionAry?: Array<string> //忘记密码有哪些选项 mobile, bank, id
-
+  chatShareBetMinAmount?: string /**<   聊天室 注单分享最小金额限制*/
   // 邀请码
   inviteCode ?: InviteCodeConfigModel
   // 注册页
@@ -226,6 +229,9 @@ export default class UGSysConfModel {
 
   mobileMenu?: Array<UGTabbarItem> // 底部Tab按钮
   userCenter?: Array<UGUserCenterItem> // 我的页功能按钮
+
+  activeReturnCoinStatus?: boolean// 是否開啟拉條模式
+  activeReturnCoinRatio?: number// 拉條最大值
 
   // 登陸頁
   loginVCode?: boolean // 登录增加了滑动验证码配置  默认开

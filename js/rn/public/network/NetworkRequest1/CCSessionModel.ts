@@ -9,6 +9,7 @@ import { string } from 'prop-types';
 import { showError } from '../../widget/UGLoadingCP';
 import { CheckError } from './NetworkRequest1';
 import { ugLog } from '../../tools/UgLog'
+import UGUserModel from '../../../redux/model/全局/UGUserModel';
 
 
 // 返回结果类型
@@ -28,8 +29,6 @@ export class CCSessionModel<T = {} | [] | string> {
   status: number;
   promise: Promise<AxiosResponse<T>>;
 
-  // 只写
-  noShowErrorHUD: boolean;
   success: (res: ResponseObject<T>, sm: CCSessionModel<T>) => void;
   failure: (err: Error, sm: CCSessionModel<T>) => void;
   completion: (res: ResponseObject<T>, err: Error, sm: CCSessionModel<T>) => void
@@ -45,13 +44,35 @@ export class CCSessionModel<T = {} | [] | string> {
     this.failure = failure
     return this
   }
+
+  // 只写
+  noShowErrorHUD: boolean;
 }
 
 
 
 // ____________________________________________________________________________________________________________
 // ____________________________________________________________________________________________________________
+/**
+ * 使用帮助：
+ * 1. 支持链式请求 const {data} = await api.task.checkinList().promise
+ * 2. 请求返回成功但业务逻辑错误时（返回的code != 0），会视为请求错误并回调 failure()，错误信息可在 NetworkRequest1.ts 的 CheckError()函数配置
+ * 3. 请求失败会自动调用showError(msg)，可以在 useFailure 或 useCompletion 设置 sm.noShowError = true 取消提示
+ * 4. 支持在iOS下拉调试界面查看请求结果和参数
+ * 5. 支持上传文件，使用方式参考 api.user.uploadAvatar() 上传单个文件、api.user.uploadFeedback() 上传多文件
+ * 
+ * （请求参数默认加密，不支持改为不加密）
+ * （不需要传token，公共参数里面有）
+ */
 
+/**
+ *  举个栗子：
+ *  showLoading()
+ *  api.task.checkinList().useSuccess(({ data, msg }) => {
+ *    showSuccess(msg)
+ *    ...
+ *  })
+ */
 export class SampleAPI {
   c: string;
   constructor(c) { this.c = c; }
@@ -62,8 +83,7 @@ export class SampleAPI {
 
 // 公共参数
 function publicParams() {
-  const { userInfo } = UGStore.globalProps;
-  return { 'token': userInfo && userInfo["API-SID"] };
+  return { 'token': UGUserModel.getToken() };
 };
 
 // 字典(map)类型
@@ -96,7 +116,7 @@ export class CCSessionReq {
       }
 
       console.log('【发起请求】', url);
-
+      console.log('【发起请求加密参数】',params);
       // 若是GET请求则拼接参数到URL
       if (!isPost) {
         for (const key in params) {
@@ -119,7 +139,9 @@ export class CCSessionReq {
         }
         return this.http.post<ResponseObject<T>>(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       } else {
-        return this.http.post<ResponseObject<T>>(url, params);
+       
+        
+        return this.http.post<ResponseObject<T>>(url, params,{ headers: { 'Content-Type': 'application/json' } });
       }
     }).then((res) => {
       // 接口请求成功

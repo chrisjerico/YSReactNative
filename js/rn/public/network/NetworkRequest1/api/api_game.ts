@@ -46,8 +46,8 @@ export class api_game {
   }
 
   // 真人游戏分类列表（二级游戏列表）
-  static realGameTypes() {// 一级游戏ID、搜索的关键字
-    return this.c.get('realGameTypes');
+  static realGameTypes(id: string) {// 一级游戏ID、搜索的关键字
+    return this.c.get('realGameTypes', { id: id });
   }
 
   // 彩票分组列表

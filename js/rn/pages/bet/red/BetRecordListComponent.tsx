@@ -204,7 +204,7 @@ const BetRecordListComponent = ({
   }
 
   /**
-   * 只有一个条目，没必要绘制整个 list 优化速度
+   * 只有一个条目，没必要绘制整个 list
    */
   const renderDataList = () => {
     return (

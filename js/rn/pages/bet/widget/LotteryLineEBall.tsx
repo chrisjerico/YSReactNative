@@ -21,6 +21,18 @@ interface ILotteryEBall {
 }
 
 /**
+ * 和 PlayData 结构类似
+ */
+interface ILotteryLineEBallItem {
+  id?: string; //708501
+  name?: string; //01
+  alias?: string;//特码A"
+  code?: string;//01
+  odds?: string;//42.5500
+  zodiacItem: ZodiacNum
+}
+
+/**
  * 一行彩票球+点击回调
  * @param item 条目数据
  * @param ballProps 球的类型
@@ -41,9 +53,10 @@ const LotteryLineEBall = ({
 
   let showName = anyEmpty(item?.alias) ? item?.name : item?.alias
   return (
-    <TouchableOpacity key={item?.id}
+    <TouchableOpacity key={'LotteryLineEBall' + item?.id}
+                      style={CommStyles.flex}
                       onPress={() => callback && callback()}>
-      <View key={item?.id}
+      <View key={'LotteryLineEBall' + item?.id}
             style={[
               _styles.ball_item_tm,
               {
@@ -72,7 +85,7 @@ const LotteryLineEBall = ({
                           ballStyle={ballStyle}
                           item={{
                             id: item?.id + zodiacNumber,
-                            name: ('0' + zodiacNumber)?.slice(-2),
+                            name: zodiacNumber,
                           }}/>)
         }
       </View>
@@ -104,18 +117,6 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
   },
 })
-
-/**
- * 和 PlayData 结构类似
- */
-interface ILotteryLineEBallItem {
-  id: string; //708501
-  name: string; //01
-  alias?: string;//特码A"
-  code?: string;//01
-  odds?: string;//42.5500
-  zodiacItem: ZodiacNum
-}
 
 export default LotteryLineEBall
 export { ILotteryLineEBallItem }
