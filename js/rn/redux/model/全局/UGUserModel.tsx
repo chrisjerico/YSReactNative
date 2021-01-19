@@ -19,7 +19,7 @@ export class UGLoginModel {
   token?: string;
   static getToken() {
     const user = UGStore.globalProps?.userInfo;
-    return user.sessid ?? user["API-SID"];
+    return user?.sessid ?? user?.["API-SID"];
   }
 }
 
