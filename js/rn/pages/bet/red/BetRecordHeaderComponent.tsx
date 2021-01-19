@@ -32,9 +32,9 @@ interface IHallGameList {
 const BetRecordHeaderComponent = ({}: IHallGameList) => {
 
   const {
-    nextIssueData, // 下一期数据
-    playOddDetailData, //彩票数据
-    // curPlayOddData, //当前选中的，特码 连码 等等
+    nextIssueData,
+    playOddDetailData,
+    // curPlayOddData,
   } = useContext(BetLotteryContext)
 
   const {

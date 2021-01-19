@@ -5,7 +5,6 @@ import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lotte
 interface IBetLotteryContext {
   nextIssueData?: () => NextIssueData //下一期数据
   playOddDetailData?: () => PlayOddDetailData //彩票数据
-  refLotteryList?: () => any // 彩票LIST索引
   // curPlayOddData?: () => PlayOddData //当前 彩票彩种数据，特码，双面
 }
 

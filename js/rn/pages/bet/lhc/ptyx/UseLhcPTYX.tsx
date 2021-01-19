@@ -36,7 +36,7 @@ const UseLhcPTYX = () => {
     setLotteryCode,
     nextIssueData,
     playOddDetailData,
-    curPlayOddData,
+    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
