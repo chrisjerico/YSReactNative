@@ -127,15 +127,15 @@ const CapitalPage = ({ navigation, route, setProps }) => {
       resizeMode={'contain'}
       style={_styles.mine_info_avatar} />
     <View>
-      <Text style={[_styles.mine_info_name,{color: Skin1.textColor1,}]}>{userInfo?.usr}</Text>
+      <Text style={[_styles.mine_info_name,{color:'white',}]}>{userInfo?.usr}</Text>
       <View style={{ flexDirection: 'row', marginTop: 8 }}>
-        <Text style={[_styles.mine_info_balance, { color: Skin1.textColor2, }]}>{!anyEmpty(userInfo?.balance) && `用户余额:`}</Text>
-        <Text style={[_styles.mine_info_balance, { color: 'red', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${userInfo?.balance}`}</Text>
+        <Text style={[_styles.mine_info_balance, { color:  'white', }]}>{!anyEmpty(userInfo?.balance) && `用户余额:`}</Text>
+        <Text style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${userInfo?.balance}`}</Text>
       </View>
 
       <View style={{ flexDirection: 'row', marginTop: 8 }}>
-        <Text style={[_styles.mine_info_balance, { color: Skin1.textColor2, }]}>{!anyEmpty(yueBaoData) && yueBaoData?.yuebaoName + '余额: ' }</Text>
-        <Text style={[_styles.mine_info_balance, { color: 'red', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${yueBaoData?.balance}`}</Text>
+        <Text style={[_styles.mine_info_balance, { color: 'white', }]}>{!anyEmpty(yueBaoData) && yueBaoData?.yuebaoName + '余额: ' }</Text>
+        <Text style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${yueBaoData?.balance}`}</Text>
       </View>
     </View>
   </View>
@@ -165,7 +165,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
                 tabBarInactiveTextColor={Skin1.textColor2}
                 tabBarTextStyle={{ fontSize: scale(20) }}
                 style={[{ flex: 1,  }]}
-                renderTabBar={() => <DefaultTabBar style={{ backgroundColor: Skin1.CLBgColor,}} />}>
+                renderTabBar={() => <DefaultTabBar style={_styles.tab_bar} />}>
                 {
                   categoryData?.map((tabItem, index) => {
                     return (
@@ -185,6 +185,9 @@ const CapitalPage = ({ navigation, route, setProps }) => {
 const _styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+  },
+  tab_bar: {
+    backgroundColor: '#f4f4f4',
   },
   mine_info_container: {
     flexDirection: 'row',
