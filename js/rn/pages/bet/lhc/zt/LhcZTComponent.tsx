@@ -1,44 +1,17 @@
-import {
-  FlatList, Platform,
-  ScrollView, StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View, ViewProps, ViewStyle,
-} from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import Modal from 'react-native-modal'
-import { useContext, useEffect, useState } from 'react'
-import { BaseScreen } from '../../../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
+import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import { pop } from '../../../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
-import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcZT from './UseLhcZT'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
-import BetLotteryContext from '../../BetLotteryContext'
-import EBall from '../../../../public/components/view/lottery/EBall'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import ERect from '../../../../public/components/view/lottery/ERect'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 
 interface ILotteryRouteParams {
   lotteryCode?: string, //当前的彩票CODE，正码、正特 等等
@@ -51,18 +24,16 @@ interface ILotteryRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
-
-  const key = 'lottery page' + lotteryCode
+const LhcZTComponent = ({ style }: ILotteryRouteParams) => {
 
   const {
+    lotteryCode,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
-    setLotteryCode,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
@@ -70,9 +41,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcZT()
 
-  useEffect(() => {
-    setLotteryCode(lotteryCode)
-  }, [])
+  const key = 'lottery page' + lotteryCode()
 
   const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableOpacity key={key + item[0]?.alias}
                                                                                          onPress={() => setTabIndex(index)}>

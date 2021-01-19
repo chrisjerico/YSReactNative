@@ -1,21 +1,8 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import { RefreshControl } from 'react-native'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-  ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import APIRouter from '../../../../public/network/APIRouter'
-import { ugLog } from '../../../../public/tools/UgLog'
-import BetLotteryContext from '../../BetLotteryContext'
-import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
+import { useEffect, useState } from 'react'
+import { ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
-import LotteryConst from '../../const/LotteryConst'
-import LotteryData from '../../const/LotteryData'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
@@ -33,10 +20,7 @@ const UseLhcHX = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
-    setLotteryCode,
-    nextIssueData,
     playOddDetailData,
-    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -64,13 +48,13 @@ const UseLhcHX = () => {
   }, [curData])
 
   return {
+    lotteryCode,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
-    setLotteryCode,
     zodiacData,
     setZodiacData,
     selectedBalls,

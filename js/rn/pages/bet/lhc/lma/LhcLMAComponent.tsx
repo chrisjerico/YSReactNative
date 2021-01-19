@@ -1,45 +1,16 @@
-import {
-  FlatList, Platform,
-  ScrollView, StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View, ViewProps, ViewStyle,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import Modal from 'react-native-modal'
-import { useContext, useEffect, useState } from 'react'
-import { BaseScreen } from '../../../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
+import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import { pop } from '../../../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
-import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcLMA, { ILMABallArray } from './UseLhcLMA'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
-import BetLotteryContext from '../../BetLotteryContext'
-import EBall from '../../../../public/components/view/lottery/EBall'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import ERect from '../../../../public/components/view/lottery/ERect'
+import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
-import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
-import { doc } from 'prettier'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 
 
 /**
@@ -48,27 +19,24 @@ import { doc } from 'prettier'
  * @param navigation
  * @constructor
  */
-const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcLMAComponent = ({ style }: ILotteryRouteParams) => {
 
-  const key = 'lottery page' + lotteryCode
 
   const {
+    lotteryCode,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
-    setLotteryCode,
     ballArray,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   } = UseLhcLMA()
 
-  useEffect(() => {
-    setLotteryCode(lotteryCode)
-  }, [])
+  const key = 'lottery page' + lotteryCode()
 
 
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableOpacity key={key + item[0]?.alias}
@@ -93,7 +61,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderTab = () => <View key={key + 'tab'}
                                 style={_styles.tab_title_container}>
     <ScrollView key={key + 'sv'}
-                style={_styles.sv_container}
+                style={_styles.sv_tab_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
       <View key={key + 'content'}
@@ -216,7 +184,7 @@ const _styles = StyleSheet.create({
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
   },
-  sv_container: {
+  sv_tab_container: {
     flex: 1,
   },
   tab_title_content: {

@@ -9,6 +9,7 @@ import { scale } from '../../../public/tools/Scale'
 import { Res } from '../../../Res/icon/Res'
 
 interface IRouteParams {
+  lotteryCode?: string, //当前的彩票CODE，正码, 正特, 平特一肖, 平特尾数 等等
 }
 
 /**
@@ -17,19 +18,14 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const TimeComponent = ({}: IRouteParams) => {
-
-  const {
-    nextIssueData,
-    playOddDetailData,
-    // curPlayOddData,
-  } = useContext(BetLotteryContext)
+const TimeComponent = ({ lotteryCode }: IRouteParams) => {
 
   const key = 'TimeComponent'
 
   const {
     displayCloseTime,
     displayOpenTime,
+    nextIssueData,
     gotoOpenNet,
     gotoLive,
   } = UseTime()
@@ -60,8 +56,8 @@ const TimeComponent = ({}: IRouteParams) => {
           style={_styles.container}>
       <View key={key + 'time sub container'}
             style={_styles.time_container}>
-        <Text key={key + 'time container 1' + nextIssueData()?.displayNumber}
-              style={_styles.issue_text}>{`${nextIssueData()?.displayNumber}期`}</Text>
+        <Text key={key + 'time container 1' + nextIssueData?.displayNumber}
+              style={_styles.issue_text}>{`${nextIssueData?.displayNumber}期`}</Text>
         <Text key={key + 'time container close'}
               style={_styles.close_text}>{'封盘:'}</Text>
         <Text key={key + 'time container 2' + displayCloseTime}

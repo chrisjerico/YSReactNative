@@ -1,25 +1,15 @@
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { HallGameData, HallGameListData } from '../../../public/network/Model/game/HallGameModel'
-import FastImage from 'react-native-fast-image'
 import CommStyles from '../../base/CommStyles'
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
-import EmptyView from '../../../public/components/view/empty/EmptyView'
+import { anyEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import LotteryBall, { BallType } from '../../../public/components/view/LotteryBall'
-import Button from '../../../public/views/tars/Button'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import PushHelper from '../../../public/define/PushHelper'
 import UseBetHistoryList from './UseBetHistoryList'
-import { LotteryHistoryData, PlayData } from '../../../public/network/Model/lottery/LotteryHistoryModel'
-import { ugLog } from '../../../public/tools/UgLog'
-import EBall from '../../../public/components/view/lottery/EBall'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
 import BetRecordListComponent from './BetRecordListComponent'
-import { useContext } from 'react'
-import BetLotteryContext from '../BetLotteryContext'
 
 interface IHallGameList {
 }
@@ -32,18 +22,13 @@ interface IHallGameList {
 const BetRecordHeaderComponent = ({}: IHallGameList) => {
 
   const {
-    nextIssueData,
-    playOddDetailData,
-    // curPlayOddData,
-  } = useContext(BetLotteryContext)
-
-  const {
     showHistory,
     setShowHistory,
     historyData,
     setHistoryData,
     systemInfo,
     userInfo,
+    nextIssueData,
     toggleHistory,
   } = UseBetHistoryList()
 
@@ -233,7 +218,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
 
   return (
     <View key={'bet record header'}>
-      {renderItemContent(nextIssueData())}
+      {renderItemContent(nextIssueData)}
       {
         showHistory ?
           <View key={'BetRecordListComponent container'}

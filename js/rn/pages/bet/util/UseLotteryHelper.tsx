@@ -12,15 +12,13 @@ import { isSelectedBallOnId } from '../const/ISelBall'
 const UseLotteryHelper = () => {
 
   const {
-    nextIssueData, // 下一期数据
+    lotteryCode,//当前的彩票CODE，正特 正码 等等
     playOddDetailData, //彩票数据
-    // curPlayOddData, //当前选中的，特码 连码 等等
   } = useContext(BetLotteryContext)
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
 
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据
-  const [lotteryCode, setLotteryCode] = useState<string>(null) //当前的彩票CODE，正特 正码 等等
 
   const [pageData, setPageData] = useState<Array<Array<PlayGroupData>>>(null) //当前重组后的所有页面数据列表，1页2页3页等等
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
@@ -32,9 +30,9 @@ const UseLotteryHelper = () => {
   useEffect(() => {
     if (!anyEmpty(lotteryCode)) {
       setPlayOddData(playOddDetailData()?.playOdds?.find(
-        (item) => item?.code == lotteryCode))
+        (item) => item?.code == lotteryCode()))
     }
-  }, [lotteryCode, playOddDetailData()])
+  }, [lotteryCode(), playOddDetailData()])
 
   /**
    * 添加或移除选中的球
@@ -78,10 +76,7 @@ const UseLotteryHelper = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
-    setLotteryCode,
-    nextIssueData,
     playOddDetailData,
-    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,

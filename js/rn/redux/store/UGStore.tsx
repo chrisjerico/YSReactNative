@@ -14,7 +14,8 @@ import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
-import LotteryListModel, {LotteryListData} from '../model/game/LotteryListModel'
+import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
+import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 
 // 整个State的树结构
 
@@ -29,8 +30,10 @@ export interface IGlobalState {
   banner?: UGBannerModel
 
   //下注
+  nextIssueData?: NextIssueData //下期数据
+  playOddDetailData?: PlayOddDetailData //彩票数据
   selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
-  lotteryModel?: LotteryListModel //游戏列表数据
+
   // lotteryColumnIndex?: number //彩种索引
 
   sys?: UGSystemModel
@@ -54,8 +57,9 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.rightMenu && (state.rightMenu = act.rightMenu)
 
     //彩票数据
+    act.nextIssueData && (state.nextIssueData = act.nextIssueData)
+    act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
     act.selectedLotteryData && (state.selectedLotteryData = act.selectedLotteryData)
-    act.lotteryModel && (state.lotteryModel = act.lotteryModel)
     // act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
 
   } else if (act.type == 'merge') {
@@ -65,8 +69,9 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.banner = { ...state.banner, ...act.banner }
 
     //彩票数据
+    state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
+    state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
     state.selectedLotteryData = {selectedData: { ...state.selectedLotteryData?.selectedData, ...act.selectedLotteryData?.selectedData }}
-    state.lotteryModel = { ...state.lotteryModel, ...act.lotteryModel }
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
@@ -93,8 +98,10 @@ export interface UGAction<P = {}> extends Action {
   banner?: UGBannerModel
 
   //彩票数据
+  nextIssueData?: NextIssueData //下期数据
+  playOddDetailData?: PlayOddDetailData //彩票数据
   selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
-  lotteryModel?: LotteryListModel //游戏列表数据
+
   // lotteryColumnIndex?: number //彩种索引
 
   sys?: UGSystemModel

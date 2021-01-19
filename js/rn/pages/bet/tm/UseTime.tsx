@@ -1,17 +1,11 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { RefreshControl, Text, View } from 'react-native'
 import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
-import { PlayOddDetailData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import BetLotteryContext from '../BetLotteryContext'
-import CommStyles from '../../base/CommStyles'
-import { ugLog } from '../../../public/tools/UgLog'
 import moment from 'moment'
 import PushHelper from '../../../public/define/PushHelper'
 import AppDefine from '../../../public/define/AppDefine'
-import { LotteryHistoryData } from '../../../public/network/Model/lottery/LotteryHistoryModel'
 import { anyEmpty } from '../../../public/tools/Ext'
-import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../public/network/APIRouter'
 
 /**
@@ -21,24 +15,27 @@ import APIRouter from '../../../public/network/APIRouter'
 const UseTime = () => {
 
   const {
-    nextIssueData,
-    playOddDetailData,
-    // curPlayOddData,
+    lotteryCode,
   } = useContext(BetLotteryContext)
 
+  const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
   const [displayCloseTime, setDisplayCloseTime] = useState<string>(null) //显示封盘时间
   const [displayOpenTime, setDisplayOpenTime] = useState<string>(null) //显示开奖时间
   const [closeTime, setCloseTime] = useState<number>(0) //封盘时间倒计时
   const [openTime, setOpenTime] = useState<number>(0) //开奖时间倒计时
 
+  useEffect(()=>{
+    requestNextData(lotteryCode())
+  }, [])
+
   useEffect(() => {
     // ugLog('nextIssueData()?.isInstant=', nextIssueData())
     //非即开彩有倒计时
-    if (nextIssueData()?.isInstant == '0') {
+    if (nextIssueData?.isInstant == '0') {
 
-      const serverTime = moment(nextIssueData()?.serverTime).toDate().getTime()
-      const closeTime = moment(nextIssueData()?.curCloseTime).toDate().getTime() - serverTime
-      const openTime = moment(nextIssueData()?.curOpenTime).toDate().getTime() - serverTime
+      const serverTime = moment(nextIssueData?.serverTime).toDate().getTime()
+      const closeTime = moment(nextIssueData?.curCloseTime).toDate().getTime() - serverTime
+      const openTime = moment(nextIssueData?.curOpenTime).toDate().getTime() - serverTime
 
       setCloseTime(closeTime)
       setOpenTime(openTime)
@@ -51,7 +48,7 @@ const UseTime = () => {
 
       return () => clearInterval(timer)
     }
-  }, [])
+  }, [nextIssueData])
 
   /**
    * 计算开奖时间封盘时间的显示
@@ -76,16 +73,34 @@ const UseTime = () => {
       setDisplayOpenTime(`${openHour}:${openMinute}:${openSecond}`)
     } else {
       setDisplayOpenTime(`开奖中`)
+
     }
 
   }, [closeTime, openTime])
+
+  /**
+   * 下一期的数据
+   */
+  const requestNextData = async (id?: string) => {
+    if (anyEmpty(id)) return null
+
+    const res = await APIRouter.game_nextIssue(id)
+      .then(({ data: res }) => res)
+    //ugLog('requestNextData data res=', JSON.stringify(res?.data))
+
+    if (res?.code == 0) {
+      setNextIssueData(res?.data)
+    }
+
+    return res?.code
+  }
 
   /**
    * 跳转开奖网
    */
   const gotoOpenNet = () => {
     PushHelper.openWebView(
-      AppDefine.host + '/open_prize/history.mobile.html?id=' + nextIssueData()?.id + '&navhidden=1',
+      AppDefine.host + '/open_prize/history.mobile.html?id=' + nextIssueData?.id + '&navhidden=1',
     )
   }
   /**
@@ -93,13 +108,14 @@ const UseTime = () => {
    */
   const gotoLive = () => {
     PushHelper.openWebView(
-      AppDefine.host + '/open_prize/video.html?id=' + nextIssueData()?.id + '&&gameType=' + nextIssueData()?.gameType + '&&navhidden=1',
+      AppDefine.host + '/open_prize/video.html?id=' + nextIssueData?.id + '&&gameType=' + nextIssueData?.gameType + '&&navhidden=1',
     )
   }
 
   return {
     displayCloseTime,
     displayOpenTime,
+    nextIssueData,
     gotoOpenNet,
     gotoLive,
   }

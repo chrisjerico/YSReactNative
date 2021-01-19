@@ -8,15 +8,13 @@ import BetLotteryContext from '../BetLotteryContext'
 const UseListContent = () => {
 
   const {
-    nextIssueData, // 下一期数据
+    lotteryCode,
     playOddDetailData, //彩票数据
-    // curPlayOddData, //当前选中的，特码 连码 等等
   } = useContext(BetLotteryContext)
 
   return {
-    nextIssueData, // 下一期数据
+    lotteryCode, //彩票id
     playOddDetailData, //彩票数据
-    // curPlayOddData, //当前选中的，特码 连码 等等
   }
 }
 

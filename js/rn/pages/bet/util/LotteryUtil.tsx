@@ -11,7 +11,7 @@ const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum =>
     || (!anyEmpty(item?.alias) && zodiac?.alias == item?.alias)))
 
 interface INameOrAlias {
-  name: string; //鼠
+  name?: string; //鼠
   alias?: string;//鼠
 }
 

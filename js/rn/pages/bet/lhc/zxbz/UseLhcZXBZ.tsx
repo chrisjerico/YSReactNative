@@ -1,18 +1,6 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import { RefreshControl } from 'react-native'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-  ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import APIRouter from '../../../../public/network/APIRouter'
-import { ugLog } from '../../../../public/tools/UgLog'
-import BetLotteryContext from '../../BetLotteryContext'
-import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
+import { useEffect, useState } from 'react'
+import { anyEmpty } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 
 
@@ -32,8 +20,6 @@ const UseLhcZXBZ = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
-    setLotteryCode,
-    nextIssueData,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -71,7 +57,7 @@ const UseLhcZXBZ = () => {
   }, [playOddData])
 
   return {
-    setLotteryCode,
+    lotteryCode,
     ballArray,
     tabIndex,
     setTabIndex,

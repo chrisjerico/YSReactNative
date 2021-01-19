@@ -1,18 +1,7 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import { RefreshControl } from 'react-native'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-  ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import APIRouter from '../../../../public/network/APIRouter'
-import { ugLog } from '../../../../public/tools/UgLog'
-import BetLotteryContext from '../../BetLotteryContext'
-import ISelBall, { isSelectedBallOnId } from '../../const/ISelBall'
+import { useEffect, useState } from 'react'
+import { ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 import LotteryConst from '../../const/LotteryConst'
 import LotteryData from '../../const/LotteryData'
@@ -33,8 +22,6 @@ const UseLhcPTYX = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
-    setLotteryCode,
-    nextIssueData,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -51,7 +38,7 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //平特一肖 和 平特尾数 只有1个数组，头尾数有2个
     if (!anyEmpty(playOddData?.playGroups)) {
-      switch (lotteryCode) {
+      switch (lotteryCode()) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
         case LotteryConst.ZX: //正肖
@@ -85,7 +72,7 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //取出生肖数据，生成对应的数据
     if (!anyEmpty(curData)) {
-      switch (lotteryCode) {
+      switch (lotteryCode()) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
         case LotteryConst.ZX: //正肖
@@ -138,13 +125,13 @@ const UseLhcPTYX = () => {
   }, [curData])
 
   return {
+    lotteryCode,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
-    setLotteryCode,
     zodiacData,
     setZodiacData,
     selectedBalls,

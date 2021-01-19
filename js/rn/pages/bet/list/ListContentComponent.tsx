@@ -23,24 +23,19 @@ import { useState } from 'react'
 const ListContentComponent = () => {
 
   const {
-    nextIssueData, // 下一期数据
+    lotteryCode,
     playOddDetailData, //彩票数据
-    // curPlayOddData, //当前选中的，特码 连码 等等
   } = UseListContent()
 
   const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
 
-
   /**
    * 绘制左边列表 特码 双面 正码 等等
    */
-  const renderLeftColumn = () => <View key={'renderLeftColumn' + playOddDetailData()?.playOdds?.toString()}
-                                       style={_styles.left_column_container}>
-    <ScrollView key={'renderLeftColumn' + playOddDetailData()?.playOdds?.toString()}
-                nestedScrollEnabled={true}
+  const renderLeftColumn = () => <View style={_styles.left_column_container}>
+    <ScrollView nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={false}>
-      <View key={'renderLeftColumn' + playOddDetailData()?.playOdds?.toString()}
-            style={_styles.left_column_content}>
+      <View style={_styles.left_column_content}>
         {
           playOddDetailData()?.playOdds?.map((item, index) => {
             return <TouchableOpacity key={'renderLeftColumn' + item?.code}
@@ -144,8 +139,8 @@ const ListContentComponent = () => {
   const renderRightContent = () => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
-    let lotteryCode = playOddDetailData()?.playOdds[leftColumnIndex]?.code
-    ugLog('------------------lotteryCode---------------------------------', lotteryCode)
+    // let lotteryCode = playOddDetailData()?.playOdds[leftColumnIndex]?.code
+    ugLog('------------------lotteryCode---------------------------------', lotteryCode())
     // return <View style={CommStyles.flex}>
     //   {
     //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
@@ -153,27 +148,23 @@ const ListContentComponent = () => {
     // </View>
 
 
-    switch (lotteryCode) {
+    switch (lotteryCode()) {
       case LotteryConst.TM: { //特码
-        return <LhcTMComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
+        return <LhcTMComponent />
       }
       case LotteryConst.ZM: //正码
       case LotteryConst.ZT: { //正特
-        return <LhcZTComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
+        return <LhcZTComponent />
       }
       case LotteryConst.LMA: { //连码
-        return <LhcLMAComponent key={lotteryCode}
-                                lotteryCode={lotteryCode}/>
+        return <LhcLMAComponent />
       }
       case LotteryConst.LM: //两面
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
       case LotteryConst.WX: { //五行
-        return <LhcSBComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
+        return <LhcSBComponent />
       }
       case LotteryConst.YX: //平特一肖
       case LotteryConst.WS: //平特尾数
@@ -182,16 +173,13 @@ const ListContentComponent = () => {
       case LotteryConst.LX: //连肖
       case LotteryConst.LW: //连尾
       case LotteryConst.ZX: { //正肖
-        return <LhcPTYXComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
+        return <LhcPTYXComponent />
       }
       case LotteryConst.HX: { //合肖
-        return <LhcHXComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
+        return <LhcHXComponent />
       }
       case LotteryConst.ZXBZ: { //自选不中
-        return <LhcZXBZComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
+        return <LhcZXBZComponent />
       }
 
     }
