@@ -18,10 +18,10 @@ import { findZodiacByName } from '../../util/LotteryUtil'
  * @param navigation
  * @constructor
  */
-const LhcHXComponent = ({ style }: ILotteryRouteParams) => {
+const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   const {
-    lotteryCode,
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -35,7 +35,10 @@ const LhcHXComponent = ({ style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcHX()
 
-  const key = 'lottery page' + lotteryCode()
+  useEffect(() => {
+    setLotteryCode(lotteryCode)
+  }, [])
+  const key = 'lottery page' + lotteryCode
 
   /**
    * 绘制 生肖和球

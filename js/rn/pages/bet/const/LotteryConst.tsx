@@ -32,6 +32,7 @@ const LotteryConst = {
  * 彩票界面入参
  */
 interface ILotteryRouteParams {
+  lotteryCode?: string, //当前的彩票CODE，正码, 正特, 平特一肖, 平特尾数 等等
   style?: StyleProp<ViewStyle>
 }
 

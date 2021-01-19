@@ -4,6 +4,7 @@ import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../public/network/M
 import { anyEmpty } from '../../../public/tools/Ext'
 import BetLotteryContext from '../BetLotteryContext'
 import { isSelectedBallOnId } from '../const/ISelBall'
+import LotteryListContext from '../list/LotteryListContext'
 
 /**
  * 彩票公共处理类
@@ -12,13 +13,13 @@ import { isSelectedBallOnId } from '../const/ISelBall'
 const UseLotteryHelper = () => {
 
   const {
-    lotteryCode,//当前的彩票CODE，正特 正码 等等
-    playOddDetailData, //彩票数据
+    playOddDetailData, //彩票数据，比如六合彩
   } = useContext(BetLotteryContext)
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
 
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据
+  const [lotteryCode, setLotteryCode] = useState<string>(null) //当前的彩票CODE，正特 正码 等等
 
   const [pageData, setPageData] = useState<Array<Array<PlayGroupData>>>(null) //当前重组后的所有页面数据列表，1页2页3页等等
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
@@ -30,9 +31,9 @@ const UseLotteryHelper = () => {
   useEffect(() => {
     if (!anyEmpty(lotteryCode)) {
       setPlayOddData(playOddDetailData()?.playOdds?.find(
-        (item) => item?.code == lotteryCode()))
+        (item) => item?.code == lotteryCode))
     }
-  }, [lotteryCode(), playOddDetailData()])
+  }, [lotteryCode])
 
   /**
    * 添加或移除选中的球
@@ -51,6 +52,7 @@ const UseLotteryHelper = () => {
   /**
    * 根据生肖数字取出对应的球ID
    * @param zodiac
+   * @param groupData
    */
   const zodiacBallIds = (zodiac?: ZodiacNum,
                          groupData?: PlayGroupData): string[] => {
@@ -76,6 +78,7 @@ const UseLotteryHelper = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
+    setLotteryCode,
     playOddDetailData,
     selectedBalls,
     setSelectedBalls,

@@ -20,6 +20,7 @@ const UseLhcLMA = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
+    setLotteryCode,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -75,7 +76,7 @@ const UseLhcLMA = () => {
   }, [playOddData])
 
   return {
-    lotteryCode,
+    setLotteryCode,
     ballArray,
     tabIndex,
     setTabIndex,

@@ -19,10 +19,10 @@ import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../.
  * @param navigation
  * @constructor
  */
-const LhcTMComponent = ({ style }: ILotteryRouteParams) => {
+const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   const {
-    lotteryCode,
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -39,7 +39,10 @@ const LhcTMComponent = ({ style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcTM()
 
-  const key = 'lottery page' + lotteryCode()
+  useEffect(() => {
+    setLotteryCode(lotteryCode)
+  }, [])
+  const key = 'lottery page' + lotteryCode
 
   /**
    * 绘制 特码A 特码B Tab

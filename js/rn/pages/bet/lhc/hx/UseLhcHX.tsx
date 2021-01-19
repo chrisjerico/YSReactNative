@@ -20,6 +20,7 @@ const UseLhcHX = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
+    setLotteryCode,
     playOddDetailData,
     selectedBalls,
     setSelectedBalls,
@@ -48,7 +49,7 @@ const UseLhcHX = () => {
   }, [curData])
 
   return {
-    lotteryCode,
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,

@@ -19,6 +19,7 @@ const UseLhcSB = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
+    setLotteryCode,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -35,7 +36,7 @@ const UseLhcSB = () => {
   }, [tabIndex, pageData])
 
   return {
-    lotteryCode,
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,

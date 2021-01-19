@@ -21,6 +21,7 @@ const UseLhcTM = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
+    setLotteryCode,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -84,7 +85,7 @@ const UseLhcTM = () => {
   }
 
   return {
-    lotteryCode,
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,

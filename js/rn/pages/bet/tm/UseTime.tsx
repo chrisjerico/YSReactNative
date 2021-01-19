@@ -15,7 +15,7 @@ import APIRouter from '../../../public/network/APIRouter'
 const UseTime = () => {
 
   const {
-    lotteryCode,
+    lotteryId,
   } = useContext(BetLotteryContext)
 
   const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
@@ -25,7 +25,7 @@ const UseTime = () => {
   const [openTime, setOpenTime] = useState<number>(0) //开奖时间倒计时
 
   useEffect(()=>{
-    requestNextData(lotteryCode())
+    requestNextData(lotteryId())
   }, [])
 
   useEffect(() => {

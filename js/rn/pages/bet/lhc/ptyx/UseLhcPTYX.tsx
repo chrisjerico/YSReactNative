@@ -22,6 +22,7 @@ const UseLhcPTYX = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
+    setLotteryCode,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -38,7 +39,7 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //平特一肖 和 平特尾数 只有1个数组，头尾数有2个
     if (!anyEmpty(playOddData?.playGroups)) {
-      switch (lotteryCode()) {
+      switch (lotteryCode) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
         case LotteryConst.ZX: //正肖
@@ -72,7 +73,7 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //取出生肖数据，生成对应的数据
     if (!anyEmpty(curData)) {
-      switch (lotteryCode()) {
+      switch (lotteryCode) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
         case LotteryConst.ZX: //正肖
@@ -125,7 +126,7 @@ const UseLhcPTYX = () => {
   }, [curData])
 
   return {
-    lotteryCode,
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,

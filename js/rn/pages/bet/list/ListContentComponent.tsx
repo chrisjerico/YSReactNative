@@ -19,11 +19,11 @@ import LhcHXComponent from '../lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
 import { useState } from 'react'
+import LotteryListContext from './LotteryListContext'
 
 const ListContentComponent = () => {
 
   const {
-    lotteryCode,
     playOddDetailData, //彩票数据
   } = UseListContent()
 
@@ -139,8 +139,8 @@ const ListContentComponent = () => {
   const renderRightContent = () => {
     // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
 
-    // let lotteryCode = playOddDetailData()?.playOdds[leftColumnIndex]?.code
-    ugLog('------------------lotteryCode---------------------------------', lotteryCode())
+    let lotteryCode = playOddDetailData()?.playOdds[leftColumnIndex]?.code
+    ugLog('------------------lotteryCode---------------------------------', lotteryCode)
     // return <View style={CommStyles.flex}>
     //   {
     //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
@@ -148,23 +148,27 @@ const ListContentComponent = () => {
     // </View>
 
 
-    switch (lotteryCode()) {
+    switch (lotteryCode) {
       case LotteryConst.TM: { //特码
-        return <LhcTMComponent />
+        return <LhcTMComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.ZM: //正码
       case LotteryConst.ZT: { //正特
-        return <LhcZTComponent />
+        return <LhcZTComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.LMA: { //连码
-        return <LhcLMAComponent />
+        return <LhcLMAComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.LM: //两面
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
       case LotteryConst.WX: { //五行
-        return <LhcSBComponent />
+        return <LhcSBComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.YX: //平特一肖
       case LotteryConst.WS: //平特尾数
@@ -173,13 +177,16 @@ const ListContentComponent = () => {
       case LotteryConst.LX: //连肖
       case LotteryConst.LW: //连尾
       case LotteryConst.ZX: { //正肖
-        return <LhcPTYXComponent />
+        return <LhcPTYXComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.HX: { //合肖
-        return <LhcHXComponent />
+        return <LhcHXComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
       case LotteryConst.ZXBZ: { //自选不中
-        return <LhcZXBZComponent />
+        return <LhcZXBZComponent key={lotteryCode}
+                               lotteryCode={lotteryCode}/>
       }
 
     }
@@ -188,11 +195,15 @@ const ListContentComponent = () => {
   }
 
   return (
-    <View key={'lottery bet content'}
-          style={_styles.middle_content_container}>
-      {renderLeftColumn()}
-      {renderRightContent()}
-    </View>
+    <LotteryListContext.Provider value={{
+      playOddData: () => playOddDetailData()?.playOdds[leftColumnIndex],
+    }}>
+      <View key={'lottery bet content'}
+            style={_styles.middle_content_container}>
+        {renderLeftColumn()}
+        {renderRightContent()}
+      </View>
+    </LotteryListContext.Provider>
   )
 
 }

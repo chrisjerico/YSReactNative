@@ -20,6 +20,7 @@ const UseLhcZXBZ = () => {
     playOddData,
     setPlayOddData,
     lotteryCode,
+    setLotteryCode,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -57,7 +58,7 @@ const UseLhcZXBZ = () => {
   }, [playOddData])
 
   return {
-    lotteryCode,
+    setLotteryCode,
     ballArray,
     tabIndex,
     setTabIndex,

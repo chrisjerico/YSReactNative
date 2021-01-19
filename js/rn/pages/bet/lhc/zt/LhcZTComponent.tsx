@@ -24,10 +24,10 @@ interface ILotteryRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({ style }: ILotteryRouteParams) => {
+const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
   const {
-    lotteryCode,
+    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -41,7 +41,10 @@ const LhcZTComponent = ({ style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcZT()
 
-  const key = 'lottery page' + lotteryCode()
+  useEffect(() => {
+    setLotteryCode(lotteryCode)
+  }, [])
+  const key = 'lottery page' + lotteryCode
 
   const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableOpacity key={key + item[0]?.alias}
                                                                                          onPress={() => setTabIndex(index)}>
