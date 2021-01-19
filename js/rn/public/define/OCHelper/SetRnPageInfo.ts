@@ -27,14 +27,14 @@ export async function setRnPageInfo(force = false) {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
-    // pages.push({
-    //   vcName: 'UGPromotionIncomeController',
-    //   rnName: PageName.JDChangLongPage,
-    //   // rnName: PageName.JDSegmentPage,
-    //   fd_prefersNavigationBarHidden: true,
-    //   允许游客访问: true,
-    //   允许未登录访问: true,
-    // })
+    pages.push({
+      vcName: 'UGFundsViewController',
+      rnName: PageName.CapitalPage,
+      // rnName: PageName.JDSegmentPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
 
   }
 
