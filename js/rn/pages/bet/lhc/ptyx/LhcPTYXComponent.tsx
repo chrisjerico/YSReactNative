@@ -20,11 +20,10 @@ import { findZodiacByName } from '../../util/LotteryUtil'
  * @param navigation
  * @constructor
  */
-const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -36,12 +35,13 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData
   } = UseLhcPTYX()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    updatePlayOddData(playOddData)
   }, [])
-  const key = 'lottery page' + lotteryCode
+  const key = 'lottery page' + playOddData?.code
 
 
   /**

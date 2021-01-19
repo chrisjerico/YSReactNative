@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 import LotteryConst from '../../const/LotteryConst'
@@ -21,10 +21,7 @@ const UseLhcPTYX = () => {
     setPageData,
     playOddData,
     setPlayOddData,
-    lotteryCode,
-    setLotteryCode,
     playOddDetailData,
-    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -39,7 +36,7 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //平特一肖 和 平特尾数 只有1个数组，头尾数有2个
     if (!anyEmpty(playOddData?.playGroups)) {
-      switch (lotteryCode) {
+      switch (playOddData?.code) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
         case LotteryConst.ZX: //正肖
@@ -73,7 +70,7 @@ const UseLhcPTYX = () => {
   useEffect(() => {
     //取出生肖数据，生成对应的数据
     if (!anyEmpty(curData)) {
-      switch (lotteryCode) {
+      switch (playOddData?.code) {
         case LotteryConst.YX: //平特一肖
         case LotteryConst.TX: //特肖
         case LotteryConst.ZX: //正肖
@@ -125,8 +122,15 @@ const UseLhcPTYX = () => {
     }
   }, [curData])
 
+  /**
+   * 更新数据
+   * @param playOddData
+   */
+  const updatePlayOddData = (playOddData?: PlayOddData) => {
+    setPlayOddData(playOddData)
+  }
+
   return {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -138,6 +142,7 @@ const UseLhcPTYX = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   }
 }
 

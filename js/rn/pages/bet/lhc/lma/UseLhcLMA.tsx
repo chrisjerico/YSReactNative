@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
+import { PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 
 /**
@@ -19,10 +20,7 @@ const UseLhcLMA = () => {
     setPageData,
     playOddData,
     setPlayOddData,
-    lotteryCode,
-    setLotteryCode,
     playOddDetailData,
-    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -71,12 +69,16 @@ const UseLhcLMA = () => {
     }
   }, [tabIndex, pageData])
 
-  useEffect(() => {
+  /**
+   * 更新数据
+   * @param playOddData
+   */
+  const updatePlayOddData = (playOddData?: PlayOddData) => {
+    setPlayOddData(playOddData)
     setPageData(playOddData?.playGroups?.map((item) => [item]))
-  }, [playOddData])
+  }
 
   return {
-    setLotteryCode,
     ballArray,
     tabIndex,
     setTabIndex,
@@ -87,6 +89,7 @@ const UseLhcLMA = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   }
 }
 

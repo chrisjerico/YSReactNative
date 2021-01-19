@@ -20,10 +20,9 @@ import { PlayGroup } from '../../../../public/network/Model/PlayOddDataModel'
  * @param navigation
  * @constructor
  */
-const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -33,12 +32,13 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   } = UseLhcSB()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    updatePlayOddData(playOddData)
   }, [])
-  const key = 'lottery page' + lotteryCode
+  const key = 'lottery page' + playOddData?.code
 
   /**
    * 绘制 方格式

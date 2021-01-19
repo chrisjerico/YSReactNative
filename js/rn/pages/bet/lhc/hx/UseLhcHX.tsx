@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 
@@ -19,8 +19,6 @@ const UseLhcHX = () => {
     setPageData,
     playOddData,
     setPlayOddData,
-    lotteryCode,
-    setLotteryCode,
     playOddDetailData,
     selectedBalls,
     setSelectedBalls,
@@ -34,13 +32,6 @@ const UseLhcHX = () => {
   }, [tabIndex, pageData])
 
   useEffect(() => {
-    //平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-    if (!anyEmpty(playOddData?.playGroups)) {
-      setPageData([playOddData?.playGroups])
-    }
-  }, [playOddData])
-
-  useEffect(() => {
     //取出生肖数据，生成对应的数据
     !anyEmpty(curData) && setZodiacData(playOddDetailData()?.setting?.zodiacNums?.map((item) => ({
       ...item,
@@ -48,8 +39,19 @@ const UseLhcHX = () => {
     })))
   }, [curData])
 
+  /**
+   * 更新数据
+   * @param playOddData
+   */
+  const updatePlayOddData = (playOddData?: PlayOddData) => {
+    setPlayOddData(playOddData)
+    //平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+    if (!anyEmpty(playOddData?.playGroups)) {
+      setPageData([playOddData?.playGroups])
+    }
+  }
+
   return {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -61,6 +63,7 @@ const UseLhcHX = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   }
 }
 

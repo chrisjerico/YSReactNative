@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
+import { PlayOdd } from '../../../../public/network/Model/PlayOddDataModel'
 
 
 /**
@@ -20,10 +21,7 @@ const UseLhcTM = () => {
     setPageData,
     playOddData,
     setPlayOddData,
-    lotteryCode,
-    setLotteryCode,
     playOddDetailData,
-    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -32,18 +30,6 @@ const UseLhcTM = () => {
 
   const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //生肖数据列表
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
-
-  useEffect(() => {
-    //特码取前3个数据 特码 两面 色波
-    if (!anyEmpty(playOddData?.playGroups)) {
-      setPageData([
-        [playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]],
-        [playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]],
-      ])
-      setZodiacData(playOddDetailData()?.setting?.zodiacNums)
-
-    }
-  }, [playOddData])
 
   useEffect(() => {
     !anyEmpty(pageData) && setCurData(pageData[tabIndex])
@@ -84,8 +70,24 @@ const UseLhcTM = () => {
     }
   }
 
+  /**
+   * 更新数据
+   * @param playOddData
+   */
+  const updatePlayOddData = (playOddData?: PlayOddData) => {
+    setPlayOddData(playOddData)
+    //特码取前3个数据 特码 两面 色波
+    if (!anyEmpty(playOddData?.playGroups)) {
+      setPageData([
+        [playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]],
+        [playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]],
+      ])
+      setZodiacData(playOddDetailData()?.setting?.zodiacNums)
+
+    }
+  }
+
   return {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -100,6 +102,7 @@ const UseLhcTM = () => {
     setSelectedBalls,
     addOrRemoveZodiac,
     addOrRemoveBall,
+    updatePlayOddData,
   }
 }
 

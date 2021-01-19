@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
+import { PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行
@@ -18,8 +19,6 @@ const UseLhcSB = () => {
     setPageData,
     playOddData,
     setPlayOddData,
-    lotteryCode,
-    setLotteryCode,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -28,15 +27,19 @@ const UseLhcSB = () => {
   } = UseLotteryHelper()
 
   useEffect(() => {
-    !anyEmpty(playOddData?.playGroups) && setPageData([playOddData?.playGroups])
-  }, [playOddData])
-
-  useEffect(() => {
     !anyEmpty(pageData) && setCurData(pageData[tabIndex])
   }, [tabIndex, pageData])
 
+  /**
+   * 更新数据
+   * @param playOddData
+   */
+  const updatePlayOddData = (playOddData?: PlayOddData) => {
+    setPlayOddData(playOddData)
+    !anyEmpty(playOddData?.playGroups) && setPageData([playOddData?.playGroups])
+  }
+
   return {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -46,6 +49,7 @@ const UseLhcSB = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   }
 }
 

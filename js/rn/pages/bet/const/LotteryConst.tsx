@@ -1,5 +1,6 @@
 import { StyleProp, ViewStyle } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
+import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 
 const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
 const BALL_CONTENT_HEIGHT = scale(720) //投注区域球的总体高度
@@ -32,7 +33,7 @@ const LotteryConst = {
  * 彩票界面入参
  */
 interface ILotteryRouteParams {
-  lotteryCode?: string, //当前的彩票CODE，正码, 正特, 平特一肖, 平特尾数 等等
+  playOddData?: PlayOddData, //当前的彩票对象，正码, 正特, 平特一肖, 平特尾数 等等
   style?: StyleProp<ViewStyle>
 }
 

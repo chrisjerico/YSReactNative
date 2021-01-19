@@ -18,10 +18,9 @@ import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryCon
  * @param navigation
  * @constructor
  */
-const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -32,12 +31,13 @@ const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   } = UseLhcZXBZ()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    updatePlayOddData(playOddData)
   }, [])
-  const key = 'lottery page' + lotteryCode
+  const key = 'lottery page' + playOddData?.code
 
   /**
    * 绘制 球

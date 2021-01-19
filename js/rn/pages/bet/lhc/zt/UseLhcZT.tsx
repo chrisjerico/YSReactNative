@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { PlayGroupData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 
@@ -20,8 +20,6 @@ const UseLhcZT = () => {
     setPageData,
     playOddData,
     setPlayOddData,
-    lotteryCode,
-    setLotteryCode,
     playOddDetailData,
     // curPlayOddData,
     selectedBalls,
@@ -36,7 +34,13 @@ const UseLhcZT = () => {
     !anyEmpty(pageData) && setCurData(pageData[tabIndex])
   }, [tabIndex, pageData])
 
-  useEffect(() => {
+  /**
+   * 更新数据
+   * @param playOddData
+   */
+  const updatePlayOddData = (playOddData?: PlayOddData) => {
+    setPlayOddData(playOddData)
+
     if (arrayLength(playOddData?.playGroups) % 2 == 0) {//长度是偶数
       let newData = new Array<Array<PlayGroupData>>()
       playOddData?.playGroups?.map((item, index) => {
@@ -49,12 +53,10 @@ const UseLhcZT = () => {
       })
       //ugLog('newData=', JSON.stringify(newData))
       setPageData(newData)
-
     }
-  }, [playOddData])
+  }
 
   return {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -66,6 +68,7 @@ const UseLhcZT = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   }
 }
 

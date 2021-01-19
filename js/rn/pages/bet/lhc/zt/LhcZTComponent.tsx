@@ -20,12 +20,7 @@ import { PlayData, PlayGroupData } from '../../../../public/network/Model/lotter
 import { arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
-
-interface ILotteryRouteParams {
-  lotteryCode?: string, //当前的彩票CODE，正码、正特 等等
-  style?: StyleProp<ViewStyle>
-}
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 
 /**
  * 六合彩 正特 正码 等等
@@ -33,10 +28,9 @@ interface ILotteryRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -48,12 +42,13 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   } = UseLhcZT()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    updatePlayOddData(playOddData)
   }, [])
-  const key = 'lottery page' + lotteryCode
+  const key = 'lottery page' + playOddData?.code
 
   const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
                                                                                          onPress={() => setTabIndex(index)}>

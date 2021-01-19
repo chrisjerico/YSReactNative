@@ -7,7 +7,7 @@ import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import * as React from 'react'
-import BetRecordHeaderComponent from '../red/BetRecordHeaderComponent'
+import BetRecordHeaderComponent from '../counter/red/BetRecordHeaderComponent'
 import { useState } from 'react'
 import UseTopArea from './UseTopArea'
 

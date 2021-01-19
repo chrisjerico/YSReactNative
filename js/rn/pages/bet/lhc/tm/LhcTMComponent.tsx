@@ -19,10 +19,9 @@ import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../.
  * @param navigation
  * @constructor
  */
-const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -37,12 +36,13 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     setSelectedBalls,
     addOrRemoveZodiac,
     addOrRemoveBall,
+    updatePlayOddData,
   } = UseLhcTM()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    updatePlayOddData(playOddData)
   }, [])
-  const key = 'lottery page' + lotteryCode
+  const key = 'lottery page' + playOddData?.code
 
   /**
    * 绘制 特码A 特码B Tab

@@ -19,11 +19,10 @@ import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryCon
  * @param navigation
  * @constructor
  */
-const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
-    setLotteryCode,
     tabIndex,
     setTabIndex,
     curData,
@@ -34,13 +33,13 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    updatePlayOddData,
   } = UseLhcLMA()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    updatePlayOddData(playOddData)
   }, [])
-  const key = 'lottery page' + lotteryCode
-
+  const key = 'lottery page' + playOddData?.code
 
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
                                                                                            style={CommStyles.flex}
