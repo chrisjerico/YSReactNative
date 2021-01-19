@@ -1,20 +1,13 @@
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { HallGameData, HallGameListData } from '../../../public/network/Model/game/HallGameModel'
-import FastImage from 'react-native-fast-image'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../public/tools/Scale'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import LotteryBall, { BallType } from '../../../public/components/view/LotteryBall'
-import Button from '../../../public/views/tars/Button'
-import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import PushHelper from '../../../public/define/PushHelper'
-import UseBetHistoryList from './UseBetHistoryList'
 import { LotteryHistoryData, PlayData } from '../../../public/network/Model/lottery/LotteryHistoryModel'
-import { ugLog } from '../../../public/tools/UgLog'
-import EBall from '../../../public/components/view/lottery/EBall'
+import UseBetRecordList from './UseBetRecordList'
 
 interface IHallGameList {
   historyData?: LotteryHistoryData //所有数据
@@ -32,7 +25,7 @@ const BetRecordListComponent = ({
   const {
     systemInfo,
     userInfo,
-  } = UseBetHistoryList()
+  } = UseBetRecordList()
 
   /**
    * 绘制生肖

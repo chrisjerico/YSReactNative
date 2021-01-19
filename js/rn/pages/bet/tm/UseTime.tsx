@@ -24,10 +24,6 @@ const UseTime = () => {
   const [closeTime, setCloseTime] = useState<number>(0) //封盘时间倒计时
   const [openTime, setOpenTime] = useState<number>(0) //开奖时间倒计时
 
-  useEffect(()=>{
-    requestNextData(lotteryId())
-  }, [])
-
   useEffect(() => {
     // ugLog('nextIssueData()?.isInstant=', nextIssueData())
     //非即开彩有倒计时
@@ -79,23 +75,6 @@ const UseTime = () => {
   }, [closeTime, openTime])
 
   /**
-   * 下一期的数据
-   */
-  const requestNextData = async (id?: string) => {
-    if (anyEmpty(id)) return null
-
-    const res = await APIRouter.game_nextIssue(id)
-      .then(({ data: res }) => res)
-    //ugLog('requestNextData data res=', JSON.stringify(res?.data))
-
-    if (res?.code == 0) {
-      setNextIssueData(res?.data)
-    }
-
-    return res?.code
-  }
-
-  /**
    * 跳转开奖网
    */
   const gotoOpenNet = () => {
@@ -116,6 +95,7 @@ const UseTime = () => {
     displayCloseTime,
     displayOpenTime,
     nextIssueData,
+    setNextIssueData,
     gotoOpenNet,
     gotoLive,
   }

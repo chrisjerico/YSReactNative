@@ -1,23 +1,33 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { LotteryHistoryData } from '../../../public/network/Model/lottery/LotteryHistoryModel'
 import { anyEmpty } from '../../../public/tools/Ext'
 import APIRouter from '../../../public/network/APIRouter'
 import moment from 'moment'
+import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
+import BetLotteryContext from '../BetLotteryContext'
 
 /**
  * 彩票开奖记录
  * @constructor
  */
-const UseBetHistoryList = () => {
+const UseBetRecordHeader = () => {
+
+  const {
+    lotteryId,
+  } = useContext(BetLotteryContext)
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
-  const nextIssueData = UGStore.globalProps.nextIssueData //下一期彩票信息
 
+  const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
   const [showHistory, setShowHistory] = useState(false) //是否显示历史记录
   const [historyData, setHistoryData] = useState<LotteryHistoryData>(null) //历史数据
+
+  useEffect(()=>{
+    requestNextData(lotteryId())
+  }, [])
 
   /**
    * 打开或者关闭数据
@@ -29,6 +39,23 @@ const UseBetHistoryList = () => {
       setShowHistory(true)
       requestHistory()
     }
+  }
+
+  /**
+   * 下一期的数据
+   */
+  const requestNextData = async (id?: string) => {
+    if (anyEmpty(id)) return null
+
+    const res = await APIRouter.game_nextIssue(id)
+      .then(({ data: res }) => res)
+    //ugLog('requestNextData data res=', JSON.stringify(res?.data))
+
+    if (res?.code == 0) {
+      setNextIssueData(res?.data)
+    }
+
+    return res?.code
   }
 
   /**
@@ -76,9 +103,10 @@ const UseBetHistoryList = () => {
     systemInfo,
     userInfo,
     nextIssueData,
+    setNextIssueData,
     toggleHistory,
   }
 }
 
-export default UseBetHistoryList
+export default UseBetRecordHeader
 

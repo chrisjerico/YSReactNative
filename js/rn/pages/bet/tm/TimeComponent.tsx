@@ -1,15 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import FastImage from 'react-native-fast-image'
 import UseTime from './UseTime'
 import BetLotteryContext from '../BetLotteryContext'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import { Res } from '../../../Res/icon/Res'
+import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
 
 interface IRouteParams {
-  lotteryCode?: string, //当前的彩票CODE，正码, 正特, 平特一肖, 平特尾数 等等
+  nextIssueData?: NextIssueData, //当前的彩票CODE，正码, 正特, 平特一肖, 平特尾数 等等
 }
 
 /**
@@ -18,17 +19,21 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const TimeComponent = ({ lotteryCode }: IRouteParams) => {
+const TimeComponent = ({ nextIssueData }: IRouteParams) => {
 
   const key = 'TimeComponent'
 
   const {
     displayCloseTime,
     displayOpenTime,
-    nextIssueData,
+    setNextIssueData,
     gotoOpenNet,
     gotoLive,
   } = UseTime()
+
+  useEffect(()=>{
+    setNextIssueData(nextIssueData)
+  }, [nextIssueData])
 
   /**
    * 哪些站点需要在线直播

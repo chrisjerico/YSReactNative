@@ -6,10 +6,11 @@ import { scale } from '../../../public/tools/Scale'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import LotteryBall, { BallType } from '../../../public/components/view/LotteryBall'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import UseBetHistoryList from './UseBetHistoryList'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
 import BetRecordListComponent from './BetRecordListComponent'
+import TimeComponent from '../tm/TimeComponent'
+import UseBetRecordHeader from './UseBetRecordHeader'
 
 interface IHallGameList {
 }
@@ -30,7 +31,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
     userInfo,
     nextIssueData,
     toggleHistory,
-  } = UseBetHistoryList()
+  } = UseBetRecordHeader()
 
   /**
    * 绘制生肖
@@ -191,7 +192,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
    */
   const renderItemContent = (item: NextIssueData) => {
     return (
-      <View key={'renderItemContent ball_item_container'}
+      <View key={'bet record renderItemContent'}
             style={_styles.ball_item_container}>
         <View key={'renderItemContent issue_container'}
               style={_styles.issue_container}>
@@ -217,7 +218,8 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
   }
 
   return (
-    <View key={'bet record header'}>
+    <View key={'bet record header'}
+          style={_styles.container}>
       {renderItemContent(nextIssueData)}
       {
         showHistory ?
@@ -228,6 +230,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
           </View> :
           null
       }
+      <TimeComponent nextIssueData={nextIssueData}/>
     </View>
   )
 }
@@ -254,6 +257,9 @@ export const BallStyles = {
 }
 
 const _styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
   ball_item_container: {
     height: scale(120),
     padding: scale(8),

@@ -105,7 +105,6 @@ const BetLotteryPage = ({ navigation, route }) => {
           <ScrollView key={'lottery middle content'}
                       style={_styles.sv_container}>
             <BetRecordHeaderComponent />
-            <TimeComponent />
             <ListContentComponent/>
           </ScrollView>
           <BetBoardComponent key={'lottery board'}
