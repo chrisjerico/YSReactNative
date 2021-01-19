@@ -182,9 +182,6 @@ const _styles = StyleSheet.create({
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
   },
-  sv_container: {
-    flex: 1,
-  },
   tab_title_content: {
     flexDirection: 'row',
   },
