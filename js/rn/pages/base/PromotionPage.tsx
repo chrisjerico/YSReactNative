@@ -10,6 +10,7 @@ import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
+import { ugLog } from '../../public/tools/UgLog'
 import BottomGap from '../../public/views/tars/BottomGap'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -26,8 +27,8 @@ const PromotionPage = (props: any) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1)
   const totalList = useRef([])
-  const showUnderline = Skin1.skitType.indexOf('威尼斯') != -1
-  const showItemBorder = Skin1.skitType.indexOf('威尼斯') != -1
+  const showUnderline = Skin1?.skitType.indexOf('威尼斯') != -1
+  const showItemBorder = Skin1?.skitType.indexOf('威尼斯') != -1
 
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
@@ -48,6 +49,7 @@ const PromotionPage = (props: any) => {
   const categoriesKey = Object.keys(categories)
 
   const handleOnPress = ({ setShowPop, item, index }) => {
+    ugLog("Promotion: " + setShowPop+ ", " + item)
     switch (Platform.OS) {
       case 'ios':
         switch (style) {
