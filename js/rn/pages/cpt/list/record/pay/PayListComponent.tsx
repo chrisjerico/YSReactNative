@@ -17,6 +17,8 @@ import CapitalContext from '../../CapitalContext'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import HTML from 'react-native-render-html'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { appConfig } from '../../../../../../../config'
+import AppDefine from '../../../../../public/define/AppDefine'
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
@@ -115,45 +117,69 @@ const PayListComponent = ({ navigation, route }) => {
             break
         }
       }}>
-        <View style={_styles.item_container}>
+        <View style={[_styles.item_container, { backgroundColor: cellBgColor() }]}>
           <FastImage source={{ uri: icon }}
-                     resizeMode={'contain'}
-                     style={_styles.pay_icon}/>
+            resizeMode={'contain'}
+            style={_styles.pay_icon} />
           <View style={_styles.text_item_container}>
             <View style={_styles.text_title_container}>
-              <Text style={_styles.text_title_0}>{item.name}</Text>
-              <View style={CommStyles.flex}/>
+              <Text style={[_styles.text_title_0,{color:Skin1.textColor1}]}>{item.name}</Text>
+              <View style={CommStyles.flex} />
               {
                 (item?.id == 'xnb_transfer' || item?.id == 'xnb_online') &&
                 <TouchableOpacity onPress={() => gotoBtcTutorial(item)}>
                   <Text style={[_styles.text_title_1,
-                    { borderColor: Skin1.themeColor, color: Skin1.themeColor }]}>充值教程</Text>
+                  { borderColor: Skin1.themeColor, color: Skin1.themeColor,marginVertical:4, }]}>充值教程</Text>
                 </TouchableOpacity>
               }
             </View>
             <HTML
-              source={{ html: item?.tip?.replace(/font/g, 'span').replace(/color="#/g, 'style=\"color:#') }}/>
+              source={{ html: item?.tip?.replace(/font/g, 'span').replace(/color="#/g, 'style=\"color:#') }} />
           </View>
         </View>
       </TouchableWithoutFeedback>
     )
   }
 
+  function tabBgColor() {
+    if (appConfig.isBgColorForMoneyVC()) {
+      return Skin1.themeColor;
+    } else {
+      return Skin1.textColor4;
+    }
+  }
+
+  function cellBgColor() {
+    if (appConfig.isBgColorForMoneyVC()) {
+      return Skin1.themeColor;
+    }
+    else if (Skin1.isBlack) {
+      return Skin1.homeContentColor;
+    }
+    if (AppDefine.siteId === 'c245') {
+      return 'transparent'
+    }
+  }
+
+ 
+
+
 
   return (
-    <View style={CommStyles.flex}>
+    <View style={[CommStyles.flex, { backgroundColor: tabBgColor() }]}>
       {
         anyEmpty(payBigData)
-          ? <EmptyView style={{ flex: 1 }}/>
+          ? <EmptyView style={{ flex: 1 }} />
           : <FlatList refreshControl={refreshCT}
-                      keyExtractor={(item, index) => `${item}-${index}`}
-                      data={payBigData?.payment}
-                      showsVerticalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
-                        return (
-                          renderItemContent(item)
-                        )
-                      }}/>
+            keyExtractor={(item, index) => `${item}-${index}`}
+            data={payBigData?.payment}
+            style={{ backgroundColor: tabBgColor() }}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => {
+              return (
+                renderItemContent(item)
+              )
+            }} />
       }
     </View>
   )
@@ -179,16 +205,14 @@ const _styles = StyleSheet.create({
     marginBottom: scale(2),
   },
   text_title_0: {
-    color: UGColor.TextColor2,
     fontSize: scale(24),
   },
   text_title_1: {
-    color: UGColor.TextColor2,
-    fontSize: scale(22),
-    borderColor: UGColor.LineColor4,
+    fontSize: scale(20),
     borderWidth: scale(1),
     borderRadius: scale(8),
-    paddingHorizontal: scale(2),
+    paddingHorizontal: scale(6),
+    paddingVertical: scale(6),
   },
   text_content_0: {
     paddingTop: scale(4),

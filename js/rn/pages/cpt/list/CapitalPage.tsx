@@ -121,12 +121,13 @@ const CapitalPage = ({ navigation, route, setProps }) => {
   /**
    * 绘制个人信息
    */
-  const renderMineInfo = () => <View style={_styles.mine_info_container}>
+  const renderMineInfo = () => 
+  <View style={[_styles.mine_info_container,{backgroundColor:Skin1.themeColor}]}>
     <FastImage source={{ uri: userInfo?.avatar }}
       resizeMode={'contain'}
       style={_styles.mine_info_avatar} />
     <View>
-      <Text style={_styles.mine_info_name}>{userInfo?.usr}</Text>
+      <Text style={[_styles.mine_info_name,{color: Skin1.textColor1,}]}>{userInfo?.usr}</Text>
       <View style={{ flexDirection: 'row', marginTop: 8 }}>
         <Text style={[_styles.mine_info_balance, { color: Skin1.textColor2, }]}>{!anyEmpty(userInfo?.balance) && `用户余额:`}</Text>
         <Text style={[_styles.mine_info_balance, { color: 'red', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${userInfo?.balance}`}</Text>
@@ -161,10 +162,10 @@ const CapitalPage = ({ navigation, route, setProps }) => {
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,
                 { backgroundColor: Skin1.themeColor }]}
                 tabBarActiveTextColor={Skin1.themeColor}
-                tabBarInactiveTextColor={Skin1.textColor1}
+                tabBarInactiveTextColor={Skin1.textColor2}
                 tabBarTextStyle={{ fontSize: scale(20) }}
                 style={[{ flex: 1,  }]}
-                renderTabBar={() => <DefaultTabBar style={_styles.tab_bar} />}>
+                renderTabBar={() => <DefaultTabBar style={{ backgroundColor: Skin1.CLBgColor,}} />}>
                 {
                   categoryData?.map((tabItem, index) => {
                     return (
@@ -199,7 +200,6 @@ const _styles = StyleSheet.create({
 
   },
   mine_info_name: {
-    color: UGColor.TextColor2,
     fontSize: scale(24),
     fontWeight: 'bold',
 
@@ -207,10 +207,7 @@ const _styles = StyleSheet.create({
   mine_info_balance: {
     fontSize: scale(20),
   },
-  tab_bar: {
-    backgroundColor: '#f4f4f4',
 
-  },
   tab_bar_underline: {
     height: scale(3),
   },

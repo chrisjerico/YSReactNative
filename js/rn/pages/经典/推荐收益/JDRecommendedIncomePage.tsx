@@ -164,7 +164,7 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
               tabBarInactiveTextColor={Skin1.textColor2}
               tabBarTextStyle={{ fontSize: scale(20) }}
               style={[{ flex: 1 ,}]}
-              renderTabBar={() => <ScrollableTabBar style={styles.tab_bar} />}>
+              renderTabBar={() => <ScrollableTabBar style={{ backgroundColor: Skin1.CLBgColor,}} />}>
               {
                 v.tabNames?.map((tabItem) => {
                   return (
