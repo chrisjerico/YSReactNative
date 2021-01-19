@@ -5,7 +5,7 @@ import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActiv
 import { scale } from '../../tools/Scale'
 import { icon_任务弹窗, icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
-import { goToUserCenterType } from '../../tools/tars'
+import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
 
 interface ActivitysProps {
   refreshing: boolean
