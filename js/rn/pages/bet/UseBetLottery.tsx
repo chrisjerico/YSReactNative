@@ -4,6 +4,7 @@ import APIRouter from '../../public/network/APIRouter'
 import { anyEmpty } from '../../public/tools/Ext'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import { UGStore } from '../../redux/store/UGStore'
+import { parseLotteryDetailData } from './util/LotteryUtil'
 
 /**
  * 彩票下注
@@ -34,7 +35,8 @@ const UseBetLottery = () => {
     //ugLog('requestLotteryData data res=', JSON.stringify(res?.data))
 
     if (res?.code == 0) {
-      setPlayOddDetailData(res?.data)
+      const newPlayOdds = parseLotteryDetailData(res?.data)
+      setPlayOddDetailData({...res?.data, playOdds: newPlayOdds})
     }
 
     return res?.code

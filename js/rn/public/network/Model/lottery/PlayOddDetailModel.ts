@@ -14,9 +14,9 @@ export interface PlayData {
   enable?: string;//1
   from_id?: string;//0
 
-  exId?: string //本地定义 id
-  exName?: string//本地定义 名字
-  exOdds?: string//本地定义 赔率
+  // exId?: string //本地定义 id
+  // exName?: string//本地定义 名字
+  // exOdds?: string//本地定义 赔率
   exZodiac?: ZodiacNum; //本地定义 对应的生肖数据
 
 }
@@ -37,6 +37,12 @@ export interface PlayOddData {
   code: string; // TM
   name: string; //特码
   playGroups: PlayGroupData[];
+  pageData?: PagePlayOddData // 重新组合数据
+}
+
+export interface PagePlayOddData { //本地定义本地使用
+  zodiacNums: ZodiacNum[] //生肖数据
+  groupTri?: Array<Array<PlayGroupData>> // 重新组合数据
 }
 
 export interface ZodiacNum {
