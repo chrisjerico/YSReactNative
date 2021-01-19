@@ -220,10 +220,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615vv.com',
   ],
   'c116': [
-    'https://58933d.com',
-    'https://58933c.com',
-    'https://58922c.com',
     'https://20801353.com',
+    'https://58922c.com',
+    'https://58922d.com',
+    'https://58933c.com',
+    'https://58933d.com',
   ],
   'c117': [
     'https://646482.com',
