@@ -33,7 +33,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const CapitalPage = ({ navigation, route }) => {
+const CapitalPage = ({ navigation, route,setProps }) => {
 
   const { initTabIndex, showBackButton }: IRouteParams = route?.params
   const indexValue = Object.values(CapitalConst).findIndex((item) =>  item == initTabIndex)
@@ -53,6 +53,25 @@ const CapitalPage = ({ navigation, route }) => {
     requestYueBao,
   } = UseCapital()
 
+    //初始化
+    useEffect(() => {
+      setProps({
+        didFocus: (params) => {
+          let dic = params;
+          for (var key in dic) {
+
+            if (key == 'selectIndex') {
+              console.log('key ==============',key);
+              console.log('v ==============',dic[key]);
+              setTabIndex(dic[key])
+              setRefreshCount(refreshCount + 1)
+            }
+  
+          }
+        }
+      })
+  
+    }, [])
   useEffect(()=>{
     if (showBackButton == '0') {//主页初始化再确认一次
       setRefreshCount(refreshCount + 1)
