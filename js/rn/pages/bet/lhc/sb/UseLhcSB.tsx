@@ -27,19 +27,11 @@ const UseLhcSB = () => {
   } = UseLotteryHelper()
 
   useEffect(() => {
-    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
-  }, [tabIndex, pageData])
-
-  /**
-   * 更新数据
-   * @param playOddData
-   */
-  const updatePlayOddData = (playOddData?: PlayOddData) => {
-    setPlayOddData(playOddData)
-    !anyEmpty(playOddData?.playGroups) && setPageData([playOddData?.playGroups])
-  }
+    setCurData(playOddData?.pageData?.groupTri[tabIndex])
+  }, [tabIndex])
 
   return {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
     curData,
@@ -49,7 +41,6 @@ const UseLhcSB = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    updatePlayOddData,
   }
 }
 

@@ -31,32 +31,11 @@ const UseLhcZT = () => {
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
 
   useEffect(() => {
-    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
-  }, [tabIndex, pageData])
-
-  /**
-   * 更新数据
-   * @param playOddData
-   */
-  const updatePlayOddData = (playOddData?: PlayOddData) => {
-    setPlayOddData(playOddData)
-
-    if (arrayLength(playOddData?.playGroups) % 2 == 0) {//长度是偶数
-      let newData = new Array<Array<PlayGroupData>>()
-      playOddData?.playGroups?.map((item, index) => {
-        if (index % 2 == 0) {
-          newData.push([
-            playOddData?.playGroups[index],
-            playOddData?.playGroups[index + 1],
-          ])
-        }
-      })
-      //ugLog('newData=', JSON.stringify(newData))
-      setPageData(newData)
-    }
-  }
+    setCurData(playOddData?.pageData?.groupTri[tabIndex])
+  }, [tabIndex])
 
   return {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
     curData,
@@ -68,7 +47,6 @@ const UseLhcZT = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    updatePlayOddData,
   }
 }
 

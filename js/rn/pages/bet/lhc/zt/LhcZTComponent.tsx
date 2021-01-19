@@ -31,6 +31,7 @@ import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryCon
 const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
     curData,
@@ -42,11 +43,11 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    updatePlayOddData,
   } = UseLhcZT()
 
   useEffect(() => {
-    updatePlayOddData(playOddData)
+    setPlayOddData(playOddData)
+    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
   const key = 'lottery page' + playOddData?.code
 

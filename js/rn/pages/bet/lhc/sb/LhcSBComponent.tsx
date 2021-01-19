@@ -13,6 +13,7 @@ import { PlayData, PlayGroupData } from '../../../../public/network/Model/lotter
 import LotteryERect from '../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { PlayGroup } from '../../../../public/network/Model/PlayOddDataModel'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行
@@ -23,6 +24,7 @@ import { PlayGroup } from '../../../../public/network/Model/PlayOddDataModel'
 const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
     curData,
@@ -32,12 +34,13 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    updatePlayOddData,
   } = UseLhcSB()
 
   useEffect(() => {
-    updatePlayOddData(playOddData)
+    setPlayOddData(playOddData)
+    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
+
   const key = 'lottery page' + playOddData?.code
 
   /**

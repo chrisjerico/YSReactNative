@@ -39,7 +39,7 @@ const ListContentComponent = () => {
         {
           playOddDetailData()?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
-                                     onPress={() => setLeftColumnIndex(index)}>
+                                             onPress={() => setLeftColumnIndex(index)}>
               <View key={'renderLeftColumn' + item?.code}
                     style={[
                       _styles.left_column_item,
@@ -151,21 +151,25 @@ const ListContentComponent = () => {
 
     switch (lotteryCode) {
       case LotteryConst.TM:  //特码
-        return <LhcTMComponent playOddData={playOdds}/>
+        return <LhcTMComponent key={lotteryCode}
+                               playOddData={playOdds}/>
 
       case LotteryConst.ZM: //正码
       case LotteryConst.ZT:  //正特
-        return <LhcZTComponent playOddData={playOdds}/>
+        return <LhcZTComponent key={lotteryCode}
+                               playOddData={playOdds}/>
 
       case LotteryConst.LMA:  //连码
-        return <LhcLMAComponent playOddData={playOdds}/>
+        return <LhcLMAComponent key={lotteryCode}
+                                playOddData={playOdds}/>
 
       case LotteryConst.LM: //两面
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
       case LotteryConst.WX:  //五行
-        return <LhcSBComponent playOddData={playOdds}/>
+        return <LhcSBComponent key={lotteryCode}
+                               playOddData={playOdds}/>
 
       case LotteryConst.YX: //平特一肖
       case LotteryConst.WS: //平特尾数
@@ -174,13 +178,16 @@ const ListContentComponent = () => {
       case LotteryConst.LX: //连肖
       case LotteryConst.LW: //连尾
       case LotteryConst.ZX:  //正肖
-        return <LhcPTYXComponent playOddData={playOdds}/>
+        return <LhcPTYXComponent key={lotteryCode}
+                                 playOddData={playOdds}/>
 
       case LotteryConst.HX:  //合肖
-        return <LhcHXComponent playOddData={playOdds}/>
+        return <LhcHXComponent key={lotteryCode}
+                               playOddData={playOdds}/>
 
       case LotteryConst.ZXBZ:  //自选不中
-        return <LhcZXBZComponent playOddData={playOdds}/>
+        return <LhcZXBZComponent key={lotteryCode}
+                                 playOddData={playOdds}/>
 
 
     }

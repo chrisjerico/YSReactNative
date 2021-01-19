@@ -160,7 +160,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
               return {
                 ...playOddData,
                 pageData: {
-                  groupTri: [[null, ...lxGroup]],
+                  groupTri: lxGroup?.map((item) => [item]),
                 } as PagePlayOddData,
               }
 
@@ -181,7 +181,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
               return {
                 ...playOddData,
                 pageData: {
-                  groupTri: [[null, ...lwGroup]],
+                  groupTri: lwGroup?.map((item) => [item]),
                 } as PagePlayOddData,
               }
           }
@@ -220,7 +220,8 @@ const combinePlayAndZodiac = ({ zodiacNums, playOddData }: IPageZodiac): PlayGro
       ...groupData,
       plays: groupData?.plays?.map((playData) => ({
         ...playData,
-        exZodiac: newZodiac?.find((zodiac) => zodiac?.name == playData?.name),
+        exZodiac: newZodiac?.find((zodiac) =>
+          zodiac?.name == playData?.name || zodiac?.name == playData?.alias || zodiac?.alias == playData?.alias),
       })),
     }
 
