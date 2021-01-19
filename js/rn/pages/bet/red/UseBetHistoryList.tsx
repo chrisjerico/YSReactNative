@@ -13,7 +13,11 @@ import BetLotteryContext from '../BetLotteryContext'
  */
 const UseBetHistoryList = () => {
 
-  const { nextIssueData, playOddDetailData, curPlayOddData} = useContext(BetLotteryContext)
+  const {
+    nextIssueData,
+    playOddDetailData,
+    // curPlayOddData,
+  } = useContext(BetLotteryContext)
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
@@ -60,7 +64,7 @@ const UseBetHistoryList = () => {
         list: data?.list?.map((item) => ({
           ...item,
           result: null,
-        }))
+        })),
       })
 
     }

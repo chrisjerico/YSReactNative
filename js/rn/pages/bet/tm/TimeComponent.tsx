@@ -19,7 +19,11 @@ interface IRouteParams {
  */
 const TimeComponent = ({}: IRouteParams) => {
 
-  const { nextIssueData, playOddDetailData, curPlayOddData } = useContext(BetLotteryContext)
+  const {
+    nextIssueData,
+    playOddDetailData,
+    // curPlayOddData,
+  } = useContext(BetLotteryContext)
 
   const key = 'TimeComponent'
 
