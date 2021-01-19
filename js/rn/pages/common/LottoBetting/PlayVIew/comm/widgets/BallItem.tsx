@@ -6,7 +6,7 @@ import {BALL_STYLES} from "../LotteryStyles";
 import {getHKballColor} from "../../lottoSetting";
 import {anyLength} from "../../../../../../public/tools/Ext";
 import FastImage from "react-native-fast-image";
-import { UGImageHost, useHtml5Image } from "../../../../../../public/tools/tars";
+import { UGImageHost, useHtml5Image } from "../../../../../../Res/icon";
 
 const {img_assets} = useHtml5Image(UGImageHost.test5)
 

@@ -38,7 +38,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 
 interface ILotteryRouteParams {
   lotteryCode?: string, //当前的彩票CODE，正码、正特 等等
@@ -95,7 +95,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderTab = () => arrayLength(pageData) > 1 && <View key={key + 'tab'}
                                                              style={_styles.tab_title_container}>
     <ScrollView key={key + 'sv'}
-                style={_styles.sv_container}
+                style={_styles.sv_tab_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
       <View key={key + 'content'}
@@ -188,19 +188,27 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   </View>
 
   return (
-    <View key={key}
-          style={[CommStyles.flex, style]}>
+    <ScrollView key={key}
+                showsVerticalScrollIndicator={false}
+                nestedScrollEnabled={true}
+                style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderAllBall()}
-    </View>
-
+    </ScrollView>
   )
 }
 
 const _styles = StyleSheet.create({
-  content_container: {
-    paddingBottom: LEFT_ITEM_HEIGHT * 6,
+  sv_container: {
     flex: 1,
+    height: BALL_CONTENT_HEIGHT,
+  },
+  sv_tab_container: {
+    flex: 1,
+  },
+  content_container: {
+    flex: 1,
+    paddingBottom: scale(240),
   },
   sub_title_container: {
     alignItems: 'center',
@@ -239,9 +247,6 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
-  },
-  sv_container: {
-    flex: 1,
   },
   tab_title_content: {
     flexDirection: 'row',

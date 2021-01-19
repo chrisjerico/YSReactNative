@@ -14,6 +14,6 @@ export const Toast = (s?: string) => {
   if (Platform.OS == 'ios') {
     OCHelper.call('HUDHelper.showMsg:', [s]);
   } else {
-    ToastAndroid.show(s, ToastAndroid.SHORT);
+    ToastAndroid.show(s, ToastAndroid.LONG);
   }
 };

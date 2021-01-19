@@ -8,7 +8,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, UGImageHost, stringToNumber, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import TouchableImage from '../../public/views/tars/TouchableImage'
@@ -19,6 +19,7 @@ import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
+import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.test5)
 

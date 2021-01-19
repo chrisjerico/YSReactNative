@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
-import { useHtml5Image } from '../../../public/tools/tars'
+import { useHtml5Image } from '../../../Res/icon'
 
 const { getHtml5Image } = useHtml5Image()
 

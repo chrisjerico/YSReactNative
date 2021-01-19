@@ -102,7 +102,7 @@ const _styles = StyleSheet.create({
  * 和 PlayData 结构类似
  */
 interface ILotteryEBallItem {
-  id: string; //708501
+  id?: string; //708501
   name?: string; //01
   alias?: string;//特码A"
   code?: string;//01

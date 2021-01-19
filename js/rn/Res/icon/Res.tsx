@@ -1,8 +1,4 @@
-// 图片服务器域名：
-// https://appstatic.guolaow.com
-// https://appstatic.guolaow.com
-
-import { UGImageHost, useHtml5Image } from "../../public/tools/tars"
+import { UGImageHost, useHtml5Image } from "."
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 /**
@@ -15,6 +11,7 @@ export const icon_刮刮乐 = img_assets('gyg')    //大转盘
 export const icon_任务弹窗 = img_assets('task_home')    //任务弹框
 
 export const Res = {
+  
   bankhl1: img_assets('bankhl1'),
   btc: img_assets('btc'),
   empty: img_assets('empty'),
@@ -125,4 +122,10 @@ export const Res = {
   dj: img_assets('lottery/d'),
   real_person: img_assets('lottery/re'),
   sports: img_assets('lottery/sp'),
+  
+  //导航 三根线
+  gengduo: img_assets('gengduo'),
+  //长龙注单详情背景
+  betDetailBg: img_assets('betDetailBg'),
+
 }

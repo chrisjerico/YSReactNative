@@ -34,8 +34,9 @@ export enum PageName {
   JDRecommendedIncomePage = "JDRecommendedIncomePage",
   TaskCenterPage = 'TaskCenterPage',
   JDPromotionCodeListPage = 'JDPromotionCodeListPage',
-  JDChanglongBetRecordpage =  'JDChanglongBetRecordpage',
-  JDLotteryAssistantPage = 'JDLotteryAssistantPage',
+  JDSegmentPage = 'JDSegmentPage',
+  JDChangLongPage = 'JDChangLongPage',
+  JDBetRecordDetailPage = 'JDBetRecordDetailPage',
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
   LHTPreferencePage = 'LHTPreferencePage',
@@ -123,5 +124,6 @@ export enum PageName {
   VietnamRegister = 'VietnamRegister',
   VietnamMine = 'VietnamMine',
   VietnamGameList = 'VietnamGameList',
-  OnlineService = 'OnlineService'
+  TwoLevelGames = "TwoLevelGames",
+  OnlineService = 'OnlineService',
 }

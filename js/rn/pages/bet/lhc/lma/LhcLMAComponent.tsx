@@ -38,7 +38,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { doc } from 'prettier'
 
 
@@ -72,8 +72,8 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
 
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableOpacity key={key + item[0]?.alias}
-                                                                                    style={CommStyles.flex}
-                                                                                    onPress={() => setTabIndex(index)}>
+                                                                                           style={CommStyles.flex}
+                                                                                           onPress={() => setTabIndex(index)}>
     <View key={key + item[0]?.alias}
           style={[
             _styles.tab_item,
@@ -159,19 +159,24 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   </View>
 
   return (
-    <View key={key}
-          style={[CommStyles.flex, style]}>
+    <ScrollView key={key}
+                nestedScrollEnabled={true}
+                style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderAllBall()}
-    </View>
+    </ScrollView>
 
   )
 }
 
 const _styles = StyleSheet.create({
-  content_container: {
-    paddingBottom: LEFT_ITEM_HEIGHT * 6,
+  sv_container: {
     flex: 1,
+    height: BALL_CONTENT_HEIGHT,
+  },
+  content_container: {
+    flex: 1,
+    paddingBottom: scale(240),
   },
   sub_title_container: {
     alignItems: 'center',

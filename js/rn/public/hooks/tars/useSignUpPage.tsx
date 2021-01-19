@@ -5,7 +5,6 @@ import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { push, popToRoot } from '../../navigation/RootNavigation'
-import { validPassword } from '../../tools/tars'
 import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
 import useSignOut from './useSignOut'
@@ -13,6 +12,7 @@ import useSignUp from './useSignUp'
 import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
 import SlideCodeModel from '../../../redux/model/other/SlideCodeModel'
+import { validPassword } from '../../tools/tars'
 
 interface UseRegisterPage {
   homePage?: PageName

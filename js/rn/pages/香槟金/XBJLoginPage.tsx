@@ -21,7 +21,7 @@ import { navigate, pop } from '../../public/navigation/RootNavigation';
 import { hideLoading, showError, showLoading, showMessage, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { TextFieldAlertCP } from '../../public/widget/TextFieldAlertCP';
-
+import { useHtml5Image } from '../../Res/icon';
 
 // 声明成员变量
 interface XJBLoginVars {
@@ -95,7 +95,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         setProps({
           navbarOpstions: { hidden: false, gradientColor:['#0000', '#0000'], hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
-          backgroundImage:'https://appstatic.guolaow.com/assets/login_bg.jpg',
+          backgroundImage:img_assets('login_bg', 'jpg'),
           rememberPassword: isRemember,
           didFocus: (params) => {
             if (params?.usr?.length) {
@@ -252,7 +252,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
           onPress={() => {
             navigate<XBJRegisterProps>(PageName.XBJRegisterPage);
           }}>
-          <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/entry_login_toggle_btn.png' }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
+          <FastImage source={{ uri: img_assets('entry_login_toggle_btn') }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
           <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>注册新用户</Text>
         </TouchableOpacity>
       </View>

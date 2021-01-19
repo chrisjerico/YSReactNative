@@ -11,7 +11,6 @@ import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { TurntableListModel } from '../../network/Model/TurntableListModel'
-import { stringToNumber } from '../../tools/tars'
 import {GoldenEggListModel} from "../../network/Model/GoldenEggListModel";
 import {ScratchListModel} from "../../network/Model/ScratchListModel";
 import {ugLog} from "../../tools/UgLog";

@@ -17,7 +17,7 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { UGStore } from '../../../redux/store/UGStore'
-import { useHtml5Image } from '../../tools/tars'
+import { useHtml5Image } from '../../../Res/icon'
 import { httpClient } from '../../network/httpClient'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'

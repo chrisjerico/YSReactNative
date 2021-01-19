@@ -9,7 +9,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -20,6 +20,7 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
+import { goToUserCenterType } from '../../public/tools/tars'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.test5)
 

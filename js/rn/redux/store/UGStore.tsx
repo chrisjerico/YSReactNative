@@ -13,6 +13,8 @@ import UGSystemModel from '../model/全局/UGSystemModel'
 import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
+import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
+import LotteryListModel, {LotteryListData} from '../model/game/LotteryListModel'
 
 // 整个State的树结构
 
@@ -25,6 +27,12 @@ export interface IGlobalState {
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳 陣列
   rightMenu?: UGRightMenuModel[] // 又選單 陣列
   banner?: UGBannerModel
+
+  //下注
+  selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+  lotteryModel?: LotteryListModel //游戏列表数据
+  // lotteryColumnIndex?: number //彩种索引
+
   sys?: UGSystemModel
   // value?: any;
 }
@@ -44,11 +52,22 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     // 陣列
     act.gameLobby && (state.gameLobby = act.gameLobby)
     act.rightMenu && (state.rightMenu = act.rightMenu)
+
+    //彩票数据
+    act.selectedLotteryData && (state.selectedLotteryData = act.selectedLotteryData)
+    act.lotteryModel && (state.lotteryModel = act.lotteryModel)
+    // act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
+
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
     state.userInfo = { ...state.userInfo, ...act.userInfo }
     state.sign = { ...state.sign, ...act.sign }
     state.banner = { ...state.banner, ...act.banner }
+
+    //彩票数据
+    state.selectedLotteryData = {selectedData: { ...state.selectedLotteryData?.selectedData, ...act.selectedLotteryData?.selectedData }}
+    state.lotteryModel = { ...state.lotteryModel, ...act.lotteryModel }
+
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
     // 陣列
@@ -72,6 +91,12 @@ export interface UGAction<P = {}> extends Action {
   sign?: UGSignModel // 登入註冊訊息
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳
   banner?: UGBannerModel
+
+  //彩票数据
+  selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+  lotteryModel?: LotteryListModel //游戏列表数据
+  // lotteryColumnIndex?: number //彩种索引
+
   sys?: UGSystemModel
   rightMenu?: UGRightMenuModel[]
   // value?: any;// 其他 example

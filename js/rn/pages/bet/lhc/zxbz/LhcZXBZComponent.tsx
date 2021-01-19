@@ -38,7 +38,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { doc } from 'prettier'
 
 
@@ -102,9 +102,9 @@ const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
               style={_styles.sub_title_container}>
           <Text key={key + 'render LMA text' + groupData?.id}
                 style={[
-            _styles.sub_title_text,
-            { color: Skin1.themeColor },
-          ]}>{groupData?.alias}</Text>
+                  _styles.sub_title_text,
+                  { color: Skin1.themeColor },
+                ]}>{groupData?.alias}</Text>
         </View>
 
         <View key={key + 'render LMA sub2' + groupData?.id}
@@ -126,18 +126,23 @@ const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   </View>
 
   return (
-    <View key={key}
-          style={[CommStyles.flex, style]}>
+    <ScrollView key={key}
+                nestedScrollEnabled={true}
+                style={[_styles.sv_container, style]}>
       {renderAllBall()}
-    </View>
+    </ScrollView>
 
   )
 }
 
 const _styles = StyleSheet.create({
-  content_container: {
-    paddingBottom: LEFT_ITEM_HEIGHT * 6,
+  sv_container: {
     flex: 1,
+    height: BALL_CONTENT_HEIGHT,
+  },
+  content_container: {
+    flex: 1,
+    paddingBottom: scale(240),
   },
   sub_title_container: {
     alignItems: 'center',
@@ -176,9 +181,6 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
-  },
-  sv_container: {
-    flex: 1,
   },
   tab_title_content: {
     flexDirection: 'row',

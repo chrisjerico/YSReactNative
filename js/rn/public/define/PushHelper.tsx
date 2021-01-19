@@ -140,7 +140,11 @@ export default class PushHelper {
 
         if (game?.seriesId == 7 && game?.subId == GameType.游戏大厅) {  //游戏大厅
           push(PageName.GameLobbyPage, { showBackButton: true })
-          return 
+          return
+        }
+        if (game?.isPopup == 1) {  //二级游戏分类
+          push(PageName.TwoLevelGames, { game: game, showBackButton: true })
+          return
         }
 
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
@@ -576,8 +580,8 @@ export default class PushHelper {
             return
           }
           case UGUserCenterType.在线客服: {
-            subId = MenuType.KF
-            break
+            push(PageName.OnlineService)
+            return
           }
           case UGUserCenterType.活动彩金: {
             subId = MenuType.SQCJ

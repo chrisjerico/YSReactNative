@@ -1,4 +1,4 @@
-import { UGImageHost, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 

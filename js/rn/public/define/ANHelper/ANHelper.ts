@@ -7,8 +7,8 @@ import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
 import { NA_DATA } from './hp/DataDefine'
 import { ugLog } from '../../tools/UgLog'
-import { stringToNumber } from '../../tools/tars'
 import { initDomain } from '../../config/MultiDomainUrls'
+import { stringToNumber } from '../../tools/tars'
 
 export class ANHelper extends ANEvent {
   // 监听安卓事件

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { pop } from '../../public/navigation/RootNavigation'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
 import { ToastError } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'

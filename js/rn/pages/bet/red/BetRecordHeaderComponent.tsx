@@ -31,7 +31,11 @@ interface IHallGameList {
  */
 const BetRecordHeaderComponent = ({}: IHallGameList) => {
 
-  const { nextIssueData, playOddDetailData, curPlayOddData } = useContext(BetLotteryContext)
+  const {
+    nextIssueData,
+    playOddDetailData,
+    // curPlayOddData,
+  } = useContext(BetLotteryContext)
 
   const {
     showHistory,

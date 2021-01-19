@@ -39,7 +39,7 @@ import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
-import { ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
 
 /**
@@ -80,9 +80,10 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableOpacity key={key + 'tab' + index + item[1]?.id}
-                                                                                           style={CommStyles.flex}
-                                                                                           onPress={() => setTabIndex(index)}>
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableOpacity
+    key={key + 'tab' + index + item[1]?.id}
+    style={CommStyles.flex}
+    onPress={() => setTabIndex(index)}>
     <View key={key + 'tab' + index + item[1]?.id}
           style={[
             _styles.tab_item,
@@ -101,7 +102,7 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderTab = () => arrayLength(pageData) > 1 && <View key={key + 'renderTab'}
                                                              style={_styles.tab_title_container}>
     <ScrollView key={key + 'sv'}
-                style={_styles.sv_container}
+                style={_styles.sv_tab_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
       <View key={key + 'renderTab sub'}
@@ -137,9 +138,9 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderEBall' + item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+                                                                         item={item}
+                                                                         selectedBalls={selectedBalls}
+                                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制全部的格子
@@ -202,19 +203,27 @@ const LhcPTYXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   </View>
 
   return (
-    <View key={key}
-          style={[CommStyles.flex, style]}>
+    <ScrollView key={key}
+                nestedScrollEnabled={true}
+                style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderAllBall()}
-    </View>
+    </ScrollView>
 
   )
 }
 
 const _styles = StyleSheet.create({
-  content_container: {
-    paddingBottom: LEFT_ITEM_HEIGHT * 6,
+  sv_container: {
     flex: 1,
+    height: BALL_CONTENT_HEIGHT,
+  },
+  sv_tab_container: {
+    flex: 1,
+  },
+  content_container: {
+    flex: 1,
+    paddingBottom: scale(240),
   },
   sub_title_container: {
     alignItems: 'center',
@@ -242,9 +251,6 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
-  },
-  sv_container: {
-    flex: 1,
   },
   tab_title_content: {
     flexDirection: 'row',
