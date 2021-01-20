@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Image, ImageBackground, Modal, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Animated, Image, ImageBackground, Modal, Text, TouchableWithoutFeedback, View, StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
+import { api_withdraw } from '../../public/network/NetworkRequest1/api/api_withdraw'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { removeHTMLTag } from '../../public/tools/removeHTMLTag'
 import Button from '../../public/views/tars/Button'
@@ -18,7 +19,7 @@ interface ApplyRewardProps {
   tabLabel: string
   list: any[]
   onPress: () => any
-  onPressApply: ({ win_apply_content }: { win_apply_content: string }) => any
+  onPressApply: ({ win_apply_content, quickAmounts }: { win_apply_content: string; quickAmounts: string[] }) => any
 }
 
 const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
@@ -28,7 +29,21 @@ const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
     scrollEnabled={true}
     renderItem={({ item }) => {
       const { name } = item
-      const win_apply_content = item?.param?.win_apply_content
+      const params = item?.param ?? {}
+      const win_apply_content = params?.win_apply_content
+      const quickAmounts = [
+        params.quickAmount1,
+        params.quickAmount2,
+        params.quickAmount3,
+        params.quickAmount4,
+        params.quickAmount5,
+        params.quickAmount6,
+        params.quickAmount7,
+        params.quickAmount8,
+        params.quickAmount9,
+        params.quickAmount10,
+        params.quickAmount11,
+      ]
       return (
         <>
           <TouchableWithoutFeedback onPress={onPress}>
@@ -45,7 +60,7 @@ const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
             title={'点击申请'}
             containerStyle={{ width: 100, height: 30, backgroundColor: '#AE0000', borderRadius: 5, alignSelf: 'center', marginVertical: 10 }}
             titleStyle={{ color: '#ffffff' }}
-            onPress={() => onPressApply({ win_apply_content })}
+            onPress={() => onPressApply({ win_apply_content, quickAmounts })}
           />
         </>
       )
@@ -105,7 +120,8 @@ const ActivityRewardPage = () => {
   const [activityVisible, setActivityVisible] = useState(false)
   const [applyVisible, setApplyVisible] = useState(false)
   const [activityContent, setActivityContent] = useState('')
-
+  const [quickAmounts, setQuickAmounts] = useState([])
+  const [money, setMoney] = useState(null)
   useEffect(() => {
     Promise.all([
       APIRouter.activity_winApplyList().catch((error) => {
@@ -144,9 +160,10 @@ const ActivityRewardPage = () => {
               onPress={() => {
                 setActivityVisible(true)
               }}
-              onPressApply={({ win_apply_content }) => {
+              onPressApply={({ win_apply_content, quickAmounts }) => {
                 setApplyVisible(true)
                 setActivityContent(win_apply_content)
+                setQuickAmounts(quickAmounts)
               }}
             />
             <ApplyFeedBack tabLabel={'申请反馈'} list={applyWinLog} />
@@ -189,11 +206,39 @@ const ActivityRewardPage = () => {
         <View style={{ backgroundColor: 'transparent', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <View style={{ width: '75%', height: '60%', backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
             <Text style={{ fontSize: 15, marginVertical: 10 }}>{'彩金活动'}</Text>
-            <View style={{ width: '100%', marginVertical: 10, paddingHorizontal: 20 }}>
+            <View style={styles.title}>
               <Text style={{ marginBottom: 10 }}>{'活动说明'}</Text>
               <Text>{removeHTMLTag(activityContent)}</Text>
             </View>
-            <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 30, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5, marginBottom: 10 }} placeholder={'申请金额'} />
+            <View style={styles.title}>
+              <Text>{'快捷金额'}</Text>
+            </View>
+            <View style={[styles.title, { flexDirection: 'row' }]}>
+              {quickAmounts?.map((ele) => {
+                if (ele == '0') {
+                  return null
+                } else {
+                  return (
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        setMoney(ele)
+                      }}>
+                      <View style={{ width: 25, aspectRatio: 1, backgroundColor: '#02C874', justifyContent: 'center', alignItems: 'center', marginRight: 5, borderRadius: 5 }}>
+                        <Text style={{ color: '#ffffff' }}>{ele}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  )
+                }
+              })}
+            </View>
+            <TextInput
+              style={{ borderColor: '#d9d9d9', width: '90%', height: 30, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5, marginBottom: 10 }}
+              placeholder={'申请金额'}
+              value={money}
+              onChangeText={(text) => {
+                setMoney(text)
+              }}
+            />
             <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }} placeholder={'申请说明'} numberOfLines={5} />
             <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', justifyContent: 'space-around', width: '100%', paddingBottom: 20 }}>
               <Button
@@ -201,6 +246,7 @@ const ActivityRewardPage = () => {
                 containerStyle={{ width: '25%', borderWidth: 1, borderColor: '#8E8E8E', borderRadius: 5, height: 30 }}
                 onPress={() => {
                   setApplyVisible(false)
+                  setMoney(null)
                 }}
               />
               <Button
@@ -218,5 +264,9 @@ const ActivityRewardPage = () => {
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  title: { width: '100%', marginVertical: 10, paddingHorizontal: 20 },
+})
 
 export default ActivityRewardPage
