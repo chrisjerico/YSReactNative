@@ -27,14 +27,14 @@ export async function setRnPageInfo(force = false) {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
-    // pages.push({
-    //   vcName: 'UGPromotionIncomeController',
-    //   rnName: PageName.JDChangLongPage,
-    //   // rnName: PageName.JDSegmentPage,
-    //   fd_prefersNavigationBarHidden: true,
-    //   允许游客访问: true,
-    //   允许未登录访问: true,
-    // })
+    pages.push({
+      vcName: 'BetDetailViewController',
+      rnName: PageName.JDBetDetailPage,
+      // rnName: PageName.JDSegmentPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
 
   }
 
@@ -56,6 +56,22 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
+    // 我的提款账户
+    pages.push({
+      vcName: 'WithdrawalAccountListVC',
+      rnName: PageName.ManageBankListPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 资金管理
+    pages.push({
+      vcName: 'UGFundsViewController',
+      rnName: PageName.CapitalPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 长龙助手
     pages.push({
       vcName: 'UGChangLongController',

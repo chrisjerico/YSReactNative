@@ -184,11 +184,12 @@ const _styles = StyleSheet.create({
   },
   text_title_1: {
     color: UGColor.TextColor2,
-    fontSize: scale(22),
+    fontSize: scale(20),
     borderColor: UGColor.LineColor4,
     borderWidth: scale(1),
     borderRadius: scale(8),
-    paddingHorizontal: scale(2),
+    paddingHorizontal: scale(4),
+    paddingVertical:scale(4),
   },
   text_content_0: {
     paddingTop: scale(4),

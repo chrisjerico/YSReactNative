@@ -162,9 +162,10 @@ const CapitalDetailListComponent = () => {
    * 绘制提示标题
    * @param item
    */
-  const renderTitleHint = () => <View key={'renderTitleHint'}>
-    <View style={_styles.capital_type_picker}>
-      <UGDropDownPicker
+  const renderTitleHint = () =>
+   <View key={'renderTitleHint'} style={[_styles.text_title_container,{position: 'absolute',width:'98%',height:scale(70),marginTop:scale(0)}]}>
+    <View style={[_styles.capital_type_picker,{marginTop:scale(0),paddingTop:scale(0)}]}>
+      <UGDropDownPicker 
         controller={instance => capitalController = instance}
         items={groups}
         defaultValue={curGroup}
@@ -172,7 +173,7 @@ const CapitalDetailListComponent = () => {
           setCurGroup(item.value)
         }}/>
     </View>
-    <View style={_styles.text_title_container}>
+    <View style={[_styles.text_title_container,{position: 'absolute',width:'98%',height:scale(70),marginTop:scale(0)}]}>
       <Text style={_styles.text_title_0}>{'日期'}</Text>
       <Text style={_styles.text_title_0}>{'金额'}</Text>
       <TouchableWithoutFeedback onPress={() => capitalController?.toggle()}>
@@ -206,28 +207,33 @@ const CapitalDetailListComponent = () => {
                                         style={CommStyles.flex}>
     {
       [
-        renderTitleHint(),
+        
+
+        // renderCalendar(),
         anyEmpty(capitalDetailData)
-          ? <EmptyView style={{ flex: 1 }}/>
-          : <FlatList refreshControl={refreshCT}
-                      keyExtractor={(item, index) => `${item}-${index}`}
-                      data={capitalDetailData}
-                      showsVerticalScrollIndicator={false}
-            // ListEmptyComponent={() => <EmptyView/>}
-                      onEndReached={({ distanceFromEnd }) => {
-                        requestListDetailData({
-                          clear: false,
-                          startDate: startDate,
-                          endDate: endDate,
-                        })
-                      }}
-                      onEndReachedThreshold={0.2}
-                      renderItem={({ item, index }) => {
-                        return (
-                          renderItemContent(item)
-                        )
-                      }}/>,
-        renderCalendar(),
+        ? <EmptyView style={{ flex: 1,marginTop:scale(70) }}/>
+        : 
+        <FlatList refreshControl={refreshCT}
+        style={{marginTop:scale(70)}}
+                    keyExtractor={(item, index) => `${item}-${index}`}
+                    data={capitalDetailData}
+                    showsVerticalScrollIndicator={false}
+          // ListEmptyComponent={() => <EmptyView/>}
+                    onEndReached={({ distanceFromEnd }) => {
+                      requestListDetailData({
+                        clear: false,
+                        startDate: startDate,
+                        endDate: endDate,
+                      })
+                    }}
+                    onEndReachedThreshold={0.2}
+                    renderItem={({ item, index }) => {
+                      return (
+                        renderItemContent(item)
+                      )
+                    }}/>,
+        renderTitleHint(),
+
       ]
     }
   </View>
