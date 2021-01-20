@@ -33,7 +33,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
   const [showUrl, setShowUrl] = useState((linkUrl.length>0) || (linkCategory>0))
   // const [show, setShow] = useState(true)
   // if (show) {
-    ugLog("linkUrl: " + linkUrl +", " + linkCategory + ", showUrl: " + showUrl)
+    ugLog("linkUrl: " + linkUrl + ", linkCategory：" + linkCategory + ", linkPosition: " + linkPosition + ", showUrl: " + showUrl)
   return (
     <View style={[{ width: '100%' }, containerStyle]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
@@ -103,7 +103,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
               <Text style={{ marginVertical:13, fontSize: 17, fontWeight: '500' }}>{title}</Text>
               <View style={{ height:1, width:'100%', backgroundColor:'#ddd'}} />
             </View>
-            <View style={{ flex: 8 }}>
+            <View style={{ flex:8 }}>
               <ScrollView 
                 showsVerticalScrollIndicator={false} 
                 style={{paddingHorizontal:5}}>
@@ -129,12 +129,16 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
                       content,
                   }}/>
                   {showUrl ? 
-                    (<TouchableOpacity
-                        style={{ flex: 1, width: '100%', height: scale(60), alignItems: 'center'}}
+                    (<Button
+                        containerStyle={{ flex: 1, width: '100%', height: scale(90), alignItems: 'center'}}
+                        showLogo={true}
+                        logoStyle={{ flex: 1, width: '100%', alignItems: 'center'}}
+                        logo={Res.promotion_more}
                         onPress={() => {
                           ugLog("onPress promotion url: " + linkUrl)
                           if (linkUrl) {
                             push(PageName.Game3rdView, {url: linkUrl})
+                            setShowPop(false)
                             return
                           }
                           let game: PushHomeGame = {
@@ -143,15 +147,11 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
                             subId: linkPosition,
                           }
                           PushHelper.pushHomeGame(game)
-                        }}>
-                        <Image 
-                          source={{ uri: Res.promotion_more }} 
-                          style={{ width: scale(250), height: scale(60)}}
-                          />
-                      </TouchableOpacity>
-                      
-                    ):({})
-                  }
+                          setShowPop(false)
+                        }}
+                      />
+                  ):({})
+                }
               </ScrollView>
             </View>
             <View style={styles.buttonContainer}>

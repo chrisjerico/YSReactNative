@@ -57,6 +57,7 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
   useEffect(() => {
     if (url) {
       setPath(url)
+      webViewRef.current.reload()
     }
     if (game) {
       updateData()
