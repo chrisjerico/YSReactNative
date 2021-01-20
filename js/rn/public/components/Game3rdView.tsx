@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View, Image, Alert } from 'react-native'
+import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View, Image, Alert, SafeAreaView } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { UGBasePageProps } from '../../pages/base/UGPage'
@@ -35,6 +35,7 @@ import { ANHelper } from '../define/ANHelper/ANHelper'
 import { CMD } from '../define/ANHelper/hp/CmdDefine'
 import { WebViewNavigationEvent } from 'react-native-webview/lib/WebViewTypes'
 import { Res } from '../../Res/icon/Res'
+import PlayChoiceItem from '../../pages/common/LottoBetting/PlayVIew/comm/widgets/PlayChoiceItem'
 
 /**
  * 第三方遊戲畫面
@@ -46,6 +47,8 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
   const { game } = route?.params
 
   const [path, setPath] = useState("")
+  const [key, setkey] = useState(1)
+  const [isWebViewUrlChanged, setIsWebViewUrlChanged] = useState(false)
 
   const webViewRef = useRef<WebView>()
 
@@ -78,7 +81,7 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
         ugLog("realGame: " + AppDefine.host + '/wjapp/api.php?c=real&a=gameUrl' + params)
         setPath(AppDefine.host + '/wjapp/api.php?c=real&a=gameUrl' + params )
         // setPath(resData)
-        webViewRef.current.reload()
+        webViewRef.current.reload()  
       } else {
         Toast(res?.msg)
       }
@@ -86,21 +89,19 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
     })
   }
 
-  let state = {
-    key: 1,
-    isWebViewUrlChanged: false
-  };
-
   let resetWebViewToInitialUrl = () => {
-    if (state.isWebViewUrlChanged) {
-      state.key = state.key + 1
-      state.isWebViewUrlChanged = false
+    ugLog("isWebViewUrlChanged: " + isWebViewUrlChanged)
+    if (isWebViewUrlChanged) {
+      ugLog("key: " + key)
+      if (key > 5) return
+      setkey(key+1)
+      setIsWebViewUrlChanged(false)
     }
   };
 
   let setWebViewUrlChanged = webviewState => {
     if (webviewState.url !== path) {
-      state.isWebViewUrlChanged = true
+      setIsWebViewUrlChanged(true)
       if (webviewState.url.includes('mobile/#/home')) 
         pop()
       if (webviewState.url.toString() == 'about:blank')  {
@@ -121,33 +122,39 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
   }
 
   return (
-    <View style={[CommStyles.flex, {alignItems: 'flex-end'}]}>
+    <View style={_styles.container}>
+    <WebView
+      ref={webViewRef}
+      style={_styles.webview}
+      key={ key }
+      source={{ uri: path }}
+      onMessage={(e: WebViewMessageEvent) => {
+        ugLog("onMessage:" + e?.nativeEvent?.data)
+      }}
+      onNavigationStateChange={ setWebViewUrlChanged }
+      // onLoadStart={(e: WebViewNavigationEvent) => {
+      //   ugLog("onLoadStart:" + e.nativeEvent)
+      // }}
+    />
+    <View style={{position: 'absolute', right: 0, top: 0, marginRight: 5, marginTop: 5}}>
       <TouchableOpacity
         onPress={onPress}>
-        <Image style={{ width: scale(60), height: scale(70), resizeMode: 'stretch', position: 'relative', marginRight: 5, marginTop: 5 }} 
+        <Image style={{ width: scale(60), height: scale(70), resizeMode: 'stretch'}} 
         source={{ uri: Res.back_home }} />
       </TouchableOpacity>
-      <WebView
-        ref={webViewRef}
-        style={_styles.webview}
-        key={ state.key }
-        source={{ uri: path }}
-        onMessage={(e: WebViewMessageEvent) => {
-          ugLog("onMessage:" + e?.nativeEvent?.data)
-        }}
-        onNavigationStateChange={ setWebViewUrlChanged }
-        // onLoadStart={(e: WebViewNavigationEvent) => {
-        //   ugLog("onLoadStart:" + e)
-        // }}
-      />
+    </View>
     </View>
   )
 }
 
 const _styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   webview: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
+    width: AppDefine.width,
+    height: AppDefine.height,
   }
 })
 
