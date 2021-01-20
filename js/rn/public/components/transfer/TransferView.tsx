@@ -33,6 +33,7 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import LinearGradient from 'react-native-linear-gradient'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
+import { showLoading, showSuccess } from '../../widget/UGLoadingCP'
 
 const myWallet = { title: '我的钱包', id: 0 }
 const dataArr = [myWallet]
@@ -106,9 +107,19 @@ export const TransferView = ({ setProps, navigation }) => {
   }
 
   const autoTransfer = async () => {
-    api.real.autoTransferOut().useSuccess((data) => {
-      Alert.alert(data.msg)
-      UGUserModel.updateFromNetwork()
+    showLoading()
+    let __cnt = 0
+    api.real.oneKeyTransferOut().useSuccess(({ data }) => {
+      data?.games?.forEach((ele) => {
+        api.real.quickTransferOut(ele?.id?.toString()).useCompletion((res, err, sm) => {
+          sm.noShowErrorHUD = true
+          __cnt++
+          if (__cnt >= data?.games?.length) {
+            showSuccess('一键提取完成')
+            UGUserModel.updateFromNetwork()
+          }
+        })
+      })
     })
     const { data } = await api.game.realGames().promise
     setData(data.data)

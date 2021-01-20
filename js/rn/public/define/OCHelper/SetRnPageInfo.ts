@@ -40,10 +40,6 @@ export async function setRnPageInfo(force = false) {
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
-    // ezer
-    if (skitType.indexOf('乐橙') != -1) {
-      pages = pages.concat(LCPages)
-    }
     // tars
     if (skitType.indexOf('宝石红') != -1) {
       pages = pages.concat(BSHPages)
@@ -244,6 +240,9 @@ export async function setRnPageInfo(force = false) {
   }
   if (skitType.indexOf('利来') != -1) {
     pages = pages.concat(LLPages)
+  }
+  if (skitType.indexOf('乐橙') != -1) {
+    pages = pages.concat(LCPages)
   }
   // 替换原生页面
   RnPageModel.pages = pages

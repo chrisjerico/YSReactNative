@@ -26,12 +26,12 @@ export class api_real {
 
   // 额度一键转出，第一步：获取需要转出的真人ID
   static oneKeyTransferOut() {
-    return this.c.post('oneKeyTransferOut');
+    return this.c.post<{games:[{id:number, name:string}]}>('oneKeyTransferOut');
   }
 
   // 额度一键转出，第二步：根据真人ID并发请求单游戏快速转出
   static quickTransferOut(id:string) {
-    return this.c.post('quickTransferOut', {id:id});
+    return this.c.post<null>('quickTransferOut', {id:id});
   }
 
   // 真人余额查询
