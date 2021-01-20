@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -6,10 +6,10 @@ import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcLMA, { ILMABallArray } from './UseLhcLMA'
+import UseLhcLMA from './UseLhcLMA'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import LotteryEBall from '../../widget/LotteryEBall'
+import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 
 
@@ -83,7 +83,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
 
     return (
       <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}

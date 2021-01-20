@@ -45,12 +45,6 @@ const CHIP_OPTION = {
   'c': Res.clr,
 }
 
-interface ILMABallArray {
-  id: string//球的id + 编号组成
-  name?: string
-  odds?: string
-}
-
 export default UseLhcBoard
-export { ILMABallArray, CHIP_OPTION }
+export { CHIP_OPTION }
 

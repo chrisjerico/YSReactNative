@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
-import { PlayGroupData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { ILotteryEBallItem } from '../../widget/LotteryEBall'
 
 
 /**
@@ -28,7 +29,7 @@ const UseLhcZXBZ = () => {
     zodiacBallIds,
   } = UseLotteryHelper()
 
-  const [ballArray, setBallArray] = useState<Array<ILMABallArray>>(null) //当前生成的数据
+  const [ballArray, setBallArray] = useState<Array<ILotteryEBallItem>>(null) //当前生成的数据
 
   useEffect(() => {
     if (!anyEmpty(pageData) && !anyEmpty(pageData[tabIndex][0].plays)) {
@@ -76,12 +77,5 @@ const UseLhcZXBZ = () => {
   }
 }
 
-interface ILMABallArray {
-  id: string//球的id + 编号组成
-  name?: string
-  odds?: string
-}
-
 export default UseLhcZXBZ
-export { ILMABallArray }
 

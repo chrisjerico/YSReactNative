@@ -12,6 +12,15 @@ import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import * as React from 'react'
 import LotteryData from '../const/LotteryData'
 import { ugLog } from '../../../public/tools/UgLog'
+import parseTMData from './ps/ParseTMDataUtil'
+import parseHXData from './ps/ParseHXDataUtil'
+import parseZTData from './ps/ParseZTDataUtil'
+import parseLMAData from './ps/ParseLMADataUtil'
+import parseSBData from './ps/ParseSBDataUtil'
+import parsePTYXData from './ps/ParsePTYXDataUtil'
+import parseWSData from './ps/ParseWSDataUtil'
+import parseLXData from './ps/ParseLXDataUtil'
+import parseLWData from './ps/ParseLWDataUtil'
 
 /**
  * 根据名字或别名找出生肖
@@ -38,159 +47,48 @@ interface INameOrAlias {
  */
 const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddData[] => {
   //给生肖生成id
-  const idZodiacNum = playOddDetailData?.setting?.zodiacNums?.map((item, index) => ({
+  const zodiacNum = playOddDetailData?.setting?.zodiacNums?.map((item, index) => ({
     ...item,
     id: index.toString()
   }))
 
   return playOddDetailData?.playOdds?.map((playOddData) => {
+    if(anyEmpty(playOddData?.playGroups)) return playOddData
+
     switch (playOddData?.code) {
       case LotteryConst.TM:  //特码
-        //特码取前3个数据 特码 两面 色波
-        if (!anyEmpty(playOddData?.playGroups)) {
-          return {
-            ...playOddData,
-            pageData: {
-              zodiacNums: idZodiacNum,
-              groupTri: [
-                [playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]],
-                [playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]],
-              ],
-            } as PagePlayOddData,
-          }
-        }
-        break
+        return parseTMData({playOddData, zodiacNum})
 
       case LotteryConst.HX://合肖
-        if (!anyEmpty(playOddData?.playGroups)) {
-          return {
-            ...playOddData,
-            pageData: {
-              zodiacNums: idZodiacNum,
-              groupTri: [playOddData?.playGroups],
-            } as PagePlayOddData,
-          }
-        }
-        break
+        return parseHXData({playOddData, zodiacNum})
 
       case LotteryConst.ZM: //正码
       case LotteryConst.ZT:  //正特
-        if (arrayLength(playOddData?.playGroups) % 2 == 0) {//长度是偶数
-          let newData = new Array<Array<PlayGroupData>>()
-          playOddData?.playGroups?.map((item, index) => {
-            if (index % 2 == 0) {
-              newData.push([
-                playOddData?.playGroups[index],
-                playOddData?.playGroups[index + 1],
-              ])
-            }
-          })
-
-          return {
-            ...playOddData,
-            pageData: {
-              groupTri: newData,
-            } as PagePlayOddData,
-          }
-        }
-        break
+        return parseZTData({playOddData, zodiacNum})
 
       case LotteryConst.LMA:  //连码
       case LotteryConst.ZXBZ:  //自选不中
-        return {
-          ...playOddData,
-          pageData: {
-            groupTri: !anyEmpty(playOddData?.playGroups) ?
-              playOddData?.playGroups?.map((item) => [item]) :
-              [],
-          } as PagePlayOddData,
-        }
+        return parseLMAData({playOddData, zodiacNum})
 
       case LotteryConst.LM: //两面
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
       case LotteryConst.WX:  //五行
-        return {
-          ...playOddData,
-          pageData: {
-            groupTri: !anyEmpty(playOddData?.playGroups) ?
-              [playOddData?.playGroups] :
-              [],
-          } as PagePlayOddData,
-        }
+        return parseSBData({playOddData, zodiacNum})
 
       case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TX: //特肖
       case LotteryConst.ZX: //正肖
-        const zxGroup = combinePlayAndZodiac({
-          zodiacNums: idZodiacNum,
-          playOddData: playOddData,
-        })
-
-        return {
-          ...playOddData,
-          pageData: {
-            groupTri: [zxGroup],
-          } as PagePlayOddData,
-        }
-
       case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        const wsGroup = combinePlayAndZodiac({
-          zodiacNums: idZodiacNum,
-          playOddData: playOddData,
-        })
-        return {
-          ...playOddData,
-          pageData: {
-            groupTri: [wsGroup],
-          } as PagePlayOddData,
-        }
-
       case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        const twsGroup = combinePlayAndZodiac({
-          zodiacNums: idZodiacNum,
-          playOddData: playOddData,
-        })
-        return {
-          ...playOddData,
-          pageData: {
-            groupTri: [twsGroup],
-          } as PagePlayOddData,
-        }
+        return parsePTYXData({playOddData, zodiacNum})
 
       case LotteryConst.LX: //连肖
-        const lxGroup = combinePlayAndZodiac({
-          zodiacNums: idZodiacNum,
-          playOddData: playOddData,
-        })
-        return {
-          ...playOddData,
-          pageData: {
-            groupTri: lxGroup?.map((item) => [item]),
-          } as PagePlayOddData,
-        }
+        return parseLXData({playOddData, zodiacNum})
 
       case LotteryConst.LW: //连尾
-        //连尾数据缺少一个 尾，补上
-        const newGroup = playOddData?.playGroups?.map((item) => ({
-          ...item,
-          plays: item?.plays?.map((item) => ({
-              ...item,
-              alias: item?.alias + '尾',
-            }
-          )),
-        }))
-        const lwGroup = combinePlayAndZodiac({
-          zodiacNums: idZodiacNum,
-          playOddData: { ...playOddData, playGroups: newGroup },
-        })
-        return {
-          ...playOddData,
-          pageData: {
-            groupTri: lwGroup?.map((item) => [item]),
-          } as PagePlayOddData,
-        }
+        return parseLWData({playOddData, zodiacNum})
     }
 
     return playOddData
@@ -288,4 +186,4 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
 
 }
 
-export { findZodiacByName, parseLotteryDetailData }
+export { findZodiacByName, parseLotteryDetailData, combinePlayAndZodiac }

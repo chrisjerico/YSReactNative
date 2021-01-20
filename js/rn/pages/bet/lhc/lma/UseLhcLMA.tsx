@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../../util/UseLotteryHelper'
 import { PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { ILotteryEBallItem } from '../../widget/LotteryEBall'
 
 
 /**
@@ -27,13 +28,13 @@ const UseLhcLMA = () => {
     zodiacBallIds,
   } = UseLotteryHelper()
 
-  const [ballArray, setBallArray] = useState<Array<ILMABallArray>>(null) //当前生成的数据
+  const [ballArray, setBallArray] = useState<Array<ILotteryEBallItem>>(null) //当前生成的数据
 
   useEffect(() => {
     if (!anyEmpty(pageData) && !anyEmpty(pageData[tabIndex][0].plays)) {
       const data = pageData[tabIndex][0]
 
-      let arr: Array<ILMABallArray>
+      let arr: Array<ILotteryEBallItem>
       const play0 = data?.plays[0]
       //多个赔率的生成47个球，否则49个球
       if (arrayLength(data?.plays) > 1) {
@@ -93,12 +94,5 @@ const UseLhcLMA = () => {
   }
 }
 
-interface ILMABallArray {
-  id?: string//球的id + 编号组成
-  name?: string
-  odds?: string
-}
-
 export default UseLhcLMA
-export { ILMABallArray }
 

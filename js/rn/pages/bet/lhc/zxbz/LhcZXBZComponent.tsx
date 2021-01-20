@@ -5,10 +5,10 @@ import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcZXBZ, { ILMABallArray } from './UseLhcZXBZ'
+import UseLhcZXBZ from './UseLhcZXBZ'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import LotteryEBall from '../../widget/LotteryEBall'
+import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 
 
@@ -44,7 +44,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
 
     return (
       <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}

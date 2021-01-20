@@ -31,6 +31,8 @@ export interface PlayGroupData {
   from_id: string; //0
   alias: string; //"两面"
   plays: PlayData[];
+
+  exPlays: PlayData[]; //本地生成的数据
 }
 
 export interface PlayOddData {

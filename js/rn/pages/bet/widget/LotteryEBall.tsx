@@ -99,7 +99,7 @@ const _styles = StyleSheet.create({
 })
 
 /**
- * 和 PlayData 结构类似
+ * 球的数据 和 PlayData 结构类似
  */
 interface ILotteryEBallItem {
   id?: string; //708501
