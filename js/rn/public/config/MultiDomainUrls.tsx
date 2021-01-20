@@ -163,7 +163,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://4924920.com',
   ],
   'c053': [
-    'https://988c53.com',
+    'https://36c53.com',
+    'https://39c53.com',
+    'https://57c53.com',
+    'https://72c53.com',
+    'https://79c53.com',
   ],
   'c073': [
     'https://c732.vip',
@@ -216,10 +220,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615vv.com',
   ],
   'c116': [
-    'https://58933d.com',
-    'https://58933c.com',
-    'https://58922c.com',
     'https://20801353.com',
+    'https://58922c.com',
+    'https://58922d.com',
+    'https://58933c.com',
+    'https://58933d.com',
   ],
   'c117': [
     'https://646482.com',

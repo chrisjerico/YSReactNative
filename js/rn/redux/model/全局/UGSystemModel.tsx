@@ -46,6 +46,7 @@ export interface UserCenter {
   site_ids: string
   sorts: string
   status: string
+  user_center_category: string //分类ID
 }
 
 export default interface UGSystemModel {
@@ -154,4 +155,5 @@ export default interface UGSystemModel {
   zxkfUrl2: string
   appVersion: string
   mobileHomeGameTypeSwitch: boolean
+  userCenterCategoryList: [{ id: number, name: string }]//个人中心页分类列表
 }

@@ -637,7 +637,7 @@ export async function updateOcSkin() {
   if (Platform.OS != 'ios') return
   if (Skin1.skitType == '默认') return
   // 已上线模板
-  const isOnlineSkin = skin1.skitType.indexOf('尊龙') != -1 || skin1.skitType.indexOf('香槟金') != -1 || skin1.skitType.indexOf('威尼斯') != -1 || skin1.skitType.indexOf('宝石红') != -1 || skin1.skitType.indexOf('乐FUN') != -1
+  const isOnlineSkin = skin1.skitType.indexOf('尊龙') != -1 || skin1.skitType.indexOf('香槟金') != -1 || skin1.skitType.indexOf('威尼斯') != -1 || skin1.skitType.indexOf('宝石红') != -1 || skin1.skitType.indexOf('乐FUN') != -1 || skin1.skitType.indexOf('利来') != -1 || skin1.skitType.indexOf('乐橙') != -1
   const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin
   if (!ok) return
 
