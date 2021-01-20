@@ -5,9 +5,10 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import EmptyView from '../../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
+import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { LotteryHistoryData, PlayData } from '../../../../public/network/Model/lottery/LotteryHistoryModel'
 import UseBetRecordList from './UseBetRecordList'
+import { BallStyles } from '../../const/LotteryConst'
 
 interface IHallGameList {
   historyData?: LotteryHistoryData //所有数据
@@ -227,28 +228,6 @@ const BetRecordListComponent = ({
     </View>
   )
 }
-
-/**
- * 球的样式
- */
-export const BallStyles = {
-  'lhc': BallType.round, //六合彩
-  'qxc': BallType.pure, //"七星彩系列"
-  'cqssc': BallType.pure, //"时时彩系列"
-  'pk10': BallType.square, //"赛车系列"
-  'xyft': BallType.square, //"飞艇系列"
-  'yncp': BallType.pure, //"越南彩系列"
-  'fc3d': BallType.pure, //"3D系列"
-  'gdkl10': BallType.pure, //"快乐10分系列"
-  'pk10nn': BallType.square, //"牛牛系列"
-  'xync': BallType.vegetable, //"幸运农场系列"
-  'bjkl8': BallType.pure, //"快乐8系列"
-  'dlt': BallType.round, //"大乐透系列"
-  'pcdd': BallType.pure, //"蛋蛋系列"
-  'jsk3': BallType.sz, //"快三系列"
-  'gd11x5': BallType.pure, //"11选5系列"
-}
-
 
 const _styles = StyleSheet.create({
   ball_item_container: {

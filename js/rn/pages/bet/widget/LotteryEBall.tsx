@@ -1,7 +1,6 @@
 import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { StyleProp, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
-import { BallStyles } from '../../hall/new/games/HallGameListComponent'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
@@ -9,6 +8,7 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { ugLog } from '../../../public/tools/UgLog'
+import { BallStyles } from '../const/LotteryConst'
 
 interface ILotteryEBall {
   item?: ILotteryEBallItem // 要绘制的数据

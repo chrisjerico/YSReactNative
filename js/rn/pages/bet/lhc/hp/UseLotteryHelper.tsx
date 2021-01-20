@@ -52,10 +52,6 @@ const UseLotteryHelper = () => {
     const zodiacIds = groupData?.plays?.filter((item) => checkMap?.includes(item?.name))
       .map((item) => item?.id)
 
-    ugLog('checkMap=', JSON.stringify(checkMap))
-    ugLog('zodiacIds=', JSON.stringify(zodiacIds))
-    ugLog('data=', JSON.stringify(groupData))
-
     return zodiacIds
   }
 

@@ -211,6 +211,7 @@ const _styles = StyleSheet.create({
   middle_content_container: {
     flexDirection: 'row',
     // height: BALL_CONTENT_HEIGHT,
+    paddingBottom: scale(120)
   },
   left_column_container: {
     height: BALL_CONTENT_HEIGHT,
@@ -219,7 +220,7 @@ const _styles = StyleSheet.create({
     height: BALL_CONTENT_HEIGHT,
   },
   left_column_content: {
-    paddingBottom: scale(240),
+    paddingBottom: scale(120),
   },
   left_column_text: {
     color: UGColor.TextColor7,

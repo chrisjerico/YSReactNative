@@ -1,19 +1,14 @@
-import { ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcSB from './UseLhcSB'
-import LotteryBall from '../../../../public/components/view/LotteryBall'
-import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
-import ERect from '../../../../public/components/view/lottery/ERect'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
-import { PlayGroup } from '../../../../public/network/Model/PlayOddDataModel'
-import { ugLog } from '../../../../public/tools/UgLog'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行
@@ -103,7 +98,7 @@ const _styles = StyleSheet.create({
   },
   content_container: {
     flex: 1,
-    paddingBottom: scale(240),
+    paddingBottom: scale(120),
   },
   sub_title_container: {
     alignItems: 'center',
