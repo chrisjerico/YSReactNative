@@ -580,8 +580,8 @@ export default class PushHelper {
             return
           }
           case UGUserCenterType.在线客服: {
-            subId = MenuType.KF
-            break
+            push(PageName.OnlineService)
+            return
           }
           case UGUserCenterType.活动彩金: {
             subId = MenuType.SQCJ

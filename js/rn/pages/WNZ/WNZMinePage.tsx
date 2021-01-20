@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Alert, ScrollView, StyleSheet } from 'react-native'
+import { Alert, ScrollView, StyleSheet, View } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -98,6 +98,32 @@ const WNZMinePage = () => {
   )
 
   const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.优惠活动, UGUserCenterType.推荐收益, UGUserCenterType.活动彩金].includes(ele?.code))
+  let categoryList: { title: string, tools: any[] }[] = sysInfo?.userCenterCategoryList?.map((category) => {
+    return { title: category.name, tools: otherTools?.filter((t) => t?.user_center_category == category?.id?.toString()) }
+  }).filter((category) => category?.tools?.length)
+  if (categoryList?.length) {
+    categoryList?.push({ 'title': '其他', tools: otherTools?.filter((t) => !sysInfo?.userCenterCategoryList?.filter((category) => category?.id?.toString() == t?.user_center_category).length) })
+  } else {
+    categoryList = [
+      {
+        title: '常用工具',
+        tools: usuallyTools,
+      },
+      {
+        title: '个人信息',
+        tools: userTools,
+      },
+      {
+        title: '投注记录',
+        tools: recordTools,
+      },
+      {
+        title: '优惠活动',
+        tools: activityTools,
+      },
+    ]
+  }
+
   // @ts-ignore
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
@@ -144,24 +170,7 @@ const WNZMinePage = () => {
           onPressLeftButton={() => PushHelper.pushUserCenterType(headrTools[0]?.code)}
           onPressRightButton={() => PushHelper.pushUserCenterType(headrTools[1]?.code)}
         />
-        {[
-          {
-            title: '常用工具',
-            tools: usuallyTools,
-          },
-          {
-            title: '个人信息',
-            tools: userTools,
-          },
-          {
-            title: '投注记录',
-            tools: recordTools,
-          },
-          {
-            title: '优惠活动',
-            tools: activityTools,
-          },
-        ].map((item, index) => {
+        {categoryList?.map((item, index) => {
           const { title, tools } = item
           return (
             <ToolBlock
@@ -225,6 +234,7 @@ const WNZMinePage = () => {
             />
           )
         })}
+        <View style={{ height: 60 }} />{/* 适配iPhoneX底部安全距离 */}
       </ScrollView>
       <MenuModalComponent
         ref={menu}

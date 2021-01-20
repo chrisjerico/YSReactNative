@@ -108,6 +108,7 @@ import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage
 import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
 import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
 import EmptyPage from '../common/ep/EmptyPage'
+import { OnlineService } from '../../public/components/OnlineService'
 import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
 import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
 import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
@@ -172,6 +173,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDChangLongPage,//长龙主页
   JDBetRecordDetailPage,//长龙注单详情
   JDBetDetailPage,//下注明细
+  OnlineService,//在线客服
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页
