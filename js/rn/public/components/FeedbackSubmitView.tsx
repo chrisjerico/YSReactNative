@@ -87,12 +87,9 @@ export const FeedbackSubmitView = ({ route }) => {
       OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, (args: [imgs: string[], assets: [], isSelectOriginalPhoto: boolean]) => {
         const imgURLs = args[0]
         if (imgURLs?.length) {
-          let imgs = [];
-          imgs.push(imgURLs);
           showLoading()
-          api.user.uploadFeedback(imgs).useSuccess(({ data, msg }) => {
+          api.user.uploadFeedback(imgURLs).useSuccess(({ data, msg }) => {
             showSuccess(msg)
-            imgs.length = 0
             // console.log('返回的数据'+JSON.stringify(data));
             let dic = data;
             // console.log("输出最初的字典元素: ");
