@@ -24,6 +24,7 @@ import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
 import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
 import { Skin1 } from '../theme/UGSkinManagers'
+import APIRouter from '../network/APIRouter'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -136,9 +137,11 @@ export default class PushHelper {
           // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
           // return
         }
+        console.log('pushDeposit')
         if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
 
         if (game?.seriesId == 7 && game?.subId == GameType.游戏大厅) {  //游戏大厅
+          console.log('游戏大厅')
           push(PageName.GameLobbyPage, { showBackButton: true })
           return
         }
@@ -147,6 +150,15 @@ export default class PushHelper {
           return
         }
 
+        if (game?.seriesId && ["2", "3", "4", "5", "6", "8"].includes(game.seriesId+'') && game?.gameId) {  //第三方遊戲
+          console.log('第三方遊戲')
+          if (UGUserModel.checkLogin()) {
+            push(PageName.Game3rdView, { game: game })
+          }
+          return 
+        }
+
+        console.log('OPEN_NAVI_PAGE')
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }
