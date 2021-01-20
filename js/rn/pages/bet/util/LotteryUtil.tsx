@@ -37,6 +37,12 @@ interface INameOrAlias {
  * ]
  */
 const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddData[] => {
+  //给生肖生成id
+  const idZodiacNum = playOddDetailData?.setting?.zodiacNums?.map((item, index) => ({
+    ...item,
+    id: index.toString()
+  }))
+
   return playOddDetailData?.playOdds?.map((playOddData) => {
     switch (playOddData?.code) {
       case LotteryConst.TM:  //特码
@@ -45,11 +51,23 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
           return {
             ...playOddData,
             pageData: {
-              zodiacNums: playOddDetailData?.setting?.zodiacNums,
+              zodiacNums: idZodiacNum,
               groupTri: [
                 [playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]],
                 [playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]],
               ],
+            } as PagePlayOddData,
+          }
+        }
+        break
+
+      case LotteryConst.HX://合肖
+        if (!anyEmpty(playOddData?.playGroups)) {
+          return {
+            ...playOddData,
+            pageData: {
+              zodiacNums: idZodiacNum,
+              groupTri: [playOddData?.playGroups],
             } as PagePlayOddData,
           }
         }
@@ -106,32 +124,32 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case LotteryConst.TX: //特肖
       case LotteryConst.ZX: //正肖
         const zxGroup = combinePlayAndZodiac({
-          zodiacNums: playOddDetailData.setting.zodiacNums,
+          zodiacNums: idZodiacNum,
           playOddData: playOddData,
         })
 
         return {
           ...playOddData,
           pageData: {
-            groupTri: [[null, ...zxGroup]],
+            groupTri: [zxGroup],
           } as PagePlayOddData,
         }
 
       case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         const wsGroup = combinePlayAndZodiac({
-          zodiacNums: playOddDetailData.setting.zodiacNums,
+          zodiacNums: idZodiacNum,
           playOddData: playOddData,
         })
         return {
           ...playOddData,
           pageData: {
-            groupTri: [[null, ...wsGroup]],
+            groupTri: [wsGroup],
           } as PagePlayOddData,
         }
 
       case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         const twsGroup = combinePlayAndZodiac({
-          zodiacNums: playOddDetailData.setting.zodiacNums,
+          zodiacNums: idZodiacNum,
           playOddData: playOddData,
         })
         return {
@@ -143,7 +161,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
 
       case LotteryConst.LX: //连肖
         const lxGroup = combinePlayAndZodiac({
-          zodiacNums: playOddDetailData.setting.zodiacNums,
+          zodiacNums: idZodiacNum,
           playOddData: playOddData,
         })
         return {
@@ -164,7 +182,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
           )),
         }))
         const lwGroup = combinePlayAndZodiac({
-          zodiacNums: playOddDetailData.setting.zodiacNums,
+          zodiacNums: idZodiacNum,
           playOddData: { ...playOddData, playGroups: newGroup },
         })
         return {
@@ -225,11 +243,11 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
     case LotteryConst.YX: //平特一肖
     case LotteryConst.TX: //特肖
     case LotteryConst.ZX: //正肖
-      return groupData?.plays.map((item) =>
+      return groupData?.plays.map((item, index) =>
         zodiacNums?.find((zodiac) =>
           zodiac?.name == item?.name))
     case LotteryConst.LX: //连肖
-      return groupData?.plays.map((item) => {
+      return groupData?.plays.map((item, index) => {
         let zodiacNum = zodiacNums?.find((zodiac) =>
           zodiac?.name == item?.alias)
         return {
@@ -240,30 +258,33 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
     case LotteryConst.WS://平特尾数
       return groupData?.plays.map((item, index) => {
         return {
+          id: item?.id,
           key: item?.id,
           name: item?.name,
           nums: LotteryData.WS[index],
-        }
+        } as ZodiacNum
       })
     case LotteryConst.TWS://头尾数
       return groupData?.plays.map((item, index) => {
         return {
+          id: item?.id,
           key: item?.id,
           name: item?.name,
           nums: LotteryData.WS[index],
-        }
+        } as ZodiacNum
       })
     case LotteryConst.LW://连尾
       return groupData?.plays.map((item, index) => {
         return {
+          id: item?.id,
           key: item?.id,
           alias: item?.alias,
           nums: LotteryData.WS[index],
-        }
+        } as ZodiacNum
       })
   }
 
-  return null
+  return zodiacNums
 
 }
 

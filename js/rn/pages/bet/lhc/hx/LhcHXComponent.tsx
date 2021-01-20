@@ -11,6 +11,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
@@ -21,6 +22,7 @@ import { findZodiacByName } from '../../util/LotteryUtil'
 const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
     curData,
@@ -32,11 +34,13 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    updatePlayOddData,
   } = UseLhcHX()
 
   useEffect(() => {
-    updatePlayOddData(playOddData)
+    ugLog('playOddData=', JSON.stringify(playOddData))
+    setPlayOddData(playOddData)
+    setCurData(playOddData?.pageData?.groupTri[0])
+    setZodiacData(playOddData?.pageData?.zodiacNums)
   }, [])
   const key = 'lottery page' + playOddData?.code
 
