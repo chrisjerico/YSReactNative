@@ -34,20 +34,16 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcZT()
 
   useEffect(() => {
     setPlayOddData(playOddData)
-    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
   const key = 'lottery page' + playOddData?.code
 
@@ -69,7 +65,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制tab，只有1个数据不绘制Tab
    */
-  const renderTab = () => arrayLength(pageData) > 1 && <View key={key + 'tab'}
+  const renderTab = () => arrayLength(playOddData?.pageData?.groupTri) > 1 && <View key={key + 'tab'}
                                                              style={_styles.tab_title_container}>
     <ScrollView key={key + 'sv'}
                 style={_styles.sv_tab_container}
@@ -78,7 +74,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View key={key + 'content'}
             style={_styles.tab_title_content}>
         {
-          pageData?.map(renderTabItem)
+          playOddData?.pageData?.groupTri?.map(renderTabItem)
         }
       </View>
     </ScrollView>
@@ -160,8 +156,8 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {arrayLength(curData) > 0 && renderZT1(curData[0])}
-    {arrayLength(curData) > 1 && renderZT2(curData[1])}
+    {arrayLength(currentPageData()) > 0 && renderZT1(currentPageData()[0])}
+    {arrayLength(currentPageData()) > 1 && renderZT2(currentPageData()[1])}
   </View>
 
   return (

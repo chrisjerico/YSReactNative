@@ -13,15 +13,12 @@ const UseLhcHX = () => {
   const {
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     playOddData,
     setPlayOddData,
     playOddDetailData,
     selectedBalls,
     setSelectedBalls,
+    currentPageData,
     addOrRemoveBall,
   } = UseLotteryHelper()
 
@@ -29,12 +26,9 @@ const UseLhcHX = () => {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedBalls,
     setSelectedBalls,
+    currentPageData,
     addOrRemoveBall,
   }
 }

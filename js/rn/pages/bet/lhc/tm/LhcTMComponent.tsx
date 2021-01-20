@@ -25,24 +25,17 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
-    zodiacData,
-    setZodiacData,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveZodiac,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcTM()
 
   useEffect(() => {
     setPlayOddData(playOddData)
-    setPageData(playOddData?.pageData?.groupTri)
-    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
   const key = 'lottery page' + playOddData?.code
 
@@ -62,7 +55,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               style={[
                 _styles.tab_title,
                 tabIndex == tab ? { color: 'white' } : null,
-              ]}>{!anyEmpty(pageData) && pageData[tab][0].alias}</Text>
+              ]}>{!anyEmpty(playOddData?.pageData?.groupTri) && playOddData?.pageData?.groupTri[tab][0].alias}</Text>
       </TouchableWithoutFeedback>
     </View>
 
@@ -78,6 +71,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 生肖
    * @param item
+   * @param index
    */
   const renderZodiacItem = (item?: ZodiacNum, index?: number) => <TouchableWithoutFeedback key={key + `${item?.name}_select`}
                                                                                    onPress={() => addOrRemoveZodiac(item)}>
@@ -108,7 +102,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View key={key + 'zodiac content'}
             style={_styles.zodiac_container}>
         {
-          zodiacData?.map(renderZodiacItem)
+          playOddData?.pageData?.zodiacNums?.map(renderZodiacItem)
         }
       </View>
     </ScrollView>
@@ -211,9 +205,9 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {arrayLength(curData) > 0 && renderTM(curData[0])}
-    {arrayLength(curData) > 1 && renderLM(curData[1])}
-    {arrayLength(curData) > 2 && renderSB(curData[2])}
+    {arrayLength(currentPageData()) > 0 && renderTM(currentPageData()[0])}
+    {arrayLength(currentPageData()) > 1 && renderLM(currentPageData()[1])}
+    {arrayLength(currentPageData()) > 2 && renderSB(currentPageData()[2])}
   </View>
 
   return (

@@ -13,10 +13,6 @@ const UseLhcSB = () => {
   const {
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     playOddData,
     setPlayOddData,
     playOddDetailData,
@@ -24,23 +20,17 @@ const UseLhcSB = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLotteryHelper()
-
-  useEffect(() => {
-    setCurData(playOddData?.pageData?.groupTri[tabIndex])
-  }, [tabIndex])
 
   return {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   }
 }
 

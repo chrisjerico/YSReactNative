@@ -15,31 +15,25 @@ const UseLhcPTYX = () => {
   const {
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
     playOddData,
     setPlayOddData,
     playOddDetailData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLotteryHelper()
 
   const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //选中了生肖数据
-
-  useEffect(() => {
-    setCurData(playOddData?.pageData?.groupTri[tabIndex])
-  }, [tabIndex])
 
   return {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   }
 }
 

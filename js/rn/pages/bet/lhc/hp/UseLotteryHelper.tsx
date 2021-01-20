@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import BetLotteryContext from '../../BetLotteryContext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
 import LotteryListContext from '../../list/LotteryListContext'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 彩票公共处理类
@@ -17,12 +18,12 @@ const UseLotteryHelper = () => {
   } = useContext(BetLotteryContext)
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
-
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据
-
-  const [pageData, setPageData] = useState<Array<Array<PlayGroupData>>>(null) //当前重组后的所有页面数据列表，1页2页3页等等
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
-  const [curData, setCurData] = useState<Array<PlayGroupData>>(null) //当前选中的第几页数据
+
+  //当前选中的第几页数据
+  const currentPageData = (): Array<PlayGroupData> | [] =>
+    tabIndex < arrayLength(playOddData?.pageData?.groupTri) ? playOddData?.pageData?.groupTri[tabIndex] : []
 
   /**
    * 添加或移除选中的球
@@ -51,8 +52,9 @@ const UseLotteryHelper = () => {
     const zodiacIds = groupData?.plays?.filter((item) => checkMap?.includes(item?.name))
       .map((item) => item?.id)
 
-    // ugLog('checkMap=', JSON.stringify(checkMap))
-    // ugLog('data=', JSON.stringify(groupData))
+    ugLog('checkMap=', JSON.stringify(checkMap))
+    ugLog('zodiacIds=', JSON.stringify(zodiacIds))
+    ugLog('data=', JSON.stringify(groupData))
 
     return zodiacIds
   }
@@ -60,15 +62,12 @@ const UseLotteryHelper = () => {
   return {
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     playOddData,
     setPlayOddData,
     playOddDetailData,
     selectedBalls,
     setSelectedBalls,
+    currentPageData,
     addOrRemoveBall,
     zodiacBallIds,
   }

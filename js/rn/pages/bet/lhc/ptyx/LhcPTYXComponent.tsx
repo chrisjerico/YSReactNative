@@ -29,16 +29,14 @@ const
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcPTYX()
 
   useEffect(() => {
     setPlayOddData(playOddData)
-    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
   const key = 'lottery page' + playOddData?.code
 
@@ -168,19 +166,19 @@ const
    * 绘制全部的球
    */
   const renderAllBall = () => {
-    if (arrayLength(curData) == 1) {
+    if (arrayLength(currentPageData()) == 1) {
       return (
         <View key={key + 'renderAllBall'}
               style={_styles.content_container}>
-          {renderLineBall(curData[0])}
+          {renderLineBall(currentPageData()[0])}
         </View>
       )
-    } else if (arrayLength(curData) == 2) {
+    } else if (arrayLength(currentPageData()) == 2) {
       return (
         <View key={key + 'renderAllBall'}
               style={_styles.content_container}>
-          {renderAllRect(curData[0])}
-          {renderLineBall(curData[1])}
+          {renderAllRect(currentPageData()[0])}
+          {renderLineBall(currentPageData[1])}
         </View>
       )
     }

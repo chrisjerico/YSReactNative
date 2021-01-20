@@ -15,35 +15,23 @@ const UseLhcLMA = () => {
   const {
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     playOddData,
     setPlayOddData,
     playOddDetailData,
     selectedBalls,
     setSelectedBalls,
+    currentPageData,
     addOrRemoveBall,
     zodiacBallIds,
   } = UseLotteryHelper()
-
-  useEffect(() => {
-    if (!anyEmpty(pageData) && !anyEmpty(pageData[tabIndex][0].plays)) {
-      setCurData(pageData[tabIndex])
-    }
-  }, [tabIndex])
 
   return {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedBalls,
     setSelectedBalls,
+    currentPageData,
     addOrRemoveBall,
   }
 }

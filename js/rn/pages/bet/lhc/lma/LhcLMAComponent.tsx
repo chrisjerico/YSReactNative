@@ -26,19 +26,14 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcLMA()
 
   useEffect(() => {
     setPlayOddData(playOddData)
-    setPageData(playOddData?.pageData?.groupTri)
-    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
   const key = 'lottery page' + playOddData?.code
 
@@ -70,7 +65,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View key={key + 'content'}
             style={_styles.tab_title_content}>
         {
-          pageData?.map(renderTabItem)
+          playOddData?.pageData?.groupTri?.map(renderTabItem)
         }
       </View>
     </ScrollView>
@@ -126,7 +121,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {!anyEmpty(curData) && renderLMA(curData[0])}
+    {!anyEmpty(currentPageData()) && renderLMA(currentPageData()[0])}
   </View>
 
   return (

@@ -14,10 +14,6 @@ const UseLhcZT = () => {
   const {
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     playOddData,
     setPlayOddData,
     playOddDetailData,
@@ -26,27 +22,21 @@ const UseLhcZT = () => {
     setSelectedBalls,
     addOrRemoveBall,
     zodiacBallIds,
+    currentPageData,
   } = UseLotteryHelper()
 
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
-
-  useEffect(() => {
-    setCurData(playOddData?.pageData?.groupTri[tabIndex])
-  }, [tabIndex])
 
   return {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   }
 }
 

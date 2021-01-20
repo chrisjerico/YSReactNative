@@ -25,18 +25,14 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcZXBZ()
 
   useEffect(() => {
     setPlayOddData(playOddData)
-    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
   const key = 'lottery page' + playOddData?.code
 
@@ -91,7 +87,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'render all ball'}
                                     style={_styles.content_container}>
-    {!anyEmpty(curData) && renderLMA(curData[0])}
+    {!anyEmpty(currentPageData()) && renderLMA(currentPageData()[0])}
   </View>
 
   return (

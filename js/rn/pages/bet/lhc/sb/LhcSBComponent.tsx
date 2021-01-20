@@ -27,18 +27,14 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcSB()
 
   useEffect(() => {
     setPlayOddData(playOddData)
-    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
 
   const key = 'lottery page' + playOddData?.code
@@ -86,7 +82,7 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
     {
-      curData?.map(renderGroupERect)
+      currentPageData()?.map(renderGroupERect)
     }
   </View>
 

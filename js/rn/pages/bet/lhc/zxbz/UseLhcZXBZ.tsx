@@ -15,10 +15,6 @@ const UseLhcZXBZ = () => {
   const {
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     playOddData,
     setPlayOddData,
     playOddDetailData,
@@ -27,19 +23,17 @@ const UseLhcZXBZ = () => {
     setSelectedBalls,
     addOrRemoveBall,
     zodiacBallIds,
+    currentPageData,
   } = UseLotteryHelper()
 
   return {
     setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   }
 }
 

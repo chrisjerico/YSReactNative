@@ -44,7 +44,7 @@ export interface PlayOddData {
 
 export interface PagePlayOddData { //本地定义本地使用
   zodiacNums: ZodiacNum[] //生肖数据
-  groupTri?: Array<Array<PlayGroupData>> // 重新组合数据
+  groupTri?: Array<Array<PlayGroupData>> // 重新组合数据 1页2页3页...
 }
 
 export interface ZodiacNum {
