@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import PromotionDialog from '../../public/components/PromotionDialog'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
@@ -132,7 +131,7 @@ const PromotionPage = (props: any) => {
               data={list}
               ListFooterComponent={<BottomGap />}
               renderItem={({ item, index }) => {
-                const { title, pic, content } = item
+                const { title, pic, content, linkUrl, linkCategory, linkPosition} = item
                 const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
                 const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
                 const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10,  padding: 9 } : {}
@@ -145,6 +144,9 @@ const PromotionPage = (props: any) => {
                     slide={style == 'slide' && selectedItemIndex == index}
                     containerStyle={containerStyle}
                     titleStyle={{ color: Skin1?.promotion?.couponTitleColor,  ...titleStyle}}
+                    linkUrl={linkUrl}
+                    linkCategory={linkCategory}
+                    linkPosition={linkPosition}
                   />
                 )
               }}
@@ -158,7 +160,7 @@ const PromotionPage = (props: any) => {
             data={list}
             ListFooterComponent={<BottomGap />}
             renderItem={({ item, index }) => {
-              const { title, pic, content } = item
+              const { title, pic, content, linkUrl, linkCategory, linkPosition } = item
               const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
               const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
               const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10,  padding: 9 } : {}
@@ -171,6 +173,9 @@ const PromotionPage = (props: any) => {
                   slide={style == 'slide' && selectedItemIndex == index}
                   containerStyle={containerStyle}
                   titleStyle={{ color: Skin1?.promotion?.couponTitleColor,  ...titleStyle}}
+                  linkUrl={linkUrl}
+                  linkCategory={linkCategory}
+                  linkPosition={linkPosition}
                 />
               )
             }}
