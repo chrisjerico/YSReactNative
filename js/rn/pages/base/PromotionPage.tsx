@@ -7,6 +7,7 @@ import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
@@ -111,8 +112,16 @@ const PromotionPage = (props: any) => {
                       setSelectedItemIndex(-1)
                       setList(item == '0' ? totalList.current : filterList)
                     }}>
-                    <View style={selectedTabIndex == item ? { backgroundColor: Skin1?.promotion?.selectedTabBgColor } : { backgroundColor: Skin1?.promotion?.tabBgColor }}>
-                      <Text style={selectedTabIndex == item ? [styles.tabText, { color: Skin1?.promotion?.selectedTabTextColor }] : [styles.tabText, { color: Skin1?.promotion?.tabTextColor }]}>
+                    <View
+                      style={
+                        selectedTabIndex == item ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType] } : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType] }
+                      }>
+                      <Text
+                        style={
+                          selectedTabIndex == item
+                            ? [styles.tabText, { color: skinColors.promotion.selectedTabTextColor[Skin1.skitType] }]
+                            : [styles.tabText, { color: skinColors.promotion.tabTextColor[Skin1.skitType] }]
+                        }>
                         {categories[item]}
                       </Text>
                     </View>
@@ -120,7 +129,7 @@ const PromotionPage = (props: any) => {
                 )
               }}
             />
-            {showUnderline && <View style={{height:1, width:AppDefine.width, backgroundColor:'#ccc'}} />}
+            {showUnderline && <View style={{ height: 1, width: AppDefine.width, backgroundColor: '#ccc' }} />}
             <List
               uniqueKey={'PromotionPage_true'}
               scrollEnabled={true}
@@ -131,7 +140,7 @@ const PromotionPage = (props: any) => {
                 const { title, pic, content } = item
                 const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
                 const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
-                const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10,  padding: 9 } : {}
+                const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10, padding: 9 } : {}
                 return (
                   <AutoHeightCouponComponent
                     title={title?.length ? title : '优惠活动'}
@@ -140,7 +149,7 @@ const PromotionPage = (props: any) => {
                     onPress={onPress}
                     slide={style == 'slide' && selectedItemIndex == index}
                     containerStyle={containerStyle}
-                    titleStyle={{ color: Skin1?.promotion?.couponTitleColor,  ...titleStyle}}
+                    titleStyle={{ color: skinColors.promotion.couponTitleColor[Skin1.skitType], ...titleStyle }}
                   />
                 )
               }}
@@ -157,7 +166,7 @@ const PromotionPage = (props: any) => {
               const { title, pic, content } = item
               const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
               const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
-              const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10,  padding: 9 } : {}
+              const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10, padding: 9 } : {}
               return (
                 <AutoHeightCouponComponent
                   title={title?.length ? title : '优惠活动'}
@@ -166,7 +175,7 @@ const PromotionPage = (props: any) => {
                   onPress={onPress}
                   slide={style == 'slide' && selectedItemIndex == index}
                   containerStyle={containerStyle}
-                  titleStyle={{ color: Skin1?.promotion?.couponTitleColor,  ...titleStyle}}
+                  titleStyle={{ color: Skin1?.promotion?.couponTitleColor, ...titleStyle }}
                 />
               )
             }}
