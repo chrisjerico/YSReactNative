@@ -12,6 +12,9 @@ export const devConfig = {
   // skinKey: 'GPK版0',
   // skinKey: UGSkinType1.威尼斯,
   skinKey: UGSkinType1.经典1蓝,
+  // skinKey: UGSkinType1.GPK0黑,
+
+
 }
 
 // 线上环境配置（这几个站点写死经典模板）
