@@ -25,7 +25,6 @@ import APIRouter from '../../public/network/APIRouter'
 import { httpClient } from '../../public/network/httpClient'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import useMinePage from '../../public/hooks/tars/useMinePage'
-import { useHtml5Image } from '../../public/tools/tars'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { useDimensions } from '@react-native-community/hooks'
 import { Button } from 'react-native-elements'
@@ -33,6 +32,7 @@ import { pop } from '../../public/navigation/RootNavigation'
 import { UGBasePageProps } from '../base/UGPage'
 import AppDefine from '../../public/define/AppDefine'
 import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
+import { useHtml5Image } from '../../Res/icon'
 
 const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
   const {
