@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../public/tools/Ext'
-import BetLotteryContext from '../BetLotteryContext'
-import { isSelectedBallOnId } from '../const/ISelBall'
-import LotteryListContext from '../list/LotteryListContext'
+import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import BetLotteryContext from '../../BetLotteryContext'
+import { isSelectedBallOnId } from '../../const/ISelBall'
+import LotteryListContext from '../../list/LotteryListContext'
 
 /**
  * 彩票公共处理类

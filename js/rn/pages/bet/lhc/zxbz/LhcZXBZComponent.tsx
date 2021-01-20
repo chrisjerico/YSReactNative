@@ -10,6 +10,7 @@ import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddD
 import { anyEmpty } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 
 /**
@@ -21,30 +22,29 @@ import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryCon
 const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
     curData,
     setCurData,
     pageData,
     setPageData,
-    ballArray,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    updatePlayOddData,
   } = UseLhcZXBZ()
 
   useEffect(() => {
-    updatePlayOddData(playOddData)
+    setPlayOddData(playOddData)
+    setCurData(playOddData?.pageData?.groupTri[0])
   }, [])
   const key = 'lottery page' + playOddData?.code
 
   /**
    * 绘制 球
-   * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
+  const renderEBall = (ballInfo?: ILotteryEBallItem) => {
 
     return (
       <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
@@ -79,7 +79,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         <View key={key + 'render LMA sub2' + groupData?.id}
               style={_styles.ball_container}>
           {
-            ballArray?.map((item, index) => renderEBall(groupData, item))
+            playOddData?.pageData?.groupTri[0][0]?.exPlays?.map((item, index) => renderEBall(item))
           }
         </View>
       </View>

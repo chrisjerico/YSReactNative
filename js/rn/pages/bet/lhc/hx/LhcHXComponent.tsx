@@ -29,18 +29,14 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setCurData,
     pageData,
     setPageData,
-    zodiacData,
-    setZodiacData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
   } = UseLhcHX()
 
   useEffect(() => {
-    ugLog('playOddData=', JSON.stringify(playOddData))
     setPlayOddData(playOddData)
     setCurData(playOddData?.pageData?.groupTri[0])
-    setZodiacData(playOddData?.pageData?.zodiacNums)
   }, [])
   const key = 'lottery page' + playOddData?.code
 
@@ -49,16 +45,14 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderEBall = (item?: ZodiacNum, index?: number) =>
-    !anyEmpty(zodiacData) && <LotteryLineEBall key={key + 'renderEBall' + item?.id}
-                                               item={{
-                                                 id: item?.id,
-                                                 name: item?.name,
-                                                 zodiacItem: findZodiacByName(zodiacData, { name: item?.name }),
-                                               }}
-                                               selectedBalls={selectedBalls}
-                                               callback={() => addOrRemoveBall(item?.id)}/>
-
+  const renderEBall = (item?: ZodiacNum, index?: number) => <LotteryLineEBall key={key + 'renderEBall' + item?.id}
+                                                                              item={{
+                                                                                id: item?.id,
+                                                                                name: item?.name,
+                                                                                zodiacItem: item,
+                                                                              }}
+                                                                              selectedBalls={selectedBalls}
+                                                                              callback={() => addOrRemoveBall(item?.id)}/>
   /**
    * 绘制 一行球
    * @param groupData
@@ -79,7 +73,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View key={key + 'renderLineBall sub' + groupData?.id}
             style={_styles.ball_container}>
         {
-          zodiacData?.map(renderEBall)
+          playOddData?.pageData?.zodiacNums?.map(renderEBall)
         }
       </View>
     </View>

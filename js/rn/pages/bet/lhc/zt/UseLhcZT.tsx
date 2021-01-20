@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import UseLotteryHelper from '../../util/UseLotteryHelper'
+import UseLotteryHelper from '../hp/UseLotteryHelper'
 
 
 /**

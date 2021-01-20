@@ -21,6 +21,7 @@ import parsePTYXData from './ps/ParsePTYXDataUtil'
 import parseWSData from './ps/ParseWSDataUtil'
 import parseLXData from './ps/ParseLXDataUtil'
 import parseLWData from './ps/ParseLWDataUtil'
+import parseZXBZData from './ps/ParseZXBZDataUtil'
 
 /**
  * 根据名字或别名找出生肖
@@ -67,7 +68,6 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
         return parseZTData({playOddData, zodiacNum})
 
       case LotteryConst.LMA:  //连码
-      case LotteryConst.ZXBZ:  //自选不中
         return parseLMAData({playOddData, zodiacNum})
 
       case LotteryConst.LM: //两面
@@ -89,6 +89,9 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
 
       case LotteryConst.LW: //连尾
         return parseLWData({playOddData, zodiacNum})
+
+      case LotteryConst.ZXBZ:  //自选不中
+        return parseZXBZData({playOddData, zodiacNum})
     }
 
     return playOddData

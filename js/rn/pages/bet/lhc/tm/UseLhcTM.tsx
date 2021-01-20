@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import UseLotteryHelper from '../../util/UseLotteryHelper'
+import UseLotteryHelper from '../hp/UseLotteryHelper'
 import { PlayOdd } from '../../../../public/network/Model/PlayOddDataModel'
 
 
@@ -70,24 +70,8 @@ const UseLhcTM = () => {
     }
   }
 
-  /**
-   * 更新数据
-   * @param playOddData
-   */
-  const updatePlayOddData = (playOddData?: PlayOddData) => {
-    setPlayOddData(playOddData)
-    //特码取前3个数据 特码 两面 色波
-    if (!anyEmpty(playOddData?.playGroups)) {
-      setPageData([
-        [playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]],
-        [playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]],
-      ])
-      setZodiacData(playOddDetailData()?.setting?.zodiacNums)
-
-    }
-  }
-
   return {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
     curData,
@@ -102,7 +86,6 @@ const UseLhcTM = () => {
     setSelectedBalls,
     addOrRemoveZodiac,
     addOrRemoveBall,
-    updatePlayOddData,
   }
 }
 
