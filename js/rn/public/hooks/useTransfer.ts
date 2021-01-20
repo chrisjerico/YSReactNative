@@ -13,6 +13,7 @@ import {
   timing,
   Value,
 } from 'react-native-reanimated'
+import { showLoading, showSuccess } from '../widget/UGLoadingCP'
 
 const useTransfer = () => {
   const checkBalance = async (id) => {
@@ -41,9 +42,19 @@ const useTransfer = () => {
   }
 
   const autoTransfer = async () => {
-    api.real.autoTransferOut().useSuccess((data) => {
-      Alert.alert(data.msg)
-      UGUserModel.updateFromNetwork()
+    showLoading()
+    let __cnt = 0
+    api.real.oneKeyTransferOut().useSuccess(({ data }) => {
+      data?.games?.forEach((ele) => {
+        api.real.quickTransferOut(ele?.id?.toString()).useCompletion((res, err, sm) => {
+          sm.noShowErrorHUD = true
+          __cnt++
+          if (__cnt >= data?.games?.length) {
+            showSuccess('一键提取完成')
+            UGUserModel.updateFromNetwork()
+          }
+        })
+      })
     })
   }
 

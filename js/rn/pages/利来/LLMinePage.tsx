@@ -25,14 +25,14 @@ import APIRouter from '../../public/network/APIRouter'
 import { httpClient } from '../../public/network/httpClient'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import useMinePage from '../../public/hooks/tars/useMinePage'
-import config from '../BZH/config'
-import { useHtml5Image } from '../../Res/icon'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { useDimensions } from '@react-native-community/hooks'
 import { Button } from 'react-native-elements'
 import { pop } from '../../public/navigation/RootNavigation'
 import { UGBasePageProps } from '../base/UGPage'
 import AppDefine from '../../public/define/AppDefine'
+import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
+import { useHtml5Image } from '../../Res/icon'
 
 const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
   const {
@@ -42,7 +42,7 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
     info,
   } = useMinePage({
     homePage: PageName.LLHomePage,
-    defaultUserCenterLogos: config.defaultUserCenterLogos,
+    defaultUserCenterLogos: MinePageImgConfig.defaultUserCenterLogos,
   })
   const { sysInfo } = info
   const { balanceDecimal } = sysInfo

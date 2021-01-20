@@ -1,6 +1,6 @@
-import { UGSkinType1 } from './js/rn/public/theme/const/UGSkinConf';
+import { UGSkinType1 } from './js/rn/public/theme/const/UGSkinConf'
 import { isTest } from './js/rn/public/config/CodePushKeys'
-import AppDefine from './js/rn/public/define/AppDefine';
+import AppDefine from './js/rn/public/define/AppDefine'
 
 // 调试环境配置
 export const devConfig = {
@@ -10,7 +10,7 @@ export const devConfig = {
   }, // 是否是测试环境
 
   // skinKey: 'GPK版0',
-  skinKey: UGSkinType1.威尼斯,
+  skinKey: UGSkinType1.利来,
 }
 
 // 线上环境配置（这几个站点写死经典模板）
@@ -21,5 +21,5 @@ export const appConfig = {
     h003b: '经典1',
   },
 
-  isWNZBottomTabHot: () => AppDefine.inSites('c245,c251') // 威尼斯首页底部官方玩法改热门彩种，信用玩法改中奖排行
+  isWNZBottomTabHot: () => AppDefine.inSites('c245,c251'), // 威尼斯首页底部官方玩法改热门彩种，信用玩法改中奖排行
 }
