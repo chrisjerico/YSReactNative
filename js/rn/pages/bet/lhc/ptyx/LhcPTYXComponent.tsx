@@ -21,7 +21,8 @@ import { ugLog } from '../../../../public/tools/UgLog'
  * @param navigation
  * @constructor
  */
-const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const
+  LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {

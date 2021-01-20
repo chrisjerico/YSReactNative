@@ -137,8 +137,6 @@ const ListContentComponent = () => {
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContent = () => {
-    // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
-
     const playOdds = playOddDetailData()?.playOdds[leftColumnIndex]
     let lotteryCode = playOdds?.code
     ugLog('------------------lotteryCode---------------------------------', lotteryCode)

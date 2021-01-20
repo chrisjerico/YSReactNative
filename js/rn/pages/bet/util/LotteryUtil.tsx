@@ -92,7 +92,6 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
-      case LotteryConst.HX://合肖
       case LotteryConst.WX:  //五行
         return {
           ...playOddData,
@@ -103,92 +102,77 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
           } as PagePlayOddData,
         }
 
-      case LotteryConst.YX: //平特一肖
-      case LotteryConst.WS: //平特尾数
-      case LotteryConst.TWS: //头尾数
+      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TX: //特肖
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZX: { //正肖
-        //平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        if (!anyEmpty(playOddData?.playGroups)) {
-          switch (playOddData?.code) {
-            case LotteryConst.YX: //平特一肖
-            case LotteryConst.TX: //特肖
-            case LotteryConst.ZX: //正肖
-              const zxGroup = combinePlayAndZodiac({
-                zodiacNums: playOddDetailData.setting.zodiacNums,
-                playOddData: playOddData,
-              })
+      case LotteryConst.ZX: //正肖
+        const zxGroup = combinePlayAndZodiac({
+          zodiacNums: playOddDetailData.setting.zodiacNums,
+          playOddData: playOddData,
+        })
 
-              return {
-                ...playOddData,
-                pageData: {
-                  groupTri: [[null, ...zxGroup]],
-                } as PagePlayOddData,
-              }
-
-            case LotteryConst.WS://平特尾数
-              const wsGroup = combinePlayAndZodiac({
-                zodiacNums: playOddDetailData.setting.zodiacNums,
-                playOddData: playOddData,
-              })
-              return {
-                ...playOddData,
-                pageData: {
-                  groupTri: [[null, ...wsGroup]],
-                } as PagePlayOddData,
-              }
-
-            case LotteryConst.TWS://头尾数
-              const twsGroup = combinePlayAndZodiac({
-                zodiacNums: playOddDetailData.setting.zodiacNums,
-                playOddData: playOddData,
-              })
-              return {
-                ...playOddData,
-                pageData: {
-                  groupTri: [twsGroup],
-                } as PagePlayOddData,
-              }
-
-            case LotteryConst.LX: //连肖
-              const lxGroup = combinePlayAndZodiac({
-                zodiacNums: playOddDetailData.setting.zodiacNums,
-                playOddData: playOddData,
-              })
-              return {
-                ...playOddData,
-                pageData: {
-                  groupTri: lxGroup?.map((item) => [item]),
-                } as PagePlayOddData,
-              }
-
-            case LotteryConst.LW: //连尾
-              //连尾数据缺少一个 尾，补上
-              const newGroup = playOddData?.playGroups?.map((item) => ({
-                ...item,
-                plays: item?.plays?.map((item) => ({
-                    ...item,
-                    alias: item?.alias + '尾',
-                  }
-                )),
-              }))
-              const lwGroup = combinePlayAndZodiac({
-                zodiacNums: playOddDetailData.setting.zodiacNums,
-                playOddData: { ...playOddData, playGroups: newGroup },
-              })
-              return {
-                ...playOddData,
-                pageData: {
-                  groupTri: lwGroup?.map((item) => [item]),
-                } as PagePlayOddData,
-              }
-          }
+        return {
+          ...playOddData,
+          pageData: {
+            groupTri: [[null, ...zxGroup]],
+          } as PagePlayOddData,
         }
-        break
 
-      }
+      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        const wsGroup = combinePlayAndZodiac({
+          zodiacNums: playOddDetailData.setting.zodiacNums,
+          playOddData: playOddData,
+        })
+        return {
+          ...playOddData,
+          pageData: {
+            groupTri: [[null, ...wsGroup]],
+          } as PagePlayOddData,
+        }
+
+      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        const twsGroup = combinePlayAndZodiac({
+          zodiacNums: playOddDetailData.setting.zodiacNums,
+          playOddData: playOddData,
+        })
+        return {
+          ...playOddData,
+          pageData: {
+            groupTri: [twsGroup],
+          } as PagePlayOddData,
+        }
+
+      case LotteryConst.LX: //连肖
+        const lxGroup = combinePlayAndZodiac({
+          zodiacNums: playOddDetailData.setting.zodiacNums,
+          playOddData: playOddData,
+        })
+        return {
+          ...playOddData,
+          pageData: {
+            groupTri: lxGroup?.map((item) => [item]),
+          } as PagePlayOddData,
+        }
+
+      case LotteryConst.LW: //连尾
+        //连尾数据缺少一个 尾，补上
+        const newGroup = playOddData?.playGroups?.map((item) => ({
+          ...item,
+          plays: item?.plays?.map((item) => ({
+              ...item,
+              alias: item?.alias + '尾',
+            }
+          )),
+        }))
+        const lwGroup = combinePlayAndZodiac({
+          zodiacNums: playOddDetailData.setting.zodiacNums,
+          playOddData: { ...playOddData, playGroups: newGroup },
+        })
+        return {
+          ...playOddData,
+          pageData: {
+            groupTri: lwGroup?.map((item) => [item]),
+          } as PagePlayOddData,
+        }
     }
 
     return playOddData
