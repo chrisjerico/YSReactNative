@@ -5,7 +5,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, push } from '../../public/navigation/RootNavigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale } from '../../public/tools/Scale'
 import { UGImageHost, useHtml5Image } from '../../Res/icon'
@@ -113,7 +113,7 @@ const LHTHomePage = () => {
                   title={name}
                   onPress={() => {
                     if (gameId == GameType.大厅) {
-                      navigate(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: skinColors.themeColor.六合厅, homePage: PageName.LHTHomePage })
+                      push(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: skinColors.themeColor.六合厅, homePage: PageName.LHTHomePage })
                     } else if (gameId == GameType.优惠活动) {
                       goToPromotionPage()
                     } else {
@@ -166,7 +166,7 @@ const LHTHomePage = () => {
                   subTitleStyle={{ fontSize: scale(19) }}
                   onPress={() => {
                     if (gameType == 'more') {
-                      navigate(PageName.LHTPreferencePage, {
+                      push(PageName.LHTPreferencePage, {
                         initPreferences: preferenceGames,
                         onPressConfirm: (preferences: any) => {
                           setPreferenceGames(preferences)
@@ -214,7 +214,7 @@ const LHTHomePage = () => {
                   subTitleStyle={{ fontSize: scale(23) }}
                   onPress={() => {
                     if (!gameId) {
-                      navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: skinColors.themeColor.六合厅 })
+                      push(PageName.SeriesLobbyPage, { subId, name, headerColor: skinColors.themeColor.六合厅 })
                     } else {
                       PushHelper.pushHomeGame(item)
                     }
