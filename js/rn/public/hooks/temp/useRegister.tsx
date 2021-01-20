@@ -1,13 +1,9 @@
 import { any } from 'prop-types'
 import { Platform } from 'react-native'
 import APIRouter, { UserReg } from '../../network/APIRouter'
-import {
-  ToastError,
-  ToastStatus,
-  ToastSuccess
-} from '../../tools/tars'
 import useLogIn from './useLogIn'
 import {ugLog} from "../../tools/UgLog";
+import { ToastStatus, ToastSuccess, ToastError } from '../../tools/tars';
 
 interface Options {
   onSuccessWithAutoLogin?: () => any;

@@ -9,9 +9,10 @@ import UseLhcSB from './UseLhcSB'
 import LotteryBall from '../../../../public/components/view/LotteryBall'
 import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
 import ERect from '../../../../public/components/view/lottery/ERect'
-import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../widget/LotteryERect'
-import { ILotteryRouteParams } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { PlayGroup } from '../../../../public/network/Model/PlayOddDataModel'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行
@@ -21,6 +22,7 @@ import { ILotteryRouteParams } from '../../const/LotteryConst'
  */
 const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
+  const key = 'lottery page' + lotteryCode
 
   // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
 
@@ -37,58 +39,76 @@ const LhcSBComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcSB()
 
-  useEffect(()=>{
+  useEffect(() => {
     setLotteryCode(lotteryCode)
   }, [])
 
   /**
    * 绘制 方格式
    * @param item
+   * @param index
    */
-  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id}
+                                                                         item={item}
+                                                                         selectedBalls={selectedBalls}
+                                                                         callback={() => addOrRemoveBall(item?.id)}/>
+
+  /**
+   * 绘制 一组格子
+   * @param groupData
+   * @param index
+   */
+  const renderGroupERect = (groupData?: PlayGroupData, index?: number) => <View
+    key={key + 'renderAllBall' + groupData?.id + index}
+    style={CommStyles.flex}>
+
+    <View key={key + 'renderAllBall sub' + groupData?.id + index}
+          style={_styles.sub_title_container}>
+      <Text key={key + 'renderAllBall text' + groupData?.id + index}
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
+    </View>
+
+    <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
+          style={_styles.rect_container}>
+      {
+        groupData?.plays?.map(renderERect)
+      }
+    </View>
+
+  </View>
 
   /**
    * 绘制全部的格子
    */
-  const renderAllBall = () => <View>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {
-        curData?.map((groupData) => {
-          return <View key={groupData?.id + groupData?.alias}
-                       style={CommStyles.flex}>
-
-            <View key={groupData?.alias}
-                  style={_styles.sub_title_container}>
-              <Text style={[
-                _styles.sub_title_text,
-                { color: Skin1.themeColor },
-              ]}>{groupData?.alias}</Text>
-            </View>
-
-            <View style={_styles.rect_container}>
-              {
-                groupData?.plays?.map((item) => renderERect(item))
-              }
-            </View>
-
-          </View>
-        })
-      }
-    </ScrollView>
+  const renderAllBall = () => <View key={key + 'renderAllBall'}
+                                    style={_styles.content_container}>
+    {
+      curData?.map(renderGroupERect)
+    }
   </View>
 
   return (
-    <View style={[CommStyles.flex, style]}>
+    <ScrollView key={key}
+                nestedScrollEnabled={true}
+                style={[_styles.sv_container, style]}>
       {renderAllBall()}
-    </View>
+    </ScrollView>
 
   )
 }
 
 const _styles = StyleSheet.create({
+  sv_container: {
+    flex: 1,
+    height: BALL_CONTENT_HEIGHT,
+  },
+  content_container: {
+    flex: 1,
+    paddingBottom: scale(240),
+  },
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,

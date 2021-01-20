@@ -7,7 +7,7 @@ import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanc
 import { PageName } from '../../../public/navigation/Navigation'
 import { navigate } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
-import { UGImageHost, useHtml5Image } from '../../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../../Res/icon'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 import TouchableImage from '../../../public/views/tars/TouchableImage'
 

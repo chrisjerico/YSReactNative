@@ -1,5 +1,5 @@
 import chroma from 'chroma-js'
-import { devConfig, releaseConfig } from '../../../../config'
+import { devConfig, appConfig } from '../../../../config'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import AppDefine from '../define/AppDefine'
 import { skinColors, UGSkinColor } from './const/UGSkinColor'
@@ -17,12 +17,12 @@ export default class UGSkinManagers {
     console.log('sysConf的模板：', skinType)
 
     // 单站写死模板
-    skinType = releaseConfig.skinKeys[AppDefine.siteId] ?? skinType
+    skinType = appConfig.skinKeys[AppDefine.siteId] ?? skinType
     // 本地调试模板
     if (devConfig.isDebug) {
       devConfig?.skinKey && (skinType = devConfig?.skinKey)
     }
-    // 这里必须写两遍（因为第一遍时 getter 取的 skin1 值是空的）
+    // 这里必须写两遍（因为第一遍时 skin1 还是空的，获取不到 getter 的 skin1.themeColor 值）
     skin1 = Skin1 = this.getSkinValue(skinType)
     skin1 = Skin1 = this.getSkinValue(skinType)
     // console.log('rnSkinColor = ', skin1);
@@ -81,6 +81,7 @@ export default class UGSkinManagers {
     return skin
   }
 
+  // 找到所有UGSkinType对象 new 一遍（new操作会配置getter）
   static convertToSkinType(data) {
     function convert(target) {
       for (const k1 in target) {

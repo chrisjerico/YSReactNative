@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, RefreshControl, Image, ImageBackgroun
 import { Button } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppDefine from '../../../public/define/AppDefine';
-import { UGImageHost, useHtml5Image } from '../../../public/tools/tars';
+import { img_images, img_vueTemplate, UGImageHost, useHtml5Image } from '../../../Res/icon';
 import React, { useEffect, useRef, useState, Component } from 'react'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { UGcheckinBonusModel, UGCheckinListModel, UGSignInModel } from '../../../redux/model/other/UGcheckinBonusModel';
@@ -18,7 +18,7 @@ import { JDSignInHistoryCP } from '../cp/JDSignInHistoryCP';
 import chroma from 'chroma-js';
 
 
-const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test10)
+const { getHtml5Image, img_platform, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test10)
 
 const JDSigInPage = () => {
 
@@ -109,18 +109,18 @@ const JDSigInPage = () => {
 
         var returnStr = '';
         if (item.isCheckin) {
-            returnStr = 'https://appstatic.guolaow.com/assets/signInGrey.png';
+            returnStr = img_assets('signInGrey');
         }
         else {
             if (item.whichDay >= checkinListModel.serverTime) {
-                returnStr = 'https://appstatic.guolaow.com/assets/signIn_blue.png';
+                returnStr = img_assets('signIn_blue');
             }
             else {
                 if (checkinListModel.mkCheckinSwitch && item.isMakeup) {
-                    returnStr = 'https://appstatic.guolaow.com/assets/signIn_red.png';
+                    returnStr = img_assets('signIn_red');
                 }
                 else {
-                    returnStr = 'https://appstatic.guolaow.com/assets/signInGrey.png';
+                    returnStr = img_assets('signInGrey');
                 }
             }
         }
@@ -131,10 +131,10 @@ const JDSigInPage = () => {
 
         var returnStr = '';
         if (item.isCheckin) {
-            returnStr = 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/signed.png';
+            returnStr = img_vueTemplate('my/userInfo/sign/signed');
         }
         else {
-            returnStr = 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/nosign.png';
+            returnStr = img_vueTemplate('my/userInfo/sign/nosign');
         }
         return returnStr;
     }
@@ -285,7 +285,7 @@ const JDSigInPage = () => {
                 }}>
                     <ImageBackground style={[styles.itemImageStyle, { borderRadius: 5, overflow: 'hidden', }]} source={{ uri: checkinImgBg(item) }}>
                         <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{'+' + item?.integral}</Text>
-                        <Image style={[styles.itemImageImageStyle,]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/gold.png' }} />
+                        <Image style={[styles.itemImageImageStyle,]} source={{ uri: img_vueTemplate('my/userInfo/sign/gold') }} />
                         <ImageBackground style={[styles.itemImageImage2Style,]} source={{ uri: imgbgCheckinState(item) }}>
                             <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle, { marginTop: 2 }]}>{checkinState(item)}</Text>
                         </ImageBackground>
@@ -299,7 +299,7 @@ const JDSigInPage = () => {
     const _renderListEmptyComp = () => {
         return (
             <View>
-                <Text>没有数据时显示本段文字</Text>
+                <Text>没有数据!</Text>
             </View>
         );
     }
@@ -374,7 +374,7 @@ const JDSigInPage = () => {
                         {hide1 && <View>
                             <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
                             <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center', height: 60 }}>
-                                <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
+                                <Image style={[{ height: 40, width: 40, }]} source={{ uri: img_vueTemplate('my/userInfo/sign/award5') }} />
                                 <View style={[]}>
                                     <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus1}</Text>
                                     <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
@@ -391,12 +391,12 @@ const JDSigInPage = () => {
                         {hide2 && <View>
                             <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
                             <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center', height: 60 }}>
-                                <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
+                                <Image style={[{ height: 40, width: 40, }]} source={{ uri: img_vueTemplate('my/userInfo/sign/award5') }} />
 
 
                                 <View style={[]}>
                                     <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus2}</Text>
-                                    <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
+                                    <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到7天即可领取'}</Text>
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}

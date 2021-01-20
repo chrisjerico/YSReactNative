@@ -6,6 +6,7 @@ import { CMD } from '../define/ANHelper/hp/CmdDefine'
 import AppDefine from '../define/AppDefine'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { Toast } from '../tools/ToastUtils'
+import { ugLog } from '../tools/UgLog'
 import { UGStore } from './../../redux/store/UGStore'
 import { CachePolicyEnum, httpClient } from './httpClient'
 import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
@@ -18,9 +19,10 @@ import { HallGameModel } from './Model/game/HallGameModel'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
-import { HomeRecommendModel } from './Model/HomeRecommendModel'
+import { HomeRecommendModel, TwoLevelGame } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
+import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
 import { NextIssueModel } from './Model/lottery/NextIssueModel'
 import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
 import { LottoGamesModel } from './Model/LottoGamesModel'
@@ -49,6 +51,7 @@ import { NewRateModel } from './Model/wd/NewRateModel'
 import { PayAisleModel } from './Model/wd/PayAisleModel'
 import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
+
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -208,6 +211,16 @@ class APIRouter {
   static game_homeRecommend = async () => {
     return httpClient.get<HomeRecommendModel>('c=game&a=homeRecommend')
   }
+
+  static game_realGameTypes = async (gameId: string, searchText: string) => {
+    let tokenParams = await APIRouter.encryptGetParams({
+      search_text: searchText,
+      id: gameId,
+    })
+
+    return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes' + tokenParams)
+  }
+
   /**
    * 首頁遊戲資料
    */
@@ -602,6 +615,7 @@ class APIRouter {
 
     return httpClient.post<any>('c=user&a=logout', tokenParams)
   }
+
   static getTrendData = async (id: string) => {
     return httpClient.get(`c=game&a=lotteryHistory`, {
       params: {
@@ -610,6 +624,7 @@ class APIRouter {
       },
     })
   }
+
   static secure_imgCaptcha = async () => {
     let accessToken = ''
     switch (Platform.OS) {
@@ -695,6 +710,15 @@ class APIRouter {
     })
 
     return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds' + tokenParams)
+  }
+
+  /**
+   * 游戏开奖记录
+   */
+  static game_lotteryHistory = async (params: IGameHistory): Promise<AxiosResponse<LotteryHistoryModel>> => {
+    ugLog('game_lotteryHistory=', JSON.stringify(params))
+    let tokenParams = await APIRouter.encryptGetParams(params)
+    return httpClient.get<LotteryHistoryModel>('c=game&a=lotteryHistory' + tokenParams)
   }
 
   /**

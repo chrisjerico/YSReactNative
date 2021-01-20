@@ -6,7 +6,7 @@ import PushHelper from "../../public/define/PushHelper"
 import {UGUserCenterType} from "../../redux/model/全局/UGSysConfModel"
 import LinearGradient from "react-native-linear-gradient"
 import {PageName} from "../../public/navigation/Navigation"
-import {useHtml5Image} from "../../public/tools/tars";
+import {useHtml5Image} from "../../Res/icon";
 import useMinePage from "../../public/hooks/temp/useMinePage";
 import config from "../BZH/config";
 import SafeAreaHeader from "../../public/views/tars/SafeAreaHeader";

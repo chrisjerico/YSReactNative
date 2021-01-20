@@ -1,8 +1,4 @@
-// 图片服务器域名：
-// https://appstatic.guolaow.com
-// https://appstatic.guolaow.com
-
-import { UGImageHost, useHtml5Image } from "../../public/tools/tars"
+import { UGImageHost, useHtml5Image } from "."
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 /**
@@ -15,6 +11,7 @@ export const icon_刮刮乐 = img_assets('gyg')    //大转盘
 export const icon_任务弹窗 = img_assets('task_home')    //任务弹框
 
 export const Res = {
+  
   bankhl1: img_assets('bankhl1'),
   btc: img_assets('btc'),
   empty: img_assets('empty'),
@@ -76,6 +73,21 @@ export const Res = {
   btc_deposit_icon: img_assets('bank/btc_deposit_icon'),
   aliyin2: img_assets('bank/aliyin2'),
 
+  //筹码
+  a10: img_assets('chip/a10'),
+  a100: img_assets('chip/a100'),
+  a1k: img_assets('chip/a1k'),
+  a5k: img_assets('chip/a5k'),
+  a10k: img_assets('chip/a10k'),
+  a50k: img_assets('chip/a50k'),
+  clr: img_assets('chip/clear'),
+
+  //彩票功能跳转图片
+  tv1: img_assets('tv/tv'),
+  tv_long: img_assets('tv/long'),
+  tv_data: img_assets('tv/data'),
+  tv_trophy: img_assets('tv/trophy'),
+
   //虚拟币教程
   hbjc_img: img_assets('tutorial/hbjc_img', 'jpg'),
   c012_virtualcoin_icon: img_assets('tutorial/c012_virtualcoin_icon', 'jpg'),
@@ -110,4 +122,10 @@ export const Res = {
   dj: img_assets('lottery/d'),
   real_person: img_assets('lottery/re'),
   sports: img_assets('lottery/sp'),
+  
+  //导航 三根线
+  gengduo: img_assets('gengduo'),
+  //长龙注单详情背景
+  betDetailBg: img_assets('betDetailBg'),
+
 }

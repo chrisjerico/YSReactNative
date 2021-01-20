@@ -19,6 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
+import { img_assets, useHtml5Image } from '../../../Res/icon';
 
 
 interface JDPromotionTabMemberCP {
@@ -396,7 +397,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
                 <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
                   {title}
                 </Text>
-                {(v.pageTitle != PromotionConst.域名绑定 && idx == 0) && <Image style={[{ height: 18, width: 18, marginTop: 15 }]} source={{ uri: Skin1.isBlack ? 'https://appstatic.guolaow.com/assets/baijiantou1.png' : 'https://appstatic.guolaow.com/assets/jiantou1.png' }} />}
+                {(v.pageTitle != PromotionConst.域名绑定 && idx == 0) && <Image style={[{ height: 18, width: 18, marginTop: 15 }]} source={{ uri: Skin1.isBlack ? img_assets('baijiantou1') : img_assets('jiantou1') }} />}
 
               </TouchableOpacity>
             )

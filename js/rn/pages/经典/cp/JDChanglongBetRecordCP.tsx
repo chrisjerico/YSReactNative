@@ -1,52 +1,44 @@
 
-import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { FlatList, RefreshControl, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
-import DateUtil from '../../../public/tools/andrew/DateUtil';
-import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
-import { setProps, UGBasePageProps } from '../../base/UGPage';
+import { setProps } from '../../base/UGPage';
 import { scale } from "../../../public/tools/Scale";
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view';
 
-import EmptyView from '../../../public/components/view/empty/EmptyView';
-import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
-import { ugLog } from '../../../public/tools/UgLog';
-import { PromotionConst } from '../const/PromotionConst';
-import { Badge, Button } from 'react-native-elements';
-import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { anyEmpty } from '../../../public/tools/Ext';
+import { Button } from 'react-native-elements';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
-import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
-import { UGStore } from '../../../redux/store/UGStore';
-import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
+import JDBetRecordDetailPage from '../长龙助手/JDBetRecordDetailPage';
+import { PageName } from '../../../public/navigation/Navigation';
+import { push } from '../../../public/navigation/RootNavigation';
 
-interface JDChanglongBetRecordpage {
+interface JDChanglongBetRecordCP {
   items?: Array<any>//界面数据
   isRefreshing?: boolean//下拉刷新开始结束 
 }
 
-const JDChanglongBetRecordpage = () => {
+const JDChanglongBetRecordCP = () => {
 
-  let { current: v } = useRef<JDChanglongBetRecordpage>(
+  let { current: v } = useRef<JDChanglongBetRecordCP>(
     {
       items: [],
       isRefreshing: true,
     }
   )
 
-    /**
+  /**
 * 钱是否隐藏
 * 
 */
-function isHide(item: any) {
-  if (item.isWin) {
-    return true
-  } else {
-    return false
+  function isHide(item: any) {
+    if (item.isWin) {
+      return true
+    } else {
+      return false
+    }
   }
-}
 
   /**
 * 状态文字
@@ -105,7 +97,11 @@ function isHide(item: any) {
       console.log('data =', data);
 
       if (anyEmpty(data)) {
-        return
+        console.log('进来了：==================');
+        v.isRefreshing = false;
+        v.items.length = 0
+        setProps();
+        return;
       }
       let arrayData = returnData(data);
       if (arrayData.length == 0) {
@@ -125,27 +121,55 @@ function isHide(item: any) {
   }
 
   /**
+* cell 按钮点击
+* 
+*/
+  async function betItemSelect(item?: any) {
+    item = JSON.parse(JSON.stringify(item))
+    console.log('0000000000===========================================================');
+    console.log('item ===',item);
+    
+    item.clsName = 'UGChanglongBetRecordModel'
+    item.pic = await OCHelper.call('UGNextIssueModel.modelWithGameId:model:.pic', [item.gameId])
+    // await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+    //   {
+    //     selectors: 'AppDefine.viewControllerWithStoryboardID:[setItem:]',
+    //     args1: ['UGBetRecordDetailViewController'],
+    //     args2: [item]
+    //   },
+    //   true,
+    // ])
+    push(PageName.JDBetRecordDetailPage, { item: item, showBackButton: true })
+    
+  }
+
+
+  /**
 * 渲染列表项
 * 
 */
-  const _renderItem = ({ index, item }) => {
+  const _renderItem = ({ item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, alignItems: 'center',marginHorizontal: 10, }]}>
+        <TouchableOpacity style={[styles.viewItem, { backgroundColor: Skin1.textColor4, alignItems: 'center', marginHorizontal: 10, }]}
+          onPress={() => {
+            betItemSelect(item)
+          }}
+        >
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 12, }}>
               {item.title}
             </Text>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#1E90FF',marginLeft: 10,  marginTop: 10, }}>
+            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#1E90FF', marginLeft: 10, marginTop: 10, }}>
               {'¥' + item.money}
             </Text>
             <View style={{ flex: 1 }}>
             </View>
-            { isHide(item)&& <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#FFD700', marginTop: 12, }}>
+            {isHide(item) && <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#FFD700', marginTop: 12, }}>
               {'+' + item.bonus + '元'}
             </Text>}
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center',  marginHorizontal: 10, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#FF4500', marginTop: 8, }}>
               {anyEmpty(item.displayNumber) ? item.issue + '期' : item.displayNumber + '期'}
             </Text>
@@ -156,54 +180,62 @@ function isHide(item: any) {
             </Text>
           </View>
 
+        </TouchableOpacity>
+      );
+    }
+  }
+
+  /**
+* 渲染列表项分割
+* 
+*/
+  const _renderItemSeparator = ({ }) => {
+    {
+      return (
+        <View style={[{ backgroundColor: Skin1.CLBgColor, height: 10 }]}>
+
         </View>
       );
     }
   }
 
-   /**
-* 渲染列表项分割
-* 
-*/
-const _renderItemSeparator = ({ index, item }) => {
-  {
-    return (
-      <View style={[ { backgroundColor: Skin1.CLBgColor, height:10}]}>
-
-      </View>
-    );
-  }
-}
-
   /**
 * 按钮加载布局
 * 
 */
-const renderFooter = () => {
- 
+  const renderFooter = () => {
+
     return (
 
-        <View style={styles.foot}>
-          <Button
-              title="查看更多"
-              style={{width:AppDefine.width -20,height:80}}
-              titleStyle ={{color:'white',fontSize:15}}
-              buttonStyle ={{backgroundColor:Skin1.themeColor,overflow: 'hidden', borderColor:Skin1.themeColor,borderWidth:1 ,}}
-              onPress={() => {
-                OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-                  {
-                    selectors: 'UGBetRecordViewController.new',
-                  },
-                  true,
-                ])
+      <View style={styles.foot}>
+        <Button
+          title="查看更多"
+          style={{ width: AppDefine.width - 20, height: 80 }}
+          titleStyle={{ color: 'white', fontSize: 15 }}
+          buttonStyle={{ backgroundColor: Skin1.themeColor, overflow: 'hidden', borderColor: Skin1.themeColor, borderWidth: 1, }}
+          onPress={() => {
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+              {
+                selectors: 'UGBetRecordViewController.new',
+              },
+              true,
+            ])
 
-              }}
-            />
+          }}
+        />
+      </View>
+    );
+
+  }
+
+
+  const _renderListEmptyComp = () => {
+    return (
+        <View >
+           
         </View>
     );
-  
 }
-
 
   /**
  * 初始化
@@ -211,25 +243,28 @@ const renderFooter = () => {
  */
   useEffect(() => {
     setProps({
-      navbarOpstions: {
-        hidden: false, title: '我的投注', back: true
-      },
+      // navbarOpstions: {
+      //   hidden: false, title: '我的投注', back: true
+      // },
       didFocus: () => {
         onHeaderRefresh()
       }
     })
 
+    onHeaderRefresh()
+
   }, [])
 
 
   return (
-    <View style={[styles.container,{backgroundColor: Skin1.CLBgColor}]}>
-      <View style={{marginTop:10,flex:1}}>
+    <View style={[styles.container, { backgroundColor: Skin1.CLBgColor }]}>
+      <View style={{ marginTop: 10, flex: 1 }}>
         <FlatList
           data={v.items}
           renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
-          ItemSeparatorComponent ={_renderItemSeparator}
+          ItemSeparatorComponent={_renderItemSeparator}
           keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
           //下拉刷新
           //设置下拉刷新样式
           refreshControl={
@@ -247,7 +282,7 @@ const renderFooter = () => {
           }
           ListFooterComponent={() => renderFooter()}
         />
-        
+
       </View>
     </View >
 
@@ -259,7 +294,7 @@ const renderFooter = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
   },
   item: {
     flex: 1,
@@ -306,4 +341,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JDChanglongBetRecordpage
+export default JDChanglongBetRecordCP

@@ -1,11 +1,14 @@
 import { skinColors } from './../../public/theme/const/UGSkinColor';
 import PushHelper from '../../public/define/PushHelper'
-import { SeriesId } from '../../public/models/Enum'
+import { GameType, SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
-import { goToUserCenterType, UGImageHost, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
+import { UGStore } from '../../redux/store/UGStore'
+import { goToUserCenterType } from '../../public/tools/tars';
 
-const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
+const { getHtml5Image, img_assets } = useHtml5Image(UGImageHost.t132f)
+const { isTest = false, uid = '' } = UGStore.globalProps.userInfo
 
 const config = {
   defaultUserCenterLogos: {
@@ -22,13 +25,13 @@ const config = {
     11: getHtml5Image(23, 'center/my_redenvelope'), // 任务中心
     12: getHtml5Image(23, 'center/user_info'), // 个人信息
     13: getHtml5Image(7, 'zhmx'), // 建议反馈
-    14: 'https://appstatic.guolaow.com/assets/wnz/service.png', // 在线客服
+    14: img_assets('wnz/service'), // 在线客服
     15: getHtml5Image(23, 'center/my_activity'), // 活动彩金
-    16: 'https://appstatic.guolaow.com/assets/wnz/long.png', // 长龙助手
+    16: img_assets('wnz/long'), // 长龙助手
     17: getHtml5Image(23, 'center/rule'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
-    19: 'https://appstatic.guolaow.com/assets/wnz/qq.png', // QQ客服
-    20: 'https://appstatic.guolaow.com/assets/wnz/award.png', // 開獎網
+    19: img_assets('wnz/qq'), // QQ客服
+    20: img_assets('wnz/award'), // 開獎網
     22: getHtml5Image(23, 'center/electronic'), // 电子注单
     23: getHtml5Image(23, 'center/live'), // 真人注单
     24: getHtml5Image(23, 'center/chess'), // 棋牌注单
@@ -202,6 +205,46 @@ const config = {
       name: '投注记录',
       icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/tzjl.png',
       onPress: goToUserCenterType.彩票注单记录,
+    },
+  ],
+  c108UnAuthNavs: [
+    {
+      name: '充值取款',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/2021.png',
+      onPress: () => {
+        if (!uid)  {
+          push(PageName.WNZSignInPage)
+          return
+        }
+        goToUserCenterType.存款
+      },
+    },
+    {
+      name: '优惠活动',
+      gameId: GameType.优惠活动,
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/niu.png',
+      onPress: () => {
+        push(PageName.PromotionPage, {
+          showBackBtn: true,
+        })
+      },
+    },
+    {
+      name: '在线客服',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/qi.png',
+      onPress: goToUserCenterType.在线客服,
+    },
+    {
+      name: '登入/注册',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/sign.png',
+      onPress: () => {
+        push(PageName.WNZSignInPage)
+      },
+    },
+    {
+      gameId: 'tryPlay',
+      name: '试玩',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c108/images/tourist.png',
     },
   ],
 }

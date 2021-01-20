@@ -48,6 +48,7 @@ import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import GameLobbyPage from '../hall/GameLobbyPage'
+import TwoLevelGames from '../hall/TwoLevelGames'
 import GameHallPage from '../hall/new/GameHallPage'
 import JXHHomePage from '../JXH/JXHHomePage'
 import JXHMinePage from '../JXH/JXHMinePage'
@@ -100,18 +101,24 @@ import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
-import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
+
 import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import BetLotteryPage from '../bet/BetLotteryPage'
 import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
-import JDChanglongBetRecordpage from '../经典/长龙助手/JDChanglongBetRecordpage'
-import JDLotteryAssistantPage from '../经典/长龙助手/JDLotteryAssistantPage'
+import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
+import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
+import EmptyPage from '../common/ep/EmptyPage'
+import { OnlineService } from '../../public/components/OnlineService'
+import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
+import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
 
 /**
  * 所有界面
  */
 const pageComponents: { [key in PageName]?: Function } = {
+  // ———————————— 测试页面 —————————————
+  JDSegmentPage,
   // ———————————— 通用页面 —————————————
   JDVirtualCurrencyTutorialPage, //虚拟币充值教程
   TransitionPage, //过渡页
@@ -120,6 +127,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionPage, //优惠活动
   // 彩票大厅-默认
   GameLobbyPage,
+  TwoLevelGames,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
@@ -140,6 +148,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDFeedBackPage, //建议反馈
   OnlinePayPage, //在线支付
   TransferPayPage, //银行支付
+  EmptyPage, //空界面
   BetLotteryPage, //彩票下注
   BtcPayPage, //虚拟币支付
   BtcTutorialPage, //虚拟币教程
@@ -160,9 +169,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   TaskCenterPage, // 任务中心
   JDRecommendedIncomePage, //推荐收益
   JDPromotionCodeListPage, //邀请码
-  JDChanglongBetRecordpage, //我的下注记录
-  JDLotteryAssistantPage, //最新长龙
-
+  JDChangLongPage, //长龙主页
+  JDBetRecordDetailPage, //长龙注单详情
+  OnlineService, //在线客服
   // ———————————— 模板页面 —————————————
 
   LCMinePage, //乐橙-我的页

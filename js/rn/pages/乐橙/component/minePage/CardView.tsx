@@ -1,33 +1,39 @@
-import {
-  Dimensions,
-  Image,
-  ImageStyle,
-  StyleProp,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { Dimensions, Image, ImageStyle, StyleProp, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { Icon } from 'react-native-elements'
+import { useEffect, useState } from 'react'
 import PushHelper from '../../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 import useMemberItems from '../../../../public/hooks/useMemberItems'
-import { useEffect, useState } from 'react'
-import { IGlobalState, UGStore } from '../../../../redux/store/UGStore'
+import { UGStore } from '../../../../redux/store/UGStore'
 import { httpClient } from '../../../../public/network/httpClient'
+import Animated, {
+  block,
+  clockRunning,
+  cond,
+  debug,
+  Easing,
+  set,
+  startClock,
+  stopClock,
+  timing,
+  Value,
+} from 'react-native-reanimated'
+import UGUserModel from '../../../../redux/model/全局/UGUserModel'
 
 export const CardView = () => {
   const userStore = UGStore.globalProps.userInfo
-  const { balance, fullName, todayWinAmount, curLevelGrade } = userStore
+  const { balance, fullName, curLevelGrade, usr } = userStore
   const [showBalance, setShowBalance] = useState(true)
-  const [depositItem, setDepositItem] = useState<any>()
-  const [withdrawItem, setWithdrawItem] = useState<any>()
   const [LXBItem, setLXBItem] = useState<any>()
   const { UGUserCenterItem } = useMemberItems()
+  const [spinValue, setSpinValue] = useState(new Value(0))
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  })
+
   useEffect(() => {
-    UGUserCenterItem && setDepositItem(UGUserCenterItem.find((item) => item.name == '存款'))
-    UGUserCenterItem && setWithdrawItem(UGUserCenterItem.find((item) => item.name == '取款'))
     UGUserCenterItem && setLXBItem(UGUserCenterItem.find((item) => item.name == '利息宝'))
   }, [UGUserCenterItem])
 
@@ -45,7 +51,7 @@ export const CardView = () => {
       <View style={{ paddingTop: 12 }}>
         <View style={{ paddingLeft: 50, paddingRight: 30, paddingTop: 10, flexDirection: 'row' }}>
           <View style={{ flexDirection: 'row', flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', alignSelf: 'center' }}>{fullName}</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', alignSelf: 'center' }}>{usr}</Text>
             <View
               style={{ height: 22, marginLeft: 8, backgroundColor: '#84C1FF', borderRadius: 10, alignSelf: 'center' }}>
               <Text style={{
@@ -105,7 +111,16 @@ export const CardView = () => {
           }}>
             * * * *
           </Text>}
-          {showBalance && <Icon name={'refresh'} />}
+          {showBalance &&
+          <TouchableWithoutFeedback onPress={() => {
+            animatedSpin(spinValue, setSpinValue)
+            UGUserModel.updateFromNetwork()
+          }}>
+            <Animated.Image
+              style={{ transform: [{ rotate: spin }], height: 20, width: 20 }}
+              source={{ uri: 'shuaxindef' }} />
+          </TouchableWithoutFeedback>
+          }
         </View>
         <View style={{ flexDirection: 'row', marginTop: 24, alignItems: 'center' }}>
           <CardButton
@@ -148,4 +163,48 @@ const CardButton = ({ uri, text, imgStyle, onPress }: { uri: string, text: strin
       </View>
     </TouchableWithoutFeedback>
   )
+}
+
+const animatedSpin = (spinValue, setSpinValue) => {
+  Animated.timing(
+    spinValue,
+    {
+      toValue: 1,
+      duration: 1000,
+      easing: Easing.linear, // Easing is an additional import from react-native
+    },
+  ).start(() => {
+    setSpinValue(new Value(0))
+  })
+}
+
+function runTiming(clock, value, dest) {
+  const state = {
+    finished: new Value(0),
+    position: value,
+    time: new Value(0),
+    frameTime: new Value(0),
+  }
+
+  const config = {
+    duration: 250,
+    toValue: dest,
+    easing: Easing.inOut(Easing.cubic),
+  }
+
+  return block([
+
+    cond(clockRunning(clock), 0, [
+
+      set(state.finished, 0),
+      set(state.time, 0),
+      set(state.position, value),
+      set(state.frameTime, 0),
+      set(config.toValue, dest),
+      startClock(clock),
+    ]),
+    timing(clock, state, config),
+    cond(state.finished, debug('stop clock', stopClock(clock))),
+    state.position,
+  ])
 }

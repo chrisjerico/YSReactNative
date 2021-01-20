@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
 import WebView from 'react-native-webview';
 import { View } from 'react-native';
+import { img_assets, img_fullPath, img_root } from '../../Res/icon';
 
 
 interface JDVirtualCurrencyTutorialVars { }
@@ -45,7 +46,7 @@ export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialPr
   if (AppDefine.siteId == 'c116') {
     imgURL = AppDefine.host + "/static/images/czjc/mobile/CGpayc213.jpg";
   } else if (AppDefine.siteId == 'c134') {
-    imgURL = 'https://appstatic.guolaow.com/c134/top-up_%20tutorial.png'
+    imgURL = img_root('c134/top-up_%20tutorial')
   }
 
   return (

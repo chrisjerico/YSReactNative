@@ -1,6 +1,5 @@
-import { UGSkinStyle } from './UGSkinStyle';
-import UGSkinManagers, { skin1, Skin1 } from '../UGSkinManagers';
-import { convertToSkinType, st } from './UGSkinConf';
+import { skin1, Skin1 } from '../UGSkinManagers'
+import { st } from './UGSkinConf'
 export interface UGSkinColor<Color, Colors> {
   // 根据主题色自动生成色值
   themeColor?: Color // 主题色
@@ -9,30 +8,29 @@ export interface UGSkinColor<Color, Colors> {
   bgTextColor?: Color // bgColor上的文本颜色
 
   // 其他颜色
-  bgColor: Colors// 背景色
-  navBarBgColor: Colors// 导航条背景色
-  tabBarBgColor: Color// 底部标签栏背景色
-  tabNoSelectColor: Color// 底部标签栏未选中颜色
-  tabSelectedColor: Color// 底部标签栏选中颜色
-  cellBgColor: Color// Cell背景色
-  progressBgColor: Colors// 我的页进度条背景渐变色
-  menuHeadViewColor: Colors// 侧边栏顶部背景渐变色
-  homeContentColor: Color// 首页内容底色
+  bgColor: Colors // 背景色
+  navBarBgColor: Colors // 导航条背景色
+  tabBarBgColor: Color // 底部标签栏背景色
+  tabNoSelectColor: Color // 底部标签栏未选中颜色
+  tabSelectedColor: Color // 底部标签栏选中颜色
+  cellBgColor: Color // Cell背景色
+  progressBgColor: Colors // 我的页进度条背景渐变色
+  menuHeadViewColor: Colors // 侧边栏顶部背景渐变色
+  homeContentColor: Color // 首页内容底色
   homeContentSubColor: Color // 首页游戏列表二级菜单背景色
-  CLBgColor: Color// 长龙灰色背景底色
-  textColor1: Color// 字颜色 黑色
-  textColor2: Color// 占位字颜色 深灰色
-  textColor3: Color// 占位字颜色 淡灰色
-  textColor4: Color// 反差字体 白色
+  CLBgColor: Color // 长龙灰色背景底色
+  textColor1: Color // 字颜色 黑色
+  textColor2: Color // 占位字颜色 深灰色
+  textColor3: Color // 占位字颜色 淡灰色
+  textColor4: Color // 反差字体 白色
   conversionCellColor: Color // 内容Cell
-  intoViewColor: Color// 转入View
-  moneyCellColor: Color// 金额Cell
-  navBarTitleColor: Color// 导航条标题颜色
-  yubaoBgColor: Color// 利息宝页背顶部景色
-  promotion: Promotion<Color>  // 优惠活动页
-  progress: Progress<Color>// 进度条颜色
+  intoViewColor: Color // 转入View
+  moneyCellColor: Color // 金额Cell
+  navBarTitleColor: Color // 导航条标题颜色
+  yubaoBgColor: Color // 利息宝页背顶部景色
+  promotion: Promotion<Color> // 优惠活动页
+  progress: Progress<Color> // 进度条颜色
 }
-
 
 interface Progress<Color> {
   tintColor?: Color
@@ -53,7 +51,7 @@ interface Promotion<Color> {
 /**
  * 主要适配模板：经典1蓝、GPK0
  * 这几个适配完其他模板一般没什么大问题了
- * 
+ *
  * 最多人用的模板：经典1蓝（占80%以上）
  * 其他多人用的模板：威尼斯、六合资料、经典18灰、GPK
  */
@@ -78,12 +76,18 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
       白曜: '#000000',
       金星黑: '#ffffff',
       凯时: '#ffffff',
-      get 六合厅() { return skin1.themeColor },
-      get 威尼斯() { return skin1.themeColor },
+      get 六合厅() {
+        return skin1.themeColor
+      },
+      get 威尼斯() {
+        return skin1.themeColor
+      },
     },
     bgColor: {
       默认: '#e53333',
-      get 白曜() { return skin1.themeColor },
+      get 白曜() {
+        return skin1.themeColor
+      },
       金星黑: '#000000',
       凯时: '#000000',
       六合厅: '#ffffff',
@@ -95,13 +99,21 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
   promotion: {
     headerBgColor: {
       默认: null,
-      get 白曜() { return Skin1.themeColor },
-      get 宝石红() { return Skin1.themeColor },
+      get 白曜() {
+        return Skin1.themeColor
+      },
+      get 宝石红() {
+        return Skin1.themeColor
+      },
       金星黑: '#000000',
       凯时: '#000000',
-      乐橙: "#ffffff",
-      get 六合厅() { return Skin1.themeColor },
-      get 威尼斯() { return Skin1.themeColor },
+      乐橙: '#ffffff',
+      get 六合厅() {
+        return Skin1.themeColor
+      },
+      get 威尼斯() {
+        return Skin1.themeColor
+      },
     },
 
     headerTintColor: {
@@ -110,12 +122,16 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     },
     listBgColor: {
       默认: null,
-      get 白曜() { return Skin1.themeColor },
+      get 白曜() {
+        return Skin1.themeColor
+      },
       凯时: '#000000',
     },
     tabBgColor: {
       默认: null,
-      get 白曜() { return Skin1.themeColor },
+      get 白曜() {
+        return Skin1.themeColor
+      },
       凯时: '#000000',
     },
     selectedTabBgColor: {
@@ -125,25 +141,33 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     },
     selectedTabTextColor: {
       默认: null,
-      get 宝石红() { return Skin1.themeColor },
+      get 宝石红() {
+        return Skin1.themeColor
+      },
       凯时: 'red',
-      乐橙: "#ffffff",
-      get 六合厅() { return Skin1.themeColor },
-      get 威尼斯() { return Skin1.themeColor },
+      乐橙: '#ffffff',
+      get 六合厅() {
+        return Skin1.themeColor
+      },
+      get 威尼斯() {
+        return Skin1.themeColor
+      },
     },
     couponTitleColor: {
       默认: '#ffffff',
+      六合厅: '#000000',
     },
     tabTextColor: {
       默认: '#000',
       凯时: '#fff',
+      六合厅: '#000000',
     },
   },
 
   // 利息宝页背顶部景色
   yubaoBgColor: {
     默认: '#8E8E8E',
-    利来: "#444",
+    利来: '#444',
   },
 
   // 背景色
@@ -219,7 +243,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     简约0蓝: ['#4463A5', '#4463A5'],
     简约1红: ['#fb8787', '#e45353'],
     凯时: ['#2C2E36', '#2C2E36'],
-    乐橙: ['#FEC434', "#FEC434"],
+    乐橙: ['#FEC434', '#FEC434'],
     六合厅: ['#4285f4', '#4285f4'],
     六合资料: ['#3862AA', '#3862AA'],
     利来: ['#999999', '#999999'],
@@ -344,7 +368,9 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     火山橙: '#eb3323',
     综合体育: '#6B54F5',
     天空蓝: '#010101',
-    get 威尼斯() { return skin1.themeColor },
+    get 威尼斯() {
+      return skin1.themeColor
+    },
     香槟金0金: '#987960',
     香槟金1黑: '#927E6D',
     香槟金2紫: '#967C6D',
@@ -433,7 +459,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     简约0蓝: ['#fa7dc5', '#f5c3e0'],
     简约1红: ['#fa7dc5', '#f5c3e0'],
     凯时: ['black', 'black'],
-    乐橙: ['#FEC434', "#FEC434"],
+    乐橙: ['#FEC434', '#FEC434'],
     六合厅: ['#4285f4', '#4285f4'],
     六合资料: ['#3862AA', '#7887a2'],
     利来: ['#555555', '#555555'],
@@ -639,6 +665,6 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
 
   // 导航条标题颜色
   navBarTitleColor: {
-    默认: '#fff'
+    默认: '#fff',
   },
 }

@@ -10,31 +10,32 @@ import PushHelper from '../../../public/define/PushHelper';
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
 import { push } from '../../../public/navigation/RootNavigation';
 import { PageName } from '../../../public/navigation/Navigation';
+import { img_images, img_vueTemplate } from '../../../Res/icon';
 
 const JDFeedBackPage = () => {
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([
     {
       idKey:'1',
       name: '在线客服',
-      imgUrl: 'https://appstatic.guolaow.com/web/images/zxkf.png',
+      imgUrl: img_images('zxkf'),
       remark: '游戏过程中遇到问题（如充值提款等），请联系在线客服以便我们为您及时处理。',
     },
     {
       idKey:'2',
       name: '建议反馈',
-      imgUrl: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/jyfk.png',
+      imgUrl: img_vueTemplate('jyfk'),
       remark: '如果您对游戏或者平台有好的建议可以行进提交，官方客服会在48小时内进行回复。我们会参考您的反馈不断优化我们的产品和服务。',
     },
     {
       idKey:'3',
       name: '投诉建议',
-      imgUrl: 'https://appstatic.guolaow.com/web/images/tsjy.png',
+      imgUrl: img_images('tsjy'),
       remark: '为了让平台所有会员获得最好的服务，维护会员权益，我们为会员提供出款监督服务，如出款遇到恶意拖延、不出款等问题可以提出投诉！我们会尽快为您解决。',
     },
     {
       idKey:'4',
       name: '反馈记录',
-      imgUrl: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/fkjl.png',
+      imgUrl: img_vueTemplate('fkjl'),
       remark: '为了让平台所有会员获得最好的服务，维护会员权益，我们为会员提供出款监督服务，如出款遇到恶意拖延、不出款等问题可以提出投诉！我们会尽快为您解决。',
     }
   ])

@@ -19,7 +19,7 @@ export class UGLoginModel {
   token?: string;
   static getToken() {
     const user = UGStore.globalProps?.userInfo;
-    return user.sessid ?? user["API-SID"];
+    return user?.sessid ?? user?.["API-SID"];
   }
 }
 
@@ -118,4 +118,6 @@ export default class UGUserModel extends UGLoginModel {
 
   unreadFaq?: number;
   unreadMsg?: number; // 站内信未读消息数量
+
+  chatShareBet?: boolean;;    /**<   是否允许注单分享 */
 }

@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {Platform, StyleSheet, View } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
-import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
-import DateUtil from '../../../public/tools/andrew/DateUtil';
-import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
 import { UGBasePageProps } from '../../base/UGPage';
 import { scale } from "../../../public/tools/Scale";
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import EmptyView from '../../../public/components/view/empty/EmptyView';
-import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext';
+import { arrayEmpty } from '../../../public/tools/Ext';
 import { ugLog } from '../../../public/tools/UgLog';
 import { PromotionConst } from '../const/PromotionConst';
 import JDPromotionTabMemberCP from '../cp/JDPromotionTabMemberCP';
@@ -25,16 +22,19 @@ import JDPromotionTabRealityRcordCP from '../cp/JDPromotionTabRealityRcordCP';
 import JDPromotionInfoCP from '../cp/JDPromotionInfoCP';
 import { Button } from 'react-native-elements';
 import { UGStore } from '../../../redux/store/UGStore';
-import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { PageName } from '../../../public/navigation/Navigation';
 import { push } from '../../../public/navigation/RootNavigation';
+import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader';
+import { skinColors } from '../../../public/theme/const/UGSkinColor';
+import { UGNavigationBar } from '../../../public/widget/UGNavigationBar';
+
 
 interface JDRecommendedIncomePage {
   tabNames?: Array<string>//tab界面名称数据
 }
 
 const 
-JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
+JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
 
   //调用sysConf
   const { inviteCode } = UGStore.globalProps.sysConf
@@ -55,7 +55,7 @@ JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
         PromotionConst.真人记录
       ]
     })
-  const [tabIndex, setTabIndex] = useState<number>(0)
+  const [tabIndex] = useState<number>(0)
   /**
    * 初始化
    * @param item
@@ -64,13 +64,8 @@ JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
     setProps({
       navbarOpstions: {
         hidden: false, title: '推荐收益',
-        rightComponent:
-         <Button 
-         title={inviteCode.displayWord}
-         buttonStyle ={{backgroundColor:Skin1.themeColor,width:100,}}
-         titleStyle={{ fontSize:16 }}
-          onPress={() => rightClicked()}
-        />
+        rightComponent:ZLHeader(),
+        
       },
       didFocus: () => {
         console.log('AppDefine.siteId ========',AppDefine.siteId );
@@ -81,6 +76,34 @@ JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
     })
 
   }, [])
+
+  const ZLHeader = () => {
+    if (isHideBut()) {
+      return(
+        <View></View>
+      )
+    } else {
+      return(
+        <Button 
+         title={inviteCode.displayWord}
+         buttonStyle ={{backgroundColor:Skin1.themeColor,width:100,}}
+         titleStyle={{ fontSize:16 }}
+          onPress={() => rightClicked()}
+        /> 
+      )
+    }
+
+  }
+
+  function isHideBut(){
+    
+    if (AppDefine.siteId ==='c084') {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
   /**
      * 跳到邀请码界面
@@ -121,6 +144,7 @@ JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
   }
 
   return (
+    
     <View style={styles.container}>
       {
         [
@@ -142,7 +166,7 @@ JDRecommendedIncomePage = ({ route, setProps }: UGBasePageProps) => {
               style={[{ flex: 1 ,}]}
               renderTabBar={() => <ScrollableTabBar style={styles.tab_bar} />}>
               {
-                v.tabNames?.map((tabItem, index) => {
+                v.tabNames?.map((tabItem) => {
                   return (
                     renderRecordList(tabItem)
                   )

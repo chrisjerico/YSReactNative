@@ -1,18 +1,23 @@
 import React, { useRef } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
+import { appConfig } from '../../../../config'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
+import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
 import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType, RankingListType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
+import { ugLog } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -25,10 +30,6 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
-import { ugLog } from '../../public/tools/UgLog'
-import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
-import { skinColors } from '../../public/theme/const/UGSkinColor'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -52,6 +53,12 @@ const WNZHomePage = () => {
   const { signOut, tryPlay } = sign
 
   const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists } = homeInfo
+
+  const getNavs = () => {
+    if (AppDefine.siteId == 'c245') return uid ? config.c245AuthNavs : config.c245UnAuthNavs
+    if (AppDefine.siteId.includes('c108') && !uid) return config.c108UnAuthNavs
+    return navs
+  }
 
   const { uid, usr, balance } = userInfo
 
@@ -128,7 +135,7 @@ const WNZHomePage = () => {
                 if (subType) {
                   showGameSubType(index)
                 } else {
-                  ugLog('GameType item=', JSON.stringify(item))
+                  //ugLog('GameType item=', JSON.stringify(item))
                   if (gameId == GameType.大厅 && subId != MenuType.CQK && subId != MenuType.CZ && subId != MenuType.TX && subId != MenuType.ZHGL && subId != MenuType.CZJL && subId != MenuType.TXJL) {
                     if (subId == 47 && sysInfo?.mobileGameHall == '1') {
                       //新彩票大厅
@@ -157,7 +164,7 @@ const WNZHomePage = () => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
-      rankingListType={AppDefine.siteId == 'c245' ? RankingListType.不顯示 : rankingListType}
+      rankingListType={appConfig.isWNZBottomTabHot() ? RankingListType.不顯示 : rankingListType}
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
@@ -186,7 +193,7 @@ const WNZHomePage = () => {
             visible={navs?.length > 0}
             navCounts={5}
             containerStyle={{ alignItems: 'center' }}
-            navs={AppDefine.siteId == 'c245' ? (uid ? config.c245AuthNavs : config.c245UnAuthNavs) : navs}
+            navs={getNavs()}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId, onPress } = item
               return (
@@ -201,7 +208,7 @@ const WNZHomePage = () => {
                     justifyContent: 'center',
                   }}
                   imageContainerStyle={{
-                    width: '80%',
+                    width: '75%',
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
@@ -211,8 +218,8 @@ const WNZHomePage = () => {
                   circleContainerStyle={{ width: '85%' }}
                   circleColor={'transparent'}
                   onPress={() => {
-                    ugLog('TEST onPRess')
-                    if (AppDefine.siteId == 'c245') {
+                    ugLog('TEST onPRess: ' + item.gameId)
+                    if (AppDefine.siteId == 'c245' || (AppDefine.siteId.includes('c108') && !uid)) {
                       if (gameId == 'tryPlay') {
                         tryPlay()
                       } else {
@@ -287,10 +294,10 @@ const WNZHomePage = () => {
             initialTabIndex={1}
             baseHeight={scale(82)}
             itemHeight={scale(100)}
-            fixedHeight={AppDefine.siteId == 'c245' ? [null, 350] : []}
+            fixedHeight={appConfig.isWNZBottomTabHot() ? [null, 350] : []}
             renderTabBar={TabBar}
             renderScene={({ item, index: sceneIndex }) => {
-              if (AppDefine.siteId == 'c245' && sceneIndex) {
+              if (appConfig.isWNZBottomTabHot() && sceneIndex) {
                 return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} iconTitleContainerStyle={{ height: 0 }} />
               } else {
                 return (
@@ -310,7 +317,7 @@ const WNZHomePage = () => {
                           logo={pic}
                           name={title}
                           desc={openCycle}
-                          logoBallText={sceneIndex ? '信' : AppDefine.siteId == 'c245' ? '热' : '官'}
+                          logoBallText={sceneIndex ? '信' : appConfig.isWNZBottomTabHot() ? '热' : '官'}
                           onPress={
                             title == '更多游戏'
                               ? goToUserCenterType.游戏大厅
@@ -347,7 +354,14 @@ const WNZHomePage = () => {
                     if (onPress) {
                       onPress()
                     } else {
-                      PushHelper.pushHomeGame(item)
+                      //ugLog('GameType item=', JSON.stringify(item))
+                      const { subId } = item
+                      if (subId == GameType.游戏大厅) {
+                        //游戏大厅
+                        push(PageName.GameLobbyPage, { showBackButton: true })
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
                     }
                   }
                 }}

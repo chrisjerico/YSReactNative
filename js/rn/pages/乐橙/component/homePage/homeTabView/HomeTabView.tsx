@@ -9,30 +9,21 @@ import { View } from 'react-native'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import PushHelper from '../../../../../public/define/PushHelper'
 import useHomePage from '../../../../../public/hooks/tars/useHomePage'
+import { navigate, push } from '../../../../../public/navigation/RootNavigation'
+import { PageName } from '../../../../../public/navigation/Navigation'
+import { WNZThemeColor } from '../../../../../public/theme/colors/WNZThemeColor'
+import { LCThemeColor } from '../../../../../public/theme/colors/LCThemeColor'
+import { GameType } from '../../../../../public/models/Enum'
+import { LHThemeColor } from '../../../../../public/theme/colors/LHThemeColor'
+import { MenuType } from '../../../../../public/define/ANHelper/hp/GotoDefine'
+import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 
-export const HomeTabView = ({ homeGames, goToPromotionPage }) => {
+export const HomeTabView = ({ homeGames, sysInfo }) => {
   const [height, setHeight] = useState(77)
-  const userStore = UGStore.globalProps.userInfo
-  const { uid = '' } = userStore
 
   useEffect(() => {
     homeGames && calculateHeight(0)
   }, [homeGames])
-
-  const thirdPartGamePress = (id: string, gameID?: string) => {
-    if (uid != '') {
-      const result = homeGames.filter((res) => res.id == id)
-      if (gameID && result.length > 0) {
-        const gameData = result[0].list.filter((res) => res.id == gameID)
-        //@ts-ignore
-        PushHelper.pushHomeGame(gameData[0])
-      } else if (!gameID && result.length > 0) {
-      } else {
-      }
-    } else {
-      PushHelper.pushLogin()
-    }
-  }
 
   const calculateHeight = (index: number) => {
     let h = 56
@@ -60,29 +51,43 @@ export const HomeTabView = ({ homeGames, goToPromotionPage }) => {
     setHeight(h)
   }
 
-  const test = (list: List) => {
-    if (list.gameId == 9) {
-      goToPromotionPage()
+  const onPress = (list: List) => {
+    const { gameId, subId, name } = list
+    if (gameId == GameType.大厅
+      && (subId != MenuType.CQK &&
+        subId != MenuType.CZ &&
+        subId != MenuType.TX &&
+        subId != MenuType.ZHGL &&
+        subId != MenuType.CZJL &&
+        subId != MenuType.TXJL)) {
+      if (subId == 47 && sysInfo?.mobileGameHall == '1') {//新彩票大厅
+        push(PageName.GameHallPage, { showBackButton: true })
+
+      } else if (subId == 47 && sysInfo?.mobileGameHall == '2') {//自由彩票大厅
+        push(PageName.FreedomHallPage, { showBackButton: true })
+
+      } else {
+        push(PageName.SeriesLobbyPage,
+          {
+            gameId,
+            subId,
+            name,
+            headerColor: Skin1.themeColor,
+            homePage: PageName.LCHomePage,
+          })
+      }
     } else {
       PushHelper.pushHomeGame(list)
     }
   }
 
-  const onPress = (list: List) => {
-    list.seriesId != '1'
-      ? thirdPartGamePress(list.seriesId, list.gameId)
-      : list.gameId
-      ? PushHelper.pushCategory(list.seriesId, list.gameId)
-      : PushHelper.pushCategory(list.seriesId, list.subType[0]?.gameId)
-  }
-
   const getTab = (item: Icon, index: number) => {
     return index == 0 ? (
-      <RecommendTabView onPress={test} key={index} list={item.list} tabLabel={item.name} />
+      <RecommendTabView onPress={onPress} key={index} list={item.list} tabLabel={item.name} />
     ) : index == 1 ? (
-      <LotteryTabView onPress={test} key={index} list={item.list} tabLabel={item.name} />
+      <LotteryTabView onPress={onPress} key={index} list={item.list} tabLabel={item.name} />
     ) : (
-      <GameListView list={item.list} key={index} onPress={test} tabLabel={item.name} />
+      <GameListView list={item.list} key={index} onPress={onPress} tabLabel={item.name} />
     )
   }
 

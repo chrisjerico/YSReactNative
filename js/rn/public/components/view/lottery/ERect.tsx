@@ -20,14 +20,14 @@ const ERect = ({
                  odds,
                  oddsStyle,
                }: IERect) => {
-
+  const key = 'ERect = 元素方格子' + title
 
   return (
-    <View key={title + odds}
+    <View key={key}
           style={_styles.container}>
-      <Text key={title}
+      <Text key={key + 'title'}
             style={[_styles.title_text, titleStyle]}>{title}</Text>
-      <Text key={odds}
+      <Text key={key + 'odds'}
             style={[_styles.odds_text, oddsStyle]}>{odds}</Text>
     </View>
   )

@@ -297,7 +297,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
         smsCode: sms ?? '', // 短信验证码
         imgCode: '', // 字母验证码
         slideCode: {
-          nc_csessionid: slideCode?.nc_csessionid,
+          nc_sid: slideCode?.nc_csessionid,
           nc_token: slideCode?.nc_token,
           nc_sig: slideCode?.nc_sig,
           nc_value: slideCode?.nc_value,

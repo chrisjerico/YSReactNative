@@ -16,6 +16,7 @@ import { showLoading, showSuccess } from '../../../public/widget/UGLoadingCP';
 import { UGStore } from '../../../redux/store/UGStore';
 import { number, string } from 'prop-types';
 import { pop } from '../../../public/navigation/RootNavigation';
+import { img_assets, img_fullPath, img_platform, useHtml5Image } from '../../../Res/icon';
 
 interface JDWriteMessagePage {
   list?: UGSignInHistoryModel[]  //添加图片fastList 数据
@@ -35,7 +36,7 @@ const JDWriteMessagePage = ({ setProps }) => {
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([
     {
       idKey: 'add',
-      imgUrl: 'https://appstatic.guolaow.com/assets/addimg.png',
+      imgUrl: img_assets('addimg),
     },
 
   ])
@@ -186,7 +187,7 @@ const JDWriteMessagePage = ({ setProps }) => {
                 <View style={{ flex: 1 }} />
                 <View style={[{ height: 40, width: 40, marginTop: 0, flexDirection: 'row' }]}>
                   <View style={{ flex: 1 }} />
-                  <Image style={[{ height: 25, width: 25, marginRight: 0 }]} source={{ uri: 'https://appstatic.guolaow.com/web/platform/c069/templates/images/close.png' }} />
+                  <Image style={[{ height: 25, width: 25, marginRight: 0 }]} source={{ uri: img_fullPath('platform/c069/templates/images/close') }} />
                 </View>
               </TouchableOpacity>
             )

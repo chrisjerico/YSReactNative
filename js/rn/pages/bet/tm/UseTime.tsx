@@ -7,6 +7,12 @@ import BetLotteryContext from '../BetLotteryContext'
 import CommStyles from '../../base/CommStyles'
 import { ugLog } from '../../../public/tools/UgLog'
 import moment from 'moment'
+import PushHelper from '../../../public/define/PushHelper'
+import AppDefine from '../../../public/define/AppDefine'
+import { LotteryHistoryData } from '../../../public/network/Model/lottery/LotteryHistoryModel'
+import { anyEmpty } from '../../../public/tools/Ext'
+import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
+import APIRouter from '../../../public/network/APIRouter'
 
 /**
  * 开奖时间显示
@@ -14,14 +20,18 @@ import moment from 'moment'
  */
 const UseTime = () => {
 
-  const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
+  const {
+    nextIssueData,
+    playOddDetailData,
+    // curPlayOddData,
+  } = useContext(BetLotteryContext)
 
   const [displayCloseTime, setDisplayCloseTime] = useState<string>(null) //显示封盘时间
   const [displayOpenTime, setDisplayOpenTime] = useState<string>(null) //显示开奖时间
   const [closeTime, setCloseTime] = useState<number>(0) //封盘时间倒计时
   const [openTime, setOpenTime] = useState<number>(0) //开奖时间倒计时
 
-  useEffect(()=>{
+  useEffect(() => {
     // ugLog('nextIssueData()?.isInstant=', nextIssueData())
     //非即开彩有倒计时
     if (nextIssueData()?.isInstant == '0') {
@@ -46,11 +56,11 @@ const UseTime = () => {
   /**
    * 计算开奖时间封盘时间的显示
    */
-  useEffect(()=>{
+  useEffect(() => {
     if (closeTime >= 0) {
-      const closeHour = ('0' + Math.floor(closeTime/HOUR_1)).slice(-2)
-      const closeMinute = ('0' + Math.floor((closeTime%HOUR_1)/MINUTE_1)).slice(-2)
-      const closeSecond = ('0' + Math.floor((closeTime%MINUTE_1)/SECOND_1)).slice(-2)
+      const closeHour = ('0' + Math.floor(closeTime / HOUR_1)).slice(-2)
+      const closeMinute = ('0' + Math.floor((closeTime % HOUR_1) / MINUTE_1)).slice(-2)
+      const closeSecond = ('0' + Math.floor((closeTime % MINUTE_1) / SECOND_1)).slice(-2)
 
       setDisplayCloseTime(`${closeHour}:${closeMinute}:${closeSecond}`)
 
@@ -70,11 +80,28 @@ const UseTime = () => {
 
   }, [closeTime, openTime])
 
-
+  /**
+   * 跳转开奖网
+   */
+  const gotoOpenNet = () => {
+    PushHelper.openWebView(
+      AppDefine.host + '/open_prize/history.mobile.html?id=' + nextIssueData()?.id + '&navhidden=1',
+    )
+  }
+  /**
+   * 跳转在线TV
+   */
+  const gotoLive = () => {
+    PushHelper.openWebView(
+      AppDefine.host + '/open_prize/video.html?id=' + nextIssueData()?.id + '&&gameType=' + nextIssueData()?.gameType + '&&navhidden=1',
+    )
+  }
 
   return {
     displayCloseTime,
     displayOpenTime,
+    gotoOpenNet,
+    gotoLive,
   }
 }
 

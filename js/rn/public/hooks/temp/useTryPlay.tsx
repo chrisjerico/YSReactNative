@@ -6,7 +6,6 @@ import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { NA_DATA } from '../../define/ANHelper/hp/DataDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
-import { ToastStatus } from '../../tools/tars'
 
 interface Options {
   onStart?: () => any;

@@ -38,6 +38,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import ERect from '../../../../public/components/view/lottery/ERect'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
+import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 
 interface ILotteryRouteParams {
   lotteryCode?: string, //当前的彩票CODE，正码、正特 等等
@@ -52,6 +53,7 @@ interface ILotteryRouteParams {
  */
 const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
 
+  const key = 'lottery page' + lotteryCode
 
   const {
     tabIndex,
@@ -68,38 +70,43 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
     addOrRemoveBall,
   } = UseLhcZT()
 
-  useEffect(()=>{
+  useEffect(() => {
     setLotteryCode(lotteryCode)
   }, [])
+
+  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableOpacity key={key + item[0]?.alias}
+                                                                                         onPress={() => setTabIndex(index)}>
+    <View key={key + item[0]?.id}
+          style={[
+            _styles.tab_item,
+            index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+          ]}>
+      <Text key={key + item[0]?.id}
+            style={[
+              _styles.tab_title_item_text,
+              index == tabIndex ? { color: `white` } : null,
+            ]}>{item[0]?.alias}</Text>
+    </View>
+  </TouchableOpacity>
 
   /**
    * 绘制tab，只有1个数据不绘制Tab
    */
-  const renderTab = () => arrayLength(pageData) > 1 &&  <View style={_styles.tab_title_container}>
-    <ScrollView style={_styles.sv_container}
+  const renderTab = () => arrayLength(pageData) > 1 && <View key={key + 'tab'}
+                                                             style={_styles.tab_title_container}>
+    <ScrollView key={key + 'sv'}
+                style={_styles.sv_tab_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
-      <View style={_styles.tab_title_content}>
+      <View key={key + 'content'}
+            style={_styles.tab_title_content}>
         {
-          pageData?.map((item, index) =>
-            <TouchableOpacity key={item[0]?.alias}
-                              style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
-              <View key={item[0]?.alias}
-                    style={[
-                      _styles.tab_item,
-                      index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-                    ]}>
-                <Text style={[
-                  _styles.tab_title_item_text,
-                  index == tabIndex ? { color: `white` } : null,
-                ]}>{item[0]?.alias}</Text>
-              </View>
-            </TouchableOpacity>)
+          pageData?.map(renderTabItem)
         }
       </View>
     </ScrollView>
-    <Icon size={scale(36)}
+    <Icon key={key + 'tab Icon'}
+          size={scale(36)}
           color={Skin1.themeColor}
           name={'angle-double-left'}/>
   </View>
@@ -108,7 +115,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 方格式
    * @param item
    */
-  const renderERect = (item?: PlayData) => <LotteryERect key={item?.id}
+  const renderERect = (item?: PlayData) => <LotteryERect key={key + 'renderERect' + item?.id}
                                                          item={item}
                                                          selectedBalls={selectedBalls}
                                                          callback={() => addOrRemoveBall(item?.id)}/>
@@ -117,7 +124,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 球
    * @param item
    */
-  const renderEBall = (item?: PlayData) => <LotteryEBall key={item?.id}
+  const renderEBall = (item?: PlayData) => <LotteryEBall key={key + 'renderEBall' + item?.id}
                                                          item={item}
                                                          selectedBalls={selectedBalls}
                                                          callback={() => addOrRemoveBall(item?.id)}/>
@@ -126,17 +133,20 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 正特
    * @param groupData
    */
-  const renderZT1 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
+  const renderZT1 = (groupData?: PlayGroupData) => <View key={key + 'renderZT1' + groupData?.id}
                                                          style={CommStyles.flex}>
 
-    <View style={_styles.sub_title_container}>
-      <Text style={[
-        _styles.sub_title_text,
-        { color: Skin1.themeColor },
-      ]}>{groupData?.alias}</Text>
+    <View key={key + ' sub renderZT1' + groupData?.id}
+          style={_styles.sub_title_container}>
+      <Text key={key + ' sub renderZT1 text' + groupData?.id}
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
     </View>
 
-    <View style={_styles.ball_container}>
+    <View key={key + ' sub2 renderZT1' + groupData?.id}
+          style={_styles.ball_container}>
       {
         groupData?.plays?.map((item) => renderEBall(item))
       }
@@ -148,17 +158,20 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * 绘制 正特
    * @param groupData
    */
-  const renderZT2 = (groupData?: PlayGroupData) => <View key={groupData?.id + groupData?.alias}
+  const renderZT2 = (groupData?: PlayGroupData) => <View key={key + 'renderZT2' + groupData?.id}
                                                          style={CommStyles.flex}>
 
-    <View style={_styles.sub_title_container}>
-      <Text style={[
-        _styles.sub_title_text,
-        { color: Skin1.themeColor },
-      ]}>{groupData?.alias}</Text>
+    <View key={key + ' sub renderZT2' + groupData?.id}
+          style={_styles.sub_title_container}>
+      <Text key={key + ' sub renderZT2' +  + groupData?.id}
+            style={[
+              _styles.sub_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.alias}</Text>
     </View>
 
-    <View style={_styles.ball_container}>
+    <View key={key + ' sub2 renderZT2' + groupData?.id}
+          style={_styles.ball_container}>
       {
         groupData?.plays?.map((item) => renderERect(item))
       }
@@ -168,21 +181,35 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <ScrollView showsVerticalScrollIndicator={false}>
+  const renderAllBall = () => <View key={key + 'renderAllBall'}
+                                    style={_styles.content_container}>
     {arrayLength(curData) > 0 && renderZT1(curData[0])}
     {arrayLength(curData) > 1 && renderZT2(curData[1])}
-  </ScrollView>
+  </View>
 
   return (
-    <View style={[CommStyles.flex, style]}>
+    <ScrollView key={key}
+                showsVerticalScrollIndicator={false}
+                nestedScrollEnabled={true}
+                style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderAllBall()}
-    </View>
-
+    </ScrollView>
   )
 }
 
 const _styles = StyleSheet.create({
+  sv_container: {
+    flex: 1,
+    height: BALL_CONTENT_HEIGHT,
+  },
+  sv_tab_container: {
+    flex: 1,
+  },
+  content_container: {
+    flex: 1,
+    paddingBottom: scale(240),
+  },
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
@@ -221,9 +248,6 @@ const _styles = StyleSheet.create({
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
   },
-  sv_container: {
-    flex: 1,
-  },
   tab_title_content: {
     flexDirection: 'row',
   },
@@ -233,6 +257,14 @@ const _styles = StyleSheet.create({
     borderRadius: scale(8),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
+  },
+  tab_item2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(8),
+    paddingVertical: scale(8),
+    paddingHorizontal: scale(30),
+    backgroundColor: 'red'
   },
   tab_title_item_text: {
     color: UGColor.TextColor3,

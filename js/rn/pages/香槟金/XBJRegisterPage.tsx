@@ -25,6 +25,7 @@ import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine';
 import APIRouter from '../../public/network/APIRouter';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
+import { img_assets } from '../../Res/icon';
 
 
 interface XBJRegisterVars {
@@ -57,7 +58,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     navigation.setOptions({ unmountOnBlur: false })
     setProps({
       backgroundColor: Skin1.bgColor,
-      backgroundImage: 'https://appstatic.guolaow.com/assets/login_bg.jpg',
+      backgroundImage: img_assets('login_bg', 'jpg'),
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
       didFocus: () => {
         v.reloadSlide();
@@ -170,7 +171,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
           onPress={() => {
             navigate(PageName.XBJLoginPage);
           }}>
-          <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/entry_login_toggle_btn.png' }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
+          <FastImage source={{ uri: img_assets('entry_login_toggle_btn') }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
           <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>返回登录</Text>
         </TouchableOpacity>
         <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.3)', padding: 24 }}>

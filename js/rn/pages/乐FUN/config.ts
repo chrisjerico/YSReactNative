@@ -1,4 +1,4 @@
-import { UGImageHost, useHtml5Image } from '../../public/tools/tars'
+import { UGImageHost, useHtml5Image } from '../../Res/icon'
 const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test5)
 
 const config = {

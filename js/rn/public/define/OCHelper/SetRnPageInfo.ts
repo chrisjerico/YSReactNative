@@ -1,10 +1,10 @@
-import { UGStore } from './../../../redux/store/UGStore'
-import { devConfig } from '../../../../../config'
 import { Platform } from 'react-native'
-import { releaseConfig } from '../../../../../config'
+import { appConfig, devConfig } from '../../../../../config'
+import { UGImageHost } from '../../../Res/icon/index'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
 import AppDefine from '../AppDefine'
+import { UGStore } from './../../../redux/store/UGStore'
 import { Skin1 } from './../../theme/UGSkinManagers'
 import { OCHelper } from './OCHelper'
 
@@ -19,31 +19,24 @@ export async function setRnPageInfo(force = false) {
   let pages: Array<RnPageModel> = []
 
   let skitType = Skin1.skitType
-  skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType
+  skitType = appConfig.skinKeys[AppDefine.siteId] ?? skitType
   console.log('------------------skitType------------------', skitType)
 
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
-    pages.push({
-      vcName: 'UGPromotionIncomeController',
-      // rnName: PageName.JDLotteryAssistantPage,
-      rnName: PageName.JDRecommendedIncomePage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    })
+    // pages.push({
+    //   vcName: 'UGPromotionIncomeController',
+    //   rnName: PageName.JDChangLongPage,
+    //   // rnName: PageName.JDSegmentPage,
+    //   fd_prefersNavigationBarHidden: true,
+    //   允许游客访问: true,
+    //   允许未登录访问: true,
+    // })
   }
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
-    // ezer
-    if (Skin1.skitType.indexOf('利来') != -1) {
-      pages = pages.concat(LLPages)
-    }
-    if (skitType.indexOf('乐橙') != -1) {
-      pages = pages.concat(LCPages)
-    }
     // tars
     if (skitType.indexOf('宝石红') != -1) {
       pages = pages.concat(BSHPages)
@@ -60,6 +53,15 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages) // [pages addObjectsFromArray:多个页面]
     }
+    // 长龙助手
+    pages.push({
+      vcName: 'UGChangLongController',
+      rnName: PageName.JDChangLongPage,
+      fd_prefersNavigationBarHidden: true,
+      tabbarItemPath: '/changLong',
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 推荐信息
     pages.push({
       vcName: 'UGPromotionIncomeController',
@@ -136,6 +138,14 @@ export async function setRnPageInfo(force = false) {
     pages.push({
       rnName: PageName.TaskCenterPage,
       userCenterItemCode: 11,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 在线客服
+    pages.push({
+      rnName: PageName.OnlineService,
+      userCenterItemCode: 14,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: false,
       允许未登录访问: false,
@@ -272,6 +282,12 @@ export async function setRnPageInfo(force = false) {
   if (skitType.indexOf('乐FUN') != -1) {
     pages = pages.concat(LEFPages)
   }
+  if (skitType.indexOf('利来') != -1) {
+    pages = pages.concat(LLPages)
+  }
+  if (skitType.indexOf('乐橙') != -1) {
+    pages = pages.concat(LCPages)
+  }
   // 替换原生页面
   RnPageModel.pages = pages
   switch (Platform.OS) {
@@ -291,7 +307,7 @@ export async function setRnPageInfo(force = false) {
 
       // 替换原生页面
       await OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages])
-      await OCHelper.call('AppDefine.shared.setImageHost:', ['https://appstatic.guolaow.com'])
+      await OCHelper.call('AppDefine.shared.setImageHost:', [UGImageHost.git])
       break
     case 'android':
       break

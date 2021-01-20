@@ -14,7 +14,7 @@ const UseLotteryHelper = () => {
   const {
     nextIssueData, // 下一期数据
     playOddDetailData, //彩票数据
-    curPlayOddData, //当前选中的，特码 连码 等等
+    // curPlayOddData, //当前选中的，特码 连码 等等
   } = useContext(BetLotteryContext)
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
@@ -81,7 +81,7 @@ const UseLotteryHelper = () => {
     setLotteryCode,
     nextIssueData,
     playOddDetailData,
-    curPlayOddData,
+    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,

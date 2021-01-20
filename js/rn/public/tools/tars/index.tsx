@@ -61,56 +61,6 @@ export const ToastStatus = (msg: any) => {
   }
 }
 
-type ImageType = 'png' | 'jpg' | 'gif' | 'svg'
-
-export enum UGImageHost {
-  test5 = 'http://test05.6yc.com',
-  test10 = 'http://test10.6yc.com',
-  t132f = 'http://t132f.fhptcdn.com',
-
-  // git仓库的图片
-  git = 'https://appstatic.guolaow.com',
-}
-
-export const useHtml5Image = (host?: UGImageHost) => {
-
-  function getImage(host: string, pType: string, p1: string, p2?: string, suffix: ImageType = 'png') {
-    // 不传host默认使用当前站点的接口域名
-    !host?.length && (host = AppDefine.host)
-
-    // 替换 pType 中的 {p1}、{p2}
-    let path: string
-    if (p2?.length) {
-      path = pType.replace(/\{p1\}/, p1)
-      path = path.replace(/\{p2\}/, p2)
-    } else {
-      path = pType.replace(/\{p1\}.*/, p1)
-    }
-    return host + '/' + path + '.' + suffix
-  }
-
-  // 替换掉第一个入参中的 {p1}、{p2} 会得到完整路径
-  return {
-    getHtml5Image: (id: number, path: string, type: ImageType = 'png') =>
-      getImage(host, 'views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type),
-
-    img_mobileTemplate: (id: number, path: string, type: ImageType = 'png') =>
-      getImage(host, 'views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type),
-
-    img_home: (path: string, type: ImageType = 'png') =>
-      getImage(host, 'views/home/images/{p1}', path, undefined, type),
-
-    img_platform: (siteId: string, path?: string, type: ImageType = 'png') =>
-      getImage(host, 'platform/{p1}/images/{p2}', siteId, path, type),
-
-    img_images: (path: string, type: ImageType = 'png') =>
-      getImage(host, 'images/{p1}', path, undefined, type),
-
-    img_assets: (path: string, type: ImageType = 'png') =>
-      getImage(UGImageHost.git, 'assets/{p1}', path, undefined, type),
-  }
-}
-
 export const getActivityPosition = (position: number) => {
   if (position == 1) {
     return { left: 0, top: scale(115) }
