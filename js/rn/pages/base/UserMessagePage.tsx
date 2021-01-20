@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, Alert, Animated, Easing, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Animated, Easing, ImageBackground, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import AutoHeightWebView from 'react-native-autoheight-webview'
+import { ScrollView } from 'react-native-gesture-handler'
 import PullToRefreshListComponent from '../../public/components/tars/PullToRefreshListComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
@@ -8,7 +10,6 @@ import { Skin1 } from '../../public/theme/UGSkinManagers'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import BottomGap from '../../public/views/temp/BottomGap'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 
 const sleep = async (ms = 0) => {
@@ -23,7 +24,11 @@ const UserMessagePage = () => {
 
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
-
+  const [alertBlock, setAlertBlock] = useState({
+    visible: false,
+    title: '',
+    content: '',
+  })
   const spinValue = useRef(new Animated.Value(1)).current
   const translateY = useRef(new Animated.Value(140)).current
   const spinDeg = spinValue.interpolate({
@@ -80,11 +85,11 @@ const UserMessagePage = () => {
                   })
                   setList(_list)
                 })
-                Alert.alert('UG集团站内信', content, [
-                  {
-                    text: '确定',
-                  },
-                ])
+                setAlertBlock({
+                  visible: true,
+                  content,
+                  title,
+                })
               }}>
               <View style={styles.message}>
                 <Text style={isRead ? styles.readTextStyle : {}}>{title}</Text>
@@ -190,6 +195,49 @@ const UserMessagePage = () => {
           />
         </View>
       </Animated.View>
+      <Modal visible={alertBlock?.visible} transparent={true}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View style={{ width: '80%', height: 200, backgroundColor: '#ffffff', borderRadius: 10 }}>
+            <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
+              <Text>{alertBlock?.title}</Text>
+            </View>
+            <ScrollView style={{ flex: 5, paddingHorizontal: 5 }}>
+              <AutoHeightWebView
+                scalesPageToFit={true}
+                viewportContent={'width=device-width, user-scalable=no'}
+                source={{
+                  html:
+                    `<head>
+                  <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
+                  <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+                  <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
+                  <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
+                  </head>` +
+                    `<script>
+                  window.onload = function () {
+                    window.location.hash = 1;
+                    document.title = document.body.scrollHeight;
+                  }
+                  </script>` +
+                    alertBlock?.content,
+                }}
+              />
+            </ScrollView>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setAlertBlock({
+                  visible: false,
+                  title: null,
+                  content: null,
+                })
+              }}>
+              <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', borderTopWidth: AppDefine.onePx, borderColor: '#d9d9d9' }}>
+                <Text style={{ color: '#2894FF' }}>{'确定'}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+      </Modal>
     </>
   )
 }
