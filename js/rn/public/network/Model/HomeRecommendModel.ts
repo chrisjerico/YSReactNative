@@ -1,4 +1,3 @@
-
 export interface Game {
   gameType: string;
   gameTypeName: string;
@@ -54,4 +53,10 @@ export interface TwoLevelGame {
   msg: string;
   data: TwoLevelType[];
   info: Info;
+}
+
+export interface GameUrlModel {
+  code: number;
+  msg: string;
+  data: string;
 }

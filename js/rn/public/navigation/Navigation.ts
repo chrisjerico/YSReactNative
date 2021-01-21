@@ -127,4 +127,5 @@ export enum PageName {
   VietnamGameList = 'VietnamGameList',
   TwoLevelGames = "TwoLevelGames",
   OnlineService = 'OnlineService',
+  Game3rdView = "Game3rdView"
 }

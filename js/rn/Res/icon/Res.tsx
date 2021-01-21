@@ -122,10 +122,12 @@ export const Res = {
   dj: img_assets('lottery/d'),
   real_person: img_assets('lottery/re'),
   sports: img_assets('lottery/sp'),
-  
+
   //导航 三根线
   gengduo: img_assets('gengduo'),
   //长龙注单详情背景
   betDetailBg: img_assets('betDetailBg'),
 
+  //第三方遊戲返回
+  back_home: img_assets('back_home'),
 }
