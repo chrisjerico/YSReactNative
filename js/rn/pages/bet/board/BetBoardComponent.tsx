@@ -42,6 +42,8 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    showBetPayment,
+    setShowBetPayment,
     userInfo,
     systemInfo,
     showSlider,
@@ -54,8 +56,6 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     setShowChip,
     playOddDetailData,
   } = UseLhcBoard()
-
-  const refPay = useRef(null) //付款面板
 
   /**
    * 加大拉条
@@ -189,8 +189,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
       <TextInput key={'renderInputArea input'}
                  style={_styles.input_text}
                  onChangeText={(s) => {
-                   const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(inputMoney) }
-                   UGStore.dispatch({type: 'merge', selectedLotteryModel})
+                   const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(s) }
+                   UGStore.dispatch({ type: 'merge', selectedLotteryModel })
                    setInputMoney(s)
                  }}
                  keyboardType={'numeric'}/>
@@ -198,10 +198,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
     <View key={'renderInputArea input 下注 重置'}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TouchableWithoutFeedback onPress={() => {
-        refPay?.current?.togglePayBoard()
-      }
-      }>
+      <TouchableWithoutFeedback onPress={() => setShowBetPayment(true)}>
         <Text key={'renderInputArea input 下注'}
               style={_styles.start_bet}>下注</Text>
       </TouchableWithoutFeedback>
@@ -235,10 +232,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
         {locked ? renderLock(lockStr) : null}
-
-
-        <PayBoardComponent key={'BetBoardComponent'}
-                           ref={refPay}/>
+        {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}/>}
       </View>
     </View>
   )

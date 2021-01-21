@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
-import { forwardRef, RefObject, useContext, useImperativeHandle, useMemo, useState } from 'react'
+import { forwardRef, RefObject, useContext, useEffect, useImperativeHandle, useMemo, useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
@@ -13,8 +13,10 @@ import { UGStore } from '../../../../redux/store/UGStore'
 import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
 import UsePayBoard from './UsePayBoard'
+import { Toast } from '../../../../public/tools/ToastUtils'
 
 interface IPayBoardComponent {
+  showCallback?: () => void //窗口 是否显示 回调
 }
 
 /**
@@ -24,11 +26,13 @@ interface IPayBoardComponent {
  * @param ref
  * @constructor
  */
-const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
+const PayBoardComponent = ({ showCallback, }: IPayBoardComponent, ref?: any) => {
 
-  const [show, setShow] = useState(false)
 
   const {
+    setShowCallback,
+    showWindow,
+    setShowWindow,
     totalMoney,
     averageMoney,
     setAverageMoney,
@@ -40,11 +44,7 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
     startBet,
   } = UsePayBoard()
 
-  useImperativeHandle(ref, () => ({
-    togglePayBoard: () => {
-      setShow(!show)
-    },
-  }))
+  useEffect(() => setShowCallback(showCallback), [])
 
   // ugLog('Object?.values(selectedData)=', Object?.values(selectedData))
   // ugLog('Object.keys(selectedData) = ', Object.keys(selectedData))
@@ -64,10 +64,12 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
                 <Text style={_styles.item_title}>{`【${groupData?.alias}-${playData?.id}】`}</Text>
                 <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
                 <Text style={_styles.item_x}>{'X'}</Text>
-                <TextInput defaultValue={'1'}
+                <TextInput defaultValue={averageMoney?.toString()}
                            onChangeText={text => setMoneyMap(prevState => {
                              const dataMap = new Map<string, number>()
                              dataMap[playData?.id] = Number.parseFloat(text)
+                             ugLog('prevState = ', JSON.stringify(prevState))
+                             ugLog('dataMap = ', JSON.stringify(dataMap))
                              return { ...prevState, ...dataMap }
                            })}
                            keyboardType={'numeric'}
@@ -113,14 +115,15 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
 
     }).flat(2)
 
-  }, [selectedData])
+  }, [selectedData, averageMoney])
+
   const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * ITEM_HEIGHT, [itemCount])
+
   return (
     <View style={_styles.container}>
-      <Modal isVisible={show}
+      <Modal isVisible={showWindow}
              style={_styles.modal_content}
-             onBackdropPress={() => setShow(false)}
-             onBackButtonPress={() => setShow(false)}
+             onBackdropPress={() => setShowWindow(false)}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
              backdropOpacity={0.3}>
@@ -144,7 +147,7 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
           </View>
           <View style={_styles.total_info_container}>
             <Text style={_styles.total_info_title}>{'投注金额不能为小数：'}</Text>
-            <TextInput defaultValue={averageMoney?.toString()}
+            <TextInput value={averageMoney?.toString()}
                        keyboardType={'numeric'}
                        onChangeText={(text => setAverageMoney(Number.parseFloat(text)))}
                        style={_styles.total_input_money}/>
@@ -159,10 +162,10 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
           </View>
           <View style={_styles.bt_container}>
             <Text style={_styles.pay_bt}
-                  onPress={() => setShow(false)}>{'取消'}</Text>
+                  onPress={() => setShowWindow(false)}>{'取消'}</Text>
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
-                  onPress={() => setShow(false)}>{'确定'}</Text>
+                  onPress={() => setShowWindow(false)}>{'确定'}</Text>
           </View>
         </View>
       </Modal>
@@ -243,6 +246,7 @@ const _styles = StyleSheet.create({
     borderColor: UGColor.LineColor4,
     borderWidth: scale(1),
     borderRadius: scale(8),
+    paddingVertical: scale(4),
   },
   dialog_title_container: {
     width: '100%',
@@ -278,12 +282,13 @@ const _styles = StyleSheet.create({
     borderColor: UGColor.LineColor4,
     borderWidth: scale(1),
     borderRadius: scale(8),
+    paddingVertical: scale(8),
   },
   last_info_container: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: scale(8),
-    paddingTop: scale(24),
+    paddingBottom: scale(12),
   },
   bt_container: {
     flexDirection: 'row',
