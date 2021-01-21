@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { TextInput } from 'react-native-gesture-handler';
@@ -16,22 +16,48 @@ import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
 import { UGBasePageProps } from '../../base/UGPage';
 import { JDAgentInput } from '../cp/JDAgentInput';
 import { JDCLInfoText, JDCLText, JDCLView } from '../cp/JDCLInfoText';
+import { UGChanglongBetRecordModel } from '../Model/UGChanglongaideModel';
 
 interface JDBetRecordDetailPage {
-  showBackButton: Boolean,
-  item: any
+  item ?: UGChanglongBetRecordModel,
 }
 const JDBetRecordDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
-  const { item, showBackButton } = route?.params
 
-  const  isAllowCancel:boolean = item.isAllowCancel;
+  // console.log('route == ',route);
+  // const { item } = route?.params
 
+  let { current: v } = useRef<JDBetRecordDetailPage>( {
+    item :null,
+  })
+
+  useEffect(() => {
+    setProps({
+      navbarOpstions: { hidden: false, title: '注单详情', back: true },
+      didFocus: (params) => {
+        console.log('params == ',params);
+        let dic = params;
+        for (var key in dic) {
+          console.log("key: " + key + " ,value: " + dic[key]);
+          if (key == 'item') {
+            let date = dic[key];
+
+            if (!anyEmpty(date)) {
+              console.log('item====',date.title);
+              v.item = date;
+            }
+
+          }
+        }
+      }
+    })
+
+  }, [])
 
   function resultLabel() {
     let str: string;
-    if (item.status) {
-      str = item.lotteryNo;
+    if (v.item?.status) {
+      str = v.item?.lotteryNo;
     } else {
       str = "等待开奖";
     }
@@ -40,9 +66,9 @@ const JDBetRecordDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   function winAmountLabel() {
     let str: string;
-    if (item.status) {
-      if (item.isWin) {
-        str = item.bonus + '元';
+    if (v.item?.status) {
+      if (v.item?.isWin) {
+        str = v.item?.bonus + '元';
       } else {
         str = "未中奖";
       }
@@ -55,19 +81,19 @@ const JDBetRecordDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   function issueLabel() {
     let str: string;
-    if (!anyEmpty(item.displayNumber)) {
-      str = '第' + item.displayNumber + '期';
+    if (!anyEmpty(v?.item?.displayNumber)) {
+      str = '第' + v?.item?.displayNumber + '期';
     } else {
-      str = '第' + item.issue + '期';
+      str = '第' + v.item?.issue + '期';
     }
     return str;
   }
 
   function resultMoneyLabel() {
     let str: string;
-    if (item.status) {
-      if (item.isWin) {
-        str = "奖金:" + item.bonus + '元';
+    if (v.item?.status) {
+      if (v.item?.isWin) {
+        str = "奖金:" + v.item?.bonus + '元';
       } else {
         str = "奖金：未中奖";
       }
@@ -78,7 +104,7 @@ const JDBetRecordDetailPage = ({ route, setProps }: UGBasePageProps) => {
   }
 
   function cancelBetWith() {
-    let orderNo: string = item.orderNo
+    let orderNo: string = v.item?.orderNo
     console.log('orderNo=============================',orderNo);
     api.user.cancelBet(orderNo).useSuccess(({ data, msg }) => {
       console.log('useSuccess=============================');
@@ -107,25 +133,17 @@ const JDBetRecordDetailPage = ({ route, setProps }: UGBasePageProps) => {
     cancelBet()
   }
 
-  useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: false, title: '注单详情RN', back: true },
-      didFocus: (params) => {
 
-      }
-    })
-
-  }, [])
 
   return (
     <View style={{ backgroundColor: Skin1.textColor4 }}>
-      <JDCLText title={item.title} content={issueLabel()} imgURL={item.pic} />
-      <JDCLInfoText title='投注时间' content={item.addTime} />
-      <JDCLInfoText title='投注单号' content={item.orderNo} />
-      <JDCLInfoText title='投注金额' content={item.money + '元'} contentColor='red' />
+      <JDCLText title={v?.item?.title} content={issueLabel()} imgURL={v.item?.pic} />
+      <JDCLInfoText title='投注时间' content={v.item?.addTime} />
+      <JDCLInfoText title='投注单号' content={v.item?.orderNo} />
+      <JDCLInfoText title='投注金额' content={v.item?.money + '元'} contentColor='red' />
       <JDCLInfoText title='派奖金额' content={winAmountLabel()} />
       <JDCLInfoText title='开奖号码' content={resultLabel()} contentColor='red' />
-      <JDCLView title={item.group_name + '-' + item.play_name} content={resultMoneyLabel()} btnHide={!isAllowCancel} onPress={onPress} />
+      <JDCLView title={v.item?.group_name + '-' + v.item?.play_name} content={resultMoneyLabel()} btnHide={!v.isAllowCancel} onPress={onPress} />
     </View>
 
   )

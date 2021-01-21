@@ -120,3 +120,37 @@ export class BetBean {
   betInfo?: string ;  /**<   */
   playIds?: string ;  /**<   */
 }
+
+export class UGChanglongBetRecordModel {
+  
+  addTime?: string ;  /**<   */
+  betInfo?: string ;  /**<   */
+  bonus?: string ;  /**<   */
+  displayNumber?: string ;  /**<   */
+  gameId?: string ;  /**<   */
+  group_name?: string ;  /**<   */
+  isAllowCancel?: boolean ;  /**<   */
+  isLoading?: boolean ;  /**<   */
+  isTest?: boolean ;  /**<   */
+  isWin?: boolean ;  /**<   */
+  issue?: string ;  /**<   */
+  lotteryNo?: string ;  /**<   */
+  money?: string ;  /**<   */
+  msg?: string ;  /**<   */
+  multiple?: string ;  /**<   */
+  odds?: string ;  /**<   */
+  openTime?: string ;  /**<   */
+  orderNo?: string ;  /**<   */
+  pic?: string ;  /**<   */
+  playCateId?: string ;  /**<   */
+  playId?: string ;  /**<   */
+  play_alias?: string ;  /**<   */
+  play_name?: string ;  /**<   */
+  rebate?: string ;  /**<   */
+  rebateMoney?: string ;  /**<   */
+  resultMoney?: string ;  /**<   */
+  title?: string ;  /**<   */
+  uid?: string ;  /**<   */
+  usr?: string ;  /**<   */
+  status?: number ;  /**<   */
+}

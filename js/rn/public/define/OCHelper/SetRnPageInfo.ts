@@ -37,14 +37,6 @@ export async function setRnPageInfo(force = false) {
       允许未登录访问: true,
     })
 
-    pages.push({
-      vcName: 'BetDetailViewController',
-      rnName: PageName.JDBetDetailPage,
-      // rnName: PageName.JDSegmentPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    })
 
     // 我的提款账户
     pages.push({
