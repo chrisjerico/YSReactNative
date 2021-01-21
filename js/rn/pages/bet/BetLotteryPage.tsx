@@ -1,28 +1,13 @@
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import UseBetLottery from './UseBetLottery'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
 import { scale } from '../../public/tools/Scale'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
-import { pop } from '../../public/navigation/RootNavigation'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import CommStyles from '../base/CommStyles'
 import { UGColor } from '../../public/theme/UGThemeColor'
-import LhcTMComponent from './lhc/tm/LhcTMComponent'
 import BetLotteryContext from './BetLotteryContext'
-import TimeComponent from './counter/TimeComponent'
-import LotteryConst, { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from './const/LotteryConst'
-import LhcZTComponent from './lhc/zt/LhcZTComponent'
-import LhcLMAComponent from './lhc/lma/LhcLMAComponent'
-import LhcSBComponent from './lhc/sb/LhcSBComponent'
-import LhcPTYXComponent from './lhc/ptyx/LhcPTYXComponent'
-import LhcHXComponent from './lhc/hx/LhcHXComponent'
-import LhcZXBZComponent from './lhc/zxbz/LhcZXBZComponent'
 import BetBoardComponent from './board/BetBoardComponent'
-import { anyEmpty, arrayLength } from '../../public/tools/Ext'
 import BetRecordHeaderComponent from './counter/red/BetRecordHeaderComponent'
-import { ugLog } from '../../public/tools/UgLog'
 import ListContentComponent from './list/ListContentComponent'
 import { TopAreaComponent } from './top/TopAreaComponent'
 
@@ -54,8 +39,6 @@ const BetLotteryPage = ({ navigation, route }) => {
   }, [lotteryId])
 
   const [textSize, setTextSize] = useState(scale(22))
-
-
 
   return (
     <BetLotteryContext.Provider value={{

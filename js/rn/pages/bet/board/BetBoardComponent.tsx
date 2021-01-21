@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import * as React from 'react'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -20,6 +20,7 @@ import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
 import { anyEmpty } from '../../../public/tools/Ext'
 import BetLotteryContext from '../BetLotteryContext'
+import PayBoardComponent from './pay/PayBoardComponent'
 
 /**
  * 彩票功能区入参
@@ -49,18 +50,17 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     setInputMoney,
     showChip,
     setShowChip,
+    playOddDetailData,
   } = UseLhcBoard()
 
-  useEffect(() => {
+  const refPay = useRef(null) //付款面板
 
-  }, [])
   /**
    * 加大拉条
    */
   const increaseSlider = () => {
     let value = sliderValue + sliderStep
-    value = value > systemInfo?.activeReturnCoinRatio ?
-      systemInfo?.activeReturnCoinRatio : value
+    value = value > systemInfo?.activeReturnCoinRatio ? systemInfo?.activeReturnCoinRatio : value
     setSliderValue(value)
   }
 
@@ -137,24 +137,22 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
     }
     {
-      showChip ?
-        <View key={'renderSliderArea chip'}
-              style={_styles.chip_container}>
-          <View key={'renderSliderArea chip sub'}
-                style={_styles.chip_content}>
-            {
-              Object.keys(CHIP_OPTION).map((money) =>
-                <TouchableWithoutFeedback key={'renderSliderArea chip' + money}
-                                  onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
-                  <FastImage key={'renderSliderArea chip' + money}
-                             source={{ uri: CHIP_OPTION[money] }}
-                             style={_styles.chip_img}
-                             resizeMode={'contain'}/>
-                </TouchableWithoutFeedback>)
-            }
-          </View>
-        </View> :
-        null
+      showChip && <View key={'renderSliderArea chip'}
+                        style={_styles.chip_container}>
+        <View key={'renderSliderArea chip sub'}
+              style={_styles.chip_content}>
+          {
+            Object.keys(CHIP_OPTION).map((money) =>
+              <TouchableWithoutFeedback key={'renderSliderArea chip' + money}
+                                        onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
+                <FastImage key={'renderSliderArea chip' + money}
+                           source={{ uri: CHIP_OPTION[money] }}
+                           style={_styles.chip_img}
+                           resizeMode={'contain'}/>
+              </TouchableWithoutFeedback>)
+          }
+        </View>
+      </View>
     }
   </View>
   /**
@@ -181,7 +179,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         <View key={'renderInputArea ct'}
               style={CommStyles.flex}/>
         <TouchableWithoutFeedback key={'renderInputArea 筹码'}
-                          onPress={() => setShowChip(!showChip)}>
+                                  onPress={() => setShowChip(!showChip)}>
           <Text key={'renderInputArea 筹码'}
                 style={_styles.lottery_count_chip}>筹码</Text>
         </TouchableWithoutFeedback>
@@ -195,8 +193,10 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
     <View key={'renderInputArea input 下注 重置'}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Text key={'renderInputArea input 下注'}
-            style={_styles.start_bet}>下注</Text>
+      <TouchableWithoutFeedback onPress={() => refPay?.current?.togglePayBoard()}>
+        <Text key={'renderInputArea input 下注'}
+              style={_styles.start_bet}>下注</Text>
+      </TouchableWithoutFeedback>
       <Text key={'renderInputArea input 重置'}
             style={_styles.start_reset}>重置</Text>
     </View>
@@ -221,23 +221,35 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   return (
     <View key={'bet board content'}
-          style={[_styles.bet_container, style]}>
-      {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
-      {renderInputArea()}
-      {
-        locked ?
-          renderLock(lockStr) :
-          null
-      }
+          pointerEvents={'box-none'}
+          style={[_styles.container, style]}>
+      <View style={_styles.bet_container}>
+        {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
+        {renderInputArea()}
+        {locked ? renderLock(lockStr) : null}
+
+
+        <PayBoardComponent key={'BetBoardComponent'}
+                           ref={refPay}/>
+      </View>
     </View>
   )
 }
 
 const _styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-end',
+    // backgroundColor: 'red',
+    // flex: 1,
+  },
   bet_container: {
     position: 'absolute',
     width: '100%',
     justifyContent: 'flex-end',
+    // backgroundColor: 'blue'
   },
   extra_container: {
     flex: 1,

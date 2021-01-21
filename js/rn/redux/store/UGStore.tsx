@@ -30,7 +30,7 @@ export interface IGlobalState {
 
   //下注
   playOddDetailData?: PlayOddDetailData //彩票数据
-  selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+  selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
 
   // lotteryColumnIndex?: number //彩种索引
 
@@ -56,7 +56,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 
     //彩票数据
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
-    act.selectedLotteryData && (state.selectedLotteryData = act.selectedLotteryData)
+    act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
     // act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
 
   } else if (act.type == 'merge') {
@@ -67,7 +67,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 
     //彩票数据
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
-    state.selectedLotteryData = {selectedData: { ...state.selectedLotteryData?.selectedData, ...act.selectedLotteryData?.selectedData }}
+    state.selectedLotteryModel = {selectedData: { ...state.selectedLotteryModel?.selectedData, ...act.selectedLotteryModel?.selectedData }}
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
@@ -95,7 +95,7 @@ export interface UGAction<P = {}> extends Action {
 
   //彩票数据
   playOddDetailData?: PlayOddDetailData //彩票数据
-  selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+  selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
 
   // lotteryColumnIndex?: number //彩种索引
 

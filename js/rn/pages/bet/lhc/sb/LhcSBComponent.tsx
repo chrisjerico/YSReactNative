@@ -76,9 +76,7 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {
-      currentPageData()?.map(renderGroupERect)
-    }
+    { currentPageData()?.map(renderGroupERect) }
   </View>
 
   return (

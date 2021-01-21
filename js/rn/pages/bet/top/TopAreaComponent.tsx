@@ -19,10 +19,11 @@ const TopAreaComponent = () => {
   const {
     userInfo,
     systemInfo,
-    nextIssueData,
-    setNextIssueData,
+    // nextIssueData,
+    // setNextIssueData,
     gameTabIndex,
     setGameTabIndex,
+    playOddDetailData,
   } = UseTopArea()
 
   /**
@@ -41,9 +42,9 @@ const TopAreaComponent = () => {
               color={Skin1.navBarTitleColor}/>
       </View>
     </TouchableWithoutFeedback>
-    <Text key={'renderTopBar title' + nextIssueData?.title}
+    <Text key={'renderTopBar title' + playOddDetailData()?.game?.title}
           style={[_styles.top_game_name,
-            { color: Skin1.navBarTitleColor }]}>{nextIssueData?.title}</Text>
+            { color: Skin1.navBarTitleColor }]}>{playOddDetailData()?.game?.title}</Text>
     <Icon key={'renderTopBar down'}
           size={scale(28)}
           name={'caret-down'}
