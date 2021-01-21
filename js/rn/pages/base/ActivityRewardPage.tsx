@@ -121,6 +121,7 @@ const ActivityRewardPage = () => {
   const [activityContent, setActivityContent] = useState('')
   const [quickAmounts, setQuickAmounts] = useState([])
   const [money, setMoney] = useState(null)
+  const [imgCaptcha, setImgCaptcha] = useState('')
   useEffect(() => {
     Promise.all([
       APIRouter.activity_winApplyList().catch((error) => {
@@ -129,14 +130,20 @@ const ActivityRewardPage = () => {
       APIRouter.activity_applyWinLog().catch((error) => {
         console.log(error)
       }),
+      APIRouter.secure_imgCaptcha().catch((error) => {
+        console.log(error)
+      }),
     ])
       .then((value) => {
         //@ts-ignore
         const winApplyList = value[0]?.data?.data?.list
         //@ts-ignore
         const applyWinLog = value[1]?.data?.data?.list
+        //@ts-ignore
+        const imgCaptcha = value[2]?.data
         setWinApplyList(winApplyList)
         setApplyWinLog(applyWinLog)
+        setImgCaptcha(imgCaptcha)
       })
       .finally(() => {
         setLoading(false)
@@ -213,12 +220,13 @@ const ActivityRewardPage = () => {
               <Text>{'快捷金额'}</Text>
             </View>
             <View style={[styles.title, { flexDirection: 'row' }]}>
-              {quickAmounts?.map((ele) => {
+              {quickAmounts?.map((ele, index) => {
                 if (ele == '0') {
                   return null
                 } else {
                   return (
                     <TouchableWithoutFeedback
+                      key={index}
                       onPress={() => {
                         setMoney(ele)
                       }}>
@@ -239,6 +247,10 @@ const ActivityRewardPage = () => {
               }}
             />
             <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }} placeholder={'申请说明'} numberOfLines={5} />
+            <View style={{ flexDirection: 'row', marginTop: 10, width: '90%' }}>
+              <TextInput placeholder={'请输入验证码'} style={{ width: 150, borderColor: '#d9d9d9', borderWidth: AppDefine.onePx, borderRadius: 5, height: 30 }} />
+              <Image source={{ uri: imgCaptcha }} style={{ width: 170, height: 30 }} resizeMode={'contain'} />
+            </View>
             <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', justifyContent: 'space-around', width: '100%', paddingBottom: 20 }}>
               <Button
                 title={'关闭'}
