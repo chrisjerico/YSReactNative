@@ -51,6 +51,8 @@ import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
 import PushHelper from '../define/PushHelper'
 import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
 import { anyEmpty } from '../tools/Ext'
+import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
+
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -667,6 +669,14 @@ class APIRouter {
 
   static lhcdoc_lotteryNumber = async () => {
     return httpClient.get('c=lhcdoc&a=lotteryNumber')
+  }
+
+  /**
+   * 彩票下注，普通彩票
+   */
+  static game_bet = async (params: IBetLotteryParams): Promise<AxiosResponse<NormalModel>> => {
+    //ugLog('recharge_onlinePay=', JSON.stringify(params))
+    return httpClient.post<NormalModel>(params.isTest ? 'c=user&a=guestBet' : 'c=user&a=bet', params)
   }
 
   /**

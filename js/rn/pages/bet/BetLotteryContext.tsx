@@ -3,9 +3,8 @@ import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel
 import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 
 interface IBetLotteryContext {
-  nextIssueData?: () => NextIssueData //下一期数据
+  lotteryId?: () => string //当前 彩票ID，香港六合彩 幸运飞艇 等等
   playOddDetailData?: () => PlayOddDetailData //彩票数据
-  // curPlayOddData?: () => PlayOddData //当前 彩票彩种数据，特码，双面
 }
 
 const BetLotteryContext = React.createContext<IBetLotteryContext>({})
