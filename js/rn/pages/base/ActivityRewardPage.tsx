@@ -84,7 +84,7 @@ const ApplyReward = ({ tabLabel, list, onPress, onPressApply }: ApplyRewardProps
       <ScrollableTabView tabBarUnderlineStyle={{ backgroundColor: Skin1.themeColor }} tabBarActiveTextColor={Skin1.themeColor}>
         <RewardList tabLabel={'全部'} uniqueKey={'ApplyReward_全部'} data={list} onPress={onPress} onPressApply={onPressApply} />
         {Object.keys(categoryList)?.map((key) => {
-          return <RewardList tabLabel={key} uniqueKey={'ApplyReward_' + key} data={categoryList[key]} onPress={onPress} onPressApply={onPressApply} />
+          return <RewardList key={key} tabLabel={key} uniqueKey={'ApplyReward_' + key} data={categoryList[key]} onPress={onPress} onPressApply={onPressApply} />
         })}
       </ScrollableTabView>
     </View>
