@@ -27,14 +27,25 @@ export async function setRnPageInfo(force = false) {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
+    // pages.push({
+    //   vcName: 'UGBetRecordDetailViewController',
+    //   rnName: PageName.JDBetRecordDetailPage,
+    //   // rnName: PageName.JDSegmentPage,
+    //   fd_prefersNavigationBarHidden: true,
+    //   允许游客访问: true,
+    //   允许未登录访问: true,
+    // })
+
     pages.push({
-      vcName: 'UGBetRecordDetailViewController',
-      rnName: PageName.JDBetRecordDetailPage,
+      vcName: 'BetDetailViewController',
+      rnName: PageName.JDBetDetailPage,
       // rnName: PageName.JDSegmentPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
     })
+
+
 
   }
 
@@ -56,7 +67,7 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
-     // 下注明细
+    // 下注明细
     pages.push({
       vcName: 'BetDetailViewController',
       rnName: PageName.JDBetDetailPage,

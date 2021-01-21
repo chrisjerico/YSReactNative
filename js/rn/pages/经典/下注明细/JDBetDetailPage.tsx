@@ -9,6 +9,7 @@ import { scale } from "../../../public/tools/Scale";
 
 import { UGStore } from '../../../redux/store/UGStore';
 import { anyEmpty } from '../../../public/tools/Ext';
+import EmptyView from '../../../public/components/view/empty/EmptyView';
 
 
 interface JDBetDetailPage {
@@ -29,7 +30,6 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
 
   let { current: v } = useRef<JDBetDetailPage>(
     {
-      pageTitle: '下注明细RN',
       titleArray: ['彩种', "笔数", "下注金额", "输赢",],
       items: [],
       state: {
@@ -44,7 +44,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
  */
   useEffect(() => {
     setProps({
-      navbarOpstions: { hidden: false, title: '下注明细', back: true },
+      navbarOpstions: { hidden: false, title: '下注明细RN', back: true },
       didFocus: (params) => {
         let dic = params;
         for (var key in dic) {
@@ -97,16 +97,24 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
     api.user.lotteryDayStat(date).useSuccess(({ data }) => {
 
       console.log('data =', data);
+
       let dicData = data;
+      
+      if (anyEmpty(data)) {
+        v.items.length = 0     
+        v.state.isRefreshing = false;
+        setProps();
+        return;
+      }
       let arrayData = returnData(dicData);
       if (arrayData.length == 0) {
         console.log('进来了：==================');
+        v.items.length = 0     
         v.state.isRefreshing = false;
         setProps();
         return;
       }
       v.state.isRefreshing = false
-      v.items.length = 0
       v.items = JSON.parse(JSON.stringify(arrayData))
       setProps()
 
@@ -167,6 +175,8 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
     }
   }
   return (
+    anyEmpty(v.items) ?
+    <EmptyView style={{ flex: 1 }} /> :
     <View style={styles.container}>
       <View style={{}}>
         <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.CLBgColor }}>
