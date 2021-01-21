@@ -14,6 +14,8 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
 import UsePayBoard from './UsePayBoard'
 import { Toast } from '../../../../public/tools/ToastUtils'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import SelectedLotteryModel from '../../../../redux/model/game/SelectedLotteryModel'
 
 interface IPayBoardComponent {
   showCallback?: () => void //窗口 是否显示 回调
@@ -22,11 +24,10 @@ interface IPayBoardComponent {
 /**
  * 下注面板
  * @param menu
- * @param onMenuClick
  * @param ref
  * @constructor
  */
-const PayBoardComponent = ({ showCallback, }: IPayBoardComponent, ref?: any) => {
+const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
 
   const {
@@ -61,7 +62,7 @@ const PayBoardComponent = ({ showCallback, }: IPayBoardComponent, ref?: any) => 
             return groupData?.plays?.map((playData) => {
               return (<View key={playData?.id + playData?.name}
                             style={_styles.item_container}>
-                <Text style={_styles.item_title}>{`【${groupData?.alias}-${playData?.id}】`}</Text>
+                <Text style={_styles.item_title}>{`[ ${groupData?.alias}-${playData?.id} ]`}</Text>
                 <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
                 <Text style={_styles.item_x}>{'X'}</Text>
                 <TextInput defaultValue={averageMoney?.toString()}
@@ -74,6 +75,26 @@ const PayBoardComponent = ({ showCallback, }: IPayBoardComponent, ref?: any) => 
                            })}
                            keyboardType={'numeric'}
                            style={_styles.item_input}/>
+                <Icon size={scale(36)}
+                      onPress={() => {
+                        const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
+                        const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //当前选中的数据
+                        Object.keys(selectedData)?.map((key) => {
+                          const groupData: Array<PlayGroupData> = selectedData[key]
+                          const newGroupData = groupData?.map((groupData) => ({
+                            ...groupData,
+                            plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
+                          }))
+                          newSelectedData[key] = newGroupData
+
+                        })
+
+                        const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedData }
+                        UGStore.dispatch({type: 'merge', selectedLotteryModel})
+                      }}
+                      style={_styles.item_trash}
+                      color={Skin1.themeColor}
+                      name={'trash-o'}/>
               </View>)
             })
 
@@ -236,7 +257,7 @@ const _styles = StyleSheet.create({
   item_x: {
     color: UGColor.TextColor2,
     fontSize: scale(20),
-    paddingHorizontal: scale(8),
+    paddingHorizontal: scale(4),
   },
   item_input: {
     width: scale(64),
@@ -247,6 +268,9 @@ const _styles = StyleSheet.create({
     borderWidth: scale(1),
     borderRadius: scale(8),
     paddingVertical: scale(4),
+  },
+  item_trash: {
+    paddingHorizontal: scale(12),
   },
   dialog_title_container: {
     width: '100%',

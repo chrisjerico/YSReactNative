@@ -37,31 +37,29 @@ const UsePayBoard = () => {
     //总共有多少条数据
     const groupValueArr: Array<Array<PlayGroupData>> = Object?.values(selectedData)
 
-    if (anyEmpty(groupValueArr)) {
-      setItemCount(0)
-      setMoneyMap(null)
-      showCallback()
+    ugLog('groupValueArr = ', JSON.stringify(groupValueArr))
+
+    const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
+    const count = anyEmpty(newGroupData) ? 0 : newGroupData.map((item) =>
+      arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
+    setItemCount(count)
+
+    ugLog('groupValueArr 2 count = ', count)
+    if (count <= 0) {
+      showCallback && showCallback()
       Toast('请选择玩法')
+    }
 
-    } else {
-      const newGroupData = groupValueArr?.flat(2)
-      const count = anyEmpty(newGroupData) ? 0 : newGroupData.map((item) =>
-        arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
-      setItemCount(count)
-
-      //只有第1次需要初始化
-      if (anyEmpty(moneyMap)) {
-        const dataMap = new Map<string, number>()
-        const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
-        newGroupData?.map((groupData) => {
-          groupData?.plays?.map((playData) => {
-            dataMap[playData?.id] = defaultMoney
-          })
+    //只有第1次需要初始化
+    if (anyEmpty(moneyMap)) {
+      const dataMap = new Map<string, number>()
+      const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
+      newGroupData?.map((groupData) => {
+        groupData?.plays?.map((playData) => {
+          dataMap[playData?.id] = defaultMoney
         })
-        ugLog('dataMap = ', JSON.stringify(dataMap))
-        setMoneyMap(dataMap)
-      }
-
+      })
+      setMoneyMap(dataMap)
     }
 
   }, [selectedData])
