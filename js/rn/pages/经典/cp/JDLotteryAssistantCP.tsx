@@ -15,7 +15,7 @@ import { BetBean, BetMode, jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UG
 import moment from 'moment';
 import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
 import { ImagePHCP } from '../tools/ImagePHCP';
-
+import { JDCLTimeCP } from './JDCLTimeCP';
 
 export interface JDLotteryAssistantCPAction {
   stopTime?: () => void
@@ -45,21 +45,22 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
   let [items, setItems] = useState<Array<UGChanglongaideModel>>([])//界面数据
   let [dataTimeIsOpen, setDataTimeIsOpen] = useState<boolean>(false)//每20获取一次数据 是否启动
   let [timeIsOpen, setTimeIsOpen] = useState<boolean>(false)//每1获取一次数据 是否启动
-  let [isRefreshing, setIsRefreshing] = useState<boolean>(true)//下拉刷新开始结束 
+  let [isRefreshing, setIsRefreshing] = useState<boolean>(true)//下拉刷新开始结束
+  // let [timeCount, setTimeCount] = useState<number>(0)//定时器计数，用来刷新界面
   /**
 * 初始化
 * @param item
 */
   useEffect(() => {
-    console.log('useEffect=========================================================');
+    // console.log('useEffect=========================================================');
     c_ref &&
       (c_ref.stopTime = () => {
-        console.log('关闭定时器=========================================================');
+        // console.log('关闭定时器=========================================================');
         destoryTimer()
       })
     c_ref &&
       (c_ref.startTime = () => {
-        console.log(' 开启定时器=========================================================');
+        // console.log(' 开启定时器=========================================================');
         starttime()
 
       })
@@ -74,11 +75,11 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
 
   function destoryTimer() {
-    clearInterval(timer)
+    // clearInterval(timer)
     clearInterval(dataTimer)
-    setTimeIsOpen(false)
+    // setTimeIsOpen(false)
     setDataTimeIsOpen(false)
-    console.log('停止定时器=========================================================');
+    // console.log('停止定时器=========================================================');
     // onHeaderRefresh()
   }
 
@@ -679,13 +680,15 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
   }
 
   function starttime() {
-    if (!timeIsOpen) {
-      console.log('=========定时器开启======== ========================');
-      timer = setInterval(() => {
-        setTimeIsOpen(true)
+    // if (!timeIsOpen) {
+    //   console.log('=========定时器开启======== ========================');
+    //   timer = setInterval(() => {
+    //     setTimeIsOpen(true)
+    //     setProps()
+    //     // setTimeCount(timeCount +1 )
 
-      }, 1000)
-    }
+    //   }, 1000)
+    // }
 
     if (!dataTimeIsOpen) {
       dataTimer = setInterval(() => {
@@ -826,7 +829,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
                 {!anyEmpty(item.displayNumber) ? item.displayNumber : item.issue}
               </Text>
               {/* 倒计时 */}
-              <_renderTimeItem index={index} item={item} />
+              <JDCLTimeCP   serverTime = {items.serverTime} closeTime ={items.closeTime}/>
 
             </View>
             {/* 图标 */}
