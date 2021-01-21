@@ -15,6 +15,8 @@ import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../r
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../public/tools/Ext'
+import { ugLog } from '../../public/tools/UgLog'
 
 // 整个State的树结构
 
@@ -67,7 +69,16 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 
     //彩票数据
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
-    state.selectedLotteryModel = {selectedData: { ...state.selectedLotteryModel?.selectedData, ...act.selectedLotteryModel?.selectedData }}
+    state.selectedLotteryModel = {
+      selectedData:
+        { ...state.selectedLotteryModel?.selectedData, ...act.selectedLotteryModel?.selectedData },
+        inputMoney: anyEmpty(act.selectedLotteryModel?.inputMoney) ?
+          state?.selectedLotteryModel?.inputMoney :
+          act?.selectedLotteryModel?.inputMoney
+    }
+
+    ugLog('ac act 1  = ', JSON.stringify(act))
+    ugLog('ac act 2 = ', JSON.stringify(state.selectedLotteryModel))
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })

@@ -21,6 +21,8 @@ import FastImage from 'react-native-fast-image'
 import { anyEmpty } from '../../../public/tools/Ext'
 import BetLotteryContext from '../BetLotteryContext'
 import PayBoardComponent from './pay/PayBoardComponent'
+import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
+import { UGStore } from '../../../redux/store/UGStore'
 
 /**
  * 彩票功能区入参
@@ -89,7 +91,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           <Icon key={'renderSliderArea slider icon'}
                 size={scale(28)}
                 onPress={() => {
-                  setShowSlider(!showSlider)
+                  setShowSlider(false)
                 }}
                 style={_styles.slider_arrow}
                 color={'white'}
@@ -129,7 +131,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 size={scale(36)}
                 style={_styles.slider_button}
                 onPress={() => {
-                  setShowSlider(!showSlider)
+                  setShowSlider(true)
                 }}
                 color={Skin1.themeColor}
                 name={'chevron-up'}/>
@@ -186,14 +188,20 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
       </View>
       <TextInput key={'renderInputArea input'}
                  style={_styles.input_text}
-                 defaultValue={inputMoney}
-                 onChangeText={(s) => setInputMoney(s)}
+                 onChangeText={(s) => {
+                   const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(inputMoney) }
+                   UGStore.dispatch({type: 'merge', selectedLotteryModel})
+                   setInputMoney(s)
+                 }}
                  keyboardType={'numeric'}/>
     </View>
 
     <View key={'renderInputArea input 下注 重置'}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TouchableWithoutFeedback onPress={() => refPay?.current?.togglePayBoard()}>
+      <TouchableWithoutFeedback onPress={() => {
+        refPay?.current?.togglePayBoard()
+      }
+      }>
         <Text key={'renderInputArea input 下注'}
               style={_styles.start_bet}>下注</Text>
       </TouchableWithoutFeedback>

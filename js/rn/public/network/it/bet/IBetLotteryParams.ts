@@ -1,7 +1,7 @@
 /**
  * 下注数据
  */
-export interface BetLotteryModel {
+export interface IBetLotteryParams {
   activeReturnCoinRatio?: string
   betIssue?: string //期号
   endTime?: string //封盘时间 1611210600
@@ -11,6 +11,8 @@ export interface BetLotteryModel {
   totalNum?: string //选中数据
 
   betBean?: Array<BetLotteryData>
+
+  isTest?: boolean //是不是试玩账号
 }
 
 export interface BetLotteryData {
