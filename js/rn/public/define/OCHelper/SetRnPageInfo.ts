@@ -46,6 +46,23 @@ export async function setRnPageInfo(force = false) {
       允许未登录访问: true,
     })
 
+    // 我的提款账户
+    pages.push({
+      vcName: 'BetDetailViewController',
+      rnName: PageName.JDBetDetailPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+
+    // 资金管理
+    pages.push({
+      vcName: 'UGFundsViewController',
+      rnName: PageName.CapitalPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
 
 
   }
@@ -163,6 +180,14 @@ export async function setRnPageInfo(force = false) {
       })
     }
   }
+  // 下注明细
+  pages.push({
+    vcName: 'BetDetailViewController',
+    rnName: PageName.JDBetDetailPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 推荐信息
   pages.push({
     vcName: 'UGPromotionIncomeController',

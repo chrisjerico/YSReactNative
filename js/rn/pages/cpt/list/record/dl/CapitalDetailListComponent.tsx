@@ -114,58 +114,50 @@ const CapitalDetailListComponent = () => {
   /**
    * 绘制日历选择
    */
-  const renderCalendar = () => {
-    let curDate
-    if(selectStartDate) curDate = new Date(startDate)
-    if(selectEndDate) curDate = new Date(endDate)
+  const renderCalendar = () => (
+    selectStartDate || selectEndDate ?
+      <View key={'renderCalendar'}
+            style={_styles.calendar_wid}>
+        <Calendar.Picker onDayPress={(date: Date) => {
+          let curDate = date.format('yyyy-MM-dd')
+          if (selectStartDate) {//设置起始日期
+            setSelectStartDate(false)
+            setStartDate(curDate)
+          } else if (selectEndDate) {//设置终止日期
+            setSelectEndDate(false)
+            setEndDate(curDate)
+          }
+        }}
+                         HeaderComponent={({
+                                             currentMonth,
+                                             onPrevMonth,
+                                             onNextMonth,
+                                           }) => {
+                           const arr = currentMonth.split(' ')
+                           return <View style={{ flexDirection: 'row' }}>
+                             <TouchableWithoutFeedback onPress={onPrevMonth}>
+                               <Text style={_styles.calendar_button}>{'上一月'}</Text>
+                             </TouchableWithoutFeedback>
+                             <Text style={_styles.calendar_title}>{arr[1] + '年'}</Text>
+                             <TouchableWithoutFeedback onPress={onNextMonth}>
+                               <Text style={_styles.calendar_button}>{'下一月'}</Text>
+                             </TouchableWithoutFeedback>
+                           </View>
+                         }}
+                         disabledDayPick={false}
+                         weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
+        />
+      </View> :
+      null
+  )
 
-    return (
-      selectStartDate || selectEndDate ?
-        <View key={'renderCalendar'}
-              style={_styles.calendar_wid}>
-          <Calendar.Picker selectedDate={curDate}
-                           onDayPress={(date: Date) => {
-                             let curDate = date.format('yyyy-MM-dd')
-                             if (selectStartDate) {//设置起始日期
-                               setSelectStartDate(false)
-                               setStartDate(curDate)
-                             } else if (selectEndDate) {//设置终止日期
-                               setSelectEndDate(false)
-                               setEndDate(curDate)
-                             }
-                           }}
-                           HeaderComponent={({
-                                               currentMonth,
-                                               onPrevMonth,
-                                               onNextMonth,
-                                             }) => {
-                             const arr = currentMonth.split(' ')
-                             return <View style={{ flexDirection: 'row' }}>
-                               <TouchableWithoutFeedback onPress={onPrevMonth}>
-                                 <Text style={_styles.calendar_button}>{'上一月'}</Text>
-                               </TouchableWithoutFeedback>
-                               <Text style={_styles.calendar_title}>{arr[1] + '年'}</Text>
-                               <TouchableWithoutFeedback onPress={onNextMonth}>
-                                 <Text style={_styles.calendar_button}>{'下一月'}</Text>
-                               </TouchableWithoutFeedback>
-                             </View>
-                           }}
-                           disabledDayPick={false}
-                           weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
-          />
-        </View> :
-        null
-    )
-
-  }
   /**
    * 绘制提示标题
    * @param item
    */
-  const renderTitleHint = () =>
-   <View key={'renderTitleHint'} style={[_styles.text_title_container,{position: 'absolute',width:'98%',height:scale(70),marginTop:scale(0)}]}>
-    <View style={[_styles.capital_type_picker,{marginTop:scale(0),paddingTop:scale(0)}]}>
-      <UGDropDownPicker 
+  const renderTitleHint = () => <View key={'renderTitleHint'}>
+    <View style={_styles.capital_type_picker}>
+      <UGDropDownPicker
         controller={instance => capitalController = instance}
         items={groups}
         defaultValue={curGroup}
@@ -173,7 +165,7 @@ const CapitalDetailListComponent = () => {
           setCurGroup(item.value)
         }}/>
     </View>
-    <View style={[_styles.text_title_container,{position: 'absolute',width:'98%',height:scale(70),marginTop:scale(0)}]}>
+    <View style={_styles.text_title_container}>
       <Text style={_styles.text_title_0}>{'日期'}</Text>
       <Text style={_styles.text_title_0}>{'金额'}</Text>
       <TouchableWithoutFeedback onPress={() => capitalController?.toggle()}>
@@ -207,33 +199,28 @@ const CapitalDetailListComponent = () => {
                                         style={CommStyles.flex}>
     {
       [
-        
-
-        // renderCalendar(),
-        anyEmpty(capitalDetailData)
-        ? <EmptyView style={{ flex: 1,marginTop:scale(70) }}/>
-        : 
-        <FlatList refreshControl={refreshCT}
-        style={{marginTop:scale(70)}}
-                    keyExtractor={(item, index) => `${item}-${index}`}
-                    data={capitalDetailData}
-                    showsVerticalScrollIndicator={false}
-          // ListEmptyComponent={() => <EmptyView/>}
-                    onEndReached={({ distanceFromEnd }) => {
-                      requestListDetailData({
-                        clear: false,
-                        startDate: startDate,
-                        endDate: endDate,
-                      })
-                    }}
-                    onEndReachedThreshold={0.2}
-                    renderItem={({ item, index }) => {
-                      return (
-                        renderItemContent(item)
-                      )
-                    }}/>,
         renderTitleHint(),
-
+        anyEmpty(capitalDetailData)
+          ? <EmptyView style={{ flex: 1 }}/>
+          : <FlatList refreshControl={refreshCT}
+                      keyExtractor={(item, index) => `${item}-${index}`}
+                      data={capitalDetailData}
+                      showsVerticalScrollIndicator={false}
+            // ListEmptyComponent={() => <EmptyView/>}
+                      onEndReached={({ distanceFromEnd }) => {
+                        requestListDetailData({
+                          clear: false,
+                          startDate: startDate,
+                          endDate: endDate,
+                        })
+                      }}
+                      onEndReachedThreshold={0.2}
+                      renderItem={({ item, index }) => {
+                        return (
+                          renderItemContent(item)
+                        )
+                      }}/>,
+        renderCalendar(),
       ]
     }
   </View>
