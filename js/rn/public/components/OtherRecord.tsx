@@ -1,6 +1,6 @@
 import { Platform, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { anyEmpty, arrayEmpty } from '../tools/Ext'
 import { scale } from '../tools/Scale'
 import { skin1, Skin1 } from '../theme/UGSkinManagers'
@@ -115,8 +115,12 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   }, [])
 
   useEffect(() => {
+    ugLog("startDate: " + startDate)
     requestGameData()
   }, [currentType, startDate])
+
+  useEffect(() => {
+  }, [selectStartDate])
 
   setProps({
     didFocus: () => {
@@ -247,24 +251,19 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       : <View></View>
     )
   }
-
-  const [visible, setVisible] = useState(true);
  
   const handleCancel = () => {
-    setVisible(false);
+    setSelectStartDate(false);
   };
 
   /**
    * 绘制日历选择
    */
-  const renderCalendar = () => {
-    let curDate
-    if(selectStartDate) curDate = new Date(startDate)
+  let renderCalendar = () => {
+    let curDate = new Date(startDate)
 
     return (
-      selectStartDate ?
       
-      <Dialog.Container visible={visible} onBackdropPress={handleCancel}>
         <View key={'renderCalendar'}
               style={_styles.calendar_wid}>
           <Calendar.Picker selectedDate={curDate}
@@ -274,7 +273,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                   setStartDate(curDate)
                   setTimeout(() => {
                   setSelectStartDate(false)
-                  }, 300)
+                  }, 100)
                 }
               }}
               HeaderComponent={({
@@ -297,17 +296,15 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                            weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
           />
         </View>
-        </Dialog.Container> :
-        null
     )
-
   }
 
+  const MemoCalendar = memo(renderCalendar)
   /**
    * 绘制右按钮
    */
   const rightButton = <TouchableWithoutFeedback onPress={() => {
-    setSelectStartDate(!selectStartDate)
+    setSelectStartDate(true)
   }}>
     <Icon size={scale(30)}
           name={'calendar'}
@@ -339,10 +336,17 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
         ref={refMenu}
         onMenuClick={clickMenu}
         menu={typeArray}/>
-      
-      {
-        renderCalendar()
-      }
+        
+        <>
+          <Dialog.Container 
+            contentStyle={{ paddingTop: 0, width: scale(500),
+              backgroundColor: UGColor.BackgroundColor2}}
+            headerStyle={{ height: 0}}
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}
+            visible={selectStartDate} onBackdropPress={handleCancel}>
+            <MemoCalendar />
+          </Dialog.Container> 
+        </>
       <View style={_styles.text_title_container}>
         <Text style={_styles.text_content_0}>{'游戏'}</Text>
         <Text style={_styles.text_content_0}>{'时间'}</Text>
@@ -404,7 +408,6 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: UGColor.BackgroundColor2,
     width: '100%',
-    paddingBottom: scale(32),
     zIndex: 1,
   },
   calendar_button: {
