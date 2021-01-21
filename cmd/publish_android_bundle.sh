@@ -6,7 +6,7 @@ cd ..
 #发布所有渠道，输入: all
 pub_type=$1
 
-if [ "$type" == "all" ]; then
+if [ "$pub_type" == "all" ]; then
 	all_sites=cmd/all_sites.txt
 	string=$(cat ${all_sites})  
 	array=(${string//,/ })  

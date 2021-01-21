@@ -1,45 +1,16 @@
-import {
-  FlatList, Platform,
-  ScrollView, StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View, ViewProps, ViewStyle,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import Modal from 'react-native-modal'
-import { useContext, useEffect, useState } from 'react'
-import { BaseScreen } from '../../../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
+import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import { pop } from '../../../../public/navigation/RootNavigation'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
-import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcZXBZ, { ILMABallArray } from './UseLhcZXBZ'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
-import BetLotteryContext from '../../BetLotteryContext'
-import EBall from '../../../../public/components/view/lottery/EBall'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import ERect from '../../../../public/components/view/lottery/ERect'
-import LotteryEBall from '../../widget/LotteryEBall'
-import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
-import { doc } from 'prettier'
+import UseLhcZXBZ from './UseLhcZXBZ'
+import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 
 /**
@@ -48,34 +19,28 @@ import { doc } from 'prettier'
  * @param navigation
  * @constructor
  */
-const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
-
-  const key = 'lottery page' + lotteryCode
+const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
-    setLotteryCode,
-    ballArray,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcZXBZ()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    setPlayOddData(playOddData)
   }, [])
+  const key = 'lottery page' + playOddData?.code
 
   /**
    * 绘制 球
-   * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
+  const renderEBall = (ballInfo?: ILotteryEBallItem) => {
 
     return (
       <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
@@ -110,7 +75,7 @@ const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
         <View key={key + 'render LMA sub2' + groupData?.id}
               style={_styles.ball_container}>
           {
-            ballArray?.map((item, index) => renderEBall(groupData, item))
+            playOddData?.pageData?.groupTri[0][0]?.exPlays?.map((item, index) => renderEBall(item))
           }
         </View>
       </View>
@@ -122,7 +87,7 @@ const LhcZXBZComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'render all ball'}
                                     style={_styles.content_container}>
-    {!anyEmpty(curData) && renderLMA(curData[0])}
+    {!anyEmpty(currentPageData()) && renderLMA(currentPageData()[0])}
   </View>
 
   return (
@@ -142,7 +107,7 @@ const _styles = StyleSheet.create({
   },
   content_container: {
     flex: 1,
-    paddingBottom: scale(240),
+    paddingBottom: scale(120),
   },
   sub_title_container: {
     alignItems: 'center',

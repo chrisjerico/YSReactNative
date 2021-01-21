@@ -1,13 +1,11 @@
 import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
-import { BallStyles } from '../../hall/new/games/HallGameListComponent'
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import ERect from '../../../public/components/view/lottery/ERect'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
+import { isSelectedBallOnId } from '../const/ISelBall'
 
 interface ILotteryERect {
   item?: PlayData // 要绘制的数据
@@ -32,7 +30,7 @@ const LotteryERect = ({
   const key = 'LotteryERect'
   let isSel = isSelectedBallOnId(selectedBalls, item?.id)
   return (
-    <TouchableOpacity key={key + item?.id}
+    <TouchableWithoutFeedback key={key + item?.id}
                       onPress={() => callback && callback()}>
       <View key={key + item?.id}
             style={[
@@ -58,7 +56,7 @@ const LotteryERect = ({
                    UGColor.TextColor7,
                }}/>
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 }
 

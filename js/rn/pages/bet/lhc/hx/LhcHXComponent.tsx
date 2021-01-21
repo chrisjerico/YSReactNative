@@ -1,46 +1,17 @@
-import {
-  FlatList, Platform,
-  ScrollView, StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View, ViewStyle,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import Modal from 'react-native-modal'
-import { useContext, useEffect, useState } from 'react'
-import { BaseScreen } from '../../../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
+import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import { pop } from '../../../../public/navigation/RootNavigation'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
-import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcHX from './UseLhcHX'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData, ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
-import BetLotteryContext from '../../BetLotteryContext'
-import EBall from '../../../../public/components/view/lottery/EBall'
-import { anyEmpty, arrayEmpty, arrayLength } from '../../../../public/tools/Ext'
-import ERect from '../../../../public/components/view/lottery/ERect'
-import LotteryEBall from '../../widget/LotteryEBall'
-import LotteryERect from '../../widget/LotteryERect'
+import { PlayGroupData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
@@ -48,47 +19,36 @@ import { findZodiacByName } from '../../util/LotteryUtil'
  * @param navigation
  * @constructor
  */
-const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
-
-  const key = 'lottery page' + lotteryCode
-
-
-  // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
+const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
-    setLotteryCode,
-    zodiacData,
-    setZodiacData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcHX()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    setPlayOddData(playOddData)
   }, [])
+  const key = 'lottery page' + playOddData?.code
 
   /**
    * 绘制 生肖和球
    * @param item
    * @param index
    */
-  const renderEBall = (item?: ZodiacNum, index?: number) =>
-    !anyEmpty(zodiacData) && <LotteryLineEBall key={key + 'renderEBall' + item?.id}
-                                               item={{
-                                                 id: item?.id,
-                                                 name: item?.name,
-                                                 zodiacItem: findZodiacByName(zodiacData, { name: item?.name }),
-                                               }}
-                                               selectedBalls={selectedBalls}
-                                               callback={() => addOrRemoveBall(item?.id)}/>
-
+  const renderEBall = (item?: ZodiacNum, index?: number) => <LotteryLineEBall key={key + 'renderEBall' + item?.id}
+                                                                              item={{
+                                                                                id: item?.id,
+                                                                                name: item?.name,
+                                                                                zodiacItem: item,
+                                                                              }}
+                                                                              selectedBalls={selectedBalls}
+                                                                              callback={() => addOrRemoveBall(item?.id)}/>
   /**
    * 绘制 一行球
    * @param groupData
@@ -109,7 +69,7 @@ const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
       <View key={key + 'renderLineBall sub' + groupData?.id}
             style={_styles.ball_container}>
         {
-          zodiacData?.map(renderEBall)
+          playOddData?.pageData?.zodiacNums?.map(renderEBall)
         }
       </View>
     </View>
@@ -119,7 +79,7 @@ const LhcHXComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {arrayLength(curData) > 0 && renderLineBall(curData[0])}
+    {arrayLength(currentPageData()) > 0 && renderLineBall(currentPageData()[0])}
   </View>
 
   return (
@@ -139,7 +99,7 @@ const _styles = StyleSheet.create({
   },
   content_container: {
     flex: 1,
-    paddingBottom: scale(240),
+    paddingBottom: scale(120),
   },
   sub_title_container: {
     alignItems: 'center',

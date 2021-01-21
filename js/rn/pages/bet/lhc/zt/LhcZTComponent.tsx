@@ -1,49 +1,26 @@
 import {
-  FlatList, Platform,
-  ScrollView, StyleProp,
+  ScrollView,
+  StyleProp,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
+  TouchableOpacity,
   TouchableWithoutFeedback,
-  View, ViewProps, ViewStyle,
+  View,
+  ViewStyle,
 } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import Modal from 'react-native-modal'
-import { useContext, useEffect, useState } from 'react'
-import { BaseScreen } from '../../../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
+import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import { pop } from '../../../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
-import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcZT from './UseLhcZT'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
-import BetLotteryContext from '../../BetLotteryContext'
-import EBall from '../../../../public/components/view/lottery/EBall'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import ERect from '../../../../public/components/view/lottery/ERect'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
-
-interface ILotteryRouteParams {
-  lotteryCode?: string, //当前的彩票CODE，正码、正特 等等
-  style?: StyleProp<ViewStyle>
-}
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 
 /**
  * 六合彩 正特 正码 等等
@@ -51,30 +28,26 @@ interface ILotteryRouteParams {
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
-
-  const key = 'lottery page' + lotteryCode
+const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
-    setLotteryCode,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcZT()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    setPlayOddData(playOddData)
   }, [])
+  const key = 'lottery page' + playOddData?.code
 
-  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableOpacity key={key + item[0]?.alias}
+  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
                                                                                          onPress={() => setTabIndex(index)}>
     <View key={key + item[0]?.id}
           style={[
@@ -87,12 +60,12 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
               index == tabIndex ? { color: `white` } : null,
             ]}>{item[0]?.alias}</Text>
     </View>
-  </TouchableOpacity>
+  </TouchableWithoutFeedback>
 
   /**
    * 绘制tab，只有1个数据不绘制Tab
    */
-  const renderTab = () => arrayLength(pageData) > 1 && <View key={key + 'tab'}
+  const renderTab = () => arrayLength(playOddData?.pageData?.groupTri) > 1 && <View key={key + 'tab'}
                                                              style={_styles.tab_title_container}>
     <ScrollView key={key + 'sv'}
                 style={_styles.sv_tab_container}
@@ -101,7 +74,7 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
       <View key={key + 'content'}
             style={_styles.tab_title_content}>
         {
-          pageData?.map(renderTabItem)
+          playOddData?.pageData?.groupTri?.map(renderTabItem)
         }
       </View>
     </ScrollView>
@@ -183,8 +156,8 @@ const LhcZTComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {arrayLength(curData) > 0 && renderZT1(curData[0])}
-    {arrayLength(curData) > 1 && renderZT2(curData[1])}
+    {arrayLength(currentPageData()) > 0 && renderZT1(currentPageData()[0])}
+    {arrayLength(currentPageData()) > 1 && renderZT2(currentPageData()[1])}
   </View>
 
   return (
@@ -208,7 +181,7 @@ const _styles = StyleSheet.create({
   },
   content_container: {
     flex: 1,
-    paddingBottom: scale(240),
+    paddingBottom: scale(120),
   },
   sub_title_container: {
     alignItems: 'center',
