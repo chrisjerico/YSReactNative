@@ -50,7 +50,9 @@ import { NextIssueModel } from './Model/lottery/NextIssueModel'
 import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
 import PushHelper from '../define/PushHelper'
 import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
+import { anyEmpty } from '../tools/Ext'
 import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
+
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -784,13 +786,22 @@ class APIRouter {
    * 加密 GET 参数
    * @param params
    */
-  static encryptGetParams =  async (params?: any) => {
+  static encryptGetParams = async (params?: any) => {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
         //TODO iOS 完成 params 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
+        let temp = {}
+        //过滤掉 null 或 "",
+        for (let paramsKey in params) {
+          if (!anyEmpty(params[paramsKey])) {
+            temp[paramsKey] = params[paramsKey]
+          }
+        }
+        temp['checkSign'] = 1
+        let paramsJM = await  OCHelper.call('CMNetwork.encryptionCheckSign:', [temp])
+        var str = JSON.stringify(paramsJM); 
+        tokenParams = str;
         break
       case 'android':
         const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {

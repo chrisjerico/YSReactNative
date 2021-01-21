@@ -55,10 +55,11 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
           { height: (arrayLength(menu) < 11 ? arrayLength(menu) : 10) * ITEM_HEIGHT },
         ]}>
           <ScrollView style={_styles.sv_container}
-                      showsVerticalScrollIndicator={false}>
+                      showsVerticalScrollIndicator={false}
+                      key ={'ScrollView-IMiddleMenu'}>
             {
               menu?.map((item, index) =>
-                <TouchableOpacity onPress={() => onMenuClick && onMenuClick(index, item)}>
+                <TouchableOpacity onPress={() => onMenuClick && onMenuClick(index, item)} key={index+'menu'}>
                   <View style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
                     <FastImage source={{ uri: item.icon }}
                                resizeMode={'contain'}

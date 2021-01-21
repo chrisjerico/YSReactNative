@@ -112,6 +112,8 @@ import EmptyPage from '../common/ep/EmptyPage'
 import { OnlineService } from '../../public/components/OnlineService'
 import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
 import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
+import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
+
 
 
 /**
@@ -172,6 +174,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionCodeListPage,//邀请码
   JDChangLongPage,//长龙主页
   JDBetRecordDetailPage,//长龙注单详情
+  JDBetDetailPage,//下注明细
   OnlineService,//在线客服
   // ———————————— 模板页面 —————————————
 
