@@ -248,7 +248,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               codeStatus == CodePush.SyncStatus.UP_TO_DATE //已是最新版本
             ) {
               Alert.alert('温馨提示',
-                '访问出现异常，请联系客服...',
+                '访问出现异常，请检查网络情况，重新打开App再试试。\n或者联系客服...',
                 [
                   {
                     text: '退出',

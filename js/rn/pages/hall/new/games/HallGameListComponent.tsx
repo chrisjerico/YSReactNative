@@ -12,6 +12,7 @@ import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
 import UseHallGameList from './UseHallGameList'
+import { BallStyles } from '../../../bet/const/LotteryConst'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -204,27 +205,6 @@ const HallGameListComponent = ({
       }
     </View>
   )
-}
-
-/**
- * 球的样式
- */
-export const BallStyles = {
-  'lhc': BallType.round, //六合彩
-  'qxc': BallType.pure, //"七星彩系列"
-  'cqssc': BallType.pure, //"时时彩系列"
-  'pk10': BallType.square, //"赛车系列"
-  'xyft': BallType.square, //"飞艇系列"
-  'yncp': BallType.pure, //"越南彩系列"
-  'fc3d': BallType.pure, //"3D系列"
-  'gdkl10': BallType.pure, //"快乐10分系列"
-  'pk10nn': BallType.square, //"牛牛系列"
-  'xync': BallType.vegetable, //"幸运农场系列"
-  'bjkl8': BallType.pure, //"快乐8系列"
-  'dlt': BallType.round, //"大乐透系列"
-  'pcdd': BallType.pure, //"蛋蛋系列"
-  'jsk3': BallType.sz, //"快三系列"
-  'gd11x5': BallType.pure, //"11选5系列"
 }
 
 const CONTENT_ITEM_HEIGHT = scale(140) //内容高度

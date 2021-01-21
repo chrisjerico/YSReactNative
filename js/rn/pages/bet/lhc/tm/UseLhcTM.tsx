@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import UseLotteryHelper from '../../util/UseLotteryHelper'
+import UseLotteryHelper from '../hp/UseLotteryHelper'
+import { PlayOdd } from '../../../../public/network/Model/PlayOddDataModel'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 
 /**
@@ -14,49 +16,25 @@ const UseLhcTM = () => {
   const {
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
     playOddData,
     setPlayOddData,
-    lotteryCode,
-    setLotteryCode,
-    nextIssueData,
     playOddDetailData,
-    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
     zodiacBallIds,
+    currentPageData,
   } = UseLotteryHelper()
 
-  const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //生肖数据列表
   const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
-
-  useEffect(() => {
-    //特码取前3个数据 特码 两面 色波
-    if (!anyEmpty(playOddData?.playGroups)) {
-      setPageData([
-        [playOddData?.playGroups[3], playOddData?.playGroups[4], playOddData?.playGroups[5]],
-        [playOddData?.playGroups[0], playOddData?.playGroups[1], playOddData?.playGroups[2]],
-      ])
-      setZodiacData(playOddDetailData()?.setting?.zodiacNums)
-
-    }
-  }, [playOddData])
-
-  useEffect(() => {
-    !anyEmpty(pageData) && setCurData(pageData[tabIndex])
-  }, [tabIndex, pageData])
 
   /**
    * 有选中的数据变化时，计算生肖的选中情况
    */
   useEffect(() => {
     let selArr = []
-    zodiacData?.map((zodiac) => {
-      let data = pageData[tabIndex]
+    playOddData?.pageData?.zodiacNums?.map((zodiac) => {
+      let data = currentPageData()
       const zodiacIds = zodiacBallIds(zodiac, data[0])
 
       const intersection = selectedBalls?.filter((item) => zodiacIds.includes(item))
@@ -66,7 +44,7 @@ const UseLhcTM = () => {
     })
 
     setSelectedZodiac(selArr)
-  }, [selectedBalls])
+  }, [tabIndex, selectedBalls])
 
   /**
    * 添加或移除生肖
@@ -74,7 +52,7 @@ const UseLhcTM = () => {
    */
   const addOrRemoveZodiac = (item: ZodiacNum) => {
     //重组数字
-    let data = pageData[tabIndex]
+    const data = currentPageData()
     const zodiacIds = zodiacBallIds(item, data[0])
 
     if (selectedZodiac.includes(item)) {
@@ -86,21 +64,16 @@ const UseLhcTM = () => {
   }
 
   return {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
-    setLotteryCode,
-    zodiacData,
-    setZodiacData,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveZodiac,
     addOrRemoveBall,
+    currentPageData,
   }
 }
 

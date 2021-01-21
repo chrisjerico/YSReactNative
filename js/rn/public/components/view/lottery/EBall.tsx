@@ -3,7 +3,6 @@ import React from 'react'
 import { scale } from '../../../tools/Scale'
 import { UGColor } from '../../../theme/UGThemeColor'
 import LotteryBall, { ILotteryBall } from '../LotteryBall'
-import { BallStyles } from '../../../../pages/hall/new/games/HallGameListComponent'
 import { anyEmpty } from '../../../tools/Ext'
 
 interface IEBall {

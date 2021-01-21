@@ -1,25 +1,17 @@
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { HallGameData, HallGameListData } from '../../../public/network/Model/game/HallGameModel'
-import FastImage from 'react-native-fast-image'
-import CommStyles from '../../base/CommStyles'
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
-import EmptyView from '../../../public/components/view/empty/EmptyView'
-import { scale } from '../../../public/tools/Scale'
-import { UGColor } from '../../../public/theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../public/components/view/LotteryBall'
-import Button from '../../../public/views/tars/Button'
-import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import PushHelper from '../../../public/define/PushHelper'
-import UseBetHistoryList from './UseBetHistoryList'
-import { LotteryHistoryData, PlayData } from '../../../public/network/Model/lottery/LotteryHistoryModel'
-import { ugLog } from '../../../public/tools/UgLog'
-import EBall from '../../../public/components/view/lottery/EBall'
+import CommStyles from '../../../base/CommStyles'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import { scale } from '../../../../public/tools/Scale'
+import { UGColor } from '../../../../public/theme/UGThemeColor'
+import LotteryBall from '../../../../public/components/view/LotteryBall'
+import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
+import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import BetRecordListComponent from './BetRecordListComponent'
-import { useContext } from 'react'
-import BetLotteryContext from '../BetLotteryContext'
+import TimeComponent from '../TimeComponent'
+import UseBetRecordHeader from './UseBetRecordHeader'
+import { BallStyles } from '../../const/LotteryConst'
 
 interface IHallGameList {
 }
@@ -32,20 +24,15 @@ interface IHallGameList {
 const BetRecordHeaderComponent = ({}: IHallGameList) => {
 
   const {
-    nextIssueData,
-    playOddDetailData,
-    // curPlayOddData,
-  } = useContext(BetLotteryContext)
-
-  const {
     showHistory,
     setShowHistory,
     historyData,
     setHistoryData,
     systemInfo,
     userInfo,
+    nextIssueData,
     toggleHistory,
-  } = UseBetHistoryList()
+  } = UseBetRecordHeader()
 
   /**
    * 绘制生肖
@@ -206,7 +193,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
    */
   const renderItemContent = (item: NextIssueData) => {
     return (
-      <View key={'renderItemContent ball_item_container'}
+      <View key={'bet record renderItemContent'}
             style={_styles.ball_item_container}>
         <View key={'renderItemContent issue_container'}
               style={_styles.issue_container}>
@@ -232,8 +219,9 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
   }
 
   return (
-    <View key={'bet record header'}>
-      {renderItemContent(nextIssueData())}
+    <View key={'bet record header'}
+          style={_styles.container}>
+      {renderItemContent(nextIssueData)}
       {
         showHistory ?
           <View key={'BetRecordListComponent container'}
@@ -243,32 +231,15 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
           </View> :
           null
       }
+      <TimeComponent nextIssueData={nextIssueData}/>
     </View>
   )
 }
 
-/**
- * 球的样式
- */
-export const BallStyles = {
-  'lhc': BallType.round, //六合彩
-  'qxc': BallType.pure, //"七星彩系列"
-  'cqssc': BallType.pure, //"时时彩系列"
-  'pk10': BallType.square, //"赛车系列"
-  'xyft': BallType.square, //"飞艇系列"
-  'yncp': BallType.pure, //"越南彩系列"
-  'fc3d': BallType.pure, //"3D系列"
-  'gdkl10': BallType.pure, //"快乐10分系列"
-  'pk10nn': BallType.square, //"牛牛系列"
-  'xync': BallType.vegetable, //"幸运农场系列"
-  'bjkl8': BallType.pure, //"快乐8系列"
-  'dlt': BallType.round, //"大乐透系列"
-  'pcdd': BallType.pure, //"蛋蛋系列"
-  'jsk3': BallType.sz, //"快三系列"
-  'gd11x5': BallType.pure, //"11选5系列"
-}
-
 const _styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
   ball_item_container: {
     height: scale(120),
     padding: scale(8),
