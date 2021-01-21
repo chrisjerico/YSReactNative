@@ -44,7 +44,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
  */
   useEffect(() => {
     setProps({
-      navbarOpstions: { hidden: false, title: '下注明细RN', back: true },
+      navbarOpstions: { hidden: false, title: '下注明细', back: true },
       didFocus: (params) => {
         let dic = params;
         for (var key in dic) {
