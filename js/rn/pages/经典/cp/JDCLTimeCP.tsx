@@ -22,7 +22,7 @@ export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
   //当前时间：
   var nowData = moment().format('YYYY-MM-DD HH:mm:ss');
   //当前本地时间和服务器时间相差多少秒
-  let [curDatadiff, setCurDatadiff] = useState<number>(moment(nowData).diff(moment( serverTime), 'seconds'))//每1获取一次数据 是否启动
+  let curDatadiff = (moment(nowData).diff(moment( serverTime), 'seconds'))//每1获取一次数据 是否启动
   let [timeIsOpen, setTimeIsOpen] = useState<boolean>(false)//每1获取一次数据 是否启动
   let  [t, setT] = useState<number>(1)//每1获取一次数据 是否启动
   /**
