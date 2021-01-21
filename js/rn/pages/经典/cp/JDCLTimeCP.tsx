@@ -24,6 +24,7 @@ export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
   //当前本地时间和服务器时间相差多少秒
   let [curDatadiff, setCurDatadiff] = useState<number>(moment(nowData).diff(moment( serverTime), 'seconds'))//每1获取一次数据 是否启动
   let [timeIsOpen, setTimeIsOpen] = useState<boolean>(false)//每1获取一次数据 是否启动
+  let  [t, setT] = useState<number>(1)//每1获取一次数据 是否启动
   /**
 * 初始化
 * @param item
@@ -44,10 +45,7 @@ export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
       console.log('=========JDCLTimeCP定时器开启======== ========================');
       timer = setInterval(() => {
         setTimeIsOpen(true)
-        //当前时间：
-        var nowData = moment().format('YYYY-MM-DD HH:mm:ss');
-        setCurDatadiff(moment(nowData).diff(moment( serverTime), 'seconds'))
-
+        setT(t++)
       }, 1000)
     }
   }
@@ -61,96 +59,66 @@ export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
   }
 
 
-
-  if (moment( serverTime) >= moment( closeTime)) {
+  function reloadText(){
+    if (moment( serverTime) >= moment( closeTime)) {
+      return '已封盘'
+    } else {
+      //服务器时间转换成当地时间 服务器时间  =  当前本地时间 - curDatadiff；
+      let severNowTime = moment().subtract(curDatadiff, 's').format('YYYY-MM-DD HH:mm:ss');
+      if (moment(severNowTime) >= moment( closeTime)) {
+        return '已封盘'
+      } else {
+  
+        let days: number = moment( closeTime).diff(moment(severNowTime), 'days');
+        // console.log('days =', days);
+        let hours: number = moment( closeTime).diff(moment(severNowTime), 'hours') - days * 24;
+        // console.log('hours =', hours);
+        let minutes: number = moment( closeTime).diff(moment(severNowTime), 'minutes') - days * 24 * 60 - hours * 60;
+        // console.log('minutes =', minutes);
+        let seconds: number = moment( closeTime).diff(moment(severNowTime), 'seconds') - days * 24 * 3600 - hours * 3600 - minutes * 60;
+        // console.log('seconds =', seconds);
+  
+        let dayStr: string; let hoursStr: string; let minutesStr: string; let secondsStr: string;
+        dayStr = '' + days;
+        if (hours < 10) {
+          hoursStr = '0' + hours;
+        } else {
+          hoursStr = '' + (hours);
+        }
+        if (minutes < 10) {
+          minutesStr = '0' + minutes;
+        } else {
+          minutesStr = '' + (minutes);
+        }
+        if (seconds < 10) {
+          secondsStr = '0' + seconds;
+        } else {
+          secondsStr = '' + (seconds);
+        }
+  
+        if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
+          return '已封盘'
+        }
+  
+        if (days) {
+          return   dayStr + '天' + hoursStr + ':' + minutesStr + ':' + secondsStr;
+        }
+        if (hours) {
+          return hoursStr + ':' + minutesStr + ':' + secondsStr
+        }
+        return minutesStr + ':' + secondsStr
+      }
+    }
+  }
 
     return (
       <View style={{}}>
         <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-          {'已封盘'}
+        {reloadText()}
         </Text>
       </View>
     );
-  } else {
 
-    //服务器时间转换成当地时间 服务器时间  =  当前本地时间 - curDatadiff；
-
-    let severNowTime = moment().subtract(curDatadiff, 's').format('YYYY-MM-DD HH:mm:ss');
-
-    if (moment(severNowTime) >= moment( closeTime)) {
-      return (
-        <View style={{}}>
-          <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-            {'已封盘'}
-          </Text>
-        </View>
-      );
-    } else {
-
-      let days: number = moment( closeTime).diff(moment(severNowTime), 'days');
-      // console.log('days =', days);
-      let hours: number = moment( closeTime).diff(moment(severNowTime), 'hours') - days * 24;
-      // console.log('hours =', hours);
-      let minutes: number = moment( closeTime).diff(moment(severNowTime), 'minutes') - days * 24 * 60 - hours * 60;
-      // console.log('minutes =', minutes);
-      let seconds: number = moment( closeTime).diff(moment(severNowTime), 'seconds') - days * 24 * 3600 - hours * 3600 - minutes * 60;
-      // console.log('seconds =', seconds);
-
-      let dayStr: string; let hoursStr: string; let minutesStr: string; let secondsStr: string;
-      dayStr = '' + days;
-      if (hours < 10) {
-        hoursStr = '0' + hours;
-      } else {
-        hoursStr = '' + (hours);
-      }
-      if (minutes < 10) {
-        minutesStr = '0' + minutes;
-      } else {
-        minutesStr = '' + (minutes);
-      }
-      if (seconds < 10) {
-        secondsStr = '0' + seconds;
-      } else {
-        secondsStr = '' + (seconds);
-      }
-
-      if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
-        return (
-          <View style={{}}>
-            <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-              {'已封盘'}
-            </Text>
-          </View>
-        );
-      }
-
-      if (days) {
-        return (
-          <View style={{}}>
-            <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-              {dayStr + '天' + hoursStr + ':' + minutesStr + ':' + secondsStr}
-            </Text>
-          </View>
-        );
-      }
-      if (hours) {
-        return (
-          <View style={{}}>
-            <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-              {hoursStr + ':' + minutesStr + ':' + secondsStr}
-            </Text>
-          </View>
-        );
-      }
-      return (
-        <View style={{}}>
-          <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-            {minutesStr + ':' + secondsStr}
-          </Text>
-        </View>
-      );
-    }
-  }
 
 
 }
