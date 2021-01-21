@@ -17,11 +17,13 @@ interface IMiddleMenuItem {
   subTitle?: string // 次级名字
   icon?: string //图标地址
   id?: string //识别标识
+  type?: string //识别标识
 }
 
 interface IMiddleMenu {
   menu?: Array<IMiddleMenuItem> //菜单
   onMenuClick?: (index: number, item: IMiddleMenuItem) => void //点击了哪个菜单
+  styles: any
 }
 
 /**
@@ -31,7 +33,7 @@ interface IMiddleMenu {
  * @param ref
  * @constructor
  */
-const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
+const MiddleMenu = ({ menu, onMenuClick, styles }: IMiddleMenu, ref?: any) => {
 
   const [show, setShow] = useState(false)
 
@@ -54,7 +56,7 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
           _styles.content,
           { height: (arrayLength(menu) < 11 ? arrayLength(menu) : 10) * ITEM_HEIGHT },
         ]}>
-          <ScrollView style={_styles.sv_container}
+          <ScrollView style={[_styles.sv_container, styles]}
                       showsVerticalScrollIndicator={false}>
             {
               menu?.map((item, index) =>
@@ -62,7 +64,8 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
                   <View style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
                     <FastImage source={{ uri: item.icon }}
                                resizeMode={'contain'}
-                               style={_styles.bank_name_icon}/>
+                               style={[_styles.bank_name_icon,
+                               {display: (!item.icon)? 'none' : 'flex'}]}/>
                     <View style={_styles.item_sub_content}>
                       <Text numberOfLines={1}
                             style={_styles.item_name}>{item.title}</Text>
@@ -107,6 +110,7 @@ const _styles = StyleSheet.create({
   },
   item_sub_content: {
     flex: 1,
+    alignItems: 'center'
   },
   item_name: {
     color: UGColor.TextColor1,

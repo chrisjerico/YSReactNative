@@ -190,6 +190,19 @@ class APIRouter {
     return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes' + tokenParams)
   }
 
+  //注单讯息
+  static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string) => {
+    let tokenParams = await APIRouter.encryptGetParams({
+      page: page,
+      rows: rows,
+      category: category,
+      startDate: startDate,
+      endDate: endDate,
+    })
+    
+    return httpClient.get<GameHistoryModel>('c=ticket&a=history' + tokenParams)
+  }
+
   static real_gotoGame = async (id) => {
     let params = await APIRouter.encryptGetParams({
       id: id
