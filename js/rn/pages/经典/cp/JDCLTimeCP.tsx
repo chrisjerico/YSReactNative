@@ -9,10 +9,6 @@ import AppDefine from "../../../public/define/AppDefine";
 import { ImagePHCP } from "../tools/ImagePHCP";
 import moment from "moment";
 
-// export interface JDCLTimeCPAction {
-//   stopTime?: () => void
-//   startTime?: () => void
-// }
 
 interface JDCLTimeCP {
   serverTime: string     //服务器时间
@@ -21,7 +17,7 @@ interface JDCLTimeCP {
 }
 
 
-export const JDCLTimeCP = (serverTime: string ,closeTime: string  ) => {
+export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
   let timer: any;//每秒刷新一次界面
   //当前时间：
   var nowData = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -34,17 +30,7 @@ export const JDCLTimeCP = (serverTime: string ,closeTime: string  ) => {
 */
   useEffect(() => {
     console.log('JDCLTimeCPuseEffect=========================================================');
-    // c_ref &&
-    //   (c_ref.stopTime = () => {
-    //     console.log('关闭定时器=========================================================');
-    //     destoryTimer()
-    //   })
-    // c_ref &&
-    //   (c_ref.startTime = () => {
-    //     console.log(' 开启定时器=========================================================');
-    //     starttime()
 
-    //   })
     starttime()
 
     return (() => {//安卓退出调用

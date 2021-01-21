@@ -699,110 +699,13 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   }
 
-  /**
-* 渲染定时器
-* 
-*/
-  const _renderTimeItem = ({ item }) => {
-
-    if (moment(item.serverTime) >= moment(item.closeTime)) {
-
-      return (
-        <View style={{}}>
-          <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-            {'已封盘'}
-          </Text>
-        </View>
-      );
-    } else {
-
-      //服务器时间转换成当地时间 服务器时间  =  当前本地时间 - curDatadiff；
-
-      let severNowTime = moment().subtract(curDatadiff, 's').format('YYYY-MM-DD HH:mm:ss');
-
-      if (moment(severNowTime) >= moment(item.closeTime)) {
-        return (
-          <View style={{}}>
-            <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-              {'已封盘'}
-            </Text>
-          </View>
-        );
-      } else {
-
-        let days: number = moment(item.closeTime).diff(moment(severNowTime), 'days');
-        // console.log('days =', days);
-        let hours: number = moment(item.closeTime).diff(moment(severNowTime), 'hours') - days * 24;
-        // console.log('hours =', hours);
-        let minutes: number = moment(item.closeTime).diff(moment(severNowTime), 'minutes') - days * 24 * 60 - hours * 60;
-        // console.log('minutes =', minutes);
-        let seconds: number = moment(item.closeTime).diff(moment(severNowTime), 'seconds') - days * 24 * 3600 - hours * 3600 - minutes * 60;
-        // console.log('seconds =', seconds);
-
-        let dayStr: string; let hoursStr: string; let minutesStr: string; let secondsStr: string;
-        dayStr = '' + days;
-        if (hours < 10) {
-          hoursStr = '0' + hours;
-        } else {
-          hoursStr = '' + (hours);
-        }
-        if (minutes < 10) {
-          minutesStr = '0' + minutes;
-        } else {
-          minutesStr = '' + (minutes);
-        }
-        if (seconds < 10) {
-          secondsStr = '0' + seconds;
-        } else {
-          secondsStr = '' + (seconds);
-        }
-
-        if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
-          return (
-            <View style={{}}>
-              <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-                {'已封盘'}
-              </Text>
-            </View>
-          );
-        }
-
-        if (days) {
-          return (
-            <View style={{}}>
-              <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-                {dayStr + '天' + hoursStr + ':' + minutesStr + ':' + secondsStr}
-              </Text>
-            </View>
-          );
-        }
-        if (hours) {
-          return (
-            <View style={{}}>
-              <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-                {hoursStr + ':' + minutesStr + ':' + secondsStr}
-              </Text>
-            </View>
-          );
-        }
-        return (
-          <View style={{}}>
-            <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
-              {minutesStr + ':' + secondsStr}
-            </Text>
-          </View>
-        );
-      }
-    }
-  }
-
-
+  
 
   /**
 * 渲染列表项
 * 
 */
-  const _renderItem = ({ index, item }) => {
+  const _renderItem = ({ index, item}) => {
     {
 
 
@@ -829,7 +732,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
                 {!anyEmpty(item.displayNumber) ? item.displayNumber : item.issue}
               </Text>
               {/* 倒计时 */}
-              <JDCLTimeCP   serverTime = {items.serverTime} closeTime ={items.closeTime}/>
+              <JDCLTimeCP   serverTime = {item.serverTime} closeTime ={item.closeTime}/>
 
             </View>
             {/* 图标 */}
