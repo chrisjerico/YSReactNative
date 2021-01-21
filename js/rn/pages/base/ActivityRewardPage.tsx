@@ -22,7 +22,7 @@ interface ApplyRewardProps {
   onPressApply: ({ win_apply_content, quickAmounts }: { win_apply_content: string; quickAmounts: string[] }) => any
 }
 
-const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
+const RewardList = ({ tabLabel, data, uniqueKey, onPress, onPressApply }) => (
   <List
     uniqueKey={uniqueKey}
     data={data}
@@ -69,24 +69,23 @@ const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
 )
 
 const ApplyReward = ({ tabLabel, list, onPress, onPressApply }: ApplyRewardProps) => {
+  let categoryList = {}
+  list?.forEach((item) => {
+    const categoryName = item?.categoryName
+    if (categoryList[categoryName]) {
+      categoryList[categoryName]?.push(item)
+    } else {
+      categoryList[categoryName] = [item]
+    }
+  })
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollableTabView tabBarUnderlineStyle={{ backgroundColor: Skin1.themeColor }} tabBarActiveTextColor={Skin1.themeColor}>
-        <View tabLabel={'全部'}>
-          <RewardList uniqueKey={'ApplyReward_全部'} data={list} onPress={onPress} onPressApply={onPressApply} />
-        </View>
-        <View tabLabel={'热门'}>
-          <RewardList uniqueKey={'ApplyReward_热门'} data={list?.filter((item) => item?.category == '1')} onPress={onPress} onPressApply={onPressApply} />
-        </View>
-        <View tabLabel={'未分类'}>
-          <RewardList uniqueKey={'ApplyReward_未分类'} data={list?.filter((item) => item?.category == '-1')} onPress={onPress} onPressApply={onPressApply} />
-        </View>
-        <View tabLabel={'彩票'}>
-          <RewardList uniqueKey={'ApplyReward_彩票'} data={list?.filter((item) => item?.category == '2')} onPress={onPress} onPressApply={onPressApply} />
-        </View>
-        <View tabLabel={'体育'}>
-          <RewardList uniqueKey={'ApplyReward_体育'} data={list?.filter((item) => item?.category == '7')} onPress={onPress} onPressApply={onPressApply} />
-        </View>
+        <RewardList tabLabel={'全部'} uniqueKey={'ApplyReward_全部'} data={list} onPress={onPress} onPressApply={onPressApply} />
+        {Object.keys(categoryList)?.map((key) => {
+          return <RewardList tabLabel={key} uniqueKey={'ApplyReward_' + key} data={categoryList[key]} onPress={onPress} onPressApply={onPressApply} />
+        })}
       </ScrollableTabView>
     </View>
   )
