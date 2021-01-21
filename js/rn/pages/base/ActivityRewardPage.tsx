@@ -96,16 +96,24 @@ const ApplyFeedBack = ({ tabLabel, list }) => {
     <List
       uniqueKey={'ApplyFeedBack'}
       ListHeaderComponent={() => (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
-          <Text style={{ fontWeight: '500' }}>{'申请日期'}</Text>
-          <Text style={{ fontWeight: '500' }}>{'申请金额'}</Text>
-          <Text style={{ fontWeight: '500' }}>{'状态'}</Text>
+        <View style={{ flexDirection: 'row', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
+          <Text style={{ fontWeight: '500', flex: 2, textAlign: 'center' }}>{'申请日期'}</Text>
+          <Text style={{ fontWeight: '500', flex: 1, textAlign: 'center' }}>{'申请金额'}</Text>
+          <Text style={{ fontWeight: '500', flex: 1, textAlign: 'center' }}>{'状态'}</Text>
         </View>
       )}
       data={list}
       scrollEnabled={true}
       renderItem={({ item }) => {
-        return null
+        const { amount, state, updateTime } = item
+        console.log('-------item------', item)
+        return (
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
+            <Text style={{ flex: 2, textAlign: 'center' }}>{updateTime}</Text>
+            <Text style={{ flex: 1, textAlign: 'center' }}>{amount}</Text>
+            <Text style={{ flex: 1, textAlign: 'center' }}>{state}</Text>
+          </View>
+        )
       }}
     />
   )
