@@ -29,7 +29,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
 
   let { current: v } = useRef<JDBetDetailPage>(
     {
-      pageTitle: '下注明细',
+      pageTitle: '下注明细RN',
       titleArray: ['彩种', "笔数", "下注金额", "输赢",],
       items: [],
       state: {
