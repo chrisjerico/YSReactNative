@@ -427,7 +427,12 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.我的页: {
-            OCHelper.call('UGTabbarController.shared.mms').then((mms: UGTabbarItem[]) => {
+            (async () => {
+              let mms: UGTabbarItem[] = await OCHelper.call('UGTabbarController.shared.customTabbar.dataArray')
+              if (!mms) {
+                // 兼容旧APP版本（写于2021.1.21 两个月后再删）
+                mms = await OCHelper.call('UGTabbarController.shared.mms')
+              }
               let isOcPush = false
               mms.forEach((item, idx) => {
                 if (item.path == '/user') {
@@ -452,7 +457,7 @@ export default class PushHelper {
                   ])
                 }
               }
-            })
+            })()
             break
           }
           case UGUserCenterType.开奖结果: {
