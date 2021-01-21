@@ -68,6 +68,12 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'txtada': [
     'http://testadaf.fhptcdn.com',
   ],
+  'txtada_b': [
+    'http://testadafb.fhptcdn.com',
+  ],
+  'txtada_c': [
+    'http://testadafc.fhptcdn.com',
+  ],
   'txt60': [
     'http://test60f.fhptcdn.com',
   ],
