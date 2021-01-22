@@ -6,6 +6,15 @@ import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddD
 import { ugLog } from '../../../../public/tools/UgLog'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { calculateItemCount } from '../../util/LotteryUtil'
+import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
+import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it/bet/IBetLotteryParams'
+import moment from 'moment'
+import LotteryConst from '../../const/LotteryConst'
+import { Text, TextInput, View } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { scale } from '../../../../public/tools/Scale'
+import { Skin1 } from '../../../../public/theme/UGSkinManagers'
+import * as React from 'react'
 
 /**
  * 下注面板
@@ -17,6 +26,8 @@ const UsePayBoard = () => {
   const {
     playOddDetailData,//彩票数据
   } = useContext(BetLotteryContext)
+
+  const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   const [selectedData, setSelectedData] = useState<Map<string, Array<PlayGroupData>>>(null) //当前选中的数据
   const [totalMoney, setTotalMoney] = useState(0) //计算总价格
@@ -37,7 +48,7 @@ const UsePayBoard = () => {
    * 选中的数据变化时重新计算条目
    */
   useEffect(() => {
-    if(selectedData == null) return
+    if (selectedData == null) return
 
     //总共有多少条数据
     setItemCount(calculateItemCount(selectedData))
@@ -81,7 +92,72 @@ const UsePayBoard = () => {
    * 开始下注
    */
   const startBetting = () => {
+    const betBean: Array<BetLotteryData> = []
 
+    Object.keys(selectedData).map((key) => {
+      const groupDataArr: Array<PlayGroupData> = selectedData[key]
+      return groupDataArr?.map((groupData) => {
+        switch (key) {
+          case LotteryConst.TM:  //特码
+            groupData?.plays?.map((playData) => {
+              betBean.push({
+                money: moneyMap[playData?.id]?.toString(),
+                odds: playData?.odds,
+                playId: playData?.id,
+                playIds: nextIssueData?.id,
+              } as BetLotteryData)
+            })
+            break
+
+          case LotteryConst.HX://合肖
+            return null
+
+          case LotteryConst.ZM: //正码
+          case LotteryConst.ZT:  //正特
+            return null
+
+          case LotteryConst.LMA:  //连码
+            return null
+
+          case LotteryConst.LM: //两面
+          case LotteryConst.ZM1_6: //正码1T6
+          case LotteryConst.SB: //色波
+          case LotteryConst.ZOX://总肖
+          case LotteryConst.WX:  //五行
+            return null
+
+          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LotteryConst.TX: //特肖
+          case LotteryConst.ZX: //正肖
+          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+            return null
+
+          case LotteryConst.LX: //连肖
+            return null
+
+          case LotteryConst.LW: //连尾
+            return null
+
+          case LotteryConst.ZXBZ:  //自选不中
+            return null
+        }
+
+      })
+
+    })
+
+    const pms: IBetLotteryParams = {
+      activeReturnCoinRatio: '0',
+      betBean: betBean,
+      betIssue: nextIssueData?.curIssue,
+      endTime: (moment(nextIssueData?.curCloseTime).toDate().getTime() / 1000).toString(),
+      gameId: nextIssueData?.id,
+      totalNum: itemCount?.toString(),
+      totalMoney: totalMoney?.toString(),
+      isInstant: nextIssueData?.isInstant
+    }
+    api.user.userGameBetWithParams(pms)
   }
 
   return {

@@ -126,9 +126,9 @@ export class api_user {
   // 普通游戏 注单投注
   static userGameBetWithParams(params: IBetLotteryParams){
     if (UGStore.globalProps.userInfo?.isTest) {//是测试账号
-      return params?.isInstant == '1' ? api_user.guestBet(params) : api_user.instantBet(params)
+      return params?.isInstant == '1' ? api_user.instantBet(params) : api_user.guestBet(params)
     } else{//不是测试账号
-      return params?.isInstant == '1' ? api_user.bet(params) : api_user.instantBet(params)
+      return params?.isInstant == '1' ? api_user.instantBet(params) : api_user.bet(params)
     }
 
   }

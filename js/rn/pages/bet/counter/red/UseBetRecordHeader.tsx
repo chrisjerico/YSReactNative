@@ -20,8 +20,9 @@ const UseBetRecordHeader = () => {
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
+  const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
-  const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
+  // const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
   const [showHistory, setShowHistory] = useState(false) //是否显示历史记录
   const [historyData, setHistoryData] = useState<LotteryHistoryData>(null) //历史数据
 
@@ -52,7 +53,7 @@ const UseBetRecordHeader = () => {
     //ugLog('requestNextData data res=', JSON.stringify(res?.data))
 
     if (res?.code == 0) {
-      setNextIssueData(res?.data)
+      UGStore.dispatch({type: 'merge', nextIssueData: res?.data})
     }
 
     return res?.code
@@ -103,7 +104,6 @@ const UseBetRecordHeader = () => {
     systemInfo,
     userInfo,
     nextIssueData,
-    setNextIssueData,
     toggleHistory,
   }
 }
