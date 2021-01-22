@@ -72,6 +72,7 @@ export const Res = {
   ht: img_assets('bank/ht'),
   btc_deposit_icon: img_assets('bank/btc_deposit_icon'),
   aliyin2: img_assets('bank/aliyin2'),
+  promotion_more: img_assets('promotion/more', 'gif'),
 
   //筹码
   a10: img_assets('chip/a10'),

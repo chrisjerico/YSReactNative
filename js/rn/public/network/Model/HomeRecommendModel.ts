@@ -99,4 +99,4 @@ export interface GameUrlModel {
   code: number;
   msg: string;
   data: string;
-}}
+}
