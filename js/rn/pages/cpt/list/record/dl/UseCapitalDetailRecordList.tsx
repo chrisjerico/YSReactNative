@@ -65,6 +65,9 @@ const UseCapitalDetailRecordList = () => {
     let reqGroup = !anyEmpty(selGroup) ? selGroup : menuItem?.find((item) =>
       item.id == curGroup?.toString())?.id?.toString()
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
+console.log('reqGroup====',reqGroup);
+console.log('selGroup====',selGroup);
+console.log('curGroup====',curGroup);
 
     APIRouter.capital_capitalDetailRecordList({
       startDate: stDate,
