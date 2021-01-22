@@ -79,7 +79,7 @@ console.log('curGroup====',curGroup);
       let listData = res?.data?.list
       let cpGroups = res?.data?.groups
 
-      //ugLog('data res=', reqPage, JSON.stringify(res?.data))
+      ugLog('data res=', reqPage, JSON.stringify(res?.data))
       if (res?.code == 0) {
 
         //缓存列表显示选项
@@ -93,6 +93,7 @@ console.log('curGroup====',curGroup);
         })
 
         setMenuItem([{ id: '0', title: '全部类型' }, ...menu])
+          setListDetailData(listData)
 
 
         if (clear) {

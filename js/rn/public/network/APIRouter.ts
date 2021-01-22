@@ -455,6 +455,8 @@ class APIRouter {
   static capital_capitalDetailRecordList = async (params: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
 
     let tokenParams = await APIRouter.encryptGetParams(params)
+    console.log('tokenParams ==',tokenParams);
+    
 
     return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&' + tokenParams)
   }
@@ -800,7 +802,8 @@ class APIRouter {
     for (let key in pms) {
       tokenParams += '&' + key + '=' + pms[key]
     }
-    //ugLog('APIRouter encryptParams=', JSON.stringify(params))
+    ugLog('APIRouter encryptParams=', JSON.stringify(tokenParams))
+    ugLog('APIRouter encryptParams====2=', JSON.stringify(params))
     return tokenParams
   }
 }
