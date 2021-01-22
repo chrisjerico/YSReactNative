@@ -265,6 +265,43 @@ const AddBankPage = ({ navigation, route }) => {
             }}/>
   </View>
 
+  /**
+   * 绘制银行选项
+   */
+  const renderBankOption = () =>
+    curAccountType == BankConst.BANK && !anyEmpty(curBankID) && <UGDropDownPicker
+      items={bankDetailItems}
+      controller={instance => bankController = instance}
+      style={_styles.bank_picker}
+      defaultValue={curBankID}
+      onChangeItem={item => setCurBankID(item.value)}/>
+
+  /**
+   * 绘制虚拟币选项
+   */
+  const renderBtcOption = () => curAccountType == BankConst.BTC && !anyEmpty(curBtcID) && <UGDropDownPicker
+    items={btcDetailItems}
+    controller={instance => btcController = instance}
+    style={_styles.bank_picker}
+    defaultValue={curBtcID}
+    onOpen={() => {
+      chainController?.close()
+    }}
+    onChangeItem={item => {
+      setCurBtcID(item.value)
+    }}/>
+
+  /**
+   * 绘制链
+   */
+  const renderBtcChainOption = () => curAccountType == BankConst.BTC && !anyEmpty(curChainValue) && !anyEmpty(chainDetailItems) &&
+    <UGDropDownPicker
+      items={chainDetailItems}
+      controller={instance => chainController = instance}
+      style={_styles.bank_picker}
+      defaultValue={curChainValue}
+      onChangeItem={item => setCurChainValue(item.value)}/>
+
   return (
     <BaseScreen style={_styles.container} screenName={'绑定提款账户'}>
       {
@@ -289,45 +326,13 @@ const AddBankPage = ({ navigation, route }) => {
                     }/>
                 }
                 <View style={{ height: scale(32) }}/>
-                {
-                  [
-                    // 绘制银行
-                    curAccountType == BankConst.BANK && !anyEmpty(curBankID) && <UGDropDownPicker
-                      items={bankDetailItems}
-                      controller={instance => bankController = instance}
-                      style={_styles.bank_picker}
-                      defaultValue={curBankID}
-                      onChangeItem={item => setCurBankID(item.value)}/>,
-                    curAccountType == BankConst.BANK && renderBank(),
-
-                    //绘制虚拟币
-                    curAccountType == BankConst.BTC && !anyEmpty(curBtcID) && <UGDropDownPicker
-                      items={btcDetailItems}
-                      controller={instance => btcController = instance}
-                      style={_styles.bank_picker}
-                      defaultValue={curBtcID}
-                      onOpen={() => {
-                        chainController?.close()
-                      }}
-                      onChangeItem={item => {
-                        setCurBtcID(item.value)
-                      }}/>,
-                    //绘制链
-                    curAccountType == BankConst.BTC && !anyEmpty(curChainValue) && !anyEmpty(chainDetailItems) &&
-                    <UGDropDownPicker
-                      items={chainDetailItems}
-                      controller={instance => chainController = instance}
-                      style={_styles.bank_picker}
-                      defaultValue={curChainValue}
-                      onChangeItem={item => setCurChainValue(item.value)}/>,
-                    curAccountType == BankConst.BTC && renderBtc(),
-
-                    //绘制微信
-                    curAccountType == BankConst.WX && renderWx(),
-                    //绘制支付宝
-                    curAccountType == BankConst.ALI && renderAli(),
-                  ]
-                }
+                {renderBankOption()}
+                {curAccountType == BankConst.BANK && renderBank()}
+                {renderBtcOption()}
+                {renderBtcChainOption()}
+                {curAccountType == BankConst.BTC && renderBtc()}
+                {curAccountType == BankConst.WX && renderWx()}
+                {curAccountType == BankConst.ALI && renderAli()}
 
                 <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
                 <Button title={'提交'}
