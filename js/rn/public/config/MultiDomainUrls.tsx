@@ -18,7 +18,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://zhibot071f.fhptcdn.com',
   ],
   'txt005': [
-    'http://t005f.fhptcdn.com',
+    'https://t005f.fhptcdn.com',
   ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
