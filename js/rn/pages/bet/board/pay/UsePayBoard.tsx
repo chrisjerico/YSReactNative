@@ -17,13 +17,16 @@ const UsePayBoard = () => {
   const {
     playOddDetailData,//彩票数据
   } = useContext(BetLotteryContext)
-  const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //当前选中的数据
 
-  // const [showWindow, setShowWindow] = useState(true) //下注窗口 是否显示
+  const [selectedData, setSelectedData] = useState<Map<string, Array<PlayGroupData>>>(null) //当前选中的数据
   const [totalMoney, setTotalMoney] = useState(0) //计算总价格
   const [averageMoney, setAverageMoney] = useState(1) //输入平均价格
   const [itemCount, setItemCount] = useState(0) //选中的条目数据
   const [moneyMap, setMoneyMap] = useState<Map<string, number>>(null) //输入单项价格列表，id -> money
+
+  useEffect(() => {
+    setSelectedData(JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData)))
+  }, [])
 
   useEffect(() => {
     const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
@@ -34,6 +37,8 @@ const UsePayBoard = () => {
    * 选中的数据变化时重新计算条目
    */
   useEffect(() => {
+    if(selectedData == null) return
+
     //总共有多少条数据
     setItemCount(calculateItemCount(selectedData))
 
@@ -42,7 +47,7 @@ const UsePayBoard = () => {
       const dataMap = new Map<string, number>()
       const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
 
-      const groupValueArr: Array<Array<PlayGroupData>> = Object?.values(selectedData)
+      const groupValueArr: Array<Array<PlayGroupData>> = Object.values(selectedData)
       ugLog('groupValueArr = ', JSON.stringify(groupValueArr))
       const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
       newGroupData?.map((groupData) => {

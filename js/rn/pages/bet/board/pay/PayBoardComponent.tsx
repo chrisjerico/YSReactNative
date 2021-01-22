@@ -51,7 +51,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   // 生成数据对应的 View
   const itemViewArr = useMemo(() => {
-    return Object.keys(selectedData).map((key) => {
+    return selectedData == null ? null : Object.keys(selectedData).map((key) => {
       const groupDataArr: Array<PlayGroupData> = selectedData[key]
       return groupDataArr?.map((groupData) => {
         switch (key) {

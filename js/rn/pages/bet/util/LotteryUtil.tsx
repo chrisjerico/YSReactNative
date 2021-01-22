@@ -43,7 +43,7 @@ const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum =>
  */
 const calculateItemCount = (selectedData?: Map<string, Array<PlayGroupData>>): number => {
   //总共有多少条数据
-  const groupValueArr: Array<Array<PlayGroupData>> = Object?.values(selectedData)
+  const groupValueArr: Array<Array<PlayGroupData>> = selectedData == null ? null : Object.values(selectedData)
   const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
   return anyEmpty(newGroupData) ? 0 : newGroupData.map((item) =>
     arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
