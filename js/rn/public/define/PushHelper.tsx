@@ -136,7 +136,7 @@ export default class PushHelper {
           // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
           // return
         }
-        if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
+        if (this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
 
         if (game?.seriesId == 7 && game?.subId == GameType.游戏大厅) {  //游戏大厅
           push(PageName.GameLobbyPage, { showBackButton: true })
@@ -161,6 +161,7 @@ export default class PushHelper {
           ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
           break
         }
+    }
   }
 
   // 去彩票
