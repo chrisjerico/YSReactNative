@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { chunkArray } from '../../../public/tools/ChunkArr'
 import { getTrendData } from '../../../public/utils/getTrendData'
 import { TrendData } from '../../../public/interface/trendData'
@@ -47,6 +47,7 @@ import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { pop } from '../../../public/navigation/RootNavigation'
+import MiddleMenu , { IMiddleMenuItem } from '../../../public/components/menu/MiddleMenu'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -82,6 +83,8 @@ const AddBankPage = ({ navigation, route }) => {
   let bankController //银行选择
   let btcController //币种选择
   let chainController //链选择
+
+  const refMenu = useRef(null)//银行选择
 
   /**
    * refreshBankList: 刷新银行卡列表
@@ -158,6 +161,15 @@ const AddBankPage = ({ navigation, route }) => {
       setCurChainValue(null)
     }
   }, [bankDetailData, curBtcID])
+
+    /**
+   * 点击银行菜单
+   * @param index
+   */
+  const clickBankMenu = (index: number, item: IMiddleMenuItem) => {
+    refMenu?.current?.toggleMenu()
+    setCurBankID(bankDetailItems[index])
+  }
 
   /**
    * 绘制银行
@@ -275,7 +287,8 @@ const AddBankPage = ({ navigation, route }) => {
               <EmptyView style={{ flex: 1 }}/> : //没有数据
               <View style={_styles.item_bank_container}>
                 {
-                  !anyEmpty(curAccountType) && <UGDropDownPicker
+                  !anyEmpty(curAccountType) && 
+                  <UGDropDownPicker
                     items={accountItems}
                     defaultValue={curAccountType}
                     onOpen={() => {
@@ -292,12 +305,17 @@ const AddBankPage = ({ navigation, route }) => {
                 {
                   [
                     // 绘制银行
-                    curAccountType == BankConst.BANK && !anyEmpty(curBankID) && <UGDropDownPicker
-                      items={bankDetailItems}
-                      controller={instance => bankController = instance}
-                      style={_styles.bank_picker}
-                      defaultValue={curBankID}
-                      onChangeItem={item => setCurBankID(item.value)}/>,
+                    curAccountType == BankConst.BANK && !anyEmpty(curBankID) && 
+                    // <UGDropDownPicker
+                    //   items={bankDetailItems}
+                    //   controller={instance => bankController = instance}
+                    //   style={_styles.bank_picker}
+                    //   defaultValue={curBankID}
+                    //   onChangeItem={item => setCurBankID(item.value)}/>,
+                    <MiddleMenu key={bankDetailItems?.toString()}
+                    ref={refMenu}
+                    onMenuClick={clickBankMenu}
+                    menu={bankDetailItems}/>,
                     curAccountType == BankConst.BANK && renderBank(),
 
                     //绘制虚拟币
