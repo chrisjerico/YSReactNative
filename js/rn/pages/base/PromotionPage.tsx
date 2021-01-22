@@ -11,6 +11,7 @@ import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
+import { ugLog } from '../../public/tools/UgLog'
 import BottomGap from '../../public/views/tars/BottomGap'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -27,8 +28,8 @@ const PromotionPage = (props: any) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1)
   const totalList = useRef([])
-  const showUnderline = Skin1.skitType.indexOf('威尼斯') != -1
-  const showItemBorder = Skin1.skitType.indexOf('威尼斯') != -1
+  const showUnderline = Skin1?.skitType?.indexOf('威尼斯') != -1
+  const showItemBorder = Skin1?.skitType?.indexOf('威尼斯') != -1
 
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
@@ -73,11 +74,13 @@ const PromotionPage = (props: any) => {
         }
         break
       case 'android':
-        ANHelper.callAsync(CMD.OPEN_COUPON, {
-          ...item,
-          style,
-        })
-        break
+        switch (style) {
+          // 弹框
+          case 'popup': {
+            setShowPop(true)
+            break
+          }
+        }
     }
   }
   if (loading) {
@@ -137,7 +140,7 @@ const PromotionPage = (props: any) => {
               data={list}
               ListFooterComponent={<BottomGap />}
               renderItem={({ item, index }) => {
-                const { title, pic, content } = item
+                const { title, pic, content, linkUrl, linkCategory, linkPosition} = item
                 const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
                 const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
                 const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10, padding: 9 } : {}
@@ -150,6 +153,9 @@ const PromotionPage = (props: any) => {
                     slide={style == 'slide' && selectedItemIndex == index}
                     containerStyle={containerStyle}
                     titleStyle={{ color: skinColors.promotion.couponTitleColor[Skin1.skitType], ...titleStyle }}
+                    linkUrl={linkUrl}
+                    linkCategory={linkCategory}
+                    linkPosition={linkPosition}
                   />
                 )
               }}
@@ -163,7 +169,7 @@ const PromotionPage = (props: any) => {
             data={list}
             ListFooterComponent={<BottomGap />}
             renderItem={({ item, index }) => {
-              const { title, pic, content } = item
+              const { title, pic, content, linkUrl, linkCategory, linkPosition } = item
               const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
               const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
               const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10, padding: 9 } : {}
@@ -176,6 +182,9 @@ const PromotionPage = (props: any) => {
                   slide={style == 'slide' && selectedItemIndex == index}
                   containerStyle={containerStyle}
                   titleStyle={{ color: Skin1?.promotion?.couponTitleColor, ...titleStyle }}
+                  linkUrl={linkUrl}
+                  linkCategory={linkCategory}
+                  linkPosition={linkPosition}
                 />
               )
             }}

@@ -210,20 +210,24 @@ export default class PushHelper {
    * @param subId
    */
   static pushDeposit(seriesId?: string, subId?: string): boolean {
+    let tabIndex = ''
     if (seriesId == '7' && subId == MenuType.ZHGL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
-      return true
+      tabIndex = CapitalConst.CAPITAL_DETAIL
     } else if (seriesId == '7' && (subId == MenuType.CQK || subId == MenuType.CZ)) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
-      return true
+      tabIndex = CapitalConst.DEPOSIT
     } else if (seriesId == '7' && subId == MenuType.TX) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
-      return true
+      tabIndex = CapitalConst.WITHDRAWAL
     } else if (seriesId == '7' && subId == MenuType.CZJL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
-      return true
+      tabIndex = CapitalConst.DEPOSIT_RECORD
     } else if (seriesId == '7' && subId == MenuType.TXJL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
+      tabIndex = CapitalConst.WITHDRAWAL_RECORD
+    }
+    if (tabIndex.length > 0) {
+      ugLog("uid: " + UGStore.globalProps.userInfo.uid)
+      if (!UGStore.globalProps.userInfo.uid) {
+        return
+      }
+      push(PageName.CapitalPage, {initTabIndex: tabIndex})
       return true
     }
 

@@ -55,6 +55,46 @@ export interface TwoLevelGame {
   info: Info;
 }
 
+export interface TwoLevelType {
+  id: string;
+  code: string;
+  name: string;
+  pic: string;
+}
+
+
+export interface GameHistoryModel {
+  code: number;
+  msg: string;
+  data: GameHistoryData;
+  urlBean: GameHistoryUrlBean;
+}
+
+export interface GameHistoryData {
+  list: GameHistorylistBean[]
+  total: number
+  totalBetAmount: string
+  totalWinAmount: string
+}
+
+export interface GameHistorylistBean {
+  lotteryNo: string
+  id: string
+  gameName: string
+  gameTypeName: string
+  issue: string
+  displayNumber: string
+  betTime: string
+  date: string
+  betAmount: string
+  winAmount: string
+}
+
+export interface GameHistoryUrlBean {
+  status: number;
+  url: string;
+}
+
 export interface GameUrlModel {
   code: number;
   msg: string;

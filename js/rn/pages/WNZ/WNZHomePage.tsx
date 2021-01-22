@@ -243,14 +243,7 @@ const WNZHomePage = () => {
                       }
                     } else {
                       if (gameId == GameType.优惠活动) {
-                        switch (Platform.OS) {
-                          case 'ios':
-                            goToPromotionPage()
-                            break
-                          case 'android':
-                            PushHelper.pushHomeGame(item)
-                            break
-                        }
+                        goToPromotionPage()
                       } else {
                         PushHelper.pushHomeGame(item)
                       }

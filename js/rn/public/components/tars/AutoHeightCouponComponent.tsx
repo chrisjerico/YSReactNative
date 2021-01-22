@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
-import { Modal, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
+import { Image, Modal, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
 import Button from '../../../public/views/tars/Button'
 import AppDefine from '../../define/AppDefine'
 import { Skin1 } from '../../theme/UGSkinManagers'
+import { Res } from '../../../Res/icon/Res'
+import { ugLog } from '../../tools/UgLog'
+import PushHelper from '../../define/PushHelper'
+import { PushHomeGame } from '../../models/Interface'
+import { PageName } from '../../navigation/Navigation'
+import { push } from '../../navigation/RootNavigation'
 
 interface AutoHeightCouponAutoHeightCouponComponentProps {
   title: string
@@ -16,13 +22,18 @@ interface AutoHeightCouponAutoHeightCouponComponentProps {
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
   slide?: boolean
+  linkUrl?: string
+  linkCategory?: number
+  linkPosition?: number
 }
 
-const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyle, titleStyle, slide = false }: AutoHeightCouponAutoHeightCouponComponentProps) => {
+const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyle, titleStyle, slide = false, linkUrl, linkCategory, linkPosition }: AutoHeightCouponAutoHeightCouponComponentProps) => {
   const [aspectRatio, setAspectRatio] = useState(undefined)
   const [showPop, setShowPop] = useState(false)
+  const [showUrl, setShowUrl] = useState((linkUrl.length>0) || (linkCategory>0))
   // const [show, setShow] = useState(true)
   // if (show) {
+    ugLog("linkUrl: " + linkUrl + ", linkCategory：" + linkCategory + ", linkPosition: " + linkPosition + ", showUrl: " + showUrl)
   return (
     <View style={[{ width: '100%' }, containerStyle]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
@@ -92,8 +103,10 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
               <Text style={{ marginVertical:13, fontSize: 17, fontWeight: '500' }}>{title}</Text>
               <View style={{ height:1, width:'100%', backgroundColor:'#ddd'}} />
             </View>
-            <View style={{ flex: 8 }}>
-              <ScrollView showsVerticalScrollIndicator={false} style={{paddingHorizontal:5}}>
+            <View style={{ flex:8 }}>
+              <ScrollView 
+                showsVerticalScrollIndicator={false} 
+                style={{paddingHorizontal:5}}>
                 <AutoHeightWebView
                   style={{ width: '100%' }}
                   scalesPageToFit={true}
@@ -114,8 +127,31 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
   }
   </script>` +
                       content,
-                  }}
-                />
+                  }}/>
+                  {showUrl ? 
+                    (<Button
+                        containerStyle={{ flex: 1, width: '100%', height: scale(90), alignItems: 'center'}}
+                        showLogo={true}
+                        logoStyle={{ flex: 1, width: '100%', alignItems: 'center'}}
+                        logo={Res.promotion_more}
+                        onPress={() => {
+                          ugLog("onPress promotion url: " + linkUrl)
+                          if (linkUrl) {
+                            push(PageName.Game3rdView, {url: linkUrl})
+                            setShowPop(false)
+                            return
+                          }
+                          let game: PushHomeGame = {
+                            seriesId: linkCategory,
+                            gameId: linkPosition,
+                            subId: linkPosition,
+                          }
+                          PushHelper.pushHomeGame(game)
+                          setShowPop(false)
+                        }}
+                      />
+                  ):({})
+                }
               </ScrollView>
             </View>
             <View style={styles.buttonContainer}>
