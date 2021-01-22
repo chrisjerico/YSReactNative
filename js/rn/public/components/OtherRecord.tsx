@@ -38,6 +38,7 @@ import { Calendar } from 'react-native-plain-calendar'
 import { format } from 'prettier'
 import moment from 'moment'
 import Dialog from "react-native-dialog";
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 /**
  * 其他注单
@@ -306,9 +307,10 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const rightButton = <TouchableWithoutFeedback onPress={() => {
     setSelectStartDate(true)
   }}>
-    <Icon size={scale(30)}
+    <AntDesign size={scale(30)}
           name={'calendar'}
-          style={{ padding: scale(16) }}/>
+          style={{ padding: scale(16) }}
+          color={'#ffffff'}/>
   </TouchableWithoutFeedback>
 
   return (
