@@ -174,8 +174,9 @@ const CapitalDetailListComponent = () => {
   /**
    * 绘制条目内容
    * @param item
+   * @param index
    */
-  const renderItemContent = (item: CapitalListData) => <View style={_styles.text_item_container}>
+  const renderItemContent = (item: CapitalListData, index?: number) => <View key={item?.time + index} style={_styles.text_item_container}>
     <Text style={_styles.text_content_0}>{item.time}</Text>
     <Text style={_styles.text_content_0}>{item.changeMoney}</Text>
     <Text style={_styles.text_content_0}>{item.category}</Text>
@@ -204,11 +205,7 @@ const CapitalDetailListComponent = () => {
                     })
                   }}
                   onEndReachedThreshold={0.2}
-                  renderItem={({ item, index }) => {
-                    return (
-                      renderItemContent(item)
-                    )
-                  }}/>}
+                  renderItem={({ item, index }) => renderItemContent(item, index)}/>}
     {renderCalendar()}
   </View>
 
