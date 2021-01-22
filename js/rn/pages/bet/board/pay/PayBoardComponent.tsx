@@ -29,11 +29,7 @@ interface IPayBoardComponent {
  */
 const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
-
   const {
-    setShowCallback,
-    showWindow,
-    setShowWindow,
     totalMoney,
     averageMoney,
     setAverageMoney,
@@ -43,9 +39,10 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     playOddDetailData,
     selectedData,
     startBet,
+    calculateItemCount,
   } = UsePayBoard()
 
-  useEffect(() => setShowCallback(showCallback), [])
+  // useEffect(() => setShowCallback(showCallback), [])
 
   // ugLog('Object?.values(selectedData)=', Object?.values(selectedData))
   // ugLog('Object.keys(selectedData) = ', Object.keys(selectedData))
@@ -86,10 +83,12 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                             plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
                           }))
                           newSelectedData[key] = newGroupData
-
                         })
 
-                        const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedData }
+                        //数据少于1了就关闭窗口
+                        if (calculateItemCount(newSelectedData) <= 0) showCallback && showCallback()
+
+                        const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedData } as SelectedLotteryModel
                         UGStore.dispatch({type: 'merge', selectedLotteryModel})
                       }}
                       style={_styles.item_trash}
@@ -142,9 +141,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   return (
     <View style={_styles.container}>
-      <Modal isVisible={showWindow}
+      <Modal isVisible={true}
              style={_styles.modal_content}
-             onBackdropPress={() => setShowWindow(false)}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
              backdropOpacity={0.3}>
@@ -183,10 +181,10 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
           </View>
           <View style={_styles.bt_container}>
             <Text style={_styles.pay_bt}
-                  onPress={() => setShowWindow(false)}>{'取消'}</Text>
+                  onPress={() => showCallback && showCallback()}>{'取消'}</Text>
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
-                  onPress={() => setShowWindow(false)}>{'确定'}</Text>
+                  onPress={() => showCallback && showCallback()}>{'确定'}</Text>
           </View>
         </View>
       </Modal>

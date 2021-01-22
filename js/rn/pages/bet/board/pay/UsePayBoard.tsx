@@ -5,6 +5,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { Toast } from '../../../../public/tools/ToastUtils'
+import { calculateItemCount } from '../../util/LotteryUtil'
 
 /**
  * 下注面板
@@ -18,8 +19,7 @@ const UsePayBoard = () => {
   } = useContext(BetLotteryContext)
   const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //当前选中的数据
 
-  const [showCallback, setShowCallback] = useState(() => null ) //窗口 是否显示 回调
-  const [showWindow, setShowWindow] = useState(true) //下注窗口 是否显示
+  // const [showWindow, setShowWindow] = useState(true) //下注窗口 是否显示
   const [totalMoney, setTotalMoney] = useState(0) //计算总价格
   const [averageMoney, setAverageMoney] = useState(1) //输入平均价格
   const [itemCount, setItemCount] = useState(0) //选中的条目数据
@@ -35,25 +35,16 @@ const UsePayBoard = () => {
    */
   useEffect(() => {
     //总共有多少条数据
-    const groupValueArr: Array<Array<PlayGroupData>> = Object?.values(selectedData)
-
-    ugLog('groupValueArr = ', JSON.stringify(groupValueArr))
-
-    const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
-    const count = anyEmpty(newGroupData) ? 0 : newGroupData.map((item) =>
-      arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
-    setItemCount(count)
-
-    ugLog('groupValueArr 2 count = ', count)
-    if (count <= 0) {
-      showCallback && showCallback()
-      Toast('请选择玩法')
-    }
+    setItemCount(calculateItemCount(selectedData))
 
     //只有第1次需要初始化
     if (anyEmpty(moneyMap)) {
       const dataMap = new Map<string, number>()
       const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
+
+      const groupValueArr: Array<Array<PlayGroupData>> = Object?.values(selectedData)
+      ugLog('groupValueArr = ', JSON.stringify(groupValueArr))
+      const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
       newGroupData?.map((groupData) => {
         groupData?.plays?.map((playData) => {
           dataMap[playData?.id] = defaultMoney
@@ -86,10 +77,6 @@ const UsePayBoard = () => {
   }
 
   return {
-    showCallback,
-    setShowCallback,
-    showWindow,
-    setShowWindow,
     totalMoney,
     averageMoney,
     setAverageMoney,
@@ -98,6 +85,7 @@ const UsePayBoard = () => {
     itemCount,
     playOddDetailData,
     selectedData,
+    calculateItemCount,
     startBet,
   }
 }

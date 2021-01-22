@@ -23,6 +23,8 @@ import BetLotteryContext from '../BetLotteryContext'
 import PayBoardComponent from './pay/PayBoardComponent'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
+import { Toast } from '../../../public/tools/ToastUtils'
+import { calculateItemCount } from '../util/LotteryUtil'
 
 /**
  * 彩票功能区入参
@@ -157,6 +159,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
       </View>
     }
   </View>
+
   /**
    * 绘制输入功能区
    */
@@ -187,6 +190,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         </TouchableWithoutFeedback>
       </View>
       <TextInput key={'renderInputArea input'}
+                 value={inputMoney}
                  style={_styles.input_text}
                  onChangeText={(s) => {
                    const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(s) }
@@ -198,7 +202,16 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
     <View key={'renderInputArea input 下注 重置'}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TouchableWithoutFeedback onPress={() => setShowBetPayment(true)}>
+      <TouchableWithoutFeedback onPress={() => {
+        if (anyEmpty(inputMoney)) {
+          Toast('请输入投注金额')
+        } else if(calculateItemCount(UGStore.globalProps?.selectedLotteryModel?.selectedData) <= 0){
+          Toast('请选择玩法')
+        } else {
+          setShowBetPayment(true)
+        }
+      }
+      }>
         <Text key={'renderInputArea input 下注'}
               style={_styles.start_bet}>下注</Text>
       </TouchableWithoutFeedback>
@@ -232,7 +245,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
         {locked ? renderLock(lockStr) : null}
-        {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}/>}
+        {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}
+                                              showCallback={() => setShowBetPayment(false)}/>}
       </View>
     </View>
   )
