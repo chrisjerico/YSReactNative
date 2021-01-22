@@ -106,7 +106,7 @@ const AddBankPage = ({ navigation, route }) => {
    */
   let bankList = bankCardData?.allAccountList
   useEffect(() => {
-    let accountTypes = bankList.filter((item) =>
+    let accountTypes = bankList?.filter((item) =>
       arrayLength(item.data) < Number(item.number) || Number(item.number) == 0).map(
       (item, index) =>
         ({

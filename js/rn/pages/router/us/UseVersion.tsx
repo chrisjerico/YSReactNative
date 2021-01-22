@@ -64,6 +64,7 @@ const UseVersion = ({
     switch (Platform.OS) {
       case 'ios':
         siteId = await OCHelper.call('AppDefine.shared.SiteId')
+        // 在iOS测试环境直接返回成功
         OCHelper.ocTest && callback && callback(true)
         break
       case 'android':
