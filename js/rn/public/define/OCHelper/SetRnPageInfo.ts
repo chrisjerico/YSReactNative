@@ -28,18 +28,6 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-    pages.push({
-      vcName: 'UGBetRecordDetailViewController',
-      rnName: PageName.JDBetRecordDetailPage,
-      // rnName: PageName.JDSegmentPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    })
-
-
- 
-
     // 资金管理
     pages.push({
       vcName: 'WithdrawalAccountListVC',
@@ -70,6 +58,14 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
+    // 资金管理
+    pages.push({
+      vcName: 'WithdrawalAccountListVC',
+      rnName: PageName.ManageBankListPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 长龙注单详情
     pages.push({
       vcName: 'UGBetRecordDetailViewController',
