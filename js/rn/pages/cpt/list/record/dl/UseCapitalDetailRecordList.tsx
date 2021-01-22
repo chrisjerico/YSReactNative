@@ -84,7 +84,6 @@ const UseCapitalDetailRecordList = () => {
         setMenuItem([{ id: '0', title: '全部类型' }, ...menu])
           setListDetailData(listData)
 
-
         if (clear) {
           setPageIndex(reqPage + 1)
           setListDetailData(listData)
