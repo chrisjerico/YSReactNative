@@ -31,6 +31,7 @@ import { getParentsTagsRecursively } from 'react-native-render-html'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { appConfig } from '../../../../config'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
+import { PushHomeGame } from '../../public/models/Interface'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -139,27 +140,31 @@ const WNZHomePage = () => {
                 if (subType) {
                   showGameSubType(index)
                 } else {
-                  //ugLog('GameType item=', JSON.stringify(item))
+                  ugLog('GameType item=', JSON.stringify(item))
                   if (gameId == GameType.大厅
                   && (subId != MenuType.CQK &&
                       subId != MenuType.CZ &&
                       subId != MenuType.TX &&
                       subId != MenuType.ZHGL &&
                       subId != MenuType.CZJL &&
-                      subId != MenuType.TXJL)) {
+                      subId != MenuType.TXJL&&
+                      subId != MenuType.YHDD)) {
                     if (subId == 47 && sysInfo?.mobileGameHall == '1') {//新彩票大厅
                       push(PageName.GameHallPage, { showBackButton: true })
 
                     } else if (subId == 47 && sysInfo?.mobileGameHall == '2') {//自由彩票大厅
                       push(PageName.FreedomHallPage, { showBackButton: true })
 
+                    } else if (subId == 9) {//自由彩票大厅
+                      push(PageName.FreedomHallPage, { showBackButton: true })
                     } else {
-                      push(PageName.SeriesLobbyPage,
-                        { gameId,
-                          subId,
-                          name,
-                          headerColor: Skin1.themeColor,
-                          homePage: PageName.WNZHomePage })
+                      let game: PushHomeGame = {
+                        category: item.category,
+                        seriesId: item.seriesId,
+                        gameId: item.gameId,
+                        subId: item.subId,
+                      }
+                      PushHelper.pushHomeGame(game)
                     }
                   } else {
                     //@ts-ignore

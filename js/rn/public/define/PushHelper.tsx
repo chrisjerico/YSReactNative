@@ -137,7 +137,6 @@ export default class PushHelper {
           // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
           // return
         }
-        console.log('pushDeposit')
         if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
 
         if (game?.seriesId == 7 && game?.subId == GameType.游戏大厅) {  //游戏大厅
@@ -155,6 +154,12 @@ export default class PushHelper {
           if (UGUserModel.checkLogin()) {
             push(PageName.Game3rdView, { game: game })
           }
+          return 
+        }
+
+        if (game?.subId == MenuType.YHDD) {  //优惠活动
+          console.log('优惠活动')
+          push(PageName.PromotionPage, { showBackBtn: true })
           return 
         }
 
