@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
-import { forwardRef, RefObject, useContext, useImperativeHandle, useMemo, useState } from 'react'
+import { forwardRef, RefObject, useContext, useEffect, useImperativeHandle, useMemo, useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
@@ -13,20 +13,21 @@ import { UGStore } from '../../../../redux/store/UGStore'
 import { ugLog } from '../../../../public/tools/UgLog'
 import BetLotteryContext from '../../BetLotteryContext'
 import UsePayBoard from './UsePayBoard'
+import { Toast } from '../../../../public/tools/ToastUtils'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import SelectedLotteryModel from '../../../../redux/model/game/SelectedLotteryModel'
 
 interface IPayBoardComponent {
+  showCallback?: () => void //窗口 是否显示 回调
 }
 
 /**
  * 下注面板
  * @param menu
- * @param onMenuClick
  * @param ref
  * @constructor
  */
-const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
-
-  const [show, setShow] = useState(false)
+const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   const {
     totalMoney,
@@ -38,13 +39,10 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
     playOddDetailData,
     selectedData,
     startBet,
+    calculateItemCount,
   } = UsePayBoard()
 
-  useImperativeHandle(ref, () => ({
-    togglePayBoard: () => {
-      setShow(!show)
-    },
-  }))
+  // useEffect(() => setShowCallback(showCallback), [])
 
   // ugLog('Object?.values(selectedData)=', Object?.values(selectedData))
   // ugLog('Object.keys(selectedData) = ', Object.keys(selectedData))
@@ -53,7 +51,7 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
 
   // 生成数据对应的 View
   const itemViewArr = useMemo(() => {
-    return Object.keys(selectedData).map((key) => {
+    return selectedData == null ? null : Object.keys(selectedData).map((key) => {
       const groupDataArr: Array<PlayGroupData> = selectedData[key]
       return groupDataArr?.map((groupData) => {
         switch (key) {
@@ -61,17 +59,41 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
             return groupData?.plays?.map((playData) => {
               return (<View key={playData?.id + playData?.name}
                             style={_styles.item_container}>
-                <Text style={_styles.item_title}>{`【${groupData?.alias}-${playData?.id}】`}</Text>
+                <Text style={_styles.item_title}>{`[ ${groupData?.alias}-${playData?.id} ]`}</Text>
                 <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
                 <Text style={_styles.item_x}>{'X'}</Text>
-                <TextInput defaultValue={'1'}
+                <TextInput defaultValue={averageMoney?.toString()}
                            onChangeText={text => setMoneyMap(prevState => {
                              const dataMap = new Map<string, number>()
                              dataMap[playData?.id] = Number.parseFloat(text)
+                             ugLog('prevState = ', JSON.stringify(prevState))
+                             ugLog('dataMap = ', JSON.stringify(dataMap))
                              return { ...prevState, ...dataMap }
                            })}
                            keyboardType={'numeric'}
                            style={_styles.item_input}/>
+                <Icon size={scale(36)}
+                      onPress={() => {
+                        const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
+                        const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //当前选中的数据
+                        Object.keys(selectedData)?.map((key) => {
+                          const groupData: Array<PlayGroupData> = selectedData[key]
+                          const newGroupData = groupData?.map((groupData) => ({
+                            ...groupData,
+                            plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
+                          }))
+                          newSelectedData[key] = newGroupData
+                        })
+
+                        //数据少于1了就关闭窗口
+                        if (calculateItemCount(newSelectedData) <= 0) showCallback && showCallback()
+
+                        const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedData } as SelectedLotteryModel
+                        UGStore.dispatch({type: 'merge', selectedLotteryModel})
+                      }}
+                      style={_styles.item_trash}
+                      color={Skin1.themeColor}
+                      name={'trash-o'}/>
               </View>)
             })
 
@@ -113,14 +135,14 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
 
     }).flat(2)
 
-  }, [selectedData])
+  }, [selectedData, averageMoney])
+
   const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * ITEM_HEIGHT, [itemCount])
+
   return (
     <View style={_styles.container}>
-      <Modal isVisible={show}
+      <Modal isVisible={true}
              style={_styles.modal_content}
-             onBackdropPress={() => setShow(false)}
-             onBackButtonPress={() => setShow(false)}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
              backdropOpacity={0.3}>
@@ -144,7 +166,7 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
           </View>
           <View style={_styles.total_info_container}>
             <Text style={_styles.total_info_title}>{'投注金额不能为小数：'}</Text>
-            <TextInput defaultValue={averageMoney?.toString()}
+            <TextInput value={averageMoney?.toString()}
                        keyboardType={'numeric'}
                        onChangeText={(text => setAverageMoney(Number.parseFloat(text)))}
                        style={_styles.total_input_money}/>
@@ -159,10 +181,10 @@ const PayBoardComponent = ({}: IPayBoardComponent, ref?: any) => {
           </View>
           <View style={_styles.bt_container}>
             <Text style={_styles.pay_bt}
-                  onPress={() => setShow(false)}>{'取消'}</Text>
+                  onPress={() => showCallback && showCallback()}>{'取消'}</Text>
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
-                  onPress={() => setShow(false)}>{'确定'}</Text>
+                  onPress={() => showCallback && showCallback()}>{'确定'}</Text>
           </View>
         </View>
       </Modal>
@@ -233,7 +255,7 @@ const _styles = StyleSheet.create({
   item_x: {
     color: UGColor.TextColor2,
     fontSize: scale(20),
-    paddingHorizontal: scale(8),
+    paddingHorizontal: scale(4),
   },
   item_input: {
     width: scale(64),
@@ -243,6 +265,10 @@ const _styles = StyleSheet.create({
     borderColor: UGColor.LineColor4,
     borderWidth: scale(1),
     borderRadius: scale(8),
+    paddingVertical: scale(4),
+  },
+  item_trash: {
+    paddingHorizontal: scale(12),
   },
   dialog_title_container: {
     width: '100%',
@@ -278,12 +304,13 @@ const _styles = StyleSheet.create({
     borderColor: UGColor.LineColor4,
     borderWidth: scale(1),
     borderRadius: scale(8),
+    paddingVertical: scale(8),
   },
   last_info_container: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: scale(8),
-    paddingTop: scale(24),
+    paddingBottom: scale(12),
   },
   bt_container: {
     flexDirection: 'row',

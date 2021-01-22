@@ -23,6 +23,8 @@ import BetLotteryContext from '../BetLotteryContext'
 import PayBoardComponent from './pay/PayBoardComponent'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
+import { Toast } from '../../../public/tools/ToastUtils'
+import { calculateItemCount } from '../util/LotteryUtil'
 
 /**
  * 彩票功能区入参
@@ -42,6 +44,8 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    showBetPayment,
+    setShowBetPayment,
     userInfo,
     systemInfo,
     showSlider,
@@ -54,8 +58,6 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     setShowChip,
     playOddDetailData,
   } = UseLhcBoard()
-
-  const refPay = useRef(null) //付款面板
 
   /**
    * 加大拉条
@@ -157,6 +159,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
       </View>
     }
   </View>
+
   /**
    * 绘制输入功能区
    */
@@ -187,10 +190,11 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         </TouchableWithoutFeedback>
       </View>
       <TextInput key={'renderInputArea input'}
+                 value={inputMoney}
                  style={_styles.input_text}
                  onChangeText={(s) => {
-                   const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(inputMoney) }
-                   UGStore.dispatch({type: 'merge', selectedLotteryModel})
+                   const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(s) }
+                   UGStore.dispatch({ type: 'merge', selectedLotteryModel })
                    setInputMoney(s)
                  }}
                  keyboardType={'numeric'}/>
@@ -199,7 +203,13 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     <View key={'renderInputArea input 下注 重置'}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
       <TouchableWithoutFeedback onPress={() => {
-        refPay?.current?.togglePayBoard()
+        if (anyEmpty(inputMoney)) {
+          Toast('请输入投注金额')
+        } else if(calculateItemCount(UGStore.globalProps?.selectedLotteryModel?.selectedData) <= 0){
+          Toast('请选择玩法')
+        } else {
+          setShowBetPayment(true)
+        }
       }
       }>
         <Text key={'renderInputArea input 下注'}
@@ -235,10 +245,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
         {locked ? renderLock(lockStr) : null}
-
-
-        <PayBoardComponent key={'BetBoardComponent'}
-                           ref={refPay}/>
+        {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}
+                                              showCallback={() => setShowBetPayment(false)}/>}
       </View>
     </View>
   )
