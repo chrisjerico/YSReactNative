@@ -197,42 +197,34 @@ const CapitalDetailListComponent = () => {
    */
   const renderListContent = () => <View key={'renderListContent'}
                                         style={CommStyles.flex}>
-    {
-      [
-        renderTitleHint(),
-        anyEmpty(capitalDetailData)
-          ? <EmptyView style={{ flex: 1 }}/>
-          : <FlatList refreshControl={refreshCT}
-                      keyExtractor={(item, index) => `${item}-${index}`}
-                      data={capitalDetailData}
-                      showsVerticalScrollIndicator={false}
-            // ListEmptyComponent={() => <EmptyView/>}
-                      onEndReached={({ distanceFromEnd }) => {
-                        requestListDetailData({
-                          clear: false,
-                          startDate: startDate,
-                          endDate: endDate,
-                        })
-                      }}
-                      onEndReachedThreshold={0.2}
-                      renderItem={({ item, index }) => {
-                        return (
-                          renderItemContent(item)
-                        )
-                      }}/>,
-        renderCalendar(),
-      ]
-    }
+    {renderTitleHint()}
+    {anyEmpty(capitalDetailData)
+      ? <EmptyView style={{ flex: 1 }}/>
+      : <FlatList refreshControl={refreshCT}
+                  keyExtractor={(item, index) => `${item}-${index}`}
+                  data={capitalDetailData}
+                  showsVerticalScrollIndicator={false}
+        // ListEmptyComponent={() => <EmptyView/>}
+                  onEndReached={({ distanceFromEnd }) => {
+                    requestListDetailData({
+                      clear: false,
+                      startDate: startDate,
+                      endDate: endDate,
+                    })
+                  }}
+                  onEndReachedThreshold={0.2}
+                  renderItem={({ item, index }) => {
+                    return (
+                      renderItemContent(item)
+                    )
+                  }}/>}
+    {renderCalendar()}
   </View>
 
   return (
     <View style={CommStyles.flex}>
-      {
-        [
-          renderCalendarTitle(),
-          renderListContent(),
-        ]
-      }
+      {renderCalendarTitle()}
+      {renderListContent()}
     </View>
   )
 }
