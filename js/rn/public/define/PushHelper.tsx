@@ -146,8 +146,16 @@ export default class PushHelper {
           push(PageName.TwoLevelGames, { game: game, showBackButton: true })
           return
         }
-        if (game?.isPopup == 1) {  //二级游戏分类
-          push(PageName.TwoLevelGames, { game: game, showBackButton: true })
+        if (game?.seriesId && ["2", "3", "4", "5", "6", "8"].includes(game.seriesId+'') && game?.gameId) {  //第三方遊戲
+          console.log('第三方遊戲')
+          if (UGUserModel.checkLogin()) {
+            push(PageName.Game3rdView, { game: game })
+          }
+          return 
+        }
+        if (game?.seriesId == 7 && game?.subId == MenuType.YHDD) {  //优惠活动
+          console.log('优惠活动')
+          push(PageName.PromotionPage, { showBackBtn: true })
           return 
         }
 
@@ -202,20 +210,24 @@ export default class PushHelper {
    * @param subId
    */
   static pushDeposit(seriesId?: string, subId?: string): boolean {
+    let tabIndex = ''
     if (seriesId == '7' && subId == MenuType.ZHGL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
-      return true
+      tabIndex = CapitalConst.CAPITAL_DETAIL
     } else if (seriesId == '7' && (subId == MenuType.CQK || subId == MenuType.CZ)) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
-      return true
+      tabIndex = CapitalConst.DEPOSIT
     } else if (seriesId == '7' && subId == MenuType.TX) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
-      return true
+      tabIndex = CapitalConst.WITHDRAWAL
     } else if (seriesId == '7' && subId == MenuType.CZJL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
-      return true
+      tabIndex = CapitalConst.DEPOSIT_RECORD
     } else if (seriesId == '7' && subId == MenuType.TXJL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
+      tabIndex = CapitalConst.WITHDRAWAL_RECORD
+    }
+    if (tabIndex.length > 0) {
+      ugLog("uid: " + UGStore.globalProps.userInfo.uid)
+      if (!UGStore.globalProps.userInfo.uid) {
+        return
+      }
+      push(PageName.CapitalPage, {initTabIndex: tabIndex})
       return true
     }
 
@@ -231,6 +243,12 @@ export default class PushHelper {
         break
       case 'android':
         if(this.pushDeposit(linkCategory?.toString(), linkPosition?.toString())) return
+
+        if (linkCategory == 7 && linkPosition == MenuType.YHDD) {  //优惠活动
+          console.log('优惠活动')
+          push(PageName.PromotionPage, { showBackBtn: true })
+          return 
+        }
 
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
           seriesId: linkCategory,
@@ -486,6 +504,7 @@ export default class PushHelper {
         break
       case 'android':
         let subId = ''
+        ugLog("code: " + code)
         switch (code) {
           case UGUserCenterType.存款: {
             // if (B_DEBUG) {
@@ -664,9 +683,9 @@ export default class PushHelper {
             subId = MenuType.HYZX
             break
           }
-          case UGUserCenterType.开奖结果: {
-            subId = MenuType.KJJG
-            break
+          case UGUserCenterType.优惠活动: {
+            push(PageName.PromotionPage, { showBackBtn: true })
+            return 
           }
         }
 
