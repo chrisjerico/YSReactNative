@@ -108,11 +108,11 @@ const AddBankPage = ({ navigation, route }) => {
   useEffect(() => {
     let accountTypes = bankList?.filter((item) =>
       arrayLength(item.data) < Number(item.number) || Number(item.number) == 0).map(
-      (item, index) =>
+        (item, index) =>
         ({
           label: item.name, value: item.type, icon: () => <FastImage source={getBankIcon(item.type.toString())}
-                                                                     resizeMode={'contain'}
-                                                                     style={_styles.bank_name_icon}/>,
+            resizeMode={'contain'}
+            style={_styles.bank_name_icon} />,
         }))
     if (anyEmpty(accountTypes)) {
       Toast('不能添加更多账户')
@@ -165,19 +165,19 @@ const AddBankPage = ({ navigation, route }) => {
   const renderBank = () => <View style={_styles.item_bank_2nd_content}>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={text => setBankAddr(text)}
-                 placeholder={'请输入您的银行卡开户地址'}/>
+        onChangeText={text => setBankAddr(text)}
+        placeholder={'请输入您的银行卡开户地址'} />
     </View>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={text => setBankNumber(text)}
-                 placeholder={'请输入您的银行卡卡号'}/>
+        onChangeText={text => setBankNumber(text)}
+        placeholder={'请输入您的银行卡卡号'} />
     </View>
     {
       systemInfo?.switchBindVerify == 1 && <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
-                   onChangeText={text => setBankPassword(text)}
-                   placeholder={'请输入提款密碼'}/>
+          onChangeText={text => setBankPassword(text)}
+          placeholder={'请输入提款密碼'} />
       </View>
     }
 
@@ -189,8 +189,8 @@ const AddBankPage = ({ navigation, route }) => {
   const renderBtc = () => <View style={_styles.item_bank_2nd_content}>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={text => setBtcAddr(text)}
-                 placeholder={'请输入您的虚拟币收款钱包地址'}/>
+        onChangeText={text => setBtcAddr(text)}
+        placeholder={'请输入您的虚拟币收款钱包地址'} />
     </View>
   </View>
 
@@ -200,13 +200,13 @@ const AddBankPage = ({ navigation, route }) => {
   const renderWx = () => <View style={_styles.item_bank_2nd_content_wx}>
     <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
       <TextInput style={_styles.input_name}
-                 onChangeText={text => setWxAccount(text)}
-                 placeholder={'请输入微信号'}/>
+        onChangeText={text => setWxAccount(text)}
+        placeholder={'请输入微信号'} />
     </View>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={text => setWxPhone(text)}
-                 placeholder={'请输入微信所绑定手机号'}/>
+        onChangeText={text => setWxPhone(text)}
+        placeholder={'请输入微信所绑定手机号'} />
     </View>
   </View>
 
@@ -216,8 +216,8 @@ const AddBankPage = ({ navigation, route }) => {
   const renderAli = () => <View style={_styles.item_bank_2nd_content_wx}>
     <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
       <TextInput style={_styles.input_name}
-                 onChangeText={text => setAliAccount(text)}
-                 placeholder={'请输入您的支付宝账号'}/>
+        onChangeText={text => setAliAccount(text)}
+        placeholder={'请输入您的支付宝账号'} />
     </View>
   </View>
 
@@ -228,79 +228,107 @@ const AddBankPage = ({ navigation, route }) => {
     <View style={_styles.item_pwd_content}>
       <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
         <TextInput style={_styles.input_name}
-                   secureTextEntry={true}
-                   onChangeText={text => setLoginPwd(text)}
-                   placeholder={'请输入当前登录密码'}/>
+          secureTextEntry={true}
+          onChangeText={text => setLoginPwd(text)}
+          placeholder={'请输入当前登录密码'} />
       </View>
       <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
-                   maxLength={4}
-                   secureTextEntry={true}
-                   onChangeText={text => setFundPwd(text)}
-                   placeholder={'请输入您的4位数字提款密码'}/>
+          maxLength={4}
+          secureTextEntry={true}
+          onChangeText={text => setFundPwd(text)}
+          placeholder={'请输入您的4位数字提款密码'} />
       </View>
       <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
-                   maxLength={4}
-                   secureTextEntry={true}
-                   onChangeText={text => setFundPwd2(text)}
-                   placeholder={'请确认您的提款密码'}/>
+          maxLength={4}
+          secureTextEntry={true}
+          onChangeText={text => setFundPwd2(text)}
+          placeholder={'请确认您的提款密码'} />
       </View>
     </View>
 
     <Button title={'提交'}
-            titleStyle={_styles.submit_text}
-            containerStyle={[_styles.submit_bt,
-              { backgroundColor: Skin1.themeColor }]}
-            onPress={() => {
-              bindPassword({
-                login_pwd: loginPwd,
-                fund_pwd: fundPwd,
-                fund_pwd2: fundPwd2,
-                callBack: () => {
-                  setLoginPwd(null)
-                },
-              })
+      titleStyle={_styles.submit_text}
+      containerStyle={[_styles.submit_bt,
+      { backgroundColor: Skin1.themeColor }]}
+      onPress={() => {
+        bindPassword({
+          login_pwd: loginPwd,
+          fund_pwd: fundPwd,
+          fund_pwd2: fundPwd2,
+          callBack: () => {
+            setLoginPwd(null)
+          },
+        })
 
-            }}/>
+      }} />
   </View>
+
+
+  /**
+    * 绘制虚拟币选项
+    */
+  const renderBtcOption = () => curAccountType == BankConst.BTC && !anyEmpty(curBtcID) &&
+    <View
+      style={{
+        ...(Platform.OS !== 'android' && {
+          zIndex: 5, 
+        })
+      }}
+    >
+      <UGDropDownPicker
+        items={btcDetailItems}
+        controller={instance => btcController = instance}
+        style={[_styles.bank_picker,]}
+        defaultValue={curBtcID}
+        onOpen={() => {
+          chainController?.close()
+        }}
+        onChangeItem={item => {
+          setCurBtcID(item.value)
+        }} />
+    </View>
 
   /**
    * 绘制银行选项
    */
   const renderBankOption = () =>
-    curAccountType == BankConst.BANK && !anyEmpty(curBankID) && <UGDropDownPicker
-      items={bankDetailItems}
-      controller={instance => bankController = instance}
-      style={_styles.bank_picker}
-      defaultValue={curBankID}
-      onChangeItem={item => setCurBankID(item.value)}/>
+    curAccountType == BankConst.BANK && !anyEmpty(curBankID) &&
+    <View
+      style={{
+        ...(Platform.OS !== 'android' && {
+          zIndex: 10,
+        })
+      }}
+    >
+      <UGDropDownPicker
+        items={bankDetailItems}
+        controller={instance => bankController = instance}
+        style={[_styles.bank_picker,]}
+        defaultValue={curBankID}
+        onChangeItem={item => setCurBankID(item.value)} />
+    </View>
 
-  /**
-   * 绘制虚拟币选项
-   */
-  const renderBtcOption = () => curAccountType == BankConst.BTC && !anyEmpty(curBtcID) && <UGDropDownPicker
-    items={btcDetailItems}
-    controller={instance => btcController = instance}
-    style={_styles.bank_picker}
-    defaultValue={curBtcID}
-    onOpen={() => {
-      chainController?.close()
-    }}
-    onChangeItem={item => {
-      setCurBtcID(item.value)
-    }}/>
 
   /**
    * 绘制链
    */
   const renderBtcChainOption = () => curAccountType == BankConst.BTC && !anyEmpty(curChainValue) && !anyEmpty(chainDetailItems) &&
-    <UGDropDownPicker
-      items={chainDetailItems}
-      controller={instance => chainController = instance}
-      style={_styles.bank_picker}
-      defaultValue={curChainValue}
-      onChangeItem={item => setCurChainValue(item.value)}/>
+    <View
+      style={{
+        ...(Platform.OS !== 'android' && {
+          zIndex: 1, 
+        })
+      }}
+    >
+      <UGDropDownPicker
+        items={chainDetailItems}
+        controller={instance => chainController = instance}
+        style={[_styles.bank_picker,]}
+        defaultValue={curChainValue}
+        onChangeItem={item => setCurChainValue(item.value)} />
+    </View>
 
   return (
     <BaseScreen style={_styles.container} screenName={'绑定提款账户'}>
@@ -309,7 +337,7 @@ const AddBankPage = ({ navigation, route }) => {
           renderBindPwd() ://先绑定密码
           (
             anyEmpty(bankList) ?
-              <EmptyView style={{ flex: 1 }}/> : //没有数据
+              <EmptyView style={{ flex: 1 }} /> : //没有数据
               <View style={_styles.item_bank_container}>
                 {
                   !anyEmpty(curAccountType) && <UGDropDownPicker
@@ -323,9 +351,9 @@ const AddBankPage = ({ navigation, route }) => {
                     onChangeItem={item => {
                       setCurAccountType(item.value)
                     }
-                    }/>
+                    } />
                 }
-                <View style={{ height: scale(32) }}/>
+                <View style={{ height: scale(32) }} />
                 {renderBankOption()}
                 {curAccountType == BankConst.BANK && renderBank()}
                 {renderBtcOption()}
@@ -336,28 +364,28 @@ const AddBankPage = ({ navigation, route }) => {
 
                 <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
                 <Button title={'提交'}
-                        titleStyle={_styles.submit_text}
-                        containerStyle={[_styles.submit_bt,
-                          { backgroundColor: Skin1.themeColor }]}
-                        onPress={() => {
-                          addBankAccount({
-                            curAccountType,
-                            curBankID,
-                            curBtcID,
-                            curChainValue,
-                            bankAddr,
-                            bankNumber,
-                            bankPassword,
-                            btcAddr,
-                            wxAccount,
-                            wxPhone,
-                            aliAccount,
-                            callBack: (accountType) => {
-                              refreshBankList(accountType)
-                            },
-                          })
+                  titleStyle={_styles.submit_text}
+                  containerStyle={[_styles.submit_bt,
+                  { backgroundColor: Skin1.themeColor }]}
+                  onPress={() => {
+                    addBankAccount({
+                      curAccountType,
+                      curBankID,
+                      curBtcID,
+                      curChainValue,
+                      bankAddr,
+                      bankNumber,
+                      bankPassword,
+                      btcAddr,
+                      wxAccount,
+                      wxPhone,
+                      aliAccount,
+                      callBack: (accountType) => {
+                        refreshBankList(accountType)
+                      },
+                    })
 
-                        }}/>
+                  }} />
               </View>
 
           )
