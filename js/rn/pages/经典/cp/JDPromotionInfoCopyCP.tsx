@@ -38,10 +38,7 @@ export const JDPromotionInfoCopyCP = (props: JDPromotionInfoCopyCP) => {
             (v) => {
               switch (Platform.OS) {
                 case 'ios':
-                  //TODO iOS 复制 title 到粘贴板
-                  OCHelper.call('UIPasteboard.generalPasteboard.setString:', [props.content]).then(() => {
-                   
-                  })
+                  OCHelper.call('UIPasteboard.generalPasteboard.setString:', [props.content])
                   break
                 case 'android':
                   // TODO Andoid 复制 title 到粘贴板

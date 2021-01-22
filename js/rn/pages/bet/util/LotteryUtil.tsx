@@ -23,6 +23,11 @@ import parseLXData from './ps/ParseLXDataUtil'
 import parseLWData from './ps/ParseLWDataUtil'
 import parseZXBZData from './ps/ParseZXBZDataUtil'
 
+interface INameOrAlias {
+  name?: string; //鼠
+  alias?: string;//鼠
+}
+
 /**
  * 根据名字或别名找出生肖
  * @param num
@@ -32,9 +37,17 @@ const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum =>
   num?.find((zodiac) => ((!anyEmpty(item?.name) && zodiac?.name == item?.name)
     || (!anyEmpty(item?.alias) && zodiac?.alias == item?.alias)))
 
-interface INameOrAlias {
-  name?: string; //鼠
-  alias?: string;//鼠
+/**
+ * 计算彩票下注时候，选中的条目数量
+ * @param selectedData
+ */
+const calculateItemCount = (selectedData?: Map<string, Array<PlayGroupData>>): number => {
+  //总共有多少条数据
+  const groupValueArr: Array<Array<PlayGroupData>> = selectedData == null ? null : Object.values(selectedData)
+  const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
+  return anyEmpty(newGroupData) ? 0 : newGroupData.map((item) =>
+    arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
+
 }
 
 /**
@@ -50,48 +63,48 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
   //给生肖生成id
   const zodiacNum = playOddDetailData?.setting?.zodiacNums?.map((item, index) => ({
     ...item,
-    id: index.toString()
+    id: index.toString(),
   }))
 
   return playOddDetailData?.playOdds?.map((playOddData) => {
-    if(anyEmpty(playOddData?.playGroups)) return playOddData
+    if (anyEmpty(playOddData?.playGroups)) return playOddData
 
     switch (playOddData?.code) {
       case LotteryConst.TM:  //特码
-        return parseTMData({playOddData, zodiacNum})
+        return parseTMData({ playOddData, zodiacNum })
 
       case LotteryConst.HX://合肖
-        return parseHXData({playOddData, zodiacNum})
+        return parseHXData({ playOddData, zodiacNum })
 
       case LotteryConst.ZM: //正码
       case LotteryConst.ZT:  //正特
-        return parseZTData({playOddData, zodiacNum})
+        return parseZTData({ playOddData, zodiacNum })
 
       case LotteryConst.LMA:  //连码
-        return parseLMAData({playOddData, zodiacNum})
+        return parseLMAData({ playOddData, zodiacNum })
 
       case LotteryConst.LM: //两面
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
       case LotteryConst.WX:  //五行
-        return parseSBData({playOddData, zodiacNum})
+        return parseSBData({ playOddData, zodiacNum })
 
       case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TX: //特肖
       case LotteryConst.ZX: //正肖
       case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        return parsePTYXData({playOddData, zodiacNum})
+        return parsePTYXData({ playOddData, zodiacNum })
 
       case LotteryConst.LX: //连肖
-        return parseLXData({playOddData, zodiacNum})
+        return parseLXData({ playOddData, zodiacNum })
 
       case LotteryConst.LW: //连尾
-        return parseLWData({playOddData, zodiacNum})
+        return parseLWData({ playOddData, zodiacNum })
 
       case LotteryConst.ZXBZ:  //自选不中
-        return parseZXBZData({playOddData, zodiacNum})
+        return parseZXBZData({ playOddData, zodiacNum })
     }
 
     return playOddData
@@ -189,4 +202,9 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
 
 }
 
-export { findZodiacByName, parseLotteryDetailData, combinePlayAndZodiac }
+export {
+  findZodiacByName,
+  parseLotteryDetailData,
+  combinePlayAndZodiac,
+  calculateItemCount,
+}

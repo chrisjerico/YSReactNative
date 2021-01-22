@@ -10,6 +10,7 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { getBankIcon } from '../../../pages/bank/list/UseManageBankList'
 import FastImage from 'react-native-fast-image'
 import CommStyles from '../../../pages/base/CommStyles'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 interface IMiddleMenuItem {
@@ -56,14 +57,20 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
         ]}>
           <ScrollView style={_styles.sv_container}
                       showsVerticalScrollIndicator={false}
-                      key ={'ScrollView-IMiddleMenu'}>
+                      key={'ScrollView-IMiddleMenu'}>
             {
               menu?.map((item, index) =>
-                <TouchableOpacity onPress={() => onMenuClick && onMenuClick(index, item)} key={index+'menu'}>
+                <TouchableOpacity onPress={() => onMenuClick && onMenuClick(index, item)} key={index + 'menu'}>
                   <View style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
-                    <FastImage source={{ uri: item.icon }}
-                               resizeMode={'contain'}
-                               style={_styles.bank_name_icon}/>
+                    {
+                      anyEmpty(item?.icon) ?
+                        <Icon size={scale(32)}
+                              style={_styles.bank_name_icon2}
+                              name={'circle-o'}/> :
+                        <FastImage source={{ uri: item.icon }}
+                                   resizeMode={'contain'}
+                                   style={_styles.bank_name_icon}/>
+                    }
                     <View style={_styles.item_sub_content}>
                       <Text numberOfLines={1}
                             style={_styles.item_name}>{item.title}</Text>
@@ -120,6 +127,9 @@ const _styles = StyleSheet.create({
   bank_name_icon: {
     width: scale(42),
     aspectRatio: 1,
+    marginRight: scale(8),
+  },
+  bank_name_icon2: {
     marginRight: scale(8),
   },
 

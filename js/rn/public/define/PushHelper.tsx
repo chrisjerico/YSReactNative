@@ -155,7 +155,7 @@ export default class PushHelper {
           if (UGUserModel.checkLogin()) {
             push(PageName.Game3rdView, { game: game })
           }
-          return 
+          return
         }
 
         console.log('OPEN_NAVI_PAGE')

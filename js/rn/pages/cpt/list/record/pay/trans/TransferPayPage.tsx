@@ -112,10 +112,7 @@ const TransferPayPage = ({ navigation, route }) => {
     <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
         case 'ios':
-          //TODO iOS 复制 title 到粘贴板
-          OCHelper.call('UIPasteboard.generalPasteboard.setString:', [copyText]).then(() => {
-              
-          })
+          OCHelper.call('UIPasteboard.generalPasteboard.setString:', [copyText])
           break
         case 'android':
           ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })

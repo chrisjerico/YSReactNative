@@ -13,6 +13,7 @@ const UseLhcBoard = () => {
 
   const [sliderValue, setSliderValue] = useState<number>(0) //拉条数据
   const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
+  const [showBetPayment, setShowBetPayment] = useState<boolean>(false) //是否显示下注
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
   const userInfo = UGStore.globalProps.userInfo //用户信息
@@ -25,6 +26,8 @@ const UseLhcBoard = () => {
   }, [])
 
   return {
+    showBetPayment,
+    setShowBetPayment,
     userInfo,
     systemInfo,
     showSlider,

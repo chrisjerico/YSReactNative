@@ -35,6 +35,7 @@ import { Toast } from '../../../../../../public/tools/ToastUtils'
 import AppDefine from '../../../../../../public/define/AppDefine'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { CapitalConst } from '../../../../const/CapitalConst'
+import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据
@@ -104,7 +105,7 @@ const BtcPayPage = ({ navigation, route }) => {
       <TouchableOpacity onPress={() => {
         switch (Platform.OS) {
           case 'ios':
-            //TODO iOS 复制 title 到粘贴板
+            OCHelper.call('UIPasteboard.generalPasteboard.setString:', [btcMoney])
             break
           case 'android':
             ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: btcMoney })
@@ -141,7 +142,7 @@ const BtcPayPage = ({ navigation, route }) => {
     <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
         case 'ios':
-          //TODO iOS 复制 title 到粘贴板
+          OCHelper.call('UIPasteboard.generalPasteboard.setString:', [copyText])
           break
         case 'android':
           ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })
