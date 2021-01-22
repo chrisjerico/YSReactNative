@@ -80,9 +80,9 @@ const ForgetPasswordPage = ({ navigation, route }) => {
               OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, (args: [imgs: string[], assets: [], isSelectOriginalPhoto: boolean]) => {
                 const imgURLs = args[0]
                 if (imgURLs?.length) {
-                  let img =  imgURLs[0];
-                  console.log('img===',img);
-  
+                  let img = imgURLs[0];
+                  console.log('img===', img);
+
                   showLoading()
                   api.user.uploadIdentity(img).useSuccess(
                     ({ data, msg }) => {
@@ -128,19 +128,56 @@ const ForgetPasswordPage = ({ navigation, route }) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
-          ANHelper.callAsync(CMD.ASK_IMAGES,
-            { value: '1' }).then((res) => {
-              if (res == null) return
 
-              showLoading()
-              api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).useSuccess(
-                ({ data, msg }) => {
-                  hideLoading()
-                  setSecondImage(data)
-                }).useFailure(() => {
-                  hideLoading()
+
+          switch (Platform.OS) {
+            case 'ios':
+              // 打开原生相册
+              OCHelper.call('UGNavigationController.current.presentViewController:animated:completion:', [{
+                selectors: 'TZImagePickerController.alloc.initWithMaxImagesCount:delegate:[setAllowPickingVideo:][setDidFinishPickingPhotosHandle:]',
+                args1: [1],
+                args2: [false],
+                args3: [NSValue.Block(['Object', 'Object', 'Number'], OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)]
+              }, true]);
+              // Block回调
+              OCHelper.removeEvents(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)
+              OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, (args: [imgs: string[], assets: [], isSelectOriginalPhoto: boolean]) => {
+                const imgURLs = args[0]
+                if (imgURLs?.length) {
+                  let img = imgURLs[0];
+                  console.log('img===', img);
+
+                  showLoading()
+                  api.user.uploadIdentity(img).useSuccess(
+                    ({ data, msg }) => {
+                      hideLoading()
+                      setSecondImage(data)
+                    }).useFailure(() => {
+                      hideLoading()
+                    })
+                }
+
+              })
+              break
+            case 'android':
+              ANHelper.callAsync(CMD.ASK_IMAGES,
+                { value: '1' }).then((res) => {
+                  if (res == null) return
+
+                  ugLog('renderIdCard=', JSON.stringify(res))
+
+                  showLoading()
+                  api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).useSuccess(
+                    ({ data, msg }) => {
+                      hideLoading()
+                      setSecondImage(data)
+                    }).useFailure(() => {
+                      hideLoading()
+                    })
                 })
-            })
+              break
+          }
+
         }}>
           <View style={_styles.add_img}>
             {
