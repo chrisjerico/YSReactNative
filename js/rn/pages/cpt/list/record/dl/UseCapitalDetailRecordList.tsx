@@ -9,6 +9,7 @@ import { CapitalGroupData, CapitalListData } from '../../../../../public/network
 import moment from 'moment'
 import { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
 import { getBankIcon } from '../../../../bank/list/UseManageBankList'
+import { api } from '../../../../../public/network/NetworkRequest1/NetworkRequest1'
 
 /**
  * 资金明细记录
@@ -65,23 +66,11 @@ const UseCapitalDetailRecordList = () => {
     let reqGroup = !anyEmpty(selGroup) ? selGroup : menuItem?.find((item) =>
       item.id == curGroup?.toString())?.id?.toString()
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
-console.log('reqGroup====',reqGroup);
-console.log('selGroup====',selGroup);
-console.log('curGroup====',curGroup);
 
-    APIRouter.capital_capitalDetailRecordList({
-      startDate: stDate,
-      endDate: edDate,
-      page: reqPage.toString(),
-      rows: '20',
-      group: reqGroup,
-    }).then(({ data: res }) => {
+    api.user.fundLogs(stDate,edDate,reqPage,20,reqGroup).useSuccess(({ data }) => {
+      const res = {data:data};
       let listData = res?.data?.list
       let cpGroups = res?.data?.groups
-
-      ugLog('data res=', reqPage, JSON.stringify(res?.data))
-      if (res?.code == 0) {
-
         //缓存列表显示选项
         const menu = cpGroups?.map((item) => {
           return (
@@ -108,13 +97,65 @@ console.log('curGroup====',curGroup);
             setListDetailData([...capitalDetailData, ...listData])
           }
         }
+      
+    }).useFailure(
+      (err,sm)=>{
 
-      } else {
-        Toast(res?.msg)
       }
-    }).finally(() => {
-      clear && setRefreshing(false)
-    })
+    ).useCompletion(
+      (res,err,sm)=>{
+        clear && setRefreshing(false)
+      }
+    )
+
+
+
+    // APIRouter.capital_capitalDetailRecordList({
+    //   startDate: stDate,
+    //   endDate: edDate,
+    //   page: reqPage.toString(),
+    //   rows: '20',
+    //   group: reqGroup,
+    // }).then(({ data: res }) => {
+    //   let listData = res?.data?.list
+    //   let cpGroups = res?.data?.groups
+
+    //   ugLog('data res=', reqPage, JSON.stringify(res?.data))
+    //   // if (res?.code == 0) {
+
+    //     //缓存列表显示选项
+    //     const menu = cpGroups?.map((item) => {
+    //       return (
+    //         ({
+    //           title: `${item?.name}`,
+    //           id: item?.id?.toString(),
+    //         } as IMiddleMenuItem)
+    //       )
+    //     })
+
+    //     setMenuItem([{ id: '0', title: '全部类型' }, ...menu])
+    //       setListDetailData(listData)
+
+
+    //     if (clear) {
+    //       setPageIndex(reqPage + 1)
+    //       setListDetailData(listData)
+    //     } else {
+    //       //没有更多数据了
+    //       if (arrayEmpty(listData)) {
+    //         setPageIndex(1)
+    //       } else {
+    //         setPageIndex(reqPage + 1)
+    //         setListDetailData([...capitalDetailData, ...listData])
+    //       }
+    //     }
+
+    //   // } else {
+    //   //   Toast(res?.msg)
+    //   // }
+    // }).finally(() => {
+    //   clear && setRefreshing(false)
+    // })
   }
 
   return {

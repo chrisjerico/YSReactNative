@@ -80,8 +80,8 @@ export class api_user {
   }
 
   // 获取资金明细
-  static fundLogs(startTime: string, endTime?: string, page = 1, rows = 20) {
-    return this.c.get('fundLogs', { startTime: startTime, endTime: endTime, page: page, rows: rows });
+  static fundLogs(startTime: string, endTime?: string, page = 1, rows = 20,group?:string) {
+    return this.c.get('fundLogs', { startTime: startTime, endTime: endTime, page: page, rows: rows ,group :group});
   }
 
   // 设置取款密码

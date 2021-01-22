@@ -52,6 +52,7 @@ import PushHelper from '../define/PushHelper'
 import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
 import { anyEmpty } from '../tools/Ext'
 import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
+import { api } from './NetworkRequest1/NetworkRequest1'
 
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
@@ -451,12 +452,13 @@ class APIRouter {
    * endDate 结束日期
    * page 第几页
    * rows 每页多少条
+   * group :类型
    */
   static capital_capitalDetailRecordList = async (params: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
 
-    let tokenParams = await APIRouter.encryptGetParams(params)
-    console.log('c=user&a=fundLogs&' + tokenParams);
+    console.log('params ==',params);
     
+    let tokenParams = await APIRouter.encryptGetParams(params)
 
     return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&' + tokenParams)
   }

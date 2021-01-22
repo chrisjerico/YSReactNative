@@ -202,7 +202,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   }
 
   ugLog('http url 1 =', config.method, config.baseURL, config.url)
-  ugLog('http params 1 =', params)
+
   // ugLog('http encryptData 1 =', encryptData)
   // ugLog('http config.data 1 =', config.data)
 
