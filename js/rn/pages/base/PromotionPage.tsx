@@ -50,6 +50,7 @@ const PromotionPage = (props: any) => {
   const categoriesKey = Object.keys(categories)
 
   const handleOnPress = ({ setShowPop, item, index }) => {
+    ugLog("handleOnPress")
     switch (Platform.OS) {
       case 'ios':
         switch (style) {
@@ -74,19 +75,15 @@ const PromotionPage = (props: any) => {
         }
         break
       case 'android':
-        switch (style) {
           // 弹框
-          case 'popup': {
-            setShowPop(true)
-            break
-          }
-        }
+        setShowPop(true)
+        break
     }
   }
   if (loading) {
     return (
       <>
-        <SafeAreaHeader headerColor={Skin1?.promotion?.headerBgColor}>
+        <SafeAreaHeader headerColor={Skin1?.themeColor}>
           <MineHeader showBackBtn={showBackBtn} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: Skin1?.promotion?.headerTintColor }} backBtnColor={Skin1?.promotion?.headerTintColor} />
         </SafeAreaHeader>
         <ProgressCircle />
@@ -95,7 +92,7 @@ const PromotionPage = (props: any) => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={Skin1?.promotion?.headerBgColor}>
+        <SafeAreaHeader headerColor={Skin1?.themeColor}>
           <MineHeader showBackBtn={showBackBtn} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: Skin1?.promotion?.headerTintColor }} backBtnColor={Skin1?.promotion?.headerTintColor} />
         </SafeAreaHeader>
         {showCategory ? (
@@ -117,12 +114,14 @@ const PromotionPage = (props: any) => {
                     }}>
                     <View
                       style={
-                        selectedTabIndex == item ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType] } : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType] }
+                        selectedTabIndex == item 
+                          ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType] } 
+                          : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType] }
                       }>
                       <Text
                         style={
                           selectedTabIndex == item
-                            ? [styles.tabText, { color: skinColors.promotion.selectedTabTextColor[Skin1.skitType] }]
+                            ? [styles.tabText, { color: skinColors.themeColor }]
                             : [styles.tabText, { color: skinColors.promotion.tabTextColor[Skin1.skitType] }]
                         }>
                         {categories[item]}
@@ -132,7 +131,7 @@ const PromotionPage = (props: any) => {
                 )
               }}
             />
-            {showUnderline && <View style={{ height: 1, width: AppDefine.width, backgroundColor: '#ccc' }} />}
+            <View style={{ height: 1, width: AppDefine.width, backgroundColor: '#ccc' }} />
             <List
               uniqueKey={'PromotionPage_true'}
               scrollEnabled={true}

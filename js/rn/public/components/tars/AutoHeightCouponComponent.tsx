@@ -78,7 +78,11 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
           }}
         />
       )}
-      <Modal visible={showPop} transparent={true}>
+      <Modal 
+        visible={showPop} 
+        transparent={true}
+        onRequestClose={()=> {setShowPop(false)}}
+        >
         <View
           style={{
             flex: 1,
@@ -107,51 +111,52 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
               <ScrollView 
                 showsVerticalScrollIndicator={false} 
                 style={{paddingHorizontal:5}}>
-                <AutoHeightWebView
-                  style={{ width: '100%' }}
-                  scalesPageToFit={true}
-                  // onSizeUpdated={size => setHeight(size?.height)}
-                  viewportContent={'width=device-width, user-scalable=no'}
-                  source={{
-                    html:
-                      `<head>
-  <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-  <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
-  <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
-  <style>body{width:100%-20;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:10}</style>
-  </head>` +
-                      `<script>
-  window.onload = function () {
-    window.location.hash = 1;
-    document.title = document.body.scrollHeight;
-  }
-  </script>` +
-                      content,
-                  }}/>
-                  {showUrl ? 
-                    (<Button
-                        containerStyle={{ flex: 1, width: '100%', height: scale(90), alignItems: 'center'}}
-                        showLogo={true}
-                        logoStyle={{ flex: 1, width: '100%', alignItems: 'center'}}
-                        logo={Res.promotion_more}
-                        onPress={() => {
-                          ugLog("onPress promotion url: " + linkUrl)
-                          if (linkUrl) {
-                            push(PageName.Game3rdView, {url: linkUrl})
+                <View style={{ flex:1 }}>
+                  <AutoHeightWebView
+                    style={{ width: '100%' }}
+                    scalesPageToFit={true}
+                    // onSizeUpdated={size => setHeight(size?.height)}
+                    viewportContent={'width=device-width, user-scalable=no'}
+                    source={{
+                      html:
+                        `<head>
+    <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
+    <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+    <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
+    <style>body{width:100%-20;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:10}</style>
+    </head>` +
+                        `<script>
+    window.onload = function () {
+      window.location.hash = 1;
+      document.title = document.body.scrollHeight;
+    }
+    </script>` +
+                        content,
+                    }}/>
+                    {showUrl ? 
+                      (<Button
+                          containerStyle={{ flex: 1, width: '100%', height: scale(90), alignItems: 'center'}}
+                          showLogo={true}
+                          logoStyle={{ flex: 1, width: '100%', alignItems: 'center'}}
+                          logo={Res.promotion_more}
+                          onPress={() => {
+                            ugLog("onPress promotion url: " + linkUrl)
+                            if (linkUrl) {
+                              push(PageName.Game3rdView, {url: linkUrl})
+                              setShowPop(false)
+                              return
+                            }
+                            let game: PushHomeGame = {
+                              seriesId: linkCategory,
+                              gameId: linkPosition,
+                              subId: linkPosition,
+                            }
+                            PushHelper.pushHomeGame(game)
                             setShowPop(false)
-                            return
-                          }
-                          let game: PushHomeGame = {
-                            seriesId: linkCategory,
-                            gameId: linkPosition,
-                            subId: linkPosition,
-                          }
-                          PushHelper.pushHomeGame(game)
-                          setShowPop(false)
-                        }}
-                      />
-                  ):({})
-                }
+                          }}
+                        />
+                    ) : null}
+                  </View>
               </ScrollView>
             </View>
             <View style={styles.buttonContainer}>
