@@ -199,7 +199,7 @@ class APIRouter {
     ugLog("params: " + params)
     return httpClient.get<GameUrlModel>('c=real&a=gotoGame' + params)
   }
-  
+
   /**
    * 首頁遊戲資料
    */
@@ -787,30 +787,18 @@ class APIRouter {
    * @param params
    */
   static encryptGetParams = async (params?: any) => {
+    let pms = undefined
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        //TODO iOS 完成 params 加密转换
-        let temp = {}
-        //过滤掉 null 或 "",
-        for (let paramsKey in params) {
-          if (!anyEmpty(params[paramsKey])) {
-            temp[paramsKey] = params[paramsKey]
-          }
-        }
-        temp['checkSign'] = 1
-        let paramsJM = await  OCHelper.call('CMNetwork.encryptionCheckSign:', [temp])
-        var str = JSON.stringify(paramsJM); 
-        tokenParams = str;
+        pms = await OCHelper.call('CMNetwork.encryptionCheckSign:', [Object.assign({ checkSign: 1 }, params)]);
         break
       case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params,
-        })
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
+        pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params, })
         break
+    }
+    for (let key in pms) {
+      tokenParams += '&' + key + '=' + pms[key]
     }
     //ugLog('APIRouter encryptParams=', JSON.stringify(params))
     return tokenParams

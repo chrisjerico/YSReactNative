@@ -38,19 +38,12 @@ export async function setRnPageInfo(force = false) {
     })
 
 
-    // 我的提款账户
-    pages.push({
-      vcName: 'BetDetailViewController',
-      rnName: PageName.JDBetDetailPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
+ 
 
     // 资金管理
     pages.push({
-      vcName: 'UGFundsViewController',
-      rnName: PageName.CapitalPage,
+      vcName: 'WithdrawalAccountListVC',
+      rnName: PageName.ManageBankListPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: false,
       允许未登录访问: false,
