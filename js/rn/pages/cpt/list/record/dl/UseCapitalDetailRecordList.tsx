@@ -7,6 +7,8 @@ import { ugLog } from '../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../public/tools/ToastUtils'
 import { CapitalGroupData, CapitalListData } from '../../../../../public/network/Model/wd/CapitalDetailModel'
 import moment from 'moment'
+import { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
+import { getBankIcon } from '../../../../bank/list/UseManageBankList'
 
 /**
  * 资金明细记录
@@ -18,9 +20,10 @@ const UseCapitalDetailRecordList = () => {
 
   const [capitalDetailData, setListDetailData] = useState<Array<CapitalListData>>([])//所有数据
 
+  const [menuItem, setMenuItem] = useState<Array<IMiddleMenuItem>>([{ id: '0', title: '全部类型' }]) //所有菜单列表
   const [pageIndex, setPageIndex] = useState(1)//当前第几页
   const [curGroup, setCurGroup] = useState(0)//当前组id
-  const [groups, setGroups] = useState([{ value: 0, label: '全部类型' }])//当前的分组数据
+  // const [groups, setGroups] = useState([{ value: 0, label: '全部类型' }])//当前的分组数据
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
@@ -59,9 +62,8 @@ const UseCapitalDetailRecordList = () => {
 
     const stDate = !anyEmpty(startDate) ? startDate : '2010-01-01'
     const edDate = !anyEmpty(endDate) ? endDate : new Date().format('yyyy-MM-dd')
-    let reqGroup = !anyEmpty(selGroup) ? selGroup : groups.find(
-      (item) => item.value == curGroup,
-    ).value.toString()
+    let reqGroup = !anyEmpty(selGroup) ? selGroup : menuItem?.find((item) =>
+      item.id == curGroup?.toString())?.id?.toString()
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
 
     APIRouter.capital_capitalDetailRecordList({
@@ -76,12 +78,19 @@ const UseCapitalDetailRecordList = () => {
 
       //ugLog('data res=', reqPage, JSON.stringify(res?.data))
       if (res?.code == 0) {
-        //每一次需要注入数据
-        if (arrayLength(groups) <= 1 && !arrayEmpty(cpGroups)) {
-          setGroups([...groups, ...cpGroups.map(
-            (item, index) =>
-              ({ label: item.name, value: item.id }))])
-        }
+
+        //缓存列表显示选项
+        const menu = cpGroups?.map((item) => {
+          return (
+            ({
+              title: `${item?.name}`,
+              id: item?.id?.toString(),
+            } as IMiddleMenuItem)
+          )
+        })
+
+        setMenuItem([{ id: '0', title: '全部类型' }, ...menu])
+
 
         if (clear) {
           setPageIndex(reqPage + 1)
@@ -105,8 +114,8 @@ const UseCapitalDetailRecordList = () => {
   }
 
   return {
+    menuItem,
     refreshCT,
-    groups,
     curGroup,
     setCurGroup,
     capitalDetailData,
