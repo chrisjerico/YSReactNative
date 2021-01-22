@@ -38,6 +38,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     itemCount,
     playOddDetailData,
     selectedData,
+    setSelectedData,
     startBet,
     calculateItemCount,
   } = UsePayBoard()
@@ -50,92 +51,93 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   // ugLog('itemCount = ', itemCount, JSON.stringify(groupValueArr?.flat(2)))
 
   // 生成数据对应的 View
-  const itemViewArr = useMemo(() => {
-    return selectedData == null ? null : Object.keys(selectedData).map((key) => {
-      const groupDataArr: Array<PlayGroupData> = selectedData[key]
-      return groupDataArr?.map((groupData) => {
-        switch (key) {
-          case LotteryConst.TM:  //特码
-            return groupData?.plays?.map((playData) => {
-              return (<View key={playData?.id + playData?.name}
-                            style={_styles.item_container}>
-                <Text style={_styles.item_title}>{`[ ${groupData?.alias}-${playData?.id} ]`}</Text>
-                <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
-                <Text style={_styles.item_x}>{'X'}</Text>
-                <TextInput defaultValue={averageMoney?.toString()}
-                           onChangeText={text => setMoneyMap(prevState => {
-                             const dataMap = new Map<string, number>()
-                             dataMap[playData?.id] = Number.parseFloat(text)
-                             ugLog('prevState = ', JSON.stringify(prevState))
-                             ugLog('dataMap = ', JSON.stringify(dataMap))
-                             return { ...prevState, ...dataMap }
-                           })}
-                           keyboardType={'numeric'}
-                           style={_styles.item_input}/>
-                <Icon size={scale(36)}
-                      onPress={() => {
-                        const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
-                        const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //当前选中的数据
-                        Object.keys(selectedData)?.map((key) => {
-                          const groupData: Array<PlayGroupData> = selectedData[key]
-                          const newGroupData = groupData?.map((groupData) => ({
-                            ...groupData,
-                            plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
-                          }))
-                          newSelectedData[key] = newGroupData
-                        })
+  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((key) => {
+    const groupDataArr: Array<PlayGroupData> = selectedData[key]
+    return groupDataArr?.map((groupData) => {
+      switch (key) {
+        case LotteryConst.TM:  //特码
+          return groupData?.plays?.map((playData) => {
+            return (<View key={playData?.id + playData?.name}
+                          style={_styles.item_container}>
+              <Text style={_styles.item_title}>{`[ ${groupData?.alias}-${playData?.id} ]`}</Text>
+              <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
+              <Text style={_styles.item_x}>{'X'}</Text>
+              <TextInput defaultValue={averageMoney?.toString()}
+                         onChangeText={text => setMoneyMap(prevState => {
+                           const dataMap = new Map<string, number>()
+                           dataMap[playData?.id] = Number.parseFloat(text)
+                           ugLog('prevState = ', JSON.stringify(prevState))
+                           ugLog('dataMap = ', JSON.stringify(dataMap))
+                           return { ...prevState, ...dataMap }
+                         })}
+                         keyboardType={'numeric'}
+                         style={_styles.item_input}/>
+              <Icon size={scale(36)}
+                    onPress={() => {
+                      const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
+                      // const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //当前选中的数据
+                      Object.keys(selectedData)?.map((key) => {
+                        const groupData: Array<PlayGroupData> = selectedData[key]
+                        const newGroupData = groupData?.map((groupData) => ({
+                          ...groupData,
+                          plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
+                        }))
+                        newSelectedData[key] = newGroupData
+                      })
 
-                        //数据少于1了就关闭窗口
-                        if (calculateItemCount(newSelectedData) <= 0) showCallback && showCallback()
+                      //数据少于1了就关闭窗口
+                      if (calculateItemCount(newSelectedData) <= 0) {
+                        showCallback && showCallback()
+                      } else {
+                        // const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedData } as SelectedLotteryModel
+                        setSelectedData(newSelectedData)
+                        // UGStore.dispatch({type: 'merge', selectedLotteryModel})
+                      }
 
-                        const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedData } as SelectedLotteryModel
-                        UGStore.dispatch({type: 'merge', selectedLotteryModel})
-                      }}
-                      style={_styles.item_trash}
-                      color={Skin1.themeColor}
-                      name={'trash-o'}/>
-              </View>)
-            })
+                    }}
+                    style={_styles.item_trash}
+                    color={Skin1.themeColor}
+                    name={'trash-o'}/>
+            </View>)
+          })
 
-          case LotteryConst.HX://合肖
-            return null
+        case LotteryConst.HX://合肖
+          return null
 
-          case LotteryConst.ZM: //正码
-          case LotteryConst.ZT:  //正特
-            return null
+        case LotteryConst.ZM: //正码
+        case LotteryConst.ZT:  //正特
+          return null
 
-          case LotteryConst.LMA:  //连码
-            return null
+        case LotteryConst.LMA:  //连码
+          return null
 
-          case LotteryConst.LM: //两面
-          case LotteryConst.ZM1_6: //正码1T6
-          case LotteryConst.SB: //色波
-          case LotteryConst.ZOX://总肖
-          case LotteryConst.WX:  //五行
-            return null
+        case LotteryConst.LM: //两面
+        case LotteryConst.ZM1_6: //正码1T6
+        case LotteryConst.SB: //色波
+        case LotteryConst.ZOX://总肖
+        case LotteryConst.WX:  //五行
+          return null
 
-          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TX: //特肖
-          case LotteryConst.ZX: //正肖
-          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-            return null
+        case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LotteryConst.TX: //特肖
+        case LotteryConst.ZX: //正肖
+        case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          return null
 
-          case LotteryConst.LX: //连肖
-            return null
+        case LotteryConst.LX: //连肖
+          return null
 
-          case LotteryConst.LW: //连尾
-            return null
+        case LotteryConst.LW: //连尾
+          return null
 
-          case LotteryConst.ZXBZ:  //自选不中
-            return null
-        }
+        case LotteryConst.ZXBZ:  //自选不中
+          return null
+      }
 
-      })
+    })
 
-    }).flat(2)
-
-  }, [selectedData, averageMoney])
+  }).flat(2)
 
   const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * ITEM_HEIGHT, [itemCount])
 

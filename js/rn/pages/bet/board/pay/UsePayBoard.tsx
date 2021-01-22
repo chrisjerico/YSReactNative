@@ -90,6 +90,7 @@ const UsePayBoard = () => {
     itemCount,
     playOddDetailData,
     selectedData,
+    setSelectedData,
     calculateItemCount,
     startBet,
   }
