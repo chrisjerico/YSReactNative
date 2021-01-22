@@ -50,6 +50,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const { type, showBackButton} = route?.params
 
   const refMenu = useRef(null)
+  const  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   // 游戏分类：lottery=彩票，real=真人，card=棋牌，game=电子游戏，sport=体育，fish=捕鱼, esport=电竞
   const typeArray: IMiddleMenuItem[] = [
     {
@@ -283,11 +284,12 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                                   onNextMonth,
                                 }) => {
                 const arr = currentMonth.split(' ')
+                ugLog(arr[0] + arr[1])
                 return <View style={{ flexDirection: 'row' }}>
                   <TouchableWithoutFeedback onPress={onPrevMonth}>
                     <Text style={_styles.calendar_button}>{'上一月'}</Text>
                   </TouchableWithoutFeedback>
-                  <Text style={_styles.calendar_title}>{arr[1] + '年'}</Text>
+                  <Text style={_styles.calendar_title}>{arr[1] + '年 ' + Number(months.indexOf(arr[0])+1) + '月'}</Text>
                   <TouchableWithoutFeedback onPress={onNextMonth}>
                     <Text style={_styles.calendar_button}>{'下一月'}</Text>
                   </TouchableWithoutFeedback>
