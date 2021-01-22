@@ -39,7 +39,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     playOddDetailData,
     selectedData,
     setSelectedData,
-    startBet,
+    startBetting,
     calculateItemCount,
   } = UsePayBoard()
 

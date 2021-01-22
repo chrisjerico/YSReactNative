@@ -77,7 +77,10 @@ const UsePayBoard = () => {
     setTotalMoney(money)
   }, [moneyMap])
 
-  const startBet = () => {
+  /**
+   * 开始下注
+   */
+  const startBetting = () => {
 
   }
 
@@ -92,7 +95,7 @@ const UsePayBoard = () => {
     selectedData,
     setSelectedData,
     calculateItemCount,
-    startBet,
+    startBetting,
   }
 }
 
