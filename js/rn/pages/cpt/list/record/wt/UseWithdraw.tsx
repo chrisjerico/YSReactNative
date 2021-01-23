@@ -53,6 +53,8 @@ const UseWithdraw = () => {
    * 切换标签刷新汇率
    */
   useEffect(() => {
+    console.log('-------oooo');
+    
     requestBankDetailData(BankConst.BTC)
   }, [withdrawType])
 
@@ -70,6 +72,7 @@ const UseWithdraw = () => {
       return
     }
     const money = Math.round(inputMoney * 100 * newRate) / 100
+ 
     setBtcMoney(money)
   }, [inputMoney])
 
@@ -78,8 +81,10 @@ const UseWithdraw = () => {
    * @param category 定义在 BankConst
    */
   const requestBankDetailData = (category?: string) => {
+
+    
     APIRouter.user_bankInfoList(category).then(({ data: res }) => {
-      ugLog('requestBankDetailData=', JSON.stringify(res?.data))
+
       if (res?.code == 0) {
         setBtcDetailData(res?.data)
       } else {
@@ -97,6 +102,7 @@ const UseWithdraw = () => {
     if (curBank?.type != BankConst.BTC) return
     //当前是哪个币
     ugLog('rateMoney curBank=', JSON.stringify(curBank))
+    ugLog('btcDetailData =',btcDetailData)
     const curBtc = btcDetailData?.find((item) => item.code == curBank?.bankCode)
     ugLog('curbtc=', JSON.stringify(curBtc))
     if (curBtc?.code == 'CGP') {
