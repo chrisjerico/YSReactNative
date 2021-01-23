@@ -57,16 +57,15 @@ const CapitalPage = ({ navigation, route, setProps }) => {
   useEffect(() => {
     setProps({
       didFocus: (params) => {
+        requestYueBao()
         let dic = params;
         for (var key in dic) {
-
           if (key == 'selectIndex') {
             console.log('key ==============', key);
             console.log('v ==============', dic[key]);
             setTabIndex(dic[key])
             setRefreshCount(refreshCount + 1)
           }
-
         }
       }
     })

@@ -143,10 +143,10 @@ const WithdrawComponent = ({ navigation, route }) => {
 
   }
   function bankLabel(){
-
+ // `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
     let a:string ;
     let b:string ;
-    if (anyEmpty(btcMoney)|| isNaN(newUsd)) {
+    if (anyEmpty(btcMoney)|| isNaN(btcMoney)) {
       a ='= 0 '+curBank?.bankCode;
     } else {
       a ='= '+btcMoney+' '+curBank?.bankCode;

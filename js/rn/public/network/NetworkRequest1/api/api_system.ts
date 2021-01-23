@@ -62,5 +62,9 @@ export class api_system {
   static bankList(type: number) {// 0全部, 1银行卡, 2支付宝, 3微信, 4虚拟币
     return this.c.get('bankList', { status: 0, type: type });
   }
+  // 实时汇率
+  static currencyRate(from?: string,to?: string,amount?: string,float?: string) {//  哪种钱  //  哪种钱 //多少钱 //汇率 1
+    return this.c.get('currencyRate', { from: from, amount: amount,to:to,float:float }); 
+  }
 
 }
