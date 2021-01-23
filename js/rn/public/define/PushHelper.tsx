@@ -146,6 +146,18 @@ export default class PushHelper {
           push(PageName.TwoLevelGames, { game: game, showBackButton: true })
           return
         }
+        if (game?.seriesId && ["2", "3", "4", "5", "6", "8"].includes(game.seriesId+'') && game?.gameId) {  //第三方遊戲
+          console.log('第三方遊戲')
+          if (UGUserModel.checkLogin()) {
+            push(PageName.Game3rdView, { game: game })
+          }
+          return
+        }
+        if (game?.seriesId == 7 && game?.subId == MenuType.YHDD) {  //优惠活动
+          console.log('优惠活动')
+          push(PageName.PromotionPage, { showBackBtn: true })
+          return
+        }
 
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
@@ -198,20 +210,24 @@ export default class PushHelper {
    * @param subId
    */
   static pushDeposit(seriesId?: string, subId?: string): boolean {
+    let tabIndex = ''
     if (seriesId == '7' && subId == MenuType.ZHGL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.CAPITAL_DETAIL})
-      return true
+      tabIndex = CapitalConst.CAPITAL_DETAIL
     } else if (seriesId == '7' && (subId == MenuType.CQK || subId == MenuType.CZ)) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
-      return true
+      tabIndex = CapitalConst.DEPOSIT
     } else if (seriesId == '7' && subId == MenuType.TX) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
-      return true
+      tabIndex = CapitalConst.WITHDRAWAL
     } else if (seriesId == '7' && subId == MenuType.CZJL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT_RECORD})
-      return true
+      tabIndex = CapitalConst.DEPOSIT_RECORD
     } else if (seriesId == '7' && subId == MenuType.TXJL) {
-      push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL_RECORD})
+      tabIndex = CapitalConst.WITHDRAWAL_RECORD
+    }
+    if (tabIndex.length > 0) {
+      ugLog("uid: " + UGStore.globalProps.userInfo.uid)
+      if (!UGStore.globalProps.userInfo.uid) {
+        return
+      }
+      push(PageName.CapitalPage, {initTabIndex: tabIndex})
       return true
     }
 
@@ -227,6 +243,12 @@ export default class PushHelper {
         break
       case 'android':
         if(this.pushDeposit(linkCategory?.toString(), linkPosition?.toString())) return
+
+        if (linkCategory == 7 && linkPosition == MenuType.YHDD) {  //优惠活动
+          console.log('优惠活动')
+          push(PageName.PromotionPage, { showBackBtn: true })
+          return
+        }
 
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
           seriesId: linkCategory,
@@ -415,7 +437,12 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.我的页: {
-            OCHelper.call('UGTabbarController.shared.mms').then((mms: UGTabbarItem[]) => {
+            (async () => {
+              let mms: UGTabbarItem[] = await OCHelper.call('UGTabbarController.shared.customTabbar.dataArray')
+              if (!mms) {
+                // 兼容旧APP版本（写于2021.1.21 两个月后再删）
+                mms = await OCHelper.call('UGTabbarController.shared.mms')
+              }
               let isOcPush = false
               mms.forEach((item, idx) => {
                 if (item.path == '/user') {
@@ -440,7 +467,7 @@ export default class PushHelper {
                   ])
                 }
               }
-            })
+            })()
             break
           }
           case UGUserCenterType.开奖结果: {
@@ -482,6 +509,7 @@ export default class PushHelper {
         break
       case 'android':
         let subId = ''
+        ugLog("code: " + code)
         switch (code) {
           case UGUserCenterType.存款: {
             // if (B_DEBUG) {
@@ -528,32 +556,32 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.其他注单记录: {
-            subId = MenuType.QTZD
-            break
+            push(PageName.OtherRecord, { type: UGUserCenterType.真人注单 })
+            return
           }
           case UGUserCenterType.电子注单: {
-            subId = MenuType.QTZD
-            break
+            push(PageName.OtherRecord, { type: UGUserCenterType.电子注单 })
+            return
           }
           case UGUserCenterType.捕鱼注单: {
-            subId = MenuType.QTZD
-            break
+            push(PageName.OtherRecord, { type: UGUserCenterType.捕鱼注单 })
+            return
           }
           case UGUserCenterType.电竞注单: {
-            subId = MenuType.QTZD
-            break
+            push(PageName.OtherRecord, { type: UGUserCenterType.电竞注单 })
+            return
           }
           case UGUserCenterType.真人注单: {
-            subId = MenuType.QTZD
-            break
+            push(PageName.OtherRecord, { type: UGUserCenterType.真人注单 })
+            return
           }
           case UGUserCenterType.棋牌注单: {
-            subId = MenuType.QTZD
-            break
+            push(PageName.OtherRecord, { type: UGUserCenterType.棋牌注单 })
+            return
           }
           case UGUserCenterType.体育注单: {
-            subId = MenuType.QTZD
-            break
+            push(PageName.OtherRecord, { type: UGUserCenterType.体育注单 })
+            return
           }
           case UGUserCenterType.额度转换: {
             subId = MenuType.EDZH
@@ -660,9 +688,9 @@ export default class PushHelper {
             subId = MenuType.HYZX
             break
           }
-          case UGUserCenterType.开奖结果: {
-            subId = MenuType.KJJG
-            break
+          case UGUserCenterType.优惠活动: {
+            push(PageName.PromotionPage, { showBackBtn: true })
+            return
           }
         }
 

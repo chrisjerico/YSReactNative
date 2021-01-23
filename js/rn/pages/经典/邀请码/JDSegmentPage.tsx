@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image,Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SegmentedControl from "rn-segmented-control";
@@ -23,9 +23,10 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
   const { img_assets } = useHtml5Image(UGImageHost.test5)
   const [imgError, setImgError] = useState(false);
   let [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
+  let text :any;
 
   const handleTabsChange = (index: number) => {
-    // console.log('index ==',index);
+    console.log('index ==',index);
 
     setTabIndex(index);
 
@@ -73,15 +74,42 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     // console.log('相差多少天',moment(now4).diff(moment('2015-10-11 18:06:03'), 'days'))
     https://appstatic.guolongling.com/assets/gengduo.png
 
-    console.log('图片路径：', img_assets('gengduo'));
-    console.log('图片路径：', Res.gengduo);
+    // console.log('图片路径：', img_assets('gengduo'));
+    // console.log('图片路径：', Res.gengduo);
 
 
 
-    Image.getSize('https://appstatic.guolaow.com/web/images/zxkf.png', (width, height) => {
-      console.log('width==', width);
+    // Image.getSize('https://appstatic.guolaow.com/web/images/zxkf.png', (width, height) => {
+    //   console.log('width==', width);
 
-    })
+    // })
+
+    console.log('text===',text.style);
+    
+
+    // text.style = { fontSize: 20, color: 'blue', marginLeft: 20}
+
+    if (index == 0) {
+      text.setNativeProps({
+        style:{
+          fontSize: 20, 
+          color: 'blue',
+           marginLeft: 20
+        },
+        memoizedProps:'123'
+      });
+    } else {
+      text.setNativeProps({
+        style:{
+          fontSize: 13, 
+          color: 'red',
+           marginLeft: 20
+        }
+      });
+    }
+ 
+
+
   };
   /**
  * 初始化
@@ -121,7 +149,7 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
       />
 
 
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Image
           style={[{ width: 50, height: 50,  },]}
           source={{
@@ -151,9 +179,12 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
             size={scale(50)}
           />}
         </View>
+      </View> */}
 
-
-
+      <View style={{}}>
+        <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }} ref={ (e) => {text = e }} >
+          {'2313432413'}
+        </Text>
       </View>
     </View >
   )

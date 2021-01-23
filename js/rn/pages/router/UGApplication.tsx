@@ -14,6 +14,7 @@ import { TransferRecordView } from '../../public/components/transfer/TransferRec
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import { TransferView } from '../../public/components/transfer/TransferView'
 import TrendView from '../../public/components/TrendView'
+import Game3rdView from '../../public/components/Game3rdView'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { Router } from '../../public/navigation/Router'
@@ -111,6 +112,9 @@ import EmptyPage from '../common/ep/EmptyPage'
 import { OnlineService } from '../../public/components/OnlineService'
 import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
 import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
+import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
+
+import OtherRecord from '../../public/components/OtherRecord'
 
 
 /**
@@ -128,6 +132,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   // 彩票大厅-默认
   GameLobbyPage,
   TwoLevelGames,
+  OtherRecord,
+  Game3rdView,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
@@ -170,6 +176,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionCodeListPage,//邀请码
   JDChangLongPage,//长龙主页
   JDBetRecordDetailPage,//长龙注单详情
+  JDBetDetailPage,//下注明细
   OnlineService,//在线客服
   // ———————————— 模板页面 —————————————
 

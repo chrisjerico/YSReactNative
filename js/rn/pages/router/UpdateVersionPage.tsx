@@ -51,7 +51,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     ugLog('try: ' + net)
     setProps({ showNetwork: net })
   }
-  const { testNetwork, testSite } = UseVersion({ testResult })
+  const { testNetwork, testSite, testCodePush } = UseVersion({ testResult })
 
   useEffect(() => {
     setProps({
@@ -103,7 +103,12 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                 case 'ios':
                   // 更新出错时无限重试
                   setTimeout(() => {
-                    CodePushSync(options)
+                    testCodePush(async (serverURL) => {
+                      console.log('发现热更新域名：', serverURL);
+                      await OCHelper.call('CodePushConfig.current.setServerURL:', [serverURL])
+                      await OCHelper.call('CodePushConfig.current.setAppVersion:', ['1.2'])
+                      CodePushSync(options)
+                    })
                   }, 1000)
                   break;
                 case 'android':
@@ -153,14 +158,18 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 先初始化一遍原生配置（避免有些用户网络慢，没更新完RN配置就直接超时进入首页）
         const sysConf: UGSysConfModel = await OCHelper.call('UGSystemConfigModel.currentConfig')
         await initConfig(sysConf, !isFirst)
-        // 检查更新
-        await OCHelper.call('CodePushConfig.current.setServerURL:', ['http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000/'])
-        await OCHelper.call('CodePushConfig.current.setAppVersion:', ['1.2'])
-        const CodePushKey = await getIOSCodePushKey()
-        console.log('OCHelper.CodePushKey = ', CodePushKey)
-        CodePushSync({
-          deploymentKey: CodePushKey,
-          installMode: CodePush.InstallMode.IMMEDIATE,
+
+        testCodePush(async (serverURL) => {
+          console.log('发现热更新域名：', serverURL);
+          // 检查更新
+          await OCHelper.call('CodePushConfig.current.setServerURL:', [serverURL])
+          await OCHelper.call('CodePushConfig.current.setAppVersion:', ['1.2'])
+          const CodePushKey = await getIOSCodePushKey()
+          console.log('OCHelper.CodePushKey = ', CodePushKey)
+          CodePushSync({
+            deploymentKey: CodePushKey,
+            installMode: CodePush.InstallMode.IMMEDIATE,
+          })
         })
       })
     } else {
@@ -248,7 +257,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               codeStatus == CodePush.SyncStatus.UP_TO_DATE //已是最新版本
             ) {
               Alert.alert('温馨提示',
-                '访问出现异常，请联系客服...',
+                '访问出现异常，请检查网络情况，重新打开App再试试。\n或者联系客服...',
                 [
                   {
                     text: '退出',

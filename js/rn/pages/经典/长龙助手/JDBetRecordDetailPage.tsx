@@ -109,7 +109,7 @@ const JDBetRecordDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   useEffect(() => {
     setProps({
-      navbarOpstions: { hidden: false, title: '注单详情', back: true },
+      navbarOpstions: { hidden: false, title: '注单详情RN', back: true },
       didFocus: (params) => {
 
       }

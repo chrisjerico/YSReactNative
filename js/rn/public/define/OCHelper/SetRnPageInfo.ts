@@ -27,14 +27,43 @@ export async function setRnPageInfo(force = false) {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
-    // pages.push({
-    //   vcName: 'UGPromotionIncomeController',
-    //   rnName: PageName.JDChangLongPage,
-    //   // rnName: PageName.JDSegmentPage,
-    //   fd_prefersNavigationBarHidden: true,
-    //   允许游客访问: true,
-    //   允许未登录访问: true,
-    // })
+
+    pages.push({
+      vcName: 'UGBetRecordDetailViewController',
+      rnName: PageName.JDBetRecordDetailPage,
+      // rnName: PageName.JDSegmentPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
+
+    pages.push({
+      vcName: 'BetDetailViewController',
+      rnName: PageName.JDBetDetailPage,
+      // rnName: PageName.JDSegmentPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
+
+    // 我的提款账户
+    pages.push({
+      vcName: 'BetDetailViewController',
+      rnName: PageName.JDBetDetailPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+
+    // 资金管理
+    pages.push({
+      vcName: 'UGFundsViewController',
+      rnName: PageName.CapitalPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+
 
   }
 
@@ -56,12 +85,36 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
-    // 长龙助手
+    // 长龙注单详情
     pages.push({
-      vcName: 'UGChangLongController',
-      rnName: PageName.JDChangLongPage,
+      vcName: 'UGBetRecordDetailViewController',
+      rnName: PageName.JDBetRecordDetailPage,
+      // rnName: PageName.JDSegmentPage,
       fd_prefersNavigationBarHidden: true,
-      tabbarItemPath: '/changLong',
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 下注明细
+    pages.push({
+      vcName: 'BetDetailViewController',
+      rnName: PageName.JDBetDetailPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 我的提款账户
+    pages.push({
+      vcName: 'BetDetailViewController',
+      rnName: PageName.JDBetDetailPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 资金管理
+    pages.push({
+      vcName: 'UGFundsViewController',
+      rnName: PageName.CapitalPage,
+      fd_prefersNavigationBarHidden: true,
       允许游客访问: false,
       允许未登录访问: false,
     })
@@ -127,6 +180,14 @@ export async function setRnPageInfo(force = false) {
       })
     }
   }
+  // 下注明细
+  pages.push({
+    vcName: 'BetDetailViewController',
+    rnName: PageName.JDBetDetailPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 推荐信息
   pages.push({
     vcName: 'UGPromotionIncomeController',
