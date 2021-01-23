@@ -161,7 +161,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,
                 { backgroundColor: Skin1.themeColor }]}
                 tabBarActiveTextColor={Skin1.themeColor}
-                tabBarInactiveTextColor={Skin1.textColor2}
+                tabBarInactiveTextColor={Skin1.tabNoSelectColor}
                 tabBarTextStyle={{ fontSize: scale(20) }}
                 style={[{ flex: 1,  }]}
                 renderTabBar={() => <DefaultTabBar style={_styles.tab_bar} />}>

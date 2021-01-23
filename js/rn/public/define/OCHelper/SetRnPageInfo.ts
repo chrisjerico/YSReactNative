@@ -28,7 +28,7 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-     // 我的提款账户
+    // 我的提款账户
     pages.push({
       vcName: 'WithdrawalAccountListVC',
       rnName: PageName.ManageBankListPage,
@@ -154,6 +154,17 @@ export async function setRnPageInfo(force = false) {
       })
     }
   }
+
+  // 长龙注单详情
+  pages.push({
+    vcName: 'UGBetRecordDetailViewController',
+    rnName: PageName.JDBetRecordDetailPage,
+    // rnName: PageName.JDSegmentPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+
   // 下注明细
   pages.push({
     vcName: 'BetDetailViewController',
