@@ -540,7 +540,8 @@ export default class PushHelper {
             // break
           }
           case UGUserCenterType.利息宝: {
-            subId = MenuType.LXB
+            //subId = MenuType.LXB
+            push(PageName.AlipayView)
             break
           }
           case UGUserCenterType.推荐收益: {
@@ -604,7 +605,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.建议反馈: {
-            navigate(PageName.FeedbackView)
+            push(PageName.FeedbackView)
             return
           }
           case UGUserCenterType.在线客服: {
