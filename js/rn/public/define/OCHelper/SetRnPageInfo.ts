@@ -28,7 +28,7 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-    // 资金管理
+     // 我的提款账户
     pages.push({
       vcName: 'WithdrawalAccountListVC',
       rnName: PageName.ManageBankListPage,
@@ -58,10 +58,18 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
-    // 资金管理
+    // 我的提款账户
     pages.push({
       vcName: 'WithdrawalAccountListVC',
       rnName: PageName.ManageBankListPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 资金管理
+    pages.push({
+      vcName: 'UGFundsViewController',
+      rnName: PageName.CapitalPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: false,
       允许未登录访问: false,
@@ -83,22 +91,7 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: false,
       允许未登录访问: false,
     })
-    // 我的提款账户
-    pages.push({
-      vcName: 'BetDetailViewController',
-      rnName: PageName.JDBetDetailPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-    // 资金管理
-    pages.push({
-      vcName: 'UGFundsViewController',
-      rnName: PageName.CapitalPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
+
     // 推荐信息
     pages.push({
       vcName: 'UGPromotionIncomeController',
