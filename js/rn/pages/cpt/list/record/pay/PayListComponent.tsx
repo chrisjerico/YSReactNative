@@ -17,6 +17,7 @@ import CapitalContext from '../../CapitalContext'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import HTML from 'react-native-render-html'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { clearExHtml } from '../../../../../public/tools/ui/UIUtil'
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
@@ -121,7 +122,8 @@ const PayListComponent = ({ navigation, route }) => {
                      style={_styles.pay_icon}/>
           <View style={_styles.text_item_container}>
             <View style={_styles.text_title_container}>
-              <Text style={_styles.text_title_0}>{item.name}</Text>
+              <HTML
+                source={{ html: clearExHtml(item?.name) }}/>
               <View style={CommStyles.flex}/>
               {
                 (item?.id == 'xnb_transfer' || item?.id == 'xnb_online') &&
@@ -132,7 +134,7 @@ const PayListComponent = ({ navigation, route }) => {
               }
             </View>
             <HTML
-              source={{ html: item?.tip?.replace(/font/g, 'span').replace(/color="#/g, 'style=\"color:#') }}/>
+              source={{ html: clearExHtml(item?.tip) }}/>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -184,11 +186,12 @@ const _styles = StyleSheet.create({
   },
   text_title_1: {
     color: UGColor.TextColor2,
-    fontSize: scale(22),
+    fontSize: scale(20),
     borderColor: UGColor.LineColor4,
     borderWidth: scale(1),
     borderRadius: scale(8),
-    paddingHorizontal: scale(2),
+    paddingHorizontal: scale(4),
+    paddingVertical:scale(4),
   },
   text_content_0: {
     paddingTop: scale(4),

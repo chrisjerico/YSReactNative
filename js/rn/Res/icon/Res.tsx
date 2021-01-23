@@ -72,6 +72,7 @@ export const Res = {
   ht: img_assets('bank/ht'),
   btc_deposit_icon: img_assets('bank/btc_deposit_icon'),
   aliyin2: img_assets('bank/aliyin2'),
+  promotion_more: img_assets('promotion/more', 'gif'),
 
   //筹码
   a10: img_assets('chip/a10'),
@@ -122,10 +123,12 @@ export const Res = {
   dj: img_assets('lottery/d'),
   real_person: img_assets('lottery/re'),
   sports: img_assets('lottery/sp'),
-  
+
   //导航 三根线
   gengduo: img_assets('gengduo'),
   //长龙注单详情背景
   betDetailBg: img_assets('betDetailBg'),
 
+  //第三方遊戲返回
+  back_home: img_assets('back_home'),
 }

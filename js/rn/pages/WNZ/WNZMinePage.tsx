@@ -102,7 +102,8 @@ const WNZMinePage = () => {
     return { title: category.name, tools: otherTools?.filter((t) => t?.user_center_category == category?.id?.toString()) }
   }).filter((category) => category?.tools?.length)
   if (categoryList?.length) {
-    categoryList?.push({ 'title': '其他', tools: otherTools?.filter((t) => !sysInfo?.userCenterCategoryList?.filter((category) => category?.id?.toString() == t?.user_center_category).length) })
+    const tools = otherTools?.filter((t) => !sysInfo?.userCenterCategoryList?.filter((category) => category?.id?.toString() == t?.user_center_category).length)
+    tools?.length && categoryList?.push({ 'title': '其他', tools: tools })
   } else {
     categoryList = [
       {
@@ -177,9 +178,6 @@ const WNZMinePage = () => {
               key={index}
               title={title}
               tools={tools}
-              contentContainer={{
-                marginBottom: index == 3 ? scaleHeight(70) : 0,
-              }}
               renderTool={(item, index) => {
                 const { code, name, logo } = item
                 return (
@@ -234,7 +232,7 @@ const WNZMinePage = () => {
             />
           )
         })}
-        <View style={{ height: 60 }} />{/* 适配iPhoneX底部安全距离 */}
+        <View style={{ height: 70 }} />{/* 适配iPhoneX底部安全距离 */}
       </ScrollView>
       <MenuModalComponent
         ref={menu}

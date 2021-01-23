@@ -79,7 +79,7 @@ const UseWithdraw = () => {
    */
   const requestBankDetailData = (category?: string) => {
     APIRouter.user_bankInfoList(category).then(({ data: res }) => {
-      //ugLog('requestBankDetailData=', JSON.stringify(res?.data))
+      ugLog('requestBankDetailData=', JSON.stringify(res?.data))
       if (res?.code == 0) {
         setBtcDetailData(res?.data)
       } else {
@@ -96,9 +96,9 @@ const UseWithdraw = () => {
   const rateMoney = () => {
     if (curBank?.type != BankConst.BTC) return
     //当前是哪个币
-    //ugLog('rateMoney curBank=', JSON.stringify(curBank))
+    ugLog('rateMoney curBank=', JSON.stringify(curBank))
     const curBtc = btcDetailData?.find((item) => item.code == curBank?.bankCode)
-    //ugLog('curbtc=', JSON.stringify(curBtc))
+    ugLog('curbtc=', JSON.stringify(curBtc))
     if (curBtc?.code == 'CGP') {
       setNewRate(1)
       setNewUsd(1)

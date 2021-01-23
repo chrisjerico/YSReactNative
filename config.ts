@@ -9,8 +9,11 @@ export const devConfig = {
     return isTest() // 這邊固定寫isTest()
   }, // 是否是测试环境
 
-  // skinKey: 'GPK版0',
-  skinKey: UGSkinType1.利来,
+
+  // skinKey: UGSkinType1.威尼斯,
+  skinKey: UGSkinType1.乐橙,
+  // skinKey: UGSkinType1.GPK0黑,
+
 }
 
 // 线上环境配置（这几个站点写死经典模板）
@@ -22,4 +25,6 @@ export const appConfig = {
   },
 
   isWNZBottomTabHot: () => AppDefine.inSites('c245,c251'), // 威尼斯首页底部官方玩法改热门彩种，信用玩法改中奖排行
+  isBgColorForMoneyVC: () => AppDefine.inSites('c134,test29'), // /**< 存款页面进去的底色为bg色   */
+
 }

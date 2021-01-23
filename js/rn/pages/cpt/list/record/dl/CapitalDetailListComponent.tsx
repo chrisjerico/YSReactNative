@@ -13,7 +13,8 @@ import Icon from 'react-native-vector-icons/Entypo'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { Calendar } from 'react-native-plain-calendar'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import MiddleMenu, { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
 
 /**
  * 资金明细记录
@@ -26,12 +27,11 @@ const CapitalDetailListComponent = () => {
   const [selectEndDate, setSelectEndDate] = useState<boolean>(false) //正在选择结束日期
   const [startDate, setStartDate] = useState<string>(null)//选中的开始日期
   const [endDate, setEndDate] = useState<string>(null)//选中的开始日期
-
-  let capitalController //类型选择
+  const refMenu = useRef(null)
 
   const {
+    menuItem,
     refreshCT,
-    groups,
     curGroup,
     setCurGroup,
     capitalDetailData,
@@ -114,71 +114,55 @@ const CapitalDetailListComponent = () => {
   /**
    * 绘制日历选择
    */
-  const renderCalendar = () => {
-    let curDate
-    if(selectStartDate) curDate = new Date(startDate)
-    if(selectEndDate) curDate = new Date(endDate)
+  const renderCalendar = () => (
+    selectStartDate || selectEndDate ?
+      <View key={'renderCalendar'}
+            style={_styles.calendar_wid}>
+        <Calendar.Picker onDayPress={(date: Date) => {
+          let curDate = date.format('yyyy-MM-dd')
+          if (selectStartDate) {//设置起始日期
+            setSelectStartDate(false)
+            setStartDate(curDate)
+          } else if (selectEndDate) {//设置终止日期
+            setSelectEndDate(false)
+            setEndDate(curDate)
+          }
+        }}
+                         HeaderComponent={({
+                                             currentMonth,
+                                             onPrevMonth,
+                                             onNextMonth,
+                                           }) => {
+                           const arr = currentMonth.split(' ')
+                           return <View style={{ flexDirection: 'row' }}>
+                             <TouchableWithoutFeedback onPress={onPrevMonth}>
+                               <Text style={_styles.calendar_button}>{'上一月'}</Text>
+                             </TouchableWithoutFeedback>
+                             <Text style={_styles.calendar_title}>{arr[1] + '年'}</Text>
+                             <TouchableWithoutFeedback onPress={onNextMonth}>
+                               <Text style={_styles.calendar_button}>{'下一月'}</Text>
+                             </TouchableWithoutFeedback>
+                           </View>
+                         }}
+                         disabledDayPick={false}
+                         weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
+        />
+      </View> :
+      null
+  )
 
-    return (
-      selectStartDate || selectEndDate ?
-        <View key={'renderCalendar'}
-              style={_styles.calendar_wid}>
-          <Calendar.Picker selectedDate={curDate}
-                           onDayPress={(date: Date) => {
-                             let curDate = date.format('yyyy-MM-dd')
-                             if (selectStartDate) {//设置起始日期
-                               setSelectStartDate(false)
-                               setStartDate(curDate)
-                             } else if (selectEndDate) {//设置终止日期
-                               setSelectEndDate(false)
-                               setEndDate(curDate)
-                             }
-                           }}
-                           HeaderComponent={({
-                                               currentMonth,
-                                               onPrevMonth,
-                                               onNextMonth,
-                                             }) => {
-                             const arr = currentMonth.split(' ')
-                             return <View style={{ flexDirection: 'row' }}>
-                               <TouchableWithoutFeedback onPress={onPrevMonth}>
-                                 <Text style={_styles.calendar_button}>{'上一月'}</Text>
-                               </TouchableWithoutFeedback>
-                               <Text style={_styles.calendar_title}>{arr[1] + '年'}</Text>
-                               <TouchableWithoutFeedback onPress={onNextMonth}>
-                                 <Text style={_styles.calendar_button}>{'下一月'}</Text>
-                               </TouchableWithoutFeedback>
-                             </View>
-                           }}
-                           disabledDayPick={false}
-                           weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
-          />
-        </View> :
-        null
-    )
-
-  }
   /**
    * 绘制提示标题
    * @param item
    */
   const renderTitleHint = () => <View key={'renderTitleHint'}>
-    <View style={_styles.capital_type_picker}>
-      <UGDropDownPicker
-        controller={instance => capitalController = instance}
-        items={groups}
-        defaultValue={curGroup}
-        onChangeItem={item => {
-          setCurGroup(item.value)
-        }}/>
-    </View>
     <View style={_styles.text_title_container}>
       <Text style={_styles.text_title_0}>{'日期'}</Text>
       <Text style={_styles.text_title_0}>{'金额'}</Text>
-      <TouchableWithoutFeedback onPress={() => capitalController?.toggle()}>
+      <TouchableWithoutFeedback onPress={() => refMenu?.current?.toggleMenu()}>
         <View style={_styles.item_type}>
           <Text style={_styles.text_title_0} numberOfLines={1}>{
-            groups.find((item) => item.value == curGroup).label
+            menuItem?.find((item) => item.id == curGroup?.toString()).title
           }</Text>
           <Icon size={scale(20)} name={'chevron-down'}/>
         </View>
@@ -190,8 +174,9 @@ const CapitalDetailListComponent = () => {
   /**
    * 绘制条目内容
    * @param item
+   * @param index
    */
-  const renderItemContent = (item: CapitalListData) => <View style={_styles.text_item_container}>
+  const renderItemContent = (item: CapitalListData, index?: number) => <View key={item?.time + index} style={_styles.text_item_container}>
     <Text style={_styles.text_content_0}>{item.time}</Text>
     <Text style={_styles.text_content_0}>{item.changeMoney}</Text>
     <Text style={_styles.text_content_0}>{item.category}</Text>
@@ -204,42 +189,45 @@ const CapitalDetailListComponent = () => {
    */
   const renderListContent = () => <View key={'renderListContent'}
                                         style={CommStyles.flex}>
-    {
-      [
-        renderTitleHint(),
-        anyEmpty(capitalDetailData)
-          ? <EmptyView style={{ flex: 1 }}/>
-          : <FlatList refreshControl={refreshCT}
-                      keyExtractor={(item, index) => `${item}-${index}`}
-                      data={capitalDetailData}
-                      showsVerticalScrollIndicator={false}
-            // ListEmptyComponent={() => <EmptyView/>}
-                      onEndReached={({ distanceFromEnd }) => {
-                        requestListDetailData({
-                          clear: false,
-                          startDate: startDate,
-                          endDate: endDate,
-                        })
-                      }}
-                      onEndReachedThreshold={0.2}
-                      renderItem={({ item, index }) => {
-                        return (
-                          renderItemContent(item)
-                        )
-                      }}/>,
-        renderCalendar(),
-      ]
-    }
+    {renderTitleHint()}
+    {anyEmpty(capitalDetailData)
+      ? <EmptyView style={{ flex: 1 }}/>
+      : <FlatList refreshControl={refreshCT}
+                  keyExtractor={(item, index) => `${item}-${index}`}
+                  data={capitalDetailData}
+                  showsVerticalScrollIndicator={false}
+        // ListEmptyComponent={() => <EmptyView/>}
+                  onEndReached={({ distanceFromEnd }) => {
+                    requestListDetailData({
+                      clear: false,
+                      startDate: startDate,
+                      endDate: endDate,
+                    })
+                  }}
+                  onEndReachedThreshold={0.2}
+                  renderItem={({ item, index }) => renderItemContent(item, index)}/>}
+    {renderCalendar()}
   </View>
+
+  /**
+   * 点击菜单
+   * @param index
+   * @param item
+   */
+  const clickMenu = (index: number, item: IMiddleMenuItem) => {
+    refMenu?.current?.toggleMenu()
+    setCurGroup(Number.parseInt(item.id))
+  }
 
   return (
     <View style={CommStyles.flex}>
-      {
-        [
-          renderCalendarTitle(),
-          renderListContent(),
-        ]
-      }
+      {renderCalendarTitle()}
+      {renderListContent()}
+
+      <MiddleMenu key={menuItem?.map((item) => item?.title)?.toString()}
+                  ref={refMenu}
+                  onMenuClick={clickMenu}
+                  menu={menuItem}/>
     </View>
   )
 }
@@ -268,12 +256,6 @@ const _styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: scale(8),
-  },
-  capital_type_picker: {
-    height: TAB_ITEM_HEIGHT,
-    padding: scale(8),
-    position: 'absolute',
-    width: '100%',
   },
   item_type: {
     flex: 1,

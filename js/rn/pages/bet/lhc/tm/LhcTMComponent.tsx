@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -19,33 +19,25 @@ import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../.
  * @param navigation
  * @constructor
  */
-const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
-
-  const key = 'lottery page' + lotteryCode
-
-  // const { nextIssueData, playOddDetailData, playOddData} = useContext(BetLotteryContext)
+const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
-    setLotteryCode,
-    zodiacData,
-    setZodiacData,
     selectedZodiac,
     setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveZodiac,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcTM()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    setPlayOddData(playOddData)
   }, [])
+  const key = 'lottery page' + playOddData?.code
 
   /**
    * 绘制 特码A 特码B Tab
@@ -56,15 +48,15 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
             _styles.tab_item,
             tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
           ]}>
-      <TouchableOpacity key={key + 'renderTabItem Text'}
+      <TouchableWithoutFeedback key={key + 'renderTabItem Text'}
                         onPress={() => setTabIndex(tab)}
                         style={_styles.tab_title_tb}>
         <Text key={key + 'renderTabItem Text'}
               style={[
                 _styles.tab_title,
                 tabIndex == tab ? { color: 'white' } : null,
-              ]}>{!anyEmpty(pageData) && pageData[tab][0].alias}</Text>
-      </TouchableOpacity>
+              ]}>{!anyEmpty(playOddData?.pageData?.groupTri) && playOddData?.pageData?.groupTri[tab][0].alias}</Text>
+      </TouchableWithoutFeedback>
     </View>
 
   /**
@@ -79,8 +71,9 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   /**
    * 绘制 生肖
    * @param item
+   * @param index
    */
-  const renderZodiacItem = (item?: ZodiacNum, index?: number) => <TouchableOpacity key={key + `${item?.name}_select`}
+  const renderZodiacItem = (item?: ZodiacNum, index?: number) => <TouchableWithoutFeedback key={key + `${item?.name}_select`}
                                                                                    onPress={() => addOrRemoveZodiac(item)}>
     <View key={key + `${item?.name}_select`}
           style={_styles.zodiac_item}>
@@ -97,7 +90,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
       <Text key={key + `${item?.name}_select name`}
             style={_styles.zodiac_item_text}>{item?.name}</Text>
     </View>
-  </TouchableOpacity>
+  </TouchableWithoutFeedback>
 
   /**
    * 绘制生肖
@@ -109,7 +102,7 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
       <View key={key + 'zodiac content'}
             style={_styles.zodiac_container}>
         {
-          zodiacData?.map(renderZodiacItem)
+          playOddData?.pageData?.zodiacNums?.map(renderZodiacItem)
         }
       </View>
     </ScrollView>
@@ -212,9 +205,9 @@ const LhcTMComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {arrayLength(curData) > 0 && renderTM(curData[0])}
-    {arrayLength(curData) > 1 && renderLM(curData[1])}
-    {arrayLength(curData) > 2 && renderSB(curData[2])}
+    {arrayLength(currentPageData()) > 0 && renderTM(currentPageData()[0])}
+    {arrayLength(currentPageData()) > 1 && renderLM(currentPageData()[1])}
+    {arrayLength(currentPageData()) > 2 && renderSB(currentPageData()[2])}
   </View>
 
   return (
@@ -237,7 +230,7 @@ const _styles = StyleSheet.create({
   },
   content_container: {
     flex: 1,
-    paddingBottom: scale(240),
+    paddingBottom: scale(120),
   },
   sub_title_container: {
     alignItems: 'center',

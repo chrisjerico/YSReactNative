@@ -55,22 +55,9 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const { reRender } = useRerender()
 
   const goToPromotionPage = () => {
-    switch (Platform.OS) {
-      case 'ios':
-        push(PageName.PromotionPage, {
-          showBackBtn: true,
-        })
-        break
-      case 'android':
-        // push(PageName.PromotionPage, {
-        //   showBackBtn: true,
-        // })
-        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
-          seriesId: '7',
-          subId: MenuType.YHDD,
-        })
-        break
-    }
+    push(PageName.PromotionPage, {
+      showBackBtn: true,
+    })
   }
 
   const { tryPlay } = useMemo(

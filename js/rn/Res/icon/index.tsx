@@ -29,7 +29,13 @@ function getImage(host: string, pType: string, p1: string, p2?: string, suffix: 
 }
 
 // 线上服务器的图片
-export const getHtml5Image = (id: number, path: string, type: ImageType = 'png') => getImage(undefined, 'views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type)
+export const getHtml5Image = (id: number, path: string, type: ImageType = 'png') => {
+  if (id) {
+    return getImage(undefined, 'views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type)
+  } else {
+    return img_images(path, type)
+  }
+}
 export const img_mobileTemplate = (id: number, path: string, type: ImageType = 'png') => getImage(undefined, 'views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type)
 export const img_home = (path: string, type: ImageType = 'png') => getImage(undefined, 'views/home/images/{p1}', path, undefined, type)
 export const img_platform = (siteId: string, path?: string, type: ImageType = 'png') => getImage(undefined, 'platform/{p1}/images/{p2}', siteId, path, type)
