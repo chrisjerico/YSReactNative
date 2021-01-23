@@ -44,7 +44,7 @@ import PlayChoiceItem from '../../pages/common/LottoBetting/PlayVIew/comm/widget
  */
 const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
 
-  const { game } = route?.params
+  const { game, uriPath } = route?.params
 
   const [path, setPath] = useState("")
   const [key, setkey] = useState(1)
@@ -58,6 +58,10 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
   } = UseGameHall()
 
   useEffect(() => {
+    if (uriPath) {
+      setPath(uriPath)
+      return
+    }
     updateData()
   }, [])
 

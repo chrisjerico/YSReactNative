@@ -114,6 +114,7 @@ import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
 import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
 import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
 
+import OtherRecord from '../../public/components/OtherRecord'
 
 
 /**
@@ -131,6 +132,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   // 彩票大厅-默认
   GameLobbyPage,
   TwoLevelGames,
+  OtherRecord,
   Game3rdView,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
