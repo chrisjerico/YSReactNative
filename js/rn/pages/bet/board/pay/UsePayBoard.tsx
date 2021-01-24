@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import * as React from 'react'
+import { numberToFloatString } from '../../../../public/tools/StringUtil'
 
 /**
  * 下注面板
@@ -101,7 +102,7 @@ const UsePayBoard = () => {
           case LotteryConst.TM:  //特码
             groupData?.plays?.map((playData) => {
               betBean.push({
-                money: moneyMap[playData?.id]?.toString(),
+                money: numberToFloatString(moneyMap[playData?.id]),
                 odds: playData?.odds,
                 playId: playData?.id,
                 playIds: nextIssueData?.id,
@@ -154,7 +155,7 @@ const UsePayBoard = () => {
       endTime: (moment(nextIssueData?.curCloseTime).toDate().getTime() / 1000).toString(),
       gameId: nextIssueData?.id,
       totalNum: itemCount?.toString(),
-      totalMoney: totalMoney?.toString(),
+      totalMoney: numberToFloatString(totalMoney),
       isInstant: nextIssueData?.isInstant
     }
     api.user.userGameBetWithParams(pms)
