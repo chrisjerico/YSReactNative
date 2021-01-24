@@ -17,6 +17,7 @@ export interface IBetLotteryParams {
 }
 
 export interface BetLotteryData {
+  betInfo?: string // 连码等累计选中的数字 7,6,3
   money?: string // 金额10.00
   odds?: string // 赔率48.8000
   playId?: string // 当前彩球id 7127749

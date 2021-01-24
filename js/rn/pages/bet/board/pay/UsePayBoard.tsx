@@ -100,6 +100,11 @@ const UsePayBoard = () => {
       return groupDataArr?.map((groupData) => {
         switch (key) {
           case LotteryConst.TM:  //特码
+          case LotteryConst.LM: //两面
+          case LotteryConst.ZM1_6: //正码1T6
+          case LotteryConst.SB: //色波
+          case LotteryConst.ZOX://总肖
+          case LotteryConst.WX:  //五行
             groupData?.plays?.map((playData) => {
               betBean.push({
                 money: numberToFloatString(moneyMap[playData?.id]),
@@ -118,14 +123,13 @@ const UsePayBoard = () => {
             return null
 
           case LotteryConst.LMA:  //连码
-            return null
-
-          case LotteryConst.LM: //两面
-          case LotteryConst.ZM1_6: //正码1T6
-          case LotteryConst.SB: //色波
-          case LotteryConst.ZOX://总肖
-          case LotteryConst.WX:  //五行
-            return null
+            const play0 = groupData?.plays[0]
+            return {
+              money: numberToFloatString(moneyMap[play0?.id]),
+              playId: play0?.id?.split(',')[0],
+              playIds: nextIssueData?.id,
+              betInfo: groupData?.plays?.map((item) => item?.name).toString()
+            } as BetLotteryData
 
           case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
           case LotteryConst.TX: //特肖

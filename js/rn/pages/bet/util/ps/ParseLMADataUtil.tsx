@@ -46,10 +46,10 @@ const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
     arr = new Array(
       47,
     ).fill(0).map((item, index) => {
-      let ballIndex = ('0' + index).slice(-2)
+      let ballIndex = ('0' + (index + 1)).slice(-2)
       return (
         {
-          id: play0?.id + ballIndex,
+          id: `${play0?.id},${ballIndex}`,
           name: ballIndex,
           odds: `${play0?.odds}\n${data?.plays[1]?.odds}`,
         }

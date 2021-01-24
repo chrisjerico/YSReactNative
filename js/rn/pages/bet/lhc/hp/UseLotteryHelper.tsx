@@ -49,24 +49,41 @@ const UseLotteryHelper = () => {
 //   }
 //   }})
 
+    /**
+     * 投注数据以彩种的形式存在，比如选中了 特码B -> 两面 -> 某个球，存下的数据就是 特码B数据 以及 这个球的数据
+     */
     switch (playOddData?.code) {
       case LotteryConst.TM:  //特码
+      case LotteryConst.LM: //两面
+      case LotteryConst.ZM1_6: //正码1T6
+      case LotteryConst.SB: //色波
+      case LotteryConst.ZOX://总肖
+      case LotteryConst.WX:  //五行
+      case LotteryConst.LMA:  //连码
+      {
+        //选中了哪些球
         const selGroup: Array<PlayGroupData> = []
 
         playOddData?.pageData?.groupTri?.map((pageData) => {
           const tempGroup: Array<PlayGroupData> = pageData?.map((itemData) => {
-            //找出彩球对应的分组
-            const selBalls = itemData?.plays?.filter((item) => selectedBalls.includes(item?.id))
-            return anyEmpty(selBalls) ? null : {...itemData, plays: selBalls} as PlayGroupData
+            //找出选中的球对应的原始数据, 优先使用 自定义数组 exPlays
+            const selBalls = anyEmpty(itemData?.exPlays) ?
+              itemData?.plays?.filter((item) => selectedBalls.includes(item?.id)) :
+              itemData?.exPlays?.filter((item) => selectedBalls.includes(item?.id))
+
+            //再用原始数组和彩种数据组合成 新的选中数据
+            return anyEmpty(selBalls) ? null : { ...itemData, plays: selBalls } as PlayGroupData
           })?.filter((item) => item != null) as Array<PlayGroupData>
 
+          //二维数据变一维数据，比如 选中了 [[两面1，两面2], [色波1，色波2]] 合成 [两面1，两面2, 色波1，色波2]
           !anyEmpty(tempGroup) && selGroup.push(...tempGroup)
         })
 
         selData[playOddData?.code] = selGroup
         const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
-        UGStore.dispatch({type: 'merge', selectedLotteryModel})
-        ugLog('selGroup = ', JSON.stringify(selectedLotteryModel))
+        UGStore.dispatch({ type: 'merge', selectedLotteryModel })
+        ugLog(`selGroup = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+      }
 
         break
 
@@ -75,16 +92,6 @@ const UseLotteryHelper = () => {
 
       case LotteryConst.ZM: //正码
       case LotteryConst.ZT:  //正特
-        break
-
-      case LotteryConst.LMA:  //连码
-        break
-
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:  //五行
         break
 
       case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个

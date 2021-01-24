@@ -1,21 +1,15 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
-import { forwardRef, RefObject, useContext, useEffect, useImperativeHandle, useMemo, useState } from 'react'
-import FastImage from 'react-native-fast-image'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { forwardRef, useMemo } from 'react'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import LotteryConst from '../../const/LotteryConst'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { UGStore } from '../../../../redux/store/UGStore'
 import { ugLog } from '../../../../public/tools/UgLog'
-import BetLotteryContext from '../../BetLotteryContext'
 import UsePayBoard from './UsePayBoard'
-import { Toast } from '../../../../public/tools/ToastUtils'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import SelectedLotteryModel from '../../../../redux/model/game/SelectedLotteryModel'
 
 interface IPayBoardComponent {
   showCallback?: () => void //窗口 是否显示 回调
@@ -56,6 +50,12 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     return groupDataArr?.map((groupData) => {
       switch (key) {
         case LotteryConst.TM:  //特码
+        case LotteryConst.LM: //两面
+        case LotteryConst.ZM1_6: //正码1T6
+        case LotteryConst.SB: //色波
+        case LotteryConst.ZOX://总肖
+        case LotteryConst.WX:  //五行
+        case LotteryConst.LMA:  //连码
           return groupData?.plays?.map((playData) => {
             return (<View key={playData?.id + playData?.name}
                           style={_styles.item_container}>
@@ -75,14 +75,15 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
               <Icon size={scale(36)}
                     onPress={() => {
                       const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
-                      // const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //当前选中的数据
+
+                      //从选中的列表里面 清除删除的数据 重新组建数据
                       Object.keys(selectedData)?.map((key) => {
                         const groupData: Array<PlayGroupData> = selectedData[key]
-                        const newGroupData = groupData?.map((groupData) => ({
+                        newSelectedData[key] = groupData?.map((groupData) => ({
                           ...groupData,
                           plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
-                        }))
-                        newSelectedData[key] = newGroupData
+                          exPlays: groupData?.exPlays?.filter((item) => item?.id != playData?.id),
+                        } as PlayGroupData))
                       })
 
                       //数据少于1了就关闭窗口
@@ -106,16 +107,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
         case LotteryConst.ZM: //正码
         case LotteryConst.ZT:  //正特
-          return null
-
-        case LotteryConst.LMA:  //连码
-          return null
-
-        case LotteryConst.LM: //两面
-        case LotteryConst.ZM1_6: //正码1T6
-        case LotteryConst.SB: //色波
-        case LotteryConst.ZOX://总肖
-        case LotteryConst.WX:  //五行
           return null
 
         case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
