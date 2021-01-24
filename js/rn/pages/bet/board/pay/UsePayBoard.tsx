@@ -1,21 +1,16 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import * as React from 'react'
+import { useContext, useEffect, useState } from 'react'
 import BetLotteryContext from '../../BetLotteryContext'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
-import { Toast } from '../../../../public/tools/ToastUtils'
-import { calculateItemCount } from '../../util/LotteryUtil'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it/bet/IBetLotteryParams'
 import moment from 'moment'
 import LotteryConst from '../../const/LotteryConst'
-import { Text, TextInput, View } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { scale } from '../../../../public/tools/Scale'
-import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import * as React from 'react'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
+import { calculateItemCount, calculateItemMoney } from '../../util/BetUtil'
 
 /**
  * 下注面板
@@ -51,39 +46,15 @@ const UsePayBoard = () => {
   useEffect(() => {
     if (selectedData == null) return
 
-    const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
-    const dataMap = new Map<string, number>()
+    ugLog(' calculate selectedData  =', JSON.stringify(selectedData))
 
     if (nextIssueData?.gameType == 'lhc') {
+      //总共有多少条数据
+      setItemCount(calculateItemCount(selectedData))
 
-      if (selectedData[LotteryConst.LMA] != null) { //连码只需要 1条数据
-        //总共有多少条数据
-        setItemCount(1)
-
-        //只有第1次需要初始化
-        if (anyEmpty(moneyMap)) {
-          const play0 = (selectedData[LotteryConst.LMA][0] as PlayGroupData).plays[0]
-          dataMap[play0?.id] = defaultMoney
-          setMoneyMap(dataMap)
-        }
-
-      } else {
-        //总共有多少条数据
-        setItemCount(calculateItemCount(selectedData))
-
-        //只有第1次需要初始化
-        if (anyEmpty(moneyMap)) {
-          //将每一个彩球拿出来，每个球默认都需要初始化投注金额
-          const groupValueArr: Array<Array<PlayGroupData>> = Object.values(selectedData)
-          const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
-          newGroupData?.map((groupData) => {
-            groupData?.plays?.map((playData) => {
-              dataMap[playData?.id] = defaultMoney
-            })
-          })
-          setMoneyMap(dataMap)
-        }
-
+      //只有第1次需要初始化
+      if (anyEmpty(moneyMap)) {
+        setMoneyMap(calculateItemMoney(selectedData))
       }
 
     } else {
@@ -136,13 +107,28 @@ const UsePayBoard = () => {
             break
 
           case LotteryConst.HX://合肖
-            return null
+          {
+            // const play0 = groupData?.plays[0]
+            const playX = groupData?.plays[arrayLength(groupData?.exZodiacs) - 2]
+
+            ugLog('moneyMap = ', JSON.stringify(moneyMap))
+            ugLog('playX = ', JSON.stringify(playX))
+
+            betBean.push({
+              money: numberToFloatString(moneyMap[playX?.id]),
+              odds: playX?.odds,
+              playId: playX?.id,
+              betInfo: groupData?.exZodiacs?.map((item) => item?.name).toString(),
+            } as BetLotteryData)
+          }
+            break
 
           case LotteryConst.ZM: //正码
           case LotteryConst.ZT:  //正特
             return null
 
           case LotteryConst.LMA:  //连码
+          {
             const play0 = groupData?.plays[0]
             betBean.push({
               money: numberToFloatString(moneyMap[play0?.id]),
@@ -150,6 +136,7 @@ const UsePayBoard = () => {
               playIds: nextIssueData?.id,
               betInfo: groupData?.exPlays?.map((item) => item?.name).toString(),
             } as BetLotteryData)
+          }
             break
 
           case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个

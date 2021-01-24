@@ -105,6 +105,26 @@ const UseLotteryHelper = () => {
         break
 
       case LotteryConst.HX://合肖
+      {
+        //选中了哪些球
+        const selGroup: Array<PlayGroupData> = []
+        const selZodiac = playOddData?.pageData?.zodiacNums?.filter(
+          (zodiac) => selectedBalls.includes(zodiac?.id),
+        )
+
+        //合肖只有一组数据
+        selGroup.push({
+          ...playOddData?.pageData?.groupTri[0][0],
+          exZodiacs: selZodiac,
+        } as PlayGroupData)
+
+        selData[playOddData?.code] = selGroup
+        const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
+        UGStore.dispatch({ type: 'merge', selectedLotteryModel })
+        ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
+        ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+      }
+
         break
 
       case LotteryConst.ZM: //正码

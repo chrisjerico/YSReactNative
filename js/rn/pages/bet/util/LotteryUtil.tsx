@@ -38,20 +38,6 @@ const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum =>
     || (!anyEmpty(item?.alias) && zodiac?.alias == item?.alias)))
 
 /**
- * 计算彩票下注时候，选中的条目数量
- * @param selectedData
- */
-const calculateItemCount = (selectedData?: Map<string, Array<PlayGroupData>>): number => {
-  //总共有多少条数据
-  const groupValueArr: Array<Array<PlayGroupData>> = selectedData == null ? null : Object.values(selectedData)
-  //2维数组转1维数组
-  const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
-  return anyEmpty(newGroupData) ? 0 : newGroupData.map((item) =>
-    arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
-
-}
-
-/**
  * 解析下注数据，避免绘制UI的时候再刷新数据，每个界面有 3层数据，
  *
  * [ tab1, tab2, tab3 ...
@@ -207,5 +193,4 @@ export {
   findZodiacByName,
   parseLotteryDetailData,
   combinePlayAndZodiac,
-  calculateItemCount,
 }
