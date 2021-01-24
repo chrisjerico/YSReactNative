@@ -10,7 +10,7 @@ import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it
 import moment from 'moment'
 import LotteryConst from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
-import { calculateItemCount, calculateItemMoney } from '../../util/BetUtil'
+import { calculateItemCount, calculateItemMoney } from '../tl/BetUtil'
 
 /**
  * 下注面板
@@ -110,9 +110,6 @@ const UsePayBoard = () => {
           {
             // const play0 = groupData?.plays[0]
             const playX = groupData?.plays[arrayLength(groupData?.exZodiacs) - 2]
-
-            ugLog('moneyMap = ', JSON.stringify(moneyMap))
-            ugLog('playX = ', JSON.stringify(playX))
 
             betBean.push({
               money: numberToFloatString(moneyMap[playX?.id]),

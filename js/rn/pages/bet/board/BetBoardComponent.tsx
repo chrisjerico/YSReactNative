@@ -24,7 +24,7 @@ import PayBoardComponent from './pay/PayBoardComponent'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { Toast } from '../../../public/tools/ToastUtils'
-import { calculateItemCount } from '../util/BetUtil'
+import { calculateItemCount } from './tl/BetUtil'
 
 /**
  * 彩票功能区入参
