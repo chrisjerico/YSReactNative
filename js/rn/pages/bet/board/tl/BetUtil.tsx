@@ -23,6 +23,7 @@ import parseLXData from '../../util/ps/ParseLXDataUtil'
 import parseLWData from '../../util/ps/ParseLWDataUtil'
 import parseZXBZData from '../../util/ps/ParseZXBZDataUtil'
 import { UGStore } from '../../../../redux/store/UGStore'
+import { zodiacPlayX } from './hx/BetHXUtil'
 
 /**
  * 下注辅助类
@@ -72,7 +73,7 @@ const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): M
       case LotteryConst.HX://部分彩种 只计算 1条数据
       {
         const groupData = (selectedData[key][0] as PlayGroupData)
-        const playX = groupData.plays[arrayLength(groupData?.exZodiacs) - 2]
+        const playX = zodiacPlayX(groupData)
         dataMap[playX?.id] = defaultMoney
       }
 

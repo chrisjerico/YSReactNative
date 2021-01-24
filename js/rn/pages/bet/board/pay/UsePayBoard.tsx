@@ -11,6 +11,7 @@ import moment from 'moment'
 import LotteryConst from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
 import { calculateItemCount, calculateItemMoney } from '../tl/BetUtil'
+import { zodiacPlayX } from '../tl/hx/BetHXUtil'
 
 /**
  * 下注面板
@@ -76,7 +77,10 @@ const UsePayBoard = () => {
    */
   useEffect(() => {
     ugLog('total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
-    const money = anyEmpty(moneyMap) ? 0 : Object.values(moneyMap)?.reduce((previousValue, currentValue) => previousValue + currentValue)
+    const money = anyEmpty(moneyMap) ?
+      0 :
+      Object.values(moneyMap)?.reduce((previousValue, currentValue) =>
+        previousValue + currentValue)
     setTotalMoney(money)
   }, [moneyMap])
 
@@ -108,8 +112,7 @@ const UsePayBoard = () => {
 
           case LotteryConst.HX://合肖
           {
-            // const play0 = groupData?.plays[0]
-            const playX = groupData?.plays[arrayLength(groupData?.exZodiacs) - 2]
+            const playX = zodiacPlayX(groupData)
 
             betBean.push({
               money: numberToFloatString(moneyMap[playX?.id]),
