@@ -30,7 +30,7 @@ interface AutoHeightCouponAutoHeightCouponComponentProps {
 const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyle, titleStyle, slide = false, linkUrl, linkCategory, linkPosition }: AutoHeightCouponAutoHeightCouponComponentProps) => {
   const [aspectRatio, setAspectRatio] = useState(undefined)
   const [showPop, setShowPop] = useState(false)
-  const [showUrl, setShowUrl] = useState((linkUrl.length>0) || (linkCategory>0))
+  const [showUrl, setShowUrl] = useState((linkUrl?.length>0) || (linkCategory>0))
   // const [show, setShow] = useState(true)
   // if (show) {
     ugLog("linkUrl: " + linkUrl + ", linkCategory：" + linkCategory + ", linkPosition: " + linkPosition + ", showUrl: " + showUrl)

@@ -28,10 +28,13 @@ const NoticeBlock = ({ logo, logoText = '公告', notices, containerStyle, onPre
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.iconContainer, iconContainerStyle]}>
-        {logo ? <FastImage resizeMode={'stretch'} style={styles.iconImage} source={{ uri: logo }} /> : <Text style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</Text>}
+        {logo ? <FastImage resizeMode={'contain'} style={styles.iconImage} source={{ uri: logo }} /> : <Text style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</Text>}
       </View>
       <View style={styles.noticContainer}>
-        <MarqueeHorizontal width={AppDefine.width * 0.85} height={null} textStyle={textStyle} textList={cleanContents} speed={60} onTextClick={onPressNotice} bgContainerStyle={bgContainerStyle} />
+        <MarqueeHorizontal
+          width={AppDefine.width * 0.85} height={null} textStyle={textStyle} textList={cleanContents} speed={60}
+          onTextClick={() => onPressNotice({ content: cleanContents.map((ele) => ele.content).join('') })}
+          bgContainerStyle={bgContainerStyle} />
       </View>
     </View>
   )
@@ -50,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconImage: {
-    width: '100%',
+    height: '60%',
     aspectRatio: 1,
   },
   noticContainer: {

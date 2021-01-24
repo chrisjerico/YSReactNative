@@ -63,16 +63,11 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: false,
       允许未登录访问: false,
     })
-
-
   }
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
     // tars
-    if (skitType.indexOf('宝石红') != -1) {
-      pages = pages.concat(BSHPages)
-    }
     if (skitType.indexOf('六合厅') != -1) {
       pages = pages.concat(LHTPages)
     }
@@ -150,7 +145,14 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: false,
       允许未登录访问: false,
     })
-
+    // 首页
+    pages.push({
+      tabbarItemPath: '/home',
+      rnName: PageName.JDHomePage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
