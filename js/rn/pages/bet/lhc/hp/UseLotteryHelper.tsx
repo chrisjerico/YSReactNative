@@ -66,13 +66,29 @@ const UseLotteryHelper = () => {
 
         playOddData?.pageData?.groupTri?.map((pageData) => {
           const tempGroup: Array<PlayGroupData> = pageData?.map((itemData) => {
-            //找出选中的球对应的原始数据, 优先使用 自定义数组 exPlays
-            const selBalls = anyEmpty(itemData?.exPlays) ?
-              itemData?.plays?.filter((item) => selectedBalls.includes(item?.id)) :
-              itemData?.exPlays?.filter((item) => selectedBalls.includes(item?.id))
+            // 优先使用 自定义数组 exPlays
+            if (anyEmpty(itemData?.exPlays)) {
+              //找出选中的球对应的原始数据
+              const selBalls = itemData?.plays?.filter((item) => selectedBalls.includes(item?.id))
+              //再用原始数组和彩种数据组合成 新的选中数据
+              return anyEmpty(selBalls) ?
+                null :
+                {
+                  ...itemData,
+                  plays: selBalls,
+                } as PlayGroupData
+            } else {
+              //找出选中的球对应的原始数据
+              const selBalls = itemData?.exPlays?.filter((item) => selectedBalls.includes(item?.id))
+              //再用原始数组和彩种数据组合成 新的选中数据
+              return anyEmpty(selBalls) ?
+                null :
+                {
+                  ...itemData,
+                  exPlays: selBalls,
+                } as PlayGroupData
+            }
 
-            //再用原始数组和彩种数据组合成 新的选中数据
-            return anyEmpty(selBalls) ? null : { ...itemData, plays: selBalls } as PlayGroupData
           })?.filter((item) => item != null) as Array<PlayGroupData>
 
           //二维数据变一维数据，比如 选中了 [[两面1，两面2], [色波1，色波2]] 合成 [两面1，两面2, 色波1，色波2]
@@ -82,7 +98,8 @@ const UseLotteryHelper = () => {
         selData[playOddData?.code] = selGroup
         const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
         UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-        ugLog(`selGroup = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+        ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
+        ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
       }
 
         break

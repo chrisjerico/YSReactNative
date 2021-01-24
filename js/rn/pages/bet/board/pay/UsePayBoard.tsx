@@ -51,23 +51,43 @@ const UsePayBoard = () => {
   useEffect(() => {
     if (selectedData == null) return
 
-    //总共有多少条数据
-    setItemCount(calculateItemCount(selectedData))
+    const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
+    const dataMap = new Map<string, number>()
 
-    //只有第1次需要初始化
-    if (anyEmpty(moneyMap)) {
-      const dataMap = new Map<string, number>()
-      const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
+    if (nextIssueData?.gameType == 'lhc') {
 
-      const groupValueArr: Array<Array<PlayGroupData>> = Object.values(selectedData)
-      ugLog('groupValueArr = ', JSON.stringify(groupValueArr))
-      const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
-      newGroupData?.map((groupData) => {
-        groupData?.plays?.map((playData) => {
-          dataMap[playData?.id] = defaultMoney
-        })
-      })
-      setMoneyMap(dataMap)
+      if (selectedData[LotteryConst.LMA] != null) { //连码只需要 1条数据
+        //总共有多少条数据
+        setItemCount(1)
+
+        //只有第1次需要初始化
+        if (anyEmpty(moneyMap)) {
+          const play0 = (selectedData[LotteryConst.LMA][0] as PlayGroupData).plays[0]
+          dataMap[play0?.id] = defaultMoney
+          setMoneyMap(dataMap)
+        }
+
+      } else {
+        //总共有多少条数据
+        setItemCount(calculateItemCount(selectedData))
+
+        //只有第1次需要初始化
+        if (anyEmpty(moneyMap)) {
+          //将每一个彩球拿出来，每个球默认都需要初始化投注金额
+          const groupValueArr: Array<Array<PlayGroupData>> = Object.values(selectedData)
+          const newGroupData = anyEmpty(groupValueArr) ? null : groupValueArr?.flat(2)
+          newGroupData?.map((groupData) => {
+            groupData?.plays?.map((playData) => {
+              dataMap[playData?.id] = defaultMoney
+            })
+          })
+          setMoneyMap(dataMap)
+        }
+
+      }
+
+    } else {
+
     }
 
   }, [selectedData])
@@ -124,12 +144,13 @@ const UsePayBoard = () => {
 
           case LotteryConst.LMA:  //连码
             const play0 = groupData?.plays[0]
-            return {
+            betBean.push({
               money: numberToFloatString(moneyMap[play0?.id]),
-              playId: play0?.id?.split(',')[0],
+              playId: play0?.id,
               playIds: nextIssueData?.id,
-              betInfo: groupData?.plays?.map((item) => item?.name).toString()
-            } as BetLotteryData
+              betInfo: groupData?.exPlays?.map((item) => item?.name).toString(),
+            } as BetLotteryData)
+            break
 
           case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
           case LotteryConst.TX: //特肖
@@ -160,7 +181,7 @@ const UsePayBoard = () => {
       gameId: nextIssueData?.id,
       totalNum: itemCount?.toString(),
       totalMoney: numberToFloatString(totalMoney),
-      isInstant: nextIssueData?.isInstant
+      isInstant: nextIssueData?.isInstant,
     }
     api.user.userGameBetWithParams(pms)
   }
