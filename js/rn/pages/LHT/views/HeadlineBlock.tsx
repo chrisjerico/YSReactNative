@@ -4,8 +4,8 @@ import { Icon } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import { MarqueeVertical } from 'react-native-marquee-ab'
 import { scale } from '../../../public/tools/Scale'
-import StringUtils from '../../../public/tools/StringUtils'
 import { INoticePop } from '../../../redux/model/home/INoticeBean'
+import { deleteHtml } from '../../../public/tools/StringUtil'
 
 interface HeadlineBlockProps {
   containerStyle?: ViewStyle
@@ -16,7 +16,7 @@ interface HeadlineBlockProps {
 
 const HeadlineBlock = ({ onPressHeadline, headlines, headLineLogo = '', containerStyle }: HeadlineBlockProps) => {
   const [display, setDisplay] = useState(true)
-  const cleanContents = headlines.map((headline, index) => ({ label: index.toString(), value: StringUtils.getInstance().deleteHtml(headline?.content) }))
+  const cleanContents = headlines.map((headline, index) => ({ label: index.toString(), value: deleteHtml(headline?.content) }))
   return display ? (
     <View style={[styles.container, containerStyle]}>
       <View style={{ flex: 70 }}>

@@ -4,7 +4,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
 import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
-import StringUtils from '../../tools/StringUtils'
+import { deleteHtml } from '../../tools/StringUtil'
 
 interface TabComponentProps {
   tabGames: TabGame[]
@@ -179,7 +179,7 @@ const TabComponent = ({
               contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
               scrollEventThrottle={5000}>
               {tabGames?.map((item, index) => {
-                const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
+                const title = deleteHtml(item?.name ?? item?.categoryName ?? '')
                 return (
                   <TouchableWithoutFeedback
                     key={index}
@@ -228,7 +228,7 @@ const TabComponent = ({
       {tabGames?.map((ele: TabGame, index) => {
         const tab = ele?.name ?? ele?.categoryName ?? ''
         const item = ele?.list ?? ele?.games ?? []
-        return Scene && <Scene key={index} tabLabel={StringUtils.getInstance().deleteHtml(tab)} item={item} index={index} tab={tab} />
+        return Scene && <Scene key={index} tabLabel={deleteHtml(tab)} item={item} index={index} tab={tab} />
       })}
     </ScrollableTabView>
   )
