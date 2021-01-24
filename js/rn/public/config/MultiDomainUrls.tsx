@@ -395,6 +395,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://065155.com',
     'https://012633.com',
   ],
+  'c243': [
+    'https://55979711.vip',
+    'https://55979722.vip',
+    'https://55979733.vip',
+    'https://55979744.vip',
+    'https://55979755.vip',
+  ],
   'c245': [
     'https://4823app.com',
   ],
