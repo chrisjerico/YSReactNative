@@ -193,8 +193,6 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                  value={inputMoney}
                  style={_styles.input_text}
                  onChangeText={(s) => {
-                   const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(s) }
-                   UGStore.dispatch({ type: 'merge', selectedLotteryModel })
                    setInputMoney(s)
                  }}
                  keyboardType={'numeric'}/>

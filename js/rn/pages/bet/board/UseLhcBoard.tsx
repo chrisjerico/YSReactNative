@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react'
 import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import BetLotteryContext from '../BetLotteryContext'
+import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 
 
 /**
@@ -22,8 +23,13 @@ const UseLhcBoard = () => {
     playOddDetailData
   } = useContext(BetLotteryContext)
 
+  /**
+   * 输入金额有变化
+   */
   useEffect(() => {
-  }, [])
+    const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(inputMoney) }
+    UGStore.dispatch({ type: 'merge', selectedLotteryModel })
+  }, [inputMoney])
 
   return {
     showBetPayment,

@@ -38,12 +38,96 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     calculateItemCount,
   } = UsePayBoard()
 
-  // useEffect(() => setShowCallback(showCallback), [])
+  /**
+   * 绘制 特码 等条目
+   * @param groupData
+   */
+  const renderTMItem = (groupData?: PlayGroupData) => {
+    return groupData?.plays?.map((playData) => {
+      return (<View key={playData?.id + playData?.name}
+                    style={_styles.item_container}>
+        <Text style={_styles.item_title}
+              numberOfLines={2}>{
+          `[ ${groupData?.alias}-${playData?.id} ]`
+        }</Text>
+        <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
+        <Text style={_styles.item_x}>{'X'}</Text>
+        <TextInput defaultValue={averageMoney?.toString()}
+                   onChangeText={text => setMoneyMap(prevState => {
+                     const dataMap = new Map<string, number>()
+                     dataMap[playData?.id] = Number.parseFloat(text)
+                     // ugLog('prevState = ', JSON.stringify(prevState))
+                     // ugLog('dataMap = ', JSON.stringify(dataMap))
+                     return { ...prevState, ...dataMap }
+                   })}
+                   keyboardType={'numeric'}
+                   style={_styles.item_input}/>
+        <Icon size={scale(36)}
+              onPress={() => {
+                const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
 
-  // ugLog('Object?.values(selectedData)=', Object?.values(selectedData))
-  // ugLog('Object.keys(selectedData) = ', Object.keys(selectedData))
+                //从选中的列表里面 清除删除的数据 重新组建数据
+                Object.keys(selectedData)?.map((key) => {
+                  const groupData: Array<PlayGroupData> = selectedData[key]
+                  newSelectedData[key] = groupData?.map((groupData) => ({
+                    ...groupData,
+                    plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
+                    exPlays: groupData?.exPlays?.filter((item) => item?.id != playData?.id),
+                  } as PlayGroupData))
+                })
 
-  // ugLog('itemCount = ', itemCount, JSON.stringify(groupValueArr?.flat(2)))
+                //数据少于1了就关闭窗口
+                if (calculateItemCount(newSelectedData) <= 0) {
+                  showCallback && showCallback()
+                } else {
+                  setSelectedData(newSelectedData)
+                }
+
+              }}
+              style={_styles.item_trash}
+              color={Skin1.themeColor}
+              name={'trash-o'}/>
+      </View>)
+    })
+  }
+
+  /**
+   * 绘制合肖等数据
+   * @param groupData
+   * @param des
+   */
+  const renderHXItem = (groupData?: PlayGroupData,
+                        des?: string) => {
+    const play0 = groupData?.plays[0]
+    return (<View key={play0?.id + play0?.name}
+                  style={_styles.item_container}>
+      <Text style={_styles.item_title}
+            numberOfLines={2}>{
+        `[ ${groupData?.alias} - ${des} ]`
+      }</Text>
+      <TextInput defaultValue={averageMoney?.toString()}
+                 onChangeText={text => setMoneyMap(prevState => {
+                   const dataMap = new Map<string, number>()
+                   dataMap[play0?.id] = Number.parseFloat(text)
+                   // ugLog('prevState = ', JSON.stringify(prevState))
+                   // ugLog('dataMap = ', JSON.stringify(dataMap))
+                   return { ...prevState, ...dataMap }
+                 })}
+                 keyboardType={'numeric'}
+                 style={_styles.item_input}/>
+      <Icon size={scale(36)}
+            onPress={() => {
+              // const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
+              // newSelectedData[key] = null
+              showCallback && showCallback()
+
+            }}
+            style={_styles.item_trash}
+            color={Skin1.themeColor}
+            name={'trash-o'}/>
+    </View>)
+
+  }
 
   // 生成数据对应的 View
   const itemViewArr = anyEmpty(selectedData) ? null : (Object.values(selectedData) as Array<Array<PlayGroupData>>).flat(2).map(
@@ -57,124 +141,19 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LotteryConst.SB: //色波
         case LotteryConst.ZOX://总肖
         case LotteryConst.WX:  //五行
-          return groupData?.plays?.map((playData) => {
-            return (<View key={playData?.id + playData?.name}
-                          style={_styles.item_container}>
-              <Text style={_styles.item_title}
-                    numberOfLines={2}>{
-                `[ ${groupData?.alias}-${playData?.id} ]`
-              }</Text>
-              <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
-              <Text style={_styles.item_x}>{'X'}</Text>
-              <TextInput defaultValue={averageMoney?.toString()}
-                         onChangeText={text => setMoneyMap(prevState => {
-                           const dataMap = new Map<string, number>()
-                           dataMap[playData?.id] = Number.parseFloat(text)
-                           // ugLog('prevState = ', JSON.stringify(prevState))
-                           // ugLog('dataMap = ', JSON.stringify(dataMap))
-                           return { ...prevState, ...dataMap }
-                         })}
-                         keyboardType={'numeric'}
-                         style={_styles.item_input}/>
-              <Icon size={scale(36)}
-                    onPress={() => {
-                      const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
-
-                      //从选中的列表里面 清除删除的数据 重新组建数据
-                      Object.keys(selectedData)?.map((key) => {
-                        const groupData: Array<PlayGroupData> = selectedData[key]
-                        newSelectedData[key] = groupData?.map((groupData) => ({
-                          ...groupData,
-                          plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
-                          exPlays: groupData?.exPlays?.filter((item) => item?.id != playData?.id),
-                        } as PlayGroupData))
-                      })
-
-                      //数据少于1了就关闭窗口
-                      if (calculateItemCount(newSelectedData) <= 0) {
-                        showCallback && showCallback()
-                      } else {
-                        setSelectedData(newSelectedData)
-                      }
-
-                    }}
-                    style={_styles.item_trash}
-                    color={Skin1.themeColor}
-                    name={'trash-o'}/>
-            </View>)
-          })
+          return renderTMItem(groupData)
 
         case LotteryConst.HX://合肖
-        {
-          const play0 = groupData?.plays[0]
-          const exZodiacsStr = groupData?.exZodiacs?.map((item) => item?.name)?.toString()
-          return (<View key={play0?.id + play0?.name}
-                        style={_styles.item_container}>
-            <Text style={_styles.item_title}
-                  numberOfLines={2}>{
-              `[ ${groupData?.alias} - ${exZodiacsStr} ]`
-            }</Text>
-            <TextInput defaultValue={averageMoney?.toString()}
-                       onChangeText={text => setMoneyMap(prevState => {
-                         const dataMap = new Map<string, number>()
-                         dataMap[play0?.id] = Number.parseFloat(text)
-                         // ugLog('prevState = ', JSON.stringify(prevState))
-                         // ugLog('dataMap = ', JSON.stringify(dataMap))
-                         return { ...prevState, ...dataMap }
-                       })}
-                       keyboardType={'numeric'}
-                       style={_styles.item_input}/>
-            <Icon size={scale(36)}
-                  onPress={() => {
-                    const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
-                    newSelectedData[key] = null
-                    showCallback && showCallback()
-
-                  }}
-                  style={_styles.item_trash}
-                  color={Skin1.themeColor}
-                  name={'trash-o'}/>
-          </View>)
-        }
-          break
+          return renderHXItem(groupData,
+            groupData?.exZodiacs?.map((item) => item?.name)?.toString())
 
         case LotteryConst.ZM: //正码
         case LotteryConst.ZT:  //正特
           return null
 
         case LotteryConst.LMA:  //连码
-        {
-          const play0 = groupData?.plays[0]
-          const exPlayStr = groupData?.exPlays?.map((item) => item?.name)?.toString()
-          return (<View key={play0?.id + play0?.name}
-                        style={_styles.item_container}>
-            <Text style={_styles.item_title}
-                  numberOfLines={2}>{
-              `[ ${groupData?.alias} - ${exPlayStr} ]`
-            }</Text>
-            <TextInput defaultValue={averageMoney?.toString()}
-                       onChangeText={text => setMoneyMap(prevState => {
-                         const dataMap = new Map<string, number>()
-                         dataMap[play0?.id] = Number.parseFloat(text)
-                         // ugLog('prevState = ', JSON.stringify(prevState))
-                         // ugLog('dataMap = ', JSON.stringify(dataMap))
-                         return { ...prevState, ...dataMap }
-                       })}
-                       keyboardType={'numeric'}
-                       style={_styles.item_input}/>
-            <Icon size={scale(36)}
-                  onPress={() => {
-                    const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
-                    newSelectedData[key] = null
-                    showCallback && showCallback()
-
-                  }}
-                  style={_styles.item_trash}
-                  color={Skin1.themeColor}
-                  name={'trash-o'}/>
-          </View>)
-        }
-          break
+          return renderHXItem(groupData,
+            groupData?.exPlays?.map((item) => item?.name)?.toString())
 
         case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         case LotteryConst.TX: //特肖
