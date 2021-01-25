@@ -119,7 +119,8 @@ const games = {
           anyEmpty(gameData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <FlatList 
-                 style={[{backgroundColor:'blue',width:AppDefine.width }]}
+                 style={[{backgroundColor:'blue',width:AppDefine.width}]}
+                //  contentContainerStyle ={{ alignItems: 'center',}}
                 refreshControl={refreshCT}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => item.category + index}

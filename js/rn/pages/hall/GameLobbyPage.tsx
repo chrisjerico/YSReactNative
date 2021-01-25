@@ -38,7 +38,6 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
   } = UseGameHall()
 
   useEffect(() => {
-    console.log('00000121===============');
     
     requestGameData()
   }, [])
