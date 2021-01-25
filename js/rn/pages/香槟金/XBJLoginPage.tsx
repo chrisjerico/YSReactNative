@@ -17,11 +17,11 @@ import { UGStore } from '../../redux/store/UGStore';
 import { setProps, UGBasePageProps } from '../base/UGPage';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { XBJRegisterProps } from './XBJRegisterPage';
-import { navigate, pop } from '../../public/navigation/RootNavigation';
+import { jumpTo, navigate, pop, push, replace } from '../../public/navigation/RootNavigation';
 import { hideLoading, showError, showLoading, showMessage, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { TextFieldAlertCP } from '../../public/widget/TextFieldAlertCP';
-import { useHtml5Image } from '../../Res/icon';
+import { img_assets, useHtml5Image } from '../../Res/icon';
 
 // 声明成员变量
 interface XJBLoginVars {
@@ -250,7 +250,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
           style={{ width: 52, flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.3)', justifyContent: 'center' }}
           activeOpacity={1}
           onPress={() => {
-            navigate<XBJRegisterProps>(PageName.XBJRegisterPage);
+            push<XBJRegisterProps>(PageName.XBJRegisterPage);
           }}>
           <FastImage source={{ uri: img_assets('entry_login_toggle_btn') }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
           <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>注册新用户</Text>
