@@ -231,7 +231,8 @@ const BetRecordListComponent = ({
 
 const _styles = StyleSheet.create({
   ball_item_container: {
-    padding: scale(8),
+    paddingHorizontal: scale(8),
+    paddingVertical: scale(6),
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: scale(1),
