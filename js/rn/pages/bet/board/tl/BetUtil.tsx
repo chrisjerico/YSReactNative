@@ -1,4 +1,4 @@
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength } from '../../../../public/tools/Ext'
 import {
   PagePlayOddData,
   PlayGroupData,
@@ -62,32 +62,35 @@ const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): M
 
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
   keys?.map((key) => {
-    switch (key) {
-      case LotteryConst.LMA://部分彩种 只计算 1条数据
-      {
-        const play0 = (selectedData[key][0] as PlayGroupData).plays[0]
-        dataMap[play0?.id] = defaultMoney
-      }
+    if(!arrayEmpty(selectedData[key])) {
+      switch (key) {
+        case LotteryConst.LMA://部分彩种 只计算 1条数据
+        {
+          const play0 = (selectedData[key][0] as PlayGroupData).plays[0]
+          dataMap[play0?.id] = defaultMoney
+        }
 
-        break
-      case LotteryConst.HX://部分彩种 只计算 1条数据
-      {
-        const groupData = (selectedData[key][0] as PlayGroupData)
-        const playX = zodiacPlayX(groupData)
-        dataMap[playX?.id] = defaultMoney
-      }
+          break
+        case LotteryConst.HX://部分彩种 只计算 1条数据
+        {
+          const groupData = (selectedData[key][0] as PlayGroupData)
+          const playX = zodiacPlayX(groupData)
+          dataMap[playX?.id] = defaultMoney
+        }
 
-        break
-      default:
-        //选中的数据有多少组
-        const value: Array<PlayGroupData> = selectedData[key]
-        value?.map((groupData) => {
-          groupData?.plays?.map((playData) => {
-            dataMap[playData?.id] = defaultMoney
+          break
+        default:
+          //选中的数据有多少组
+          const value: Array<PlayGroupData> = selectedData[key]
+          value?.map((groupData) => {
+            groupData?.plays?.map((playData) => {
+              dataMap[playData?.id] = defaultMoney
+            })
           })
-        })
 
-        break
+          break
+      }
+
     }
   })
 

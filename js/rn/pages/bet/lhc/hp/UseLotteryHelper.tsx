@@ -17,6 +17,8 @@ import parseLWData from '../../util/ps/ParseLWDataUtil'
 import parseZXBZData from '../../util/ps/ParseZXBZDataUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
 import SelectedLotteryModel from '../../../../redux/model/game/SelectedLotteryModel'
+import { parseLMASelectedData } from '../../util/sel/ParseLMASelectedUtil'
+import { parseHXSelectedData } from '../../util/sel/ParseHXSelectedUtil'
 
 /**
  * 彩票公共处理类
@@ -61,68 +63,65 @@ const UseLotteryHelper = () => {
       case LotteryConst.WX:  //五行
       case LotteryConst.LMA:  //连码
       {
-        //选中了哪些球
-        const selGroup: Array<PlayGroupData> = []
 
-        playOddData?.pageData?.groupTri?.map((pageData) => {
-          const tempGroup: Array<PlayGroupData> = pageData?.map((itemData) => {
-            // 优先使用 自定义数组 exPlays
-            if (anyEmpty(itemData?.exPlays)) {
-              //找出选中的球对应的原始数据
-              const selBalls = itemData?.plays?.filter((item) => selectedBalls.includes(item?.id))
-              //再用原始数组和彩种数据组合成 新的选中数据
-              return anyEmpty(selBalls) ?
-                null :
-                {
-                  ...itemData,
-                  plays: selBalls,
-                } as PlayGroupData
-            } else {
-              //找出选中的球对应的原始数据
-              const selBalls = itemData?.exPlays?.filter((item) => selectedBalls.includes(item?.id))
-              //再用原始数组和彩种数据组合成 新的选中数据
-              return anyEmpty(selBalls) ?
-                null :
-                {
-                  ...itemData,
-                  exPlays: selBalls,
-                } as PlayGroupData
-            }
-
-          })?.filter((item) => item != null) as Array<PlayGroupData>
-
-          //二维数据变一维数据，比如 选中了 [[两面1，两面2], [色波1，色波2]] 合成 [两面1，两面2, 色波1，色波2]
-          !anyEmpty(tempGroup) && selGroup.push(...tempGroup)
-        })
-
-        selData[playOddData?.code] = selGroup
-        const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
-        UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-        ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
-        ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+        selData[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
+        // //选中了哪些球
+        // const selGroup: Array<PlayGroupData> = []
+        //
+        // playOddData?.pageData?.groupTri?.map((pageData) => {
+        //   const tempGroup: Array<PlayGroupData> = pageData?.map((itemData) => {
+        //     // 优先使用 自定义数组 exPlays
+        //     if (anyEmpty(itemData?.exPlays)) {
+        //       //找出选中的球对应的原始数据
+        //       const selBalls = itemData?.plays?.filter((item) => selectedBalls.includes(item?.id))
+        //       //再用原始数组和彩种数据组合成 新的选中数据
+        //       return anyEmpty(selBalls) ?
+        //         null :
+        //         {
+        //           ...itemData,
+        //           plays: selBalls,
+        //         } as PlayGroupData
+        //     } else {
+        //       //找出选中的球对应的原始数据
+        //       const selBalls = itemData?.exPlays?.filter((item) => selectedBalls.includes(item?.id))
+        //       //再用原始数组和彩种数据组合成 新的选中数据
+        //       return anyEmpty(selBalls) ?
+        //         null :
+        //         {
+        //           ...itemData,
+        //           exPlays: selBalls,
+        //         } as PlayGroupData
+        //     }
+        //
+        //   })?.filter((item) => item != null) as Array<PlayGroupData>
+        //
+        //   //二维数据变一维数据，比如 选中了 [[两面1，两面2], [色波1，色波2]] 合成 [两面1，两面2, 色波1，色波2]
+        //   !anyEmpty(tempGroup) && selGroup.push(...tempGroup)
+        // })
+        //
+        // selData[playOddData?.code] = selGroup
+        // const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
+        // UGStore.dispatch({ type: 'merge', selectedLotteryModel })
+        // ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
+        // ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
       }
 
         break
 
       case LotteryConst.HX://合肖
       {
-        //选中了哪些球
-        const selGroup: Array<PlayGroupData> = []
-        const selZodiac = playOddData?.pageData?.zodiacNums?.filter(
-          (zodiac) => selectedBalls.includes(zodiac?.id),
-        )
-
-        //合肖只有一组数据
-        selGroup.push({
-          ...playOddData?.pageData?.groupTri[0][0],
-          exZodiacs: selZodiac,
-        } as PlayGroupData)
-
-        selData[playOddData?.code] = selGroup
-        const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
-        UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-        ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
-        ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+        // //选中了哪些球
+        // const selGroup: Array<PlayGroupData> = []
+        // const selZodiac = playOddData?.pageData?.zodiacNums?.filter(
+        //   (zodiac) => selectedBalls.includes(zodiac?.id),
+        // )
+        //
+        // //合肖只有一组数据
+        // selGroup.push({
+        //   ...playOddData?.pageData?.groupTri[0][0],
+        //   exZodiacs: selZodiac,
+        // } as PlayGroupData)
+        selData[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
       }
 
         break
@@ -147,6 +146,12 @@ const UseLotteryHelper = () => {
       case LotteryConst.ZXBZ:  //自选不中
         break
     }
+
+    const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
+    UGStore.dispatch({ type: 'merge', selectedLotteryModel })
+    ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
+    ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+
   }, [selectedBalls])
 
   //当前选中的第几页数据

@@ -1,6 +1,9 @@
 import * as React from 'react'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { arrayLength } from '../../../../../public/tools/Ext'
+/**
+ * 合肖下注工具类
+ */
 
 /**
  * 合肖根据选中的数据找出对应的赔率

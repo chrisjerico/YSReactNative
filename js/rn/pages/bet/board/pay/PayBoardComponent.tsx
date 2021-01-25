@@ -10,6 +10,7 @@ import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddD
 import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { anyEmpty } from '../../../../public/tools/Ext'
 
 interface IPayBoardComponent {
   showCallback?: () => void //窗口 是否显示 回调
@@ -45,10 +46,10 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   // ugLog('itemCount = ', itemCount, JSON.stringify(groupValueArr?.flat(2)))
 
   // 生成数据对应的 View
-  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((key) => {
-    //这个彩种有几组数据，像 特码B就有3组，由 特码,两面,色波 组成
-    const groupDataArr: Array<PlayGroupData> = selectedData[key]
-    return groupDataArr?.map((groupData) => {
+  const itemViewArr = anyEmpty(selectedData) ? null : (Object.values(selectedData) as Array<Array<PlayGroupData>>).flat(2).map(
+    (groupData, index) => {
+      const key = groupData?.code
+      ugLog('key 2 index = ', key, index)
       switch (key) {
         case LotteryConst.TM:  //特码
         case LotteryConst.LM: //两面
@@ -192,11 +193,10 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
           return null
       }
 
+
     })
 
-  }).flat(2)
-
-  const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * ITEM_HEIGHT, [itemCount])
+  const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * BET_ITEM_HEIGHT, [itemCount])
 
   return (
     <View style={_styles.container}>
@@ -251,8 +251,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   )
 }
 
-const ITEM_HEIGHT = scale(68) //每个条目高度
-const ITEM_WIDTH = scale(440) //每个条目宽度
+const BET_ITEM_HEIGHT = scale(68) //每个条目高度
+const BET_ITEM_WIDTH = scale(440) //每个条目宽度
 
 const _styles = StyleSheet.create({
   container: {},
@@ -261,16 +261,20 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    width: ITEM_WIDTH,
+    width: BET_ITEM_WIDTH,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: scale(16),
     backgroundColor: UGColor.BackgroundColor1,
-    // backgroundColor: 'red',
   },
-  sv_parent: {},
-  sv_container: {},
+  sv_parent: {
+    width: '100%',
+  },
+  sv_container: {
+    width: '100%',
+  },
   sv_content: {
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -292,8 +296,8 @@ const _styles = StyleSheet.create({
     fontSize: scale(24),
   },
   item_container: {
-    width: ITEM_WIDTH,
-    height: ITEM_HEIGHT,
+    width: BET_ITEM_WIDTH,
+    height: BET_ITEM_HEIGHT,
     paddingHorizontal: scale(8),
     flexDirection: 'row',
     alignItems: 'center',
@@ -392,5 +396,9 @@ const _styles = StyleSheet.create({
 
 })
 
+export {
+  BET_ITEM_WIDTH,
+  BET_ITEM_HEIGHT,
+}
 export default forwardRef(PayBoardComponent)
 
