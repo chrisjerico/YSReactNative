@@ -52,6 +52,7 @@ const UseLotteryHelper = () => {
 //   }})
 
     /**
+     *
      * 投注数据以彩种的形式存在，比如选中了 特码B -> 两面 -> 某个球，存下的数据就是 特码B数据 以及 这个球的数据
      */
     switch (playOddData?.code) {
@@ -64,18 +65,16 @@ const UseLotteryHelper = () => {
       case LotteryConst.ZOX://总肖
       case LotteryConst.WX:  //五行
       case LotteryConst.LMA:  //连码
-        selData[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
-        break
-
-      case LotteryConst.HX://合肖
-        selData[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
-        break
-
       case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TX: //特肖
       case LotteryConst.ZX: //正肖
       case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        selData[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
+        break
+
+      case LotteryConst.HX://合肖
+        selData[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
         break
 
       case LotteryConst.LX: //连肖

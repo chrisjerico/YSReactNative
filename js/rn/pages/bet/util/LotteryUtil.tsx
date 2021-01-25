@@ -39,7 +39,6 @@ const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum =>
 
 /**
  *
- * <新彩种1>
  *
  * 解析下注数据，每个界面有 3层数据，
  *

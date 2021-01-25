@@ -43,13 +43,12 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
    * @param groupData
    */
   const renderTMItem = (groupData?: PlayGroupData) => {
-    ugLog('renderTMItem = ', JSON.stringify(groupData))
     return groupData?.plays?.map((playData) => {
       return (<View key={playData?.id + playData?.name}
                     style={_styles.item_container}>
         <Text style={_styles.item_title}
               numberOfLines={2}>{
-          `[ ${groupData?.alias}-${playData?.id} ]`
+          `[ ${groupData?.alias}- ${playData?.id} ]`
         }</Text>
         <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
         <Text style={_styles.item_x}>{'X'}</Text>
@@ -104,7 +103,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                   style={_styles.item_container}>
       <Text style={_styles.item_title}
             numberOfLines={2}>{
-        `[ ${groupData?.alias} - ${des} ]`
+        `[ ${groupData?.alias}- ${des} ]`
       }</Text>
       <TextInput defaultValue={averageMoney?.toString()}
                  onChangeText={text => setMoneyMap(prevState => {
@@ -143,6 +142,11 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LotteryConst.SB: //色波
         case LotteryConst.ZOX://总肖
         case LotteryConst.WX:  //五行
+        case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LotteryConst.TX: //特肖
+        case LotteryConst.ZX: //正肖
+        case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
           return renderTMItem(groupData)
 
         case LotteryConst.HX://合肖
@@ -152,13 +156,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LotteryConst.LMA:  //连码
           return renderHXItem(groupData,
             groupData?.exPlays?.map((item) => item?.name)?.toString())
-
-        case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.TX: //特肖
-        case LotteryConst.ZX: //正肖
-        case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          return null
 
         case LotteryConst.LX: //连肖
           return null
@@ -232,7 +229,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 }
 
 const BET_ITEM_HEIGHT = scale(68) //每个条目高度
-const BET_ITEM_WIDTH = scale(440) //每个条目宽度
+const BET_ITEM_WIDTH = scale(460) //每个条目宽度
 
 const _styles = StyleSheet.create({
   container: {},

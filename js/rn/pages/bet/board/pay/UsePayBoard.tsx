@@ -85,6 +85,7 @@ const UsePayBoard = () => {
   }, [moneyMap])
 
   /**
+   *
    * 开始下注
    */
   const startBetting = () => {
@@ -102,6 +103,11 @@ const UsePayBoard = () => {
           case LotteryConst.SB: //色波
           case LotteryConst.ZOX://总肖
           case LotteryConst.WX:  //五行
+          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LotteryConst.TX: //特肖
+          case LotteryConst.ZX: //正肖
+          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
             groupData?.plays?.map((playData) => {
               betBean.push({
                 money: numberToFloatString(moneyMap[playData?.id]),
@@ -136,13 +142,6 @@ const UsePayBoard = () => {
             } as BetLotteryData)
           }
             break
-
-          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TX: //特肖
-          case LotteryConst.ZX: //正肖
-          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-            return null
 
           case LotteryConst.LX: //连肖
             return null
