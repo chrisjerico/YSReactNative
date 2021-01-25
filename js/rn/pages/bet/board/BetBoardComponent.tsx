@@ -129,7 +129,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 style={_styles.slider_minus}
                 name={'plus-circle'}/>
         </View> :
-        <View key={'renderSliderArea slider arrow up'}>
+        <View key={'renderSliderArea slider arrow up'}
+              style={_styles.slider_button_container}>
           <Icon key={'renderSliderArea slider icon up'}
                 size={scale(36)}
                 style={_styles.slider_button}
@@ -292,6 +293,10 @@ const _styles = StyleSheet.create({
   },
   slider_minus: {
     paddingRight: scale(12),
+  },
+  slider_button_container: {
+    width: scale(52),
+    aspectRatio: 1,
   },
   slider_button: {
     padding: scale(8),
