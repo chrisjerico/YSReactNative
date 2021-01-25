@@ -25,10 +25,78 @@ import parseZXBZData from '../../util/ps/ParseZXBZDataUtil'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { zodiacPlayX } from './hx/BetHXUtil'
 import { playDataX } from './zxbz/BetZXBZUtil'
+import { numberToFloatString } from '../../../../public/tools/StringUtil'
+import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
+import { Toast } from '../../../../public/tools/ToastUtils'
 
 /**
  * 下注辅助类
  */
+
+/**
+ * 计算彩票下注时候，选中的条目数量是否符合要求
+ *
+ * @param showMsg 显示提示语
+ */
+const checkBetCount = (showMsg?: boolean): boolean => {
+  const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData
+  const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
+
+  ugLog('key key selectedData = ', JSON.stringify(selectedData))
+  ugLog('keys = ', JSON.stringify(keys))
+  if(anyEmpty(keys)) {
+    Toast('请选择玩法')
+    return false
+  }
+
+  for (let index in keys) {
+    const key = keys[index]
+    ugLog('key index = ', key)
+    switch (key) {
+      case LotteryConst.TM:  //特码
+      case LotteryConst.LM: //两面
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT:  //正特
+      case LotteryConst.ZM1_6: //正码1T6
+      case LotteryConst.SB: //色波
+      case LotteryConst.ZOX://总肖
+      case LotteryConst.WX:  //五行
+      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.TX: //特肖
+      case LotteryConst.ZX: //正肖
+      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.LX: //连肖
+      case LotteryConst.LW: //连尾
+        ugLog('key key = selectedData[key] ', JSON.stringify(selectedData[key]))
+        if(arrayLength(selectedData[key]) <= 0) {
+          Toast('请选择玩法')
+          return false
+        }
+        break
+
+      case LotteryConst.HX://合肖
+        if(arrayLength(selectedData[key]) <= 1) {
+          Toast('合肖请选择2个以上的数据')
+          return false
+        }
+        break
+      case LotteryConst.LMA:  //连码
+
+        break
+
+      case LotteryConst.ZXBZ:  //自选不中
+        if(arrayLength(selectedData[key]) <= 1) {
+          Toast('自选不中请选择2到12个数据')
+          return false
+        }
+        break
+    }
+
+  }
+
+  return true
+}
 
 /**
  * 计算彩票下注时候，选中的条目数量
@@ -113,4 +181,5 @@ const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): M
 export {
   calculateItemCount,
   calculateItemMoney,
+  checkBetCount,
 }

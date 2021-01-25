@@ -4,6 +4,11 @@ import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import BetLotteryContext from '../BetLotteryContext'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
+import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
+import { Toast } from '../../../public/tools/ToastUtils'
+import { calculateItemCount, checkBetCount } from './tl/BetUtil'
+import LotteryConst from '../const/LotteryConst'
+import { ugLog } from '../../../public/tools/UgLog'
 
 
 /**
@@ -20,8 +25,10 @@ const UseLhcBoard = () => {
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
   const {
-    playOddDetailData
+    playOddDetailData,//彩票数据
   } = useContext(BetLotteryContext)
+
+  // const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   /**
    * 输入金额有变化
@@ -30,6 +37,19 @@ const UseLhcBoard = () => {
     const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(inputMoney) }
     UGStore.dispatch({ type: 'merge', selectedLotteryModel })
   }, [inputMoney])
+
+  /**
+   * 开始下注
+   */
+  const checkShowBetPayment = () => {
+    if (anyEmpty(inputMoney)) {
+      Toast('请输入投注金额')
+    // } else if (count <= 0) {
+    //   Toast('请选择玩法')
+    } else if(checkBetCount(true)) {
+      setShowBetPayment(true)
+    }
+  }
 
   return {
     showBetPayment,
@@ -45,6 +65,7 @@ const UseLhcBoard = () => {
     showChip,
     setShowChip,
     playOddDetailData,
+    checkShowBetPayment,
   }
 }
 

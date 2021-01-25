@@ -18,7 +18,7 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
 import BetLotteryContext from '../BetLotteryContext'
 import PayBoardComponent from './pay/PayBoardComponent'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
@@ -57,6 +57,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     showChip,
     setShowChip,
     playOddDetailData,
+    checkShowBetPayment,
   } = UseLhcBoard()
 
   /**
@@ -200,16 +201,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
     <View key={'renderInputArea input 下注 重置'}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TouchableWithoutFeedback onPress={() => {
-        if (anyEmpty(inputMoney)) {
-          Toast('请输入投注金额')
-        } else if(calculateItemCount(UGStore.globalProps?.selectedLotteryModel?.selectedData) <= 0){
-          Toast('请选择玩法')
-        } else {
-          setShowBetPayment(true)
-        }
-      }
-      }>
+      <TouchableWithoutFeedback onPress={checkShowBetPayment}>
         <Text key={'renderInputArea input 下注'}
               style={_styles.start_bet}>下注</Text>
       </TouchableWithoutFeedback>

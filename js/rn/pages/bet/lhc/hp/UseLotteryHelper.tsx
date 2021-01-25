@@ -19,6 +19,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import SelectedLotteryModel from '../../../../redux/model/game/SelectedLotteryModel'
 import { parseLMASelectedData } from '../../util/sel/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/sel/ParseHXSelectedUtil'
+import { Toast } from '../../../../public/tools/ToastUtils'
 
 /**
  * 彩票公共处理类
@@ -101,10 +102,14 @@ const UseLotteryHelper = () => {
     if (isSelectedBallOnId(selectedBalls, ballId)) {
       let newResult = selectedBalls?.filter((item) => item != ballId)
       setSelectedBalls(newResult)
+
     } else {
       switch (playOddData?.code) {
         case LotteryConst.ZXBZ:  //自选不中 最多只能选中12个
-          if(arrayLength(selectedBalls) >= 12) return
+          if(arrayLength(selectedBalls) >= 12) {
+            Toast('自选不中请选择2到12个数据')
+            return
+          }
           break
       }
 
