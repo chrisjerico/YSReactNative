@@ -28,7 +28,7 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-     // 游戏大厅
+    // 游戏大厅
     pages.push({
       vcName: 'UGYYLotteryHomeViewController',
       rnName: PageName.GameLobbyPage,
@@ -53,6 +53,14 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
+    // 游戏大厅
+    pages.push({
+      vcName: 'UGYYLotteryHomeViewController',
+      rnName: PageName.GameLobbyPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 我的提款账户
     pages.push({
       vcName: 'WithdrawalAccountListVC',
