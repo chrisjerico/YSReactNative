@@ -72,8 +72,14 @@ export enum UGUserCenterType {
   资金明细 = 32,
   优惠活动 = 33,
   聊天室 = 34,
+  真人大厅 = 42,
+  棋牌大厅 = 43,
+  电子大厅 = 44,
+  体育大厅 = 45,
+  电竞大厅 = 46,
   // 自定义（从100+开始写，前面的都是后台定制的）
-  彩票大厅 = 100,
+  彩票大厅 = 47,
+  捕鱼大厅 = 48,
   每日签到 = 102,
   登出 = 103,
   游戏大厅 = 104,
@@ -148,7 +154,7 @@ export default class UGSysConfModel {
     return api.system.config().useSuccess(({ data }, sm) => {
       sm.noShowErrorHUD = true
       console.log('系统配置数据：',data);
-      
+
       UGStore.dispatch({ type: 'merge', sysConf: data })
       completed && completed()
     }).promise
