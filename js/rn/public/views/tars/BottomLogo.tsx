@@ -36,7 +36,7 @@ const BottomLogo = ({ webName, onPressComputer, onPressPromotion, containerStyle
               },
               titleStyle,
             ]}>
-            {'🎁优惠活动'}
+            {' 🎁优惠活动'}
           </Text>
         </TouchableWithoutFeedback>
       </View>

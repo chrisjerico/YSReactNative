@@ -82,7 +82,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
 
     return (
-      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
+      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                     item={{
                       ...item?.plays[0],
                       ...ballInfo,

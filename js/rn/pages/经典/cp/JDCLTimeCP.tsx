@@ -6,7 +6,7 @@ import { scale } from "../../../public/tools/Scale";
 import { Button } from "react-native-elements";
 import { Res } from "../../../Res/icon/Res";
 import AppDefine from "../../../public/define/AppDefine";
-import { ImagePHCP } from "../tools/ImagePHCP";
+import { ImagePlaceholder } from "../tools/ImagePlaceholder";
 import moment from "moment";
 
 

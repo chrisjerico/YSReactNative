@@ -11,7 +11,7 @@ import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import AppDefine from '../../define/AppDefine'
 import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
-import StringUtils from '../../tools/StringUtils'
+import { deleteHtml } from '../../tools/StringUtil'
 
 interface TabComponentProps {
   tabGames: TabGame[];
@@ -175,7 +175,7 @@ const TabComponent = ({
     tabGames?.map((item, index) => {
       return {
         key: index.toString(),
-        title: StringUtils.getInstance().deleteHtml(
+        title: deleteHtml(
           item?.name ?? item?.categoryName ?? ''
         ),
         logo: item?.logo,

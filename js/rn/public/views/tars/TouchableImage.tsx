@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image, StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import { FastImagePlaceholder, ImagePlaceholder } from '../../../pages/经典/tools/ImagePlaceholder'
 
 interface TouchableImageProps {
   pic: string
@@ -15,7 +16,7 @@ interface TouchableImageProps {
 }
 
 const TouchableImage = ({ onPress, pic, containerStyle, resizeMode = 'cover', enableFastImage = true, onLoad, onLoadStart, onLoadEnd, onError }: TouchableImageProps) => {
-  const ImageComponent = enableFastImage ? FastImage : Image
+  const ImageComponent = enableFastImage ? FastImagePlaceholder : ImagePlaceholder
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.container, containerStyle]}>

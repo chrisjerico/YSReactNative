@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Platform, ScrollView } from 'react-native'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
@@ -16,6 +16,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { anyEmpty } from '../../public/tools/Ext'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { stringToNumber } from '../../public/tools/tars'
+import { setProps } from './UGPage'
 
 const subIds = {
   42: '真人',
@@ -36,26 +37,17 @@ const SeriesLobbyPage = ({ route }) => {
   const banners = banner?.list ?? []
   const item = gameLobby?.find((item: any) => subIdTitle?.includes(item?.categoryName))
   const { games, categoryName } = item ?? {}
+
+  //初始化
+  useEffect(() => {
+    setProps({
+      navbarOpstions: { hidden: false, title: name, back: true },
+    })
+
+  }, [])
   return (
     <>
-      <SafeAreaHeader headerColor={anyEmpty(headerColor) ? Skin1.themeColor : headerColor}>
-        <MineHeader
-          showBackBtn={anyEmpty(showBackButton) ? true : showBackButton == '1'}
-          onPressBackBtn={() => {
-            switch (Platform.OS) {
-              case 'ios':
-                OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
-                  navigate(homePage, {})
-                })
-                break
-              case 'android':
-                pop()
-                break
-            }
-          }}
-          title={name}
-        />
-      </SafeAreaHeader>
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <BannerBlock
           containerStyle={{ aspectRatio: 540 / 230 }}

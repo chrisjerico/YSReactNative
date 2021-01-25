@@ -32,7 +32,8 @@ export interface PlayGroupData {
   alias: string; //"两面"
   plays: PlayData[];
 
-  exPlays: PlayData[]; //本地生成的数据
+  exZodiacs: ZodiacNum[]; //本地生成的生肖数据
+  exPlays: PlayData[]; //本地生成的彩球数据
 }
 
 export interface PlayOddData {

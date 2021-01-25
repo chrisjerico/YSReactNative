@@ -113,6 +113,7 @@ import { OnlineService } from '../../public/components/OnlineService'
 import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
 import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
 import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
+import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePage'
 
 import OtherRecord from '../../public/components/OtherRecord'
 
@@ -129,11 +130,10 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
-  // 彩票大厅-默认
-  GameLobbyPage,
-  TwoLevelGames,
-  OtherRecord,
-  Game3rdView,
+  GameLobbyPage,  // 游戏大厅主页-默认
+  TwoLevelGames,//二级游戏分类
+  OtherRecord,//其他投注记录（真人、棋牌、电子、体育、捕鱼、电竞）
+  Game3rdView,//优惠活动详情
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
@@ -179,6 +179,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDBetDetailPage,//下注明细
   OnlineService,//在线客服
   // ———————————— 模板页面 —————————————
+
+  JDHomePage,
 
   LCMinePage, //乐橙-我的页
   LCHomePage, //乐橙-首页

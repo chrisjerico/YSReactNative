@@ -604,7 +604,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.建议反馈: {
-            navigate(PageName.FeedbackView)
+            push(PageName.FeedbackView)
             return
           }
           case UGUserCenterType.在线客服: {

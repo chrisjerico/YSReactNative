@@ -13,12 +13,15 @@ interface ITMData {
  * @param zodiacNum
  */
 const parseHXData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
-  if(anyEmpty(playOddData?.playGroups)) return playOddData
+  if (anyEmpty(playOddData?.playGroups)) return playOddData
 
   return {
     ...playOddData,
     pageData: {
-      zodiacNums: zodiacNum,
+      zodiacNums: zodiacNum?.map((zodiac) => ({
+        ...zodiac,
+        nums: zodiac?.nums?.filter((item) => item != '49') //合肖去掉49
+      })),
       groupTri: [playOddData?.playGroups],
     } as PagePlayOddData,
   }
