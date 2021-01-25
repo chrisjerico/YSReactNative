@@ -629,6 +629,15 @@ export default class PushHelper {
             push(PageName.TrendView, {})
             return
           }
+          case UGUserCenterType.真人大厅:
+          case UGUserCenterType.棋牌大厅:
+          case UGUserCenterType.电子大厅:
+          case UGUserCenterType.体育大厅:
+          case UGUserCenterType.电竞大厅:
+          case UGUserCenterType.捕鱼大厅: {
+            subId = code.toString()
+            break
+          }
           case UGUserCenterType.QQ客服: {
             subId = MenuType.QQ
             break

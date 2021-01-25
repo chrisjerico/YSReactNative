@@ -19,6 +19,7 @@ import AppDefine from '../../../../public/define/AppDefine'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 import PushHelper from '../../../../public/define/PushHelper'
 import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -86,7 +87,7 @@ const LobbyGameListComponent = ({
           PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
         } else {
 
-          //TODO 
+          //TODO
           switch (Platform.OS) {
             case 'ios':
               //如果是威尼斯
@@ -118,7 +119,6 @@ const LobbyGameListComponent = ({
 
               break
             case 'android':
-              //TODO android 去系列界面
                //如果是威尼斯
                if (Skin1.skitType.indexOf('威尼斯') != -1) {
                 push(PageName.SeriesLobbyPage,
@@ -132,6 +132,7 @@ const LobbyGameListComponent = ({
               }
               else {
                 // 打开原生
+                 PushHelper.pushUserCenterType(games.subId[item.category])
               }
               break
           }
