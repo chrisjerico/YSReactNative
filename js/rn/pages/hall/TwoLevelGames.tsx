@@ -47,7 +47,7 @@ interface TwoLevelProps {
  */
 const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 
-  let { game, showBackButton} = route?.params
+  let { game, showBackButton } = route?.params
 
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
@@ -70,15 +70,15 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       if (Skin1.skitType.indexOf('威尼斯') != -1) {
         !gameData?.length && requestGameData()
       }
-      else{
+      else {
         switch (Platform.OS) {
           case 'ios':
             let dic = params;
             for (var key in dic) {
               if (key == 'game') {
-                 game = JSON.parse(JSON.stringify(dic[key]))
-                 game.name = game.title    
-                  requestGameData()
+                game = JSON.parse(JSON.stringify(dic[key]))
+                game.name = game.title
+                requestGameData()
               }
             }
             break;
@@ -88,8 +88,8 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
             break;
         }
       }
-      
-      
+
+
 
     }
   }, false)
@@ -107,19 +107,19 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
     }
 
     api.game.realGameTypes(game.gameId, "").useSuccess(({ data }) => {
-     let res = {data:data}
-        setIsSetData(true)
-        for (let index = 0; index < res.data.length; index++) {
-          const v = res.data[index];
-          v.id =   game.gameId;
-        }
-        refreshUI(res.data)
-    })
-    .useCompletion(
-      (res,err,sm)=>{
-        setRefreshing(false)
+      let res = { data: data }
+      setIsSetData(true)
+      for (let index = 0; index < res.data.length; index++) {
+        const v = res.data[index];
+        v.id = game.gameId;
       }
-    )
+      refreshUI(res.data)
+    })
+      .useCompletion(
+        (res, err, sm) => {
+          setRefreshing(false)
+        }
+      )
   }
 
   /**
@@ -128,10 +128,10 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
    */
   const renderDataList = (item: Array<TwoLevelType>) =>
     <>
-      <TwoLevelListComponent 
+      <TwoLevelListComponent
         refreshing={refreshing}
         gameData={item}
-        requestGameData={requestGameData}/>
+        requestGameData={requestGameData} />
     </>
 
   /**
@@ -140,31 +140,32 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
   const renderAllData = () => {
     return (
       isSetData
-      ?
-      anyEmpty(gameData)
-        ? <EmptyView style={{ flex: 1 }}/>
-        : 
+        ?
+        anyEmpty(gameData)
+          ? <EmptyView style={{ flex: 1 }} />
+          :
           <View>
             <View style={_styles.searchView}>
-            <TouchableOpacity 
-              onPress={() => {
+              <TouchableOpacity
+                onPress={() => {
                   setFilterData(gameData)
-              }}>
-              <Text style={{ 
-                fontSize: scale(23),
-                color: Skin1.themeColor, 
-                marginRight: scale(15), }}>全部游戏</Text>
-            </TouchableOpacity>
-            <TextInput 
+                }}>
+                <Text style={{
+                  fontSize: scale(23),
+                  color: Skin1.themeColor,
+                  marginRight: scale(15),
+                }}>全部游戏</Text>
+              </TouchableOpacity>
+              <TextInput
                 style={_styles.searchInput}
-                onChangeText={ (text) => {
-                    setSearchText(text)
+                onChangeText={(text) => {
+                  setSearchText(text)
                 }}
-                />
-            <Button
+              />
+              <Button
                 title={'搜索'}
-                containerStyle={[_styles.searchButton, {backgroundColor: Skin1.themeColor}]}
-                titleStyle={{ 
+                containerStyle={[_styles.searchButton, { backgroundColor: Skin1.themeColor }]}
+                titleStyle={{
                   color: '#ffffff',
                   fontSize: scale(23)
                 }}
@@ -172,13 +173,20 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                   setFilterData(gameData.filter((v) => {
                     return v.name.includes(searchText)
                   }))
-                }} /> 
+                }} />
+            </View>
+            <ScrollView >
+              {renderDataList(filterData)}
+              <View
+              style={{
+                  height:200,
+              }}
+            >
+            </View>
+            </ScrollView>
+
           </View>
-          <ScrollView>
-            {renderDataList(filterData)}
-          </ScrollView>
-        </View>
-      : <View></View>
+        : <View></View>
     )
   }
 
@@ -188,8 +196,8 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
         <MineHeader
           showBackBtn={anyEmpty(showBackButton) ? true : showBackButton == '1'}
           onPressBackBtn={() => {
-                pop()
-            }
+            pop()
+          }
           }
           title={game.name ?? game.title}
         />
@@ -202,29 +210,29 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 }
 
 const _styles = StyleSheet.create({
-  searchView: { 
+  searchView: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: scale(10)
   },
-  searchInput: { 
+  searchInput: {
     width: scale(250),
     height: scale(50),
     fontSize: scale(23),
-    color: Skin1.textColor1, 
-    marginRight: scale(15), 
-    borderColor: Skin1.textColor1, 
+    color: Skin1.textColor1,
+    marginRight: scale(15),
+    borderColor: Skin1.textColor1,
     borderRadius: scale(5),
     borderWidth: scale(1),
     textAlignVertical: 'center',
     paddingVertical: scale(0),
     paddingLeft: scale(10),
   },
-  searchButton: { 
-    width: scale(85), 
+  searchButton: {
+    width: scale(85),
     height: scale(50),
-    borderRadius: scale(2) 
+    borderRadius: scale(2)
   }
 })
 
