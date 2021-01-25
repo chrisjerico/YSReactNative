@@ -80,9 +80,6 @@ const games = {
 
     return (
       <TouchableWithoutFeedback    onPress={() => {
-
-        console.log('item.category == ',item.category);
-        console.log('systemInfo?.mobileGameHall == ',systemInfo?.mobileGameHall);
         
         if (item.category == 'lottery') {
           PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)

@@ -148,27 +148,24 @@ export async function setRnPageInfo(force = false) {
       })
     }
   }
-<<<<<<< HEAD
 
-  // 长龙注单详情
-  pages.push({
-    vcName: 'UGBetRecordDetailViewController',
-    rnName: PageName.JDBetRecordDetailPage,
-    // rnName: PageName.JDSegmentPage,
-=======
+
   //利息宝页
   pages.push({
     rnName: PageName.AlipayView,
     userCenterItemCode: 4,
->>>>>>> andrew/hbArc
     fd_prefersNavigationBarHidden: true,
     允许游客访问: false,
     允许未登录访问: false,
   })
-<<<<<<< HEAD
-
-=======
->>>>>>> andrew/hbArc
+  // 长龙注单详情
+  pages.push({
+    vcName: 'UGBetRecordDetailViewController',
+    rnName: PageName.JDBetRecordDetailPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 下注明细
   pages.push({
     vcName: 'BetDetailViewController',
@@ -185,6 +182,7 @@ export async function setRnPageInfo(force = false) {
     允许游客访问: false,
     允许未登录访问: false,
   })
+
   // 申请代理
   pages.push({
     vcName: 'UGAgentViewController',
