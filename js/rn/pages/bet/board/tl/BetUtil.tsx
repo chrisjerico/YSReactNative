@@ -24,6 +24,7 @@ import parseLWData from '../../util/ps/ParseLWDataUtil'
 import parseZXBZData from '../../util/ps/ParseZXBZDataUtil'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { zodiacPlayX } from './hx/BetHXUtil'
+import { playDataX } from './zxbz/BetZXBZUtil'
 
 /**
  * 下注辅助类
@@ -38,7 +39,9 @@ const calculateItemCount = (selectedData?: Map<string, Array<PlayGroupData>>): n
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
   keys?.map((key) => {
     if (arrayLength(selectedData[key]) > 0) {//该彩种是否有选中的数据
-      if (LotteryConst.LMA == key || LotteryConst.HX == key) {//部分彩种 只计算 1条数据
+      if (LotteryConst.LMA == key
+        || LotteryConst.HX == key
+        || LotteryConst.ZXBZ == key) {//部分彩种 只计算 1条数据
         itemCount++
       } else {
         //选中的数据有多少组
@@ -62,7 +65,7 @@ const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): M
 
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
   keys?.map((key) => {
-    if(!arrayEmpty(selectedData[key])) {
+    if (!arrayEmpty(selectedData[key])) {
       switch (key) {
         case LotteryConst.LMA://部分彩种 只计算 1条数据
         {
@@ -75,6 +78,15 @@ const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): M
         {
           const groupData = (selectedData[key][0] as PlayGroupData)
           const playX = zodiacPlayX(groupData)
+          dataMap[playX?.id] = defaultMoney
+        }
+
+          break
+
+        case LotteryConst.ZXBZ://部分彩种 只计算 1条数据
+        {
+          const groupData = (selectedData[key][0] as PlayGroupData)
+          const playX = playDataX(groupData)
           dataMap[playX?.id] = defaultMoney
         }
 

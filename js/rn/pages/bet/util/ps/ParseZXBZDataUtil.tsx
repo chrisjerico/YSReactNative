@@ -44,9 +44,9 @@ const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
     let ballIndex = ('0' + index).slice(-2)
     return (
       {
-        id: play0?.id + ballIndex,
+        id: play0?.id + ',' + ballIndex,
         name: ballIndex,
-      }
+      } as ILotteryEBallItem
     )
   })
 }

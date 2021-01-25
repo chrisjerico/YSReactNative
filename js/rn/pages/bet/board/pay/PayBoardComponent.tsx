@@ -40,15 +40,19 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   /**
    * 绘制 特码 等条目
+   * @param lotteryCode 彩种CODE，特码,合肖等
    * @param groupData
    */
-  const renderTMItem = (groupData?: PlayGroupData) => {
+  const renderTMItem = (lotteryCode?: string, groupData?: PlayGroupData) => {
     return groupData?.plays?.map((playData) => {
+      const showName = lotteryCode == LotteryConst.LX || lotteryCode == LotteryConst.LW ?
+        playData?.alias :
+        playData?.name
       return (<View key={playData?.id + playData?.name}
                     style={_styles.item_container}>
         <Text style={_styles.item_title}
               numberOfLines={2}>{
-          `[ ${groupData?.alias}- ${playData?.id} ]`
+          `[ ${groupData?.alias}- ${showName} ]`
         }</Text>
         <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
         <Text style={_styles.item_x}>{'X'}</Text>
@@ -129,11 +133,11 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   }
 
-  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((key, keyIndex) => {
-    const groupDataArr: Array<PlayGroupData> = selectedData[key]
+  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((lotteryCode, keyIndex) => {
+    const groupDataArr: Array<PlayGroupData> = selectedData[lotteryCode]
     return groupDataArr?.map((groupData, index) => {
-      ugLog('key 2 index = ', key, index)
-      switch (key) {
+      ugLog('lotteryCode 2 index = ', lotteryCode, index)
+      switch (lotteryCode) {
         case LotteryConst.TM:  //特码
         case LotteryConst.LM: //两面
         case LotteryConst.ZM: //正码
@@ -147,26 +151,19 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LotteryConst.ZX: //正肖
         case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          return renderTMItem(groupData)
+        case LotteryConst.LX: //连肖
+        case LotteryConst.LW: //连尾
+          return renderTMItem(lotteryCode, groupData)
 
         case LotteryConst.HX://合肖
           return renderHXItem(groupData,
             groupData?.exZodiacs?.map((item) => item?.name)?.toString())
 
         case LotteryConst.LMA:  //连码
+        case LotteryConst.ZXBZ:  //自选不中
           return renderHXItem(groupData,
             groupData?.exPlays?.map((item) => item?.name)?.toString())
-
-        case LotteryConst.LX: //连肖
-          return null
-
-        case LotteryConst.LW: //连尾
-          return null
-
-        case LotteryConst.ZXBZ:  //自选不中
-          return null
       }
-
 
 
     })

@@ -70,20 +70,14 @@ const UseLotteryHelper = () => {
       case LotteryConst.ZX: //正肖
       case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.LX: //连肖
+      case LotteryConst.LW: //连尾
+      case LotteryConst.ZXBZ:  //自选不中
         selData[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
         break
 
       case LotteryConst.HX://合肖
         selData[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
-        break
-
-      case LotteryConst.LX: //连肖
-        break
-
-      case LotteryConst.LW: //连尾
-        break
-
-      case LotteryConst.ZXBZ:  //自选不中
         break
     }
 
@@ -108,6 +102,12 @@ const UseLotteryHelper = () => {
       let newResult = selectedBalls?.filter((item) => item != ballId)
       setSelectedBalls(newResult)
     } else {
+      switch (playOddData?.code) {
+        case LotteryConst.ZXBZ:  //自选不中 最多只能选中12个
+          if(arrayLength(selectedBalls) >= 12) return
+          break
+      }
+
       setSelectedBalls([...selectedBalls, ballId])
     }
   }

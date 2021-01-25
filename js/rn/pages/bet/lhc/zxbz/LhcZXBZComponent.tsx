@@ -7,7 +7,7 @@ import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcZXBZ from './UseLhcZXBZ'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
@@ -69,7 +69,12 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 style={[
                   _styles.sub_title_text,
                   { color: Skin1.themeColor },
-                ]}>{groupData?.alias}</Text>
+                ]}>{
+                  groupData?.alias + (arrayLength(selectedBalls) > 4 ?
+                    `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 5]?.odds}）` :
+                    '')
+
+          }</Text>
         </View>
 
         <View key={key + 'render LMA sub2' + groupData?.id}
