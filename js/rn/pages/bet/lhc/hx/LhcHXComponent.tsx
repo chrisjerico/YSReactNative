@@ -15,7 +15,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { array } from 'prop-types'
 
 /**
- * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
+ * 六合彩 合肖 等等
  *
  * @param navigation
  * @constructor

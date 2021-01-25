@@ -19,7 +19,7 @@ import LhcHXComponent from '../lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
 import { useState } from 'react'
-import LotteryListContext from './LotteryListContext'
+import { UGStore } from '../../../redux/store/UGStore'
 
 const ListContentComponent = () => {
 
@@ -39,7 +39,13 @@ const ListContentComponent = () => {
         {
           playOddDetailData()?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
-                                             onPress={() => setLeftColumnIndex(index)}>
+                                             onPress={() => {
+                                               UGStore.dispatch({
+                                                 type: 'reset',
+                                                 currentPlayOddData: playOddDetailData()?.playOdds[leftColumnIndex],
+                                               })
+                                               setLeftColumnIndex(index)
+                                             }}>
               <View key={'renderLeftColumn' + item?.code}
                     style={[
                       _styles.left_column_item,
@@ -187,22 +193,17 @@ const ListContentComponent = () => {
         return <LhcZXBZComponent key={lotteryCode}
                                  playOddData={playOdds}/>
 
-
     }
 
     return null
   }
 
   return (
-    <LotteryListContext.Provider value={{
-      playOddData: () => playOddDetailData()?.playOdds[leftColumnIndex],
-    }}>
-      <View key={'lottery bet content'}
-            style={_styles.middle_content_container}>
-        {renderLeftColumn()}
-        {renderRightContent()}
-      </View>
-    </LotteryListContext.Provider>
+    <View key={'lottery bet content'}
+          style={_styles.middle_content_container}>
+      {renderLeftColumn()}
+      {renderRightContent()}
+    </View>
   )
 
 }
@@ -211,7 +212,7 @@ const _styles = StyleSheet.create({
   middle_content_container: {
     flexDirection: 'row',
     // height: BALL_CONTENT_HEIGHT,
-    paddingBottom: scale(120)
+    paddingBottom: scale(120),
   },
   left_column_container: {
     height: BALL_CONTENT_HEIGHT,

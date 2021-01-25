@@ -31,6 +31,8 @@ const UseLotteryHelper = () => {
     playOddDetailData, //彩票数据，比如六合彩
   } = useContext(BetLotteryContext)
 
+  const currentPlayOddData = UGStore.globalProps?.currentPlayOddData //当前选中的彩种数据 特码 两面 等
+
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
@@ -104,10 +106,17 @@ const UseLotteryHelper = () => {
       setSelectedBalls(newResult)
 
     } else {
+      ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
       switch (playOddData?.code) {
+        case LotteryConst.HX:  //合肖 最多只能选中11个
+          if(arrayLength(selectedBalls) > 10) {
+            Toast('合肖请选择2到11个选项')
+            return
+          }
+          break
         case LotteryConst.ZXBZ:  //自选不中 最多只能选中12个
-          if(arrayLength(selectedBalls) >= 12) {
-            Toast('自选不中请选择2到12个数据')
+          if(arrayLength(selectedBalls) > 11) {
+            Toast('自选不中请选择5到12个选项')
             return
           }
           break
@@ -132,6 +141,7 @@ const UseLotteryHelper = () => {
   }
 
   return {
+    currentPlayOddData,
     tabIndex,
     setTabIndex,
     playOddData,

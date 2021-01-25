@@ -42,8 +42,6 @@ const checkBetCount = (showMsg?: boolean): boolean => {
   const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
 
-  ugLog('key key selectedData = ', JSON.stringify(selectedData))
-  ugLog('keys = ', JSON.stringify(keys))
   if(anyEmpty(keys)) {
     Toast('请选择玩法')
     return false
@@ -51,7 +49,6 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 
   for (let index in keys) {
     const key = keys[index]
-    ugLog('key index = ', key, JSON.stringify(selectedData[key]))
     switch (key) {
       // case LotteryConst.TM:  //特码
       // case LotteryConst.LM: //两面
@@ -87,7 +84,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 
       case LotteryConst.ZXBZ:  //自选不中
         if(arrayLength(selectedData[key][0]?.exPlays) < 5) {
-          Toast('自选不中请选择5到12个数据')
+          Toast('自选不中请选择5到12个选项')
           return false
         }
         break

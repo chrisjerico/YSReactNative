@@ -32,7 +32,7 @@ export interface IGlobalState {
   banner?: UGBannerModel
 
   //下注
-  playOddData?: PlayOddData //当前选中的彩种数据
+  currentPlayOddData?: PlayOddData //当前选中的彩种数据 特码 两面 等
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据
   selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
@@ -60,7 +60,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.rightMenu && (state.rightMenu = act.rightMenu)
 
     //彩票数据
-    act.playOddData && (state.playOddData = act.playOddData)
+    act.currentPlayOddData && (state.currentPlayOddData = act.currentPlayOddData)
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
     act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
@@ -73,7 +73,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.banner = { ...state.banner, ...act.banner }
 
     //彩票数据
-    state.playOddData = { ...state.playOddData, ...act.playOddData }
+    state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
     state.selectedLotteryModel = {
@@ -109,7 +109,7 @@ export interface UGAction<P = {}> extends Action {
   banner?: UGBannerModel
 
   //彩票数据
-  playOddData?: PlayOddData //当前选中的彩种数据
+  currentPlayOddData?: PlayOddData //当前选中的彩种数据
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据
   selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
