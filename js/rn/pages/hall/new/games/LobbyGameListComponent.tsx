@@ -16,6 +16,8 @@ import { push } from '../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../public/navigation/Navigation'
 import { Res } from '../../../../Res/icon/Res'
 import AppDefine from '../../../../public/define/AppDefine'
+import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
+import PushHelper from '../../../../public/define/PushHelper'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -77,15 +79,13 @@ const games = {
   const renderItemContent = (item: Data) => {
 
     return (
-      <TouchableWithoutFeedback onPress={() => {
+      <TouchableWithoutFeedback    onPress={() => {
+
+        console.log('item.category == ',item.category);
+        console.log('systemInfo?.mobileGameHall == ',systemInfo?.mobileGameHall);
+        
         if (item.category == 'lottery') {
-          if (systemInfo?.mobileGameHall == '1') {//新彩票大厅
-            push(PageName.GameHallPage, { showBackButton: true })
-
-          } else if (systemInfo?.mobileGameHall == '2') {//自由彩票大厅
-            push(PageName.FreedomHallPage, { showBackButton: true })
-
-          }
+          PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
         } else {
           push(PageName.SeriesLobbyPage,
             { gameId: 0,
@@ -97,30 +97,30 @@ const games = {
       }}>
       <View style={[_styles.game_item_container,{ backgroundColor: Skin1.homeContentColor,}]}>
         <Image 
-          style={{ width: 60, height: 60, marginRight: 10 }} 
+          style={{ width: 60, height: 60, marginRight: 10 ,}} 
           source={{ uri: games.icons[item.category] }} />
           <View>
             <Text
-              style={[_styles.category_name,{ color: Skin1.textColor1,}]}
+              style={[_styles.category_name,{ color: Skin1.textColor1,marginRight: 10 ,},]}
               >{item.categoryName}系列</Text>
               <Text
-                style={_styles.play_now}
+                style={[_styles.play_now,{ marginTop: 10 ,},]}
                 >立即游戏</Text>
           </View>
       </View>
       </TouchableWithoutFeedback>
+
+
     )
   }
 
   return (
-    <View style={[CommStyles.flex, _styles.container,{backgroundColor:'red'}]}>
+    <View style={[CommStyles.flex, _styles.container,]}>
       {
         [
           anyEmpty(gameData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <FlatList 
-                 style={[{backgroundColor:'blue',width:AppDefine.width}]}
-                //  contentContainerStyle ={{ alignItems: 'center',}}
                 refreshControl={refreshCT}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => item.category + index}
@@ -143,11 +143,11 @@ const _styles = StyleSheet.create({
   },
   game_item_container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    // justifyContent: 'space-around',
     marginHorizontal: scale(16),
     marginVertical: scale(16),
-    padding: scale(20),
-    borderRadius: scale(5),
+    padding: scale(24),
+    borderRadius: scale(10),
 
   },
   category_name: { 
@@ -157,8 +157,8 @@ const _styles = StyleSheet.create({
     marginBottom: scale(15) 
   },
   play_now: { 
-    fontWeight: '100', 
-    fontSize: scale(20), 
+    fontWeight: 'bold', 
+    fontSize: scale(18), 
     color: 'red' 
   }
 })
