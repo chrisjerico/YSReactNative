@@ -47,7 +47,7 @@ interface TwoLevelProps {
  */
 const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 
-  const { game, showBackButton} = route?.params
+  let { game, showBackButton} = route?.params
 
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
@@ -65,8 +65,25 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
   }, [])
 
   setProps({
-    didFocus: () => {
-      !gameData?.length && requestGameData()
+    didFocus: (params) => {
+
+      switch (Platform.OS) {
+        case 'ios':
+          let dic = params;
+          for (var key in dic) {
+            if (key == 'game') {
+               game = JSON.parse(JSON.stringify(dic[key]))
+               game.name = game.title    
+                requestGameData()
+            }
+          }
+          break;
+        case 'android':
+          //TODO Android 传参
+          !gameData?.length && requestGameData()
+          break;
+      }
+
     }
   }, false)
 
@@ -75,29 +92,27 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
    */
   const requestGameData = async () => {
     setRefreshing(true)
-
     // 刷新UI
     function refreshUI(data: TwoLevelType[]) {
       setRefreshing(false)
       setGameData(data)
       setFilterData(data)
     }
-    
-    // 获取彩票数据
-    APIRouter.game_realGameTypes(game.gameId, "").then(({ data: res }) => {
-      ugLog('data res=', res)
-      if (res?.code == 0) {
+
+    api.game.realGameTypes(game.gameId, "").useSuccess(({ data }) => {
+     let res = {data:data}
         setIsSetData(true)
-        res?.data.forEach((v) => {
-          v.id = game.gameId
-        })
-        refreshUI(res?.data)
-      } else {
-        Toast(res?.msg)
-      }
-    }).finally(() => {
-      setRefreshing(false)
+        for (let index = 0; index < res.data.length; index++) {
+          const v = res.data[index];
+          v.id =   game.gameId;
+        }
+        refreshUI(res.data)
     })
+    .useCompletion(
+      (res,err,sm)=>{
+        setRefreshing(false)
+      }
+    )
   }
 
   /**
@@ -169,7 +184,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                 pop()
             }
           }
-          title={game.name}
+          title={game.name ?? game.title}
         />
       </SafeAreaHeader>
       {

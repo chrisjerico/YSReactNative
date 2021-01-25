@@ -28,6 +28,15 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
+    // 2级游戏分类
+    pages.push({
+      vcName: 'UGGameListViewController',
+      rnName: PageName.TwoLevelGames,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+
     // 游戏大厅
     pages.push({
       vcName: 'UGYYLotteryHomeViewController',
