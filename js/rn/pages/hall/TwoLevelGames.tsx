@@ -67,22 +67,29 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
   setProps({
     didFocus: (params) => {
 
-      switch (Platform.OS) {
-        case 'ios':
-          let dic = params;
-          for (var key in dic) {
-            if (key == 'game') {
-               game = JSON.parse(JSON.stringify(dic[key]))
-               game.name = game.title    
-                requestGameData()
-            }
-          }
-          break;
-        case 'android':
-          //TODO Android 传参
-          !gameData?.length && requestGameData()
-          break;
+      if (Skin1.skitType.indexOf('威尼斯') != -1) {
+        !gameData?.length && requestGameData()
       }
+      else{
+        switch (Platform.OS) {
+          case 'ios':
+            let dic = params;
+            for (var key in dic) {
+              if (key == 'game') {
+                 game = JSON.parse(JSON.stringify(dic[key]))
+                 game.name = game.title    
+                  requestGameData()
+              }
+            }
+            break;
+          case 'android':
+            //TODO Android 传参
+            !gameData?.length && requestGameData()
+            break;
+        }
+      }
+      
+      
 
     }
   }, false)
