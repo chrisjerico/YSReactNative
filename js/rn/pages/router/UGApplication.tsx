@@ -130,11 +130,10 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
-  // 彩票大厅-默认
-  GameLobbyPage,
-  TwoLevelGames,
-  OtherRecord,
-  Game3rdView,
+  GameLobbyPage,  // 游戏大厅主页-默认
+  TwoLevelGames,//二级游戏分类
+  OtherRecord,//其他投注记录（真人、棋牌、电子、体育、捕鱼、电竞）
+  Game3rdView,//优惠活动详情
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版

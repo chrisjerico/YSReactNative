@@ -33,7 +33,7 @@ const MineHeader = ({ showRightTitle = false,
   backBtnColor = '#ffffff', 
   titleStyle, 
   rightTitleStyle,
-  titleIcon,
+  titleIcon =null,
   onPressTitle }: MineHeaderProps) => {
   return (
     <View style={styles.container}>
@@ -60,14 +60,14 @@ const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, r
     <>
       <View style={{ flex: 1, alignItems: 'center' }}>
         <TouchableWithoutFeedback onPress={onPressTitle}>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-            <Text style={[styles.headerTitle, titleStyle]}>{title}</Text>
-            {titleIcon ? 
+          <View style={{ flex: 1, alignItems: 'center',  justifyContent: 'center', flexDirection: 'row' }}>
+            <Text style={[styles.headerTitle, titleStyle,]}>{title}</Text>
+            {!anyEmpty(titleIcon) &&
               <Icon  
                 style={{marginLeft: 1}}
                 size={scale(25)}
                 name={titleIcon}
-                color={'#ffffff'}/> : (<View style={{ flex: 1 }} />)}
+                color={'#ffffff'}/> }
           </View>
         </TouchableWithoutFeedback>
       </View>
