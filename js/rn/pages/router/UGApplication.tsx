@@ -113,6 +113,7 @@ import { OnlineService } from '../../public/components/OnlineService'
 import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
 import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
 import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
+import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePage'
 
 import OtherRecord from '../../public/components/OtherRecord'
 
@@ -179,6 +180,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDBetDetailPage,//下注明细
   OnlineService,//在线客服
   // ———————————— 模板页面 —————————————
+
+  JDHomePage,
 
   LCMinePage, //乐橙-我的页
   LCHomePage, //乐橙-首页

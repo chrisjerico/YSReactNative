@@ -169,7 +169,7 @@ const TabComponent = ({
         return renderTabBar ? (
           renderTabBar({ activeTab, goToPage })
         ) : (
-          <View style={[tabBarStyle, { height: defaultTabHeight }]}>
+          <View style={[{ height: defaultTabHeight }, tabBarStyle, ]}>
             <ScrollView
               scrollEnabled={tabBarScrollEnabled}
               ref={scroll}

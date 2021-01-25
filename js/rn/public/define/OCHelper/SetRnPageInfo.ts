@@ -36,16 +36,11 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: false,
       允许未登录访问: false,
     })
-
-
   }
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
     // tars
-    if (skitType.indexOf('宝石红') != -1) {
-      pages = pages.concat(BSHPages)
-    }
     if (skitType.indexOf('六合厅') != -1) {
       pages = pages.concat(LHTPages)
     }
@@ -108,14 +103,6 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    //利息宝页
-    pages.push({
-      rnName: PageName.AlipayView,
-      userCenterItemCode: 4,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
     // 申请代理
     pages.push({
       vcName: 'UGAgentViewController',
@@ -132,7 +119,6 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: false,
       允许未登录访问: false,
     })
-
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -154,6 +140,14 @@ export async function setRnPageInfo(force = false) {
       })
     }
   }
+  //利息宝页
+  pages.push({
+    rnName: PageName.AlipayView,
+    userCenterItemCode: 4,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 下注明细
   pages.push({
     vcName: 'BetDetailViewController',
@@ -304,6 +298,17 @@ export async function setRnPageInfo(force = false) {
       break
   }
 }
+
+// 经典模板
+const JDPages = [
+  {
+    tabbarItemPath: '/home',
+    rnName: PageName.JDHomePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  }
+]
 
 // 乐FUN
 const LEFPages = [

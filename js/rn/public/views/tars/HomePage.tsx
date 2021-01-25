@@ -1,12 +1,12 @@
 import React, { memo, ReactElement, useCallback } from 'react'
-import { ListRenderItem, RefreshControl, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native'
+import { ListRenderItem, RefreshControl, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import AnimatedRankComponent from '../../components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../components/tars/AutoHeightCouponComponent'
 import PushHelper from '../../define/PushHelper'
 import { RankingListType } from '../../models/Enum'
 import { httpClient } from '../../network/httpClient'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
-import { scale } from '../../tools/Scale'
+import { sc, scale } from '../../tools/Scale'
 import Activitys, { FloatAd, GoldenEgg, Roulette } from './Activitys'
 import BannerBlock from './BannerBlock'
 import BottomGap from './BottomGap'
@@ -49,15 +49,15 @@ interface HomePageProps {
   notices: any[]
   showCoupon: boolean
   goToPromotionPage: () => any
-  rankingListType: RankingListType
+  rankingListType: RankingListType//底部排行榜
   webName: string
-  couponBlockStyles?: CouponBlockStyles
-  animatedRankComponentStyles?: AnimatedRankComponentStyles
-  couponStyles?: CouponStyles
-  bottomLogoStyles?: BottomLogoStyles
+  couponBlockStyles?: CouponBlockStyles//底部优惠活动
+  animatedRankComponentStyles?: AnimatedRankComponentStyles//底部排行榜
+  couponStyles?: CouponStyles//底部优惠活动
+  bottomLogoStyles?: BottomLogoStyles//底部商标
   containerStyle?: StyleProp<ViewStyle>
-  noticeBlockStyles?: NoticeBlockStyles
-  noticeLogo?: string
+  noticeBlockStyles?: NoticeBlockStyles // 跑马灯
+  noticeLogo?: string//跑马灯
   showBannerBlock?: boolean
   refreshTintColor?: string
   equalFactor?: any
@@ -70,13 +70,15 @@ interface CouponBlockStyles {
   titleStyle?: StyleProp<TextStyle>
 }
 interface AnimatedRankComponentStyles {
-  containerStyle?: StyleProp<ViewStyle>
-  iconTitleContainerStyle?: StyleProp<ViewStyle>
-  contentContainerStyle?: StyleProp<ViewStyle>
-  titleConatinerStyle?: StyleProp<ViewStyle>
-  iconTitleStyle?: StyleProp<TextStyle>
-  contentTitleStyle?: StyleProp<TextStyle>
-  iconStyle?: StyleProp<TextStyle>
+  containerStyle?: StyleProp<ViewStyle>//最外层
+  iconStyle?: StyleProp<TextStyle>//标题icon
+  iconTitleContainerStyle?: StyleProp<ViewStyle>//标题
+  iconTitleStyle?: StyleProp<TextStyle>//标题
+  contentContainerStyle?: StyleProp<ViewStyle>//表格
+  titleConatinerStyle?: StyleProp<ViewStyle>//表格标题
+  contentTitleStyle?: StyleProp<TextStyle>//表格标题
+  leftItemTextStyle?: StyleProp<TextStyle>//行文本
+  rightItemTextStyle?: StyleProp<TextStyle>//行文本
 }
 
 interface CouponStyles {
@@ -120,9 +122,9 @@ const HomePage = ({
   floatAds,
   goldenEggs,
   scratchs,
-  showOnlineNum,
-  bannersInterval,
-  onlineNum,
+  showOnlineNum,//在线人数
+  bannersInterval,//顶部横幅
+  onlineNum,//在线人数
   banners,
   showCoupon,
   coupons,
@@ -131,13 +133,13 @@ const HomePage = ({
   rankingListType,
   webName,
   rankLists,
-  couponBlockStyles,
-  animatedRankComponentStyles,
-  couponStyles,
-  bottomLogoStyles,
+  couponBlockStyles,//底部优惠活动
+  animatedRankComponentStyles,//底部排行榜
+  couponStyles,//底部优惠活动
+  bottomLogoStyles,//底部商标
   containerStyle,
-  noticeBlockStyles,
-  noticeLogo,
+  noticeBlockStyles,//跑马灯
+  noticeLogo,//跑马灯
   showBannerBlock = true,
   refreshTintColor = '#000000',
 }: HomePageProps) => {
@@ -263,7 +265,7 @@ const areEqual = (prevProps, nextProps) => {
 
 const styles = StyleSheet.create({
   bannerContainer: {
-    aspectRatio: 540 / 218,
+    aspectRatio: 540 / 237,
   },
   bannerBadge: {
     top: scale(-210),

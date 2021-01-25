@@ -14,7 +14,7 @@ import { BetBean, BetMode, jsDic, UGBetItemModel, UGbetListModel, UGbetModel, UG
 
 import moment from 'moment';
 import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
-import { ImagePHCP } from '../tools/ImagePHCP';
+import { ImagePlaceholder } from '../tools/ImagePlaceholder';
 import { JDCLTimeCP } from './JDCLTimeCP';
 
 export interface JDLotteryAssistantCPAction {
@@ -713,11 +713,9 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
         <View style={[styles.viewItem, { alignItems: 'center', marginHorizontal: 10, flexDirection: 'row', }]}>
           {/* 图片 */}
           <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-            <ImagePHCP
-              style={[styles.itemImageImageStyle,]}
-              url={cellImg(item)}
-              imgH={50}
-              imgW={50}
+            <ImagePlaceholder
+              source={{ uri: cellImg(item) }}
+              style={styles.itemImageImageStyle}
             />
           </View>
           {/* 内容 */}
