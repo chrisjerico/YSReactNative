@@ -48,6 +48,15 @@ export class ANHelper extends ANEvent {
     )
   }
 
+  /**
+   * Promise 调用安卓函数
+   *
+   * @param type 当前类型
+   * @param data 参数
+   */
+  static callAsyncObject(params?: any): Promise<any | null> {
+    return this.core.executeCmdObject && this.core.executeCmdObject(params)  }
+
   static async setup() {
     super.setup()
 
