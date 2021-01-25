@@ -77,9 +77,6 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
           act?.selectedLotteryModel?.inputMoney
     }
 
-    ugLog('ac act 1  = ', JSON.stringify(act))
-    ugLog('ac act 2 = ', JSON.stringify(state.selectedLotteryModel))
-
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
     // 陣列
