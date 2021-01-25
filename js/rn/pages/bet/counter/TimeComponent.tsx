@@ -10,7 +10,7 @@ import { Res } from '../../../Res/icon/Res'
 import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
 
 interface IRouteParams {
-  nextIssueData?: NextIssueData, //当前的彩票CODE，正码, 正特, 平特一肖, 平特尾数 等等
+
 }
 
 /**
@@ -19,21 +19,17 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const TimeComponent = ({ nextIssueData }: IRouteParams) => {
+const TimeComponent = ({  }: IRouteParams) => {
 
   const key = 'TimeComponent'
 
   const {
     displayCloseTime,
     displayOpenTime,
-    setNextIssueData,
+    nextIssueData,
     gotoOpenNet,
     gotoLive,
   } = UseTime()
-
-  useEffect(()=>{
-    setNextIssueData(nextIssueData)
-  }, [nextIssueData])
 
   /**
    * 哪些站点需要在线直播
@@ -57,7 +53,7 @@ const TimeComponent = ({ nextIssueData }: IRouteParams) => {
   }
 
   return (
-    <View key={key}
+    nextIssueData?.isInstant != '1' && <View key={key}
           style={_styles.container}>
       <View key={key + 'time sub container'}
             style={_styles.time_container}>

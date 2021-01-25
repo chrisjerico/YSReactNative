@@ -231,7 +231,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
           </View> :
           null
       }
-      <TimeComponent nextIssueData={nextIssueData}/>
+      <TimeComponent/>
     </View>
   )
 }
