@@ -96,6 +96,8 @@ const UsePayBoard = () => {
         switch (key) {
           case LotteryConst.TM:  //特码
           case LotteryConst.LM: //两面
+          case LotteryConst.ZM: //正码
+          case LotteryConst.ZT:  //正特
           case LotteryConst.ZM1_6: //正码1T6
           case LotteryConst.SB: //色波
           case LotteryConst.ZOX://总肖
@@ -122,10 +124,6 @@ const UsePayBoard = () => {
             } as BetLotteryData)
           }
             break
-
-          case LotteryConst.ZM: //正码
-          case LotteryConst.ZT:  //正特
-            return null
 
           case LotteryConst.LMA:  //连码
           {

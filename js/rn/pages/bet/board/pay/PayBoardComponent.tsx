@@ -43,6 +43,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
    * @param groupData
    */
   const renderTMItem = (groupData?: PlayGroupData) => {
+    ugLog('renderTMItem = ', JSON.stringify(groupData))
     return groupData?.plays?.map((playData) => {
       return (<View key={playData?.id + playData?.name}
                     style={_styles.item_container}>
@@ -129,14 +130,15 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   }
 
-  // 生成数据对应的 View
-  const itemViewArr = anyEmpty(selectedData) ? null : (Object.values(selectedData) as Array<Array<PlayGroupData>>).flat(2).map(
-    (groupData, index) => {
-      const key = groupData?.code
+  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((key, keyIndex) => {
+    const groupDataArr: Array<PlayGroupData> = selectedData[key]
+    return groupDataArr?.map((groupData, index) => {
       ugLog('key 2 index = ', key, index)
       switch (key) {
         case LotteryConst.TM:  //特码
         case LotteryConst.LM: //两面
+        case LotteryConst.ZM: //正码
+        case LotteryConst.ZT:  //正特
         case LotteryConst.ZM1_6: //正码1T6
         case LotteryConst.SB: //色波
         case LotteryConst.ZOX://总肖
@@ -146,10 +148,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LotteryConst.HX://合肖
           return renderHXItem(groupData,
             groupData?.exZodiacs?.map((item) => item?.name)?.toString())
-
-        case LotteryConst.ZM: //正码
-        case LotteryConst.ZT:  //正特
-          return null
 
         case LotteryConst.LMA:  //连码
           return renderHXItem(groupData,
@@ -173,7 +171,10 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
       }
 
 
+
     })
+
+  }).flat(2)
 
   const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * BET_ITEM_HEIGHT, [itemCount])
 

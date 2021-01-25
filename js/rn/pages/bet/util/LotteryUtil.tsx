@@ -38,7 +38,10 @@ const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum =>
     || (!anyEmpty(item?.alias) && zodiac?.alias == item?.alias)))
 
 /**
- * 解析下注数据，避免绘制UI的时候再刷新数据，每个界面有 3层数据，
+ *
+ * <新彩种1>
+ *
+ * 解析下注数据，每个界面有 3层数据，
  *
  * [ tab1, tab2, tab3 ...
  *  [ 圆形，方格
