@@ -51,43 +51,43 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 
   for (let index in keys) {
     const key = keys[index]
-    ugLog('key index = ', key)
+    ugLog('key index = ', key, JSON.stringify(selectedData[key]))
     switch (key) {
-      case LotteryConst.TM:  //特码
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT:  //正特
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:  //五行
-      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TX: //特肖
-      case LotteryConst.ZX: //正肖
-      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-        ugLog('key key = selectedData[key] ', JSON.stringify(selectedData[key]))
-        if(arrayLength(selectedData[key]) <= 0) {
-          Toast('请选择玩法')
-          return false
-        }
-        break
-
-      case LotteryConst.HX://合肖
-        if(arrayLength(selectedData[key]) <= 1) {
-          Toast('合肖请选择2个以上的数据')
-          return false
-        }
-        break
-      case LotteryConst.LMA:  //连码
-
-        break
+      // case LotteryConst.TM:  //特码
+      // case LotteryConst.LM: //两面
+      // case LotteryConst.ZM: //正码
+      // case LotteryConst.ZT:  //正特
+      // case LotteryConst.ZM1_6: //正码1T6
+      // case LotteryConst.SB: //色波
+      // case LotteryConst.ZOX://总肖
+      // case LotteryConst.WX:  //五行
+      // case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      // case LotteryConst.TX: //特肖
+      // case LotteryConst.ZX: //正肖
+      // case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      // case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      // case LotteryConst.LX: //连肖
+      // case LotteryConst.LW: //连尾
+      //   ugLog('key key = selectedData[key] ', JSON.stringify(selectedData[key]))
+      //   if(arrayLength(selectedData[key]) <= 0) {
+      //     Toast('请选择玩法')
+      //     return false
+      //   }
+      //   break
+      //
+      // case LotteryConst.HX://合肖
+      //   if(arrayLength(selectedData[key][0]?.exZodiacs) <= 1) {
+      //     Toast('合肖请选择2个以上的数据')
+      //     return false
+      //   }
+      //   break
+      // case LotteryConst.LMA:  //连码
+      //
+      //   break
 
       case LotteryConst.ZXBZ:  //自选不中
-        if(arrayLength(selectedData[key]) <= 1) {
-          Toast('自选不中请选择2到12个数据')
+        if(arrayLength(selectedData[key][0]?.exPlays) < 5) {
+          Toast('自选不中请选择5到12个数据')
           return false
         }
         break
