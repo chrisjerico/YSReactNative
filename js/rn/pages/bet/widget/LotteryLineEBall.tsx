@@ -52,8 +52,8 @@ const LotteryLineEBall = ({
   let showName = anyEmpty(item?.alias) ? item?.name : item?.alias
   return (
     <TouchableWithoutFeedback key={'LotteryLineEBall' + item?.id}
-                      style={CommStyles.flex}
-                      onPress={() => callback && callback()}>
+                              style={CommStyles.flex}
+                              onPress={() => callback && callback()}>
       <View key={'LotteryLineEBall' + item?.id}
             style={[
               _styles.ball_item_tm,
@@ -76,7 +76,8 @@ const LotteryLineEBall = ({
               ]}>{item?.odds}</Text>
         <View style={CommStyles.flex}/>
         {
-          !anyEmpty(item?.zodiacItem) && item?.zodiacItem?.nums?.map((zodiacNumber) =>
+          !anyEmpty(item?.zodiacItem) &&
+          item?.zodiacItem?.nums?.map((zodiacNumber) =>
             <LotteryEBall key={item?.id + zodiacNumber}
                           ballProps={ballProps}
                           containerStyle={{ width: null }}

@@ -11,6 +11,7 @@ import { AvatarSettingModel } from '../../Model/SystemAvatarListModel';
 import AppDefine from '../../../define/AppDefine';
 import { UGStore } from '../../../../redux/store/UGStore';
 import { BetMode } from '../../../../pages/经典/Model/UGChanglongaideModel';
+import { IBetLotteryParams } from '../../it/bet/IBetLotteryParams'
 
 
 
@@ -99,7 +100,7 @@ export class api_user {
     return this.c.post('changeFundPwd', { old_pwd: old_pwd, new_pwd: new_pwd });
   }
 
-  // 注单投注
+  // 长龙注单投注
   static userBetWithParams(params: BetMode){
 
     if (UGStore.globalProps.userInfo?.isTest) {//是测试账号
@@ -115,13 +116,22 @@ export class api_user {
         return api_user.bet(params);
       }
       else{
-       
+
         return api_user.instantBet(params);
       }
     }
 
   }
 
+  // 普通游戏 注单投注
+  static userGameBetWithParams(params: IBetLotteryParams){
+    if (UGStore.globalProps.userInfo?.isTest) {//是测试账号
+      return params?.isInstant == '1' ? api_user.instantBet(params) : api_user.guestBet(params)
+    } else{//不是测试账号
+      return params?.isInstant == '1' ? api_user.instantBet(params) : api_user.bet(params)
+    }
+
+  }
 
   // 取消注单
   static cancelBet(orderId: string) {

@@ -12,6 +12,7 @@ import LotteryLineEBall from '../../widget/LotteryLineEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { array } from 'prop-types'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
@@ -63,14 +64,16 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.alias}</Text>
+              ]}>{
+          groupData?.alias + (arrayLength(selectedBalls) > 1 ?
+            `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 2]?.odds}）` :
+            '')
+        }</Text>
       </View>
 
       <View key={key + 'renderLineBall sub' + groupData?.id}
             style={_styles.ball_container}>
-        {
-          playOddData?.pageData?.zodiacNums?.map(renderEBall)
-        }
+        { playOddData?.pageData?.zodiacNums?.map(renderEBall) }
       </View>
     </View>
 
