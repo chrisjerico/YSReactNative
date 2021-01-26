@@ -67,10 +67,17 @@ const UseCapitalDetailRecordList = () => {
       item.id == curGroup?.toString())?.id?.toString()
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
 
+    console.log('startDate====',startDate);
+    console.log('endDate====',endDate);
+    
+
     api.user.fundLogs(stDate,edDate,reqPage,20,reqGroup).useSuccess(({ data }) => {
       const res = {data:data};
       let listData = res?.data?.list
       let cpGroups = res?.data?.groups
+     
+      console.log('listData====', JSON.stringify(listData));
+      
         //缓存列表显示选项
         const menu = cpGroups?.map((item) => {
           return (
