@@ -102,17 +102,18 @@ const BtcPayPage = ({ navigation, route }) => {
     <View style={_styles.btc_hint_container}>
       <Text style={_styles.choose_result_title}>{`虚拟币金额: ${btcMoney}`}</Text>
       <Text style={_styles.btc_type}>{payData?.channel[selPayChannel]?.domain}</Text>
+
       <TouchableOpacity onPress={() => {
-        switch (Platform.OS) {
-          case 'ios':
-            OCHelper.call('UIPasteboard.generalPasteboard.setString:', [btcMoney])
-            break
-          case 'android':
-            ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: btcMoney })
-            break
-        }
-        Toast('复制成功')
-      }}>
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.call('UIPasteboard.generalPasteboard.setString:', [btcMoney.toString()])
+          break
+        case 'android':
+          ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: btcMoney })
+          break
+      }
+      Toast('复制成功')
+    }}>
         <Text style={_styles.choose_result_copy}>复制</Text>
       </TouchableOpacity>
     </View>
