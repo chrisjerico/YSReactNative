@@ -8,7 +8,7 @@ import { arrayLength } from '../../tools/Ext'
 interface RenderGame {
   item: Game
   index: number
-  showGameSubType: (index: number) => any
+  showGameSubType: (index: number) => boolean
 }
 
 interface GameSubTypeComponentProps {
@@ -50,11 +50,13 @@ const GameSubTypeComponent = ({
       setIndexHistory(null)
       setCutRow(null)
       setSubType([])
+      return false
     } else {
       const subType = games[index]?.subType ?? []
       setIndexHistory(index)
       setCutRow(cutRow)
       setSubType(subType)
+      return true
     }
   }
 

@@ -28,6 +28,7 @@ interface TabComponentProps {
   tabBarStyle?: StyleProp<ViewStyle>
   locked?: boolean
   enableMinWidth?: boolean
+  c_ref?: TabComponentApi
 }
 
 interface RenderTabBar {
@@ -64,6 +65,11 @@ export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
 const minTabWidth = scale(100)
 const defaultTabHeight = scale(60)
 
+
+export interface TabComponentApi {
+  updateGameSubTypeHeight: (subTypeHeight: number) => void
+}
+
 const TabComponent = ({
   tabGames = [],
   focusTabColor,
@@ -86,6 +92,7 @@ const TabComponent = ({
   tabBarStyle,
   locked = true,
   enableMinWidth = true,
+  c_ref,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
     if (fixedHeight[index]) {
@@ -95,7 +102,8 @@ const TabComponent = ({
       if (games) {
         const gameCount = games?.length ?? 0
         const gameRow = Math.ceil(gameCount / numColumns)
-        return itemHeight * gameRow + baseHeight
+        const subTypeHeight = (v?.subTypeHeights?.[index] ?? 0)
+        return itemHeight * gameRow + baseHeight + subTypeHeight
       } else {
         return 0
       }
@@ -105,6 +113,10 @@ const TabComponent = ({
   const [height, setHeight] = useState(getSceneHeight(initialTabIndex))
   const scroll = useRef(null)
   const tabRef = useRef(null)
+  const { current: v } = useRef({
+    subTypeHeights: {},
+    currentIndex: 0,
+  })
 
   const getTabCount = () => {
     return tabGames?.length ?? 0
@@ -124,11 +136,18 @@ const TabComponent = ({
   }
 
   const changeIndex = ({ i }) => {
+    v.currentIndex = i
     const height = getSceneHeight(i)
     const x = getTabXPosition(i)
     setHeight(height)
     enableAutoScrollTab && scrollTabTo(x)
   }
+
+  // 点击子游戏时更新高度
+  c_ref && (c_ref.updateGameSubTypeHeight = (subTypeHeight) => {
+    v.subTypeHeights[v.currentIndex] = subTypeHeight
+    setHeight(getSceneHeight(v.currentIndex))
+  })
 
   const getTabXPosition = (index: number) => {
     const width = getTabWidth()

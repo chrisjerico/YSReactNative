@@ -658,6 +658,14 @@ export default class PushHelper {
             return
           }
           case UGUserCenterType.彩票大厅: {
+            switch (UGStore.globalProps?.sysConf?.mobileGameHall) {
+              case '1':
+                push(PageName.GameHallPage, { showBackButton: true })
+                return
+              case '2':
+                push(PageName.FreedomHallPage, { showBackButton: true })
+                return
+            }
             subId = MenuType.GCDT
             break
           }

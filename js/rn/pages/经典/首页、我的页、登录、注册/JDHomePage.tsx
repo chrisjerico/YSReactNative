@@ -6,7 +6,7 @@ import { appConfig } from '../../../../../config'
 import AnimatedRankComponent from '../../../public/components/tars/AnimatedRankComponent'
 import GameSubTypeComponent from '../../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../../public/components/tars/MenuModalComponent'
-import TabComponent from '../../../public/components/tars/TabComponent'
+import TabComponent, { TabComponentApi } from '../../../public/components/tars/TabComponent'
 import { MenuType } from '../../../public/define/ANHelper/hp/GotoDefine'
 import AppDefine from '../../../public/define/AppDefine'
 import PushHelper from '../../../public/define/PushHelper'
@@ -41,6 +41,7 @@ import HomeHeader from './views/HomeHeader'
 
 const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const menu = useRef(null)
+  const { current: v } = useRef<{} & TabComponentApi>({})
 
   useEffect(() => {
     setProps({ backgroundColor: skin1.bgColor })
@@ -86,8 +87,8 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
           <TouchableOpacity key={index} style={{ marginHorizontal: sc(5), marginVertical: sc(7) }} onPress={() => {
             PushHelper.pushHomeGame(item)
           }}>
-            <Image source={{ uri: img_assets('subgame_bg') }} style={{ width: sc(157), height: sc(45), marginHorizontal: sc(5), tintColor:skin1.homeContentSubColor }} resizeMode='contain' />
-            <Text style={{ position: 'absolute', marginLeft: sc(6), marginTop: sc(12), width: sc(153), textAlign: 'center', color: '#ffffff', fontSize: scale(18.5), fontWeight: '500' }}>{anyEmpty(title) ? name : title}</Text>
+            <Image source={{ uri: img_assets('subgame_bg') }} style={{ width: sc(157), height: sc(45), marginHorizontal: sc(5), tintColor: skin1.homeContentSubColor }} resizeMode='contain' />
+            <Text style={{ position: 'absolute', marginLeft: sc(6), marginTop: sc(12), width: sc(153), textAlign: 'center', color: '#ffffff', fontSize: sc(18.5), fontWeight: '500' }}>{anyEmpty(title) ? name : title}</Text>
           </TouchableOpacity>
         )
       }}
@@ -130,7 +131,10 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               enableCircle={false}
               onPress={() => {
                 if (subType) {
-                  showGameSubType(index)
+                  const isShow = showGameSubType(index)
+                  const row = Math.ceil(item?.subType?.length / 3)
+                  const subTypeHeight = row * sc(55)
+                  v.updateGameSubTypeHeight && v.updateGameSubTypeHeight(isShow ? subTypeHeight : 0)
                 } else {
                   //ugLog('GameType item=', JSON.stringify(item))
                   if (gameId == GameType.大厅
@@ -305,6 +309,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
           {/* 游戏列表 */}
           {mobileHomeGameTypeSwitch ? (
             <TabComponent
+              c_ref={v}
               tabGames={homeGames}
               itemHeight={scale(172)}
               tabWidth={sc(85)}
