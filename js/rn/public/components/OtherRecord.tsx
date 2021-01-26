@@ -125,8 +125,28 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   }, [selectStartDate])
 
   setProps({
-    didFocus: () => {
-      !data?.length && requestGameData()
+    didFocus: (params) => {
+
+      switch (Platform.OS) {
+        case 'ios':
+          let dic = params;
+          console.log('dic==',dic);
+ 
+          
+          for (var key in dic) {
+            console.log('key==',key);
+            console.log('dic[key]==',dic[key]);
+            if (key == 'game') {
+            
+            }
+          }
+          break;
+        case 'android':
+          //TODO Android 传参
+          !data?.length && requestGameData()
+          break;
+      }
+     
     }
   }, false)
 
