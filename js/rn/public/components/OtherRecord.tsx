@@ -47,8 +47,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
  */
 const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
-  const { type, showBackButton} = route?.params
+  let { type, showBackButton} = route?.params
 
+  
+  if (anyEmpty(type)) {
+    type =  'real';
+  }
+  console.log('type===========',type);
+ 
   const refMenu = useRef(null)
   const  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   // 游戏分类：lottery=彩票，real=真人，card=棋牌，game=电子游戏，sport=体育，fish=捕鱼, esport=电竞
@@ -130,22 +136,28 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       switch (Platform.OS) {
         case 'ios':
           let dic = params;
-          console.log('dic==',dic);
+          console.log('dic===========',dic);
  
           
           for (var key in dic) {
             console.log('key==',key);
             console.log('dic[key]==',dic[key]);
-            if (key == 'game') {
+            if (key == 'type') {
             
+              if (anyEmpty(dic[key])) {
+                type =  'real';
+              }
+              else{
+                type =  dic[key];
+              }
             }
           }
           break;
         case 'android':
           //TODO Android 传参
-          !data?.length && requestGameData()
           break;
       }
+      !data?.length && requestGameData()
      
     }
   }, false)
@@ -192,7 +204,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     
     // 获取注單數據
     APIRouter.ticket_history_args(
-      page+'', '20', currentType.type, startDate, startDate
+      page+'', '20', currentType?.type, startDate, startDate
     ).then(({ data: res }) => {
       ugLog('data res=', res)
       if (res?.code == 0) {
@@ -264,10 +276,12 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
         ? <EmptyView style={{ flex: 1 }}/>
         : 
         <View>
-          <ScrollView>
+          <ScrollView style={{ height:AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 60 - 50, }}>
             {
               renderDataList(data)
             }
+            <View style={{ height:20, }}>
+            </View>
           </ScrollView>
         </View>
       : <View></View>
@@ -349,14 +363,14 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
           onPressTitle={() => {
             refMenu?.current?.toggleMenu()
           }}
-          title={currentType.title}
+          title={currentType?.title ?? '真人注单'}
           titleIcon={'chevron-down'}
         />
 
       </SafeAreaHeader>
       <MiddleMenu
         styles={{ width: scale(200) }}
-        key={currentType.id}
+        key={currentType?.id}
         ref={refMenu}
         onMenuClick={clickMenu}
         menu={typeArray}/>
@@ -413,13 +427,13 @@ const _styles = StyleSheet.create({
   text_bottom_container: {
     backgroundColor: skin1.themeColor,
     width: '100%',
-    height: scale(60),
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center', 
     justifyContent: 'flex-end',
     color: skin1.textColor4,
     position: 'absolute',
-    bottom: 0
+    bottom: AppDefine.safeArea.bottom
   },
   text_content_bottom: {
     flex: 1,

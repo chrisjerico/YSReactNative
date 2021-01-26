@@ -46,14 +46,6 @@ export async function setRnPageInfo(force = false) {
       允许未登录访问: false,
     })
 
-    // 游戏大厅
-    pages.push({
-      vcName: 'UGYYLotteryHomeViewController',
-      rnName: PageName.GameLobbyPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
   }
 
   // 测试环境（未上线的内容）
