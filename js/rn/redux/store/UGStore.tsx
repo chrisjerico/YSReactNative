@@ -60,10 +60,10 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.rightMenu && (state.rightMenu = act.rightMenu)
 
     //彩票数据
-    act.currentPlayOddData && (state.currentPlayOddData = act.currentPlayOddData)
-    act.nextIssueData && (state.nextIssueData = act.nextIssueData)
-    act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
-    act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
+    state.currentPlayOddData = act.currentPlayOddData
+    state.nextIssueData = act.nextIssueData
+    state.playOddDetailData = act.playOddDetailData
+    state.selectedLotteryModel = act.selectedLotteryModel
     // act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
 
   } else if (act.type == 'merge') {

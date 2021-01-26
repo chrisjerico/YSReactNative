@@ -32,9 +32,10 @@ const UseLotteryHelper = () => {
   } = useContext(BetLotteryContext)
 
   const currentPlayOddData = UGStore.globalProps?.currentPlayOddData //当前选中的彩种数据 特码 两面 等
+  const selectedLotteryModel = UGStore.globalProps?.selectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
-  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据
+  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //此页显示的彩种数据
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
 
   useEffect(() => {
@@ -86,10 +87,13 @@ const UseLotteryHelper = () => {
 
     const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
     UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-    ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
-    ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+    ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
 
   }, [selectedBalls])
+
+  useEffect(() => {
+    ugLog('selectedLotteryModel?.selectedData = ', anyEmpty(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
+  }, [selectedLotteryModel?.selectedData])
 
   //当前选中的第几页数据
   const currentPageData = (): Array<PlayGroupData> =>

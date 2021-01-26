@@ -81,13 +81,13 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       // case LotteryConst.LMA:  //连码
       //
       //   break
-
-      case LotteryConst.ZXBZ:  //自选不中
-        if(arrayLength(selectedData[key][0]?.exPlays) < 5) {
-          Toast('自选不中请选择5到12个选项')
-          return false
-        }
-        break
+      //
+      // case LotteryConst.ZXBZ:  //自选不中
+      //   if(arrayLength(selectedData[key][0]?.exPlays) < 5) {
+      //     Toast('自选不中请选择5到12个选项')
+      //     return false
+      //   }
+      //   break
     }
 
   }

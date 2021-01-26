@@ -40,6 +40,7 @@ const ListContentComponent = () => {
           playOddDetailData()?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
                                              onPress={() => {
+                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: null })
                                                UGStore.dispatch({
                                                  type: 'reset',
                                                  currentPlayOddData: playOddDetailData()?.playOdds[leftColumnIndex],
@@ -54,7 +55,10 @@ const ListContentComponent = () => {
                         borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
                       },
                     ]}>
+                <View style={_styles.left_column_text_flag}>
+                </View>
                 <Text key={'renderLeftColumn' + item?.code}
+                      numberOfLines={1}
                       style={_styles.left_column_text}>{item.name}</Text>
               </View>
             </TouchableWithoutFeedback>
@@ -226,14 +230,24 @@ const _styles = StyleSheet.create({
   left_column_text: {
     color: UGColor.TextColor7,
     fontSize: scale(22),
+    flex: 1,
   },
   left_column_item: {
     width: scale(140),
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     height: LEFT_ITEM_HEIGHT,
-    borderRadius: scale(8),
+    borderRadius: scale(4),
   },
+  left_column_text_flag: {
+    backgroundColor: UGColor.WarnningColor1,
+    borderRadius: scale(16),
+    width: scale(16),
+    aspectRatio: 1,
+    marginLeft: scale(8),
+    marginRight: scale(6),
+  },
+
 })
 
 export default ListContentComponent
