@@ -28,7 +28,7 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-    // 2级游戏分类
+    // 其他注单
     pages.push({
       vcName: 'UGRealBetRecordViewController',
       rnName: PageName.OtherRecord,
@@ -178,10 +178,12 @@ export async function setRnPageInfo(force = false) {
   }
 
 
-  //利息宝页
-  pages.push({
-    rnName: PageName.AlipayView,
-    userCenterItemCode: 4,
+
+
+   // 游戏大厅
+   pages.push({
+    vcName: 'UGYYLotteryHomeViewController',
+    rnName: PageName.GameLobbyPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: false,
     允许未登录访问: false,
@@ -236,7 +238,14 @@ export async function setRnPageInfo(force = false) {
     允许游客访问: false,
     允许未登录访问: false,
   })
-
+  //利息宝页
+  pages.push({
+    rnName: PageName.AlipayView,
+    userCenterItemCode: 4,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',
