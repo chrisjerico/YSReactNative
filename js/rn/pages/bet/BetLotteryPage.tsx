@@ -39,10 +39,10 @@ const BetLotteryPage = ({ navigation, route }) => {
     setLotteryId(lotteryId)
 
     return () => {//退出清除数据
-      UGStore.dispatch({type: 'reset', currentPlayOddData: null})
-      UGStore.dispatch({type: 'reset', nextIssueData: null})
-      UGStore.dispatch({type: 'reset', playOddDetailData: null})
-      UGStore.dispatch({type: 'reset', selectedLotteryModel: null})
+      UGStore.dispatch({type: 'reset', currentPlayOddData: {}})
+      UGStore.dispatch({type: 'reset', nextIssueData: {}})
+      UGStore.dispatch({type: 'reset', playOddDetailData: {}})
+      UGStore.dispatch({type: 'reset', selectedLotteryModel: {}})
     }
   }, [])
 
