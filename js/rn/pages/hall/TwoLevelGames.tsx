@@ -131,6 +131,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       <TwoLevelListComponent
         refreshing={refreshing}
         gameData={item}
+        gameID={game.gameId}
         requestGameData={requestGameData} />
     </>
 
