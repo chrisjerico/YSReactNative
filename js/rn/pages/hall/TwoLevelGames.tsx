@@ -88,10 +88,13 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
             break;
         }
       }
-
-
-
-    }
+      setSearchText("");
+    },
+    didBlur: () => {
+      console.log('二級遊戲didBlur');
+      setSearchText("");
+    },
+    
   }, false)
 
   /**
@@ -104,6 +107,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       setRefreshing(false)
       setGameData(data)
       setFilterData(data)
+
     }
 
     api.game.realGameTypes(game.gameId, "").useSuccess(({ data }) => {
@@ -162,6 +166,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                 onChangeText={(text) => {
                   setSearchText(text)
                 }}
+                value ={searchText}
               />
               <Button
                 title={'搜索'}
