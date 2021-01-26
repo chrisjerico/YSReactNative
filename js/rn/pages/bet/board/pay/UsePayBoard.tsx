@@ -12,6 +12,7 @@ import LotteryConst from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
 import { calculateItemCount, calculateItemMoney } from '../tl/BetUtil'
 import { zodiacPlayX } from '../tl/hx/BetHXUtil'
+import { playDataX } from '../tl/zxbz/BetZXBZUtil'
 
 /**
  * 下注面板
@@ -85,6 +86,7 @@ const UsePayBoard = () => {
   }, [moneyMap])
 
   /**
+   *
    * 开始下注
    */
   const startBetting = () => {
@@ -96,10 +98,19 @@ const UsePayBoard = () => {
         switch (key) {
           case LotteryConst.TM:  //特码
           case LotteryConst.LM: //两面
+          case LotteryConst.ZM: //正码
+          case LotteryConst.ZT:  //正特
           case LotteryConst.ZM1_6: //正码1T6
           case LotteryConst.SB: //色波
           case LotteryConst.ZOX://总肖
           case LotteryConst.WX:  //五行
+          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LotteryConst.TX: //特肖
+          case LotteryConst.ZX: //正肖
+          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LotteryConst.LX: //连肖
+          case LotteryConst.LW: //连尾
             groupData?.plays?.map((playData) => {
               betBean.push({
                 money: numberToFloatString(moneyMap[playData?.id]),
@@ -123,10 +134,6 @@ const UsePayBoard = () => {
           }
             break
 
-          case LotteryConst.ZM: //正码
-          case LotteryConst.ZT:  //正特
-            return null
-
           case LotteryConst.LMA:  //连码
           {
             const play0 = groupData?.plays[0]
@@ -139,21 +146,18 @@ const UsePayBoard = () => {
           }
             break
 
-          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TX: //特肖
-          case LotteryConst.ZX: //正肖
-          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-            return null
-
-          case LotteryConst.LX: //连肖
-            return null
-
-          case LotteryConst.LW: //连尾
-            return null
-
           case LotteryConst.ZXBZ:  //自选不中
-            return null
+          {
+            const playX = playDataX(groupData)
+
+            betBean.push({
+              money: numberToFloatString(moneyMap[playX?.id]),
+              odds: playX?.odds,
+              playId: playX?.id,
+              betInfo: groupData?.exPlays?.map((item) => item?.name).toString(),
+            } as BetLotteryData)
+          }
+          break
         }
 
       })

@@ -37,9 +37,9 @@ export interface PlayGroupData {
 }
 
 export interface PlayOddData {
-  code: string; // TM
-  name: string; //特码
-  playGroups: PlayGroupData[];
+  code?: string; // TM
+  name?: string; //特码
+  playGroups?: PlayGroupData[];
   pageData?: PagePlayOddData // 重新组合数据
 }
 
@@ -101,11 +101,11 @@ export interface PlayOddGame {
 }
 
 export interface PlayOddDetailData {
-  playOdds: PlayOddData[];
-  setting: PlayOddSettingData;
-  betNumLimit: BetNumLimit[];
-  lotteryLimit: LotteryLimit;
-  game: PlayOddGame;
+  playOdds?: PlayOddData[];
+  setting?: PlayOddSettingData;
+  betNumLimit?: BetNumLimit[];
+  lotteryLimit?: LotteryLimit;
+  game?: PlayOddGame;
 }
 
 /**

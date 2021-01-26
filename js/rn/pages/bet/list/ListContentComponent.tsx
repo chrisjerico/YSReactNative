@@ -19,7 +19,7 @@ import LhcHXComponent from '../lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
 import { useState } from 'react'
-import LotteryListContext from './LotteryListContext'
+import { UGStore } from '../../../redux/store/UGStore'
 
 const ListContentComponent = () => {
 
@@ -39,7 +39,14 @@ const ListContentComponent = () => {
         {
           playOddDetailData()?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
-                                             onPress={() => setLeftColumnIndex(index)}>
+                                             onPress={() => {
+                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: null })
+                                               UGStore.dispatch({
+                                                 type: 'reset',
+                                                 currentPlayOddData: playOddDetailData()?.playOdds[leftColumnIndex],
+                                               })
+                                               setLeftColumnIndex(index)
+                                             }}>
               <View key={'renderLeftColumn' + item?.code}
                     style={[
                       _styles.left_column_item,
@@ -48,7 +55,10 @@ const ListContentComponent = () => {
                         borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
                       },
                     ]}>
+                <View style={_styles.left_column_text_flag}>
+                </View>
                 <Text key={'renderLeftColumn' + item?.code}
+                      numberOfLines={1}
                       style={_styles.left_column_text}>{item.name}</Text>
               </View>
             </TouchableWithoutFeedback>
@@ -187,22 +197,17 @@ const ListContentComponent = () => {
         return <LhcZXBZComponent key={lotteryCode}
                                  playOddData={playOdds}/>
 
-
     }
 
     return null
   }
 
   return (
-    <LotteryListContext.Provider value={{
-      playOddData: () => playOddDetailData()?.playOdds[leftColumnIndex],
-    }}>
-      <View key={'lottery bet content'}
-            style={_styles.middle_content_container}>
-        {renderLeftColumn()}
-        {renderRightContent()}
-      </View>
-    </LotteryListContext.Provider>
+    <View key={'lottery bet content'}
+          style={_styles.middle_content_container}>
+      {renderLeftColumn()}
+      {renderRightContent()}
+    </View>
   )
 
 }
@@ -211,7 +216,7 @@ const _styles = StyleSheet.create({
   middle_content_container: {
     flexDirection: 'row',
     // height: BALL_CONTENT_HEIGHT,
-    paddingBottom: scale(120)
+    paddingBottom: scale(120),
   },
   left_column_container: {
     height: BALL_CONTENT_HEIGHT,
@@ -225,14 +230,24 @@ const _styles = StyleSheet.create({
   left_column_text: {
     color: UGColor.TextColor7,
     fontSize: scale(22),
+    flex: 1,
   },
   left_column_item: {
     width: scale(140),
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     height: LEFT_ITEM_HEIGHT,
-    borderRadius: scale(8),
+    borderRadius: scale(4),
   },
+  left_column_text_flag: {
+    backgroundColor: UGColor.WarnningColor1,
+    borderRadius: scale(16),
+    width: scale(16),
+    aspectRatio: 1,
+    marginLeft: scale(8),
+    marginRight: scale(6),
+  },
+
 })
 
 export default ListContentComponent

@@ -207,7 +207,7 @@ const HallGameListComponent = ({
   )
 }
 
-const CONTENT_ITEM_HEIGHT = scale(140) //内容高度
+const CONTENT_ITEM_HEIGHT = scale(128) //内容高度
 
 const _styles = StyleSheet.create({
   ball_item_container: {

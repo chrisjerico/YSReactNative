@@ -5,7 +5,7 @@ import { anyEmpty } from '../../../../public/tools/Ext'
 import UseLotteryHelper from '../hp/UseLotteryHelper'
 
 /**
- * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
+ * 六合彩 合肖 等等
  * @constructor
  */
 const UseLhcHX = () => {

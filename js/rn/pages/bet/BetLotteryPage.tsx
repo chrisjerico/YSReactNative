@@ -10,6 +10,7 @@ import BetBoardComponent from './board/BetBoardComponent'
 import BetRecordHeaderComponent from './counter/red/BetRecordHeaderComponent'
 import ListContentComponent from './list/ListContentComponent'
 import { TopAreaComponent } from './top/TopAreaComponent'
+import { UGStore } from '../../redux/store/UGStore'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -36,7 +37,14 @@ const BetLotteryPage = ({ navigation, route }) => {
 
   useEffect(() => {
     setLotteryId(lotteryId)
-  }, [lotteryId])
+
+    return () => {//退出清除数据
+      UGStore.dispatch({type: 'reset', currentPlayOddData: {}})
+      UGStore.dispatch({type: 'reset', nextIssueData: {}})
+      UGStore.dispatch({type: 'reset', playOddDetailData: {}})
+      UGStore.dispatch({type: 'reset', selectedLotteryModel: {}})
+    }
+  }, [])
 
   const [textSize, setTextSize] = useState(scale(22))
 

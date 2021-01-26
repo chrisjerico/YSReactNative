@@ -186,7 +186,7 @@ const _styles = StyleSheet.create({
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     padding: scale(6),
   },
   sub_title_text: {
@@ -227,7 +227,7 @@ const _styles = StyleSheet.create({
   tab_item: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
   },

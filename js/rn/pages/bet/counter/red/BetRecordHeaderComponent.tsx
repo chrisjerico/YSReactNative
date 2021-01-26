@@ -231,7 +231,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
           </View> :
           null
       }
-      <TimeComponent nextIssueData={nextIssueData}/>
+      <TimeComponent/>
     </View>
   )
 }
@@ -241,8 +241,8 @@ const _styles = StyleSheet.create({
     width: '100%',
   },
   ball_item_container: {
-    height: scale(120),
-    padding: scale(8),
+    paddingHorizontal: scale(8),
+    paddingVertical: scale(2),
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: scale(1),
@@ -301,7 +301,7 @@ const _styles = StyleSheet.create({
     marginHorizontal: scale(4),
     alignItems: 'center',
     justifyContent: 'center',
-    width: scale(38),
+    width: scale(36),
     aspectRatio: 1,
   },
   zodiac_text: {
