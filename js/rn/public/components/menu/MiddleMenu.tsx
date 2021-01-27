@@ -18,6 +18,7 @@ interface IMiddleMenuItem {
   subTitle?: string // 次级名字
   icon?: string //图标地址
   id?: string //识别标识
+  type: string 
 }
 
 interface IMiddleMenu {

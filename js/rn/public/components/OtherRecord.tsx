@@ -47,16 +47,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
  */
 const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
-  let { type, showBackButton} = route?.params
-
-  
-  if (anyEmpty(type)) {
-    type =  'real';
-  }
-  console.log('type===========',type);
- 
+  let { type, showBackButton } = route?.params
   const refMenu = useRef(null)
-  const  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   // 游戏分类：lottery=彩票，real=真人，card=棋牌，game=电子游戏，sport=体育，fish=捕鱼, esport=电竞
   const typeArray: IMiddleMenuItem[] = [
     {
@@ -103,6 +96,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     },
   ]
 
+  console.log('type0===========', type);
   const [currentType, setCurrentType] = useState(typeArray[0])  //選擇注單類形
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [page, setPage] = useState(1)
@@ -119,8 +113,50 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   } = UseGameHall()
 
   useEffect(() => {
-    setCurrentType(typeArray.find((v) => v.id == type))
+    console.log('useEffect');
+    console.log('type1===========', type);
+    switch (Platform.OS) {
+      case 'ios':
+        if (anyEmpty(type)) {
+          type = 'real';
+        }
+        setCurrentType(typeArray.find((v) => v.type == type))
+        break;
+      case 'android':
+        if (anyEmpty(type)) {
+          type = '23';
+        }
+        setCurrentType(typeArray.find((v) => v.id == type))
+        break;
+    }
   }, [])
+
+  setProps({
+    didFocus: (params) => {
+      ugLog('params==',params)
+      switch (Platform.OS) {
+        case 'ios':
+          let dic = params;
+          for (var key in dic) {
+            if (key == 'gameType') {
+              if (anyEmpty(dic[key])) {
+                type = 'real';
+              }
+              else {
+                type = dic[key];
+              }
+              ugLog('type3====', type)
+              setCurrentType(typeArray.find((v) => v.type == type))
+            }
+          }
+          break;
+        case 'android':
+          //TODO Android 传参
+          break;
+      }
+      !data?.length && requestGameData()
+    }
+  }, false)
 
   useEffect(() => {
     ugLog("startDate: " + startDate)
@@ -130,37 +166,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   useEffect(() => {
   }, [selectStartDate])
 
-  setProps({
-    didFocus: (params) => {
 
-      switch (Platform.OS) {
-        case 'ios':
-          let dic = params;
-          console.log('dic===========',dic);
- 
-          
-          for (var key in dic) {
-            console.log('key==',key);
-            console.log('dic[key]==',dic[key]);
-            if (key == 'type') {
-            
-              if (anyEmpty(dic[key])) {
-                type =  'real';
-              }
-              else{
-                type =  dic[key];
-              }
-            }
-          }
-          break;
-        case 'android':
-          //TODO Android 传参
-          break;
-      }
-      !data?.length && requestGameData()
-     
-    }
-  }, false)
 
   /**
    * 点击菜单
@@ -175,9 +181,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
-                                    onRefresh={() => {
-                                      requestGameData()
-                                    }}/>
+    onRefresh={() => {
+      requestGameData()
+    }} />
 
   /**
    * 请求游戏数据
@@ -190,23 +196,23 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       setRefreshing(false)
       setData(data.data.list)
       let total = 0
-      data.data.list.forEach((e) => { 
+      data.data.list.forEach((e) => {
         total += Number(e.betAmount)
       })
       setBetTotal(total)
       total = 0
-      data.data.list.forEach((e) => { 
+      data.data.list.forEach((e) => {
         total += Number(e.winAmount)
       })
       setWinTotal(total)
       renderAllData()
     }
-    
+
     // 获取注單數據
     APIRouter.ticket_history_args(
-      page+'', '20', currentType?.type, startDate, startDate
+      page + '', '20', currentType?.type, startDate, startDate
     ).then(({ data: res }) => {
-      ugLog('data res=', res)
+      // ugLog('data res=', res)
       if (res?.code == 0) {
         setIsSetData(true)
         refreshUI(res)
@@ -223,15 +229,15 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
    * @param item
    */
   const renderDataList = (item: Array<GameHistorylistBean>) => {
-    ugLog('item=', item)
+    // ugLog('item=', item)
     return (
-    <>
-      <View style={{ flex: 1 }}>
-        {
-          [
-            anyEmpty(item)
-              ? <EmptyView style={{ flex: 1 }}/>
-              : <FlatList 
+      <>
+        <View style={{ flex: 1 }}>
+          {
+            [
+              anyEmpty(item)
+                ? <EmptyView style={{ flex: 1 }} />
+                : <FlatList
                   refreshControl={refreshCT}
                   showsVerticalScrollIndicator={false}
                   keyExtractor={(item, index) => item.id + index}
@@ -239,7 +245,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                   numColumns={1}
                   renderItem={({ item, index }) => {
                     return (
-                      <View style={[_styles.text_title_container, {backgroundColor: skin1.textColor4}]}>
+                      <View style={[_styles.text_title_container, { backgroundColor: skin1.textColor4 }]}>
                         <Text style={_styles.text_content_0}>{item.gameName}{'\n'}{item.gameTypeName}</Text>
                         <Text style={_styles.text_content_0}>{item.betTime}</Text>
                         <Text style={_styles.text_content_0}>{item.betAmount}</Text>
@@ -257,11 +263,11 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                       </View>
                     )
                   }}
-                  />,
-          ]
-        }
-      </View>
-    </>
+                />,
+            ]
+          }
+        </View>
+      </>
     )
   }
 
@@ -271,23 +277,23 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const renderAllData = () => {
     return (
       isSetData
-      ?
-      anyEmpty(data)
-        ? <EmptyView style={{ flex: 1 }}/>
-        : 
-        <View>
-          <ScrollView style={{ height:AppDefine.height - 44 - AppDefine.safeArea.top - AppDefine.safeArea.bottom - 60 - 50, }}>
-            {
-              renderDataList(data)
-            }
-            <View style={{ height:20, }}>
-            </View>
-          </ScrollView>
-        </View>
-      : <View></View>
+        ?
+        anyEmpty(data)
+          ? <EmptyView style={{ flex: 1 }} />
+          :
+          <View>
+            <ScrollView style={{ height: AppDefine.height - 44 - AppDefine.safeArea.top - 0 - 60 - 50, }}>
+              {
+                renderDataList(data)
+              }
+              <View style={{ height: 20, }}>
+              </View>
+            </ScrollView>
+          </View>
+        : <View></View>
     )
   }
- 
+
   const handleCancel = () => {
     setSelectStartDate(false);
   };
@@ -299,44 +305,121 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     let curDate = new Date(startDate)
 
     return (
-      
-        <View key={'renderCalendar'}
-              style={_styles.calendar_wid}>
-          <Calendar.Picker selectedDate={curDate}
-              onDayPress={(date: Date) => {
-                let curDate = date.format('yyyy-MM-dd')
-                if (selectStartDate) {//设置起始日期
-                  setStartDate(curDate)
-                  setTimeout(() => {
-                  setSelectStartDate(false)
-                  }, 100)
-                }
-              }}
-              HeaderComponent={({
-                                  currentMonth,
-                                  onPrevMonth,
-                                  onNextMonth,
-                                }) => {
-                const arr = currentMonth.split(' ')
-                ugLog(arr[0] + arr[1])
-                return <View style={{ flexDirection: 'row' }}>
-                  <TouchableWithoutFeedback onPress={onPrevMonth}>
-                    <Text style={_styles.calendar_button}>{'上一月'}</Text>
-                  </TouchableWithoutFeedback>
-                  <Text style={_styles.calendar_title}>{arr[1] + '年 ' + Number(months.indexOf(arr[0])+1) + '月'}</Text>
-                  <TouchableWithoutFeedback onPress={onNextMonth}>
-                    <Text style={_styles.calendar_button}>{'下一月'}</Text>
-                  </TouchableWithoutFeedback>
-                </View>
-              }}
-              disabledDayPick={false}
-                           weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
-          />
-        </View>
+
+      <View key={'renderCalendar'}
+        style={[_styles.calendar_wid, { backgroundColor: UGColor.BackgroundColor2, }]}>
+        <Calendar.Picker selectedDate={curDate}
+          onDayPress={(date: Date) => {
+            let curDate = date.format('yyyy-MM-dd')
+            if (selectStartDate) {//设置起始日期
+              setStartDate(curDate)
+              setTimeout(() => {
+                setSelectStartDate(false)
+              }, 100)
+            }
+          }}
+          HeaderComponent={({
+            currentMonth,
+            onPrevMonth,
+            onNextMonth,
+          }) => {
+            const arr = currentMonth.split(' ')
+            ugLog(arr[0] + arr[1])
+            return <View style={{ flexDirection: 'row' }}>
+              <TouchableWithoutFeedback onPress={onPrevMonth}>
+                <Text style={[_styles.calendar_button, { color: UGColor.TextColor3, }]}>{'上一月'}</Text>
+              </TouchableWithoutFeedback>
+              <Text style={[_styles.calendar_title, { color: UGColor.TextColor2, }]}>{arr[1] + '年 ' + Number(months.indexOf(arr[0]) + 1) + '月'}</Text>
+              <TouchableWithoutFeedback onPress={onNextMonth}>
+                <Text style={[_styles.calendar_button, { color: UGColor.TextColor3, }]}>{'下一月'}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+          }}
+          disabledDayPick={false}
+          weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
+        />
+      </View>
     )
   }
 
   const MemoCalendar = memo(renderCalendar)
+
+  function MineHeaderTitle() {
+    ugLog('MineHeaderTitle')
+    setCurrentType(typeArray.find((v) => v.id == type))
+    // let item: IMiddleMenuItem = {
+    //   title: '真人注单', //菜单名字
+    //   subTitle: null, // 次级名字
+    //   icon: null, //图标地址
+    //   id: '23', //识别标识
+    //   type: 'real'
+    // }
+
+    // if (type == 'real') {
+    //   ugLog('real')
+    //   item = {
+    //     title: '真人注单', //菜单名字
+    //     subTitle: null, // 次级名字
+    //     icon: null, //图标地址
+    //     id: '23', //识别标识
+    //     type: 'real'
+    //   }
+    // }
+    // else if (type == 'card') {
+    //   ugLog('card')
+    //   item = {
+    //     title: '棋牌注单',
+    //     subTitle: null,
+    //     icon: null,
+    //     id: '24',
+    //     type: 'card'
+    //   }
+    // }
+    // else if (type == 'fish') {
+    //   ugLog('fish')
+    //   item = {
+    //     title: '捕鱼注单',
+    //     subTitle: null,
+    //     icon: null,
+    //     id: '25',
+    //     type: 'fish'
+    //   }
+    // }
+    // else if (type == 'game') {
+    //   ugLog('game')
+    //   item = {
+    //     title: '电子注单',
+    //     subTitle: null,
+    //     icon: null,
+    //     id: '22',
+    //     type: 'game'
+    //   }
+    // }
+    // else if (type == 'esport') {
+    //   ugLog('esport')
+    //   item = {
+    //     title: '电竞注单',
+    //     subTitle: null,
+    //     icon: null,
+    //     id: '26',
+    //     type: 'esport'
+    //   }
+    // }
+    // else if (type == 'sport') {
+    //   ugLog('sport')
+    //   item = {
+    //     title: '体育注单',
+    //     subTitle: null,
+    //     icon: null,
+    //     id: '27',
+    //     type: 'sport'
+    //   }
+    // }
+
+
+    // ugLog('item==', JSON.stringify(item))
+    // setCurrentType(item)
+  }
   /**
    * 绘制右按钮
    */
@@ -344,9 +427,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     setSelectStartDate(true)
   }}>
     <AntDesign size={scale(30)}
-          name={'calendar'}
-          style={{ padding: scale(16) }}
-          color={'#ffffff'}/>
+      name={'calendar'}
+      style={{ padding: scale(16) }}
+      color={'#ffffff'} />
   </TouchableWithoutFeedback>
 
   return (
@@ -354,16 +437,16 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader
           showBackBtn={anyEmpty(showBackButton) ? true : showBackButton == '1'}
-          rightButton={rightButton} 
+          rightButton={rightButton}
           showRightTitle={true}
           onPressBackBtn={() => {
-              pop()
-            }
+            pop()
+          }
           }
           onPressTitle={() => {
             refMenu?.current?.toggleMenu()
           }}
-          title={currentType?.title ?? '真人注单'}
+          title={currentType?.title}
           titleIcon={'chevron-down'}
         />
 
@@ -373,18 +456,20 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
         key={currentType?.id}
         ref={refMenu}
         onMenuClick={clickMenu}
-        menu={typeArray}/>
-        
-        <>
-          <Dialog.Container 
-            contentStyle={{ paddingTop: 0, width: scale(500),
-              backgroundColor: UGColor.BackgroundColor2}}
-            headerStyle={{ height: 0}}
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}
-            visible={selectStartDate} onBackdropPress={handleCancel}>
-            <MemoCalendar />
-          </Dialog.Container> 
-        </>
+        menu={typeArray} />
+
+      <>
+        <Dialog.Container
+          contentStyle={{
+            paddingTop: 0, width: scale(500),
+            backgroundColor: UGColor.BackgroundColor2
+          }}
+          headerStyle={{ height: 0 }}
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          visible={selectStartDate} onBackdropPress={handleCancel}>
+          <MemoCalendar />
+        </Dialog.Container>
+      </>
       <View style={_styles.text_title_container}>
         <Text style={_styles.text_content_0}>{'游戏'}</Text>
         <Text style={_styles.text_content_0}>{'时间'}</Text>
@@ -392,9 +477,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
         <Text style={_styles.text_content_0}>{'输赢'}</Text>
         <Text style={_styles.text_content_0}>{'详情'}</Text>
       </View>
-      <View style={_styles.text_bottom_container}>
-        <Text style={[_styles.text_content_bottom, {alignItems: 'flex-start'}]}>{'下注总金额: ' + betTotal}</Text>
-        <Text style={[_styles.text_content_bottom, {alignItems: 'flex-end'}]}>{'输赢金额: ' + winTotal}</Text>
+      <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
+        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-start', color: skin1.textColor4, }]}>{'下注总金额: ' + betTotal}</Text>
+        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor4, }]}>{'输赢金额: ' + winTotal}</Text>
       </View>
       {
         renderAllData()
@@ -425,38 +510,33 @@ const _styles = StyleSheet.create({
     textAlign: 'center',
   },
   text_bottom_container: {
-    backgroundColor: skin1.themeColor,
     width: '100%',
     height: 60,
     flexDirection: 'row',
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'flex-end',
     color: skin1.textColor4,
     position: 'absolute',
-    bottom: AppDefine.safeArea.bottom
+
   },
   text_content_bottom: {
     flex: 1,
-    color: skin1.textColor4,
     fontSize: scale(20),
     textAlign: 'center',
   },
   calendar_wid: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: UGColor.BackgroundColor2,
     width: '100%',
     zIndex: 1,
   },
   calendar_button: {
-    color: UGColor.TextColor3,
     fontSize: scale(22),
     textAlign: 'center',
     padding: scale(18),
   },
   calendar_title: {
     flex: 1,
-    color: UGColor.TextColor2,
     fontSize: scale(24),
     textAlign: 'center',
     padding: scale(16),
