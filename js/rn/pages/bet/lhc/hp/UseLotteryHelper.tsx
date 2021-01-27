@@ -92,13 +92,15 @@ const UseLotteryHelper = () => {
     }
 
     const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedModel }
-    UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-    ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+    // UGStore.dispatch({ type: 'merge', selectedLotteryModel })
+
+    ugLog('选中的数据 selectedBalls = ', JSON.stringify(selectedBalls))
+    ugLog(`选中的数据 selectedLotteryModel = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
 
   }, [selectedBalls])
 
   useEffect(() => {
-    ugLog('selectedLotteryModel?.selectedData = ', anyEmpty(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
+    // ugLog('选中的数据有变化: ', anyEmpty(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
   }, [selectedLotteryModel?.selectedData])
 
   //当前选中的第几页数据

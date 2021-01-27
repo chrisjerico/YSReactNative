@@ -1,6 +1,7 @@
 import { PlayData, PlayGroupData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 将选中的球转换为固定格式存储下来
@@ -16,10 +17,14 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
   const tabMap = new Map<string, Array<SelectedPlayModel>>() //每一个TAB的数组 如 特码B TMB -> 对应的数据
   selGroup[playOddData.code] = tabMap
 
+  // ugLog('playOddData?.pageData?.groupTri = ', JSON.stringify(playOddData?.pageData?.groupTri))
+
   //遍历每一TAB的数据 如 特码B和特码A
   playOddData?.pageData?.groupTri?.map((pageData) => {
+    // ugLog('pageData = ', JSON.stringify(pageData))
     const pageArr = new Array<SelectedPlayModel>() //每一组数据，如 特码B里面的 两面, 色波
     tabMap[pageData[0].id] = pageArr //取第一组数据的ID作为Tab标识
+    ugLog('tabMap code = ', pageData[0].id)
 
     //遍历TAB的每一组数据，如特码B里面有 特码数据，两面数据，色波数据
     pageData?.map((groupData) => {
@@ -44,16 +49,20 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
       //     } as PlayGroupData
       // }
 
-
       //找出选中的球对应的原始数据, 优先使用 自定义数组 exPlays
       const selBalls = !anyEmpty(groupData?.exPlays) ?
-        groupData?.plays?.filter((item) => selectedBalls.includes(item?.id)) :
-        groupData?.exPlays?.filter((item) => selectedBalls.includes(item?.id))
+        groupData?.exPlays?.filter((item) => selectedBalls.includes(item?.id)) :
+        groupData?.plays?.filter((item) => selectedBalls.includes(item?.id))
+
+      ugLog('selBalls = ', groupData.code, JSON.stringify(selBalls))
+
       //再用原始数组和彩种数据组合成 新的选中数据
       !anyEmpty(selBalls) && pageArr.push({
         playGroups: groupData,
         plays: selBalls
       } as SelectedPlayModel)
+
+      ugLog('pageArr = ', groupData.code, JSON.stringify(pageArr))
 
     })
 
@@ -61,6 +70,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
     // !anyEmpty(tempGroup) && selGroup.push(...tempGroup)
   })
 
+  ugLog('selGroup = ', JSON.stringify(selGroup))
   return selGroup
 }
 

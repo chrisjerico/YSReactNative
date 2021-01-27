@@ -50,13 +50,6 @@ const BetLotteryPage = ({ navigation, route }) => {
     }
   }, [])
 
-  const lst = ['1', '2', '3', '4', '5', '6']
-
-  ugLog('map 1 = ', JSON.stringify(lst))
-  lst.map((item) => item == '2' && delete lst[2])
-  ugLog('map 2 = ', JSON.stringify(lst))
-
-
   return (
     <BetLotteryContext.Provider value={{
       lotteryId: () => lotteryId,
@@ -107,9 +100,9 @@ const BetLotteryPage = ({ navigation, route }) => {
             <BetRecordHeaderComponent />
             <ListContentComponent/>
           </ScrollView>
-          <BetBoardComponent key={'lottery board'}
-                             locked={false}
-                             lockStr={'封盘中...'}/>
+          {/*<BetBoardComponent key={'lottery board'}*/}
+          {/*                   locked={false}*/}
+          {/*                   lockStr={'封盘中...'}/>*/}
         </View>
       </BaseScreen>
     </BetLotteryContext.Provider>
