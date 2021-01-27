@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react'
 import BetLotteryContext from '../../BetLotteryContext'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it/bet/IBetLotteryParams'
@@ -27,7 +27,7 @@ const UsePayBoard = () => {
 
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
-  const [selectedData, setSelectedData] = useState<Map<string, Array<PlayGroupData>>>(null) //当前选中的数据
+  const [selectedData, setSelectedData] = useState<Map<string, Map<string, Map<string, Array<PlayData>>>>>(null) //当前选中的数据 结构和SelectedLotteryModel一样
   const [totalMoney, setTotalMoney] = useState(0) //计算总价格
   const [averageMoney, setAverageMoney] = useState(1) //输入平均价格
   const [itemCount, setItemCount] = useState(0) //选中的条目数据
