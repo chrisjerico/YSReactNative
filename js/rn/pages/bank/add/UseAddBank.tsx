@@ -60,30 +60,8 @@ const UseAddBank = () => {
   const requestBankDetailData = async (category?: string) => {
 
 
-    // api.system.bankList(parseInt(category)).useSuccess(({ data }) => {
-    //   let res :any =  {data }
-    //   if (res?.code == 0) {
-    //     if (category == BankConst.BANK) {
-    //       setBankDetailData(res)
-    //       !anyEmpty(res?.data) && setBankDetailItems(res?.data?.map(
-    //         (item, index) =>
-    //           ({ label: item.name, value: item.id })))
-
-    //     } else if (category == BankConst.BTC) {
-    //       setBtcDetailData(res)
-    //       !anyEmpty(res?.data) && setBtcDetailItems(res?.data?.map(
-    //         (item, index) =>
-    //           ({ label: item.name, value: item.id })))
-
-    //     }
-
-    //   }
-
-    // });
-
-
-    APIRouter.user_bankInfoList(category).then(({ data: res }) => {
-
+    api.system.bankList(parseInt(category)).useSuccess(({ data }) => {
+      let res :any =  {data }
       if (res?.code == 0) {
         if (category == BankConst.BANK) {
           setBankDetailData(res)
@@ -99,10 +77,32 @@ const UseAddBank = () => {
 
         }
 
-      } else {
-        Toast(res?.msg)
       }
-    })
+
+    });
+
+
+    // APIRouter.user_bankInfoList(category).then(({ data: res }) => {
+
+    //   if (res?.code == 0) {
+    //     if (category == BankConst.BANK) {
+    //       setBankDetailData(res)
+    //       !anyEmpty(res?.data) && setBankDetailItems(res?.data?.map(
+    //         (item, index) =>
+    //           ({ label: item.name, value: item.id })))
+
+    //     } else if (category == BankConst.BTC) {
+    //       setBtcDetailData(res)
+    //       !anyEmpty(res?.data) && setBtcDetailItems(res?.data?.map(
+    //         (item, index) =>
+    //           ({ label: item.name, value: item.id })))
+
+    //     }
+
+    //   } else {
+    //     Toast(res?.msg)
+    //   }
+    // })
   }
 
   /**
