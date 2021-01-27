@@ -40,6 +40,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   //     params[key] = null
   //   }
   // }
+  
   let temp = {}
   //过滤掉 null 或 "",
   for (let paramsKey in params) {

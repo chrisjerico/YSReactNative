@@ -82,7 +82,7 @@ const UseAddBank = () => {
     // });
 
 
-    APIRouter.user_bankInfoList(parseInt(category)).then(({ data: res }) => {
+    APIRouter.user_bankInfoList(category).then(({ data: res }) => {
 
       if (res?.code == 0) {
         if (category == BankConst.BANK) {

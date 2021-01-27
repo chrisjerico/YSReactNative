@@ -31,11 +31,6 @@ const LotteryHistoryPage = () => {
   const [rightMenuVisible, setRightMenuVisible] = useState(false)
 
   useEffect(() => {
-    APIRouter.ticket_history()
-      .then((value) => {
-        console.log('----------------LotteryHistoryPage-------', value?.data?.data)
-      })
-      .catch((error) => {})
   }, [])
   return (
     <>
