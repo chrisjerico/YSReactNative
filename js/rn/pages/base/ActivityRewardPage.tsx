@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Image, ImageBackground, Modal, Text, TouchableWithoutFeedback, View, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Image, ImageBackground, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
-import { api_withdraw } from '../../public/network/NetworkRequest1/api/api_withdraw'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { removeHTMLTag } from '../../public/tools/removeHTMLTag'
+import { Toast } from '../../public/tools/ToastUtils'
 import Button from '../../public/views/tars/Button'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -58,7 +58,7 @@ const RewardList = ({ tabLabel, data, uniqueKey, onPress, onPressApply }) => (
           </TouchableWithoutFeedback>
           <Button
             title={'点击申请'}
-            containerStyle={{ width: 100, height: 30, backgroundColor: '#AE0000', borderRadius: 5, alignSelf: 'center', marginVertical: 10 }}
+            containerStyle={{ width: 100, height: 30, backgroundColor: Skin1.themeColor, borderRadius: 5, alignSelf: 'center', marginVertical: 10 }}
             titleStyle={{ color: '#ffffff' }}
             onPress={() => onPressApply({ win_apply_content, quickAmounts })}
           />
@@ -272,7 +272,12 @@ const ActivityRewardPage = () => {
                 containerStyle={{ width: '25%', borderWidth: 1, borderColor: 'transparent', borderRadius: 5, height: 30, backgroundColor: Skin1.themeColor }}
                 titleStyle={{ color: '#ffffff' }}
                 onPress={() => {
-                  setApplyVisible(false)
+                  if (money) {
+                    setApplyVisible(false)
+                    setMoney(null)
+                  } else {
+                    Toast('申请金额不能为空')
+                  }
                 }}
               />
             </View>
