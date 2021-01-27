@@ -99,6 +99,7 @@ const PayListComponent = ({ navigation, route }) => {
           case 'dshb_transfer'://多闪红包
           case 'xlsm_transfer'://闲聊扫码
           case 'zfbzyhk_transfer'://支付宝转银行卡
+          case 'bankalipay_transfer'://"银行支付宝转账"
           case 'wxzfbsm_transfer'://"微信支付宝扫码"
           case 'liaobei_transfer'://"聊呗转账"
             push(PageName.TransferPayPage, {

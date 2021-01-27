@@ -32,7 +32,7 @@ import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
 import Modal from 'react-native-modal'
 import { useContext, useEffect, useState } from 'react'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
-import { CapitalConst, TransferConst } from '../../../../const/CapitalConst'
+import { CapitalConst } from '../../../../const/CapitalConst'
 import CapitalContext from '../../../CapitalContext'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
@@ -139,9 +139,9 @@ const TransferPayPage = ({ navigation, route }) => {
         </View>
         {
           [
-            !anyEmpty(nameHint?.payee_des) && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
-            !anyEmpty(nameHint?.bank_account_des) && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
-            !anyEmpty((nameHint?.account_address_des)) && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
+            !anyEmpty(nameHint?.payee) && !anyEmpty(nameHint?.payee_des) && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
+            !anyEmpty(nameHint?.bank_account) && !anyEmpty(nameHint?.bank_account_des) && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
+            !anyEmpty((nameHint?.account_address)) && !anyEmpty((nameHint?.account_address_des)) && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
             !anyEmpty(payChannelBean?.qrcode) && <TouchableImage
               pic={payChannelBean?.qrcode}
               containerStyle={{ aspectRatio: 1, width: scale(240) }}
