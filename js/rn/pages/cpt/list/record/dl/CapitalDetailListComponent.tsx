@@ -205,7 +205,17 @@ const CapitalDetailListComponent = () => {
                     })
                   }}
                   onEndReachedThreshold={0.2}
-                  renderItem={({ item, index }) => renderItemContent(item, index)}/>}
+                  renderItem={({ item, index }) => renderItemContent(item, index)}
+                  ListFooterComponent={
+                    <View
+                    style={{
+                        height:100,
+                        
+                    }}
+                  >
+                  </View>
+                  }
+                  />}
     {renderCalendar()}
   </View>
 

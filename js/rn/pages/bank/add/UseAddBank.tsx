@@ -13,6 +13,7 @@ import { Toast } from '../../../public/tools/ToastUtils'
 import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
 import md5 from 'blueimp-md5'
 import { pop } from '../../../public/navigation/RootNavigation'
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 
 /**
  * 银行卡管理
@@ -57,7 +58,32 @@ const UseAddBank = () => {
    * @param category 定义在 BankConst
    */
   const requestBankDetailData = async (category?: string) => {
-    APIRouter.user_bankInfoList(category).then(({ data: res }) => {
+
+
+    // api.system.bankList(parseInt(category)).useSuccess(({ data }) => {
+    //   let res :any =  {data }
+    //   if (res?.code == 0) {
+    //     if (category == BankConst.BANK) {
+    //       setBankDetailData(res)
+    //       !anyEmpty(res?.data) && setBankDetailItems(res?.data?.map(
+    //         (item, index) =>
+    //           ({ label: item.name, value: item.id })))
+
+    //     } else if (category == BankConst.BTC) {
+    //       setBtcDetailData(res)
+    //       !anyEmpty(res?.data) && setBtcDetailItems(res?.data?.map(
+    //         (item, index) =>
+    //           ({ label: item.name, value: item.id })))
+
+    //     }
+
+    //   }
+
+    // });
+
+
+    APIRouter.user_bankInfoList(parseInt(category)).then(({ data: res }) => {
+
       if (res?.code == 0) {
         if (category == BankConst.BANK) {
           setBankDetailData(res)

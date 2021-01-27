@@ -52,6 +52,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
     return temp
   }
 
+  ugLog('params ==444444',params)
   try {
 
     switch (Platform.OS) {
@@ -143,7 +144,7 @@ httpClient.interceptors.response.use(
 )
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   if (!config.url.includes('wjapp')) {
-    config.url = 'wjapp/api.php?' + config.url
+    config.url = '/wjapp/api.php?' + config.url
   }
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data })
@@ -201,7 +202,12 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
     }
   }
 
-  ugLog('http url 1 =', config.method, config.baseURL, config.url)
+
+
+  ugLog('config.baseURL =', config.baseURL)
+  ugLog('config.url =', config.url)
+
+  ugLog('http url 1 =', config.method,config.baseURL,config.url)
 
   // ugLog('http encryptData 1 =', encryptData)
   // ugLog('http config.data 1 =', config.data)

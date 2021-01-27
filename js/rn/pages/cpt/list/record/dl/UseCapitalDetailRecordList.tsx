@@ -77,7 +77,7 @@ const UseCapitalDetailRecordList = () => {
       let cpGroups = res?.data?.groups
      
       console.log('listData====', JSON.stringify(listData));
-      ugLog('page==',pageIndex)
+
         //缓存列表显示选项
         const menu = cpGroups?.map((item) => {
           return (
@@ -89,21 +89,21 @@ const UseCapitalDetailRecordList = () => {
         })
 
         setMenuItem([{ id: '0', title: '全部类型' }, ...menu])
-          setListDetailData(listData)
-
         if (clear) {
           ugLog('clear')
           setPageIndex(reqPage + 1)
           setListDetailData(listData)
+
         } else {
           //没有更多数据了
           if (arrayEmpty(listData)) {
-            ugLog('arrayEmpty')
             setPageIndex(1)
+            
+
           } else {
             setPageIndex(reqPage + 1)
-            ugLog('reqPage==',reqPage)
             setListDetailData([...capitalDetailData, ...listData])
+
           }
         }
       
@@ -116,55 +116,6 @@ const UseCapitalDetailRecordList = () => {
         clear && setRefreshing(false)
       }
     )
-
-
-
-    // APIRouter.capital_capitalDetailRecordList({
-    //   startDate: stDate,
-    //   endDate: edDate,
-    //   page: reqPage.toString(),
-    //   rows: '20',
-    //   group: reqGroup,
-    // }).then(({ data: res }) => {
-    //   let listData = res?.data?.list
-    //   let cpGroups = res?.data?.groups
-
-    //   ugLog('data res=', reqPage, JSON.stringify(res?.data))
-    //   if (res?.code == 0) {
-
-    //     //缓存列表显示选项
-    //     const menu = cpGroups?.map((item) => {
-    //       return (
-    //         ({
-    //           title: `${item?.name}`,
-    //           id: item?.id?.toString(),
-    //         } as IMiddleMenuItem)
-    //       )
-    //     })
-
-    //     setMenuItem([{ id: '0', title: '全部类型' }, ...menu])
-    //       setListDetailData(listData)
-
-
-    //     if (clear) {
-    //       setPageIndex(reqPage + 1)
-    //       setListDetailData(listData)
-    //     } else {
-    //       //没有更多数据了
-    //       if (arrayEmpty(listData)) {
-    //         setPageIndex(1)
-    //       } else {
-    //         setPageIndex(reqPage + 1)
-    //         setListDetailData([...capitalDetailData, ...listData])
-    //       }
-    //     }
-
-    //   } else {
-    //     Toast(res?.msg)
-    //   }
-    // }).finally(() => {
-    //   clear && setRefreshing(false)
-    // })
   }
 
   return {

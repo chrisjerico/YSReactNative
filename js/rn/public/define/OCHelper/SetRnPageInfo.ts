@@ -46,6 +46,24 @@ export async function setRnPageInfo(force = false) {
       允许未登录访问: false,
     })
 
+    // 资金管理
+    pages.push({
+      vcName: 'UGFundsViewController',
+      rnName: PageName.CapitalPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+
+    // 我的提款账户
+    pages.push({
+      vcName: 'WithdrawalAccountListVC',
+      rnName: PageName.ManageBankListPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+
   }
 
   // 测试环境（未上线的内容）
@@ -64,8 +82,8 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
 
-     // 2级游戏分类
-     pages.push({
+    // 2级游戏分类
+    pages.push({
       vcName: 'UGGameListViewController',
       rnName: PageName.TwoLevelGames,
       fd_prefersNavigationBarHidden: true,
@@ -172,8 +190,8 @@ export async function setRnPageInfo(force = false) {
 
 
 
-   // 游戏大厅
-   pages.push({
+  // 游戏大厅
+  pages.push({
     vcName: 'UGYYLotteryHomeViewController',
     rnName: PageName.GameLobbyPage,
     fd_prefersNavigationBarHidden: true,

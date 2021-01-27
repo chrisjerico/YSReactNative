@@ -185,7 +185,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
               {renderDataList(filterData)}
               <View
               style={{
-                  height:200,
+                  height:20,
               }}
             >
             </View>
