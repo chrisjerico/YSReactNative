@@ -26,9 +26,12 @@ const UseBetRecordHeader = () => {
   const [showHistory, setShowHistory] = useState(false) //是否显示历史记录
   const [historyData, setHistoryData] = useState<LotteryHistoryData>(null) //历史数据
 
+  /**
+   * 下一期的数据有变化就请求历史记录
+   */
   useEffect(()=>{
-    requestNextData(lotteryId())
-  }, [])
+    showHistory && requestHistory()
+  }, [nextIssueData])
 
   /**
    * 打开或者关闭数据
@@ -40,23 +43,6 @@ const UseBetRecordHeader = () => {
       setShowHistory(true)
       requestHistory()
     }
-  }
-
-  /**
-   * 下一期的数据
-   */
-  const requestNextData = async (id?: string) => {
-    if (anyEmpty(id)) return null
-
-    const res = await APIRouter.game_nextIssue(id)
-      .then(({ data: res }) => res)
-    //ugLog('requestNextData data res=', JSON.stringify(res?.data))
-
-    if (res?.code == 0) {
-      UGStore.dispatch({type: 'merge', nextIssueData: res?.data})
-    }
-
-    return res?.code
   }
 
   /**

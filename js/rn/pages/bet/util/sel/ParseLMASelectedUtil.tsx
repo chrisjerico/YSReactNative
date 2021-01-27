@@ -14,17 +14,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
   playOddData?.pageData?.groupTri?.map((pageData) => {
     const tempGroup: Array<PlayGroupData> = pageData?.map((itemData) => {
       // 优先使用 自定义数组 exPlays
-      if (anyEmpty(itemData?.exPlays)) {
-        //找出选中的球对应的原始数据
-        const selBalls = itemData?.plays?.filter((item) => selectedBalls.includes(item?.id))
-        //再用原始数组和彩种数据组合成 新的选中数据
-        return anyEmpty(selBalls) ?
-          null :
-          {
-            ...itemData,
-            plays: selBalls,
-          } as PlayGroupData
-      } else {
+      if (!anyEmpty(itemData?.exPlays)) {
         //找出选中的球对应的原始数据
         const selBalls = itemData?.exPlays?.filter((item) => selectedBalls.includes(item?.id))
         //再用原始数组和彩种数据组合成 新的选中数据
@@ -33,6 +23,17 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
           {
             ...itemData,
             exPlays: selBalls,
+          } as PlayGroupData
+
+      } else {
+        //找出选中的球对应的原始数据
+        const selBalls = itemData?.plays?.filter((item) => selectedBalls.includes(item?.id))
+        //再用原始数组和彩种数据组合成 新的选中数据
+        return anyEmpty(selBalls) ?
+          null :
+          {
+            ...itemData,
+            plays: selBalls,
           } as PlayGroupData
       }
 

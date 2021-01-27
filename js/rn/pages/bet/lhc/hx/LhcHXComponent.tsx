@@ -15,7 +15,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { array } from 'prop-types'
 
 /**
- * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
+ * 六合彩 合肖 等等
  *
  * @param navigation
  * @constructor
@@ -107,7 +107,7 @@ const _styles = StyleSheet.create({
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     padding: scale(6),
   },
   sub_title_text: {
@@ -137,7 +137,7 @@ const _styles = StyleSheet.create({
   tab_item: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
   },

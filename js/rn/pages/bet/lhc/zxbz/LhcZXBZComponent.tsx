@@ -7,7 +7,7 @@ import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcZXBZ from './UseLhcZXBZ'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
@@ -69,7 +69,12 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 style={[
                   _styles.sub_title_text,
                   { color: Skin1.themeColor },
-                ]}>{groupData?.alias}</Text>
+                ]}>{
+                  groupData?.alias + (arrayLength(selectedBalls) > 4 ?
+                    `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 5]?.odds}）` :
+                    '')
+
+          }</Text>
         </View>
 
         <View key={key + 'render LMA sub2' + groupData?.id}
@@ -112,7 +117,7 @@ const _styles = StyleSheet.create({
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     padding: scale(6),
   },
   sub_title_text: {
@@ -153,7 +158,7 @@ const _styles = StyleSheet.create({
   tab_item: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
   },

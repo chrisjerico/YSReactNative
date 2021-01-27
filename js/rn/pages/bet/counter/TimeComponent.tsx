@@ -10,7 +10,7 @@ import { Res } from '../../../Res/icon/Res'
 import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
 
 interface IRouteParams {
-  nextIssueData?: NextIssueData, //当前的彩票CODE，正码, 正特, 平特一肖, 平特尾数 等等
+
 }
 
 /**
@@ -19,21 +19,17 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const TimeComponent = ({ nextIssueData }: IRouteParams) => {
+const TimeComponent = ({  }: IRouteParams) => {
 
   const key = 'TimeComponent'
 
   const {
     displayCloseTime,
     displayOpenTime,
-    setNextIssueData,
+    nextIssueData,
     gotoOpenNet,
     gotoLive,
   } = UseTime()
-
-  useEffect(()=>{
-    setNextIssueData(nextIssueData)
-  }, [nextIssueData])
 
   /**
    * 哪些站点需要在线直播
@@ -57,12 +53,12 @@ const TimeComponent = ({ nextIssueData }: IRouteParams) => {
   }
 
   return (
-    <View key={key}
+    nextIssueData?.isInstant != '1' && <View key={key}
           style={_styles.container}>
       <View key={key + 'time sub container'}
             style={_styles.time_container}>
         <Text key={key + 'time container 1' + nextIssueData?.displayNumber}
-              style={_styles.issue_text}>{`${nextIssueData?.displayNumber}期`}</Text>
+              style={_styles.issue_text}>{`${nextIssueData?.displayNumber ?? '无 '}期`}</Text>
         <Text key={key + 'time container close'}
               style={_styles.close_text}>{'封盘:'}</Text>
         <Text key={key + 'time container 2' + displayCloseTime}
@@ -105,7 +101,8 @@ const TimeComponent = ({ nextIssueData }: IRouteParams) => {
 
 const _styles = StyleSheet.create({
   container: {
-    paddingVertical: scale(8),
+    flexDirection: 'row',
+    paddingVertical: scale(14),
     backgroundColor: UGColor.LineColor3,
   },
   time_container: {
@@ -121,25 +118,25 @@ const _styles = StyleSheet.create({
   },
   issue_text: {
     color: UGColor.TextColor3,
-    fontSize: scale(22),
+    fontSize: scale(20),
     paddingLeft: scale(8),
   },
   close_text: {
     color: UGColor.TextColor3,
-    fontSize: scale(22),
+    fontSize: scale(18),
     paddingHorizontal: scale(4),
   },
   close_time: {
     color: UGColor.RedColor2,
-    fontSize: scale(24),
+    fontSize: scale(20),
   },
   open_time: {
     color: UGColor.WarnningColor1,
-    fontSize: scale(24),
+    fontSize: scale(20),
   },
   tv_img: {
-    width: scale(36),
-    marginHorizontal: scale(8),
+    width: scale(32),
+    marginHorizontal: scale(6),
     aspectRatio: 1,
   },
 

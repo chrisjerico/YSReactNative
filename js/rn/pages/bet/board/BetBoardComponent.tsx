@@ -18,13 +18,14 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
 import BetLotteryContext from '../BetLotteryContext'
 import PayBoardComponent from './pay/PayBoardComponent'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { calculateItemCount } from './tl/BetUtil'
+import { ugLog } from '../../../public/tools/UgLog'
 
 /**
  * 彩票功能区入参
@@ -57,6 +58,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     showChip,
     setShowChip,
     playOddDetailData,
+    checkShowBetPayment,
   } = UseLhcBoard()
 
   /**
@@ -128,7 +130,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 style={_styles.slider_minus}
                 name={'plus-circle'}/>
         </View> :
-        <View key={'renderSliderArea slider arrow up'}>
+        <View key={'renderSliderArea slider arrow up'}
+              style={_styles.slider_button_container}>
           <Icon key={'renderSliderArea slider icon up'}
                 size={scale(36)}
                 style={_styles.slider_button}
@@ -193,8 +196,6 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                  value={inputMoney}
                  style={_styles.input_text}
                  onChangeText={(s) => {
-                   const selectedLotteryModel: SelectedLotteryModel = { inputMoney: Number.parseFloat(s) }
-                   UGStore.dispatch({ type: 'merge', selectedLotteryModel })
                    setInputMoney(s)
                  }}
                  keyboardType={'numeric'}/>
@@ -202,21 +203,18 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
     <View key={'renderInputArea input 下注 重置'}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TouchableWithoutFeedback onPress={() => {
-        if (anyEmpty(inputMoney)) {
-          Toast('请输入投注金额')
-        } else if(calculateItemCount(UGStore.globalProps?.selectedLotteryModel?.selectedData) <= 0){
-          Toast('请选择玩法')
-        } else {
-          setShowBetPayment(true)
-        }
-      }
-      }>
+      <TouchableWithoutFeedback onPress={checkShowBetPayment}>
         <Text key={'renderInputArea input 下注'}
               style={_styles.start_bet}>下注</Text>
       </TouchableWithoutFeedback>
-      <Text key={'renderInputArea input 重置'}
-            style={_styles.start_reset}>重置</Text>
+
+      <TouchableWithoutFeedback onPress={() => {
+        ugLog('clear selected')
+        UGStore.dispatch({type: 'reset', selectedLotteryModel: {}})}
+      }>
+        <Text key={'renderInputArea input 重置'}
+              style={_styles.start_reset}>重置</Text>
+      </TouchableWithoutFeedback>
     </View>
 
   </View>
@@ -303,6 +301,10 @@ const _styles = StyleSheet.create({
   slider_minus: {
     paddingRight: scale(12),
   },
+  slider_button_container: {
+    width: scale(52),
+    aspectRatio: 1,
+  },
   slider_button: {
     padding: scale(8),
   },
@@ -348,7 +350,7 @@ const _styles = StyleSheet.create({
   tab_item: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
   },

@@ -250,7 +250,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://jz2111.com',
   ],
   'c126b': [
-    'https://bc44698.com',
     'https://b66224.com',
     'https://b62244.com',
     'https://b62224.com',
@@ -426,8 +425,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://hg88991.com',
   ],
   'c259': [
-    'https://660598.com',
-    'https://738868.com',
+    'https://L816.com',
+    'https://wf7.co',
     'https://667568.com'
   ],
   'l001': [

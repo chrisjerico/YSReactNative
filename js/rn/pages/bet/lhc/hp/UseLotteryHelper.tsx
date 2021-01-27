@@ -19,6 +19,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import SelectedLotteryModel from '../../../../redux/model/game/SelectedLotteryModel'
 import { parseLMASelectedData } from '../../util/sel/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/sel/ParseHXSelectedUtil'
+import { Toast } from '../../../../public/tools/ToastUtils'
 
 /**
  * 彩票公共处理类
@@ -30,8 +31,11 @@ const UseLotteryHelper = () => {
     playOddDetailData, //彩票数据，比如六合彩
   } = useContext(BetLotteryContext)
 
+  const currentPlayOddData = UGStore.globalProps?.currentPlayOddData //当前选中的彩种数据 特码 两面 等
+  const selectedLotteryModel = UGStore.globalProps?.selectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
-  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //当前彩种数据
+  const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //此页显示的彩种数据
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
 
   useEffect(() => {
@@ -52,107 +56,44 @@ const UseLotteryHelper = () => {
 //   }})
 
     /**
+     *
      * 投注数据以彩种的形式存在，比如选中了 特码B -> 两面 -> 某个球，存下的数据就是 特码B数据 以及 这个球的数据
      */
     switch (playOddData?.code) {
       case LotteryConst.TM:  //特码
       case LotteryConst.LM: //两面
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT:  //正特
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
       case LotteryConst.WX:  //五行
       case LotteryConst.LMA:  //连码
-      {
-
-        selData[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
-        // //选中了哪些球
-        // const selGroup: Array<PlayGroupData> = []
-        //
-        // playOddData?.pageData?.groupTri?.map((pageData) => {
-        //   const tempGroup: Array<PlayGroupData> = pageData?.map((itemData) => {
-        //     // 优先使用 自定义数组 exPlays
-        //     if (anyEmpty(itemData?.exPlays)) {
-        //       //找出选中的球对应的原始数据
-        //       const selBalls = itemData?.plays?.filter((item) => selectedBalls.includes(item?.id))
-        //       //再用原始数组和彩种数据组合成 新的选中数据
-        //       return anyEmpty(selBalls) ?
-        //         null :
-        //         {
-        //           ...itemData,
-        //           plays: selBalls,
-        //         } as PlayGroupData
-        //     } else {
-        //       //找出选中的球对应的原始数据
-        //       const selBalls = itemData?.exPlays?.filter((item) => selectedBalls.includes(item?.id))
-        //       //再用原始数组和彩种数据组合成 新的选中数据
-        //       return anyEmpty(selBalls) ?
-        //         null :
-        //         {
-        //           ...itemData,
-        //           exPlays: selBalls,
-        //         } as PlayGroupData
-        //     }
-        //
-        //   })?.filter((item) => item != null) as Array<PlayGroupData>
-        //
-        //   //二维数据变一维数据，比如 选中了 [[两面1，两面2], [色波1，色波2]] 合成 [两面1，两面2, 色波1，色波2]
-        //   !anyEmpty(tempGroup) && selGroup.push(...tempGroup)
-        // })
-        //
-        // selData[playOddData?.code] = selGroup
-        // const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
-        // UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-        // ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
-        // ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
-      }
-
-        break
-
-      case LotteryConst.HX://合肖
-      {
-        // //选中了哪些球
-        // const selGroup: Array<PlayGroupData> = []
-        // const selZodiac = playOddData?.pageData?.zodiacNums?.filter(
-        //   (zodiac) => selectedBalls.includes(zodiac?.id),
-        // )
-        //
-        // //合肖只有一组数据
-        // selGroup.push({
-        //   ...playOddData?.pageData?.groupTri[0][0],
-        //   exZodiacs: selZodiac,
-        // } as PlayGroupData)
-        selData[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
-      }
-
-        break
-
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT:  //正特
-        break
-
       case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TX: //特肖
       case LotteryConst.ZX: //正肖
       case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        break
-
       case LotteryConst.LX: //连肖
-        break
-
       case LotteryConst.LW: //连尾
+      case LotteryConst.ZXBZ:  //自选不中
+        selData[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
         break
 
-      case LotteryConst.ZXBZ:  //自选不中
+      case LotteryConst.HX://合肖
+        selData[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
         break
     }
 
     const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
     UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-    ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedBalls))
-    ugLog(`重新组合的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+    ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
 
   }, [selectedBalls])
+
+  useEffect(() => {
+    ugLog('selectedLotteryModel?.selectedData = ', anyEmpty(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
+  }, [selectedLotteryModel?.selectedData])
 
   //当前选中的第几页数据
   const currentPageData = (): Array<PlayGroupData> =>
@@ -167,7 +108,24 @@ const UseLotteryHelper = () => {
     if (isSelectedBallOnId(selectedBalls, ballId)) {
       let newResult = selectedBalls?.filter((item) => item != ballId)
       setSelectedBalls(newResult)
+
     } else {
+      ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
+      switch (playOddData?.code) {
+        case LotteryConst.HX:  //合肖 最多只能选中11个
+          if(arrayLength(selectedBalls) > 10) {
+            Toast('合肖请选择2到11个选项')
+            return
+          }
+          break
+        case LotteryConst.ZXBZ:  //自选不中 最多只能选中12个
+          if(arrayLength(selectedBalls) > 11) {
+            Toast('自选不中请选择5到12个选项')
+            return
+          }
+          break
+      }
+
       setSelectedBalls([...selectedBalls, ballId])
     }
   }
@@ -187,6 +145,7 @@ const UseLotteryHelper = () => {
   }
 
   return {
+    currentPlayOddData,
     tabIndex,
     setTabIndex,
     playOddData,
