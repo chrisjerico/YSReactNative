@@ -106,7 +106,6 @@ const ApplyFeedBack = ({ tabLabel, list }) => {
       scrollEnabled={true}
       renderItem={({ item }) => {
         const { amount, state, updateTime } = item
-        console.log('-------item------', item)
         return (
           <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
             <Text style={{ flex: 2, textAlign: 'center' }}>{updateTime}</Text>
