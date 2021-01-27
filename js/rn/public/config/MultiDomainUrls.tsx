@@ -1,9 +1,9 @@
-import {Platform} from "react-native";
-import {ANHelper} from "../define/ANHelper/ANHelper";
-import {CMD} from "../define/ANHelper/hp/CmdDefine";
-import {OCHelper} from "../define/OCHelper/OCHelper";
-import {string} from "prop-types";
-import {ugLog} from "../tools/UgLog";
+import { Platform } from "react-native";
+import { ANHelper } from "../define/ANHelper/ANHelper";
+import { CMD } from "../define/ANHelper/hp/CmdDefine";
+import { OCHelper } from "../define/OCHelper/OCHelper";
+import { string } from "prop-types";
+import { ugLog } from "../tools/UgLog";
 import { anyEmpty } from '../tools/Ext'
 
 /**
@@ -434,11 +434,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333p.org',
-    'https://70333o.org',
-    'https://70333i.org',
-    'https://70333u.org',
-    'https://70333y.org',
+    'https://70333a.org',
+    'https://70333s.org',
+    'https://70333d.org',
+    'https://70333f.org',
+    'https://70333g.org',
   ],
   'h003b': [
     'https://betv5.com',
