@@ -20,7 +20,7 @@ const UseOnlinePay = () => {
   const [accountItems, setAccountItems] = useState(null) //账户有哪些
   const [inputMoney, setInputMoney] = useState(null) //输入金额
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
-  const [moneyOption, setMoneyOption] = useState<Array<string>>(null) //输入金额
+  const [moneyOption, setMoneyOption] = useState<Array<string>>(null) //输入金额选项
   const [payData, setPayData] = useState<PayAisleListData>(null) //当前数据
   const [payBigData, setPayBigData] = useState<PayAisleData>(null) //总数据
 
