@@ -96,14 +96,21 @@ const OnlinePayPage = ({ navigation, route }) => {
   /**
    * 已选择的渠道
    */
-  const renderSelectedChannel = () => <View>
-    <Text style={_styles.choose_channel_title}>{
-      anyEmpty(payData.channel[selPayChannel]?.fcomment) ?
-        payData.channel[selPayChannel]?.payeeName :
-        payData.channel[selPayChannel]?.fcomment
-    }</Text>
-    <Text style={_styles.choose_channel_hint}>{payBigData?.transferPrompt}</Text>
-  </View>
+  const renderSelectedChannel = () => {
+    let showTitle: string
+    if (!anyEmpty(payData.channel[selPayChannel]?.fcomment)) {
+      showTitle = payData.channel[selPayChannel]?.fcomment
+    } else if (payData.prompt) {
+      showTitle = payData.prompt
+    } else {
+      showTitle = payData.channel[selPayChannel]?.payeeName
+    }
+
+    return <View>
+      <Text style={_styles.choose_channel_title}>{showTitle}</Text>
+      <Text style={_styles.choose_channel_hint}>{payBigData?.transferPrompt}</Text>
+    </View>
+  }
 
   /**
    * 选择渠道
