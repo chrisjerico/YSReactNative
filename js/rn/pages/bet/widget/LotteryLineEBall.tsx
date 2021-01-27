@@ -1,14 +1,12 @@
-import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
-import { BallStyles } from '../../hall/new/games/HallGameListComponent'
+import { ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import { StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { IEBall } from '../../../public/components/view/lottery/EBall'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
+import { isSelectedBallOnId } from '../const/ISelBall'
 import LotteryEBall from './LotteryEBall'
-import { ugLog } from '../../../public/tools/UgLog'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
 
@@ -53,9 +51,9 @@ const LotteryLineEBall = ({
 
   let showName = anyEmpty(item?.alias) ? item?.name : item?.alias
   return (
-    <TouchableOpacity key={'LotteryLineEBall' + item?.id}
-                      style={CommStyles.flex}
-                      onPress={() => callback && callback()}>
+    <TouchableWithoutFeedback key={'LotteryLineEBall' + item?.id}
+                              style={CommStyles.flex}
+                              onPress={() => callback && callback()}>
       <View key={'LotteryLineEBall' + item?.id}
             style={[
               _styles.ball_item_tm,
@@ -78,7 +76,8 @@ const LotteryLineEBall = ({
               ]}>{item?.odds}</Text>
         <View style={CommStyles.flex}/>
         {
-          !anyEmpty(item?.zodiacItem) && item?.zodiacItem?.nums?.map((zodiacNumber) =>
+          !anyEmpty(item?.zodiacItem) &&
+          item?.zodiacItem?.nums?.map((zodiacNumber) =>
             <LotteryEBall key={item?.id + zodiacNumber}
                           ballProps={ballProps}
                           containerStyle={{ width: null }}
@@ -89,7 +88,7 @@ const LotteryLineEBall = ({
                           }}/>)
         }
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 }
 

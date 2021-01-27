@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
@@ -15,18 +15,14 @@ import { PageName } from '../../../public/navigation/Navigation';
 import { push } from '../../../public/navigation/RootNavigation';
 
 interface JDChanglongBetRecordCP {
-  items?: Array<any>//界面数据
-  isRefreshing?: boolean//下拉刷新开始结束 
+
 }
 
 const JDChanglongBetRecordCP = () => {
 
-  let { current: v } = useRef<JDChanglongBetRecordCP>(
-    {
-      items: [],
-      isRefreshing: true,
-    }
-  )
+  let [isRefreshing, setIsRefreshing] = useState<boolean>(true)//下拉刷新开始结束 
+  let [items, setItems] = useState<Array<any>>([])//界面数据
+
 
   /**
 * 钱是否隐藏
@@ -85,7 +81,7 @@ const JDChanglongBetRecordCP = () => {
  * 
  */
   const onHeaderRefresh = () => {
-    v.isRefreshing = true
+    setIsRefreshing(true)
     console.log('下拉刷新');
     getUserRecentBet()
   }
@@ -98,24 +94,22 @@ const JDChanglongBetRecordCP = () => {
 
       if (anyEmpty(data)) {
         console.log('进来了：==================');
-        v.isRefreshing = false;
-        v.items.length = 0
-        setProps();
+        setIsRefreshing(false)
+        setItems([])
         return;
       }
       let arrayData = returnData(data);
       if (arrayData.length == 0) {
         console.log('进来了：==================');
-        v.isRefreshing = false;
-        v.items.length = 0
-        setProps();
+        setIsRefreshing(false)
+        setItems([])
         return;
       }
-      v.isRefreshing = false
-      v.items.length = 0
-      v.items = JSON.parse(JSON.stringify(arrayData))
+      setIsRefreshing(false)
+      setItems([])
+      setItems(JSON.parse(JSON.stringify(arrayData)))
 
-      setProps()
+        
 
     });
   }
@@ -260,7 +254,7 @@ const JDChanglongBetRecordCP = () => {
     <View style={[styles.container, { backgroundColor: Skin1.CLBgColor }]}>
       <View style={{ marginTop: 10, flex: 1 }}>
         <FlatList
-          data={v.items}
+          data={items}
           renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
           ItemSeparatorComponent={_renderItemSeparator}
           keyExtractor={(item, index) => index.toString()}
@@ -273,7 +267,7 @@ const JDChanglongBetRecordCP = () => {
               colors={[Skin1.textColor2]} //android
               tintColor={Skin1.textColor2} //ios
               titleColor={Skin1.textColor2}
-              refreshing={v.isRefreshing}
+              refreshing={isRefreshing}
               // refreshing={isHeader}
               onRefresh={() => {
                 onHeaderRefresh(); //下拉刷新加载数据

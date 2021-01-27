@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View, Image, ImageBackground } from 'react-native'
+import { Dimensions, FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View, Image, ImageBackground, Platform } from 'react-native'
 import * as React from 'react'
 import { HallGameData, HallGameListData } from '../../../../public/network/Model/game/HallGameModel'
 import CommStyles from '../../../base/CommStyles'
@@ -17,11 +17,15 @@ import { PageName } from '../../../../public/navigation/Navigation'
 import { Res } from '../../../../Res/icon/Res'
 import { ANHelper } from '../../../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../../../public/define/ANHelper/hp/CmdDefine'
+import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
+import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
+import { showLoading } from '../../../../public/widget/UGLoadingCP'
 
 interface ITwoLevelGameList {
   refreshing?: boolean //刷新
   gameData?: Array<TwoLevelType> //所有数据
   requestGameData?: () => void //请求数据
+  gameID?:string //游戏id
 }
 
 /**
@@ -32,6 +36,7 @@ interface ITwoLevelGameList {
 const TwoLevelListComponent = ({ refreshing,
                                  gameData,
                                  requestGameData,
+                                 gameID,
                                }: ITwoLevelGameList) => {
 
   const {
@@ -58,7 +63,24 @@ const TwoLevelListComponent = ({ refreshing,
         gameId: item.id,
         gameCode: item.code,
       }
-        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
+
+      const gameIOS = {
+        seriesId: '5',
+        gameId: gameID,
+        subId:gameID,
+        gameCode: item.code,
+        clsName:'GameModel',
+      }
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [gameIOS])
+          break;
+        case 'android':
+          ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
+          break;
+      }
+
+        
       }}>
       <View style={_styles.game_item_container}>
         <ImageBackground 

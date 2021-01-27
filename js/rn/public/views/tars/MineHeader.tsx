@@ -1,7 +1,9 @@
 import React, { memo } from 'react'
 import { StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import Icon from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
+import { Skin1 } from '../../theme/UGSkinManagers';
 import {anyEmpty} from "../../tools/Ext";
 
 interface MineHeaderProps {
@@ -16,9 +18,23 @@ interface MineHeaderProps {
   backBtnColor?: string
   titleStyle?: StyleProp<TextStyle>
   rightTitleStyle?: StyleProp<TextStyle>
+  titleIcon?: string
+  onPressTitle?: () => any
 }
 
-const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle, rightButton, backBtnColor = '#ffffff', titleStyle, rightTitleStyle }: MineHeaderProps) => {
+const MineHeader = ({ showRightTitle = false, 
+  onPressRightTitle, 
+  title, 
+  renderHeader, 
+  showBackBtn = false, 
+  onPressBackBtn, 
+  rightTitle, 
+  rightButton, 
+  backBtnColor = '#ffffff', 
+  titleStyle, 
+  rightTitleStyle,
+  titleIcon =null,
+  onPressTitle }: MineHeaderProps) => {
   return (
     <View style={styles.container}>
       {showBackBtn ? (
@@ -30,16 +46,30 @@ const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHe
       ) : (
           <View style={{ flex: 1 }} />
         )}
-      {renderHeader ? renderHeader() : <DefaultHeader title={title} rightTitle={rightTitle} rightButton={rightButton} showRightTitle={showRightTitle} titleStyle={titleStyle} rightTitleStyle={rightTitleStyle} onPressRightTitle={onPressRightTitle} />}
+      {renderHeader ? renderHeader() : 
+        <DefaultHeader title={title} rightTitle={rightTitle} rightButton={rightButton} showRightTitle={showRightTitle} titleStyle={titleStyle} rightTitleStyle={rightTitleStyle} 
+          onPressRightTitle={onPressRightTitle}
+          titleIcon={titleIcon}
+          onPressTitle={onPressTitle} />}
     </View>
   )
 }
 
-const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, rightButton, titleStyle, rightTitleStyle }) => {
+const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, rightButton, titleStyle, rightTitleStyle, titleIcon, onPressTitle }) => {
   return (
     <>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={[styles.headerTitle, titleStyle]}>{title}</Text>
+        <TouchableWithoutFeedback onPress={onPressTitle}>
+          <View style={{ flex: 1, alignItems: 'center',  justifyContent: 'center', flexDirection: 'row' }}>
+            <Text style={[styles.headerTitle, titleStyle,]}>{title}</Text>
+            {!anyEmpty(titleIcon) &&
+              <Icon  
+                style={{marginLeft: 1}}
+                size={scale(25)}
+                name={titleIcon}
+                color={'#ffffff'}/> }
+          </View>
+        </TouchableWithoutFeedback>
       </View>
       {showRightTitle ? (
         <TouchableWithoutFeedback onPress={onPressRightTitle}>

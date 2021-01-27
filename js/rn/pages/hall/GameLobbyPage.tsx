@@ -3,7 +3,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import EmptyView from '../../public/components/view/empty/EmptyView'
 import { Data } from '../../public/network/Model/HomeRecommendModel'
@@ -38,6 +38,7 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
   } = UseGameHall()
 
   useEffect(() => {
+    
     requestGameData()
   }, [])
 
@@ -92,7 +93,7 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
       ?
       anyEmpty(gameData)
         ? <EmptyView style={{ flex: 1 }}/>
-        : <ScrollView>
+        : <ScrollView style={{  }}>
           {renderDataList(gameData)}
         </ScrollView>
       : <View></View>

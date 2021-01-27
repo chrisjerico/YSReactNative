@@ -9,12 +9,15 @@ import { AlipayView } from '../../public/components/alipay/AlipayView'
 import { FeedbackRecordView } from '../../public/components/FeedbackRecordView'
 import { FeedbackSubmitView } from '../../public/components/FeedbackSubmitView'
 import { FeedbackView } from '../../public/components/FeedbackView'
+import Game3rdView from '../../public/components/Game3rdView'
+import { OnlineService } from '../../public/components/OnlineService'
+import OtherRecord from '../../public/components/OtherRecord'
 import { SupFeedbackSubmitView } from '../../public/components/SupFeedbackSubmitView'
+import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import { TransferRecordView } from '../../public/components/transfer/TransferRecordView'
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import { TransferView } from '../../public/components/transfer/TransferView'
 import TrendView from '../../public/components/TrendView'
-import Game3rdView from '../../public/components/Game3rdView'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { Router } from '../../public/navigation/Router'
@@ -26,6 +29,8 @@ import ManageBankListPage from '../bank/list/ManageBankListPage'
 import ActivityRewardPage from '../base/ActivityRewardPage'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import PromotionPage from '../base/PromotionPage'
+import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
+import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
 import TaskCenterPage from '../base/TaskCenterPage'
@@ -33,6 +38,7 @@ import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
 import UserMessagePage from '../base/UserMessagePage'
+import BetLotteryPage from '../bet/BetLotteryPage'
 import BYHomePage from '../BY/BYHomePage'
 import BYMinePage from '../BY/BYMinePage'
 import BYSignInPage from '../BY/BYSignInPage'
@@ -42,15 +48,18 @@ import BZHHomePage from '../BZH/BZHHomePage'
 import BZHMinePage from '../BZH/BZHMinePage'
 import BZHSignInPage from '../BZH/BZHSignInPage'
 import BZHSignUpPage from '../BZH/BZHSignUpPage'
+import EmptyPage from '../common/ep/EmptyPage'
 import LottoBetting from '../common/LottoBetting'
 import PromotionListPage from '../common/PromotionListPage'
 import CapitalPage from '../cpt/list/CapitalPage'
+import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
+import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import GameLobbyPage from '../hall/GameLobbyPage'
-import TwoLevelGames from '../hall/TwoLevelGames'
 import GameHallPage from '../hall/new/GameHallPage'
+import TwoLevelGames from '../hall/TwoLevelGames'
 import JXHHomePage from '../JXH/JXHHomePage'
 import JXHMinePage from '../JXH/JXHMinePage'
 import JXHSignInPage from '../JXH/JXHSignInPage'
@@ -86,8 +95,17 @@ import ZLMinePage from '../尊龙/ZLMinePage'
 import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
 import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
+import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
 import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
+import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
+import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
+import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
+import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
+import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
+import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
+import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
+import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePage'
 import { XBJLoginPage } from '../香槟金/XBJLoginPage'
 import { XBJMinePage } from '../香槟金/XBJMinePage'
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage'
@@ -97,22 +115,6 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
-import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
-import JDAgentPage from '../经典/申请代理/JDAgentPage'
-import SetPasswordPage from '../base/pwd/SetPasswordPage'
-import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
-
-import { TransferLineView } from '../../public/components/transfer/TransferLineView'
-import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
-import BetLotteryPage from '../bet/BetLotteryPage'
-import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
-import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
-import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
-import EmptyPage from '../common/ep/EmptyPage'
-import { OnlineService } from '../../public/components/OnlineService'
-import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
-import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
 
 /**
  * 所有界面
@@ -126,10 +128,10 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
-  // 彩票大厅-默认
-  GameLobbyPage,
-  TwoLevelGames,
-  Game3rdView,
+  GameLobbyPage, // 游戏大厅主页-默认
+  TwoLevelGames, //二级游戏分类
+  OtherRecord, //其他投注记录（真人、棋牌、电子、体育、捕鱼、电竞）
+  Game3rdView, //优惠活动详情
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
@@ -173,8 +175,11 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDPromotionCodeListPage, //邀请码
   JDChangLongPage, //长龙主页
   JDBetRecordDetailPage, //长龙注单详情
+  JDBetDetailPage, //下注明细
   OnlineService, //在线客服
   // ———————————— 模板页面 —————————————
+
+  JDHomePage,
 
   LCMinePage, //乐橙-我的页
   LCHomePage, //乐橙-首页

@@ -4,7 +4,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
 import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
-import StringUtils from '../../tools/StringUtils'
+import { deleteHtml } from '../../tools/StringUtil'
 
 interface TabComponentProps {
   tabGames: TabGame[]
@@ -28,6 +28,7 @@ interface TabComponentProps {
   tabBarStyle?: StyleProp<ViewStyle>
   locked?: boolean
   enableMinWidth?: boolean
+  c_ref?: TabComponentApi
 }
 
 interface RenderTabBar {
@@ -64,6 +65,11 @@ export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
 const minTabWidth = scale(100)
 const defaultTabHeight = scale(60)
 
+
+export interface TabComponentApi {
+  updateGameSubTypeHeight: (subTypeHeight: number) => void
+}
+
 const TabComponent = ({
   tabGames = [],
   focusTabColor,
@@ -86,6 +92,7 @@ const TabComponent = ({
   tabBarStyle,
   locked = true,
   enableMinWidth = true,
+  c_ref,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
     if (fixedHeight[index]) {
@@ -95,7 +102,8 @@ const TabComponent = ({
       if (games) {
         const gameCount = games?.length ?? 0
         const gameRow = Math.ceil(gameCount / numColumns)
-        return itemHeight * gameRow + baseHeight
+        const subTypeHeight = (v?.subTypeHeights?.[index] ?? 0)
+        return itemHeight * gameRow + baseHeight + subTypeHeight
       } else {
         return 0
       }
@@ -105,6 +113,10 @@ const TabComponent = ({
   const [height, setHeight] = useState(getSceneHeight(initialTabIndex))
   const scroll = useRef(null)
   const tabRef = useRef(null)
+  const { current: v } = useRef({
+    subTypeHeights: {},
+    currentIndex: 0,
+  })
 
   const getTabCount = () => {
     return tabGames?.length ?? 0
@@ -124,11 +136,18 @@ const TabComponent = ({
   }
 
   const changeIndex = ({ i }) => {
+    v.currentIndex = i
     const height = getSceneHeight(i)
     const x = getTabXPosition(i)
     setHeight(height)
     enableAutoScrollTab && scrollTabTo(x)
   }
+
+  // 点击子游戏时更新高度
+  c_ref && (c_ref.updateGameSubTypeHeight = (subTypeHeight) => {
+    v.subTypeHeights[v.currentIndex] = subTypeHeight
+    setHeight(getSceneHeight(v.currentIndex))
+  })
 
   const getTabXPosition = (index: number) => {
     const width = getTabWidth()
@@ -169,7 +188,7 @@ const TabComponent = ({
         return renderTabBar ? (
           renderTabBar({ activeTab, goToPage })
         ) : (
-          <View style={[tabBarStyle, { height: defaultTabHeight }]}>
+          <View style={[{ height: defaultTabHeight }, tabBarStyle, ]}>
             <ScrollView
               scrollEnabled={tabBarScrollEnabled}
               ref={scroll}
@@ -179,7 +198,7 @@ const TabComponent = ({
               contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
               scrollEventThrottle={5000}>
               {tabGames?.map((item, index) => {
-                const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
+                const title = deleteHtml(item?.name ?? item?.categoryName ?? '')
                 return (
                   <TouchableWithoutFeedback
                     key={index}
@@ -228,7 +247,7 @@ const TabComponent = ({
       {tabGames?.map((ele: TabGame, index) => {
         const tab = ele?.name ?? ele?.categoryName ?? ''
         const item = ele?.list ?? ele?.games ?? []
-        return Scene && <Scene key={index} tabLabel={StringUtils.getInstance().deleteHtml(tab)} item={item} index={index} tab={tab} />
+        return Scene && <Scene key={index} tabLabel={deleteHtml(tab)} item={item} index={index} tab={tab} />
       })}
     </ScrollableTabView>
   )

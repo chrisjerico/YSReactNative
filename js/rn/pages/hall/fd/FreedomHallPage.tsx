@@ -41,7 +41,7 @@ interface IRouteParams {
   showBackButton?: boolean //是否显示返回按钮
 }
 const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
-  const { showBackButton }: IRouteParams = route?.params
+  const routeParams: IRouteParams = route?.params
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
@@ -49,7 +49,7 @@ const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
     hallGames?: HallGameData[]
     isGroup: boolean
   }>({ isGroup: true });
-  
+
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
@@ -69,7 +69,7 @@ const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
       !gameData?.length && requestGameData()
     }
   }, false)
-  
+
   /**
    * 请求游戏数据
    */
@@ -118,7 +118,7 @@ const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
     function getGroup() {
       api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
         sm.noShowErrorHUD = true
-        
+
         // 若只有一个“其他“分组，则不显示分组
         const other = data?.filter((v) => v.id == '0')[0]
         data = data?.filter((v) => v.id != '0')
@@ -266,7 +266,7 @@ const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
                     showRightTitle={true}
                     rightButton={rightButton}
                     onPressBackBtn={()=>{ pop() }}
-                    showBackBtn={Platform.OS == 'ios' || showBackButton}
+                    showBackBtn={Platform.OS == 'ios' || routeParams?.showBackButton}
                     />
       </SafeAreaHeader>
       {

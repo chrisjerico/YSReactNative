@@ -3,7 +3,7 @@
  * @constructor
  */
 import UseListContent from './UseListContent'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import LotteryConst, { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
@@ -19,32 +19,34 @@ import LhcHXComponent from '../lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
 import { useState } from 'react'
+import { UGStore } from '../../../redux/store/UGStore'
 
 const ListContentComponent = () => {
 
   const {
-    nextIssueData, // 下一期数据
     playOddDetailData, //彩票数据
-    // curPlayOddData, //当前选中的，特码 连码 等等
   } = UseListContent()
 
   const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
 
-
   /**
    * 绘制左边列表 特码 双面 正码 等等
    */
-  const renderLeftColumn = () => <View key={'renderLeftColumn' + playOddDetailData()?.playOdds?.toString()}
-                                       style={_styles.left_column_container}>
-    <ScrollView key={'renderLeftColumn' + playOddDetailData()?.playOdds?.toString()}
-                nestedScrollEnabled={true}
+  const renderLeftColumn = () => <View style={_styles.left_column_container}>
+    <ScrollView nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={false}>
-      <View key={'renderLeftColumn' + playOddDetailData()?.playOdds?.toString()}
-            style={_styles.left_column_content}>
+      <View style={_styles.left_column_content}>
         {
           playOddDetailData()?.playOdds?.map((item, index) => {
-            return <TouchableOpacity key={'renderLeftColumn' + item?.code}
-                                     onPress={() => setLeftColumnIndex(index)}>
+            return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
+                                             onPress={() => {
+                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: null })
+                                               UGStore.dispatch({
+                                                 type: 'reset',
+                                                 currentPlayOddData: playOddDetailData()?.playOdds[leftColumnIndex],
+                                               })
+                                               setLeftColumnIndex(index)
+                                             }}>
               <View key={'renderLeftColumn' + item?.code}
                     style={[
                       _styles.left_column_item,
@@ -53,10 +55,13 @@ const ListContentComponent = () => {
                         borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
                       },
                     ]}>
+                <View style={_styles.left_column_text_flag}>
+                </View>
                 <Text key={'renderLeftColumn' + item?.code}
+                      numberOfLines={1}
                       style={_styles.left_column_text}>{item.name}</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           })
         }
       </View>
@@ -142,9 +147,8 @@ const ListContentComponent = () => {
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContent = () => {
-    // ugLog('playOddDetailData?.playOdds[leftColumnIndex]=', playOddDetailData?.playOdds[leftColumnIndex])
-
-    let lotteryCode = playOddDetailData()?.playOdds[leftColumnIndex]?.code
+    const playOdds = playOddDetailData()?.playOdds[leftColumnIndex]
+    let lotteryCode = playOdds?.code
     ugLog('------------------lotteryCode---------------------------------', lotteryCode)
     // return <View style={CommStyles.flex}>
     //   {
@@ -154,45 +158,44 @@ const ListContentComponent = () => {
 
 
     switch (lotteryCode) {
-      case LotteryConst.TM: { //特码
+      case LotteryConst.TM:  //特码
         return <LhcTMComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
+                               playOddData={playOdds}/>
+
       case LotteryConst.ZM: //正码
-      case LotteryConst.ZT: { //正特
+      case LotteryConst.ZT:  //正特
         return <LhcZTComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.LMA: { //连码
+                               playOddData={playOdds}/>
+
+      case LotteryConst.LMA:  //连码
         return <LhcLMAComponent key={lotteryCode}
-                                lotteryCode={lotteryCode}/>
-      }
+                                playOddData={playOdds}/>
+
       case LotteryConst.LM: //两面
       case LotteryConst.ZM1_6: //正码1T6
       case LotteryConst.SB: //色波
       case LotteryConst.ZOX://总肖
-      case LotteryConst.WX: { //五行
+      case LotteryConst.WX:  //五行
         return <LhcSBComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
+                               playOddData={playOdds}/>
+
       case LotteryConst.YX: //平特一肖
       case LotteryConst.WS: //平特尾数
       case LotteryConst.TWS: //头尾数
       case LotteryConst.TX: //特肖
       case LotteryConst.LX: //连肖
       case LotteryConst.LW: //连尾
-      case LotteryConst.ZX: { //正肖
+      case LotteryConst.ZX:  //正肖
         return <LhcPTYXComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.HX: { //合肖
+                                 playOddData={playOdds}/>
+
+      case LotteryConst.HX:  //合肖
         return <LhcHXComponent key={lotteryCode}
-                               lotteryCode={lotteryCode}/>
-      }
-      case LotteryConst.ZXBZ: { //自选不中
+                               playOddData={playOdds}/>
+
+      case LotteryConst.ZXBZ:  //自选不中
         return <LhcZXBZComponent key={lotteryCode}
-                                 lotteryCode={lotteryCode}/>
-      }
+                                 playOddData={playOdds}/>
 
     }
 
@@ -213,6 +216,7 @@ const _styles = StyleSheet.create({
   middle_content_container: {
     flexDirection: 'row',
     // height: BALL_CONTENT_HEIGHT,
+    paddingBottom: scale(120),
   },
   left_column_container: {
     height: BALL_CONTENT_HEIGHT,
@@ -221,19 +225,29 @@ const _styles = StyleSheet.create({
     height: BALL_CONTENT_HEIGHT,
   },
   left_column_content: {
-    paddingBottom: scale(240),
+    paddingBottom: scale(120),
   },
   left_column_text: {
     color: UGColor.TextColor7,
     fontSize: scale(22),
+    flex: 1,
   },
   left_column_item: {
     width: scale(140),
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     height: LEFT_ITEM_HEIGHT,
-    borderRadius: scale(8),
+    borderRadius: scale(4),
   },
+  left_column_text_flag: {
+    backgroundColor: UGColor.WarnningColor1,
+    borderRadius: scale(16),
+    width: scale(16),
+    aspectRatio: 1,
+    marginLeft: scale(8),
+    marginRight: scale(6),
+  },
+
 })
 
 export default ListContentComponent

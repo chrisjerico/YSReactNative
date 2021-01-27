@@ -15,7 +15,7 @@ export enum UGImageHost {
 // 替换掉pType中的 {p1}、{p2} 会得到完整路径
 function getImage(host: string, pType: string, p1: string, p2?: string, suffix: ImageType = 'png') {
   // 不传host默认使用当前站点的接口域名
-  !host?.length && (host = UGImageHost.t132f)
+  !host?.length && (host = UGImageHost.test10)
 
   // 替换 pType 中的 {p1}、{p2}
   let path: string

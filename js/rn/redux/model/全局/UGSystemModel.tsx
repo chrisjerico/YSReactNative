@@ -78,7 +78,7 @@ export default interface UGSystemModel {
   chatRoomServer: string
   chatRoomSwitch: boolean
   chatShareBetMinAmount: string
-  mobileGameHall: string//用户中心类型
+  mobileGameHall?: '0' | '1' | '2' //彩票大厅类型，0默认，1新版，2自由版
   picTypeshow: string//风格tab打开还是关闭
   checkinSwitch: string
   closeregreason: string

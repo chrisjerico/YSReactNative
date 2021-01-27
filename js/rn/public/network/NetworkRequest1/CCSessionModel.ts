@@ -60,7 +60,7 @@ export class CCSessionModel<T = {} | [] | string> {
  * 3. 请求失败会自动调用showError(msg)，可以在 useFailure 或 useCompletion 设置 sm.noShowError = true 取消提示
  * 4. 支持在iOS下拉调试界面查看请求结果和参数
  * 5. 支持上传文件，使用方式参考 api.user.uploadAvatar() 上传单个文件、api.user.uploadFeedback() 上传多文件
- * 
+ *
  * （请求参数默认加密，不支持改为不加密）
  * （不需要传token，公共参数里面有）
  */
@@ -101,6 +101,8 @@ export class CCSessionReq {
   static request<T>(path: string, params: object = {}, isPost: boolean = false, files?: { [x: string]: string }): CCSessionModel<T> {
     typeof params == 'string' && (params = JSON.parse(params));// 容错
     let url = `${AppDefine.host}/wjapp/api.php?${path}`;// 拼接url
+
+    ugLog('【未加密参数】', JSON.stringify(params))
     params = Object.assign({}, publicParams(), params); // 添加公共参数
 
     const sm = new CCSessionModel<T>();
@@ -139,8 +141,8 @@ export class CCSessionReq {
         }
         return this.http.post<ResponseObject<T>>(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       } else {
-       
-        
+
+
         return this.http.post<ResponseObject<T>>(url, params,{ headers: { 'Content-Type': 'application/json' } });
       }
     }).then((res) => {
@@ -186,5 +188,6 @@ function encryptParams(params: Dictionary): Promise<Dictionary> {
     return OCHelper.call('CMNetwork.encryptionCheckSign:', [Object.assign({ checkSign: 1 }, params)]);
   } else {
     return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: params });
+    // return ANHelper.callAsyncObject(params);
   }
 }

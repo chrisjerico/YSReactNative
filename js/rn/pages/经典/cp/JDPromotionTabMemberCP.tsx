@@ -298,7 +298,6 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
                       switch (Platform.OS) {
                         case 'ios':
-                          //TODO iOS完成 跳充值弹框
                           OCHelper.call('SGBrowserView.showZoomView:', [{
                             selectors: 'UGPormotionUserInfoView.alloc.initWithFrame:[setItem:]',
                             args1: [NSValue.CGRectMake(0, 0, AppDefine.width - 40, 500)],

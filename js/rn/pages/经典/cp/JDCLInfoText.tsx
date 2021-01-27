@@ -6,7 +6,7 @@ import { scale } from "../../../public/tools/Scale";
 import { Button } from "react-native-elements";
 import { Res } from "../../../Res/icon/Res";
 import AppDefine from "../../../public/define/AppDefine";
-import { ImagePHCP } from "../tools/ImagePHCP";
+import { ImagePlaceholder } from "../tools/ImagePlaceholder";
 
 interface JDCLInfoText {
   title?: string     //左边👉文本内容
@@ -57,17 +57,15 @@ export const JDCLText = (props: JDCLText) => {
 
     {/* 图片 */}
     <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-      <ImagePHCP
+      <ImagePlaceholder
+        source={{ uri: props.imgURL }}
         style={{
           height: scale(80),
           width: scale(80),
           marginVertical: scale(10),
           resizeMode: "stretch",
         }}
-        url={props.imgURL }
-        imgH={80}
-        imgW ={80}
-        />
+      />
     </View>
     {/* 内容 */}
     <View style={[{ flexDirection: 'column', marginLeft: scale(10), }]}>

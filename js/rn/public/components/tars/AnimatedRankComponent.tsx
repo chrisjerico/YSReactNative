@@ -23,6 +23,8 @@ interface AnimatedRankComponentProps {
   iconTitleStyle?: StyleProp<TextStyle>
   contentTitleStyle?: StyleProp<TextStyle>
   iconStyle?: StyleProp<TextStyle>
+  leftItemTextStyle?: StyleProp<TextStyle>//行文本
+  rightItemTextStyle?: StyleProp<TextStyle>//行文本
 }
 
 const itemHeight = 30
@@ -39,6 +41,8 @@ const AnimatedRankComponent = ({
   iconColor,
   contentTitleStyle,
   iconStyle,
+  leftItemTextStyle,
+  rightItemTextStyle,
 }: AnimatedRankComponentProps) => {
   const listHeight = 180
   const count = rankLists?.length
@@ -106,17 +110,17 @@ const AnimatedRankComponent = ({
                 return (
                   <View key={index} style={styles.itemContainer}>
                     <View style={styles.itemTextContainer}>
-                      <Text style={styles.item} numberOfLines={1}>
+                      <Text style={[styles.item, leftItemTextStyle]} numberOfLines={1}>
                         {username}
                       </Text>
                     </View>
                     <View style={styles.itemTextContainer}>
-                      <Text style={styles.item} numberOfLines={1}>
+                      <Text style={[styles.item, leftItemTextStyle]} numberOfLines={1}>
                         {type}
                       </Text>
                     </View>
                     <View style={styles.itemTextContainer}>
-                      <Text style={styles.item} numberOfLines={1}>
+                      <Text style={[styles.item, rightItemTextStyle]} numberOfLines={1}>
                         {coin}
                       </Text>
                     </View>

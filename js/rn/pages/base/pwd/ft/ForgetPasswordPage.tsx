@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
 import { BaseScreen } from '../../../乐橙/component/BaseScreen'
@@ -19,6 +19,9 @@ import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { hideLoading, showLoading, showSuccess } from '../../../../public/widget/UGLoadingCP'
 import { UGStore } from '../../../../redux/store/UGStore'
 import APIRouter from '../../../../public/network/APIRouter'
+import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
+import { NSValue } from '../../../../public/define/OCHelper/OCBridge/OCCall'
+import { OCEventType } from '../../../../public/define/OCHelper/OCBridge/OCEvent'
 
 interface IRouteParams {
   onCallback?: () => any, //设置密码成功
@@ -62,58 +65,129 @@ const ForgetPasswordPage = ({ navigation, route }) => {
       <Text style={_styles.add_img_text}>{'身份证正反面: '}</Text>
       <View style={_styles.add_img_bt_container}>
         <TouchableOpacity onPress={() => {
-          ANHelper.callAsync(CMD.ASK_IMAGES,
-            { value: '1' }).then((res) => {
-            if (res == null) return
 
-            ugLog('renderIdCard=', JSON.stringify(res))
+          switch (Platform.OS) {
+            case 'ios':
+              // 打开原生相册
+              OCHelper.call('UGNavigationController.current.presentViewController:animated:completion:', [{
+                selectors: 'TZImagePickerController.alloc.initWithMaxImagesCount:delegate:[setAllowPickingVideo:][setDidFinishPickingPhotosHandle:]',
+                args1: [1],
+                args2: [false],
+                args3: [NSValue.Block(['Object', 'Object', 'Number'], OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)]
+              }, true]);
+              // Block回调
+              OCHelper.removeEvents(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)
+              OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, (args: [imgs: string[], assets: [], isSelectOriginalPhoto: boolean]) => {
+                const imgURLs = args[0]
+                if (imgURLs?.length) {
+                  let img = imgURLs[0];
+                  console.log('img===', img);
 
-            showLoading()
-            api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).useSuccess(
-              ({ data, msg }) => {
-                hideLoading()
-                setFirstImage(data)
-              }).useFailure(() => {
-                hideLoading()
+                  showLoading()
+                  api.user.uploadIdentity(img).useSuccess(
+                    ({ data, msg }) => {
+                      hideLoading()
+                      setFirstImage(data)
+                    }).useFailure(() => {
+                      hideLoading()
+                    })
+                }
+
               })
-          })
+              break
+            case 'android':
+              ANHelper.callAsync(CMD.ASK_IMAGES,
+                { value: '1' }).then((res) => {
+                  if (res == null) return
+
+                  ugLog('renderIdCard=', JSON.stringify(res))
+
+                  showLoading()
+                  api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).useSuccess(
+                    ({ data, msg }) => {
+                      hideLoading()
+                      setFirstImage(data)
+                    }).useFailure(() => {
+                      hideLoading()
+                    })
+                })
+              break
+          }
+
         }}>
           <View style={_styles.add_img}>
             {
               anyEmpty(firstImage) ?
                 <Icon size={scale(72)}
-                      color={Skin1.themeColor}
-                      name={'plus'}/> :
+                  color={Skin1.themeColor}
+                  name={'plus'} /> :
                 <Image source={{ uri: firstImage?.url }}
-                       style={_styles.id_image}
-                       resizeMode={'stretch'}/>
+                  style={_styles.id_image}
+                  resizeMode={'stretch'} />
             }
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
-          ANHelper.callAsync(CMD.ASK_IMAGES,
-            { value: '1' }).then((res) => {
-            if (res == null) return
 
-            showLoading()
-            api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).useSuccess(
-              ({ data, msg }) => {
-                hideLoading()
-                setSecondImage(data)
-              }).useFailure(() => {
-                hideLoading()
+
+          switch (Platform.OS) {
+            case 'ios':
+              // 打开原生相册
+              OCHelper.call('UGNavigationController.current.presentViewController:animated:completion:', [{
+                selectors: 'TZImagePickerController.alloc.initWithMaxImagesCount:delegate:[setAllowPickingVideo:][setDidFinishPickingPhotosHandle:]',
+                args1: [1],
+                args2: [false],
+                args3: [NSValue.Block(['Object', 'Object', 'Number'], OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)]
+              }, true]);
+              // Block回调
+              OCHelper.removeEvents(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)
+              OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, (args: [imgs: string[], assets: [], isSelectOriginalPhoto: boolean]) => {
+                const imgURLs = args[0]
+                if (imgURLs?.length) {
+                  let img = imgURLs[0];
+                  console.log('img===', img);
+
+                  showLoading()
+                  api.user.uploadIdentity(img).useSuccess(
+                    ({ data, msg }) => {
+                      hideLoading()
+                      setSecondImage(data)
+                    }).useFailure(() => {
+                      hideLoading()
+                    })
+                }
+
               })
-          })
+              break
+            case 'android':
+              ANHelper.callAsync(CMD.ASK_IMAGES,
+                { value: '1' }).then((res) => {
+                  if (res == null) return
+
+                  ugLog('renderIdCard=', JSON.stringify(res))
+
+                  showLoading()
+                  api.user.uploadIdentity(JSON.parse(res)[0]?.compressPath).useSuccess(
+                    ({ data, msg }) => {
+                      hideLoading()
+                      setSecondImage(data)
+                    }).useFailure(() => {
+                      hideLoading()
+                    })
+                })
+              break
+          }
+
         }}>
           <View style={_styles.add_img}>
             {
               anyEmpty(secondImage) ?
                 <Icon size={scale(72)}
-                      color={Skin1.themeColor}
-                      name={'plus'}/> :
+                  color={Skin1.themeColor}
+                  name={'plus'} /> :
                 <Image source={{ uri: secondImage?.url }}
-                       style={_styles.id_image}
-                       resizeMode={'stretch'}/>
+                  style={_styles.id_image}
+                  resizeMode={'stretch'} />
             }
           </View>
         </TouchableOpacity>
@@ -124,26 +198,26 @@ const ForgetPasswordPage = ({ navigation, route }) => {
   const renderPhone = () => <View>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={text => setPhoneNumber(text)}
-                 placeholder={'输入手机号'}/>
+        onChangeText={text => setPhoneNumber(text)}
+        placeholder={'输入手机号'} />
     </View>
     {
       systemInfo?.switchCoinPwdSms == '1' && <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
-                   value={smsNumber}
-                   onChangeText={text => setSmsNumber(text)}
-                   placeholder={'输入短信验证码'}/>
+          value={smsNumber}
+          onChangeText={text => setSmsNumber(text)}
+          placeholder={'输入短信验证码'} />
         {
           startCount ?
             <Text style={[_styles.verify_code_count,
-              {backgroundColor: Skin1.themeColor}]}>{`${countDown}秒`}</Text> :
+            { backgroundColor: Skin1.themeColor }]}>{`${countDown}秒`}</Text> :
             <Button title={'获取短信验证码'}
-                  titleStyle={_styles.verify_code_text}
-                  containerStyle={[_styles.verify_code_bt,
-                    { backgroundColor: Skin1.themeColor }]}
-                  onPress={() => {
-                    sendSmsCode()
-                  }}/>
+              titleStyle={_styles.verify_code_text}
+              containerStyle={[_styles.verify_code_bt,
+              { backgroundColor: Skin1.themeColor }]}
+              onPress={() => {
+                sendSmsCode()
+              }} />
         }
 
       </View>
@@ -160,8 +234,8 @@ const ForgetPasswordPage = ({ navigation, route }) => {
         systemInfo?.coinPwdAuditOptionAry?.includes('bank') ?
           <View style={_styles.bank_bank_name_2nd_container}>
             <TextInput style={_styles.input_name}
-                       onChangeText={text => setBankCard(text)}
-                       placeholder={'输入提款银行卡号'}/>
+              onChangeText={text => setBankCard(text)}
+              placeholder={'输入提款银行卡号'} />
           </View> :
           null
       }
@@ -172,11 +246,11 @@ const ForgetPasswordPage = ({ navigation, route }) => {
       }
       <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
-                   maxLength={4}
-                   secureTextEntry={true}
-                   keyboardType={'numeric'}
-                   onChangeText={text => setFundPassword(text)}
-                   placeholder={'新的四位取款密码'}/>
+          maxLength={4}
+          secureTextEntry={true}
+          keyboardType={'numeric'}
+          onChangeText={text => setFundPassword(text)}
+          placeholder={'新的四位取款密码'} />
       </View>
       {
         systemInfo?.coinPwdAuditOptionAry?.includes('id') ?
@@ -186,17 +260,17 @@ const ForgetPasswordPage = ({ navigation, route }) => {
     </View>
 
     <Button title={'提交'}
-            titleStyle={_styles.submit_text}
-            containerStyle={[_styles.submit_bt,
-              { backgroundColor: Skin1.themeColor }]}
-            onPress={() => {
-              bindPassword().then((res) => {
-                if (res == 0) {
-                  onCallback && onCallback()
-                }
-              })
+      titleStyle={_styles.submit_text}
+      containerStyle={[_styles.submit_bt,
+      { backgroundColor: Skin1.themeColor }]}
+      onPress={() => {
+        bindPassword().then((res) => {
+          if (res == 0) {
+            onCallback && onCallback()
+          }
+        })
 
-            }}/>
+      }} />
   </View>
 
   return (

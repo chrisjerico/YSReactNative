@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { appConfig } from '../../../../config'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
@@ -10,10 +10,10 @@ import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType, RankingListType } from '../../public/models/Enum'
+import { PushHomeGame } from '../../public/models/Interface'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
@@ -135,16 +135,34 @@ const WNZHomePage = () => {
                 if (subType) {
                   showGameSubType(index)
                 } else {
-                  //ugLog('GameType item=', JSON.stringify(item))
-                  if (gameId == GameType.大厅 && subId != MenuType.CQK && subId != MenuType.CZ && subId != MenuType.TX && subId != MenuType.ZHGL && subId != MenuType.CZJL && subId != MenuType.TXJL) {
+                  ugLog('GameType item=', JSON.stringify(item))
+                  if (
+                    gameId == GameType.大厅 &&
+                    subId != MenuType.CQK &&
+                    subId != MenuType.CZ &&
+                    subId != MenuType.TX &&
+                    subId != MenuType.ZHGL &&
+                    subId != MenuType.CZJL &&
+                    subId != MenuType.TXJL &&
+                    subId != MenuType.YHDD
+                  ) {
                     if (subId == 47 && sysInfo?.mobileGameHall == '1') {
                       //新彩票大厅
                       push(PageName.GameHallPage, { showBackButton: true })
                     } else if (subId == 47 && sysInfo?.mobileGameHall == '2') {
                       //自由彩票大厅
                       push(PageName.FreedomHallPage, { showBackButton: true })
+                    } else if (subId == 9) {
+                      //自由彩票大厅
+                      push(PageName.FreedomHallPage, { showBackButton: true })
                     } else {
-                      push(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: Skin1.themeColor, homePage: PageName.WNZHomePage })
+                      let game: PushHomeGame = {
+                        category: item.category,
+                        seriesId: item.seriesId,
+                        gameId: item.gameId,
+                        subId: item.subId,
+                      }
+                      PushHelper.pushHomeGame(game)
                     }
                   } else {
                     //@ts-ignore
@@ -227,14 +245,7 @@ const WNZHomePage = () => {
                       }
                     } else {
                       if (gameId == GameType.优惠活动) {
-                        switch (Platform.OS) {
-                          case 'ios':
-                            goToPromotionPage()
-                            break
-                          case 'android':
-                            PushHelper.pushHomeGame(item)
-                            break
-                        }
+                        goToPromotionPage()
                       } else {
                         PushHelper.pushHomeGame(item)
                       }

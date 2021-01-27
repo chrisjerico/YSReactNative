@@ -1,6 +1,15 @@
-import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native'
 import * as React from 'react'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -9,8 +18,14 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
 import BetLotteryContext from '../BetLotteryContext'
+import PayBoardComponent from './pay/PayBoardComponent'
+import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
+import { UGStore } from '../../../redux/store/UGStore'
+import { Toast } from '../../../public/tools/ToastUtils'
+import { calculateItemCount } from './tl/BetUtil'
+import { ugLog } from '../../../public/tools/UgLog'
 
 /**
  * 彩票功能区入参
@@ -30,6 +45,8 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    showBetPayment,
+    setShowBetPayment,
     userInfo,
     systemInfo,
     showSlider,
@@ -40,18 +57,16 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     setInputMoney,
     showChip,
     setShowChip,
+    playOddDetailData,
+    checkShowBetPayment,
   } = UseLhcBoard()
 
-  useEffect(() => {
-
-  }, [])
   /**
    * 加大拉条
    */
   const increaseSlider = () => {
     let value = sliderValue + sliderStep
-    value = value > systemInfo?.activeReturnCoinRatio ?
-      systemInfo?.activeReturnCoinRatio : value
+    value = value > systemInfo?.activeReturnCoinRatio ? systemInfo?.activeReturnCoinRatio : value
     setSliderValue(value)
   }
 
@@ -80,7 +95,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           <Icon key={'renderSliderArea slider icon'}
                 size={scale(28)}
                 onPress={() => {
-                  setShowSlider(!showSlider)
+                  setShowSlider(false)
                 }}
                 style={_styles.slider_arrow}
                 color={'white'}
@@ -115,12 +130,13 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 style={_styles.slider_minus}
                 name={'plus-circle'}/>
         </View> :
-        <View key={'renderSliderArea slider arrow up'}>
+        <View key={'renderSliderArea slider arrow up'}
+              style={_styles.slider_button_container}>
           <Icon key={'renderSliderArea slider icon up'}
                 size={scale(36)}
                 style={_styles.slider_button}
                 onPress={() => {
-                  setShowSlider(!showSlider)
+                  setShowSlider(true)
                 }}
                 color={Skin1.themeColor}
                 name={'chevron-up'}/>
@@ -128,26 +144,25 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
     }
     {
-      showChip ?
-        <View key={'renderSliderArea chip'}
-              style={_styles.chip_container}>
-          <View key={'renderSliderArea chip sub'}
-                style={_styles.chip_content}>
-            {
-              Object.keys(CHIP_OPTION).map((money) =>
-                <TouchableOpacity key={'renderSliderArea chip' + money}
-                                  onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
-                  <FastImage key={'renderSliderArea chip' + money}
-                             source={{ uri: CHIP_OPTION[money] }}
-                             style={_styles.chip_img}
-                             resizeMode={'contain'}/>
-                </TouchableOpacity>)
-            }
-          </View>
-        </View> :
-        null
+      showChip && <View key={'renderSliderArea chip'}
+                        style={_styles.chip_container}>
+        <View key={'renderSliderArea chip sub'}
+              style={_styles.chip_content}>
+          {
+            Object.keys(CHIP_OPTION).map((money) =>
+              <TouchableWithoutFeedback key={'renderSliderArea chip' + money}
+                                        onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
+                <FastImage key={'renderSliderArea chip' + money}
+                           source={{ uri: CHIP_OPTION[money] }}
+                           style={_styles.chip_img}
+                           resizeMode={'contain'}/>
+              </TouchableWithoutFeedback>)
+          }
+        </View>
+      </View>
     }
   </View>
+
   /**
    * 绘制输入功能区
    */
@@ -171,25 +186,35 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
               style={_styles.lottery_count_hint}>注</Text>
         <View key={'renderInputArea ct'}
               style={CommStyles.flex}/>
-        <TouchableOpacity key={'renderInputArea 筹码'}
-                          onPress={() => setShowChip(!showChip)}>
+        <TouchableWithoutFeedback key={'renderInputArea 筹码'}
+                                  onPress={() => setShowChip(!showChip)}>
           <Text key={'renderInputArea 筹码'}
                 style={_styles.lottery_count_chip}>筹码</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </View>
       <TextInput key={'renderInputArea input'}
+                 value={inputMoney}
                  style={_styles.input_text}
-                 defaultValue={inputMoney}
-                 onChangeText={(s) => setInputMoney(s)}
+                 onChangeText={(s) => {
+                   setInputMoney(s)
+                 }}
                  keyboardType={'numeric'}/>
     </View>
 
     <View key={'renderInputArea input 下注 重置'}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Text key={'renderInputArea input 下注'}
-            style={_styles.start_bet}>下注</Text>
-      <Text key={'renderInputArea input 重置'}
-            style={_styles.start_reset}>重置</Text>
+      <TouchableWithoutFeedback onPress={checkShowBetPayment}>
+        <Text key={'renderInputArea input 下注'}
+              style={_styles.start_bet}>下注</Text>
+      </TouchableWithoutFeedback>
+
+      <TouchableWithoutFeedback onPress={() => {
+        ugLog('clear selected')
+        UGStore.dispatch({type: 'reset', selectedLotteryModel: {}})}
+      }>
+        <Text key={'renderInputArea input 重置'}
+              style={_styles.start_reset}>重置</Text>
+      </TouchableWithoutFeedback>
     </View>
 
   </View>
@@ -212,23 +237,33 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   return (
     <View key={'bet board content'}
-          style={[_styles.bet_container, style]}>
-      {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
-      {renderInputArea()}
-      {
-        locked ?
-          renderLock(lockStr) :
-          null
-      }
+          pointerEvents={'box-none'}
+          style={[_styles.container, style]}>
+      <View style={_styles.bet_container}>
+        {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
+        {renderInputArea()}
+        {locked ? renderLock(lockStr) : null}
+        {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}
+                                              showCallback={() => setShowBetPayment(false)}/>}
+      </View>
     </View>
   )
 }
 
 const _styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-end',
+    // backgroundColor: 'red',
+    // flex: 1,
+  },
   bet_container: {
     position: 'absolute',
     width: '100%',
     justifyContent: 'flex-end',
+    // backgroundColor: 'blue'
   },
   extra_container: {
     flex: 1,
@@ -265,6 +300,10 @@ const _styles = StyleSheet.create({
   },
   slider_minus: {
     paddingRight: scale(12),
+  },
+  slider_button_container: {
+    width: scale(52),
+    aspectRatio: 1,
   },
   slider_button: {
     padding: scale(8),
@@ -311,7 +350,7 @@ const _styles = StyleSheet.create({
   tab_item: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
   },

@@ -15,6 +15,7 @@ import { Toast } from '../../../../../public/tools/ToastUtils'
 import { BankDetailListData, BankDetailListModel } from '../../../../../public/network/Model/bank/BankDetailListModel'
 import { hideLoading, showLoading } from '../../../../../public/widget/UGLoadingCP'
 import { pop } from '../../../../../public/navigation/RootNavigation'
+import { api } from '../../../../../public/network/NetworkRequest1/NetworkRequest1'
 
 /**
  * 提现界面
@@ -38,7 +39,7 @@ const UseWithdraw = () => {
   const [showAddBank, setShowAddBank] = useState(false) //是否显示添加银行卡等帐户
   const [userInfo, setUserInfo] = useState(null) //个人信息
 
-  useEffect(()=>{
+  useEffect(() => {
     setUserInfo(UGStore.globalProps.userInfo)
   }, [])
 
@@ -53,6 +54,8 @@ const UseWithdraw = () => {
    * 切换标签刷新汇率
    */
   useEffect(() => {
+    console.log('-------oooo');
+
     requestBankDetailData(BankConst.BTC)
   }, [withdrawType])
 
@@ -70,6 +73,7 @@ const UseWithdraw = () => {
       return
     }
     const money = Math.round(inputMoney * 100 * newRate) / 100
+
     setBtcMoney(money)
   }, [inputMoney])
 
@@ -78,14 +82,17 @@ const UseWithdraw = () => {
    * @param category 定义在 BankConst
    */
   const requestBankDetailData = (category?: string) => {
-    APIRouter.user_bankInfoList(category).then(({ data: res }) => {
-      //ugLog('requestBankDetailData=', JSON.stringify(res?.data))
-      if (res?.code == 0) {
-        setBtcDetailData(res?.data)
-      } else {
-        Toast(res?.msg)
-      }
-    })
+
+
+
+    api.system.bankList(parseInt(category)).useSuccess(({ data }) => {
+      let res :any =  {data }
+      console.log('res======', res);
+
+      setBtcDetailData(res?.data)
+
+    });
+
   }
 
   /**
@@ -96,9 +103,10 @@ const UseWithdraw = () => {
   const rateMoney = () => {
     if (curBank?.type != BankConst.BTC) return
     //当前是哪个币
-    //ugLog('rateMoney curBank=', JSON.stringify(curBank))
+    ugLog('rateMoney curBank=', JSON.stringify(curBank))
+    ugLog('btcDetailData =', btcDetailData)
     const curBtc = btcDetailData?.find((item) => item.code == curBank?.bankCode)
-    //ugLog('curbtc=', JSON.stringify(curBtc))
+    ugLog('curbtc=', JSON.stringify(curBtc))
     if (curBtc?.code == 'CGP') {
       setNewRate(1)
       setNewUsd(1)
@@ -260,7 +268,7 @@ const UseWithdraw = () => {
 
     if (result?.data?.code == 0) {
       userInfo.fullName = fullName
-      UGStore.dispatch({type: 'merge', userInfo: { fullName: fullName }});
+      UGStore.dispatch({ type: 'merge', userInfo: { fullName: fullName } });
       UGStore.save();
 
       setUserInfo(null)

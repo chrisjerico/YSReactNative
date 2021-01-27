@@ -33,10 +33,10 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const CapitalPage = ({ navigation, route }) => {
+const CapitalPage = ({ navigation, route, setProps }) => {
 
   const { initTabIndex, showBackButton }: IRouteParams = route?.params
-  const indexValue = Object.values(CapitalConst).findIndex((item) =>  item == initTabIndex)
+  const indexValue = Object.values(CapitalConst).findIndex((item) => item == initTabIndex)
 
   // const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(indexValue < 0 ? 0 : indexValue) //当前是哪个Tab
@@ -53,7 +53,25 @@ const CapitalPage = ({ navigation, route }) => {
     requestYueBao,
   } = UseCapital()
 
-  useEffect(()=>{
+  //初始化
+  useEffect(() => {
+    setProps({
+      didFocus: (params) => {
+        requestYueBao()
+        let dic = params;
+        for (var key in dic) {
+          if (key == 'selectIndex') {
+            console.log('key ==============', key);
+            console.log('v ==============', dic[key]);
+            setTabIndex(dic[key])
+            setRefreshCount(refreshCount + 1)
+          }
+        }
+      }
+    })
+
+  }, [])
+  useEffect(() => {
     if (showBackButton == '0') {//主页初始化再确认一次
       setRefreshCount(refreshCount + 1)
     }
@@ -87,32 +105,37 @@ const CapitalPage = ({ navigation, route }) => {
   const renderRecordList = (item: string) => {
     switch (item) {
       case CapitalConst.DEPOSIT:
-        return <PayListComponent tabLabel={item} key={item}/>
+        return <PayListComponent tabLabel={item} key={item} />
       case CapitalConst.WITHDRAWAL:
-        return <WithdrawComponent tabLabel={item} key={item}/>
+        return <WithdrawComponent tabLabel={item} key={item} />
       case CapitalConst.DEPOSIT_RECORD:
-        return <DepositRecordListComponent tabLabel={item}/>
+        return <DepositRecordListComponent tabLabel={item} />
       case CapitalConst.WITHDRAWAL_RECORD:
-        return <WithdrawalRecordListComponent tabLabel={item}/>
+        return <WithdrawalRecordListComponent tabLabel={item} />
       case CapitalConst.CAPITAL_DETAIL:
-        return <CapitalDetailListComponent tabLabel={item}/>
+        return <CapitalDetailListComponent tabLabel={item} />
     }
   }
 
   /**
    * 绘制个人信息
    */
-  const renderMineInfo = () => <View style={_styles.mine_info_container}>
+  const renderMineInfo = () => 
+  <View style={[_styles.mine_info_container,{backgroundColor:Skin1.themeColor}]}>
     <FastImage source={{ uri: userInfo?.avatar }}
-               resizeMode={'contain'}
-               style={_styles.mine_info_avatar}/>
+      resizeMode={'contain'}
+      style={_styles.mine_info_avatar} />
     <View>
-      <Text style={_styles.mine_info_name}>{userInfo?.usr}</Text>
-      <Text style={_styles.mine_info_balance}>{!anyEmpty(userInfo?.balance) && `用户余额: ${userInfo?.balance}`}</Text>
-      {
-        yueBaoData != null &&
-        <Text style={_styles.mine_info_balance}>{yueBaoData?.yuebaoName + '余额: ' + yueBaoData?.balance}</Text>
-      }
+      <Text style={[_styles.mine_info_name,{color:'white',}]}>{userInfo?.usr}</Text>
+      <View style={{ flexDirection: 'row', marginTop: 8 }}>
+        <Text style={[_styles.mine_info_balance, { color:  'white', }]}>{!anyEmpty(userInfo?.balance) && `用户余额:`}</Text>
+        <Text style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${userInfo?.balance}`}</Text>
+      </View>
+
+      <View style={{ flexDirection: 'row', marginTop: 8 }}>
+        <Text style={[_styles.mine_info_balance, { color: 'white', }]}>{!anyEmpty(yueBaoData) && yueBaoData?.yuebaoName + '余额: ' }</Text>
+        <Text style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${yueBaoData?.balance}`}</Text>
+      </View>
     </View>
   </View>
 
@@ -122,31 +145,32 @@ const CapitalPage = ({ navigation, route }) => {
       getYueBaoInfo: () => yueBaoData,
     }}>
       <BaseScreen style={_styles.container}
-                  hideLeft={showBackButton == '0'}
-                  screenName={'资金管理'}>
+        hideLeft={showBackButton == '0'}
+        screenName={'资金管理'}>
         {
           [
             renderMineInfo(),
             anyEmpty(categoryData) ?
-              <EmptyView style={{ flex: 1 }}/> :
+              <EmptyView style={{ flex: 1 }} /> :
               <ScrollableTabView
                 key={'ScrollableTabView' + refreshCount}
                 initialPage={tabIndex}
-                onChangeTab={value => {}}
+                onChangeTab={value => { }}
+
                 // ref={instance => tabController = instance}
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,
-                  { backgroundColor: Skin1.themeColor }]}
+                { backgroundColor: Skin1.themeColor }]}
                 tabBarActiveTextColor={Skin1.themeColor}
-                tabBarInactiveTextColor={Skin1.textColor1}
+                tabBarInactiveTextColor={Skin1.tabNoSelectColor}
                 tabBarTextStyle={{ fontSize: scale(20) }}
-                style={[{ flex: 1 }]}
-                renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
+                style={[{ flex: 1,  }]}
+                renderTabBar={() => <DefaultTabBar style={_styles.tab_bar} />}>
                 {
                   categoryData?.map((tabItem, index) => {
-                      return (
-                        renderRecordList(tabItem)
-                      )
-                    },
+                    return (
+                      renderRecordList(tabItem)
+                    )
+                  },
                   )
                 }
               </ScrollableTabView>,
@@ -161,27 +185,31 @@ const _styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
   },
+  tab_bar: {
+    backgroundColor: '#f4f4f4',
+  },
   mine_info_container: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: scale(16),
+    height: scale(160)
   },
   mine_info_avatar: {
-    width: scale(64),
+    width: scale(100),
     aspectRatio: 1,
+    borderRadius: scale(50),
     marginRight: scale(16),
+
   },
   mine_info_name: {
-    color: UGColor.TextColor2,
     fontSize: scale(24),
+    fontWeight: 'bold',
+
   },
   mine_info_balance: {
-    color: UGColor.TextColor3,
     fontSize: scale(20),
   },
-  tab_bar: {
-    backgroundColor: '#f4f4f4',
-  },
+
   tab_bar_underline: {
     height: scale(3),
   },

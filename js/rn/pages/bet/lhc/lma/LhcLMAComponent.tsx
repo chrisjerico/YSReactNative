@@ -1,45 +1,16 @@
-import {
-  FlatList, Platform,
-  ScrollView, StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableNativeFeedback, TouchableOpacity,
-  TouchableWithoutFeedback,
-  View, ViewProps, ViewStyle,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
-import Modal from 'react-native-modal'
-import { useContext, useEffect, useState } from 'react'
-import { BaseScreen } from '../../../乐橙/component/BaseScreen'
-import * as Animatable from 'react-native-animatable'
+import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
-import { pop } from '../../../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
-import { ugLog } from '../../../../public/tools/UgLog'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcLMA, { ILMABallArray } from './UseLhcLMA'
-import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import { BallStyles } from '../../../hall/new/games/HallGameListComponent'
-import BetLotteryContext from '../../BetLotteryContext'
-import EBall from '../../../../public/components/view/lottery/EBall'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import ERect from '../../../../public/components/view/lottery/ERect'
-import LotteryEBall from '../../widget/LotteryEBall'
-import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
-import { doc } from 'prettier'
+import UseLhcLMA from './UseLhcLMA'
+import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
+import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 
 
 /**
@@ -48,30 +19,25 @@ import { doc } from 'prettier'
  * @param navigation
  * @constructor
  */
-const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
+const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
-  const key = 'lottery page' + lotteryCode
 
   const {
+    setPlayOddData,
     tabIndex,
     setTabIndex,
-    curData,
-    setCurData,
-    pageData,
-    setPageData,
-    setLotteryCode,
-    ballArray,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    currentPageData,
   } = UseLhcLMA()
 
   useEffect(() => {
-    setLotteryCode(lotteryCode)
+    setPlayOddData(playOddData)
   }, [])
+  const key = 'lottery page' + playOddData?.code
 
-
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableOpacity key={key + item[0]?.alias}
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
                                                                                            style={CommStyles.flex}
                                                                                            onPress={() => setTabIndex(index)}>
     <View key={key + item[0]?.alias}
@@ -85,7 +51,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
               index == tabIndex ? { color: `white` } : null,
             ]}>{item[0]?.alias}</Text>
     </View>
-  </TouchableOpacity>
+  </TouchableWithoutFeedback>
 
   /**
    * 绘制tab
@@ -93,13 +59,13 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
   const renderTab = () => <View key={key + 'tab'}
                                 style={_styles.tab_title_container}>
     <ScrollView key={key + 'sv'}
-                style={_styles.sv_container}
+                style={_styles.sv_tab_container}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
       <View key={key + 'content'}
             style={_styles.tab_title_content}>
         {
-          pageData?.map(renderTabItem)
+          playOddData?.pageData?.groupTri?.map(renderTabItem)
         }
       </View>
     </ScrollView>
@@ -113,10 +79,10 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILMABallArray) => {
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
 
     return (
-      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
+      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                     item={{
                       ...item?.plays[0],
                       ...ballInfo,
@@ -146,7 +112,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
       <View key={key + ' ball renderLMA' + groupData?.id}
             style={_styles.ball_container}>
         {
-          ballArray?.map((item, index) => renderEBall(groupData, item))
+          groupData?.exPlays.map((item, index) => renderEBall(groupData, item))
         }
       </View>
     </View>
@@ -155,7 +121,7 @@ const LhcLMAComponent = ({ lotteryCode, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {!anyEmpty(curData) && renderLMA(curData[0])}
+    {!anyEmpty(currentPageData()) && renderLMA(currentPageData()[0])}
   </View>
 
   return (
@@ -176,12 +142,12 @@ const _styles = StyleSheet.create({
   },
   content_container: {
     flex: 1,
-    paddingBottom: scale(240),
+    paddingBottom: scale(120),
   },
   sub_title_container: {
     alignItems: 'center',
     backgroundColor: UGColor.LineColor3,
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     padding: scale(6),
   },
   sub_title_text: {
@@ -216,7 +182,7 @@ const _styles = StyleSheet.create({
     backgroundColor: UGColor.LineColor3,
     borderRadius: scale(8),
   },
-  sv_container: {
+  sv_tab_container: {
     flex: 1,
   },
   tab_title_content: {
@@ -225,7 +191,7 @@ const _styles = StyleSheet.create({
   tab_item: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: scale(8),
+    borderRadius: scale(4),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
   },

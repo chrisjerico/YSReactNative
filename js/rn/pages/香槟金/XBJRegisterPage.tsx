@@ -15,7 +15,7 @@ import { UGStore } from '../../redux/store/UGStore';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import { UGBasePageProps } from '../base/UGPage';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { jumpTo, navigate, pop, popToRoot } from '../../public/navigation/RootNavigation';
+import { jumpTo, navigate, pop, popToRoot, push, replace } from '../../public/navigation/RootNavigation';
 import { Toast } from "../../public/tools/ToastUtils";
 import { SlidingVerification } from './XBJLoginPage';
 import { showError, showLoading, showMessage, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
@@ -169,7 +169,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
           style={{ width: 52, flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.3)', justifyContent: 'center' }}
           activeOpacity={1}
           onPress={() => {
-            navigate(PageName.XBJLoginPage);
+            jumpTo(PageName.XBJLoginPage);
           }}>
           <FastImage source={{ uri: img_assets('entry_login_toggle_btn') }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
           <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>返回登录</Text>

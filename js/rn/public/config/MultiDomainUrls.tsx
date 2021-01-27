@@ -18,7 +18,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://zhibot071f.fhptcdn.com',
   ],
   'txt005': [
-    'http://t005f.fhptcdn.com',
+    'https://t005f.fhptcdn.com',
   ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
@@ -67,6 +67,12 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'txtada': [
     'http://testadaf.fhptcdn.com',
+  ],
+  'txtada_b': [
+    'http://testadafb.fhptcdn.com',
+  ],
+  'txtada_c': [
+    'http://testadafc.fhptcdn.com',
   ],
   'txt60': [
     'http://test60f.fhptcdn.com',
@@ -244,7 +250,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://jz2111.com',
   ],
   'c126b': [
-    'https://bc44698.com',
     'https://b66224.com',
     'https://b62244.com',
     'https://b62224.com',
@@ -338,7 +343,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771bb771.com',
+    'https://771771z.com',
     'https://771771s.com',
     'https://771771i.com',
     'https://771771j.com',
@@ -351,10 +356,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4505450.com',
-    'https://4504501.com',
-    'https://45022app.com',
-    'https://45033vip.com',
+    'https://4504506.com',
+    'https://vip45022.com',
+    'https://45033app.com',
+    'https://4504505.com',
+    'https://4508450.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -388,6 +394,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://065155.com',
     'https://012633.com',
   ],
+  'c243': [
+    'https://55979711.vip',
+    'https://55979722.vip',
+    'https://55979733.vip',
+    'https://55979744.vip',
+    'https://55979755.vip',
+  ],
   'c245': [
     'https://4823app.com',
   ],
@@ -412,8 +425,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://hg88991.com',
   ],
   'c259': [
-    'https://660598.com',
-    'https://738868.com',
+    'https://L816.com',
+    'https://wf7.co',
     'https://667568.com'
   ],
   'l001': [

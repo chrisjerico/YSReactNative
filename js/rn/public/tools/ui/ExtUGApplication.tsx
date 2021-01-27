@@ -49,6 +49,7 @@ export default class ExtUGApplication {
     PageName.UpdateVersionPage,    
     PageName.GameLobbyPage,
     PageName.TwoLevelGames,
+    PageName.OtherRecord,
     PageName.Game3rdView,
   ]
 

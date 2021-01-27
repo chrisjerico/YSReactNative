@@ -8,6 +8,7 @@ import { ugLog } from '../../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { PayAisleData, PayAisleListData } from '../../../../../../public/network/Model/wd/PayAisleModel'
 import { hideLoading, showLoading } from '../../../../../../public/widget/UGLoadingCP'
+import { api } from '../../../../../../public/network/NetworkRequest1/NetworkRequest1'
 
 /**
  * BTC支付
@@ -34,23 +35,34 @@ const UseBtcPay = () => {
 
       let curChannel = payData?.channel[selPayChannel]
       setMoneyOption(payBigData?.quickAmount)
-      if(!anyEmpty(curChannel?.para?.fixedAmount)) {
+      if (!anyEmpty(curChannel?.para?.fixedAmount)) {
         const moneyOp = curChannel?.para?.fixedAmount?.split(' ')
         if (!anyEmpty(moneyOp)) {
           setMoneyOption(moneyOp)
         }
       }
 
+
+
+
       //再调用一次实时汇率
-      APIRouter.system_currencyRate({
-        from: 'CNY',
-        to: 'USD',
-        amount: '1',
-        float: payData?.channel[selPayChannel]?.branchAddress
-      }).then(({ data: res }) => {
-        ugLog('实时汇率=', res)
+      api.system.currencyRate('CNY', 'USD', '1', payData?.channel[selPayChannel]?.branchAddress).useSuccess(({ data }) => {
+        let res = { data: data }
+        ugLog('实时汇率==========', res)
         rateMoney(Number(res?.data?.rate))
-      })
+      });
+
+
+      //再调用一次实时汇率
+      // APIRouter.system_currencyRate({
+      //   from: 'CNY',
+      //   to: 'USD',
+      //   amount: '1',
+      //   float: payData?.channel[selPayChannel]?.branchAddress
+      // }).then(({ data: res }) => {
+      //   ugLog('实时汇率=', res)
+      //   rateMoney(Number(res?.data?.rate))
+      // })
     }
 
   }, [payData, selPayChannel])
@@ -77,11 +89,11 @@ const UseBtcPay = () => {
       let newRate = Math.round((convertRate * 10000) * (100 + floatRate))
       newRate /= 10000 * 100
 
-      if(newRate <= 0) return 1
+      if (newRate <= 0) return 1
 
       setNewRate(newRate)
 
-      let usd = Math.round(100 / newRate)/100
+      let usd = Math.round(100 / newRate) / 100
       ugLog('1比1美元 汇率=', convertRate, newRate, usd)
       setNewUsd(usd)
     }

@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View, Image } from 'react-native'
+import { Dimensions, FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View, Image, Platform } from 'react-native'
 import * as React from 'react'
 import { HallGameData, HallGameListData } from '../../../../public/network/Model/game/HallGameModel'
 import CommStyles from '../../../base/CommStyles'
@@ -15,6 +15,11 @@ import { Data } from '../../../../public/network/Model/HomeRecommendModel'
 import { push } from '../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../public/navigation/Navigation'
 import { Res } from '../../../../Res/icon/Res'
+import AppDefine from '../../../../public/define/AppDefine'
+import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
+import PushHelper from '../../../../public/define/PushHelper'
+import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -28,10 +33,10 @@ interface IHallGameList {
  * @constructor
  */
 const LobbyGameListComponent = ({
-                                 refreshing,
-                                 gameData,
-                                 requestGameData,
-                               }: IHallGameList) => {
+  refreshing,
+  gameData,
+  requestGameData,
+}: IHallGameList) => {
 
   const {
     systemInfo,
@@ -40,34 +45,34 @@ const LobbyGameListComponent = ({
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
-                                    onRefresh={() => {
-                                      requestGameData()
-                                    }}/>
+    onRefresh={() => {
+      requestGameData()
+    }} />
 
-/**
- * 得到图标
- * @param type
- */
-const games = {
-  subId: {
-    'lottery': 47,
-    'game': 44,
-    'fish': 48,
-    'card': 43,
-    'esport': 46,
-    'real': 42,
-    'sport': 45,
-  },
-  icons: {
-    'lottery': Res.lottery_ticket,
-    'game': Res.game,
-    'fish': Res.fish,
-    'card': Res.chess,
-    'esport': Res.dj,
-    'real': Res.real_person,
-    'sport': Res.sports,
+  /**
+   * 得到图标
+   * @param type
+   */
+  const games = {
+    subId: {
+      'lottery': 47,
+      'game': 44,
+      'fish': 48,
+      'card': 43,
+      'esport': 46,
+      'real': 42,
+      'sport': 45,
+    },
+    icons: {
+      'lottery': Res.lottery_ticket,
+      'game': Res.game,
+      'fish': Res.fish,
+      'card': Res.chess,
+      'esport': Res.dj,
+      'real': Res.real_person,
+      'sport': Res.sports,
+    }
   }
-}
 
   /**
    * 绘制彩票信息
@@ -77,57 +82,99 @@ const games = {
 
     return (
       <TouchableWithoutFeedback onPress={() => {
+
         if (item.category == 'lottery') {
-          if (systemInfo?.mobileGameHall == '1') {//新彩票大厅
-            push(PageName.GameHallPage, { showBackButton: true })
-
-          } else if (systemInfo?.mobileGameHall == '2') {//自由彩票大厅
-            push(PageName.FreedomHallPage, { showBackButton: true })
-
-          }
+          PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
         } else {
-          push(PageName.SeriesLobbyPage,
-            { gameId: 0,
-              subId: games.subId[item.category],
-              name: item.categoryName,
-              headerColor: Skin1.themeColor,
-              homePage: PageName.WNZHomePage })
+
+          //TODO
+          switch (Platform.OS) {
+            case 'ios':
+              //如果是威尼斯
+              if (Skin1.skitType.indexOf('威尼斯') != -1) {
+                push(PageName.SeriesLobbyPage,
+                  {
+                    gameId: 0,
+                    subId: games.subId[item.category],
+                    name: item.categoryName,
+                    headerColor: Skin1.themeColor,
+                    homePage: PageName.WNZHomePage
+                  })
+              }
+              else {
+                // 打开原生
+                OCHelper.call('UGNavigationController.current.pushViewController:animated:',
+                  [
+                    {
+                      selectors: 'UGYYLotterySecondHomeViewController.new[setTitle:][setDataArray:]',
+                      args1: [item.categoryName + '系列'],
+                      args2: [{
+                        selectors: 'UGYYGames.arrayOfModelsFromDictionaries:error:',
+                        args1: [item.games]
+                      }]
+                    },
+                    true
+                  ]);
+              }
+
+              break
+            case 'android':
+               //如果是威尼斯
+               if (Skin1.skitType.indexOf('威尼斯') != -1) {
+                push(PageName.SeriesLobbyPage,
+                  {
+                    gameId: 0,
+                    subId: games.subId[item.category],
+                    name: item.categoryName,
+                    headerColor: Skin1.themeColor,
+                    homePage: PageName.WNZHomePage
+                  })
+              }
+              else {
+                // 打开原生
+                 PushHelper.pushUserCenterType(games.subId[item.category])
+              }
+              break
+          }
+
         }
       }}>
-      <View style={_styles.game_item_container}>
-        <Image 
-          style={{ width: 60, height: 60, marginRight: 10 }} 
-          source={{ uri: games.icons[item.category] }} />
+        <View style={[_styles.game_item_container, { backgroundColor: Skin1.homeContentColor, }]}>
+          <Image
+            style={{ width: 60, height: 60, marginRight: 10, }}
+            source={{ uri: games.icons[item.category] }} />
           <View>
             <Text
-              style={_styles.category_name}
-              >{item.categoryName}系列</Text>
-              <Text
-                style={_styles.play_now}
-                >立即游戏</Text>
+              style={[_styles.category_name, { color: Skin1.textColor1, marginRight: 10, },]}
+            >{item.categoryName}系列</Text>
+            <Text
+              style={[_styles.play_now, { marginTop: 10, },]}
+            >立即游戏</Text>
           </View>
-      </View>
+        </View>
       </TouchableWithoutFeedback>
+
+
     )
   }
 
   return (
-    <View style={[CommStyles.flex, _styles.container]}>
+    <View style={[CommStyles.flex, _styles.container,]}>
       {
         [
           anyEmpty(gameData)
-            ? <EmptyView style={{ flex: 1 }}/>
-            : <FlatList 
-                refreshControl={refreshCT}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item, index) => item.category + index}
-                data={gameData}
-                numColumns={2}
-                renderItem={({ item, index }) => {
-                  return (
-                    renderItemContent(item)
-                  )
-                }}/>,
+            ? <EmptyView style={{ flex: 1 }} />
+            : <FlatList
+              refreshControl={refreshCT}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item, index) => item.category + index}
+              data={gameData}
+              numColumns={2}
+              renderItem={({ item, index }) => {
+                return (
+                  renderItemContent(item)
+                )
+              }} />,
         ]
       }
     </View>
@@ -140,23 +187,23 @@ const _styles = StyleSheet.create({
   },
   game_item_container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: scale(20),
-    padding: scale(20),
-    borderRadius: scale(5),
-    backgroundColor: '#e7e7e7',
+    // justifyContent: 'space-around',
+    marginHorizontal: scale(16),
+    marginVertical: scale(16),
+    padding: scale(24),
+    borderRadius: scale(10),
+
   },
-  category_name: { 
-    fontWeight: 'bold', 
-    fontSize: scale(20), 
-    color: 'black', 
-    marginTop: scale(5), 
-    marginBottom: scale(15) 
+  category_name: {
+    fontWeight: 'bold',
+    fontSize: scale(20),
+    marginTop: scale(5),
+    marginBottom: scale(15)
   },
-  play_now: { 
-    fontWeight: '100', 
-    fontSize: scale(20), 
-    color: 'red' 
+  play_now: {
+    fontWeight: 'bold',
+    fontSize: scale(18),
+    color: 'red'
   }
 })
 

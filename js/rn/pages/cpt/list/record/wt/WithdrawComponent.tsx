@@ -142,7 +142,25 @@ const WithdrawComponent = ({ navigation, route }) => {
     </TouchableOpacity>
 
   }
-
+  function bankLabel(){
+ // `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
+    let a:string ;
+    let b:string ;
+    if (anyEmpty(btcMoney)|| isNaN(btcMoney)) {
+      a ='= 0 '+curBank?.bankCode;
+    } else {
+      a ='= '+btcMoney+' '+curBank?.bankCode;
+    }
+    if (anyEmpty(newUsd)|| isNaN(newUsd)) {
+      b =',   '+curBank?.bankCode+' = 0'+ ' CNY';
+    }
+     else {
+      b =',   '+curBank?.bankCode+' = '+ newUsd + ' CNY';
+    }
+    return a+' '+b;
+    
+  }
+  
   /**
    * 利息宝绘制输入金额和密码
    */
@@ -161,7 +179,7 @@ const WithdrawComponent = ({ navigation, route }) => {
         curBank?.type != BankConst.BTC ?
           null :
           <Text style={_styles.btc_hint}>{
-            `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
+            bankLabel()
           }</Text>
       }
       <Text style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
@@ -247,7 +265,8 @@ const WithdrawComponent = ({ navigation, route }) => {
         curBank?.type != BankConst.BTC ?
           null :
           <Text style={_styles.btc_hint}>{
-            `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
+            // `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
+            bankLabel()
           }</Text>
       }
       <Text style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${

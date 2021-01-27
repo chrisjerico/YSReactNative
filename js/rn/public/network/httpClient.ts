@@ -149,6 +149,9 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data })
   devConfig.isTest() && (config.orParams = params)
 
+  console.log('请求的url===',config.url);
+  console.log('请求的params===',params);
+  
   let { isEncrypt = true } = config
   let encryptData = await encryptParams(params, isEncrypt);
 
@@ -198,8 +201,8 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
     }
   }
 
-  // ugLog('http url 1 =', config.method, config.baseURL, config.url)
-  // ugLog('http params 1 =', params)
+  ugLog('http url 1 =', config.method, config.baseURL, config.url)
+
   // ugLog('http encryptData 1 =', encryptData)
   // ugLog('http config.data 1 =', config.data)
 

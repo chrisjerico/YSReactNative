@@ -72,26 +72,18 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
 
   progress: {
     tintColor: {
-      默认: '#e53333',
+      get 默认() { return skin1.themeColor },
       白曜: '#000000',
       金星黑: '#ffffff',
       凯时: '#ffffff',
-      get 六合厅() {
-        return skin1.themeColor
-      },
-      get 威尼斯() {
-        return skin1.themeColor
-      },
     },
     bgColor: {
-      默认: '#e53333',
+      默认: '#fff',
       get 白曜() {
         return skin1.themeColor
       },
       金星黑: '#000000',
       凯时: '#000000',
-      六合厅: '#ffffff',
-      威尼斯: '#ffffff',
     },
   },
 
@@ -486,7 +478,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     默认: '#fff',
     白曜: '#FFECEC',
     黑金: '#fefefe',
-    经典1蓝: '#b2cde0',
+    经典1蓝: '#b7cbdd',
     经典2红: '#d0aeb7',
     经典3金: '#d2bea6',
     经典4绿: '#c4e5c7',

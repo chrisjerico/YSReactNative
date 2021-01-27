@@ -14,7 +14,10 @@ import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
-import LotteryListModel, {LotteryListData} from '../model/game/LotteryListModel'
+import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../public/tools/Ext'
+import { ugLog } from '../../public/tools/UgLog'
+import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
 
 // 整个State的树结构
 
@@ -29,8 +32,11 @@ export interface IGlobalState {
   banner?: UGBannerModel
 
   //下注
-  selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
-  lotteryModel?: LotteryListModel //游戏列表数据
+  currentPlayOddData?: PlayOddData //当前选中的彩种数据 特码 两面 等
+  nextIssueData?: NextIssueData //下一期的数据数据
+  playOddDetailData?: PlayOddDetailData //彩票数据
+  selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+
   // lotteryColumnIndex?: number //彩种索引
 
   sys?: UGSystemModel
@@ -54,8 +60,10 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.rightMenu && (state.rightMenu = act.rightMenu)
 
     //彩票数据
-    act.selectedLotteryData && (state.selectedLotteryData = act.selectedLotteryData)
-    act.lotteryModel && (state.lotteryModel = act.lotteryModel)
+    act.currentPlayOddData && (state.currentPlayOddData = act.currentPlayOddData)
+    act.nextIssueData && (state.nextIssueData = act.nextIssueData)
+    act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
+    act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
     // act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
 
   } else if (act.type == 'merge') {
@@ -65,8 +73,16 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.banner = { ...state.banner, ...act.banner }
 
     //彩票数据
-    state.selectedLotteryData = {selectedData: { ...state.selectedLotteryData?.selectedData, ...act.selectedLotteryData?.selectedData }}
-    state.lotteryModel = { ...state.lotteryModel, ...act.lotteryModel }
+    state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
+    state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
+    state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
+    state.selectedLotteryModel = {
+      selectedData:
+        { ...state.selectedLotteryModel?.selectedData, ...act.selectedLotteryModel?.selectedData },
+      inputMoney: anyEmpty(act.selectedLotteryModel?.inputMoney) ?
+          state?.selectedLotteryModel?.inputMoney :
+          act?.selectedLotteryModel?.inputMoney
+    }
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
@@ -93,8 +109,11 @@ export interface UGAction<P = {}> extends Action {
   banner?: UGBannerModel
 
   //彩票数据
-  selectedLotteryData?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
-  lotteryModel?: LotteryListModel //游戏列表数据
+  currentPlayOddData?: PlayOddData //当前选中的彩种数据
+  nextIssueData?: NextIssueData //下一期的数据数据
+  playOddDetailData?: PlayOddDetailData //彩票数据
+  selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+
   // lotteryColumnIndex?: number //彩种索引
 
   sys?: UGSystemModel

@@ -9,6 +9,7 @@ import { Toast } from '../tools/ToastUtils'
 import { ugLog } from '../tools/UgLog'
 import { UGStore } from './../../redux/store/UGStore'
 import { CachePolicyEnum, httpClient } from './httpClient'
+import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
 import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
 import { BalanceModel } from './Model/BalanceModel'
 import { BankDetailListModel } from './Model/bank/BankDetailListModel'
@@ -221,14 +222,27 @@ class APIRouter {
     return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes' + tokenParams)
   }
 
+  //注单讯息
+  static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string) => {
+    let tokenParams = await APIRouter.encryptGetParams({
+      page: page,
+      rows: rows,
+      category: category,
+      startDate: startDate,
+      endDate: endDate,
+    })
+
+    return httpClient.get<GameHistoryModel>('c=ticket&a=history' + tokenParams)
+  }
+
   static real_gotoGame = async (id) => {
     let params = await APIRouter.encryptGetParams({
-      id: id
+      id: id,
     })
-    ugLog("params: " + params)
+    ugLog('params: ' + params)
     return httpClient.get<GameUrlModel>('c=real&a=gotoGame' + params)
   }
-  
+
   /**
    * 首頁遊戲資料
    */
@@ -478,8 +492,11 @@ class APIRouter {
    * endDate 结束日期
    * page 第几页
    * rows 每页多少条
+   * group :类型
    */
   static capital_capitalDetailRecordList = async (params: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
+    console.log('params ==', params)
+
     let tokenParams = await APIRouter.encryptGetParams(params)
 
     return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&' + tokenParams)
@@ -697,6 +714,14 @@ class APIRouter {
   }
 
   /**
+   * 彩票下注，普通彩票
+   */
+  static game_bet = async (params: IBetLotteryParams): Promise<AxiosResponse<NormalModel>> => {
+    //ugLog('recharge_onlinePay=', JSON.stringify(params))
+    return httpClient.post<NormalModel>(params.isTest ? 'c=user&a=guestBet' : 'c=user&a=bet', params)
+  }
+
+  /**
    * 下一期开奖信息
    * id 游戏 id
    */
@@ -802,23 +827,20 @@ class APIRouter {
    * @param params
    */
   static encryptGetParams = async (params?: any) => {
+    let pms = undefined
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        //TODO iOS 完成 params 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
+        pms = await OCHelper.call('CMNetwork.encryptionCheckSign:', [Object.assign({ checkSign: 1 }, params)])
         break
       case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params,
-        })
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
+        pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params })
         break
     }
-    //ugLog('APIRouter encryptParams=', JSON.stringify(params))
+    for (let key in pms) {
+      tokenParams += '&' + key + '=' + pms[key]
+    }
+
     return tokenParams
   }
 }
