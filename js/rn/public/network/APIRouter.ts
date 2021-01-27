@@ -202,7 +202,7 @@ class APIRouter {
       startDate: startDate,
       endDate: endDate,
     })
-    
+
     return httpClient.get<GameHistoryModel>('c=ticket&a=history' + tokenParams)
   }
 
@@ -301,12 +301,12 @@ class APIRouter {
       return null
     }
 
-    let tokenParams = await APIRouter.encryptGetParams({
+    let tokenParams = {
       status: 0,
       type: category,
-    })
+    }
 
-    return httpClient.get<BankDetailListModel>('c=system&a=bankList' + tokenParams)
+    return httpClient.get<BankDetailListModel>('c=system&a=bankList', { params: tokenParams })
   }
 
   /**
@@ -469,8 +469,8 @@ class APIRouter {
    */
   static capital_capitalDetailRecordList = async (params: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
 
-    console.log('params ==',params);
-    
+    console.log('params ==', params);
+
     let tokenParams = await APIRouter.encryptGetParams(params)
 
     return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&' + tokenParams)

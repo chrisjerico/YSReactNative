@@ -163,7 +163,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
       config.url += '&checkSign=1'
     }
 
-    Object.keys(encryptData).map((res) => {
+    Object.keys(encryptData).forEach((res) => {
       if (!config.params) {
         config.params = {}
       }
