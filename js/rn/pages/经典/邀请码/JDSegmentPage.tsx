@@ -6,7 +6,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import SegmentedControl from "rn-segmented-control";
 import AppDefine from '../../../public/define/AppDefine';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
+import { dicNull } from '../../../public/tools/Ext';
 import { scale } from '../../../public/tools/Scale';
+import { ugLog } from '../../../public/tools/UgLog';
 import { useHtml5Image, UGImageHost } from '../../../Res/icon';
 import { Res } from '../../../Res/icon/Res';
 import { UGBasePageProps } from '../../base/UGPage';
@@ -84,29 +86,39 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
 
     // })
 
-    console.log('text===',text.style);
+
     
 
     // text.style = { fontSize: 20, color: 'blue', marginLeft: 20}
 
     if (index == 0) {
-      text.setNativeProps({
-        style:{
-          fontSize: 20, 
-          color: 'blue',
-           marginLeft: 20
-        },
-        memoizedProps:'123'
-      });
+      // text.setNativeProps({
+      //   style:{
+      //     fontSize: 20, 
+      //     color: 'blue',
+      //      marginLeft: 20
+      //   },
+      //   memoizedProps:'123'
+      // });
+
+      let dic = {}
+      ugLog('dic == 空',dicNull(dic))
+      ugLog('dic ==',JSON.stringify(dic))
     } else {
-      text.setNativeProps({
-        style:{
-          fontSize: 13, 
-          color: 'red',
-           marginLeft: 20
-        }
-      });
+      // text.setNativeProps({
+      //   style:{
+      //     fontSize: 13, 
+      //     color: 'red',
+      //      marginLeft: 20
+      //   }
+      // });
+
+      let dic = {k:111,b:'ddd'}
+      ugLog('dic 非空',dicNull(dic))
+      ugLog('dic ==',JSON.stringify(dic))
     }
+
+
  
 
 
