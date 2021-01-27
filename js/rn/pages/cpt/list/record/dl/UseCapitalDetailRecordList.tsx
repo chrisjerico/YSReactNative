@@ -77,7 +77,7 @@ const UseCapitalDetailRecordList = () => {
       let cpGroups = res?.data?.groups
      
       console.log('listData====', JSON.stringify(listData));
-      
+      ugLog('page==',pageIndex)
         //缓存列表显示选项
         const menu = cpGroups?.map((item) => {
           return (
@@ -92,14 +92,17 @@ const UseCapitalDetailRecordList = () => {
           setListDetailData(listData)
 
         if (clear) {
+          ugLog('clear')
           setPageIndex(reqPage + 1)
           setListDetailData(listData)
         } else {
           //没有更多数据了
           if (arrayEmpty(listData)) {
+            ugLog('arrayEmpty')
             setPageIndex(1)
           } else {
             setPageIndex(reqPage + 1)
+            ugLog('reqPage==',reqPage)
             setListDetailData([...capitalDetailData, ...listData])
           }
         }
@@ -127,7 +130,7 @@ const UseCapitalDetailRecordList = () => {
     //   let cpGroups = res?.data?.groups
 
     //   ugLog('data res=', reqPage, JSON.stringify(res?.data))
-    //   // if (res?.code == 0) {
+    //   if (res?.code == 0) {
 
     //     //缓存列表显示选项
     //     const menu = cpGroups?.map((item) => {
@@ -156,9 +159,9 @@ const UseCapitalDetailRecordList = () => {
     //       }
     //     }
 
-    //   // } else {
-    //   //   Toast(res?.msg)
-    //   // }
+    //   } else {
+    //     Toast(res?.msg)
+    //   }
     // }).finally(() => {
     //   clear && setRefreshing(false)
     // })
