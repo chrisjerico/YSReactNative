@@ -12,7 +12,7 @@ import ListContentComponent from './list/ListContentComponent'
 import { TopAreaComponent } from './top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
 import { ugLog } from '../../public/tools/UgLog'
-import { anyEmpty } from '../../public/tools/Ext'
+import { anyEmpty, mergeObject } from '../../public/tools/Ext'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -100,9 +100,9 @@ const BetLotteryPage = ({ navigation, route }) => {
             <BetRecordHeaderComponent />
             <ListContentComponent/>
           </ScrollView>
-          {/*<BetBoardComponent key={'lottery board'}*/}
-          {/*                   locked={false}*/}
-          {/*                   lockStr={'封盘中...'}/>*/}
+          <BetBoardComponent key={'lottery board'}
+                             locked={false}
+                             lockStr={'封盘中...'}/>
         </View>
       </BaseScreen>
     </BetLotteryContext.Provider>

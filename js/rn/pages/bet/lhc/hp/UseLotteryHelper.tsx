@@ -92,7 +92,7 @@ const UseLotteryHelper = () => {
     }
 
     const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedModel }
-    // UGStore.dispatch({ type: 'merge', selectedLotteryModel })
+    UGStore.dispatch({ type: 'merge', selectedLotteryModel })
 
     ugLog('选中的数据 selectedBalls = ', JSON.stringify(selectedBalls))
     ugLog(`选中的数据 selectedLotteryModel = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))

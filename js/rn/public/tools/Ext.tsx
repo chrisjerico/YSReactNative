@@ -5,21 +5,23 @@
  */
 
 
+import { ugLog } from './UgLog'
+
 /**
  * 检查当前变量是否为 true
  * @param value
  */
-export const checkTrue = (value?: any) => value != null && value === true;
+export const checkTrue = (value?: any) => value != null && value === true
 
 /**
  * 检查当前变量是否为 空
  * @param value
  */
-export const arrayEmpty = (value?: Array<any>) => value == null || value.length <= 0;
-export const arrayLength = (value?: Array<any>) => arrayEmpty(value) ? 0 : value.length;
-export const anyNull = (value?: any) => value == null || value == 'undefined';
+export const arrayEmpty = (value?: Array<any>) => value == null || value.length <= 0
+export const arrayLength = (value?: Array<any>) => arrayEmpty(value) ? 0 : value.length
+export const anyNull = (value?: any) => value == null || value == 'undefined'
 export const anyEmpty = (value?: any) => anyNull(value) || value === '' || value.length <= 0 || Object.keys(value).length === 0
-export const anyLength = (value?: any) => anyEmpty(value) ? 0 : value.length;
+export const anyLength = (value?: any) => anyEmpty(value) ? 0 : value.length
 
 
 const isObject = (obj) => {
@@ -31,30 +33,24 @@ const isArray = (arr) => {
 
 /**
  * 合并对象
- * @param target 新对象
- * @param arg 需要合并的对象
+ * @param src 源对象
+ * @param des 新对象
  */
-export const mergeObject = (target: any, ...arg): any => {
-  return arg?.reduce((acc, cur) => {
-    return anyEmpty(cur) ? null : Object.keys(cur).reduce((subAcc, key) => {
-      const srcVal = cur[key]
-      if (isObject(srcVal)) {
-        subAcc[key] = mergeObject(subAcc[key] ? subAcc[key] : {}, srcVal)
-      } else if (isArray(srcVal)) {
-        // series: []，下层数组直接赋值
-        subAcc[key] = srcVal.map((item, idx) => {
-          if (isObject(item)) {
-            const curAccVal = subAcc[key] ? subAcc[key] : []
-            return mergeObject(curAccVal[idx] ? curAccVal[idx] : {}, item)
-          } else {
-            return item
-          }
-        })
-      } else {
-        subAcc[key] = srcVal
-      }
-      return subAcc
-    }, acc)
-  }, target)
+export const mergeObject = (src = {}, des = {}): any => {
+  let obj = src
+  ugLog('des?.toString() = ', JSON.stringify(des))
+  if (typeof src != 'object' || typeof des != 'object' || JSON.stringify(des) == '{}') {
+    return des // 如果其中一个不是对象 就返回 des
+  }
+  for (let key in des) {
+    // 如果target也存在 那就再次合并
+    if (src.hasOwnProperty(key)) {
+      obj[key] = mergeObject(src[key], des[key])
+    } else {
+      // 不存在就直接添加
+      obj[key] = des[key]
+    }
+  }
+  return obj
 }
 

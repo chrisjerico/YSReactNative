@@ -76,7 +76,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
-    state.selectedLotteryModel = mergeObject({}, state.selectedLotteryModel, act.selectedLotteryModel)
+    state.selectedLotteryModel = mergeObject(act.selectedLotteryModel, state.selectedLotteryModel)
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })

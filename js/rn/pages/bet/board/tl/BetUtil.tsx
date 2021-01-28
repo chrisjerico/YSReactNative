@@ -43,6 +43,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
   const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
 
+  // ugLog('checkBetCount selectedData', JSON.stringify(selectedData))
   if(anyEmpty(keys)) {
     Toast('请选择玩法')
     return false
@@ -50,45 +51,47 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 
   for (let index in keys) {
     const key = keys[index]
+    const selCount = calculateItemCount(selectedData)
+    ugLog('checkBetCount selCount', selCount)
+
     switch (key) {
-      // case LotteryConst.TM:  //特码
-      // case LotteryConst.LM: //两面
-      // case LotteryConst.ZM: //正码
-      // case LotteryConst.ZT:  //正特
-      // case LotteryConst.ZM1_6: //正码1T6
-      // case LotteryConst.SB: //色波
-      // case LotteryConst.ZOX://总肖
-      // case LotteryConst.WX:  //五行
-      // case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      // case LotteryConst.TX: //特肖
-      // case LotteryConst.ZX: //正肖
-      // case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      // case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      // case LotteryConst.LX: //连肖
-      // case LotteryConst.LW: //连尾
-      //   ugLog('key key = selectedData[key] ', JSON.stringify(selectedData[key]))
-      //   if(arrayLength(selectedData[key]) <= 0) {
-      //     Toast('请选择玩法')
-      //     return false
-      //   }
-      //   break
-      //
-      // case LotteryConst.HX://合肖
-      //   if(arrayLength(selectedData[key][0]?.exZodiacs) <= 1) {
-      //     Toast('合肖请选择2个以上的数据')
-      //     return false
-      //   }
-      //   break
-      // case LotteryConst.LMA:  //连码
-      //
-      //   break
-      //
-      // case LotteryConst.ZXBZ:  //自选不中
-      //   if(arrayLength(selectedData[key][0]?.exPlays) < 5) {
-      //     Toast('自选不中请选择5到12个选项')
-      //     return false
-      //   }
-      //   break
+      case LotteryConst.TM:  //特码
+      case LotteryConst.LM: //两面
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT:  //正特
+      case LotteryConst.ZM1_6: //正码1T6
+      case LotteryConst.SB: //色波
+      case LotteryConst.ZOX://总肖
+      case LotteryConst.WX:  //五行
+      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.TX: //特肖
+      case LotteryConst.ZX: //正肖
+      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.LX: //连肖
+      case LotteryConst.LW: //连尾
+        if(selCount <= 0) {
+          showMsg && Toast('请选择玩法')
+          return false
+        }
+        break
+
+      case LotteryConst.HX://合肖
+        if(selCount <= 1) {
+          showMsg && Toast('合肖请选择2个以上的数据')
+          return false
+        }
+        break
+      case LotteryConst.LMA:  //连码
+
+        break
+
+      case LotteryConst.ZXBZ:  //自选不中
+        if(selCount < 5) {
+          showMsg && Toast('自选不中请选择5到12个选项')
+          return false
+        }
+        break
     }
 
   }
@@ -104,7 +107,8 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 const gatherItems = (code?: string, selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
   //选中的数据有多少组
   const valueArr: Array<Map<string, SelectedPlayModel>> = Object.values(selectedData[code])
-  return valueArr?.map((arr) => Object.values(arr)).flat(Infinity)
+  return valueArr?.map((arr) =>
+    Object.values(arr)).flat(Infinity).filter((item) => !anyEmpty(item))
 }
 
 /**
@@ -115,17 +119,20 @@ const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, S
   let itemCount = 0
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
   keys?.map((key) => {
-    if (arrayLength(selectedData[key]) > 0) {//该彩种是否有选中的数据
+    const selData = gatherItems(key, selectedData)
+    const scount = selData?.map((item) =>
+      arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
+    ugLog('calculate valueSel key = ', key, scount)
+
+    if (scount > 0) {//该彩种是否有选中的数据
       if (LotteryConst.LMA == key
         || LotteryConst.HX == key
         || LotteryConst.ZXBZ == key) {//部分彩种 只计算 1条数据
         itemCount++
       } else {
         //选中的数据有多少组
-        const valueSel = gatherItems(key, selectedData)
-
-        itemCount += valueSel?.map((item) =>
-          arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
+        // const valueSel = gatherItems(key, selectedData)
+        itemCount += scount
       }
     }
   })
