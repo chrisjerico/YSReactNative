@@ -390,11 +390,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5566569.com',
   ],
   'c242': [
-    'https://499918.com',
-    'https://894556.com',
-    'https://067055.com',
-    'https://065155.com',
-    'https://012633.com',
+    'https://398595.com',
+    'https://697896.com',
+    'https://697956.com',
   ],
   'c243': [
     'https://55979711.vip',
@@ -438,11 +436,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333p.org',
-    'https://70333o.org',
-    'https://70333i.org',
-    'https://70333u.org',
-    'https://70333y.org',
+    'https://70333a.org',
+    'https://70333s.org',
+    'https://70333d.org',
+    'https://70333f.org',
+    'https://70333g.org',
   ],
   'h003b': [
     'https://betv5.com',
