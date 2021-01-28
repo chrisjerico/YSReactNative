@@ -35,19 +35,43 @@ const JDGameListCP = ({
 
     return (
       <TouchableWithoutFeedback onPress={() => {
-             push(PageName.TwoLevelGames, { game: item, showBackButton: true })
-        
+
+        if (item?.isPopup) {
+          push(PageName.TwoLevelGames, { game: item, showBackButton: true })
+        } else {
+          //TODO
+          switch (Platform.OS) {
+            case 'ios':
+              const dict = {
+                "real": 2,
+                "fish": 3,
+                "game": 4,
+                "card": 5,
+                "sport": 6,
+              }
+              let linkCategory:number = dict[item?.category];
+              
+              if (!anyEmpty(linkCategory)) {
+                
+              }
+
+              break
+            case 'android':
+              break
+          }
+        }
+
       }}>
         <View style={[_styles.game_item_container, { backgroundColor: Skin1.homeContentColor, }]}>
           <Image
-            style={{ width: 60, height: 60, marginRight: 10, marginTop: 10, marginLeft: 10 ,}}
+            style={{ width: 60, height: 60, marginRight: 10, marginTop: 10, marginLeft: 10, }}
             source={{ uri: item.pic }} />
           <View>
             <Text
               style={[_styles.category_name, { color: Skin1.textColor1, width: scale(100), marginTop: 18, },]}
             >{item.title}</Text>
             <Text
-              style={[_styles.play_now, {position:'absolute', marginTop: scale(80), },]}
+              style={[_styles.play_now, { position: 'absolute', marginTop: scale(80), },]}
             >立即游戏</Text>
           </View>
         </View>
@@ -57,10 +81,10 @@ const JDGameListCP = ({
     )
   }
 
-      /**
-   * Foot页面
-   * 
-   */
+  /**
+* Foot页面
+* 
+*/
   const _renderListFootComp = () => {
     return (
       <View style={{
@@ -85,9 +109,9 @@ const JDGameListCP = ({
                 return (
                   renderItemContent(item)
                 )
-              }} 
-              ListFooterComponent={ ()=>  _renderListFootComp() }
-              />,
+              }}
+              ListFooterComponent={() => _renderListFootComp()}
+            />,
         ]
 
       }
