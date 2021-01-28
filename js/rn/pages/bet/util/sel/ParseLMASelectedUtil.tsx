@@ -53,14 +53,14 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
 
       //找出选中的球对应的原始数据, 优先使用 自定义数组 exPlays
       const selBalls = !anyEmpty(groupData?.exPlays) ?
-        groupData?.exPlays?.filter((item) => selectedBalls.includes(item?.id)) :
-        groupData?.plays?.filter((item) => selectedBalls.includes(item?.id))
+        groupData?.exPlays?.filter((item) => selectedBalls.includes(item?.exId ?? item?.id)) :
+        groupData?.plays?.filter((item) => selectedBalls.includes(item?.exId ?? item?.id))
 
       // ugLog('selBalls = ', groupData.code, JSON.stringify(selBalls))
 
       //再用原始数组和彩种数据组合成 新的选中数据
       !anyEmpty(selBalls) && pageArr.push({
-        playGroups: groupData,
+        // playGroups: groupData,
         plays: selBalls
       } as SelectedPlayModel)
 

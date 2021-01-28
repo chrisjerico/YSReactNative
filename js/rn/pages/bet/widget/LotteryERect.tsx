@@ -28,7 +28,7 @@ const LotteryERect = ({
                       }: ILotteryERect) => {
 
   const key = 'LotteryERect'
-  let isSel = isSelectedBallOnId(selectedBalls, item?.id)
+  let isSel = isSelectedBallOnId(selectedBalls, item?.exId ?? item?.id) //优先使用本地生成的唯一识别ID
   return (
     <TouchableWithoutFeedback key={key + item?.id}
                       onPress={() => callback && callback()}>

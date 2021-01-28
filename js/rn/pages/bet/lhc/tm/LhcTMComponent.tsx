@@ -116,7 +116,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id}
                                                                          item={item}
                                                                          selectedBalls={selectedBalls}
-                                                                         callback={() => addOrRemoveBall(item?.id)}/>
+                                                                         callback={() => addOrRemoveBall(item?.exId)}/>
 
   /**
    * 绘制 球
@@ -126,7 +126,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderEBall = (item?: PlayData, index?: number) => <LotteryEBall key={key + 'renderEBall' + item?.id}
                                                                          item={item}
                                                                          selectedBalls={selectedBalls}
-                                                                         callback={() => addOrRemoveBall(item?.id)}/>
+                                                                         callback={() => addOrRemoveBall(item?.exId)}/>
 
   /**
    * 绘制 特码B/A
