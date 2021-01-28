@@ -115,7 +115,12 @@ const TabComponent = ({
       return tabWidth
     }
     const tabCount = getTabCount()
-    const width = tabCount ? AppDefine.width / tabCount : 0
+    let width = 0
+    if(tabCount<5){
+      width = tabCount ? AppDefine.width / tabCount : 0
+    }else{
+      width = tabCount ? AppDefine.width / 5 : 0
+    }
     if (enableMinWidth && width < minTabWidth) {
       return minTabWidth + scale(20)
     } else {
