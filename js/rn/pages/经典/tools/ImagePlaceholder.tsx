@@ -10,7 +10,7 @@ interface ImagePlaceholder {
 export const ImagePlaceholder = (props: ImageProps & ImagePlaceholder) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
   const style: any = props?.style
-  const { placeholderURL = img_assets('placeholder', 'jpg') } = props
+  const { placeholderURL = img_assets('load', 'png') } = props
 
   return <View>
     {shwoDefaultImage && <Image style={[style, { position: 'absolute' }]} resizeMode='cover' source={{ uri: placeholderURL }} />}
@@ -33,7 +33,7 @@ export const ImagePlaceholder = (props: ImageProps & ImagePlaceholder) => {
 export const FastImagePlaceholder = (props: FastImageProperties & ImagePlaceholder) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
   const style: any = props?.style
-  const { placeholderURL = img_assets('placeholder', 'jpg') } = props
+  const { placeholderURL = img_assets('load', 'png') } = props
 
   return <View>
     {shwoDefaultImage && <FastImage style={[style, { position: 'absolute' }]} resizeMode='cover' source={{ uri: placeholderURL }} />}

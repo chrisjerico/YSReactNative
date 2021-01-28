@@ -6,7 +6,7 @@ import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../../public/tools/Ext'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
-import { ImagePlaceholder } from '../tools/ImagePlaceholder'
+import { FastImagePlaceholder, ImagePlaceholder } from '../tools/ImagePlaceholder'
 import { push } from '../../../public/navigation/RootNavigation'
 import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
@@ -66,7 +66,7 @@ const JDGameListCP = ({
 
       }}>
         <View style={[_styles.game_item_container, { backgroundColor: Skin1.homeContentColor, }]}>
-          <ImagePlaceholder
+          <FastImagePlaceholder
             style={{ width: 60, height: 60, marginRight: 10, marginTop: 10, marginLeft: 10, }}
             source={{ uri: item.pic }} />
           <View>
