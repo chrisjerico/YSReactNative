@@ -66,7 +66,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test5804.ccpt.site',
   ],
   'txtada': [
-    'http://testadaf.fhptcdn.com',
+    'http://testadaf.6yc.com',
   ],
   'txtada_b': [
     'http://testadafb.fhptcdn.com',
@@ -75,10 +75,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://testadafc.fhptcdn.com',
   ],
   'txt60': [
-    'http://test60f.fhptcdn.com',
+    'http://test60f.6yc.com',
   ],
   'txt61': [
-    'http://test61f.fhptcdn.com',
+    'http://test61f.6yc.com',
   ],
   'txt61b': [
     'http://test61a.fhptcdn.com',
@@ -99,7 +99,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t126f.fhptcdn.com',
+    'http://t126f.6yc.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
@@ -120,10 +120,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t126f.fhptcdn.com',
+    'http://t126f.6yc.com',
   ],
   'tstksm': [
-    'http://t133f.fhptcdn.com',
+    'http://t133f.6yc.com',
   ],
   'chat': [
     'http://test03.6yc.com',
