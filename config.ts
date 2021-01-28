@@ -10,8 +10,8 @@ export const devConfig = {
   }, // 是否是测试环境
 
 
-  // skinKey: UGSkinType1.威尼斯,
-  skinKey: UGSkinType1.经典1蓝
+  skinKey: UGSkinType1.威尼斯,
+  // skinKey: UGSkinType1.经典1蓝
   // skinKey: UGSkinType1.GPK0黑,
 
 }

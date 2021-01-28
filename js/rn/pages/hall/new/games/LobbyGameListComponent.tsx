@@ -87,9 +87,7 @@ const LobbyGameListComponent = ({
           PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
         } else {
 
-          //TODO
-          switch (Platform.OS) {
-            case 'ios':
+
               //如果是威尼斯
               if (Skin1.skitType.indexOf('威尼斯') != -1) {
                 push(PageName.SeriesLobbyPage,
@@ -102,19 +100,6 @@ const LobbyGameListComponent = ({
                   })
               }
               else {
-                // 打开原生
-                // OCHelper.call('UGNavigationController.current.pushViewController:animated:',
-                //   [
-                //     {
-                //       selectors: 'UGYYLotterySecondHomeViewController.new[setTitle:][setDataArray:]',
-                //       args1: [item.categoryName + '系列'],
-                //       args2: [{
-                //         selectors: 'UGYYGames.arrayOfModelsFromDictionaries:error:',
-                //         args1: [item.games]
-                //       }]
-                //     },
-                //     true
-                //   ]);
 
                 push(PageName.JDLotterySecondPage, {
                   dataArray: item.games,
@@ -122,27 +107,6 @@ const LobbyGameListComponent = ({
                  
                 })
               }
-
-              break
-            case 'android':
-               //如果是威尼斯
-               if (Skin1.skitType.indexOf('威尼斯') != -1) {
-                push(PageName.SeriesLobbyPage,
-                  {
-                    gameId: 0,
-                    subId: games.subId[item.category],
-                    name: item.categoryName,
-                    headerColor: Skin1.themeColor,
-                    homePage: PageName.WNZHomePage
-                  })
-              }
-              else {
-                // 打开原生
-                 PushHelper.pushUserCenterType(games.subId[item.category])
-              }
-              break
-          }
-
         }
       }}>
         <View style={[_styles.game_item_container, { backgroundColor: Skin1.homeContentColor, }]}>
