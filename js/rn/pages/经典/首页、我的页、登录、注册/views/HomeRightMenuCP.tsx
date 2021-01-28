@@ -18,7 +18,7 @@ import List from "../../../../public/views/tars/List"
 import { UGUserCenterType } from "../../../../redux/model/全局/UGSysConfModel"
 import { UGStore } from "../../../../redux/store/UGStore"
 import { img_assets, img_images } from "../../../../Res/icon"
-import { ImagePlaceholder } from "../../tools/ImagePlaceholder"
+import { FastImagePlaceholder, ImagePlaceholder } from "../../tools/ImagePlaceholder"
 
 
 export interface HomeRightMenuCP {
@@ -128,7 +128,7 @@ export const HomeRightMenuCP = (props: HomeRightMenuProps) => {
                 menuModalComponent?.current?.close()
                 PushHelper.pushLinkPositionType(subId)
               }}>
-                <ImagePlaceholder source={{ uri: icon ?? logo }} style={{ marginLeft: sc(20), width: sc(37), aspectRatio: 1, tintColor: skin1.themeColor }} />
+                <ImagePlaceholder source={{ uri: icon ?? logo }} style={{ marginLeft: sc(20), width: sc(37), aspectRatio: 1, tintColor: skin1.themeColor, backgroundColor:'#ddd' }} />
                 <Text style={{ marginLeft: sc(15), flex: 1, fontSize: sc(20) }}>{text}</Text>
                 {isHot ? <FastImage source={{ uri: img_images('hot2x') }} style={{ height: '100%', aspectRatio: 1 }} /> : <Entypo name='chevron-thin-right' color={UGColor.LineColor2} size={sc(29)} style={{ marginRight: sc(10) }} />}
                 <View style={{ position: 'absolute', top: sc(63), marginLeft: sc(70), width: '100%', height: 1, backgroundColor: '#e9e9e9' }} />

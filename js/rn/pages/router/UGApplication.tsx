@@ -180,7 +180,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   OnlineService,//在线客服
   // ———————————— 模板页面 —————————————
 
-  JDHomePage,
+  JDHomePage,// 经典-首页
 
   LCMinePage, //乐橙-我的页
   LCHomePage, //乐橙-首页
