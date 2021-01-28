@@ -95,6 +95,19 @@ const TwoLevelListComponent = ({ refreshing,
     )
   }
 
+    /**
+   * 数据为空展示页面
+   * 
+   */
+  const _renderListFootComp = () => {
+    return (
+      <View style={{
+        height: 200,
+      }}>
+      </View>
+    );
+  }
+
   return (
     <View style={[CommStyles.flex]}>
       {
@@ -111,7 +124,10 @@ const TwoLevelListComponent = ({ refreshing,
                   return (
                     renderItemContent(item)
                   )
-                }}/>,
+                }}
+                ListFooterComponent={ ()=>  _renderListFootComp() }
+            
+                />,
         ]
       }
     </View>
