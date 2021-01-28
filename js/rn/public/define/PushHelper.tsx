@@ -25,6 +25,59 @@ import { RnPageModel } from './OCHelper/SetRnPageInfo'
 import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
 import { Skin1 } from '../theme/UGSkinManagers'
 
+
+export enum UGLinkPositionType {
+  资金管理 = 1,
+  APP下载 = 2,
+  聊天室 = 3,
+  在线客服 = 4,
+  长龙助手 = 5,
+  推广收益 = 6,
+  开奖网 = 7,
+  利息宝 = 8,
+  优惠活动 = 9,
+  注单记录 = 10,
+  QQ客服 = 11,
+  微信客服 = 12,
+  任务大厅 = 13,
+  站内信 = 14,
+  签到 = 15,
+  投诉中心 = 16,
+  全民竞猜 = 17,
+  活动彩金 = 18,
+  游戏大厅 = 19,
+  会员中心 = 20,
+  充值 = 21,
+  提现 = 22,
+  额度转换 = 23,
+  即时注单 = 24,
+  今日输赢 = 25,
+  开奖记录 = 26,
+  当前版本号 = 27,
+  资金明细 = 28,
+  回到电脑版 = 29,
+  返回首页 = 30,
+  退出登录 = 31,
+  投注记录 = 32,
+  彩种规则 = 33,
+  红包记录 = 36,
+  扫雷记录 = 37,
+  修改密码 = 38,
+  修改提款密码 = 39,
+  红包活动 = 40,
+  试玩 = 41,
+  真人大厅 = 42,
+  棋牌大厅 = 43,
+  电子大厅 = 44,
+  体育大厅 = 45,
+  电竞大厅 = 46,
+  彩票大厅 = 47,
+  开奖走势 = 54,
+  路珠 = 55,
+
+  // 自定义（从100+开始写，前面的都是后台定制的）
+}
+
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
     switch (Platform.OS) {
@@ -86,40 +139,6 @@ export default class PushHelper {
       case 'android':
         await ANHelper.callAsync(CMD.LOG_OUT)
         Toast('退出成功')
-        break
-    }
-  }
-  // 登入
-  static pushLogin() {
-    switch (Platform.OS) {
-      case 'ios':
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-          {
-            selectors: 'AppDefine.viewControllerWithStoryboardID:',
-            args1: ['UGLoginViewController'],
-          },
-          true,
-        ])
-        break
-      case 'android':
-        ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LoginActivity)
-        break
-    }
-  }
-  // 註冊
-  static pushRegister() {
-    switch (Platform.OS) {
-      case 'ios':
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-          {
-            selectors: 'AppDefine.viewControllerWithStoryboardID:',
-            args1: ['UGRegisterViewController'],
-          },
-          true,
-        ])
-        break
-      case 'android':
-        ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.RegeditActivity)
         break
     }
   }
@@ -324,29 +343,15 @@ export default class PushHelper {
       case 'ios':
         switch (code) {
           case UGUserCenterType.存款纪录: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:[setSelectIndex:]',
-                args1: ['UGFundsViewController'],
-                args2: [2],
-              },
-              true,
-            ])
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGFundsViewController', { selectIndex: 2 }), true,])
             break
           }
           case UGUserCenterType.取款纪录: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:[setSelectIndex:]',
-                args1: ['UGFundsViewController'],
-                args2: [3],
-              },
-              true,
-            ])
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGFundsViewController', { selectIndex: 3 }), true,])
             break
           }
           case UGUserCenterType.每日签到: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true])
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGSigInCodeViewController'), true])
             break
           }
           case UGUserCenterType.全民竞猜: {
@@ -362,7 +367,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.彩票大厅: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryHomeController.new' }, true])
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGLotteryHomeController'), true])
             break
           }
           case UGUserCenterType.聊天室: {
@@ -371,7 +376,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.游戏大厅: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGYYLotteryHomeViewController.new' }, true])
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGYYLotteryHomeViewController'), true])
             break
           }
           case UGUserCenterType.刮刮乐: {
@@ -388,11 +393,7 @@ export default class PushHelper {
               })
               if (scratchList?.length) {
                 OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [
-                  {
-                    selectors: 'ScratchController.new[setItem:][setModalPresentationStyle:]',
-                    args1: [{ clsName: 'ScratchDataModel', scratchList, scratchWinList }],
-                    args2: [5],
-                  },
+                  NSValue.ViewController('ScratchController', { item: { clsName: 'ScratchDataModel', scratchList, scratchWinList }, modalPresentationStyle: 5 }),
                   true,
                   undefined,
                 ])
@@ -458,26 +459,14 @@ export default class PushHelper {
                 if (rpm) {
                   push(rpm.rnName)
                 } else {
-                  OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-                    {
-                      selectors: 'AppDefine.viewControllerWithStoryboardID:',
-                      args1: ['UGMineSkinViewController'],
-                    },
-                    true,
-                  ])
+                  OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGMineSkinViewController'), true])
                 }
               }
             })()
             break
           }
           case UGUserCenterType.开奖结果: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:',
-                args1: ['UGLotteryRecordController'],
-              },
-              true,
-            ])
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGLotteryRecordController'), true])
             // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
             break
           }
@@ -495,6 +484,14 @@ export default class PushHelper {
           }
           case UGUserCenterType.优惠活动: {
             push(PageName.JDPromotionListPage)
+            break
+          }
+          case UGUserCenterType.登录页: {
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGLoginViewController'), true])
+            break
+          }
+          case UGUserCenterType.注册页: {
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGRegisterViewController'), true])
             break
           }
           default: {
@@ -581,6 +578,14 @@ export default class PushHelper {
           }
           case UGUserCenterType.体育注单: {
             push(PageName.OtherRecord, { type: UGUserCenterType.体育注单 })
+            return
+          }
+          case UGUserCenterType.登录页: {
+            ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LoginActivity)
+            return
+          }
+          case UGUserCenterType.注册页: {
+            ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.RegeditActivity)
             return
           }
           case UGUserCenterType.额度转换: {
@@ -718,6 +723,21 @@ export default class PushHelper {
             subId: subId,
           })
         }
+    }
+  }
+
+  // LinkPosition跳转
+  static pushLinkPositionType(code: UGLinkPositionType) {
+    switch (Platform.OS) {
+      case 'ios':
+        switch (code) {
+          default:
+            OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [7, code])
+        }
+        break
+      case 'android':
+        // TODO 安卓
+        break
     }
   }
 }

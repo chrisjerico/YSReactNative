@@ -18,6 +18,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import LinearGradient from 'react-native-linear-gradient'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const LCMinePage = () => {
   const { info } = useMinePage({
@@ -29,7 +30,7 @@ const LCMinePage = () => {
   const { userCenterItems } = sysInfo
   const { loginOut } = useLoginOut(PageName.LCHomePage)
   useEffect(() => {
-    uid == '' && PushHelper.pushLogin()
+    uid == '' && PushHelper.pushUserCenterType(UGUserCenterType.登录页)
   }, [uid])
 
   return (
