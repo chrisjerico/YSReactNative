@@ -141,11 +141,11 @@ const LobbyGameListComponent = ({
       }}>
         <View style={[_styles.game_item_container, { backgroundColor: Skin1.homeContentColor, }]}>
           <Image
-            style={{ width: 60, height: 60, marginRight: 10, }}
+            style={{ width: 60, height: 60, marginRight: 10,marginTop:10,marginLeft:10 }}
             source={{ uri: games.icons[item.category] }} />
           <View>
             <Text
-              style={[_styles.category_name, { color: Skin1.textColor1, marginRight: 10, },]}
+              style={[_styles.category_name, { color: Skin1.textColor1, marginRight: 10,marginTop:18 },]}
             >{item.categoryName}系列</Text>
             <Text
               style={[_styles.play_now, { marginTop: 10, },]}
@@ -187,10 +187,10 @@ const _styles = StyleSheet.create({
   },
   game_item_container: {
     flexDirection: 'row',
-    // justifyContent: 'space-around',
     marginHorizontal: scale(16),
     marginVertical: scale(16),
-    padding: scale(24),
+    width:scale(230),
+    height:scale(130),
     borderRadius: scale(10),
 
   },
