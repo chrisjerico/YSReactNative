@@ -71,7 +71,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
               onPress={() => {
                 //选中了哪些数据 code -> code -> value, 如 正特 -> 正特1 -> 01,03,04
                 //Map<string, Map<string, Map<string, SelectedPlayModel>>>
-                // const newSelectedData = JSON.parse(JSON.stringify(selectedData))
                 const newSelectedData = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
 
                 //注释以特码为例

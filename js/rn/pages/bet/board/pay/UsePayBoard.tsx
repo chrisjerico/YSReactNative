@@ -10,7 +10,7 @@ import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it
 import moment from 'moment'
 import LotteryConst from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
-import { calculateItemCount, initItemMoney } from '../tl/BetUtil'
+import { calculateItemCount, gatherSelectedItems, initItemMoney } from '../tl/BetUtil'
 import { zodiacPlayX } from '../tl/hx/BetHXUtil'
 import { playDataX } from '../tl/zxbz/BetZXBZUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
@@ -93,9 +93,10 @@ const UsePayBoard = () => {
   const startBetting = () => {
     const betBean: Array<BetLotteryData> = []
 
+    //Map<string, Map<string, Map<string, SelectedPlayModel>>>
     Object.keys(selectedData).map((key) => {
-      const groupDataArr: Array<PlayGroupData> = selectedData[key]
-      return groupDataArr?.map((groupData) => {
+      const selItems = gatherSelectedItems(key, selectedData)
+      return selItems?.map((selModel) => {
         switch (key) {
           case LotteryConst.TM:  //特码
           case LotteryConst.LM: //两面
@@ -112,9 +113,9 @@ const UsePayBoard = () => {
           case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
           case LotteryConst.LX: //连肖
           case LotteryConst.LW: //连尾
-            groupData?.plays?.map((playData) => {
+            selModel?.plays?.map((playData) => {
               betBean.push({
-                money: numberToFloatString(moneyMap[playData?.id]),
+                money: numberToFloatString(moneyMap[playData?.exId ?? playData?.id]),
                 odds: playData?.odds,
                 playId: playData?.id,
                 playIds: nextIssueData?.id,
@@ -124,38 +125,38 @@ const UsePayBoard = () => {
 
           case LotteryConst.HX://合肖
           {
-            const playX = zodiacPlayX(groupData)
+            const playX = zodiacPlayX(selModel)
 
             betBean.push({
-              money: numberToFloatString(moneyMap[playX?.id]),
+              money: numberToFloatString(moneyMap[playX?.exId ?? playX?.id]),
               odds: playX?.odds,
               playId: playX?.id,
-              betInfo: groupData?.exZodiacs?.map((item) => item?.name).toString(),
+              betInfo: selModel?.zodiacs?.map((item) => item?.name).toString(),
             } as BetLotteryData)
           }
             break
 
           case LotteryConst.LMA:  //连码
           {
-            const play0 = groupData?.plays[0]
+            const play0 = selModel?.plays[0]
             betBean.push({
-              money: numberToFloatString(moneyMap[play0?.id]),
+              money: numberToFloatString(moneyMap[play0?.exId ?? play0?.id]),
               playId: play0?.id,
               playIds: nextIssueData?.id,
-              betInfo: groupData?.exPlays?.map((item) => item?.name).toString(),
+              betInfo: selModel?.plays?.map((item) => item?.name).toString(),
             } as BetLotteryData)
           }
             break
 
           case LotteryConst.ZXBZ:  //自选不中
           {
-            const playX = playDataX(groupData)
+            const playX = playDataX(selModel)
 
             betBean.push({
-              money: numberToFloatString(moneyMap[playX?.id]),
+              money: numberToFloatString(moneyMap[playX?.exId ?? playX?.id]),
               odds: playX?.odds,
               playId: playX?.id,
-              betInfo: groupData?.exPlays?.map((item) => item?.name).toString(),
+              betInfo: selModel?.plays?.map((item) => item?.name).toString(),
             } as BetLotteryData)
           }
           break
