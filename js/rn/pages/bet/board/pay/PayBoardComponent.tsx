@@ -174,48 +174,14 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   }
 
-  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((lotteryCode, keyIndex) => {
-    const groupDataArr: Array<PlayGroupData> = selectedData[lotteryCode]
-    return groupDataArr?.map((groupData, index) => {
-      ugLog('lotteryCode 2 index = ', lotteryCode, index)
-      switch (lotteryCode) {
-        case LotteryConst.TM:  //特码
-        case LotteryConst.LM: //两面
-        case LotteryConst.ZM: //正码
-        case LotteryConst.ZT:  //正特
-        case LotteryConst.ZM1_6: //正码1T6
-        case LotteryConst.SB: //色波
-        case LotteryConst.ZOX://总肖
-        case LotteryConst.WX:  //五行
-        case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.TX: //特肖
-        case LotteryConst.ZX: //正肖
-        case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.LX: //连肖
-        case LotteryConst.LW: //连尾
-          return renderTMItem(lotteryCode, groupData)
-
-        case LotteryConst.HX://合肖
-          return renderHXItem(groupData,
-            groupData?.exZodiacs?.map((item) => item?.name)?.toString())
-
-        case LotteryConst.LMA:  //连码
-        case LotteryConst.ZXBZ:  //自选不中
-          return renderHXItem(groupData,
-            groupData?.exPlays?.map((item) => item?.name)?.toString())
-      }
-
-
-    })
-
-  }).flat(2)
-
+  const itemViewArr = selectedData == null ? null : null
   const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * BET_ITEM_HEIGHT, [itemCount])
 
   return (
     <View style={_styles.container}>
       <Modal isVisible={true}
+             onBackdropPress={showCallback}
+             onBackButtonPress={showCallback}
              style={_styles.modal_content}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}

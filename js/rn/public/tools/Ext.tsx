@@ -36,19 +36,23 @@ const isArray = (arr) => {
  * @param src 源对象
  * @param des 新对象
  */
-export const mergeObject = (src = {}, des = {}): any => {
+export const mergeObject = (src?: any, des?: any): any => {
   let obj = src
-  ugLog('des?.toString() = ', JSON.stringify(des))
-  if (typeof src != 'object' || typeof des != 'object' || JSON.stringify(des) == '{}') {
+  if ((!anyNull(src) && typeof src != 'object')
+    || (!anyNull(des) && typeof des != 'object')
+    || JSON.stringify(des) == '{}'
+    || anyNull(src)) {
     return des // 如果其中一个不是对象 就返回 des
   }
-  for (let key in des) {
-    // 如果target也存在 那就再次合并
-    if (src.hasOwnProperty(key)) {
-      obj[key] = mergeObject(src[key], des[key])
-    } else {
-      // 不存在就直接添加
-      obj[key] = des[key]
+  if (!anyEmpty(des)) {
+    for (let key in des) {
+      // 如果target也存在 那就再次合并
+      if (src.hasOwnProperty(key)) {
+        obj[key] = mergeObject(src[key], des[key])
+      } else {
+        // 不存在就直接添加
+        obj[key] = des[key]
+      }
     }
   }
   return obj

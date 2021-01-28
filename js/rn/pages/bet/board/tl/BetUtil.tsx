@@ -43,7 +43,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
   const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
 
-  // ugLog('checkBetCount selectedData', JSON.stringify(selectedData))
+  ugLog('checkBetCount selectedData', JSON.stringify(keys))
   if(anyEmpty(keys)) {
     Toast('请选择玩法')
     return false
@@ -121,7 +121,7 @@ const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, S
   keys?.map((key) => {
     const selData = gatherItems(key, selectedData)
     const scount = selData?.map((item) =>
-      arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
+      arrayLength(item.zodiacs || item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
     ugLog('calculate valueSel key = ', key, scount)
 
     if (scount > 0) {//该彩种是否有选中的数据

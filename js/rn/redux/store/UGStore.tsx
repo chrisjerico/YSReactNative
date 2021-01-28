@@ -64,7 +64,6 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
     act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
-    // act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
 
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
@@ -76,7 +75,10 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
-    state.selectedLotteryModel = mergeObject(act.selectedLotteryModel, state.selectedLotteryModel)
+    // ugLog('state.selectedLotteryModel 1 = ', JSON.stringify(state.selectedLotteryModel))
+    // ugLog('state.selectedLotteryModel 2 = ', JSON.stringify(act.selectedLotteryModel))
+    state.selectedLotteryModel = mergeObject(state.selectedLotteryModel, act.selectedLotteryModel)
+    // ugLog('state.selectedLotteryModel 3 = ', JSON.stringify(state.selectedLotteryModel))
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })

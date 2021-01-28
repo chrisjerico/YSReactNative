@@ -49,7 +49,7 @@ const UsePayBoard = () => {
   useEffect(() => {
     if (selectedData == null) return
 
-    ugLog(' calculate selectedData  =', JSON.stringify(selectedData))
+    // ugLog(' calculate selectedData  =', JSON.stringify(selectedData))
 
     if (nextIssueData?.gameType == 'lhc') {
       //总共有多少条数据
@@ -70,7 +70,7 @@ const UsePayBoard = () => {
    * 平均价格和条目变化时重新计算总金额
    */
   useEffect(() => {
-    ugLog('total money = ', totalMoney)
+    ugLog('averageMoney total money = ', totalMoney)
     setTotalMoney(itemCount * averageMoney)
   }, [averageMoney, itemCount])
 
@@ -78,7 +78,7 @@ const UsePayBoard = () => {
    * 价格变化时重新计算总金额
    */
   useEffect(() => {
-    ugLog('total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
+    ugLog('moneyMap total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
     const money = anyEmpty(moneyMap) ?
       0 :
       Object.values(moneyMap)?.reduce((previousValue, currentValue) =>
