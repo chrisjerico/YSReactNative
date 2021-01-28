@@ -37,14 +37,14 @@ export async function setRnPageInfo(force = false) {
       允许未登录访问: false,
     })
 
-    // 2级游戏分类
-    pages.push({
-      vcName: 'UGGameListViewController',
-      rnName: PageName.TwoLevelGames,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
+    // // 2级游戏分类
+    // pages.push({
+    //   vcName: 'UGGameListViewController',
+    //   rnName: PageName.TwoLevelGames,
+    //   fd_prefersNavigationBarHidden: true,
+    //   允许游客访问: false,
+    //   允许未登录访问: false,
+    // })
 
     // 资金管理
     pages.push({

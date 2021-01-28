@@ -10,6 +10,7 @@ import { ImagePlaceholder } from '../tools/ImagePlaceholder'
 import { push } from '../../../public/navigation/RootNavigation'
 import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 
 interface IXLGameList {
   gameData?: Array<UGYYGames> //所有数据
@@ -51,8 +52,10 @@ const JDGameListCP = ({
               }
               let linkCategory:number = dict[item?.category];
               
+              ugLog('item.id==',item.id)
+              ugLog('item.gameid==',item.gameId)
               if (!anyEmpty(linkCategory)) {
-                
+                OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [linkCategory, item.id])
               }
 
               break

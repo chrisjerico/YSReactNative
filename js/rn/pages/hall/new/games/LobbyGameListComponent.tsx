@@ -116,8 +116,6 @@ const LobbyGameListComponent = ({
                 //     true
                 //   ]);
 
-                ugLog('item.categoryName==',item.categoryName);
-
                 push(PageName.JDLotterySecondPage, {
                   dataArray: item.games,
                   title: item.categoryName+'系列',
