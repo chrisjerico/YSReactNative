@@ -11,7 +11,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import { gatherSelectedItems } from '../tl/BetUtil'
+import { calculateItemCount, gatherSelectedItems } from '../tl/BetUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 
 interface IPayBoardComponent {
@@ -37,7 +37,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     selectedData,
     setSelectedData,
     startBetting,
-    calculateItemCount,
   } = UsePayBoard()
 
   /**
@@ -70,65 +69,33 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                    style={_styles.item_input}/>
         <Icon size={scale(36)}
               onPress={() => {
-                // //选中了哪些数据 code -> code -> value, 如 正特 -> 正特1 -> 01,03,04
-                //
-                // //新生成一份数据 多层结构
-                // //Map1<string, Map2<string, Map3<string, Array<string>>>>()
+                //选中了哪些数据 code -> code -> value, 如 正特 -> 正特1 -> 01,03,04
+                //Map<string, Map<string, Map<string, SelectedPlayModel>>>
                 // const newSelectedData = JSON.parse(JSON.stringify(selectedData))
-                //
-                // Object.values(newSelectedData).map((map2) =>
-                //   Object.values(map2).map((map3: Map<string, Array<string>>) =>
-                //     Object.values(map3)).map((arr: Array<PlayData>) =>
-                //     arr.map((value: PlayData) =>{
-                //
-                //   })))
-                //
-                // Object.keys(selectedData).forEach((ztKey => {
-                //   const ztValue = selectedData[ztKey]
-                //   Object.keys(ztValue).forEach((zt1Key => {
-                //     const zt1Value = ztValue[zt1Key]
-                //   }))
-                // }))
-                //
-                // //注释以特码为例
-                // for (let keyTM in selectedData) {
-                //   newSelectedData[keyTM] = selectedData[keyTM]// 复制一份特码B 特码A的数据
-                //   for (let keyTMB in valueTM) {
-                //     const valueTMB = new Map<string, Array<string>>() // 特码数据 两面数据 色波数据
-                //     valueTM[keyTM] = valueTMB
-                //     for (let keySB in valueTMB) {
-                //       const valueSB = new Array<string>() // 两码或者色波里面的 01, 02, 03
-                //       valueTMB[keySB] = valueSB
-                //
-                //     }
-                //   }
-                // }
-                //
-                // Object.keys(selectedData)?.map((keyTM) => {
-                //   return
-                // })
-                //
-                //
-                //
-                // //从选中的列表里面 清除删除的数据 重新组建数据
-                // Object.keys(selectedData)?.map((keyTM) => {
-                //   //特码B数据
-                //   const tmData: Map<string, Map<string, Array<string>>> = selectedData[keyTM]
-                //
-                //
-                //   newSelectedData[key] = groupData?.map((groupData) => ({
-                //     ...groupData,
-                //     plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
-                //     exPlays: groupData?.exPlays?.filter((item) => item?.id != playData?.id),
-                //   } as PlayGroupData))
-                // })
-                //
-                // //数据少于1了就关闭窗口
-                // if (calculateItemCount(newSelectedData) <= 0) {
-                //   showCallback && showCallback()
-                // } else {
-                //   setSelectedData(newSelectedData)
-                // }
+                const newSelectedData = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
+
+                //注释以特码为例
+                for(const [key1, value1] of Object.entries(selectedData)) {
+                  newSelectedData[key1] = value1
+                  for(const [key2, value2] of Object.entries(value1)) {
+                    value1[key2] = value2
+                    for(const [key3, value3] of Object.entries(value2)) {
+                      value2[key3] = {
+                        ...value3,
+                        plays: value3?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData))
+
+                      } as SelectedPlayModel
+                    }
+                  }
+                }
+
+                ugLog('newSelectedData = ', JSON.stringify(newSelectedData))
+                //数据少于1了就关闭窗口
+                if (calculateItemCount(newSelectedData) <= 0) {
+                  showCallback && showCallback()
+                } else {
+                  setSelectedData(newSelectedData)
+                }
 
               }}
               style={_styles.item_trash}
@@ -140,7 +107,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   /**
    * 绘制合肖等数据
-   * @param groupData
+   * @param selModel
    * @param des
    */
   const renderHXItem = (selModel?: SelectedPlayModel,
@@ -164,8 +131,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                  style={_styles.item_input}/>
       <Icon size={scale(36)}
             onPress={() => {
-              // const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
-              // newSelectedData[key] = null
               showCallback && showCallback()
 
             }}

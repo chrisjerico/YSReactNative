@@ -188,7 +188,6 @@ const UsePayBoard = () => {
     playOddDetailData,
     selectedData,
     setSelectedData,
-    calculateItemCount,
     startBetting,
   }
 }
