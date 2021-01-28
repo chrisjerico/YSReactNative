@@ -11,7 +11,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import { gatherItems } from '../tl/BetUtil'
+import { gatherSelectedItems } from '../tl/BetUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 
 interface IPayBoardComponent {
@@ -60,11 +60,11 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         <Text style={_styles.item_x}>{'X'}</Text>
         <TextInput defaultValue={averageMoney?.toString()}
                    onChangeText={text => setMoneyMap(prevState => {
-                     const dataMap = new Map<string, number>()
-                     dataMap[playData?.exId ?? playData?.id] = Number.parseFloat(text)
+                     const moneyMap = new Map<string, number>()
+                     moneyMap[playData?.exId ?? playData?.id] = Number.parseFloat(text)
                      // ugLog('prevState = ', JSON.stringify(prevState))
-                     // ugLog('dataMap = ', JSON.stringify(dataMap))
-                     return { ...prevState, ...dataMap }
+                     // ugLog('moneyMap = ', JSON.stringify(moneyMap))
+                     return { ...prevState, ...moneyMap }
                    })}
                    keyboardType={'numeric'}
                    style={_styles.item_input}/>
@@ -154,11 +154,11 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
       }</Text>
       <TextInput defaultValue={averageMoney?.toString()}
                  onChangeText={text => setMoneyMap(prevState => {
-                   const dataMap = new Map<string, number>()
-                   dataMap[play0?.exId ?? play0?.id] = Number.parseFloat(text)
+                   const moneyMap = new Map<string, number>()
+                   moneyMap[play0?.exId ?? play0?.id] = Number.parseFloat(text)
                    // ugLog('prevState = ', JSON.stringify(prevState))
-                   // ugLog('dataMap = ', JSON.stringify(dataMap))
-                   return { ...prevState, ...dataMap }
+                   // ugLog('moneyMap = ', JSON.stringify(moneyMap))
+                   return { ...prevState, ...moneyMap }
                  })}
                  keyboardType={'numeric'}
                  style={_styles.item_input}/>
@@ -177,7 +177,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   }
 
   const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((lotteryCode, keyIndex) => {
-    const selItems = gatherItems(lotteryCode, selectedData)
+    const selItems = gatherSelectedItems(lotteryCode, selectedData)
     // const groupDataArr: Array<PlayGroupData> = selectedData[lotteryCode]
     return selItems?.map((selModel, index) => {
       ugLog('lotteryCode 2 index = ', lotteryCode, index)

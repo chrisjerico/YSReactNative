@@ -104,7 +104,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
  * @param code 某个彩种，如 特码TM
  * @param selectedData 如选中的数据
  */
-const gatherItems = (code?: string, selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
+const gatherSelectedItems = (code?: string, selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
   //选中的数据有多少组
   const valueArr: Array<Map<string, SelectedPlayModel>> = Object.values(selectedData[code])
   return valueArr?.map((arr) =>
@@ -119,7 +119,7 @@ const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, S
   let itemCount = 0
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
   keys?.map((key) => {
-    const selData = gatherItems(key, selectedData)
+    const selData = gatherSelectedItems(key, selectedData)
     const scount = selData?.map((item) =>
       arrayLength(item.zodiacs || item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
     ugLog('calculate valueSel key = ', key, scount)
@@ -146,7 +146,7 @@ const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, S
  */
 const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Map<string, number> => {
   const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
-  const dataMap = new Map<string, number>()
+  const moneyMap = new Map<string, number>()
 
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
   keys?.map((key) => {
@@ -155,17 +155,17 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
         case LotteryConst.LMA://部分彩种 只计算 1条数据
         {
           // const play0 = (selectedData[key][0] as PlayGroupData).plays[0]
-          const play0 = gatherItems(key, selectedData)[0]?.plays[0]
-          dataMap[play0?.exId ?? play0?.id] = defaultMoney
+          const play0 = gatherSelectedItems(key, selectedData)[0]?.plays[0]
+          moneyMap[play0?.exId ?? play0?.id] = defaultMoney
         }
 
           break
         case LotteryConst.HX://部分彩种 只计算 1条数据
         {
           // const groupData = (selectedData[key][0] as PlayGroupData)
-          const selData = gatherItems(key, selectedData)[0]
+          const selData = gatherSelectedItems(key, selectedData)[0]
           const playX = zodiacPlayX(selData)
-          dataMap[playX?.exId ?? playX?.id] = defaultMoney
+          moneyMap[playX?.exId ?? playX?.id] = defaultMoney
         }
 
           break
@@ -173,19 +173,19 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
         case LotteryConst.ZXBZ://部分彩种 只计算 1条数据
         {
           // const groupData = (selectedData[key][0] as PlayGroupData)
-          const selData = gatherItems(key, selectedData)[0]
+          const selData = gatherSelectedItems(key, selectedData)[0]
           const playX = playDataX(selData)
-          dataMap[playX?.exId ?? playX?.id] = defaultMoney
+          moneyMap[playX?.exId ?? playX?.id] = defaultMoney
         }
 
           break
         default:
           //选中的数据有多少组
           // const value: Array<PlayGroupData> = selectedData[key]
-          const selData = gatherItems(key, selectedData)
+          const selData = gatherSelectedItems(key, selectedData)
           selData?.map((selModel) => {
             selModel?.plays?.map((playData) => {
-              dataMap[playData?.exId ?? playData?.id] = defaultMoney
+              moneyMap[playData?.exId ?? playData?.id] = defaultMoney
             })
           })
 
@@ -195,12 +195,12 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
     }
   })
 
-  return dataMap
+  return moneyMap
 }
 
 
 export {
-  gatherItems,
+  gatherSelectedItems,
   calculateItemCount,
   initItemMoney,
   checkBetCount,
