@@ -3,6 +3,7 @@ import { Text, TouchableWithoutFeedback, View } from 'react-native'
 import PushHelper from '../../../../public/define/PushHelper'
 import { PageName } from '../../../../public/navigation/Navigation'
 import useSignInPage from '../../../../public/hooks/tars/useSignInPage'
+import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 
 export const LoginButtonBar = () => {
   const { sign, navigateTo } = useSignInPage({
@@ -15,7 +16,7 @@ export const LoginButtonBar = () => {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', height: 40 }}>
       <TouchableWithoutFeedback onPress={() => {
-        PushHelper.pushLogin()
+        PushHelper.pushUserCenterType(UGUserCenterType.登录页)
       }}>
         <Text style={{ color: '#333', fontSize: 17.6, lineHeight: 24.6 }}>登录</Text>
       </TouchableWithoutFeedback>

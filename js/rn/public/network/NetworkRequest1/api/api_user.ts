@@ -62,6 +62,11 @@ export class api_user {
     return this.c.post('exists', { usr: usr });
   }
 
+  // 获取用户余额
+  static balance() {
+    return this.c.get<{ balance: string }>('balance');
+  }
+
   // 退出登录
   static logout() {
     return this.c.post('logout');

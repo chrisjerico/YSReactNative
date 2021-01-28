@@ -8,6 +8,7 @@ import PushHelper from "../define/PushHelper"
 import FastImage, {ImageStyle} from "react-native-fast-image"
 import React from 'react'
 import {useDimensions} from '@react-native-community/hooks'
+import { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
 
 /**
  * 红包
@@ -36,7 +37,7 @@ const RedBagItem = ({style, redBag, loginPage}: { style?: StyleProp<ViewStyle>, 
                         },
                         {
                             text: "马上登录", onPress: () => {
-                                loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
+                                loginPage ? navigate(loginPage, {}) : PushHelper.pushUserCenterType(UGUserCenterType.登录页)
                             },
                         }
                     ])
@@ -48,7 +49,7 @@ const RedBagItem = ({style, redBag, loginPage}: { style?: StyleProp<ViewStyle>, 
                         },
                         {
                             text: "马上登录", onPress: () => {
-                                loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
+                                loginPage ? navigate(loginPage, {}) : PushHelper.pushUserCenterType(UGUserCenterType.登录页)
                             },
                         }
                     ])

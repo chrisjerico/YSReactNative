@@ -13,6 +13,7 @@ export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey ?? ''
 
   static ocTest: boolean
+  static appVersion: string
 
   // 调用OC函数
   static call = OCCall.call
@@ -37,11 +38,11 @@ export class OCHelper extends OCEvent {
       this.ocTest = await OCHelper.call('AppDefine.shared.Test')
       const siteId = await OCHelper.call('AppDefine.shared.SiteId')
       const host = DomainUrls[siteId] ?? await OCHelper.call('AppDefine.shared.Host')
-      const appVersion = await OCHelper.call('AppDefine.shared.Version')
+      const appVersion = this.appVersion = await OCHelper.call('AppDefine.shared.Version')
       AppDefine.host = host
       httpClient.defaults.baseURL = host
       console.log('AppDefine.siteId =', siteId);
-      
+
       AppDefine.siteId = siteId
 
       // 配置iOS的域名

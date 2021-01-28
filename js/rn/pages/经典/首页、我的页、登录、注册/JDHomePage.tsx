@@ -1,7 +1,12 @@
-import React, { useCallback, useEffect, useRef } from 'react'
-import { Platform, StyleSheet, View, Image, Text, ImageBackground } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Platform, StyleSheet, View, Image, Text, ImageBackground, Animated, Easing } from 'react-native'
+import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import LinearGradient from 'react-native-linear-gradient'
+import { sub } from 'react-native-reanimated'
+import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { appConfig } from '../../../../../config'
 import AnimatedRankComponent from '../../../public/components/tars/AnimatedRankComponent'
 import GameSubTypeComponent from '../../../public/components/tars/GameSubTypeComponent'
@@ -9,11 +14,12 @@ import MenuModalComponent from '../../../public/components/tars/MenuModalCompone
 import TabComponent, { TabComponentApi } from '../../../public/components/tars/TabComponent'
 import { MenuType } from '../../../public/define/ANHelper/hp/GotoDefine'
 import AppDefine from '../../../public/define/AppDefine'
-import PushHelper from '../../../public/define/PushHelper'
+import PushHelper, { UGLinkPositionType } from '../../../public/define/PushHelper'
 import useHomePage from '../../../public/hooks/tars/useHomePage'
 import { GameType, RankingListType } from '../../../public/models/Enum'
 import { PageName } from '../../../public/navigation/Navigation'
 import { push } from '../../../public/navigation/RootNavigation'
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { skin1, Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -23,7 +29,6 @@ import { sc, scale } from '../../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../../public/tools/tars'
 import { ugLog } from '../../../public/tools/UgLog'
 import BannerBlock from '../../../public/views/tars/BannerBlock'
-import Button from '../../../public/views/tars/Button'
 import GameButton from '../../../public/views/tars/GameButton'
 import HomePage from '../../../public/views/tars/HomePage'
 import List from '../../../public/views/tars/List'
@@ -31,17 +36,21 @@ import NavBlock from '../../../public/views/tars/NavBlock'
 import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../../public/views/tars/TouchableImage'
 import { UGNavigationBar } from '../../../public/widget/UGNavigationBar'
+import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
+import { UGStore } from '../../../redux/store/UGStore'
 import { img_assets, img_images, img_platform } from '../../../Res/icon'
 import { UGBasePageProps } from '../../base/UGPage'
 import MenuButton from '../../WNZ/views/MenuButton'
 import RowGameButtom from '../../WNZ/views/RowGameButtom'
 import TabBar from '../../WNZ/views/TabBar'
+import { ImagePlaceholder } from '../tools/ImagePlaceholder'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
+import { HomeRightMenuCP } from './views/HomeRightMenuCP'
 
 const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const menu = useRef(null)
-  const { current: v } = useRef<{} & TabComponentApi>({})
+  const { current: v } = useRef<{} & TabComponentApi & HomeRightMenuCP>({})
 
   useEffect(() => {
     setProps({ backgroundColor: skin1.bgColor })
@@ -70,7 +79,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType } = sysInfo
 
   // @ts-ignore
-  const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
+  const defaultMenus = config.getDefaultMenus()
 
   const renderGameSubTypeComponent = (games: any[]) => (
     <GameSubTypeComponent
@@ -144,12 +153,8 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                       subId != MenuType.ZHGL &&
                       subId != MenuType.CZJL &&
                       subId != MenuType.TXJL)) {
-                    if (subId == 47 && sysInfo?.mobileGameHall == '1') {//新彩票大厅
-                      push(PageName.GameHallPage, { showBackButton: true })
-
-                    } else if (subId == 47 && sysInfo?.mobileGameHall == '2') {//自由彩票大厅
-                      push(PageName.FreedomHallPage, { showBackButton: true })
-
+                    if (subId == 47) {//彩票大厅
+                      PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
                     } else {
                       push(PageName.SeriesLobbyPage,
                         {
@@ -214,8 +219,11 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
           name={usr}
           logo={mobile_logo}
           balance={balance}
+          onPressTryPlay={tryPlay}
+          onPressSignIn={goToUserCenterType.登录页}
+          onPressSignUp={goToUserCenterType.注册页}
           showChatRoom={chatRoomSwitch}
-          onPressMenu={openMenu}
+          onPressMenu={() => { v.showRightMenuCP && v.showRightMenuCP() }}
           onPressComment={goToUserCenterType.聊天室}
           onPressUser={goToUserCenterType.我的页}
         />
@@ -339,38 +347,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       )}
       renderRestComponent={() => (
         // 侧边栏
-        <MenuModalComponent
-          ref={menu}
-          menus={menus?.length ? menus : defaultMenus}
-          renderMenuItem={({ item }) => {
-            const { name, gameId, title, onPress } = item
-            return (
-              <MenuButton
-                title={name ?? title}
-                subTitle={'(' + appVersion + ')'}
-                showSubTitle={gameId == GameType.APP版本号}
-                onPress={() => {
-                  if (gameId == GameType.登出) {
-                    signOut()
-                  } else {
-                    closeMenu()
-                    if (onPress) {
-                      onPress()
-                    } else {
-                      //ugLog('GameType item=', JSON.stringify(item))
-                      const { subId } = item
-                      if (subId == GameType.游戏大厅) {  //游戏大厅
-                        push(PageName.GameLobbyPage, { showBackButton: true })
-                      } else {
-                        PushHelper.pushHomeGame(item)
-                      }
-                    }
-                  }
-                }}
-              />
-            )
-          }}
-        />
+        <HomeRightMenuCP menus={menus?.length ? menus : defaultMenus} appVersion={appVersion} showDepositAndWithdrawalBtn={!menus?.length} c_ref={v} />
       )}
     />
   )
