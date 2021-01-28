@@ -94,7 +94,7 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
       ?
       anyEmpty(gameData)
         ? <EmptyView style={{ flex: 1 }}/>
-        : <ScrollView style={{  }}>
+        : <ScrollView style={{ flex: 1 }}>
           {renderDataList(gameData)}
         </ScrollView>
       : <View></View>
