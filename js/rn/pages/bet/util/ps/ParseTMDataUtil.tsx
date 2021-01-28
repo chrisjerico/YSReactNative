@@ -24,7 +24,7 @@ const parseTMData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
       ...group,
       plays: group?.plays?.map((play) => ({
         ...play,
-        exId: `${playOddData.code}+${group.alias}+${play.id}` //使用分类ID和PlayID生成唯一识别的ID
+        exId: `${playOddData.code},${group.alias},${play.id}` //使用分类ID和PlayID生成唯一识别的ID
       } as PlayData))
     } as PlayGroupData))
 

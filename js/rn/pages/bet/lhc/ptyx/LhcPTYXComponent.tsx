@@ -40,7 +40,6 @@ const
   }, [])
   const key = 'lottery page' + playOddData?.code
 
-
   /**
    * 绘制 单个Tab
    * @param item
@@ -178,7 +177,7 @@ const
         <View key={key + 'renderAllBall'}
               style={_styles.content_container}>
           {renderAllRect(currentPageData()[0])}
-          {renderLineBall(currentPageData[1])}
+          {renderLineBall(currentPageData()[1])}
         </View>
       )
     }

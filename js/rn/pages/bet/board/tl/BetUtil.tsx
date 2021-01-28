@@ -28,6 +28,7 @@ import { playDataX } from './zxbz/BetZXBZUtil'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
 import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
 import { Toast } from '../../../../public/tools/ToastUtils'
+import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 
 /**
  * 下注辅助类
@@ -96,10 +97,21 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 }
 
 /**
+ * 将彩种数组集合成一维数据
+ * @param code 某个彩种，如 特码TM
+ * @param selectedData 如选中的数据
+ */
+const gatherItems = (code?: string, selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
+  //选中的数据有多少组
+  const valueArr: Array<Map<string, SelectedPlayModel>> = Object.values(selectedData[code])
+  return valueArr?.map((arr) => Object.values(arr)).flat(Infinity)
+}
+
+/**
  * 计算彩票下注时候，选中的条目数量
  * @param selectedData
  */
-const calculateItemCount = (selectedData?: Map<string, Array<PlayGroupData>>): number => {
+const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): number => {
   let itemCount = 0
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
   keys?.map((key) => {
@@ -110,8 +122,9 @@ const calculateItemCount = (selectedData?: Map<string, Array<PlayGroupData>>): n
         itemCount++
       } else {
         //选中的数据有多少组
-        const value: Array<PlayGroupData> = selectedData[key]
-        itemCount += value?.map((item) =>
+        const valueSel = gatherItems(key, selectedData)
+
+        itemCount += valueSel?.map((item) =>
           arrayLength(item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
       }
     }
@@ -121,10 +134,10 @@ const calculateItemCount = (selectedData?: Map<string, Array<PlayGroupData>>): n
 }
 
 /**
- * 计算彩票下注时候，选中的条目默认金额
+ * 计算彩票下注时候，初始化选中的条目默认金额
  * @param selectedData
  */
-const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): Map<string, number> => {
+const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Map<string, number> => {
   const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
   const dataMap = new Map<string, number>()
 
@@ -134,15 +147,17 @@ const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): M
       switch (key) {
         case LotteryConst.LMA://部分彩种 只计算 1条数据
         {
-          const play0 = (selectedData[key][0] as PlayGroupData).plays[0]
+          // const play0 = (selectedData[key][0] as PlayGroupData).plays[0]
+          const play0 = gatherItems(key, selectedData)[0]?.plays[0]
           dataMap[play0?.id] = defaultMoney
         }
 
           break
         case LotteryConst.HX://部分彩种 只计算 1条数据
         {
-          const groupData = (selectedData[key][0] as PlayGroupData)
-          const playX = zodiacPlayX(groupData)
+          // const groupData = (selectedData[key][0] as PlayGroupData)
+          const selData = gatherItems(key, selectedData)[0]
+          const playX = zodiacPlayX(selData)
           dataMap[playX?.id] = defaultMoney
         }
 
@@ -150,18 +165,20 @@ const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): M
 
         case LotteryConst.ZXBZ://部分彩种 只计算 1条数据
         {
-          const groupData = (selectedData[key][0] as PlayGroupData)
-          const playX = playDataX(groupData)
+          // const groupData = (selectedData[key][0] as PlayGroupData)
+          const selData = gatherItems(key, selectedData)[0]
+          const playX = playDataX(selData)
           dataMap[playX?.id] = defaultMoney
         }
 
           break
         default:
           //选中的数据有多少组
-          const value: Array<PlayGroupData> = selectedData[key]
-          value?.map((groupData) => {
-            groupData?.plays?.map((playData) => {
-              dataMap[playData?.id] = defaultMoney
+          // const value: Array<PlayGroupData> = selectedData[key]
+          const selData = gatherItems(key, selectedData)
+          selData?.map((selModel) => {
+            selModel?.plays?.map((playData) => {
+              dataMap[playData?.exId ?? playData?.id] = defaultMoney
             })
           })
 
@@ -177,6 +194,6 @@ const calculateItemMoney = (selectedData?: Map<string, Array<PlayGroupData>>): M
 
 export {
   calculateItemCount,
-  calculateItemMoney,
+  initItemMoney,
   checkBetCount,
 }

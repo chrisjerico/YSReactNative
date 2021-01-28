@@ -10,9 +10,10 @@ import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it
 import moment from 'moment'
 import LotteryConst from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
-import { calculateItemCount, calculateItemMoney } from '../tl/BetUtil'
+import { calculateItemCount, initItemMoney } from '../tl/BetUtil'
 import { zodiacPlayX } from '../tl/hx/BetHXUtil'
 import { playDataX } from '../tl/zxbz/BetZXBZUtil'
+import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 
 /**
  * 下注面板
@@ -27,7 +28,7 @@ const UsePayBoard = () => {
 
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
-  const [selectedData, setSelectedData] = useState<Map<string, Map<string, Map<string, Array<PlayData>>>>>(null) //当前选中的数据 结构和SelectedLotteryModel一样
+  const [selectedData, setSelectedData] = useState<Map<string, Map<string, Map<string, SelectedPlayModel>>>>(null) //当前选中的数据 结构和SelectedLotteryModel一样
   const [totalMoney, setTotalMoney] = useState(0) //计算总价格
   const [averageMoney, setAverageMoney] = useState(1) //输入平均价格
   const [itemCount, setItemCount] = useState(0) //选中的条目数据
@@ -56,7 +57,7 @@ const UsePayBoard = () => {
 
       //只有第1次需要初始化
       if (anyEmpty(moneyMap)) {
-        setMoneyMap(calculateItemMoney(selectedData))
+        setMoneyMap(initItemMoney(selectedData))
       }
 
     } else {
@@ -66,7 +67,7 @@ const UsePayBoard = () => {
   }, [selectedData])
 
   /**
-   * 价格变化时重新计算总金额
+   * 平均价格和条目变化时重新计算总金额
    */
   useEffect(() => {
     ugLog('total money = ', totalMoney)

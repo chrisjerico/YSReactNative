@@ -22,9 +22,9 @@ import parseLWData from '../../util/ps/ParseLWDataUtil'
 import parseZXBZData from '../../util/ps/ParseZXBZDataUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
 import SelectedLotteryModel, { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
 import { parseLMASelectedData } from '../../util/sel/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/sel/ParseHXSelectedUtil'
-import { Toast } from '../../../../public/tools/ToastUtils'
 
 /**
  * 彩票公共处理类
@@ -47,7 +47,7 @@ const UseLotteryHelper = () => {
 
 
     //生成选中的数据
-    const newSelectedModel = new Map<string, Map<string, Map<string, Array<SelectedPlayModel>>>>()
+    const newSelectedModel = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
 
 //     const subData: SelectedLotterySubData = {
 //       groupId: playOddData?.pageData?.groupTri[tabIndex]
