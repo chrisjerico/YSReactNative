@@ -13,7 +13,7 @@ export const ImagePlaceholder = (props: ImageProps & ImagePlaceholder) => {
   const { placeholderURL = img_assets('placeholder', 'jpg') } = props
 
   return <View>
-    {shwoDefaultImage && <Image style={style} resizeMode='cover' source={{ uri: placeholderURL }} />}
+    {shwoDefaultImage && <Image style={[style, { position: 'absolute' }]} resizeMode='cover' source={{ uri: placeholderURL }} />}
     <Image
       {...props}
       onError={(err) => {
@@ -36,7 +36,7 @@ export const FastImagePlaceholder = (props: FastImageProperties & ImagePlacehold
   const { placeholderURL = img_assets('placeholder', 'jpg') } = props
 
   return <View>
-    {shwoDefaultImage && <FastImage style={style} resizeMode='cover' source={{ uri: placeholderURL }} />}
+    {shwoDefaultImage && <FastImage style={[style, { position: 'absolute' }]} resizeMode='cover' source={{ uri: placeholderURL }} />}
     <FastImage
       {...props}
       onError={() => {
