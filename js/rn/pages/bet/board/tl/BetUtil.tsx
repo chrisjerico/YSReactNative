@@ -156,7 +156,7 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
         {
           // const play0 = (selectedData[key][0] as PlayGroupData).plays[0]
           const play0 = gatherItems(key, selectedData)[0]?.plays[0]
-          dataMap[play0?.id] = defaultMoney
+          dataMap[play0?.exId ?? play0?.id] = defaultMoney
         }
 
           break
@@ -165,7 +165,7 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
           // const groupData = (selectedData[key][0] as PlayGroupData)
           const selData = gatherItems(key, selectedData)[0]
           const playX = zodiacPlayX(selData)
-          dataMap[playX?.id] = defaultMoney
+          dataMap[playX?.exId ?? playX?.id] = defaultMoney
         }
 
           break
@@ -175,7 +175,7 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
           // const groupData = (selectedData[key][0] as PlayGroupData)
           const selData = gatherItems(key, selectedData)[0]
           const playX = playDataX(selData)
-          dataMap[playX?.id] = defaultMoney
+          dataMap[playX?.exId ?? playX?.id] = defaultMoney
         }
 
           break
@@ -200,6 +200,7 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
 
 
 export {
+  gatherItems,
   calculateItemCount,
   initItemMoney,
   checkBetCount,

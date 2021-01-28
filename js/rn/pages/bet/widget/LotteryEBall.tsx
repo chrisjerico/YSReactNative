@@ -103,7 +103,7 @@ const _styles = StyleSheet.create({
  */
 interface ILotteryEBallItem {
   id?: string; //708501
-  exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, TM+特码B+708550
+  exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, TM,特码B,708550
   name?: string; //01
   alias?: string;//特码A"
   code?: string;//01

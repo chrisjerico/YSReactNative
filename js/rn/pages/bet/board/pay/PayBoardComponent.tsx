@@ -11,6 +11,8 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { anyEmpty } from '../../../../public/tools/Ext'
+import { gatherItems } from '../tl/BetUtil'
+import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 
 interface IPayBoardComponent {
   showCallback?: () => void //窗口 是否显示 回调
@@ -41,10 +43,10 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   /**
    * 绘制 特码 等条目
    * @param lotteryCode 彩种CODE，特码,合肖等
-   * @param groupData
+   * @param selModel 选中的数据
    */
-  const renderTMItem = (lotteryCode?: string, groupData?: PlayGroupData) => {
-    return groupData?.plays?.map((playData) => {
+  const renderTMItem = (lotteryCode?: string, selModel?: SelectedPlayModel) => {
+    return selModel?.plays?.map((playData) => {
       const showName = lotteryCode == LotteryConst.LX || lotteryCode == LotteryConst.LW ?
         playData?.alias :
         playData?.name
@@ -52,14 +54,14 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                     style={_styles.item_container}>
         <Text style={_styles.item_title}
               numberOfLines={2}>{
-          `[ ${groupData?.alias}- ${showName} ]`
+          `[ ${selModel?.playGroups?.alias}- ${showName} ]`
         }</Text>
         <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
         <Text style={_styles.item_x}>{'X'}</Text>
         <TextInput defaultValue={averageMoney?.toString()}
                    onChangeText={text => setMoneyMap(prevState => {
                      const dataMap = new Map<string, number>()
-                     dataMap[playData?.id] = Number.parseFloat(text)
+                     dataMap[playData?.exId ?? playData?.id] = Number.parseFloat(text)
                      // ugLog('prevState = ', JSON.stringify(prevState))
                      // ugLog('dataMap = ', JSON.stringify(dataMap))
                      return { ...prevState, ...dataMap }
@@ -141,19 +143,19 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
    * @param groupData
    * @param des
    */
-  const renderHXItem = (groupData?: PlayGroupData,
+  const renderHXItem = (selModel?: SelectedPlayModel,
                         des?: string) => {
-    const play0 = groupData?.plays[0]
+    const play0 = selModel?.plays[0]
     return (<View key={play0?.id + play0?.name}
                   style={_styles.item_container}>
       <Text style={_styles.item_title}
             numberOfLines={2}>{
-        `[ ${groupData?.alias}- ${des} ]`
+        `[ ${selModel?.playGroups?.alias}- ${des} ]`
       }</Text>
       <TextInput defaultValue={averageMoney?.toString()}
                  onChangeText={text => setMoneyMap(prevState => {
                    const dataMap = new Map<string, number>()
-                   dataMap[play0?.id] = Number.parseFloat(text)
+                   dataMap[play0?.exId ?? play0?.id] = Number.parseFloat(text)
                    // ugLog('prevState = ', JSON.stringify(prevState))
                    // ugLog('dataMap = ', JSON.stringify(dataMap))
                    return { ...prevState, ...dataMap }
@@ -174,7 +176,44 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   }
 
-  const itemViewArr = selectedData == null ? null : null
+  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((lotteryCode, keyIndex) => {
+    const selItems = gatherItems(lotteryCode, selectedData)
+    // const groupDataArr: Array<PlayGroupData> = selectedData[lotteryCode]
+    return selItems?.map((selModel, index) => {
+      ugLog('lotteryCode 2 index = ', lotteryCode, index)
+      switch (lotteryCode) {
+        case LotteryConst.TM:  //特码
+        case LotteryConst.LM: //两面
+        case LotteryConst.ZM: //正码
+        case LotteryConst.ZT:  //正特
+        case LotteryConst.ZM1_6: //正码1T6
+        case LotteryConst.SB: //色波
+        case LotteryConst.ZOX://总肖
+        case LotteryConst.WX:  //五行
+        case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LotteryConst.TX: //特肖
+        case LotteryConst.ZX: //正肖
+        case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LotteryConst.LX: //连肖
+        case LotteryConst.LW: //连尾
+          return renderTMItem(lotteryCode, selModel)
+
+        case LotteryConst.HX://合肖
+          return renderHXItem(selModel,
+            selModel?.zodiacs?.map((item) => item?.name)?.toString())
+
+        case LotteryConst.LMA:  //连码
+        case LotteryConst.ZXBZ:  //自选不中
+          return renderHXItem(selModel,
+            selModel?.plays?.map((item) => item?.name)?.toString())
+      }
+
+
+    })
+
+  }).flat(2)
+
   const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * BET_ITEM_HEIGHT, [itemCount])
 
   return (
