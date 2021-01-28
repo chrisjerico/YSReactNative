@@ -103,18 +103,26 @@ const LobbyGameListComponent = ({
               }
               else {
                 // 打开原生
-                OCHelper.call('UGNavigationController.current.pushViewController:animated:',
-                  [
-                    {
-                      selectors: 'UGYYLotterySecondHomeViewController.new[setTitle:][setDataArray:]',
-                      args1: [item.categoryName + '系列'],
-                      args2: [{
-                        selectors: 'UGYYGames.arrayOfModelsFromDictionaries:error:',
-                        args1: [item.games]
-                      }]
-                    },
-                    true
-                  ]);
+                // OCHelper.call('UGNavigationController.current.pushViewController:animated:',
+                //   [
+                //     {
+                //       selectors: 'UGYYLotterySecondHomeViewController.new[setTitle:][setDataArray:]',
+                //       args1: [item.categoryName + '系列'],
+                //       args2: [{
+                //         selectors: 'UGYYGames.arrayOfModelsFromDictionaries:error:',
+                //         args1: [item.games]
+                //       }]
+                //     },
+                //     true
+                //   ]);
+
+                ugLog('item.categoryName==',item.categoryName);
+
+                push(PageName.JDLotterySecondHomePage, {
+                  dataArray: item.games,
+                  title: item.categoryName+'系列',
+                 
+                })
               }
 
               break

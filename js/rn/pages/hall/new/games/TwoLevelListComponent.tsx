@@ -96,7 +96,7 @@ const TwoLevelListComponent = ({ refreshing,
   }
 
     /**
-   * 数据为空展示页面
+   * Foot页面
    * 
    */
   const _renderListFootComp = () => {

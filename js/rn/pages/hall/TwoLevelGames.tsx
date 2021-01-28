@@ -66,35 +66,14 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   setProps({
     didFocus: (params) => {
-
-      if (Skin1.skitType.indexOf('威尼斯') != -1) {
-        !gameData?.length && requestGameData()
-      }
-      else {
-        switch (Platform.OS) {
-          case 'ios':
-            let dic = params;
-            for (var key in dic) {
-              if (key == 'game') {
-                game = JSON.parse(JSON.stringify(dic[key]))
-                game.name = game.title
-                requestGameData()
-              }
-            }
-            break;
-          case 'android':
-            //TODO Android 传参
-            !gameData?.length && requestGameData()
-            break;
-        }
-      }
+      !gameData?.length && requestGameData()
       setSearchText("");
     },
     didBlur: () => {
       console.log('二級遊戲didBlur');
       setSearchText("");
     },
-    
+
   }, false)
 
   /**
@@ -110,8 +89,12 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 
     }
 
-    api.game.realGameTypes(game.gameId, "").useSuccess(({ data }) => {
+    api.game.realGameTypes(game.id, "").useSuccess(({ data }) => {
       let res = { data: data }
+     
+      if ( anyEmpty(res.data)) {
+        return;
+      }
       setIsSetData(true)
       for (let index = 0; index < res.data.length; index++) {
         const v = res.data[index];
@@ -166,7 +149,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                 onChangeText={(text) => {
                   setSearchText(text)
                 }}
-                value ={searchText}
+                value={searchText}
               />
               <Button
                 title={'搜索'}
@@ -184,11 +167,11 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
             <ScrollView >
               {renderDataList(filterData)}
               <View
-              style={{
-                  height:20,
-              }}
-            >
-            </View>
+                style={{
+                  height: 20,
+                }}
+              >
+              </View>
             </ScrollView>
 
           </View>
