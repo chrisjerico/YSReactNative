@@ -76,6 +76,14 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   }, false)
 
+
+  /**
+   * 游戏数据id
+   */
+  function gameDataId(){
+    return (Skin1.skitType.indexOf('威尼斯') != -1)?game.gameId:game.id;
+  }
+
   /**
    * 请求游戏数据
    */
@@ -88,11 +96,8 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       setFilterData(data)
 
     }
-
-
     
-    
-    api.game.realGameTypes((Skin1.skitType.indexOf('威尼斯') != -1)?game.gameId:game.id, "").useSuccess(({ data }) => {
+    api.game.realGameTypes(gameDataId(), "").useSuccess(({ data }) => {
       let res = { data: data }
      
       if ( anyEmpty(res.data)) {
@@ -101,7 +106,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       setIsSetData(true)
       for (let index = 0; index < res.data.length; index++) {
         const v = res.data[index];
-        v.id = (Skin1.skitType.indexOf('威尼斯') != -1)?game.gameId:game.id;
+        v.id = gameDataId();
       }
       refreshUI(res.data)
     })
@@ -121,7 +126,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       <TwoLevelListComponent
         refreshing={refreshing}
         gameData={item}
-        gameID={(Skin1.skitType.indexOf('威尼斯') != -1)?game.gameId:game.id}
+        gameID= {gameDataId()}
         requestGameData={requestGameData} />
     </>
 

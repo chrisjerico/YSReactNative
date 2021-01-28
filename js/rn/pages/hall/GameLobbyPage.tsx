@@ -18,6 +18,7 @@ import { UGBasePageProps } from '../base/UGPage'
 import { pop } from '../../public/navigation/RootNavigation'
 import LobbyGameListComponent from './new/games/LobbyGameListComponent'
 import { ScrollView } from 'react-native-gesture-handler'
+import LinearGradient from 'react-native-linear-gradient'
 
 /**
  * 游戏大厅
@@ -101,7 +102,7 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
   }
 
   return (
-    <View style={CommStyles.flex}>
+    <View style={[CommStyles.flex]}>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader
           showBackBtn={anyEmpty(showBackButton) ? true : showBackButton == '1'}
@@ -112,9 +113,11 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
           title={'游戏大厅'}
         />
       </SafeAreaHeader>
+      <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
       {
         renderAllData()
       }
+      </LinearGradient>
     </View>
   )
 }

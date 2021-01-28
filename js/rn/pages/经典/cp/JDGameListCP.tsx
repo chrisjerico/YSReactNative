@@ -66,7 +66,7 @@ const JDGameListCP = ({
 
       }}>
         <View style={[_styles.game_item_container, { backgroundColor: Skin1.homeContentColor, }]}>
-          <Image
+          <ImagePlaceholder
             style={{ width: 60, height: 60, marginRight: 10, marginTop: 10, marginLeft: 10, }}
             source={{ uri: item.pic }} />
           <View>

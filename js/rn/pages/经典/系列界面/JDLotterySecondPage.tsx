@@ -10,6 +10,8 @@ import CommStyles from '../../base/CommStyles'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import { anyEmpty } from '../../../public/tools/Ext'
 import JDGameListCP from '../cp/JDGameListCP'
+import LinearGradient from 'react-native-linear-gradient'
+import { Skin1 } from '../../../public/theme/UGSkinManagers'
 
 interface IJDLotterySecondHomParams {
   dataArray?: Array<UGYYGames>, //列表数据
@@ -66,11 +68,11 @@ const JDLotterySecondPage = ({ navigation, route, setProps }: UGBasePageProps) =
   }
 
   return (
-    <View style={CommStyles.flex}>
+    <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
       {
         renderAllData()
       }
-    </View>
+    </LinearGradient>
   )
 }
 
