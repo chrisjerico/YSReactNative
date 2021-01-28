@@ -20,7 +20,7 @@ interface IJDLotterySecondHomParams {
  * @param navigation
  * @constructor
  */
-const JDLotterySecondHomePage = ({ navigation, route, setProps }: UGBasePageProps) => {
+const JDLotterySecondPage = ({ navigation, route, setProps }: UGBasePageProps) => {
 
 
   /**
@@ -74,4 +74,4 @@ const JDLotterySecondHomePage = ({ navigation, route, setProps }: UGBasePageProp
   )
 }
 
-export default JDLotterySecondHomePage
+export default JDLotterySecondPage

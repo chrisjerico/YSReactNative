@@ -116,7 +116,7 @@ import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
 import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePage'
 
 import OtherRecord from '../../public/components/OtherRecord'
-import JDLotterySecondHomePage from '../经典/系列界面/JDLotterySecondHomePage'
+import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
 
 
 /**
@@ -179,7 +179,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDBetRecordDetailPage,//长龙注单详情
   JDBetDetailPage,//下注明细
   OnlineService,//在线客服
-  JDLotterySecondHomePage,//2级系列游戏
+  JDLotterySecondPage,//2级系列游戏
   // ———————————— 模板页面 —————————————
 
   JDHomePage,

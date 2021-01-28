@@ -38,7 +38,7 @@ export enum PageName {
   JDChangLongPage = 'JDChangLongPage',
   JDBetRecordDetailPage = 'JDBetRecordDetailPage',
   JDBetDetailPage = 'JDBetDetailPage',
-  JDLotterySecondHomePage ='JDLotterySecondHomePage',
+  JDLotterySecondPage ='JDLotterySecondPage',
   // ———————————— 模板页面 —————————————
   JDHomePage = 'JDHomePage',
 
