@@ -155,7 +155,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                 }}>全部游戏</Text>
               </TouchableOpacity>
               <TextInput
-                style={_styles.searchInput}
+                style={[_styles.searchInput,{ color: Skin1.textColor1,}]}
                 onChangeText={(text) => {
                   setSearchText(text)
                 }}
