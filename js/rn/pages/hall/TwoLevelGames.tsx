@@ -81,7 +81,9 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
    * 游戏数据id
    */
   function gameDataId(){
-    return (Skin1.skitType.indexOf('威尼斯') != -1)?game.gameId:game.id;
+
+    let gotoId = anyEmpty(game.id)?game.gameId:game.id
+    return gotoId
   }
 
   /**

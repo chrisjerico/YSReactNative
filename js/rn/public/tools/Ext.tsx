@@ -21,3 +21,10 @@ export const anyNull = (value?: any) => value == null || value == 'undefined';
 export const anyEmpty = (value?: any) => anyNull(value) || value === '' || value.length <= 0
 export const anyLength = (value?: any) => anyEmpty(value) ? 0 : value.length;
 export const dicNull = (value?: any) => JSON.stringify(value) == '{}' ? true : false;
+
+
+/**
+ * 数组取第一元素
+ * @param value
+ */
+export const firstObj = (array?: any) => array && array.length ? array[0] : undefined;

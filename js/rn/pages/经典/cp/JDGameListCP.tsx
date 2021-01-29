@@ -40,7 +40,6 @@ const JDGameListCP = ({
         if (item?.isPopup) {
           push(PageName.TwoLevelGames, { game: item, showBackButton: true })
         } else {
-          
           switch (Platform.OS) {
             case 'ios':
               const dict = {
@@ -52,10 +51,15 @@ const JDGameListCP = ({
               }
               let linkCategory:number = dict[item?.category];
               
-              ugLog('item.id==',item.id)
-              ugLog('item.gameid==',item.gameId)
+              // ugLog('item.id==',item.id)
+              // ugLog('item.gameid==',item.gameId)
+              let gotoId = anyEmpty(item.id)?item.gameId:item.id
+              // ugLog('goto==',gotoId)
+              if (anyEmpty(linkCategory)) {
+                linkCategory = 2;
+              }
               if (!anyEmpty(linkCategory)) {
-                OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [linkCategory, item.id])
+                OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [linkCategory, gotoId])
               }
 
               break
