@@ -54,6 +54,7 @@ import { anyEmpty } from '../tools/Ext'
 import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
 import { api } from './NetworkRequest1/NetworkRequest1'
 
+//1
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -79,7 +80,18 @@ export interface UserReg {
 
 class APIRouter {
   static activity_applyWinLog = async () => {
-    return httpClient.get<any>('c=activity&a=applyWinLog')
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.get<any>('c=activity&a=applyWinLog&token=' + tokenParams)
   }
 
 
@@ -166,7 +178,7 @@ class APIRouter {
       id: gameId,
     }
 
-    return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes',)
+    return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes',{ params: tokenParams })
   }
 
   //注单讯息
