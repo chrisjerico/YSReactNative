@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../tools/Scale'
+import { sc, scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { img_platform } from '../../../Res/icon'
 import { IconProps } from 'react-native-vector-icons/Icon'
@@ -113,15 +113,15 @@ const GameButton = (props: GameButtonProps) => {
               circleContainerStyle,
             ]}>
             <View style={[styles.imageContainer, imageContainerStyle]}>
-              <FastImagePlaceholder style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} />
-              {showCenterFlag && (flagIcon ? <FastImagePlaceholder source={{ uri: flagIcon }} style={[styles.image, { position: 'absolute' }]} /> : <DefaultFlag center={true} />)}
+              <FastImagePlaceholder style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} placeholderStyle={{ borderRadius: sc(50), overflow:'hidden' }} />
+              {showCenterFlag && (flagIcon ? <FastImage source={{ uri: flagIcon }} style={[styles.image, { position: 'absolute' }]} /> : <DefaultFlag center={true} />)}
               {showSecondLevelIcon && <AntDesign name={'appstore1'} size={scale(25)} {...secondLevelIconProps} style={[styles.secondLevelIcon, secondLevelIconProps?.style, secondLevelIconContainerStyle]} />}
             </View>
           </View>
         ) : (
           <View style={[styles.imageContainer, imageContainerStyle]}>
-            <FastImagePlaceholder style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} />
-            {showCenterFlag && (flagIcon ? <FastImagePlaceholder source={{ uri: flagIcon }} style={[styles.image, { position: 'absolute' }]} /> : <DefaultFlag center={true} />)}
+            <FastImagePlaceholder style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} placeholderStyle={{ borderRadius: sc(50), overflow:'hidden' }} />
+            {showCenterFlag && (flagIcon ? <FastImage source={{ uri: flagIcon }} style={[styles.image, { position: 'absolute' }]} /> : <DefaultFlag center={true} />)}
             {showSecondLevelIcon && <AntDesign name={'appstore1'} size={scale(25)} {...secondLevelIconProps} style={[styles.secondLevelIcon, secondLevelIconProps?.style, secondLevelIconContainerStyle]} />}
           </View>
         )}
@@ -140,7 +140,7 @@ const GameButton = (props: GameButtonProps) => {
             </View>
           )}
         </View>
-        {showBigCenterFlag && <FastImagePlaceholder source={{ uri: flagIcon ? flagIcon : img_platform('c116', 'zhongdajiang', 'gif') }} style={[styles.image, { position: 'absolute' }]} />}
+        {showBigCenterFlag && <FastImage source={{ uri: flagIcon ? flagIcon : img_platform('c116', 'zhongdajiang', 'gif') }} style={[styles.image, { position: 'absolute' }]} />}
         {showUnReadMsg && (
           <View style={styles.unReadMsgContainer}>
             <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
@@ -149,7 +149,7 @@ const GameButton = (props: GameButtonProps) => {
         {showRightTopFlag &&
           (flagIcon ? (
             <View style={[styles.rightTopFlag, flagContainer]}>
-              <FastImagePlaceholder style={{ width: '100%', height: '100%' }} source={{ uri: flagIcon }} resizeMode={'contain'} />
+              <FastImage style={{ width: '100%', height: '100%' }} source={{ uri: flagIcon }} resizeMode={'contain'} />
             </View>
           ) : (
             <DefaultFlag center={false} flagContainer={flagContainer} />

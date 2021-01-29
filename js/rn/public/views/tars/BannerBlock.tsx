@@ -47,7 +47,7 @@ const BannerBlock = ({ onlineNum = 0, banners = [], renderBanner, showOnlineNum 
               },
               badgeStyle,
             ]}
-            value={'当前在线:' + onlineNum}
+            value={'当前在线人数：' + onlineNum}
           />
         )}
       </View>

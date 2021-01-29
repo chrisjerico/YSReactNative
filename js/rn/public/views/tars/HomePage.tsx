@@ -61,6 +61,7 @@ interface HomePageProps {
   showBannerBlock?: boolean
   refreshTintColor?: string
   equalFactor?: any
+  bannerBadgeStyle?:StyleProp<ViewStyle>// 在线人数
 }
 
 interface CouponBlockStyles {
@@ -142,6 +143,7 @@ const HomePage = ({
   noticeLogo,//跑马灯
   showBannerBlock = true,
   refreshTintColor = '#000000',
+  bannerBadgeStyle,
 }: HomePageProps) => {
   const onPressNotice = useCallback(({ content }) => {
     PushHelper.pushNoticePopUp(content)
@@ -190,7 +192,7 @@ const HomePage = ({
                 <BannerBlock
                   showOnlineNum={showOnlineNum}
                   containerStyle={styles.bannerContainer}
-                  badgeStyle={styles.bannerBadge}
+                  badgeStyle={{...styles.bannerBadge, ...bannerBadgeStyle}}
                   autoplayTimeout={bannersInterval}
                   onlineNum={onlineNum}
                   banners={banners}
