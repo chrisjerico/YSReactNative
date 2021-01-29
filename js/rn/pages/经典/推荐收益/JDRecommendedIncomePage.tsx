@@ -65,14 +65,8 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
       navbarOpstions: {
         hidden: false, title: '推荐收益',
         rightComponent:ZLHeader(),
-        
+        back:true,
       },
-      didFocus: () => {
-        console.log('AppDefine.siteId ========',AppDefine.siteId );
-        AppDefine.checkHeaderShowBackButton((show) => {
-          setProps({ navbarOpstions: { back: show } });
-        })
-      }
     })
 
   }, [])

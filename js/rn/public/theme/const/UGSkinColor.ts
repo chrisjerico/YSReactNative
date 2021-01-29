@@ -8,7 +8,8 @@ export interface UGSkinColor<Color, Colors> {
   bgTextColor?: Color // bgColor上的文本颜色
 
   // 其他颜色
-  bgColor: Colors // 背景色
+  backgroundColor: Color // 背景色
+  bgColor: Colors // 背景渐变色色
   navBarBgColor: Colors // 导航条背景色
   tabBarBgColor: Color // 底部标签栏背景色
   tabNoSelectColor: Color // 底部标签栏未选中颜色
@@ -160,6 +161,16 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
   yubaoBgColor: {
     默认: '#8E8E8E',
     利来: '#444',
+  },
+
+  backgroundColor: {
+    默认: '#fff',
+    GPK0黑: '#171717',
+    尊龙: '#171717',
+    香槟金1黑: '#111',
+    黑金: '#1a1a1e',
+    经典21黑: '#0D0D0D',
+    金星黑: '#000',
   },
 
   // 背景色

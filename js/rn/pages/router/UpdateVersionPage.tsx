@@ -54,10 +54,6 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   const { testNetwork, testSite, testCodePush } = UseVersion({ testResult })
 
   useEffect(() => {
-    setProps({
-      navbarOpstions: { hidden: true },
-    })
-
     function CodePushSync(options: SyncOptions) {
       CodePush.sync(
         options,

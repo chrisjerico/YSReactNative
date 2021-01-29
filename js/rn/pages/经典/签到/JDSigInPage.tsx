@@ -259,12 +259,7 @@ const JDSigInPage = () => {
 
         checkinList()
         setProps({
-            navbarOpstions: { hidden: false, title: '签到' },
-            didFocus: () => {
-                AppDefine.checkHeaderShowBackButton((show) => {
-                    setProps({ navbarOpstions: { back: show } });
-                })
-            }
+            navbarOpstions: { hidden: false, title: '签到', back: true },
         })
 
     }, [])

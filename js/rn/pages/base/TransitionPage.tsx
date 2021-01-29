@@ -19,11 +19,11 @@ export const TransitionPage = (props: TransitionProps) => {
 
   useEffect(() => {
     setProps({
-      backgroundColor: ['#ddd', '#ddd'],
+      backgroundColor: '#ddd',
       navbarOpstions: { backgroundColor: 'transparent', hideUnderline: true, back: true },
       didFocus: (p: TransitionProps) => {
         if (Skin1.skitType == '香槟金') {
-          setProps({ backgroundColor: Skin1.bgColor });
+          setProps({ bgGradientColor: Skin1.bgColor });
         }
         if (!p) return;
         const { jumpTo: j, pushTo, props } = p;

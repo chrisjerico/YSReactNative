@@ -103,6 +103,14 @@ export function getCurrentPage(): PageName {
     return undefined;
 }
 
+export function getCurrentRoute(): { name: PageName, key: string } {
+    if (navigationRef?.current?.getCurrentRoute) {
+        // @ts-ignore
+        return navigationRef?.current?.getCurrentRoute() ?? {};
+    }
+    return { name: undefined, key: undefined };
+}
+
 export function replace(name: string, params?: any) {
     try {
         navigationRef?.current?.dispatch(StackActions.replace(name, params));

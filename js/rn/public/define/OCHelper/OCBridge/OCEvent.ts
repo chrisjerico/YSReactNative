@@ -4,7 +4,7 @@ import { UGStore } from './../../../../redux/store/UGStore';
 import { OCCall } from './OCCall';
 import { PageName, } from '../../../navigation/Navigation';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
-import { getCurrentPage, getStackLength, jumpTo, pop, push } from '../../../navigation/RootNavigation';
+import { getCurrentPage, getCurrentRoute, getStackLength, jumpTo, pop, push } from '../../../navigation/RootNavigation';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
 import { RnPageModel } from '../SetRnPageInfo';
 import UGUserModel from '../../../../redux/model/全局/UGUserModel';
@@ -43,7 +43,7 @@ export class OCEvent extends OCCall {
     this.emitter.addListener('SelectVC', (params: { vcName: PageName; rnAction: 'jump' | 'push' | 'refresh' | 'blur' }) => {
       UGUserModel.updateFromYS()
       const page = RnPageModel.getPageName(params.vcName)
-      const currentPage = getCurrentPage()
+      const { name: currentPage, key } = getCurrentRoute()
 
       let action = params.rnAction;
       if (action == 'jump' && currentPage == page && getStackLength() < 2) {
@@ -64,13 +64,13 @@ export class OCEvent extends OCCall {
           break
         case 'blur':
           console.log('失去焦点：', currentPage, params)
-          const { didBlur } = UGStore.getPageProps(currentPage)
+          const { didBlur } = UGStore.getPageProps(key)
           didBlur && didBlur(params)
           break
         case 'refresh':
         default:
           console.log('成为焦点：', currentPage, params)
-          const { didFocus } = UGStore.getPageProps(currentPage)
+          const { didFocus } = UGStore.getPageProps(key)
           didFocus && didFocus(params)
       }
     })

@@ -6,6 +6,7 @@ import { deepMergeProps } from '../tools/FUtils'
 import { Platform, View, ViewProps } from 'react-native'
 import { pop } from '../navigation/RootNavigation'
 import { useSafeArea } from 'react-native-safe-area-context'
+import { skin1 } from '../theme/UGSkinManagers'
 
 // 声明Porps
 export interface UGNavigationBarProps extends HeaderProps {
@@ -51,18 +52,17 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
   }
 
   // 渐变色
-  if (props.gradientColor) {
-    p = deepMergeProps(p, {
-      ViewComponent: LinearGradient,
-      linearGradientProps: {
-        colors: props.gradientColor,
-        start: { x: 0, y: 1 },
-        end: { x: 1, y: 1 },
-      },
-    })
-  }
-  
-  return <Header {...p} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top-2, height: useSafeArea()?.top + 45 }} />
+  const gradientColor = props.gradientColor ?? skin1.navBarBgColor
+  p = deepMergeProps(p, {
+    ViewComponent: LinearGradient,
+    linearGradientProps: {
+      colors: gradientColor,
+      start: { x: 0, y: 1 },
+      end: { x: 1, y: 1 },
+    },
+  })
+
+  return <Header {...p} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top - 2, height: useSafeArea()?.top + 45 }} />
 }
 
 
