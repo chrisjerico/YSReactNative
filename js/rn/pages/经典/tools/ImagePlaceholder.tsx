@@ -11,7 +11,7 @@ interface ImagePlaceholder {
 export const ImagePlaceholder = (props: ImageProps & ImagePlaceholder) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
 
-  const style: any = props?.style
+  const {style, placeholderStyle}: any = props
   const { placeholderURL = img_assets('load', 'png') } = props
 
 
@@ -36,7 +36,7 @@ export const ImagePlaceholder = (props: ImageProps & ImagePlaceholder) => {
 export const FastImagePlaceholder = (props: FastImageProperties & ImagePlaceholder) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
 
-  const style: any = props?.style
+  const {style, placeholderStyle}: any = props
   const { placeholderURL = img_assets('load', 'png') } = props
 
 
