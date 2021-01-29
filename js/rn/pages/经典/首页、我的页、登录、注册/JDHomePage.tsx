@@ -135,6 +135,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                 aspectRatio: 1.04,
                 borderRadius: scale(15),
                 justifyContent: 'center',
+                ...getWhiteBorderStyle(),
               }}
               imageContainerStyle={{ width: sc(95) }}
               titleContainerStyle={{

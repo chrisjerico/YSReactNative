@@ -5,7 +5,7 @@ import { img_assets } from "../../../Res/icon";
 
 interface ImagePlaceholder {
   placeholderURL?: string,
-  placeholderStyle?: ImageBackgroundProps
+  placeholderStyle?: StyleProp<ViewStyle>
 }
 
 export const ImagePlaceholder = (props: ImageProps & ImagePlaceholder) => {
@@ -48,7 +48,7 @@ export const FastImagePlaceholder = (props: FastImageProperties & ImagePlacehold
         props?.onLoad && props?.onLoad(event)
       }}
     >
-      {shwoDefaultImage && <ImageBackground style={[{ flex: 1 }, placeholderStyle]} resizeMode='cover' source={{ uri: placeholderURL }} />}
+      {shwoDefaultImage && <FastImage style={[{ flex: 1 }, placeholderStyle]} resizeMode='cover' source={{ uri: placeholderURL }} />}
     </FastImage>
   )
 }

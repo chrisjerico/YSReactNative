@@ -17,14 +17,19 @@ const NavBlock = ({ renderNav, navs = [], containerStyle, visible }: NavBlockPro
       navCounts = 4
     }
 
-    const lineDatas = []
+    // 处理成多行数据
+    const lineDatas: any[][] = []
     let i = 0
     while (i < navs?.length) {
       lineDatas.push(navs?.slice(i, Math.min(i + navCounts, navs?.length)))
       i += navCounts
     }
     const children = lineDatas?.map((v) => {
-      return <View style={{ flexDirection: 'row' }}>{v?.map(renderNav)}</View>
+      const cells = v?.map(renderNav)
+      for (i = 0; i < navCounts - v?.length; i++) {
+        cells.push(<View style={{ flex: 1 }} />)  // 使最后一行少于 navCounts 的按钮显示在左侧（默认是在中间）
+      }
+      return <View style={{ flexDirection: 'row' }}>{cells}</View>
     })
 
     // return <View>{navs?.slice(0, navCounts).map(renderNav)}</View>
