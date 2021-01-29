@@ -40,7 +40,7 @@ const JDGameListCP = ({
         if (item?.isPopup) {
           push(PageName.TwoLevelGames, { game: item, showBackButton: true })
         } else {
-          //TODO
+          
           switch (Platform.OS) {
             case 'ios':
               const dict = {
@@ -60,6 +60,7 @@ const JDGameListCP = ({
 
               break
             case 'android':
+              //TODO android 游戏界面
               break
           }
         }

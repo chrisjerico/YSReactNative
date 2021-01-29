@@ -78,7 +78,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test60f.fhptcdn.com',
   ],
   'txt61': [
-    'http://test61f.fhptcdn.com',
+    'http://test61f.6yc.com',
   ],
   'txt61b': [
     'http://test61a.fhptcdn.com',
