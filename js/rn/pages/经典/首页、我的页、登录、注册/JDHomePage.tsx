@@ -53,7 +53,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const { current: v } = useRef<{} & TabComponentApi & HomeRightMenuCP>({})
 
   useEffect(() => {
-    setProps({ backgroundColor: skin1.bgColor })
+    setProps({ bgGradientColor: skin1.bgColor })
   }, [])
 
   const openMenu = () => {

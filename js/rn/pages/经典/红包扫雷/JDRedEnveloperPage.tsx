@@ -20,7 +20,7 @@ interface JDRedEnveloperPage {
   }
 }
 
-const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
+const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps) => {
 
   let { current: v } = useRef<JDRedEnveloperPage>(
     {
@@ -46,9 +46,9 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
             v.type = dic[key]
             console.log('得到的type=', v.type);
             if (v.type == '1') {
-              setProps({ navbarOpstions: { title: '红包记录' } }, false)
+              setNavbarProps({ title: '红包记录' })
             } else {
-              setProps({ navbarOpstions: { title: '扫雷记录' } }, false)
+              setNavbarProps({ title: '扫雷记录' })
             }
             v.items.length = 0;
             v.pageNumber = 1;

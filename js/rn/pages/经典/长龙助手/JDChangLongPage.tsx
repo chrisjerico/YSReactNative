@@ -54,14 +54,11 @@ const
       fetchBalance()
       setProps({
         navbarOpstions: {
-          hidden: false, title: '长龙助手',
+          hidden: false, title: '长龙助手', back: true,
           rightComponent: _renderNavRigth({})
 
         },
         didFocus: () => {
-          AppDefine.checkHeaderShowBackButton((show) => {
-            setProps({ navbarOpstions: { back: show } });
-          })
           console.log('长龙主页didFocus');
           vcp?.startTime && vcp?.startTime()
         },

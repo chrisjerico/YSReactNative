@@ -57,9 +57,8 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
   useEffect(() => {
     navigation.setOptions({ unmountOnBlur: false })
     setProps({
-      backgroundColor: Skin1.bgColor,
+      bgGradientColor: Skin1.bgColor,
       backgroundImage: img_assets('login_bg', 'jpg'),
-      navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
       didFocus: () => {
         v.reloadSlide();
       }

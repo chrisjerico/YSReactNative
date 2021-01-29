@@ -44,12 +44,7 @@ const JDFeedBackPage = () => {
   useEffect(() => {
 
     setProps({
-      navbarOpstions: { hidden: false, title: '建议反馈' },
-      didFocus: () => {
-        AppDefine.checkHeaderShowBackButton((show) => {
-          setProps({ navbarOpstions: { back: show } });
-        })
-      }
+      navbarOpstions: { hidden: false, title: '建议反馈', back: true },
     })
 
   }, [])

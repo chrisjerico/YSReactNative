@@ -1,9 +1,9 @@
 import { PageName } from '../../navigation/Navigation';
-import { getCurrentPage, getStackLength, jumpTo, navigate, pop, push } from '../../navigation/RootNavigation'
+import { getCurrentPage, getCurrentRoute, getStackLength, jumpTo, navigate, pop, push } from '../../navigation/RootNavigation'
 import { RnPageModel } from '../OCHelper/SetRnPageInfo';
 import { UGBridge } from './UGBridge';
-import {ugLog} from "../../tools/UgLog";
-import {UGStore} from "../../../redux/store/UGStore";
+import { ugLog } from "../../tools/UgLog";
+import { UGStore } from "../../../redux/store/UGStore";
 import { ANHelper } from './ANHelper'
 import { CMD } from './hp/CmdDefine'
 import { NA_DATA } from './hp/DataDefine'
@@ -50,8 +50,8 @@ export class ANEvent extends UGBridge {
           break
         case 'refresh':
         default:
-          const currentPage = getCurrentPage()
-          const { didFocus } = UGStore.getPageProps(currentPage)
+          const { name: currentPage, key } = getCurrentRoute()
+          const { didFocus } = UGStore.getPageProps(key)
           didFocus && didFocus()
           ugLog('触发焦点：', currentPage, didFocus)
           break

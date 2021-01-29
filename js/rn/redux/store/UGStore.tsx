@@ -100,7 +100,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 // 声明UGAction
 export interface UGAction<P = {}> extends Action {
   type: 'reset' | 'merge' | BettingReducerActions // reset替换整个对象，merge只改变指定变量
-  page?: PageName // 配合props使用
+  page?: string // 配合props使用
   props?: P // 配合page使用
   sysConf?: UGSysConfModel // 修改系统配置
   userInfo?: UGUserModel // 修改用户信息
@@ -126,14 +126,14 @@ export class UGStore {
   static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any, sign: {} as any, gameLobby: [], sys: {} as any }
 
   // 发送通知
-  private static callbacks: { page: PageName; callback: () => void }[] = []
+  private static callbacks: { key: string; callback: () => void }[] = []
 
   static dispatch<P>(act: UGAction<P>, willRender = true) {
     this.globalProps = RootReducer(this.globalProps, act)
     if (!willRender) return
     if (act.page) {
       for (const cb of this.callbacks) {
-        cb.page == act.page && cb.callback()
+        cb.key == act.page && cb.callback()
       }
     } else {
       setProps()
@@ -141,8 +141,8 @@ export class UGStore {
   }
 
   // 添加监听
-  static subscribe(page: PageName, callback: () => void): Unsubscribe {
-    const cb = { page: page, callback: callback }
+  static subscribe(key: string, callback: () => void): Unsubscribe {
+    const cb = { key: key, callback: callback }
     this.callbacks.push(cb)
     return () => {
       //@ts-ignore
@@ -151,8 +151,8 @@ export class UGStore {
   }
 
   // 获取当前页面Props
-  static getPageProps<P extends UGBasePageProps>(page: PageName): P {
-    return this.globalProps[page] ?? {}
+  static getPageProps<P extends UGBasePageProps>(pageKey: string): P {
+    return this.globalProps[pageKey]
   }
 
   // 从本地获取所有数据，并刷新UI
