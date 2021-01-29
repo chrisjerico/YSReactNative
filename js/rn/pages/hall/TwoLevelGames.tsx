@@ -150,7 +150,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                 }}>
                 <Text style={{
                   fontSize: scale(23),
-                  color: Skin1.themeColor,
+                  color: Skin1.textColor1,
                   marginRight: scale(15),
                 }}>全部游戏</Text>
               </TouchableOpacity>

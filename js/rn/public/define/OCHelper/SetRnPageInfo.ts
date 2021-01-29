@@ -91,6 +91,14 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
 
+    // 2级系列大厅
+    pages.push({
+      vcName: 'UGYYLotterySecondHomeViewController',
+      rnName: PageName.JDLotterySecondPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 2级游戏分类
     pages.push({
       vcName: 'UGGameListViewController',

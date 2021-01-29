@@ -11,8 +11,8 @@ export const devConfig = {
 
 
   // skinKey: UGSkinType1.威尼斯,
-  skinKey: UGSkinType1.经典1蓝
-  // skinKey: UGSkinType1.GPK0黑,
+  // skinKey: UGSkinType1.经典1蓝
+  skinKey: UGSkinType1.GPK0黑,
 
 }
 

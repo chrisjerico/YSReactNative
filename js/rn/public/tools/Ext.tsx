@@ -24,7 +24,7 @@ export const dicNull = (value?: any) => JSON.stringify(value) == '{}' ? true : f
 
 
 /**
- * 数组取第一元素
+ * 数组取第一个元素
  * @param value
  */
 export const firstObj = (array?: any) => array && array.length ? array[0] : undefined;
