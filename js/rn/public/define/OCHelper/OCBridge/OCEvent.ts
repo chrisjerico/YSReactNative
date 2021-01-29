@@ -4,7 +4,7 @@ import { UGStore } from './../../../../redux/store/UGStore';
 import { OCCall } from './OCCall';
 import { PageName, } from '../../../navigation/Navigation';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
-import { getCurrentPage, getCurrentRoute, getStackLength, jumpTo, pop, push } from '../../../navigation/RootNavigation';
+import { getCurrentPage, getCurrentRoute, getStackLength, jumpTo, pop, push, refresh } from '../../../navigation/RootNavigation';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
 import { RnPageModel } from '../SetRnPageInfo';
 import UGUserModel from '../../../../redux/model/全局/UGUserModel';
@@ -70,6 +70,7 @@ export class OCEvent extends OCCall {
         case 'refresh':
         default:
           console.log('成为焦点：', currentPage, params)
+          refresh(params) // 设置 route.params
           const { didFocus } = UGStore.getPageProps(key)
           didFocus && didFocus(params)
       }

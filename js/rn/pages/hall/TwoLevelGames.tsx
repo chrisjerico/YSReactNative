@@ -198,7 +198,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
             pop()
           }
           }
-          title={game.name ?? game.title}
+          title={game?.name ?? game?.title}
         />
       </SafeAreaHeader>
       {

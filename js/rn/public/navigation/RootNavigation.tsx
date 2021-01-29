@@ -34,6 +34,10 @@ export function jumpTo<P extends object>(page: PageName, props?: P, willTransiti
     return goFirstTransitionPage(page, props, RouterType.Tab, willTransition);
 }
 
+export function refresh<P extends object>(props?: P) {
+    navigationRef?.current?.navigate(getCurrentPage(), props)
+}
+
 export function pop(): boolean {
     const count = navigationRef?.current?.getRootState().routes.length;
     if (count < 3) {
