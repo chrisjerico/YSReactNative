@@ -30,6 +30,7 @@ const JDLotterySecondPage = ({ navigation, route, setProps, setNavbarProps }: UG
     * bankCardData: 银行卡数据
     */
   let { title, dataArray }: IJDLotterySecondHomParams = route?.params
+  ugLog('rn=====',dataArray)
   const [isDate, setIsDate] = useState(false)
 
   //初始化
@@ -37,7 +38,7 @@ const JDLotterySecondPage = ({ navigation, route, setProps, setNavbarProps }: UG
     setProps({
       navbarOpstions: { hidden: false, title: title, back: true },
       didFocus: (params) => {
-        ugLog('params==',params)
+        ugLog('原生params==',params)
         switch (Platform.OS) {
           case 'ios':
             let dic = params;
