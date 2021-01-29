@@ -14,6 +14,8 @@ import MenuModalComponent from '../../../public/components/tars/MenuModalCompone
 import TabComponent, { TabComponentApi } from '../../../public/components/tars/TabComponent'
 import { MenuType } from '../../../public/define/ANHelper/hp/GotoDefine'
 import AppDefine from '../../../public/define/AppDefine'
+import { OCEventType } from '../../../public/define/OCHelper/OCBridge/OCEvent'
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import PushHelper, { UGLinkPositionType } from '../../../public/define/PushHelper'
 import useHomePage from '../../../public/hooks/tars/useHomePage'
 import { GameType, RankingListType } from '../../../public/models/Enum'
@@ -32,11 +34,11 @@ import BannerBlock from '../../../public/views/tars/BannerBlock'
 import GameButton from '../../../public/views/tars/GameButton'
 import HomePage from '../../../public/views/tars/HomePage'
 import List from '../../../public/views/tars/List'
-import NavBlock from '../../../public/views/tars/NavBlock'
 import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../../public/views/tars/TouchableImage'
 import { UGNavigationBar } from '../../../public/widget/UGNavigationBar'
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
+import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { img_assets, img_images, img_platform } from '../../../Res/icon'
 import { UGBasePageProps } from '../../base/UGPage'
@@ -47,6 +49,7 @@ import { ImagePlaceholder } from '../tools/ImagePlaceholder'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
 import { HomeRightMenuCP } from './views/HomeRightMenuCP'
+import NavBlock from './views/NavBlock'
 
 const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const menu = useRef(null)
@@ -55,6 +58,13 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
   useEffect(() => {
     setProps({ bgGradientColor: skin1.bgColor })
   }, [])
+
+  OCHelper.removeEvents(OCEventType.UGNotificationLoginComplete)
+  OCHelper.addEvent(OCEventType.UGNotificationLoginComplete, () => {
+    setTimeout(() => {
+      UGUserModel.updateFromYS()
+    }, 500);
+  })
 
   const openMenu = () => {
     menu?.current?.open()
@@ -191,7 +201,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       refresh={refresh}
       pagekey={'JDHomePage'}
       headerColor={skin1.themeColor}
-      noticeBlockStyles={noticeBlockStyles}
+      noticeBlockStyles={noticeBlockStyles()}
       noticeLogo={img_assets('notice')}
       couponBlockStyles={couponBlockStyles}
       couponStyles={{
@@ -200,6 +210,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
         },
         titleStyle: { marginVertical: sc(3), fontSize: sc(23), fontWeight: '500' }
       }}
+      bannerBadgeStyle={{ paddingHorizontal: sc(15), top: -sc(225), height: sc(40), borderRadius: sc(20), backgroundColor: 'rgba(27,38,116,0.5)' }}
       animatedRankComponentStyles={animatedRankComponentStyles()}
       containerStyle={styles.container}
       bottomLogoStyles={{
@@ -233,8 +244,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
           {/* 导航按钮 */}
           <NavBlock
             visible={navs?.length > 0}
-            navCounts={5}
-            containerStyle={{ alignItems: 'center', margin: sc(10), width: '96%', backgroundColor: skin1.homeContentColor, borderRadius: sc(15), aspectRatio: undefined, ...getWhiteBorderStyle() }}
+            containerStyle={{ alignItems: 'center', margin: sc(10), width: '96%', backgroundColor: skin1.homeContentColor, borderRadius: sc(15), ...getWhiteBorderStyle() }}
             navs={navs}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId, onPress, hotIcon, tipFlag } = item
@@ -256,13 +266,13 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                     marginTop: -sc(10),
                     width: '63%',
                   }}
-                  titleContainerStyle={{ marginTop: -22 }}
+                  titleContainerStyle={{ marginTop: -22, height: sc(52) }}
                   titleStyle={{
                     color: 'black',
                     fontWeight: '500',
                     fontSize: scale(18),
                   }}
-                  circleContainerStyle={{ width: '85%' }}
+                  circleContainerStyle={{ width: '85%', height: sc(92) }}
                   circleColor={'transparent'}
                   onPress={() => {
                     ugLog("TEST onPRess: " + item.gameId)
@@ -320,7 +330,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               c_ref={v}
               tabGames={homeGames}
               itemHeight={scale(172)}
-              tabWidth={sc(85)}
+              tabWidth={homeGames?.length > 6 ? sc(85) : sc(515 / homeGames?.length)}
               numColumns={3}
               tabBarBackgroundColor={skin1.homeContentColor}
               tabBarStyle={{
@@ -373,12 +383,12 @@ const styles = StyleSheet.create({
   }
 })
 // 跑马灯
-const noticeBlockStyles = StyleSheet.create({
+const noticeBlockStyles = () => StyleSheet.create({
   containerStyle: {
     borderRadius: 0,
     marginBottom: scale(5),
     height: sc(62),
-    backgroundColor: skinColors.homeContentColor.经典1蓝,
+    backgroundColor: skin1.homeContentColor,
   },
   iconContainerStyle: {
     marginHorizontal: scale(10),
