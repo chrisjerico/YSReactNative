@@ -39,6 +39,8 @@ import { format } from 'prettier'
 import moment from 'moment'
 import Dialog from "react-native-dialog";
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { UGStore } from '../../redux/store/UGStore'
+import { color } from 'react-native-reanimated'
 
 /**
  * 其他注单
@@ -253,11 +255,28 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                         <View style={_styles.text_content_0}>
                           <TouchableOpacity onPress={
                             () => {
-                              ugLog("URL: ", AppDefine.host + '/' + item.bet_details.url)
-                              push(PageName.Game3rdView, { uriPath: AppDefine.host + '/' + item.bet_details.url })
+                              let url2 = AppDefine.host +  item.bet_details.url;
+                              const { token, sessid} = UGStore.globalProps?.userInfo
+                              const newUrl2 = `${url2}&loginsessid=${sessid}&logintoken=${token}`
+                              let url1 = `${AppDefine.host}/chat/appcheck?from=app`
+                              const newUrl1 = `${url1}&loginsessid=${sessid}&logintoken=${token}`
+                              ugLog('newUrl2==',newUrl2)
+                              ugLog('newUrl1==',newUrl1)
+                              switch (Platform.OS) {
+                                case 'ios':
+                                  OCHelper.call('CMCommon.goTGWebUrl:url2:title:',[
+                                    newUrl1,newUrl2,'注单详情'
+                                  ]
+                                )
+                                  break
+                                case 'android':
+                                  //TODO android 注单详情
+                                  break
+                              }
+                             
                             }
                           }>
-                            <Text>{'详情'}</Text>
+                            <Text style={{color:'red'}}>{'详情'}</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
