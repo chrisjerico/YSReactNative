@@ -41,13 +41,13 @@ export const firstObj = (array?: any) => array && array.length ? array[0] : unde
  * @param des 新对象
  */
 export const mergeObject = (src?: any, des?: any): any => {
-  let obj = src
   if ((!anyNull(src) && typeof src != 'object')
     || (!anyNull(des) && typeof des != 'object')
     || JSON.stringify(des) == '{}'
     || anyNull(src)) {
     return des // 如果其中一个不是对象 就返回 des
   }
+  let obj = JSON.parse(JSON.stringify(src))
   if (!anyEmpty(des)) {
     for (let key in des) {
       // 如果target也存在 那就再次合并
