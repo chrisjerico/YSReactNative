@@ -62,7 +62,7 @@ export default class UGUserModel extends UGLoginModel {
     temp.token = user['API-TOKEN'];
     return temp;
   }
-  static checkLogin() {
+  static checkLogin(canTest = false) {  // 是否允许试玩账号
     const { isTest, uid } = UGStore.globalProps.userInfo
     if (!isTest && uid?.length) return true;
 
@@ -71,7 +71,7 @@ export default class UGUserModel extends UGLoginModel {
         { text: "取消", onPress: () => { }, style: "cancel" },
         { text: "马上登录", onPress: goToUserCenterType.登录页 },
       ])
-    } else if (isTest) {
+    } else if (!canTest && isTest) {
       Alert.alert("温馨提示", "请登录正式账号", [
         { text: "取消", onPress: () => { }, style: "cancel" },
         { text: "马上登录", onPress: goToUserCenterType.登录页 },

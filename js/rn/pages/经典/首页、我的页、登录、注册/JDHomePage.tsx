@@ -47,6 +47,7 @@ import RowGameButtom from '../../WNZ/views/RowGameButtom'
 import TabBar from '../../WNZ/views/TabBar'
 import { ImagePlaceholder } from '../tools/ImagePlaceholder'
 import config from './config'
+import { HomeFriendReferralCP } from './views/HomeFriendReferralCP'
 import HomeHeader from './views/HomeHeader'
 import { HomeRightMenuCP } from './views/HomeRightMenuCP'
 import NavBlock from './views/NavBlock'
@@ -86,7 +87,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
 
   const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType } = sysInfo
+  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType, switchShowFriendReferral, showNavigationBar } = sysInfo
 
   // @ts-ignore
   const defaultMenus = config.getDefaultMenus()
@@ -242,6 +243,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       )}
       renderListHeaderComponent={() => (
         <>
+          <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '1'} containerStyle={{ marginLeft: sc(10), width: '96%', marginTop: sc(6) }} />
           {/* 导航按钮 */}
           <NavBlock
             visible={navs?.length > 0}
@@ -303,6 +305,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               )
             }}
           />
+          <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '0'} containerStyle={{ marginLeft: sc(10), width: '96%', marginBottom: sc(10) }} />
           {/* 腰部广告图 */}
           <BannerBlock
             containerStyle={{ marginHorizontal: sc(10), marginTop: scale(0), marginBottom: scale(15), width: '96%', aspectRatio: 540 / 135 }}

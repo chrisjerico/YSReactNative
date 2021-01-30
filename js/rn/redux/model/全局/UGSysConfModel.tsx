@@ -242,6 +242,10 @@ export default class UGSysConfModel {
   activeReturnCoinStatus?: boolean// 是否開啟拉條模式
   activeReturnCoinRatio?: number// 拉條最大值
 
+  switchShowFriendReferral?: '0' | '1' //是否显示首页推荐好友 0不显示，1显示
+  showNavigationBar?: '0' | '1'   //首页推荐好友显示在前还是后 1 前 0 后
+
+
   // 登陸頁
   loginVCode?: boolean // 登录增加了滑动验证码配置  默认开
   login_to?: '0' | '1'
