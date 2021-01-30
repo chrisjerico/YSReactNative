@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Component, ReactElement, useEffect, useRef } from 'react'
 import { Header, HeaderProps, Button } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
@@ -8,6 +8,11 @@ import { pop } from '../navigation/RootNavigation'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { skin1 } from '../theme/UGSkinManagers'
 
+
+export interface UGNavigationBar {
+  setNavBarProps?: (props: UGNavigationBarProps) => void
+}
+
 // 声明Porps
 export interface UGNavigationBarProps extends HeaderProps {
   hidden?: boolean; // 隐藏导航条
@@ -16,6 +21,7 @@ export interface UGNavigationBarProps extends HeaderProps {
   gradientColor?: string[]; // 背景渐变色
   hideUnderline?: boolean; // 隐藏下划线
   leftComponent?: ReactElement<any>;
+  c_ref?: UGNavigationBar
 }
 
 // 默认Props
@@ -28,41 +34,52 @@ const defaultProps: UGNavigationBarProps = {
 }
 
 export const UGNavigationBar = (props: UGNavigationBarProps) => {
-  let p: UGNavigationBarProps = Object.assign({}, defaultProps, props)
+  const { current: v } = useRef<UGNavigationBarProps>(defaultProps)
+  Object.assign(v, props)
+
+  const { title, c_ref, leftComponent, back, hideUnderline } = props
+  const [, setState] = useState({})
+
+  useEffect(() => {
+    c_ref && (c_ref.setNavBarProps = (p) => {
+      Object.assign(v, deepMergeProps(v, p))
+      setState({})
+    })
+  }, [c_ref])
 
   // 标题
-  if (props.title) {
-    Object.assign(p, {
+  if (title) {
+    Object.assign(v, {
       centerComponent: {
-        text: props.title,
+        text: title,
         style: { color: 'white', fontSize: 18 },
       },
     })
   }
   // 左侧按钮
-  p.leftComponent = (
+  v.leftComponent = (
     <View style={{ flexDirection: 'row' }}>
-      <BackButton style={{ height: props.back ? 40 : 0 }} />
-      {props.leftComponent}
+      <BackButton style={{ height: back ? 40 : 0 }} />
+      {leftComponent}
     </View>
   )
   // 隐藏下划线
-  if (props.hideUnderline) {
-    p = deepMergeProps(p, { containerStyle: { borderBottomWidth: 0 }, })
+  if (hideUnderline) {
+    Object.assign(v, deepMergeProps(v, { containerStyle: { borderBottomWidth: 0 }, }))
   }
 
   // 渐变色
   const gradientColor = props.gradientColor ?? skin1.navBarBgColor
-  p = deepMergeProps(p, {
+  Object.assign(v, deepMergeProps(v, {
     ViewComponent: LinearGradient,
     linearGradientProps: {
       colors: gradientColor,
       start: { x: 0, y: 1 },
       end: { x: 1, y: 1 },
     },
-  })
+  }))
 
-  return <Header {...p} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top - 2, height: useSafeArea()?.top + 45 }} />
+  return <Header {...v} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top - 2, height: useSafeArea()?.top + 45 }} />
 }
 
 
