@@ -176,7 +176,7 @@ const ManageBankListPage = ({ navigation, setProps }) => {
               tabBarUnderlineStyle={[_styles.tab_bar_underline,
                 { backgroundColor: Skin1.themeColor }]}
               tabBarActiveTextColor={Skin1.themeColor}
-              tabBarInactiveTextColor={Skin1.tabNoSelectColor}
+              tabBarInactiveTextColor={'#999999'}
               tabBarTextStyle={{ fontSize: scale(20) }}
               style={[_styles.bg_container]}
               renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
