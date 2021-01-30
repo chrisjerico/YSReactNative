@@ -105,6 +105,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const [data, setData] = useState<Array<GameHistorylistBean>>([])
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
   const [betTotal, setBetTotal] = useState(0) //是否存取過數據
+  const [validbetTotal, setValidBetTotal] = useState('0') //是否存取過數據
   const [winTotal, setWinTotal] = useState(0) //是否存取過數據
   const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //正在选择开始日期
   const [startDate, setStartDate] = useState<string>(null)//选中的开始日期
@@ -197,6 +198,8 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     function refreshUI(data: GameHistoryModel) {
       setRefreshing(false)
       setData(data.data.list)
+      let vBetTotal = data.data.totalValidBetAmount
+      setValidBetTotal(vBetTotal)
       let total = 0
       data.data.list.forEach((e) => {
         total += Number(e.betAmount)
@@ -214,7 +217,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     APIRouter.ticket_history_args(
       page + '', '20', currentType?.type, startDate, startDate
     ).then(({ data: res }) => {
-      // ugLog('data res=', res)
+      ugLog('获取注單數據=======', res)
       if (res?.code == 0) {
         setIsSetData(true)
         refreshUI(res)
@@ -248,10 +251,10 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                   renderItem={({ item, index }) => {
                     return (
                       <View style={[_styles.text_title_container, { backgroundColor: skin1.textColor4 }]}>
-                        <Text style={_styles.text_content_0}>{item.gameName}{'\n'}{item.gameTypeName}</Text>
-                        <Text style={_styles.text_content_0}>{item.betTime}</Text>
-                        <Text style={_styles.text_content_0}>{item.betAmount}</Text>
-                        <Text style={_styles.text_content_0}>{item.winAmount}</Text>
+                        <Text style={[_styles.text_content_0,{color:skin1.textColor1}]}>{item.gameName}{'\n'}{item.gameTypeName}</Text>
+                        <Text style={[_styles.text_content_0,{color:skin1.textColor1}]}>{item.betTime}</Text>
+                        <Text style={[_styles.text_content_0,{color:skin1.textColor1}]}>{item.betAmount}</Text>
+                        <Text style={[_styles.text_content_0,{color:skin1.textColor1}]}>{item.winAmount}</Text>
                         <View style={_styles.text_content_0}>
                           <TouchableOpacity onPress={
                             () => {
@@ -260,8 +263,6 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                               const newUrl2 = `${url2}&loginsessid=${sessid}&logintoken=${token}`
                               let url1 = `${AppDefine.host}/chat/appcheck?from=app`
                               const newUrl1 = `${url1}&loginsessid=${sessid}&logintoken=${token}`
-                              ugLog('newUrl2==',newUrl2)
-                              ugLog('newUrl1==',newUrl1)
                               switch (Platform.OS) {
                                 case 'ios':
                                   OCHelper.call('CMCommon.goTGWebUrl:url2:title:',[
@@ -363,82 +364,6 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   const MemoCalendar = memo(renderCalendar)
 
-  function MineHeaderTitle() {
-    ugLog('MineHeaderTitle')
-    setCurrentType(typeArray.find((v) => v.id == type))
-    // let item: IMiddleMenuItem = {
-    //   title: '真人注单', //菜单名字
-    //   subTitle: null, // 次级名字
-    //   icon: null, //图标地址
-    //   id: '23', //识别标识
-    //   type: 'real'
-    // }
-
-    // if (type == 'real') {
-    //   ugLog('real')
-    //   item = {
-    //     title: '真人注单', //菜单名字
-    //     subTitle: null, // 次级名字
-    //     icon: null, //图标地址
-    //     id: '23', //识别标识
-    //     type: 'real'
-    //   }
-    // }
-    // else if (type == 'card') {
-    //   ugLog('card')
-    //   item = {
-    //     title: '棋牌注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '24',
-    //     type: 'card'
-    //   }
-    // }
-    // else if (type == 'fish') {
-    //   ugLog('fish')
-    //   item = {
-    //     title: '捕鱼注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '25',
-    //     type: 'fish'
-    //   }
-    // }
-    // else if (type == 'game') {
-    //   ugLog('game')
-    //   item = {
-    //     title: '电子注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '22',
-    //     type: 'game'
-    //   }
-    // }
-    // else if (type == 'esport') {
-    //   ugLog('esport')
-    //   item = {
-    //     title: '电竞注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '26',
-    //     type: 'esport'
-    //   }
-    // }
-    // else if (type == 'sport') {
-    //   ugLog('sport')
-    //   item = {
-    //     title: '体育注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '27',
-    //     type: 'sport'
-    //   }
-    // }
-
-
-    // ugLog('item==', JSON.stringify(item))
-    // setCurrentType(item)
-  }
   /**
    * 绘制右按钮
    */
@@ -497,8 +422,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
         <Text style={_styles.text_content_0}>{'详情'}</Text>
       </View>
       <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
-        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-start', color: skin1.textColor4, }]}>{'下注总金额: ' + betTotal}</Text>
-        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor4, }]}>{'输赢金额: ' + winTotal}</Text>
+        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-start', color: skin1.textColor1, }]}>{'下注总金额: ' + betTotal}</Text>
+        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor1, }]}>{'有效下注总金额: ' + validbetTotal}</Text>
+        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor1, }]}>{'输赢金额: ' + winTotal}</Text>
       </View>
       {
         renderAllData()
