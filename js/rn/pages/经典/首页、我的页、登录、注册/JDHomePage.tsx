@@ -113,7 +113,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
         )
       }}
       renderGame={({ item, index, showGameSubType }) => {
-        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
+        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId, subtitle } = item
         const flagType = parseInt(tipFlag)
         return (
           <View style={styles.gameContainer}>
@@ -130,6 +130,9 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               flagContainer={{ width: sc(50), height: sc(50) }}
               showBigCenterFlag={flagType == 4}
               title={anyEmpty(title) ? name : title}
+              showSubTitle={!!subtitle?.length}
+              subTitle={subtitle}
+              subTitleStyle={{ fontSize: sc(18), color: '#777' }}
               containerStyle={{
                 width: '100%',
                 backgroundColor: skin1.homeContentColor,
@@ -140,8 +143,8 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               }}
               imageContainerStyle={{ width: sc(95) }}
               titleContainerStyle={{
-                aspectRatio: 5,
-                paddingTop: scale(5),
+                height: sc(50),
+                aspectRatio:5,
               }}
               secondLevelIconProps={{
                 name: 'appstore1',
