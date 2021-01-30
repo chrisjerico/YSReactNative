@@ -15,7 +15,7 @@ import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../r
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
 import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../public/tools/Ext'
+import { anyEmpty, mergeObject } from '../../public/tools/Ext'
 import { ugLog } from '../../public/tools/UgLog'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
 
@@ -64,7 +64,6 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
     act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
-    // act.lotteryColumnIndex && (state.lotteryColumnIndex = act.lotteryColumnIndex)
 
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
@@ -76,13 +75,10 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
-    state.selectedLotteryModel = {
-      selectedData:
-        { ...state.selectedLotteryModel?.selectedData, ...act.selectedLotteryModel?.selectedData },
-      inputMoney: anyEmpty(act.selectedLotteryModel?.inputMoney) ?
-          state?.selectedLotteryModel?.inputMoney :
-          act?.selectedLotteryModel?.inputMoney
-    }
+    // ugLog('state.selectedLotteryModel 1 = ', JSON.stringify(state.selectedLotteryModel))
+    // ugLog('state.selectedLotteryModel 2 = ', JSON.stringify(act.selectedLotteryModel))
+    state.selectedLotteryModel = mergeObject(state.selectedLotteryModel, act.selectedLotteryModel)
+    // ugLog('state.selectedLotteryModel 3 = ', JSON.stringify(state.selectedLotteryModel))
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })

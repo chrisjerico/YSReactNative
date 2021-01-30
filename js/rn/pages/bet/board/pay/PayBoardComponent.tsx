@@ -6,11 +6,13 @@ import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import LotteryConst from '../../const/LotteryConst'
-import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { anyEmpty } from '../../../../public/tools/Ext'
+import { calculateItemCount, gatherSelectedItems } from '../tl/BetUtil'
+import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 
 interface IPayBoardComponent {
   showCallback?: () => void //窗口 是否显示 回调
@@ -35,16 +37,15 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     selectedData,
     setSelectedData,
     startBetting,
-    calculateItemCount,
   } = UsePayBoard()
 
   /**
    * 绘制 特码 等条目
    * @param lotteryCode 彩种CODE，特码,合肖等
-   * @param groupData
+   * @param selModel 选中的数据
    */
-  const renderTMItem = (lotteryCode?: string, groupData?: PlayGroupData) => {
-    return groupData?.plays?.map((playData) => {
+  const renderTMItem = (lotteryCode?: string, selModel?: SelectedPlayModel) => {
+    return selModel?.plays?.map((playData) => {
       const showName = lotteryCode == LotteryConst.LX || lotteryCode == LotteryConst.LW ?
         playData?.alias :
         playData?.name
@@ -52,34 +53,42 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                     style={_styles.item_container}>
         <Text style={_styles.item_title}
               numberOfLines={2}>{
-          `[ ${groupData?.alias}- ${showName} ]`
+          `[ ${selModel?.playGroups?.alias}- ${showName} ]`
         }</Text>
         <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
         <Text style={_styles.item_x}>{'X'}</Text>
         <TextInput defaultValue={averageMoney?.toString()}
                    onChangeText={text => setMoneyMap(prevState => {
-                     const dataMap = new Map<string, number>()
-                     dataMap[playData?.id] = Number.parseFloat(text)
+                     const moneyMap = new Map<string, number>()
+                     moneyMap[playData?.exId ?? playData?.id] = Number.parseFloat(text)
                      // ugLog('prevState = ', JSON.stringify(prevState))
-                     // ugLog('dataMap = ', JSON.stringify(dataMap))
-                     return { ...prevState, ...dataMap }
+                     // ugLog('moneyMap = ', JSON.stringify(moneyMap))
+                     return { ...prevState, ...moneyMap }
                    })}
                    keyboardType={'numeric'}
                    style={_styles.item_input}/>
         <Icon size={scale(36)}
               onPress={() => {
-                const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
+                //选中了哪些数据 code -> code -> value, 如 正特 -> 正特1 -> 01,03,04
+                //Map<string, Map<string, Map<string, SelectedPlayModel>>>
+                const newSelectedData = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
 
-                //从选中的列表里面 清除删除的数据 重新组建数据
-                Object.keys(selectedData)?.map((key) => {
-                  const groupData: Array<PlayGroupData> = selectedData[key]
-                  newSelectedData[key] = groupData?.map((groupData) => ({
-                    ...groupData,
-                    plays: groupData?.plays?.filter((item) => item?.id != playData?.id),
-                    exPlays: groupData?.exPlays?.filter((item) => item?.id != playData?.id),
-                  } as PlayGroupData))
-                })
+                //注释以特码为例
+                for(const [key1, value1] of Object.entries(selectedData)) {
+                  newSelectedData[key1] = value1
+                  for(const [key2, value2] of Object.entries(value1)) {
+                    value1[key2] = value2
+                    for(const [key3, value3] of Object.entries(value2)) {
+                      value2[key3] = {
+                        ...value3,
+                        plays: value3?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData))
 
+                      } as SelectedPlayModel
+                    }
+                  }
+                }
+
+                ugLog('newSelectedData = ', JSON.stringify(newSelectedData))
                 //数据少于1了就关闭窗口
                 if (calculateItemCount(newSelectedData) <= 0) {
                   showCallback && showCallback()
@@ -97,32 +106,30 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   /**
    * 绘制合肖等数据
-   * @param groupData
+   * @param selModel
    * @param des
    */
-  const renderHXItem = (groupData?: PlayGroupData,
+  const renderHXItem = (selModel?: SelectedPlayModel,
                         des?: string) => {
-    const play0 = groupData?.plays[0]
+    const play0 = selModel?.plays[0]
     return (<View key={play0?.id + play0?.name}
                   style={_styles.item_container}>
       <Text style={_styles.item_title}
             numberOfLines={2}>{
-        `[ ${groupData?.alias}- ${des} ]`
+        `[ ${selModel?.playGroups?.alias}- ${des} ]`
       }</Text>
       <TextInput defaultValue={averageMoney?.toString()}
                  onChangeText={text => setMoneyMap(prevState => {
-                   const dataMap = new Map<string, number>()
-                   dataMap[play0?.id] = Number.parseFloat(text)
+                   const moneyMap = new Map<string, number>()
+                   moneyMap[play0?.exId ?? play0?.id] = Number.parseFloat(text)
                    // ugLog('prevState = ', JSON.stringify(prevState))
-                   // ugLog('dataMap = ', JSON.stringify(dataMap))
-                   return { ...prevState, ...dataMap }
+                   // ugLog('moneyMap = ', JSON.stringify(moneyMap))
+                   return { ...prevState, ...moneyMap }
                  })}
                  keyboardType={'numeric'}
                  style={_styles.item_input}/>
       <Icon size={scale(36)}
             onPress={() => {
-              // const newSelectedData = new Map<string, Array<PlayGroupData>>() //重新组建数据
-              // newSelectedData[key] = null
               showCallback && showCallback()
 
             }}
@@ -134,8 +141,9 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   }
 
   const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((lotteryCode, keyIndex) => {
-    const groupDataArr: Array<PlayGroupData> = selectedData[lotteryCode]
-    return groupDataArr?.map((groupData, index) => {
+    const selItems = gatherSelectedItems(lotteryCode, selectedData)
+    // const groupDataArr: Array<PlayGroupData> = selectedData[lotteryCode]
+    return selItems?.map((selModel, index) => {
       ugLog('lotteryCode 2 index = ', lotteryCode, index)
       switch (lotteryCode) {
         case LotteryConst.TM:  //特码
@@ -153,16 +161,16 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         case LotteryConst.LX: //连肖
         case LotteryConst.LW: //连尾
-          return renderTMItem(lotteryCode, groupData)
+          return renderTMItem(lotteryCode, selModel)
 
         case LotteryConst.HX://合肖
-          return renderHXItem(groupData,
-            groupData?.exZodiacs?.map((item) => item?.name)?.toString())
+          return renderHXItem(selModel,
+            selModel?.zodiacs?.map((item) => item?.name)?.toString())
 
         case LotteryConst.LMA:  //连码
         case LotteryConst.ZXBZ:  //自选不中
-          return renderHXItem(groupData,
-            groupData?.exPlays?.map((item) => item?.name)?.toString())
+          return renderHXItem(selModel,
+            selModel?.plays?.map((item) => item?.name)?.toString())
       }
 
 
@@ -175,6 +183,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   return (
     <View style={_styles.container}>
       <Modal isVisible={true}
+             onBackdropPress={showCallback}
+             onBackButtonPress={showCallback}
              style={_styles.modal_content}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}

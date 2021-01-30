@@ -1,6 +1,11 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import {
+  PlayData,
+  PlayGroupData,
+  PlayOddData,
+  ZodiacNum,
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import BetLotteryContext from '../../BetLotteryContext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
@@ -16,10 +21,10 @@ import parseLXData from '../../util/ps/ParseLXDataUtil'
 import parseLWData from '../../util/ps/ParseLWDataUtil'
 import parseZXBZData from '../../util/ps/ParseZXBZDataUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
-import SelectedLotteryModel from '../../../../redux/model/game/SelectedLotteryModel'
+import SelectedLotteryModel, { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
 import { parseLMASelectedData } from '../../util/sel/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/sel/ParseHXSelectedUtil'
-import { Toast } from '../../../../public/tools/ToastUtils'
 
 /**
  * 彩票公共处理类
@@ -41,7 +46,8 @@ const UseLotteryHelper = () => {
   useEffect(() => {
 
 
-    const selData = new Map<string, Array<PlayGroupData>>()
+    //生成选中的数据
+    const newSelectedModel = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
 
 //     const subData: SelectedLotterySubData = {
 //       groupId: playOddData?.pageData?.groupTri[tabIndex]
@@ -77,22 +83,24 @@ const UseLotteryHelper = () => {
       case LotteryConst.LX: //连肖
       case LotteryConst.LW: //连尾
       case LotteryConst.ZXBZ:  //自选不中
-        selData[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
+        newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
         break
 
       case LotteryConst.HX://合肖
-        selData[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
+        newSelectedModel[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
         break
     }
 
-    const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
+    const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedModel }
     UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-    ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+
+    ugLog('选中的数据 selectedBalls = ', JSON.stringify(selectedBalls))
+    ugLog(`选中的数据 selectedLotteryModel = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(UGStore.globalProps?.selectedLotteryModel))
 
   }, [selectedBalls])
 
   useEffect(() => {
-    ugLog('selectedLotteryModel?.selectedData = ', anyEmpty(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
+    // ugLog('选中的数据有变化: ', anyEmpty(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
   }, [selectedLotteryModel?.selectedData])
 
   //当前选中的第几页数据

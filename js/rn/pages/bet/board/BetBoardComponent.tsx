@@ -13,7 +13,7 @@ import { useContext, useEffect, useRef } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
-import UseLhcBoard, { CHIP_OPTION } from './UseLhcBoard'
+import UseBetBoard, { CHIP_OPTION } from './UseBetBoard'
 import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
@@ -59,7 +59,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     setShowChip,
     playOddDetailData,
     checkShowBetPayment,
-  } = UseLhcBoard()
+  } = UseBetBoard()
 
   /**
    * 加大拉条
