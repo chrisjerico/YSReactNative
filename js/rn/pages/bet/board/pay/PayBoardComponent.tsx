@@ -227,7 +227,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                   onPress={() => showCallback && showCallback()}>{'取消'}</Text>
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
-                  onPress={() => startBetting()}>{'确定'}</Text>
+                  onPress={() =>
+                    startBetting().then((code) => code == 0 && showCallback())}>{'确定'}</Text>
           </View>
         </View>
       </Modal>
