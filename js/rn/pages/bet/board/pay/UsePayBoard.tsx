@@ -17,6 +17,8 @@ import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryM
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { NormalModel } from '../../../../public/network/Model/NormalModel'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
+import APIRouter from '../../../../public/network/APIRouter'
+import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 
 /**
  * 下注面板
@@ -186,6 +188,9 @@ const UsePayBoard = () => {
     hideLoading()
     // ugLog('res bet 2 = res', data)
     Toast(data?.msg)
+
+    syncUserInfo()
+
     return data?.code
 
     // const { data } = await api.user.myFeedback(0, date, true, 1, 20).promise
