@@ -8,7 +8,7 @@ import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcPTYX from './UseLhcPTYX'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
@@ -114,7 +114,7 @@ const
    * 绘制全部的格子
    * @param groupData
    */
-  const renderAllRect = (groupData?: PlayGroupData) => !anyEmpty(groupData) &&
+  const renderAllRect = (groupData?: PlayGroupData) => !dicNull(groupData) &&
     <View key={key + 'renderAllRect' + groupData?.id}
           style={CommStyles.flex}>
 

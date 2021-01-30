@@ -4,7 +4,7 @@ import { pop } from '../../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../../public/tools/Scale'
 import CommStyles from '../../base/CommStyles'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, dicNull } from '../../../public/tools/Ext'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import * as React from 'react'
 import BetRecordHeaderComponent from '../counter/red/BetRecordHeaderComponent'
@@ -53,7 +53,7 @@ const TopAreaComponent = () => {
           style={CommStyles.flex}/>
     <Text key={'renderTopBar money' + userInfo?.balance}
           style={[_styles.top_money,
-            { color: Skin1.navBarTitleColor }]}>{!anyEmpty(userInfo) && userInfo?.balance}</Text>
+            { color: Skin1.navBarTitleColor }]}>{!dicNull(userInfo) && userInfo?.balance}</Text>
     <Icon key={'renderTopBar refresh'}
           size={scale(24)}
           name={'refresh'}

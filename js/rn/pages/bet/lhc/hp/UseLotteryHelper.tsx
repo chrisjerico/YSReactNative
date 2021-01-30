@@ -100,7 +100,7 @@ const UseLotteryHelper = () => {
   }, [selectedBalls])
 
   useEffect(() => {
-    // ugLog('选中的数据有变化: ', anyEmpty(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
+    // ugLog('选中的数据有变化: ', dicNull(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
   }, [selectedLotteryModel?.selectedData])
 
   //当前选中的第几页数据

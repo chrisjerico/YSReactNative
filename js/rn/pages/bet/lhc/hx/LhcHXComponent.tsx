@@ -7,7 +7,7 @@ import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcHX from './UseLhcHX'
 import { PlayGroupData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
@@ -55,7 +55,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param groupData
    */
   const renderLineBall = (groupData?: PlayGroupData) =>
-    !anyEmpty(groupData) && <View key={key + groupData?.id}
+    !dicNull(groupData) && <View key={key + groupData?.id}
                                   style={CommStyles.flex}>
 
       <View key={key + 'renderLineBall' + groupData?.id}

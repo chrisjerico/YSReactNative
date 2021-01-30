@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import BetLotteryContext from '../../BetLotteryContext'
 import { UGStore } from '../../../../redux/store/UGStore'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
@@ -79,7 +79,7 @@ const UsePayBoard = () => {
    */
   useEffect(() => {
     ugLog('moneyMap total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
-    const money = anyEmpty(moneyMap) ?
+    const money = dicNull(moneyMap) ?
       0 :
       Object.values(moneyMap)?.reduce((previousValue, currentValue) =>
         previousValue + currentValue)
