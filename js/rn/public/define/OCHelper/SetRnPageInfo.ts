@@ -90,6 +90,9 @@ export async function setRnPageInfo(force = false) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
+    if (skitType.indexOf('经典') != -1) {
+      pages = pages.concat(JDPages.filter((ele) => ele.rnName == PageName.JDHomePage))
+    }
 
     // 2级游戏分类
     pages.push({
