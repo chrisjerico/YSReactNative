@@ -347,7 +347,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     香槟金5绿: '#1C7841',
     香槟金6蓝: '#36389C',
     香槟金7小红: '#C2446C',
-    新年红: '#FFFFFF',
+    新年红: '#999999',
     尊龙: '#FFFFFF',
   },
 
