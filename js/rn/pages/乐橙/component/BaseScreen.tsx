@@ -5,6 +5,7 @@ import { pop } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
+import { TouchableHighlight } from 'react-native-gesture-handler'
 
 interface BaseScreenProps {
     hideBar?: boolean //隐藏标题栏
@@ -16,42 +17,52 @@ interface BaseScreenProps {
     rightButton?: JSX.Element
 }
 
-export const BaseScreen = ({hideBar, children, screenName, style, icon, hideLeft, rightButton}: BaseScreenProps) => {
+export const BaseScreen = ({ hideBar, children, screenName, style, icon, hideLeft, rightButton }: BaseScreenProps) => {
     return (
-        <View style={[{flex: 1, backgroundColor: Skin1.homeContentColor}, style]}>
-            <SafeAreaView style={{backgroundColor: Skin1.themeColor}}>
+        <View style={[{ flex: 1, backgroundColor: Skin1.homeContentColor }, style]}>
+            <SafeAreaView style={{ backgroundColor: Skin1.themeColor }}>
                 {
                     hideBar ?
-                      null
-                      : <View style={{
-                        backgroundColor: Skin1.themeColor, //根据当前主题来
-                        width: scale(540),
-                        flexDirection: "row",
-                        alignItems: "center",
-                        alignSelf: "center",
-                    }}>
-                        <Text style={{
-                            paddingTop: scale(20),
-                            paddingBottom: scale(20),
-                            textAlign: "center",
-                            fontSize: scale(24),
-                            width: "100%",
+                        null
+                        : <View style={{
+                            backgroundColor: Skin1.themeColor, //根据当前主题来
+                            width: scale(540),
+                            flexDirection: "row",
+                            alignItems: "center",
                             alignSelf: "center",
-                            color: Skin1.navBarTitleColor //根据当前主题来
-                        }}>{screenName}</Text>
-                          {
-                              !hideLeft && <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => pop()}>
-                                  <Icon size={33} name={icon || 'angle-left'}
-                                        color={ Skin1.navBarTitleColor } //根据当前主题来
-                                  />
-                              </TouchableOpacity>
-                          }
-                        <View style={_styles.right_container}>
+                        }}>
+                            <Text style={{
+                                paddingTop: scale(20),
+                                paddingBottom: scale(20),
+                                textAlign: "center",
+                                fontSize: scale(24),
+                                width: "100%",
+                                alignSelf: "center",
+                                color: Skin1.navBarTitleColor //根据当前主题来
+                            }}>{screenName}</Text>
                             {
-                                rightButton
+                                <TouchableOpacity style={{ width: 60, height: 40, position: "absolute",  }}
+                                    onPress={() => {
+                                        pop()
+                                    }}
+                                >
+                                    {
+
+                                        <View style={{ left: 20,  }} >
+                                            <Icon size={33} name={icon || 'angle-left'}
+                                                color={Skin1.navBarTitleColor} //根据当前主题来
+                                            />
+                                        </View>
+                                    }
+                                </TouchableOpacity>
+
                             }
+                            <View style={_styles.right_container} pointerEvents={'box-none'}>
+                                {
+                                    rightButton
+                                }
+                            </View>
                         </View>
-                    </View>
                 }
             </SafeAreaView>
             {children}
