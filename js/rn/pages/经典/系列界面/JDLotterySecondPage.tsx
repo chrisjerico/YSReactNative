@@ -30,7 +30,6 @@ const JDLotterySecondPage = ({ navigation, route, setProps, setNavbarProps }: UG
     * bankCardData: 银行卡数据
     */
   let { title, dataArray }: IJDLotterySecondHomParams = route?.params
-  ugLog('title=====',title)
 
   //初始化
   useEffect(() => {
@@ -39,6 +38,7 @@ const JDLotterySecondPage = ({ navigation, route, setProps, setNavbarProps }: UG
       didFocus: (params) => {
         switch (Platform.OS) {
           case 'ios':
+            setNavbarProps({title:params?.title})
             break;
           case 'android':
             //TODO Android 2级系列大厅传参
