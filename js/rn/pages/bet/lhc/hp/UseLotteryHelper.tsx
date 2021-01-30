@@ -149,7 +149,7 @@ const UseLotteryHelper = () => {
     const checkMap = zodiac.nums.map((item) => ('0' + item).slice(-2))
 
     return groupData?.plays?.filter((item) => checkMap?.includes(item?.name))
-      .map((item) => item?.id)
+      .map((item) => item?.exId)
   }
 
   return {

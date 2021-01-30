@@ -139,7 +139,7 @@ export interface Data {
   userCenter: UserCenter[];
   webName: string;
   yuebaoName: string;
-  yuebaoSwitch: boolean;
+  yuebaoSwitch: boolean; //利息宝开关
   znxNotify: string;
   zxkfUrl: string;
   zxkfUrl2: string;
