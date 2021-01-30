@@ -210,7 +210,7 @@ const CapitalDetailListComponent = () => {
                     <View
                     style={{
                         height:100,
-                        
+
                     }}
                   >
                   </View>
@@ -235,6 +235,7 @@ const CapitalDetailListComponent = () => {
       {renderListContent()}
 
       <MiddleMenu key={menuItem?.map((item) => item?.title)?.toString()}
+                  curId={curGroup?.toString()}
                   ref={refMenu}
                   onMenuClick={clickMenu}
                   menu={menuItem}/>
