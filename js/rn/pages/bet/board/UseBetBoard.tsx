@@ -15,7 +15,7 @@ import { ugLog } from '../../../public/tools/UgLog'
  * 彩票下注 功能面板
  * @constructor
  */
-const UseLhcBoard = () => {
+const UseBetBoard = () => {
 
   const [sliderValue, setSliderValue] = useState<number>(0) //拉条数据
   const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
@@ -80,6 +80,6 @@ const CHIP_OPTION = {
   'c': Res.clr,
 }
 
-export default UseLhcBoard
+export default UseBetBoard
 export { CHIP_OPTION }
 
