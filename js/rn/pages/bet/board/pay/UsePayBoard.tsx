@@ -16,7 +16,6 @@ import { playDataX } from '../tl/zxbz/BetZXBZUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { NormalModel } from '../../../../public/network/Model/NormalModel'
-import { ApiNormalModel } from '../../../../public/network/Model/pub/ApiNormalModel'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 
 /**
@@ -180,8 +179,10 @@ const UsePayBoard = () => {
       totalMoney: numberToFloatString(totalMoney),
       isInstant: nextIssueData?.isInstant,
     }
+    // api.user.userGameBetWithParams(pms).useSuccess(((res, sm) =>
+    // ))
     showLoading()
-    const { data }: ApiNormalModel = await api.user.userGameBetWithParams(pms).promise
+    const { data } = await api.user.userGameBetWithParams(pms).promise
     hideLoading()
     // ugLog('res bet 2 = res', data)
     Toast(data?.msg)
