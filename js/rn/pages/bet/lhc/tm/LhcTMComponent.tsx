@@ -12,6 +12,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 六合彩特码
@@ -113,7 +114,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id}
+  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={`${key}-LotteryEBall-${item?.exId}-${item?.id}`}
                                                                          item={item}
                                                                          selectedBalls={selectedBalls}
                                                                          callback={() => addOrRemoveBall(item?.exId)}/>
@@ -123,7 +124,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderEBall = (item?: PlayData, index?: number) => <LotteryEBall key={key + 'renderEBall' + item?.id}
+  const renderEBall = (item?: PlayData, index?: number) => <LotteryEBall key={`${key}-LotteryEBall-${item?.exId}-${item?.id}`}
                                                                          item={item}
                                                                          selectedBalls={selectedBalls}
                                                                          callback={() => addOrRemoveBall(item?.exId)}/>
