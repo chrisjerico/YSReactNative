@@ -263,7 +263,7 @@ function teamBetListData() {
         <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.level + '级下线'}
+            {item.level == 0 ? '全部下线' : item.level + '级下线'}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
