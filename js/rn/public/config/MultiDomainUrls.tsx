@@ -149,7 +149,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c012': [
     'https://fjc012cpamg12aktk.org',
-    'https://0849520.com',
+    'https://0849514.com',
     'https://0849519.com',
     'https://0849518.com',
     'https://0849516.com',
@@ -380,7 +380,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.hilliot.com',
   ],
   'c237': [
-    'https://13478116.com',
+    'https://13478107.com',
     'https://13478117.com',
     'https://13478118.com',
     'https://13478119.com',
