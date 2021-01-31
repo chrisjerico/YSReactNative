@@ -429,6 +429,14 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://wf7.co',
     'https://667568.com'
   ],
+  'c261': [
+    'https://yl29001.com',
+    'https://yl29002.com',
+    'https://yl29003.com',
+    'https://yl29005.com',
+    'https://yl29006.com',
+
+  ],
   'l001': [
     'https://4988wap.com',
   ],
