@@ -46,6 +46,7 @@ export class OCEvent extends OCCall {
       const { name: currentPage, key } = getCurrentRoute()
 
       let action = params.rnAction;
+      let isJump = action == 'jump'
       if (action == 'jump' && currentPage == page && getStackLength() < 2) {
         action = 'refresh';
       }
@@ -69,6 +70,8 @@ export class OCEvent extends OCCall {
           break
         case 'refresh':
         default:
+          !isJump && (params = undefined) // 非跳转情况下刷新页面不传 params
+
           console.log('成为焦点：', currentPage, params)
           refresh(params) // 设置 route.params
           const { didFocus } = UGStore.getPageProps(key)
