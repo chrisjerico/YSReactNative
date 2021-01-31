@@ -117,6 +117,7 @@ import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePag
 
 import OtherRecord from '../../public/components/OtherRecord'
 import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
+import { DoyLaunchPage } from '../../../doy/pages/DoyLaunchPage'
 
 
 /**
@@ -245,6 +246,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   LLMinePage, //利来-我的页
   LLLoginPage, //利来-登录
   LLRegisterPage, //利来-注册
+
+  // Doy钱包
+  DoyLaunchPage,// 启动页
 }
 
 // TabbarController

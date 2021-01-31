@@ -69,6 +69,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     六合厅: '#4285f4',
     利来: '#999999',
     威尼斯: '#BF242A',
+    doyWallet:'#3b6ee2',
   },
 
   progress: {
@@ -171,6 +172,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     黑金: '#1a1a1e',
     经典21黑: '#0D0D0D',
     金星黑: '#000',
+    doyWallet:'#f6f6f9'
   },
 
   // 背景色
@@ -267,6 +269,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     香槟金7小红: ['#F07DA0', '#F07DA0'],
     新年红: ['#DE1C27', '#DE1C27'],
     尊龙: ['#333333', '#333333'],
+    doyWallet: ['#3b6ee2', '#3b6ee2'],
   },
 
   // 底部标签栏背景色

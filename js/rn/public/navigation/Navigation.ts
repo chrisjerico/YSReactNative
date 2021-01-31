@@ -131,5 +131,6 @@ export enum PageName {
   TwoLevelGames = "TwoLevelGames",
   OnlineService = 'OnlineService',
   OtherRecord = "OtherRecord",
-  Game3rdView = "Game3rdView"
+  Game3rdView = "Game3rdView",
+  DoyLaunchPage = "DoyLaunchPage",
 }

@@ -72,6 +72,8 @@ export class UGSkinType<T> {
   新世纪?: T = null
   越南?: T = null
   kikimall?: T = null
+  doyWallet?: T = null
+
   //必须要 = null 或 = undefined（才能获取到key名，也就是模板名）
   constructor(props?: UGSkinType<T>) {
     if (!props) return this
