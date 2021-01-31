@@ -5,7 +5,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import { combinePlayAndZodiac } from '../LotteryUtil'
+import { combinePlayAndZodiac } from './ParseLotteryUtil'
 
 interface ITMData {
   playOddData?: PlayOddData

@@ -38,7 +38,7 @@ const UseLotteryHelper = () => {
   } = useContext(BetLotteryContext)
 
   const currentPlayOddData = UGStore.globalProps?.currentPlayOddData //当前选中的彩种数据 特码 两面 等
-  const selectedLotteryModel = UGStore.globalProps?.selectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+  // const selectedLotteryModel = UGStore.globalProps?.selectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //此页显示的彩种数据
@@ -46,7 +46,9 @@ const UseLotteryHelper = () => {
 
   useEffect(() => {
     //生成选中的数据
-    const newSelectedModel = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
+    const newSelectedModel = dicNull(UGStore.globalProps?.selectedLotteryModel?.selectedData) ?
+      new Map<string, Map<string, Map<string, SelectedPlayModel>>>() :
+      JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData))
 
     switch (playOddData?.code) {
       case LotteryConst.TM:  //特码
@@ -75,7 +77,7 @@ const UseLotteryHelper = () => {
     }
 
     const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedModel }
-    UGStore.dispatch({ type: 'merge', selectedLotteryModel })
+    UGStore.dispatch({ type: 'reset', selectedLotteryModel })
 
     ugLog('选中的数据 selectedBalls = ', JSON.stringify(selectedBalls))
     ugLog(`选中的数据 selectedLotteryModel = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(UGStore.globalProps?.selectedLotteryModel))
@@ -122,8 +124,7 @@ const UseLotteryHelper = () => {
                   setSelectedBalls(ids)
                 }
                   break
-                default:
-                {
+                default: {
                   const ids = playModel?.plays?.map((play) => play?.exId ?? play?.id)
                   setSelectedBalls(ids)
                 }
@@ -155,13 +156,13 @@ const UseLotteryHelper = () => {
       ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
       switch (playOddData?.code) {
         case LotteryConst.HX:  //合肖 最多只能选中11个
-          if(arrayLength(selectedBalls) > 10) {
+          if (arrayLength(selectedBalls) > 10) {
             Toast('合肖请选择2到11个选项')
             return
           }
           break
         case LotteryConst.ZXBZ:  //自选不中 最多只能选中12个
-          if(arrayLength(selectedBalls) > 11) {
+          if (arrayLength(selectedBalls) > 11) {
             Toast('自选不中请选择5到12个选项')
             return
           }

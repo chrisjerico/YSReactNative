@@ -4,8 +4,8 @@ import APIRouter from '../../public/network/APIRouter'
 import { anyEmpty } from '../../public/tools/Ext'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import { UGStore } from '../../redux/store/UGStore'
-import { parseLotteryDetailData } from './util/LotteryUtil'
 import { ugLog } from '../../public/tools/UgLog'
+import { parseLotteryDetailData } from './util/ps/ParseLotteryUtil'
 
 /**
  * 彩票下注
