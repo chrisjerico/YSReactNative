@@ -50,6 +50,8 @@ import { color } from 'react-native-reanimated'
 const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   let { type, showBackButton } = route?.params
+  ugLog('--------------------------route?.params==', route?.params)
+
   const refMenu = useRef(null)
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   // 游戏分类：lottery=彩票，real=真人，card=棋牌，game=电子游戏，sport=体育，fish=捕鱼, esport=电竞
@@ -98,8 +100,8 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     },
   ]
 
-  // console.log('type0===========', type);
-  const [currentType, setCurrentType] = useState(typeArray[0])  //選擇注單類形
+
+  const [currentType, setCurrentType] = useState({})  //選擇注單類形
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [page, setPage] = useState(1)
   const [data, setData] = useState<Array<GameHistorylistBean>>([])
@@ -109,58 +111,43 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const [winTotal, setWinTotal] = useState(0) //是否存取過數據
   const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //正在选择开始日期
   const [startDate, setStartDate] = useState<string>(moment().format('yyyy-MM-DD'))//选中的开始日期
-
-  ugLog('startDate ==  ',startDate)
+  console.log('0000currentType===========', currentType);
+  // ugLog('startDate ==  ',startDate)
   const {
     systemInfo,
     userInfo,
   } = UseGameHall()
 
   useEffect(() => {
-    console.log('useEffect');
-    console.log('type1===========', type);
-    switch (Platform.OS) {
-      case 'ios':
-        if (anyEmpty(type)) {
-          type = 'real';
+    setProps({
+      didFocus: (params) => {
+        ugLog('--------------------------params==', params)
+        switch (Platform.OS) {
+          case 'ios':
+            let dic = params;
+            for (var key in dic) {
+              if (key == 'gameType') {
+                if (anyEmpty(dic[key])) {
+                  type = 'real';
+                }
+                else {
+                  type = dic[key];
+                }
+                setCurrentType(typeArray.find((v) => v.type == type))
+                // ugLog('2222current===',currentType)
+              }
+            }
+            break;
+          case 'android':
+            //TODO Android 传参
+            break;
         }
-        setCurrentType(typeArray.find((v) => v.type == type))
-        break;
-      case 'android':
-        if (anyEmpty(type)) {
-          type = '23';
-        }
-        setCurrentType(typeArray.find((v) => v.id == type))
-        break;
-    }
+        !data?.length && requestGameData()
+      }
+    }, false)
   }, [])
 
-  setProps({
-    didFocus: (params) => {
-      ugLog('params==', params)
-      switch (Platform.OS) {
-        case 'ios':
-          let dic = params;
-          for (var key in dic) {
-            if (key == 'gameType') {
-              if (anyEmpty(dic[key])) {
-                type = 'real';
-              }
-              else {
-                type = dic[key];
-              }
-              ugLog('type3====', type)
-              setCurrentType(typeArray.find((v) => v.type == type))
-            }
-          }
-          break;
-        case 'android':
-          //TODO Android 传参
-          break;
-      }
-      !data?.length && requestGameData()
-    }
-  }, false)
+
 
   useEffect(() => {
     ugLog("startDate: " + startDate)
@@ -179,8 +166,8 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     refMenu?.current?.toggleMenu()
     setCurrentType(item)
-    // let date = moment().format('yyyy-MM-DD');
-    // setStartDate(date)
+
+
   }
 
   //刷新控件
@@ -324,9 +311,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
    */
   let renderCalendar = () => {
     let curDate = new Date(startDate)
-
-
-    ugLog('curDate ==  ',curDate)
+    // ugLog('curDate ==  ',curDate)
     return (
 
       <View key={'renderCalendar'}
@@ -438,9 +423,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
           <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'输赢金额: '}</Text>
           <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, }]}>{winTotal}</Text>
         </View>
-        {/* <Text style={[_styles.text_content_bottom, { alignItems: 'flex-start', color: skin1.textColor1, }]}>{'下注总金额: ' + betTotal}</Text>
-        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor1, }]}>{'有效下注总金额: ' + validbetTotal}</Text>
-        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor1, }]}>{'输赢金额: ' + winTotal}</Text> */}
+
       </View>
       {
         renderAllData()
