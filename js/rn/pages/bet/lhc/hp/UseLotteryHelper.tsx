@@ -153,7 +153,7 @@ const UseLotteryHelper = () => {
       setSelectedBalls(newResult)
 
     } else {
-      ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
+      //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
       switch (playOddData?.code) {
         case LotteryConst.HX:  //合肖 最多只能选中11个
           if (arrayLength(selectedBalls) > 10) {

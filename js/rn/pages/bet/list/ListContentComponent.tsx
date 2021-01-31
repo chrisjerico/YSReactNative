@@ -60,7 +60,7 @@ const ListContentComponent = () => {
                     ]}>
                 <View style={[
                   _styles.left_column_text_flag,
-                  ballSelected ? {backgroundColor: UGColor.WarnningColor1} : null
+                  ballSelected[item?.code] ? {backgroundColor: UGColor.WarnningColor1} : null
                 ]}>
                 </View>
                 <Text key={'renderLeftColumn' + item?.code}

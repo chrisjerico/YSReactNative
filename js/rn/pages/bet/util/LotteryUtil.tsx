@@ -1,4 +1,4 @@
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
+import { anyEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
 import {
   PagePlayOddData,
   PlayGroupData,
@@ -22,6 +22,7 @@ import parseWSData from './ps/ParseWSDataUtil'
 import parseLXData from './ps/ParseLXDataUtil'
 import parseLWData from './ps/ParseLWDataUtil'
 import parseZXBZData from './ps/ParseZXBZDataUtil'
+import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 
 interface INameOrAlias {
   name?: string; //鼠
@@ -37,6 +38,31 @@ const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum =>
   num?.find((zodiac) => ((!anyEmpty(item?.name) && zodiac?.name == item?.name)
     || (!anyEmpty(item?.alias) && zodiac?.alias == item?.alias)))
 
+/**
+ * 各彩种选中的数量
+ * @param selectedData
+ */
+const filterSelectedData = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Map<string, number> => {
+  const map = new Map<string, number>()
+
+  if (!dicNull(selectedData)) {
+    for (let key1 of Object.keys(selectedData)) {
+      let count = 0
+      for (let value2 of Object.values(selectedData[key1])) {
+        for (let value3 of Object.values(value2)) {
+          count += arrayLength(value3?.zodiacs) + arrayLength(value3?.plays)
+        }
+      }
+      map[key1] = count
+    }
+  }
+
+  ugLog('filterSelectedData map = ', JSON.stringify(map))
+
+  return map
+}
+
 export {
   findZodiacByName,
+  filterSelectedData,
 }
