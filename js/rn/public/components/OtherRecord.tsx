@@ -136,7 +136,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   setProps({
     didFocus: (params) => {
-      ugLog('params==',params)
+      ugLog('params==', params)
       switch (Platform.OS) {
         case 'ios':
           let dic = params;
@@ -251,33 +251,33 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                   renderItem={({ item, index }) => {
                     return (
                       <View style={[_styles.text_title_container, { backgroundColor: skin1.textColor4 }]}>
-                        <Text style={[_styles.text_content_0,{color:skin1.textColor1}]}>{item.gameName}{'\n'}{item.gameTypeName}</Text>
-                        <Text style={[_styles.text_content_0,{color:skin1.textColor1}]}>{item.betTime}</Text>
-                        <Text style={[_styles.text_content_0,{color:skin1.textColor1}]}>{item.betAmount}</Text>
-                        <Text style={[_styles.text_content_0,{color:skin1.textColor1}]}>{item.winAmount}</Text>
+                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.gameName}{'\n'}{item.gameTypeName}</Text>
+                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.betTime}</Text>
+                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.betAmount}</Text>
+                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.winAmount}</Text>
                         <View style={_styles.text_content_0}>
                           <TouchableOpacity onPress={
                             () => {
-                              let url2 = AppDefine.host +  item.bet_details.url;
-                              const { token, sessid} = UGStore.globalProps?.userInfo
+                              let url2 = AppDefine.host + item.bet_details.url;
+                              const { token, sessid } = UGStore.globalProps?.userInfo
                               const newUrl2 = `${url2}&loginsessid=${sessid}&logintoken=${token}`
                               let url1 = `${AppDefine.host}/chat/appcheck?from=app`
                               const newUrl1 = `${url1}&loginsessid=${sessid}&logintoken=${token}`
                               switch (Platform.OS) {
                                 case 'ios':
-                                  OCHelper.call('CMCommon.goTGWebUrl:url2:title:',[
-                                    newUrl1,newUrl2,'注单详情'
+                                  OCHelper.call('CMCommon.goTGWebUrl:url2:title:', [
+                                    newUrl1, newUrl2, '注单详情'
                                   ]
-                                )
+                                  )
                                   break
                                 case 'android':
                                   //TODO android 注单详情
                                   break
                               }
-                             
+
                             }
                           }>
-                            <Text style={{color:'red'}}>{'详情'}</Text>
+                            <Text style={{ color: 'red' }}>{'详情'}</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -422,9 +422,21 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
         <Text style={_styles.text_content_0}>{'详情'}</Text>
       </View>
       <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
-        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-start', color: skin1.textColor1, }]}>{'下注总金额: ' + betTotal}</Text>
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'下注总金额: '}</Text>
+          <Text style={[_styles.text_content_bottom, { color: 'yellow', }]}>{betTotal}</Text>
+        </View>
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'有效下注总金额:'}</Text>
+          <Text style={[_styles.text_content_bottom, { color: 'yellow', }]}>{validbetTotal}</Text>
+        </View>
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'输赢金额: '}</Text>
+          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, }]}>{winTotal}</Text>
+        </View>
+        {/* <Text style={[_styles.text_content_bottom, { alignItems: 'flex-start', color: skin1.textColor1, }]}>{'下注总金额: ' + betTotal}</Text>
         <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor1, }]}>{'有效下注总金额: ' + validbetTotal}</Text>
-        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor1, }]}>{'输赢金额: ' + winTotal}</Text>
+        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor1, }]}>{'输赢金额: ' + winTotal}</Text> */}
       </View>
       {
         renderAllData()
@@ -459,7 +471,7 @@ const _styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-around',
     color: skin1.textColor4,
     position: 'absolute',
 
