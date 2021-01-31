@@ -16,6 +16,7 @@ import { BankDetailListData, BankDetailListModel } from '../../../../../public/n
 import { hideLoading, showLoading } from '../../../../../public/widget/UGLoadingCP'
 import { pop } from '../../../../../public/navigation/RootNavigation'
 import { api } from '../../../../../public/network/NetworkRequest1/NetworkRequest1'
+import moment from 'moment'
 
 /**
  * 提现界面
@@ -163,7 +164,7 @@ const UseWithdraw = () => {
       setShowAddBank(anyEmpty(bankItems))
 
       //缓存列表显示选项
-      const menu = bankItems?.map((item) => {
+      const menu: Array<IMiddleMenuItem> = bankItems?.map((item) => {
         return (
           ({
             title: `${item?.parentTypeName} (${item?.bankName}, ${item?.ownerName})`,
@@ -183,6 +184,8 @@ const UseWithdraw = () => {
    * 请求余额提现到银行卡
    */
   const confirmWithdraw = async () => {
+    if(!checkWithdrawTime()) return
+
     if (anyEmpty(inputMoney)) {
       Toast('请输入金额')
       return
@@ -208,6 +211,8 @@ const UseWithdraw = () => {
    * 请求利息宝提现到银行卡
    */
   const yuebaoWithdraw = async () => {
+    if(!checkWithdrawTime()) return
+
     if (anyEmpty(inputMoney)) {
       Toast('请输入金额')
       return
@@ -233,6 +238,8 @@ const UseWithdraw = () => {
    * 请求余额宝 转到 余额
    */
   const yueBao2YuE = async () => {
+    if(!checkWithdrawTime()) return
+
     if (anyEmpty(inputMoney)) {
       Toast('请输入金额')
       return
@@ -257,7 +264,6 @@ const UseWithdraw = () => {
   /**
    * 绑定实名
    * @param fullName 真名
-   * @param callBack
    */
   const bindRealName = async (fullName?: string) => {
     if (anyEmpty(fullName)) return
@@ -279,6 +285,38 @@ const UseWithdraw = () => {
     }
 
     return result?.data?.code
+  }
+
+  /**
+   * 取款时间段是否OK
+   */
+  const checkWithdrawTime = (): boolean => {
+    const curDate = moment().format('YYYY/MM/DD')
+
+    if (withdrawType == 0) {//判断余额宝的时间范围
+      const startTime = moment(`${curDate} ${systemInfo?.balanceChannelStartTime}`)?.unix()
+      const endTime = moment(`${curDate} ${systemInfo?.balanceChannelEndTime}`).unix()
+      const curTime = moment().unix()
+
+      if (curTime > endTime || curTime < startTime) {
+        Toast(systemInfo?.balanceChannelPrompt)
+      } else {
+        return true
+      }
+
+    } else if(withdrawType == 1) {//判断利息宝的时间范围
+      const startTime = moment(`${curDate} ${systemInfo?.yuebaoChannelStartTime}`).unix()
+      const endTime = moment(`${curDate} ${systemInfo?.yuebaoChannelEndTime}`).unix()
+      const curTime = moment().unix()
+
+      if (curTime > endTime || curTime < startTime) {
+        Toast(systemInfo?.yuebaoChannelPrompt)
+      } else {
+        return true
+      }
+    }
+
+    return false
   }
 
   return {
