@@ -18,7 +18,7 @@ interface IMiddleMenuItem {
   subTitle?: string // 次级名字
   icon?: string //图标地址
   id?: string //识别标识
-  type: string
+  type?: string
 }
 
 interface IMiddleMenu {
@@ -51,7 +51,8 @@ const MiddleMenu = ({ curId, menu, onMenuClick }: IMiddleMenu, ref?: any) => {
   const renderIcon = (item?: IMiddleMenuItem) => {
     const icon = item?.id == curId?.toString() ?
       <Icon size={scale(32)}
-            name={'check'}
+            name={'check-circle'}
+            color={Skin1.themeColor}
             style={_styles.bank_name_icon2}/> :
       <Icon size={scale(32)}
             name={'circle-o'}
@@ -87,7 +88,10 @@ const MiddleMenu = ({ curId, menu, onMenuClick }: IMiddleMenu, ref?: any) => {
                     {renderIcon(item)}
                     <View style={_styles.item_sub_content}>
                       <Text numberOfLines={1}
-                            style={_styles.item_name}>{item.title}</Text>
+                            style={[
+                              _styles.item_name,
+                              item?.id == curId?.toString() ? {color: Skin1.themeColor} : null,
+                            ]}>{item.title}</Text>
                       {
                         !anyEmpty(item.subTitle) && <Text numberOfLines={1}
                                                           style={[_styles.item_sub_name, { color: Skin1.themeColor }]}>

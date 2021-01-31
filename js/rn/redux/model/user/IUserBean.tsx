@@ -87,7 +87,7 @@ export default interface IUserBean {
   taskReward: string,
   taskRewardTitle: string,
   taskRewardTotal: string,
-  yuebaoSwitch: boolean,
+  yuebaoSwitch: boolean,//利息宝开关
   chatRoomSwitch: boolean,
   todayWinAmount: string,
   unsettleAmount: string,
