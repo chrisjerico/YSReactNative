@@ -40,11 +40,12 @@ const ListContentComponent = () => {
           playOddDetailData()?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
                                              onPress={() => {
-                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: null })
+                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
                                                UGStore.dispatch({
                                                  type: 'reset',
                                                  currentPlayOddData: playOddDetailData()?.playOdds[leftColumnIndex],
                                                })
+
                                                setLeftColumnIndex(index)
                                              }}>
               <View key={'renderLeftColumn' + item?.code}

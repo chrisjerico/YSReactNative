@@ -35,7 +35,6 @@ const isArray = (arr) => Array.isArray(arr)
 export const mergeObject = (src?: any, des?: any): any => {
   if ((!anyNull(src) && typeof src != 'object')
     || (!anyNull(des) && typeof des != 'object')
-    || JSON.stringify(des) == '{}'
     || anyNull(src)) {
     return des // 如果其中一个不是对象 就返回 des
   }

@@ -104,7 +104,7 @@ const UseLotteryHelper = () => {
 
     ugLog('恢复选中的数据')
     const selModel = UGStore.globalProps?.selectedLotteryModel
-    const curSelectedData: Map<string, Map<string, SelectedPlayModel>> = selModel && selModel[playOddData?.code]
+    const curSelectedData: Map<string, Map<string, SelectedPlayModel>> = selModel?.selectedData[playOddData?.code]
 
     switch (playOddData?.code) {
       case LotteryConst.TM:  //特码
@@ -125,28 +125,31 @@ const UseLotteryHelper = () => {
       case LotteryConst.LW: //连尾
       case LotteryConst.ZXBZ:  //自选不中
       case LotteryConst.HX://合肖
-        // if (arrayLength(playOddData?.pageData?.groupTri) == 1) {//只有1页数据/非特殊玩法，才恢复选中数据
-        //   //第一页第一条数据的 alias是TAB名字，也是TAB的 key
-        //   const groupDataArr: Map<string, SelectedPlayModel> = curSelectedData[playOddData?.pageData?.groupTri[0][0]?.alias]
-        //   if (!dicNull(groupDataArr)) {
-        //     ((Object.values(groupDataArr) as Array<SelectedPlayModel>))?.map((playModel) => {
-        //       switch (playOddData?.code) {
-        //         case LotteryConst.HX://合肖
-        //         {
-        //           const ids = playModel?.zodiacs?.map((zodiac) => zodiac?.id)
-        //           setSelectedBalls(ids)
-        //         }
-        //           break
-        //         default:
-        //         {
-        //           const ids = playModel?.plays?.map((play) => play?.exId ?? play?.id)
-        //           setSelectedBalls(ids)
-        //         }
-        //           break
-        //       }
-        //     })
-        //   }
-        // }
+        // ugLog('恢复选中的数据 curSelectedData 1111= ', JSON.stringify(curSelectedData))
+        // ugLog('恢复选中的数据 groupTri 2222= ', JSON.stringify(playOddData?.pageData?.groupTri))
+        if (curSelectedData && arrayLength(playOddData?.pageData?.groupTri) == 1) {//只有1页数据/非特殊玩法，才恢复选中数据
+          // 第一页第一条数据的 alias是TAB名字，也是TAB的 key
+          const groupDataArr: Map<string, SelectedPlayModel> = curSelectedData[playOddData?.pageData?.groupTri[0][0]?.alias]
+          // ugLog('恢复选中的数据 groupDataArr 3333 = ', JSON.stringify(groupDataArr))
+          if (!dicNull(groupDataArr)) {
+            ((Object.values(groupDataArr) as Array<SelectedPlayModel>))?.map((playModel) => {
+              switch (playOddData?.code) {
+                case LotteryConst.HX://合肖
+                {
+                  const ids = playModel?.zodiacs?.map((zodiac) => zodiac?.id)
+                  setSelectedBalls(ids)
+                }
+                  break
+                default:
+                {
+                  const ids = playModel?.plays?.map((play) => play?.exId ?? play?.id)
+                  setSelectedBalls(ids)
+                }
+                  break
+              }
+            })
+          }
+        }
         break
     }
 
