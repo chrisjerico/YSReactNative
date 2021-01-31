@@ -397,6 +397,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       </SafeAreaHeader>
       <MiddleMenu
         styles={{ width: scale(200) }}
+        curId={currentType.id}
         key={currentType?.id}
         ref={refMenu}
         onMenuClick={clickMenu}
