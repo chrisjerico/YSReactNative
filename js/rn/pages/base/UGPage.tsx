@@ -41,6 +41,7 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, F = any> {
 export default (Page: Function) => {
   return class extends React.Component<UGBasePageProps> {
     private unsubscribe: () => void
+    private navBar: UGNavigationBar = {}
 
     constructor(props: UGBasePageProps) {
       super(props)
@@ -131,12 +132,8 @@ export default (Page: Function) => {
     setNavbarProps(navBarProps: UGNavigationBarProps): void {
       const { route: { key } } = this.props
       const props = UGStore.getPageProps<UGBasePageProps>(key) ?? {}
-      if (props?.navbarOpstions) {
-        props.navbarOpstions = deepMergeProps(props.navbarOpstions, navBarProps)
-        this.setState({})
-      } else {
-        this.setProps({ navbarOpstions: navBarProps })
-      }
+      props.navbarOpstions = deepMergeProps(props.navbarOpstions, navBarProps)
+      this.navBar?.setNavBarProps && this.navBar.setNavBarProps(props.navbarOpstions)
     }
 
     render() {
@@ -147,7 +144,7 @@ export default (Page: Function) => {
       return (
         <LinearGradient colors={bgGradientColor ?? [backgroundColor, backgroundColor]} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
-            {navbarOpstions && !navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
+            {navbarOpstions && !navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} c_ref={this.navBar} />}
             <Page
               {...this.props}
               {...props}
