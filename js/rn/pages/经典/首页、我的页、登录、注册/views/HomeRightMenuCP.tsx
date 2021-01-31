@@ -12,7 +12,7 @@ import PushHelper, { UGLinkPositionType } from "../../../../public/define/PushHe
 import { api } from "../../../../public/network/NetworkRequest1/NetworkRequest1"
 import { skin1 } from "../../../../public/theme/UGSkinManagers"
 import { UGColor } from "../../../../public/theme/UGThemeColor"
-import { sc } from "../../../../public/tools/Scale"
+import { sc540 } from "../../../../public/tools/Scale"
 import { goToUserCenterType } from "../../../../public/tools/tars"
 import List from "../../../../public/views/tars/List"
 import { UGUserCenterType } from "../../../../redux/model/全局/UGSysConfModel"
@@ -82,21 +82,21 @@ export const HomeRightMenuCP = (props: HomeRightMenuProps) => {
 
       return (
         <View style={{ height: '100%', backgroundColor: '#fff' }}>
-          <LinearGradient colors={skin1.menuHeadViewColor} start={{ x: 0, y: 0 }} end={{ x: 2, y: 0 }} style={{ height: sc(260), paddingLeft: sc(10) }}>
-            <Text style={{ marginTop: sc(115), color: 'white', textAlign: 'center', fontSize: sc(24.5) }}>欢迎您！</Text>
-            <Text style={{ marginTop: sc(42), color: 'white', textAlign: 'center', fontSize: sc(21.5) }}>{usr}</Text>
-            <Text style={{ marginTop: sc(8), color: 'white', textAlign: 'center', fontSize: sc(21.5) }}>{'¥' + balance}</Text>
-            <Button style={{ marginTop: -sc(44), marginLeft: sc(175) }} buttonStyle={{ backgroundColor: 'transparent' }} onPress={refreshBalance} icon={(
+          <LinearGradient colors={skin1.menuHeadViewColor} start={{ x: 0, y: 0 }} end={{ x: 2, y: 0 }} style={{ height: sc540(260), paddingLeft: sc540(10) }}>
+            <Text style={{ marginTop: sc540(115), color: 'white', textAlign: 'center', fontSize: sc540(24.5) }}>欢迎您！</Text>
+            <Text style={{ marginTop: sc540(42), color: 'white', textAlign: 'center', fontSize: sc540(21.5) }}>{usr}</Text>
+            <Text style={{ marginTop: sc540(8), color: 'white', textAlign: 'center', fontSize: sc540(21.5) }}>{'¥' + balance}</Text>
+            <Button style={{ marginTop: -sc540(44), marginLeft: sc540(175) }} buttonStyle={{ backgroundColor: 'transparent' }} onPress={refreshBalance} icon={(
               <Animated.View style={{ transform: [{ rotateZ: v.rotateZ }] }}>
-                <MaterialCommunityIcons name={'refresh'} size={sc(42)} color={'white'} />
+                <MaterialCommunityIcons name={'refresh'} size={sc540(42)} color={'white'} />
               </Animated.View>
             )} />
           </LinearGradient>
-          {showDepositAndWithdrawalBtn && <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingVertical: sc(14), paddingHorizontal: sc(6) }}>
+          {showDepositAndWithdrawalBtn && <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingVertical: sc540(14), paddingHorizontal: sc540(6) }}>
             <Button
-              icon={<Image source={{ uri: img_assets('chongzhi@2x') }} style={{ height: sc(34), aspectRatio: 1, tintColor: '#fff' }} />}
-              buttonStyle={{ paddingVertical: sc(7.5), paddingHorizontal: sc(16), backgroundColor: skin1.themeColor, borderRadius: sc(8) }}
-              titleStyle={{ marginLeft: sc(7), fontSize: sc(20) }}
+              icon={<Image source={{ uri: img_assets('chongzhi@2x') }} style={{ height: sc540(34), aspectRatio: 1, tintColor: '#fff' }} />}
+              buttonStyle={{ paddingVertical: sc540(7.5), paddingHorizontal: sc540(16), backgroundColor: skin1.themeColor, borderRadius: sc540(8) }}
+              titleStyle={{ marginLeft: sc540(7), fontSize: sc540(20) }}
               title='充值'
               onPress={() => {
                 menuModalComponent?.current?.close()
@@ -104,9 +104,9 @@ export const HomeRightMenuCP = (props: HomeRightMenuProps) => {
               }}
             />
             <Button
-              icon={<Image source={{ uri: img_assets('tixian@2x') }} style={{ height: sc(34), aspectRatio: 1, tintColor: '#fff' }} />}
-              buttonStyle={{ paddingVertical: sc(7.5), paddingHorizontal: sc(16), backgroundColor: skin1.themeColor, borderRadius: sc(8) }}
-              titleStyle={{ marginLeft: sc(7), fontSize: sc(20) }}
+              icon={<Image source={{ uri: img_assets('tixian@2x') }} style={{ height: sc540(34), aspectRatio: 1, tintColor: '#fff' }} />}
+              buttonStyle={{ paddingVertical: sc540(7.5), paddingHorizontal: sc540(16), backgroundColor: skin1.themeColor, borderRadius: sc540(8) }}
+              titleStyle={{ marginLeft: sc540(7), fontSize: sc540(20) }}
               title='提现'
               onPress={() => {
                 menuModalComponent?.current?.close()
@@ -115,7 +115,7 @@ export const HomeRightMenuCP = (props: HomeRightMenuProps) => {
             />
           </View>}
           <View style={{ height: 1, width: '100%', backgroundColor: '#eee' }} />
-          <List uniqueKey={'MenuModalComponent'} style={{ flex: 1 }} data={menus} scrollEnabled ListFooterComponent={<View style={{ height: sc(60) }} ><View style={{ height: 1, width: '100%', backgroundColor: '#e9e9e9' }} /></View>} renderItem={({ item }) => {
+          <List uniqueKey={'MenuModalComponent'} style={{ flex: 1 }} data={menus} scrollEnabled ListFooterComponent={<View style={{ height: sc540(60) }} ><View style={{ height: 1, width: '100%', backgroundColor: '#e9e9e9' }} /></View>} renderItem={({ item }) => {
             const { name, title, icon, logo, subId, isHot } = item
 
             let text = name ?? title
@@ -124,14 +124,14 @@ export const HomeRightMenuCP = (props: HomeRightMenuProps) => {
             subId == UGLinkPositionType.当前版本号 && (text = `${text}(${appVersion})`)
 
             return (
-              <TouchableOpacity style={{ flexDirection: 'row', height: sc(63), alignItems: 'center' }} onPress={() => {
+              <TouchableOpacity style={{ flexDirection: 'row', height: sc540(63), alignItems: 'center' }} onPress={() => {
                 menuModalComponent?.current?.close()
                 PushHelper.pushLinkPositionType(subId)
               }}>
-                <ImagePlaceholder source={{ uri: icon ?? logo }} style={{ marginLeft: sc(20), width: sc(37), aspectRatio: 1, tintColor: skin1.themeColor }} />
-                <Text style={{ marginLeft: sc(15), flex: 1, fontSize: sc(20) }}>{text}</Text>
-                {isHot ? <FastImage source={{ uri: img_images('hot2x') }} style={{ height: '100%', aspectRatio: 1 }} /> : <Entypo name='chevron-thin-right' color={UGColor.LineColor2} size={sc(29)} style={{ marginRight: sc(10) }} />}
-                <View style={{ position: 'absolute', top: sc(63), marginLeft: sc(70), width: '100%', height: 1, backgroundColor: '#e9e9e9' }} />
+                <ImagePlaceholder source={{ uri: icon ?? logo }} style={{ marginLeft: sc540(20), width: sc540(37), aspectRatio: 1, tintColor: skin1.themeColor }} />
+                <Text style={{ marginLeft: sc540(15), flex: 1, fontSize: sc540(20) }}>{text}</Text>
+                {isHot ? <FastImage source={{ uri: img_images('hot2x') }} style={{ height: '100%', aspectRatio: 1 }} /> : <Entypo name='chevron-thin-right' color={UGColor.LineColor2} size={sc540(29)} style={{ marginRight: sc540(10) }} />}
+                <View style={{ position: 'absolute', top: sc540(63), marginLeft: sc540(70), width: '100%', height: 1, backgroundColor: '#e9e9e9' }} />
               </TouchableOpacity>
             )
           }} />

@@ -5,7 +5,7 @@ import FastImage from "react-native-fast-image";
 import { setProps, UGBasePageProps } from "../../rn/pages/base/UGPage";
 import { PageName } from "../../rn/public/navigation/Navigation";
 import UGSkinManagers, { skin1 } from "../../rn/public/theme/UGSkinManagers";
-import { sc } from "../../rn/public/tools/Scale";
+import { sc540 } from "../../rn/public/tools/Scale";
 import { img_doy } from "../../rn/Res/icon";
 
 export const DoyLaunchPage = ({ setNavbarProps }: UGBasePageProps) => {
@@ -17,8 +17,8 @@ export const DoyLaunchPage = ({ setNavbarProps }: UGBasePageProps) => {
   }, [])
 
   return <View style={{ alignItems: 'center' }}>
-    <FastImage source={{ uri: img_doy('启动页logo', 'svg') }} style={{ width: sc(100), height: sc(100), backgroundColor: '#ddd' }} />
-    <Text style={{ fontSize: sc(40), textAlign: 'center' }}>DOY</Text>
-    <Button title='登录钱包' buttonStyle={{ width: sc(500) }} />
+    <FastImage source={{ uri: img_doy('启动页logo', 'svg') }} style={{ width: sc540(100), height: sc540(100), backgroundColor: '#ddd' }} />
+    <Text style={{ fontSize: sc540(40), textAlign: 'center' }}>DOY</Text>
+    <Button title='登录钱包' buttonStyle={{ width: sc540(500) }} />
   </View>
 }
