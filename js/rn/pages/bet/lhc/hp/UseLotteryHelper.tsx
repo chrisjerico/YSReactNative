@@ -45,27 +45,9 @@ const UseLotteryHelper = () => {
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
 
   useEffect(() => {
-
-
     //生成选中的数据
     const newSelectedModel = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
 
-//     const subData: SelectedLotterySubData = {
-//       groupId: playOddData?.pageData?.groupTri[tabIndex]
-//     }
-//
-// UGStore.dispatch({type: 'merge', selectedLotteryData: {
-//   selectedData: {
-//     '': {
-//
-//     }
-//   }
-//   }})
-
-    /**
-     *
-     * 投注数据以彩种的形式存在，比如选中了 特码B -> 两面 -> 某个球，存下的数据就是 特码B数据 以及 这个球的数据
-     */
     switch (playOddData?.code) {
       case LotteryConst.TM:  //特码
       case LotteryConst.LM: //两面

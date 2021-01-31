@@ -20,10 +20,12 @@ import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
 import { useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
+import { arrayLength } from '../../../public/tools/Ext'
 
 const ListContentComponent = () => {
 
   const {
+    ballSelected,
     playOddDetailData, //彩票数据
   } = UseListContent()
 
@@ -40,7 +42,7 @@ const ListContentComponent = () => {
           playOddDetailData()?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
                                              onPress={() => {
-                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+                                               // UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
                                                UGStore.dispatch({
                                                  type: 'reset',
                                                  currentPlayOddData: playOddDetailData()?.playOdds[leftColumnIndex],
@@ -56,7 +58,10 @@ const ListContentComponent = () => {
                         borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
                       },
                     ]}>
-                <View style={_styles.left_column_text_flag}>
+                <View style={[
+                  _styles.left_column_text_flag,
+                  ballSelected ? {backgroundColor: UGColor.WarnningColor1} : null
+                ]}>
                 </View>
                 <Text key={'renderLeftColumn' + item?.code}
                       numberOfLines={1}
@@ -241,7 +246,7 @@ const _styles = StyleSheet.create({
     borderRadius: scale(4),
   },
   left_column_text_flag: {
-    backgroundColor: UGColor.WarnningColor1,
+    backgroundColor: UGColor.LineColor2,
     borderRadius: scale(16),
     width: scale(16),
     aspectRatio: 1,

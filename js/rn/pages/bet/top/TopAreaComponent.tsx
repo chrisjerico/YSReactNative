@@ -52,9 +52,11 @@ const TopAreaComponent = () => {
           color={Skin1.navBarTitleColor}/>
     <View key={'renderTopBar space'}
           style={CommStyles.flex}/>
-    <Text key={'renderTopBar money' + userInfo?.balance}
-          style={[_styles.top_money,
-            { color: Skin1.navBarTitleColor }]}>{!dicNull(userInfo) && userInfo?.balance}</Text>
+    <TouchableWithoutFeedback onPress={() => syncUserInfo()}>
+      <Text key={'renderTopBar money' + userInfo?.balance}
+            style={[_styles.top_money,
+              { color: Skin1.navBarTitleColor }]}>{!dicNull(userInfo) && userInfo?.balance}</Text>
+    </TouchableWithoutFeedback>
     <TouchableWithoutFeedback onPress={() => syncUserInfo()}>
       <Icon key={'renderTopBar refresh'}
             size={scale(24)}
