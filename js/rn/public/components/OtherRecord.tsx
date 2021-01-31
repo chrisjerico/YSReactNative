@@ -98,7 +98,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     },
   ]
 
-  console.log('type0===========', type);
+  // console.log('type0===========', type);
   const [currentType, setCurrentType] = useState(typeArray[0])  //選擇注單類形
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [page, setPage] = useState(1)
@@ -108,8 +108,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const [validbetTotal, setValidBetTotal] = useState('0') //是否存取過數據
   const [winTotal, setWinTotal] = useState(0) //是否存取過數據
   const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //正在选择开始日期
-  const [startDate, setStartDate] = useState<string>(null)//选中的开始日期
+  const [startDate, setStartDate] = useState<string>(moment().format('yyyy-MM-DD'))//选中的开始日期
 
+  ugLog('startDate ==  ',startDate)
   const {
     systemInfo,
     userInfo,
@@ -178,8 +179,8 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     refMenu?.current?.toggleMenu()
     setCurrentType(item)
-    let date = moment().format('yyyy-MM-DD');
-    setStartDate(date)
+    // let date = moment().format('yyyy-MM-DD');
+    // setStartDate(date)
   }
 
   //刷新控件
@@ -217,7 +218,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     APIRouter.ticket_history_args(
       page + '', '20', currentType?.type, startDate, startDate
     ).then(({ data: res }) => {
-      ugLog('获取注單數據=======', res)
+      // ugLog('获取注單數據=======', res)
       if (res?.code == 0) {
         setIsSetData(true)
         refreshUI(res)
@@ -324,6 +325,8 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   let renderCalendar = () => {
     let curDate = new Date(startDate)
 
+
+    ugLog('curDate ==  ',curDate)
     return (
 
       <View key={'renderCalendar'}
