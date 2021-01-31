@@ -18,6 +18,7 @@ import { Badge, Button } from 'react-native-elements';
 import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { img_assets, useHtml5Image } from '../../../Res/icon';
+import { appConfig } from '../../../../../config';
 
 
 interface JDPromotionTabRealityRcordCP {
@@ -51,7 +52,7 @@ const JDPromotionTabRealityRcordCP = ({ pageTitle, titleArray }: { pageTitle?: s
       levelArray: [],
       pageSize: 20,
       pageNumber: 1,
-      levelindex: 0,
+      levelindex: appConfig.isShowOneLevel() ? 1 : 0,
       state: {
         showFoot: 0,
         isRefreshing: true,
@@ -60,17 +61,19 @@ const JDPromotionTabRealityRcordCP = ({ pageTitle, titleArray }: { pageTitle?: s
     }
   )
   let capitalController //类型选择
-  v.levelArray = [{ value: 0, label: '全部下线' },
-  { value: 1, label: '1级下线' },
-  { value: 2, label: '2级下线' },
-  { value: 3, label: '3级下线' },
-  { value: 4, label: '4级下线' },
-  { value: 5, label: '5级下线' },
-  { value: 6, label: '6级下线' },
-  { value: 7, label: '7级下线' },
-  { value: 8, label: '8级下线' },
-  { value: 9, label: '9级下线' },
-  { value: 10, label: '10级下线' }];
+
+  v.levelArray = appConfig.isShowOneLevel() ? [{ value: 1, label: '1级下线' },] :
+    [{ value: 0, label: '全部下线' },
+    { value: 1, label: '1级下线' },
+    { value: 2, label: '2级下线' },
+    { value: 3, label: '3级下线' },
+    { value: 4, label: '4级下线' },
+    { value: 5, label: '5级下线' },
+    { value: 6, label: '6级下线' },
+    { value: 7, label: '7级下线' },
+    { value: 8, label: '8级下线' },
+    { value: 9, label: '9级下线' },
+    { value: 10, label: '10级下线' }];
   //初始化
   useEffect(() => {
         onHeaderRefresh()
