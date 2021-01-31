@@ -50,7 +50,7 @@ import { color } from 'react-native-reanimated'
 const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   let { type, showBackButton } = route?.params
-  ugLog('--------------------------route?.params==', route?.params)
+  // ugLog('--------------------------route?.params==', route?.params)
 
   const refMenu = useRef(null)
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -111,7 +111,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const [winTotal, setWinTotal] = useState(0) //是否存取過數據
   const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //正在选择开始日期
   const [startDate, setStartDate] = useState<string>(moment().format('yyyy-MM-DD'))//选中的开始日期
-  console.log('0000currentType===========', currentType);
+
   // ugLog('startDate ==  ',startDate)
   const {
     systemInfo,
@@ -134,7 +134,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                   type = dic[key];
                 }
                 setCurrentType(typeArray.find((v) => v.type == type))
-                // ugLog('2222current===',currentType)
+                 requestGameData()
               }
             }
             break;
@@ -142,8 +142,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
             //TODO Android 传参
             break;
         }
-        !data?.length && requestGameData()
-      }
+
+        
+      },
     }, false)
   }, [])
 
@@ -201,6 +202,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       renderAllData()
     }
 
+// ugLog('page==',page)
+// ugLog('currentType?.type==',currentType?.type)
+// ugLog('startDate==',startDate)
     // 获取注單數據
     APIRouter.ticket_history_args(
       page + '', '20', currentType?.type, startDate, startDate
@@ -372,6 +376,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
           rightButton={rightButton}
           showRightTitle={true}
           onPressBackBtn={() => {
+            // ugLog('999999')
+            //情况网络数据
+            setData([]);
             pop()
           }
           }
