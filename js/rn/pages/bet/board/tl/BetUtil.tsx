@@ -87,7 +87,8 @@ const checkBetCount = (showMsg?: boolean): boolean => {
         break
 
       case LotteryConst.ZXBZ:  //自选不中
-        if(selCount < 5) {
+        const count = calculateActualItemCount(selectedData)
+        if(count < 5) {
           showMsg && Toast('自选不中请选择5到12个选项')
           return false
         }
@@ -112,7 +113,7 @@ const gatherSelectedItems = (code?: string, selectedData?: Map<string, Map<strin
 }
 
 /**
- * 计算彩票下注时候，选中的条目数量
+ * 计算彩票下注时候，选中的条目占位数量，有的彩票计算实际数量，有的彩票计算相对数量
  * @param selectedData
  */
 const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): number => {
@@ -122,7 +123,7 @@ const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, S
     const selData = gatherSelectedItems(key, selectedData)
     const scount = selData?.map((item) =>
       arrayLength(item.zodiacs || item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
-    ugLog('calculate valueSel key = ', key, scount)
+    ugLog('calculateItemCount valueSel key = ', key, scount)
 
     if (scount > 0) {//该彩种是否有选中的数据
       if (LotteryConst.LMA == key
@@ -134,6 +135,29 @@ const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, S
         // const valueSel = gatherItems(key, selectedData)
         itemCount += scount
       }
+    }
+  })
+
+  return itemCount
+}
+
+/**
+ * 计算彩票下注时候，选中的条目实际数量
+ * @param selectedData
+ */
+const calculateActualItemCount = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): number => {
+  let itemCount = 0
+  const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
+  keys?.map((key) => {
+    const selData = gatherSelectedItems(key, selectedData)
+    const scount = selData?.map((item) =>
+      arrayLength(item.zodiacs || item.plays))?.reduce(((previousValue, currentValue) => previousValue + currentValue))
+    ugLog('calculateActualItemCount valueSel key = ', key, scount)
+
+    if (scount > 0) {//该彩种是否有选中的数据
+      //选中的数据有多少组
+      // const valueSel = gatherItems(key, selectedData)
+      itemCount += scount
     }
   })
 
@@ -202,6 +226,7 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
 export {
   gatherSelectedItems,
   calculateItemCount,
+  calculateActualItemCount,
   initItemMoney,
   checkBetCount,
 }

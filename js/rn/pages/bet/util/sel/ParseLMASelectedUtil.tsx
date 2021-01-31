@@ -32,7 +32,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
 
       //再用原始数组和彩种数据组合成 新的选中数据
       !anyEmpty(selBalls) && (
-        tabMap[groupData?.code] = {
+        tabMap[groupData?.alias] = {
           playGroups: groupData,
           plays: selBalls
         } as SelectedPlayModel //key=取第一组数据的ID作为Tab标识, value=每一组数据，如 特码B里面的 两面, 色波
