@@ -6,7 +6,7 @@ import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { anyEmpty } from '../../../public/tools/Ext'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
-import { ImagePlaceholder } from '../tools/ImagePlaceholder'
+import { FastImagePlaceholder, ImagePlaceholder } from '../tools/ImagePlaceholder'
 import { push } from '../../../public/navigation/RootNavigation'
 import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
@@ -40,7 +40,6 @@ const JDGameListCP = ({
         if (item?.isPopup) {
           push(PageName.TwoLevelGames, { game: item, showBackButton: true })
         } else {
-          //TODO
           switch (Platform.OS) {
             case 'ios':
               const dict = {
@@ -52,21 +51,27 @@ const JDGameListCP = ({
               }
               let linkCategory:number = dict[item?.category];
               
-              ugLog('item.id==',item.id)
-              ugLog('item.gameid==',item.gameId)
+              // ugLog('item.id==',item.id)
+              // ugLog('item.gameid==',item.gameId)
+              let gotoId = anyEmpty(item.id)?item.gameId:item.id
+              // ugLog('goto==',gotoId)
+              if (anyEmpty(linkCategory)) {
+                linkCategory = 2;
+              }
               if (!anyEmpty(linkCategory)) {
-                OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [linkCategory, item.id])
+                OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [linkCategory, gotoId])
               }
 
               break
             case 'android':
+              //TODO android 游戏界面
               break
           }
         }
 
       }}>
         <View style={[_styles.game_item_container, { backgroundColor: Skin1.homeContentColor, }]}>
-          <Image
+          <FastImagePlaceholder
             style={{ width: 60, height: 60, marginRight: 10, marginTop: 10, marginLeft: 10, }}
             source={{ uri: item.pic }} />
           <View>

@@ -18,10 +18,11 @@ interface IMiddleMenuItem {
   subTitle?: string // 次级名字
   icon?: string //图标地址
   id?: string //识别标识
-  type: string 
+  type?: string
 }
 
 interface IMiddleMenu {
+  curId?: string //当前选中的识别标识
   menu?: Array<IMiddleMenuItem> //菜单
   onMenuClick?: (index: number, item: IMiddleMenuItem) => void //点击了哪个菜单
 }
@@ -33,7 +34,7 @@ interface IMiddleMenu {
  * @param ref
  * @constructor
  */
-const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
+const MiddleMenu = ({ curId, menu, onMenuClick }: IMiddleMenu, ref?: any) => {
 
   const [show, setShow] = useState(false)
 
@@ -42,6 +43,27 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
       setShow(!show)
     },
   }))
+
+  /**
+   * 绘制一个条目
+   * @param item
+   */
+  const renderIcon = (item?: IMiddleMenuItem) => {
+    const icon = item?.id == curId?.toString() ?
+      <Icon size={scale(32)}
+            name={'check-circle'}
+            color={Skin1.themeColor}
+            style={_styles.bank_name_icon2}/> :
+      <Icon size={scale(32)}
+            name={'circle-o'}
+            style={_styles.bank_name_icon2}/>
+
+    return (anyEmpty(item?.icon) ?
+      icon :
+      <FastImage source={{ uri: item.icon }}
+                 resizeMode={'contain'}
+                 style={_styles.bank_name_icon}/>)
+  }
 
   return (
     <View style={_styles.container}>
@@ -63,18 +85,13 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
               menu?.map((item, index) =>
                 <TouchableOpacity onPress={() => onMenuClick && onMenuClick(index, item)} key={index + 'menu'}>
                   <View style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
-                    {
-                      anyEmpty(item?.icon) ?
-                        <Icon size={scale(32)}
-                              style={_styles.bank_name_icon2}
-                              name={'circle-o'}/> :
-                        <FastImage source={{ uri: item.icon }}
-                                   resizeMode={'contain'}
-                                   style={_styles.bank_name_icon}/>
-                    }
+                    {renderIcon(item)}
                     <View style={_styles.item_sub_content}>
                       <Text numberOfLines={1}
-                            style={_styles.item_name}>{item.title}</Text>
+                            style={[
+                              _styles.item_name,
+                              item?.id == curId?.toString() ? {color: Skin1.themeColor} : null,
+                            ]}>{item.title}</Text>
                       {
                         !anyEmpty(item.subTitle) && <Text numberOfLines={1}
                                                           style={[_styles.item_sub_name, { color: Skin1.themeColor }]}>

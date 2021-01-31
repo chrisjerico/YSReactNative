@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import BetLotteryContext from '../../BetLotteryContext'
 import { UGStore } from '../../../../redux/store/UGStore'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
@@ -14,6 +14,11 @@ import { calculateItemCount, gatherSelectedItems, initItemMoney } from '../tl/Be
 import { zodiacPlayX } from '../tl/hx/BetHXUtil'
 import { playDataX } from '../tl/zxbz/BetZXBZUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
+import { NormalModel } from '../../../../public/network/Model/NormalModel'
+import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
+import APIRouter from '../../../../public/network/APIRouter'
+import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 
 /**
  * 下注面板
@@ -79,7 +84,7 @@ const UsePayBoard = () => {
    */
   useEffect(() => {
     ugLog('moneyMap total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
-    const money = anyEmpty(moneyMap) ?
+    const money = dicNull(moneyMap) ?
       0 :
       Object.values(moneyMap)?.reduce((previousValue, currentValue) =>
         previousValue + currentValue)
@@ -90,7 +95,7 @@ const UsePayBoard = () => {
    *
    * 开始下注
    */
-  const startBetting = () => {
+  const startBetting = async (): Promise<number> => {
     const betBean: Array<BetLotteryData> = []
 
     //Map<string, Map<string, Map<string, SelectedPlayModel>>>
@@ -176,7 +181,19 @@ const UsePayBoard = () => {
       totalMoney: numberToFloatString(totalMoney),
       isInstant: nextIssueData?.isInstant,
     }
-    api.user.userGameBetWithParams(pms)
+    // api.user.userGameBetWithParams(pms).useSuccess(((res, sm) =>
+    // ))
+    showLoading()
+    const { data } = await api.user.userGameBetWithParams(pms).promise
+    hideLoading()
+    // ugLog('res bet 2 = res', data)
+    Toast(data?.msg)
+
+    syncUserInfo()
+
+    return data?.code
+
+    // const { data } = await api.user.myFeedback(0, date, true, 1, 20).promise
   }
 
   return {

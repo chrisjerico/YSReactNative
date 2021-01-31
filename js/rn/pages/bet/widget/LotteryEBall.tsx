@@ -75,7 +75,7 @@ const LotteryEBall = (iBall: ILotteryEBall) => {
   const { item, callback } = iBall
 
   return (
-    callback != null ? <TouchableWithoutFeedback key={'LotteryEBall' + item?.id}
+    callback != null ? <TouchableWithoutFeedback key={`LotteryEBall-${item?.exId}-${item?.id}`}
                                          onPress={() => callback && callback()}>
         {renderContent(iBall)}
       </TouchableWithoutFeedback> :
