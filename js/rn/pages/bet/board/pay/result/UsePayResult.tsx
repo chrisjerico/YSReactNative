@@ -27,6 +27,8 @@ import { LotteryResultData } from '../../../../../public/network/Model/lottery/r
  */
 const UsePayResult = () => {
 
+  const nextIssueData = UGStore.globalProps?.nextIssueData
+
   const [counter, setCounter] = useState(0) //倒计时
   const [timer, setTimer] = useState<any>() //时钟
   const [autoBet, setAutoBet] = useState(false) //是否打开自动投注
@@ -61,6 +63,7 @@ const UsePayResult = () => {
   }, [autoBet])
 
   return {
+    nextIssueData,
     closeWindow,
     setCloseWindow,
     betResult,

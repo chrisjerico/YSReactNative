@@ -38,6 +38,8 @@ export const mergeObject = (src?: any, des?: any): any => {
     || anyNull(src)) {
     return des // 如果其中一个不是对象 就返回 des
   }
+  ugLog('mergeObject = ', JSON.stringify(src))
+  ugLog('mergeObject = ', JSON.stringify(des))
   let obj = JSON.parse(JSON.stringify(src))
   if (!anyEmpty(des)) {
     for (let key in des) {

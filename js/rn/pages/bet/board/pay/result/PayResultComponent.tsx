@@ -28,6 +28,7 @@ interface IPayResultComponent {
 const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?: any) => {
 
   const {
+    nextIssueData,
     closeWindow,
     setCloseWindow,
     betResult,
@@ -47,19 +48,96 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
   }, [closeWindow, autoBet])
 
   /**
+   * 绘制倒计时
+   */
+  const renderCounter = () => {
+    return (
+      autoBet && <View style={_styles.counter_container}>
+        <Animatable.Text animation="pulse"
+                         easing="linear"
+                         iterationDelay={500}
+                         iterationCount={'infinite'}
+                         style={_styles.counter_text}>{
+          `倒计时: ${3 - counter % 4}s`
+        }️</Animatable.Text>
+      </View>
+    )
+  }
+
+  /**
+   * 绘制中奖金额
+   */
+  const renderBonus = () => {
+    return <View style={_styles.text_container}>
+      {
+        betResult && <Animatable.Text key={betResult?.result + betResult?.openNum}
+                                      animation={zoomOutIn}
+                                      iterationCount={1}
+                                      duration={500}
+                                      iterationDelay={100}
+                                      style={_styles.bet_text}>{
+          Number.parseFloat(betResult?.bonus) > 0 ? `+${betResult?.bonus}` : '再接再厉'
+        }</Animatable.Text>
+      }
+    </View>
+  }
+
+  /**
    * 绘制 是否中奖图标
    */
   const renderPrize = () => {
-    return betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
-                                         animation={zoomOutIn}
-                                         iterationCount={1}
-                                         duration={500}
-                                         iterationDelay={500}
-                                         style={CommStyles.flex}>
-      <FastImage source={Number.parseFloat(betResult?.bonus) > 0 ? { uri: Res.mmczjl } : { uri: Res.mmcwzj }}
-                 resizeMode={'contain'}
-                 style={_styles.zj}/>
-    </Animatable.View>
+    return <View style={_styles.zj_container}>
+      {
+        betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
+                                      animation={zoomOutIn}
+                                      iterationCount={1}
+                                      duration={500}
+                                      iterationDelay={500}
+                                      style={CommStyles.flex}>
+          <FastImage source={Number.parseFloat(betResult?.bonus) > 0 ? { uri: Res.mmczjl } : { uri: Res.mmcwzj }}
+                     resizeMode={'contain'}
+                     style={_styles.zj}/>
+        </Animatable.View>
+      }
+    </View>
+  }
+
+  /**
+   * 绘制 自动下注
+   */
+  const renderAutoBet = () => {
+    return <TouchableWithoutFeedback onPress={() => setAutoBet(!autoBet)}>
+      <View style={_styles.tz_container}>
+        {
+          autoBet ? <FastImage source={{ uri: Res.mmczt }}
+                               resizeMode={'contain'}
+                               style={_styles.tz}/> :
+            <FastImage source={{ uri: Res.mmczdtz }}
+                       resizeMode={'contain'}
+                       style={_styles.tz}/>
+        }
+      </View>
+    </TouchableWithoutFeedback>
+  }
+
+  /**
+   * 绘制 中奖结果
+   */
+  const renderResult = () => {
+    return <View style={_styles.ball_container}>
+      {
+        betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
+                                      animation={zoomInOut}
+                                      iterationCount={1}
+                                      duration={500}
+                                      iterationDelay={250}
+                                      style={_styles.ball_content}>
+          <LotteryZodiacAndBall ballStr={betResult?.openNum}
+                                zodiacStr={nextIssueData?.gameType == 'cqssc' ? null : betResult?.result}
+                                gameType={betResult?.gameType}/>
+        </Animatable.View>
+      }
+    </View>
   }
 
   return (
@@ -75,62 +153,15 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
                      resizeMode={'contain'}
                      style={_styles.mmc_image}/>
 
-          <View style={_styles.text_container}>
-            {
-              betResult && <Animatable.Text key={betResult?.result + betResult?.openNum}
-                                            animation={zoomOutIn}
-                                            iterationCount={1}
-                                            duration={500}
-                                            iterationDelay={100}
-                                            style={_styles.bet_text}>{
-                Number.parseFloat(betResult?.bonus) > 0 ? '恭喜中奖' : '再接再厉'
-              }</Animatable.Text>
-            }
-          </View>
+          {renderBonus()}
 
-          {
-            autoBet && <View style={_styles.counter_container}>
-              <Animatable.Text animation="pulse"
-                               easing="linear"
-                               iterationDelay={500}
-                               iterationCount={'infinite'}
-                               style={_styles.counter_text}>{
-                `倒计时: ${3 - counter % 4}s`
-              }️</Animatable.Text>
-            </View>
-          }
+          {renderCounter()}
 
-          <View style={_styles.zj_container}>
-            {renderPrize()}
-          </View>
+          {renderPrize()}
 
-          <TouchableWithoutFeedback onPress={() => setAutoBet(!autoBet)}>
-            <View style={_styles.tz_container}>
-              {
-                autoBet ? <FastImage source={{ uri: Res.mmczt }}
-                                     resizeMode={'contain'}
-                                     style={_styles.tz}/> :
-                  <FastImage source={{ uri: Res.mmczdtz }}
-                             resizeMode={'contain'}
-                             style={_styles.tz}/>
-              }
-            </View>
-          </TouchableWithoutFeedback>
+          {renderAutoBet()}
 
-          <View style={_styles.ball_container}>
-            {
-              betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
-                                            animation={zoomInOut}
-                                            iterationCount={1}
-                                            duration={500}
-                                            iterationDelay={250}
-                                            style={CommStyles.flex}>
-                <LotteryZodiacAndBall ballStr={betResult?.openNum}
-                                      zodiacStr={betResult?.result}
-                                      gameType={betResult?.gameType}/>
-              </Animatable.View>
-            }
-          </View>
+          {renderResult()}
 
           <View style={_styles.close_container}>
             <Icon size={scale(48)}
@@ -202,9 +233,15 @@ const _styles = StyleSheet.create({
   ball_container: {
     position: 'absolute',
     alignItems: 'center',
-    paddingBottom: scale(150),
+    justifyContent: 'flex-end',
     width: '100%',
     height: '100%',
+  },
+  ball_content: {
+    height: scale(86),
+    marginBottom: scale(150),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text_container: {
     position: 'absolute',

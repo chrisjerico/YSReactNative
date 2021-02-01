@@ -154,7 +154,7 @@ export class CCSessionReq {
       if (sm.err) {
         return Promise.reject(sm.err);
       }
-      console.log('【请求成功】', sm.res?.msg, sm.url);
+      console.log('【请求成功】', JSON.stringify(sm.res), sm.url);
 
       // 向外回调
       sm.success && sm.success(res?.data, sm)

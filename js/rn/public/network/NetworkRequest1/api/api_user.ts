@@ -160,8 +160,6 @@ export class api_user {
 
   // 即时投注（待完善）
   static instantBet(params: {}) {
-    console.log('instantBet  params ===',params);
-
     return this.c.post<LotteryResultModel>('instantBet',params);
   }
 

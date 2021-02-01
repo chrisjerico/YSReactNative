@@ -95,8 +95,7 @@ const LotteryZodiacAndBall = ({
       case 'pk10nn'://牛牛系列
         ballView = (
           [
-            <View key={key + ballStr + 'line'}
-                  style={CommStyles.flex}/>,
+            <View key={key + ballStr + 'line'}/>,
             <View key={key + ballStr + 'ct'}
                   style={_styles.ball_container}>
               {
@@ -113,8 +112,7 @@ const LotteryZodiacAndBall = ({
       case 'dlt'://大乐透系列
         ballView = (
           [
-            <View key={key + ballStr + 'line'}
-                  style={CommStyles.flex}/>,
+            <View key={key + ballStr + 'line'}/>,
             <View key={key + ballStr + 'ct'}
                   style={_styles.ball_container}>
               {
@@ -133,8 +131,7 @@ const LotteryZodiacAndBall = ({
       case 'lhc'://六合彩
         ballView = (
           [
-            <View key={ballStr + 'line'}
-                  style={CommStyles.flex}/>,
+            <View key={ballStr + 'line'}/>,
             <View key={ballStr + 'ct'}
                   style={_styles.ball_container}>
               {
@@ -157,8 +154,7 @@ const LotteryZodiacAndBall = ({
       default:
         ballView = (
           [
-            <View key={key + ballStr + 'line'}
-                  style={CommStyles.flex}/>,
+            <View key={key + ballStr + 'line'}/>,
             <View key={key + ballStr + 'ct'}
                   style={_styles.ball_container}>
               {
