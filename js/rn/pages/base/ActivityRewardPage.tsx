@@ -8,6 +8,7 @@ import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { removeHTMLTag } from '../../public/tools/removeHTMLTag'
+import { stringToNumber } from '../../public/tools/tars'
 import { Toast } from '../../public/tools/ToastUtils'
 import Button from '../../public/views/tars/Button'
 import List from '../../public/views/tars/List'
@@ -129,6 +130,7 @@ const ActivityRewardPage = () => {
   const [quickAmounts, setQuickAmounts] = useState([])
   const [applyMoney, setApplyMoney] = useState(null)
   const [applyDescription, setApplyDescription] = useState(null)
+  const [applyImgCaptcha, setApplyImgCaptcha] = useState(null)
   const [imgCaptcha, setImgCaptcha] = useState('')
   useEffect(() => {
     Promise.all([
@@ -251,7 +253,7 @@ const ActivityRewardPage = () => {
               placeholder={'申请金额'}
               value={applyMoney}
               onChangeText={(text) => {
-                setApplyMoney(text)
+                setApplyMoney(text?.replace(/[^0-9]/g, ''))
               }}
             />
             <TextInput
@@ -263,7 +265,7 @@ const ActivityRewardPage = () => {
               }}
             />
             <View style={{ flexDirection: 'row', marginTop: 10, width: '90%' }}>
-              <TextInput placeholder={'请输入验证码'} style={{ width: 150, borderColor: '#d9d9d9', borderWidth: AppDefine.onePx, borderRadius: 5, height: 30 }} />
+              <TextInput placeholder={'请输入验证码'} style={{ width: 150, borderColor: '#d9d9d9', borderWidth: AppDefine.onePx, borderRadius: 5, height: 30, paddingHorizontal: 3 }} />
               <Image source={{ uri: imgCaptcha }} style={{ width: 170, height: 30 }} resizeMode={'contain'} />
             </View>
             <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', justifyContent: 'space-around', width: '100%', paddingBottom: 20 }}>
@@ -285,6 +287,8 @@ const ActivityRewardPage = () => {
                     Toast('申请金额不能为空')
                   } else if (!applyDescription) {
                     Toast('申请说明不能为空')
+                  } else if (!applyImgCaptcha) {
+                    Toast('验证码不能为空')
                   } else {
                     setApplyVisible(false)
                     setApplyMoney(null)
