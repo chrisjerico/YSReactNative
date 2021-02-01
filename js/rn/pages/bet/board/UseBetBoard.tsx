@@ -2,7 +2,6 @@ import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
-import BetLotteryContext from '../BetLotteryContext'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
 import { Toast } from '../../../public/tools/ToastUtils'
@@ -24,9 +23,7 @@ const UseBetBoard = () => {
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
-  const {
-    playOddDetailData,//彩票数据
-  } = useContext(BetLotteryContext)
+  const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
 
   // const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 

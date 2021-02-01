@@ -197,7 +197,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             _styles.dialog_title_container,
             { backgroundColor: Skin1.themeColor },
           ]}>
-            <Text style={_styles.dialog_title_text}>{playOddDetailData()?.game?.title + '-下注清单'}</Text>
+            <Text style={_styles.dialog_title_text}>{playOddDetailData?.game?.title + '-下注清单'}</Text>
           </View>
           <View style={[_styles.sv_parent, { height: listHeight }]}>
             <ScrollView style={_styles.sv_container}

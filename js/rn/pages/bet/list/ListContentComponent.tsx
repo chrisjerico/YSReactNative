@@ -39,13 +39,13 @@ const ListContentComponent = () => {
                 showsVerticalScrollIndicator={false}>
       <View style={_styles.left_column_content}>
         {
-          playOddDetailData()?.playOdds?.map((item, index) => {
+          playOddDetailData?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
                                              onPress={() => {
                                                UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
                                                UGStore.dispatch({
                                                  type: 'reset',
-                                                 currentPlayOddData: playOddDetailData()?.playOdds[leftColumnIndex],
+                                                 currentPlayOddData: playOddDetailData?.playOdds[leftColumnIndex],
                                                })
 
                                                setLeftColumnIndex(index)
@@ -153,7 +153,9 @@ const ListContentComponent = () => {
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContent = () => {
-    const playOdds = playOddDetailData()?.playOdds[leftColumnIndex]
+    ugLog('playOddDetailData leftColumnIndex =-', leftColumnIndex)
+    ugLog('playOddDetailData righ =-', playOddDetailData)
+    const playOdds = playOddDetailData?.playOdds[leftColumnIndex]
     let lotteryCode = playOdds?.code
     ugLog('------------------lotteryCode---------------------------------', lotteryCode)
     // return <View style={CommStyles.flex}>

@@ -18,7 +18,7 @@ const UseBetLottery = () => {
 
   const refListController = useRef()
   const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
-  const [playOddDetailData, setPlayOddDetailData] = useState<PlayOddDetailData>(null) //彩票数据
+  const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const [loadedLottery, setLoadedLottery] = useState<Array<string>>([])//需要加载进来的彩票列表
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const UseBetLottery = () => {
 
     if (res?.code == 0) {
       const newPlayOdds = parseLotteryDetailData(res?.data)
-      setPlayOddDetailData({...res?.data, playOdds: newPlayOdds})
+      UGStore.dispatch({type: 'reset', playOddDetailData: {...res?.data, playOdds: newPlayOdds}})
     }
 
     return res?.code

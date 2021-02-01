@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
-import BetLotteryContext from '../BetLotteryContext'
 import moment from 'moment'
 import PushHelper from '../../../public/define/PushHelper'
 import AppDefine from '../../../public/define/AppDefine'
@@ -16,10 +15,7 @@ import { ugLog } from '../../../public/tools/UgLog'
  */
 const UseTime = () => {
 
-  const {
-    lotteryId,
-  } = useContext(BetLotteryContext)
-
+  const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   // const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
@@ -29,7 +25,7 @@ const UseTime = () => {
   const [openTime, setOpenTime] = useState<number>(-1) //开奖时间倒计时
 
   useEffect(()=>{
-    requestNextData(lotteryId())
+    requestNextData(UGStore.globalProps?.lotteryId)
   }, [])
 
   useEffect(() => {

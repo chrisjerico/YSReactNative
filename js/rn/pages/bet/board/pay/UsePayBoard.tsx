@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import BetLotteryContext from '../../BetLotteryContext'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
@@ -27,10 +26,7 @@ import { syncUserInfo } from '../../../../public/tools/user/UserTools'
  */
 const UsePayBoard = () => {
 
-  const {
-    playOddDetailData,//彩票数据
-  } = useContext(BetLotteryContext)
-
+  const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   const [selectedData, setSelectedData] = useState<Map<string, Map<string, Map<string, SelectedPlayModel>>>>(null) //当前选中的数据 结构和SelectedLotteryModel一样

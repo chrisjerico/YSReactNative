@@ -34,6 +34,7 @@ interface INameOrAlias {
  * 退出的时候清除彩票数据
  */
 const clearLotteryData = () => {
+  UGStore.dispatch({ type: 'reset', lotteryId: '-1' })
   UGStore.dispatch({ type: 'reset', currentPlayOddData: {} })
   UGStore.dispatch({ type: 'reset', nextIssueData: {} })
   UGStore.dispatch({ type: 'reset', playOddDetailData: {} })
