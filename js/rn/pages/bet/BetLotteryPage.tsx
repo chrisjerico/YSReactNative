@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import UseBetLottery from './UseBetLottery'
@@ -16,6 +16,7 @@ import FastImage from 'react-native-fast-image'
 import { Res } from '../../Res/icon/Res'
 import { clearLotteryData } from './util/LotteryUtil'
 import InstantLotteryComponent from './counter/mmc/InstantLotteryComponent'
+import * as Animatable from 'react-native-animatable'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -57,9 +58,8 @@ const BetLotteryPage = ({ navigation, route }) => {
                 style={{ backgroundColor: UGColor.BackgroundColor1 }}
                 hideBar={true}>
 
-      {/*<Text>{lotteryId}</Text>*/}
-      {/*<Animatable.Text animation="pulse" easing="linear" iterationDelay={1000} iterationCount="infinite" style={{ textAlign: 'center', backgroundColor: 'yellow' }}>{new Date().format('yyyy年MM月dd日 hh时mm分')}️</Animatable.Text>*/}
-
+      {/*<Animatable.Text animation="pulse" easing="linear" iterationDelay={1000} iterationCount={'infinite'} style={{ textAlign: 'center', backgroundColor: 'yellow' }}>{new Date().format('yyyy年MM月dd日 hh时mm分')}️</Animatable.Text>*/}
+      {/*<Animatable.Text animation={zoomOut} iterationCount={1}  style={{ textAlign: 'center', backgroundColor: 'red' }}>Zoom me out</Animatable.Text>*/}
       {/*<Animatable.Text style={{backgroundColor: 'red'}} animation="slideInDown" iterationCount="infinite" direction="alternate">Up and down you go</Animatable.Text>*/}
       {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="zoomInUp" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}
       {/*<Animatable.Text style={{backgroundColor: 'blue'}} animation="fadeIn" iterationCount="infinite">Zoom me up, Scotty</Animatable.Text>*/}

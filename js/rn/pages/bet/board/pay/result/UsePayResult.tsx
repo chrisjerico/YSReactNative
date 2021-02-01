@@ -26,8 +26,31 @@ import { syncUserInfo } from '../../../../../public/tools/user/UserTools'
  */
 const UsePayResult = () => {
 
+  const [counter, setCounter] = useState(0) //倒计时
+  const [timer, setTimer] = useState<any>() //时钟
+  const [autoBet, setAutoBet] = useState(false) //是否打开自动投注
+
+  useEffect(() => {
+    if (autoBet) {
+      const timer = setInterval(() => {
+        setCounter(n => n + 1)
+      }, 1000)
+
+      setTimer(timer)
+    } else {
+      setCounter(0)
+      clearInterval(timer)
+    }
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [autoBet])
 
   return {
+    counter,
+    autoBet,
+    setAutoBet,
   }
 }
 

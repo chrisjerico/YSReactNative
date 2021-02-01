@@ -1,22 +1,17 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
-import { forwardRef, useMemo } from 'react'
-import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../../public/tools/Scale'
-import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import LotteryConst from '../../../const/LotteryConst'
-import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { ugLog } from '../../../../../public/tools/UgLog'
 import UsePayResult from './UsePayResult'
 import Icon from 'react-native-vector-icons/Fontisto'
-import { anyEmpty } from '../../../../../public/tools/Ext'
-import { calculateItemCount, gatherSelectedItems } from '../../tl/BetUtil'
-import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
 import { Res } from '../../../../../Res/icon/Res'
 import FastImage from 'react-native-fast-image'
 import { LotteryResultData } from '../../../../../public/network/Model/lottery/result/LotteryResultModel'
 import LotteryZodiacAndBall from '../../../widget/LotteryZodiacAndBall'
+import * as Animatable from 'react-native-animatable'
+import { UGColor } from '../../../../../public/theme/UGThemeColor'
+import { forwardRef } from 'react'
+import CommStyles from '../../../../base/CommStyles'
 
 interface IPayResultComponent {
   betData?: LotteryResultData
@@ -31,15 +26,25 @@ interface IPayResultComponent {
  */
 const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?: any) => {
 
-  const {} = UsePayResult()
+  const {
+    counter,
+    autoBet,
+    setAutoBet,
+  } = UsePayResult()
 
   /**
    * 绘制 是否中奖图标
    */
   const renderPrize = () => {
-    return <FastImage source={Number.parseFloat(betData?.bonus) > 0 ? { uri: Res.mmczjl } : { uri: Res.mmcwzj }}
-                      resizeMode={'contain'}
-                      style={_styles.zj}/>
+    return <Animatable.View animation={zoomOutIn}
+                            iterationCount={1}
+                            duration={500}
+                            iterationDelay={500}
+                            style={CommStyles.flex}>
+      <FastImage source={Number.parseFloat(betData?.bonus) > 0 ? { uri: Res.mmczjl } : { uri: Res.mmcwzj }}
+                 resizeMode={'contain'}
+                 style={_styles.zj}/>
+    </Animatable.View>
   }
 
   return (
@@ -61,25 +66,45 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
             }</Text>
           </View>
 
+          {
+            autoBet && <View style={_styles.counter_container}>
+              <Animatable.Text animation="pulse"
+                               easing="linear"
+                               iterationDelay={500}
+                               iterationCount={'infinite'}
+                               style={_styles.counter_text}>{
+                `倒计时: ${3 - counter % 4}s`
+              }️</Animatable.Text>
+            </View>
+          }
+
           <View style={_styles.zj_container}>
             {renderPrize()}
           </View>
 
-          <View style={_styles.tz_container}>
-            <FastImage source={{ uri: Res.mmczdtz }}
-                       resizeMode={'contain'}
-                       style={_styles.tz}/>
-
-            {/*<FastImage source={{ uri: Res.mmczt }}*/}
-            {/*           resizeMode={'contain'}*/}
-            {/*           style={_styles.tz}/>*/}
-
-          </View>
+          <TouchableWithoutFeedback onPress={() => setAutoBet(!autoBet)}>
+            <View style={_styles.tz_container}>
+              {
+                autoBet ? <FastImage source={{ uri: Res.mmczt }}
+                                     resizeMode={'contain'}
+                                     style={_styles.tz}/> :
+                  <FastImage source={{ uri: Res.mmczdtz }}
+                             resizeMode={'contain'}
+                             style={_styles.tz}/>
+              }
+            </View>
+          </TouchableWithoutFeedback>
 
           <View style={_styles.ball_container}>
-            <LotteryZodiacAndBall ballStr={betData?.openNum}
-                                  zodiacStr={betData?.result}
-                                  gameType={betData?.gameType}/>
+            <Animatable.View animation={zoomInOut}
+                             iterationCount={1}
+                             duration={500}
+                             iterationDelay={400}
+                             style={CommStyles.flex}>
+              <LotteryZodiacAndBall ballStr={betData?.openNum}
+                                    zodiacStr={betData?.result}
+                                    gameType={betData?.gameType}/>
+            </Animatable.View>
           </View>
 
           <View style={_styles.close_container}>
@@ -134,7 +159,7 @@ const _styles = StyleSheet.create({
   zj: {//中奖
     width: scale(186),
     height: scale(64),
-    marginTop: scale(288),
+    marginTop: scale(280),
   },
   close: {
     marginTop: scale(98),
@@ -166,7 +191,42 @@ const _styles = StyleSheet.create({
     marginBottom: scale(80),
     fontSize: scale(30),
   },
+  counter_container: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+  },
+  counter_text: {
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: scale(80),
+    fontSize: scale(30),
+  },
 
 })
+
+const zoomOutIn = {
+  0: {
+    opacity: 0,
+    scale: 10,
+  },
+  1: {
+    opacity: 1,
+    scale: 1,
+  },
+}
+
+const zoomInOut = {
+  0: {
+    opacity: 0,
+    scale: 0,
+  },
+  1: {
+    opacity: 1,
+    scale: 1,
+  },
+}
+
 export default forwardRef(PayResultComponent)
 
