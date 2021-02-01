@@ -5,7 +5,7 @@ import { anyEmpty } from '../../public/tools/Ext'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { ugLog } from '../../public/tools/UgLog'
-import { parseLotteryDetailData } from './util/ps/ParseLotteryUtil'
+import { parseLotteryDetailData } from './util/parse/ParseLotteryUtil'
 
 /**
  * 彩票下注

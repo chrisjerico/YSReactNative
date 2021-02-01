@@ -50,20 +50,14 @@ const UsePayBoard = () => {
    */
   useEffect(() => {
     if (selectedData == null) return
-
     // ugLog(' calculate selectedData  =', JSON.stringify(selectedData))
 
-    if (nextIssueData?.gameType == 'lhc') {
-      //总共有多少条数据
-      setItemCount(calculateItemCount(selectedData))
+    //总共有多少条数据
+    setItemCount(calculateItemCount(selectedData))
 
-      //只有第1次需要初始化
-      if (anyEmpty(moneyMap)) {
-        setMoneyMap(initItemMoney(selectedData))
-      }
-
-    } else {
-
+    //第1次需要初始化
+    if (anyEmpty(moneyMap)) {
+      setMoneyMap(initItemMoney(selectedData))
     }
 
   }, [selectedData])

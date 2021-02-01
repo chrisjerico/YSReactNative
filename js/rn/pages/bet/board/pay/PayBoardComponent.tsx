@@ -245,7 +245,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 }
 
 const BET_ITEM_HEIGHT = scale(68) //每个条目高度
-const BET_ITEM_WIDTH = scale(460) //每个条目宽度
+const BET_ITEM_WIDTH = scale(480) //每个条目宽度
 
 const _styles = StyleSheet.create({
   container: {},
