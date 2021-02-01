@@ -65,7 +65,7 @@ export default class UGTextField extends Component<IPorps, IState> {
         case '邀请码':
           return {
             leftIcon: { name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
-            keyboardType: 'number-pad',
+            keyboardType: 'email-address',
             onlyIntegerAndLetter: true,
           };
         case '账号':
