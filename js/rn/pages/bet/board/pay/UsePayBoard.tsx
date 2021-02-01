@@ -18,6 +18,7 @@ import { NormalModel } from '../../../../public/network/Model/NormalModel'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../../public/network/APIRouter'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
+import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 
 /**
  * 下注面板
@@ -91,7 +92,7 @@ const UsePayBoard = () => {
    *
    * 开始下注
    */
-  const startBetting = async (): Promise<number> => {
+  const startBetting = async (): Promise<LotteryResultModel> => {
     const betBean: Array<BetLotteryData> = []
 
     //Map<string, Map<string, Map<string, SelectedPlayModel>>>
@@ -183,11 +184,10 @@ const UsePayBoard = () => {
     const { data } = await api.user.userGameBetWithParams(pms).promise
     hideLoading()
     ugLog('res bet 2 = res', JSON.stringify(data))
-    Toast(data?.msg)
 
     syncUserInfo()
 
-    return data?.code
+    return data
 
     // const { data } = await api.user.myFeedback(0, date, true, 1, 20).promise
   }

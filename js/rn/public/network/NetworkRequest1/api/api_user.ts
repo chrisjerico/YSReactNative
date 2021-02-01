@@ -13,6 +13,7 @@ import { UGStore } from '../../../../redux/store/UGStore';
 import { BetMode } from '../../../../pages/经典/Model/UGChanglongaideModel';
 import { IBetLotteryParams } from '../../it/bet/IBetLotteryParams'
 import { NormalModel } from '../../Model/NormalModel'
+import { LotteryResultModel } from '../../Model/lottery/result/LotteryResultModel'
 
 
 
@@ -148,20 +149,20 @@ export class api_user {
   static guestBet(params: {}) {
 
     console.log('guestBet  params ===',params);
-    return this.c.post<NormalModel>('guestBet',params);
+    return this.c.post<LotteryResultModel>('guestBet',params);
   }
 
   // 用户投注（待完善）
   static bet(params: {}) {
     console.log('bet  params ===',params);
-    return this.c.post<NormalModel>('bet',params);
+    return this.c.post<LotteryResultModel>('bet',params);
   }
 
   // 即时投注（待完善）
   static instantBet(params: {}) {
     console.log('instantBet  params ===',params);
 
-    return this.c.post<NormalModel>('instantBet',params);
+    return this.c.post<LotteryResultModel>('instantBet',params);
   }
 
   // 提交反馈

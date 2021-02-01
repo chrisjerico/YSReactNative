@@ -10,12 +10,14 @@ import { PlayData, PlayGroupData } from '../../../../public/network/Model/lotter
 import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { anyEmpty } from '../../../../public/tools/Ext'
+import { anyEmpty, dicNull } from '../../../../public/tools/Ext'
 import { calculateItemCount, gatherSelectedItems } from '../tl/BetUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
+import { LotteryResultData } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 
 interface IPayBoardComponent {
-  showCallback?: () => void //窗口 是否显示 回调
+  showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
 }
 
 /**
@@ -183,8 +185,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   return (
     <View style={_styles.container}>
       <Modal isVisible={true}
-             onBackdropPress={showCallback}
-             onBackButtonPress={showCallback}
              style={_styles.modal_content}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
@@ -228,7 +228,11 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
                   onPress={() =>
-                    startBetting().then((code) => code == 0 && showCallback())}>{'确定'}</Text>
+                    startBetting().then((data) => {
+                      //结果为空只需要显示提示信息
+                      dicNull(data?.data) && (Toast(data?.msg))
+                      showCallback(data?.data)
+                    })}>{'确定'}</Text>
           </View>
         </View>
       </Modal>

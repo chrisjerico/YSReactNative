@@ -76,12 +76,12 @@ export const Res = {
 
   //秒秒彩
   mmckjz: img_root('web/images/zh/mmckjz'), //开奖中
-  mmcwzj: img_root('web/images/zh/mmcwzj'),//未开奖
+  mmcwzj: img_root('web/images/zh/mmcwzj'),//未中奖
   mmczjl: img_root('web/images/zh/mmczjl'), //中奖啦
   mmczt: img_root('web/images/zh/mmczt'), //暂停
   mmczdtz: img_root('web/images/zh/mmczdtz'), //自动投注
-  mmcBg23: img_root('web/images/mmcBg23'), //牛仔背景
   mmcbackpic: img_root('web/static/vueTemplate/vue/images/mmcbackpic'), //背景
+  mmcBg23: img_root('web/images/mmcBg23'), //牛仔背景
   mmcbg2_2: img_assets('mmcbg2_2'),//背景2
 
   //筹码

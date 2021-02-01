@@ -11,6 +11,7 @@ import FastImage from 'react-native-fast-image'
 import PayBoardComponent from './pay/PayBoardComponent'
 import { UGStore } from '../../../redux/store/UGStore'
 import { ugLog } from '../../../public/tools/UgLog'
+import PayResultComponent from './pay/result/PayResultComponent'
 
 /**
  * 彩票功能区入参
@@ -30,6 +31,8 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    betResult,
+    setBetResult,
     showBetPayment,
     setShowBetPayment,
     userInfo,
@@ -229,7 +232,12 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         {renderInputArea()}
         {locked ? renderLock(lockStr) : null}
         {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}
-                                              showCallback={() => setShowBetPayment(false)}/>}
+                                              showCallback={(data) => {
+                                                setShowBetPayment(false)
+                                                setBetResult(data)
+                                              }}/>}
+        {/*{betResult && <PayResultComponent showCallback={() => setBetResult(null)}/>}*/}
+        <PayResultComponent showCallback={() => setBetResult(null)}/>
       </View>
     </View>
   )

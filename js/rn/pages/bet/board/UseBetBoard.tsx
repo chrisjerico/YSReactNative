@@ -8,6 +8,7 @@ import { Toast } from '../../../public/tools/ToastUtils'
 import { calculateItemCount, checkBetCount } from './tl/BetUtil'
 import LotteryConst from '../const/LotteryConst'
 import { ugLog } from '../../../public/tools/UgLog'
+import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
 
 
 /**
@@ -19,6 +20,7 @@ const UseBetBoard = () => {
   const [sliderValue, setSliderValue] = useState<number>(0) //拉条数据
   const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
   const [showBetPayment, setShowBetPayment] = useState<boolean>(false) //是否显示下注
+  const [betResult, setBetResult] = useState<LotteryResultData>(null) //下注结果
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
   const userInfo = UGStore.globalProps.userInfo //用户信息
@@ -49,6 +51,8 @@ const UseBetBoard = () => {
   }
 
   return {
+    betResult,
+    setBetResult,
     showBetPayment,
     setShowBetPayment,
     userInfo,
