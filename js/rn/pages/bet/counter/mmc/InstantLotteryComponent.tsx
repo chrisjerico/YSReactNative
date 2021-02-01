@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import * as React from 'react'
 import FastImage from 'react-native-fast-image'
-import { Res } from '../../../Res/icon/Res'
+import { Res } from '../../../../Res/icon/Res'
 import UseInstantLottery from './UseInstantLottery'
 
 interface IRouteParams {

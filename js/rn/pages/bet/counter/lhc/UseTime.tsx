@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
+import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import moment from 'moment'
-import PushHelper from '../../../public/define/PushHelper'
-import AppDefine from '../../../public/define/AppDefine'
-import { anyEmpty } from '../../../public/tools/Ext'
-import APIRouter from '../../../public/network/APIRouter'
-import { UGStore } from '../../../redux/store/UGStore'
-import { ugLog } from '../../../public/tools/UgLog'
+import PushHelper from '../../../../public/define/PushHelper'
+import AppDefine from '../../../../public/define/AppDefine'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import APIRouter from '../../../../public/network/APIRouter'
+import { UGStore } from '../../../../redux/store/UGStore'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 开奖时间显示

@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { useEffect } from 'react'
-import { anyEmpty } from '../../../public/tools/Ext'
-import APIRouter from '../../../public/network/APIRouter'
-import { UGStore } from '../../../redux/store/UGStore'
-import { ugLog } from '../../../public/tools/UgLog'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import APIRouter from '../../../../public/network/APIRouter'
+import { UGStore } from '../../../../redux/store/UGStore'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
- * 开奖时间显示
+ * 秒秒彩背影显示
  * @constructor
  */
 const UseInstantLottery = () => {

@@ -2,9 +2,9 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import FastImage from 'react-native-fast-image'
 import UseTime from './UseTime'
-import { UGColor } from '../../../public/theme/UGThemeColor'
-import { scale } from '../../../public/tools/Scale'
-import { Res } from '../../../Res/icon/Res'
+import { UGColor } from '../../../../public/theme/UGThemeColor'
+import { scale } from '../../../../public/tools/Scale'
+import { Res } from '../../../../Res/icon/Res'
 
 interface IRouteParams {
 

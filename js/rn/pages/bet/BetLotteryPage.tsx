@@ -6,7 +6,7 @@ import { BaseScreen } from '../乐橙/component/BaseScreen'
 import { scale } from '../../public/tools/Scale'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import BetBoardComponent from './board/BetBoardComponent'
-import BetRecordHeaderComponent from './counter/red/BetRecordHeaderComponent'
+import BetRecordHeaderComponent from './counter/lhc/red/BetRecordHeaderComponent'
 import ListContentComponent from './list/ListContentComponent'
 import { TopAreaComponent } from './top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
@@ -15,7 +15,7 @@ import { anyEmpty, dicNull, mergeObject } from '../../public/tools/Ext'
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../Res/icon/Res'
 import { clearLotteryData } from './util/LotteryUtil'
-import InstantLotteryComponent from './counter/InstantLotteryComponent'
+import InstantLotteryComponent from './counter/mmc/InstantLotteryComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
