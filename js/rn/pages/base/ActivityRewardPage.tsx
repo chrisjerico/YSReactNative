@@ -8,19 +8,19 @@ import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { removeHTMLTag } from '../../public/tools/removeHTMLTag'
-import { stringToNumber } from '../../public/tools/tars'
 import { Toast } from '../../public/tools/ToastUtils'
 import Button from '../../public/views/tars/Button'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import ProgressCircle from '../../public/views/temp/ProgressCircle'
+import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 
 interface ApplyRewardProps {
   tabLabel: string
   list: any[]
   onPress: () => any
-  onPressApply: ({ win_apply_content, quickAmounts }: { win_apply_content: string; quickAmounts: string[] }) => any
+  onPressApply: ({ win_apply_content, quickAmounts, id }: { win_apply_content: string; quickAmounts: string[]; id: string }) => any
 }
 
 const RewardList = ({ tabLabel, data, uniqueKey, onPress, onPressApply }) => (
@@ -29,7 +29,7 @@ const RewardList = ({ tabLabel, data, uniqueKey, onPress, onPressApply }) => (
     data={data}
     scrollEnabled={true}
     renderItem={({ item }) => {
-      const { name } = item
+      const { name, id } = item
       const params = item?.param ?? {}
       const win_apply_content = params?.win_apply_content
       const quickAmounts = [
@@ -61,7 +61,7 @@ const RewardList = ({ tabLabel, data, uniqueKey, onPress, onPressApply }) => (
             title={'点击申请'}
             containerStyle={{ width: 100, height: 30, backgroundColor: Skin1.themeColor, borderRadius: 5, alignSelf: 'center', marginVertical: 10 }}
             titleStyle={{ color: '#ffffff' }}
-            onPress={() => onPressApply({ win_apply_content, quickAmounts })}
+            onPress={() => onPressApply({ win_apply_content, quickAmounts, id })}
           />
         </>
       )
@@ -132,6 +132,7 @@ const ActivityRewardPage = () => {
   const [applyDescription, setApplyDescription] = useState(null)
   const [applyImgCaptcha, setApplyImgCaptcha] = useState(null)
   const [imgCaptcha, setImgCaptcha] = useState('')
+  const [id, setId] = useState('')
   useEffect(() => {
     Promise.all([
       APIRouter.activity_winApplyList().catch((error) => {
@@ -176,10 +177,11 @@ const ActivityRewardPage = () => {
               onPress={() => {
                 setActivityVisible(true)
               }}
-              onPressApply={({ win_apply_content, quickAmounts }) => {
-                setApplyVisible(true)
+              onPressApply={({ win_apply_content, quickAmounts, id }) => {
                 setActivityContent(win_apply_content)
                 setQuickAmounts(quickAmounts)
+                setId(id)
+                setApplyVisible(true)
               }}
             />
             <ApplyFeedBack tabLabel={'申请反馈'} list={applyWinLog} />
@@ -265,7 +267,13 @@ const ActivityRewardPage = () => {
               }}
             />
             <View style={{ flexDirection: 'row', marginTop: 10, width: '90%' }}>
-              <TextInput placeholder={'请输入验证码'} style={{ width: 150, borderColor: '#d9d9d9', borderWidth: AppDefine.onePx, borderRadius: 5, height: 30, paddingHorizontal: 3 }} />
+              <TextInput
+                placeholder={'请输入验证码'}
+                style={{ width: 150, borderColor: '#d9d9d9', borderWidth: AppDefine.onePx, borderRadius: 5, height: 30, paddingHorizontal: 3 }}
+                onChangeText={(text) => {
+                  setApplyImgCaptcha(text)
+                }}
+              />
               <Image source={{ uri: imgCaptcha }} style={{ width: 170, height: 30 }} resizeMode={'contain'} />
             </View>
             <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', justifyContent: 'space-around', width: '100%', paddingBottom: 20 }}>
@@ -276,6 +284,7 @@ const ActivityRewardPage = () => {
                   setApplyVisible(false)
                   setApplyMoney(null)
                   setApplyDescription(null)
+                  setApplyImgCaptcha(null)
                 }}
               />
               <Button
@@ -290,8 +299,23 @@ const ActivityRewardPage = () => {
                   } else if (!applyImgCaptcha) {
                     Toast('验证码不能为空')
                   } else {
-                    setApplyVisible(false)
-                    setApplyMoney(null)
+                    showLoading('申请中...')
+                    APIRouter.activity_applyWin({ amount: applyMoney, userComment: applyDescription, imgCode: applyImgCaptcha, id: id })
+                      .then((value) => {
+                        const code = value?.data?.code
+                        const msg = value?.data?.msg
+                        if (code) {
+                          showError(msg?.toString())
+                        } else {
+                          showSuccess(msg?.toString())
+                        }
+                      })
+                      .finally(() => {
+                        setApplyVisible(false)
+                        setApplyMoney(null)
+                        setApplyDescription(null)
+                        setApplyImgCaptcha(null)
+                      })
                   }
                 }}
               />
