@@ -1,17 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import CommStyles from '../../../../base/CommStyles'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { scale } from '../../../../../public/tools/Scale'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import LotteryBall from '../../../../../public/components/view/LotteryBall'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { NextIssueData } from '../../../../../public/network/Model/lottery/NextIssueModel'
 import BetRecordListComponent from './BetRecordListComponent'
 import TimeComponent from '../TimeComponent'
 import UseBetRecordHeader from './UseBetRecordHeader'
-import { BallStyles } from '../../../const/LotteryConst'
+import LotteryZodiacAndBall from '../../../widget/LotteryZodiacAndBall'
 
 interface IHallGameList {
 }
@@ -34,158 +32,6 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
     toggleHistory,
   } = UseBetRecordHeader()
 
-  /**
-   * 绘制生肖
-   * @param zodiacStr 生肖编号
-   */
-  const renderZodiac = (zodiacStr?: string) => {
-    let zodiacs = anyEmpty(zodiacStr) ? [] : zodiacStr.split(',')
-    if (anyEmpty(zodiacs)) return null
-    let lastZodiac = zodiacs.pop() //最后一个球
-
-    return (
-      <View key={'renderZodiac' + zodiacStr}
-            style={_styles.zodiac_container}>
-        {
-          zodiacs?.map((item, index) => (
-            <View key={'renderZodiac' + zodiacStr + item + index}
-                  style={_styles.zodiac_text_container}>
-              <Text style={_styles.zodiac_text}>{item}</Text>
-            </View>
-          ))
-        }
-        {
-          lastZodiac && <Text key={'renderZodiac' + zodiacStr + '+'}
-                              style={_styles.text_content_plus}>{'+'}</Text>
-        }
-        {
-          lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
-                              style={_styles.zodiac_text_container}>
-            <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
-          </View>
-        }
-      </View>
-    )
-  }
-
-  /**
-   * 绘制球
-   * @param gameType 游戏种类
-   * @param ballStr 游戏编号
-   */
-  const renderBalls = (gameType?: string,
-                       ballStr?: string) => {
-    let balls = anyEmpty(ballStr) ? [] :
-      ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
-    let lastBall = balls.pop() //最后一个球
-    let ballStyle = BallStyles[gameType] //球的样式
-    ballStyle = anyEmpty(ballStyle) ? BallStyles['lhc'] : ballStyle
-
-    let ballView
-    const key = 'header renderBalls' + gameType
-    switch (gameType) {
-      case 'bjkl8'://北京快8
-        ballView = (
-          [
-            <View key={key + ballStr + 'ct'}
-                  style={_styles.ball_wrap_container}>
-              {
-
-                [...balls, lastBall]?.map((item, index) =>
-                  <LotteryBall key={key + ballStr + item + index}
-                               type={ballStyle}
-                               size={scale(38)}
-                               ballNumber={item}/>)
-              }
-            </View>,
-          ]
-        )
-        break
-      case 'pk10'://赛车系列
-      case 'xyft'://飞艇系列
-      case 'pk10nn'://牛牛系列
-        ballView = (
-          [
-            <View key={key + ballStr + 'line'}
-                  style={CommStyles.flex}/>,
-            <View key={key + ballStr + 'ct'}
-                  style={_styles.ball_container}>
-              {
-                [...balls, lastBall]?.map((item, index) =>
-                  <LotteryBall key={key + ballStr + item + index}
-                               type={ballStyle}
-                               size={scale(39)}
-                               ballNumber={item}/>)
-              }
-            </View>,
-          ]
-        )
-        break
-      case 'dlt'://大乐透系列
-        ballView = (
-          [
-            <View key={key + ballStr + 'line'}
-                  style={CommStyles.flex}/>,
-            <View key={key + ballStr + 'ct'}
-                  style={_styles.ball_container}>
-              {
-                [...balls, lastBall]?.map((item, index) =>
-                  <LotteryBall key={key + ballStr + item + index}
-                               type={ballStyle}
-                               ballColor={index < balls.length - 1 ?
-                                 UGColor.RedColor5 :
-                                 UGColor.BlueColor6}
-                               ballNumber={item}/>)
-              }
-            </View>,
-          ]
-        )
-        break
-      case 'lhc'://六合彩
-        ballView = (
-          [
-            <View key={ballStr + 'line'}
-                  style={CommStyles.flex}/>,
-            <View key={ballStr + 'ct'}
-                  style={_styles.ball_container}>
-              {
-                [
-                  balls?.map((item, index) =>
-                    <LotteryBall key={key + ballStr + item + index}
-                                 type={ballStyle}
-                                 ballNumber={item}/>),
-                  lastBall && <Text key={key + ballStr + '+'}
-                                    style={_styles.text_content_plus}>{'+'}</Text>,
-                  lastBall && <LotteryBall key={key + ballStr + lastBall}
-                                           type={ballStyle}
-                                           ballNumber={lastBall}/>,
-                ]
-              }
-            </View>,
-          ]
-        )
-        break
-      default:
-        ballView = (
-          [
-            <View key={key + ballStr + 'line'}
-                  style={CommStyles.flex}/>,
-            <View key={key + ballStr + 'ct'}
-                  style={_styles.ball_container}>
-              {
-                [...balls, lastBall]?.map((item, index) =>
-                  <LotteryBall key={key + ballStr + item + index}
-                               type={ballStyle}
-                               ballNumber={item}/>)
-              }
-            </View>,
-          ]
-        )
-        break
-    }
-
-    return ballView
-  }
 
   /**
    * 绘制彩票信息
@@ -201,7 +47,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
             anyEmpty(item?.displayNumber) ? null :
               <Text key={'renderItemContent issue_container' + item.displayNumber}
                     style={_styles.text_content_issue}
-                    numberOfLines={2}>{item.displayNumber + '期'}</Text>
+                    numberOfLines={1}>{item.displayNumber + '期'}</Text>
           }
           <Icon key={'renderItemContent issue_container' + showHistory}
                 size={scale(48)}
@@ -210,10 +56,9 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
                 color={Skin1.themeColor}
                 name={showHistory ? 'angle-double-up' : 'angle-double-down'}/>
         </View>
-        <View key={'renderItemContent result'}>
-          {renderBalls(item?.gameType, item?.preNum)}
-          {renderZodiac(item?.preResult)}
-        </View>
+        <LotteryZodiacAndBall gameType={item?.gameType}
+                              zodiacStr={item?.preResult}
+                              ballStr={item?.preNum}/>
       </View>
     )
   }
@@ -250,6 +95,7 @@ const _styles = StyleSheet.create({
   },
   issue_container: {
     flex: 1,
+    alignItems: 'flex-start',
   },
   issue_arrow: {
     paddingHorizontal: scale(12),
@@ -259,55 +105,8 @@ const _styles = StyleSheet.create({
     fontSize: scale(24),
     textAlign: 'center',
   },
-  text_content_plus: {
-    color: UGColor.TextColor3,
-    fontSize: scale(32),
-    textAlign: 'center',
-    paddingHorizontal: scale(16),
-  },
-  item_logo: {
-    width: scale(80),
-    aspectRatio: 1,
-    marginRight: scale(8),
-  },
-  start_game_container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  start_game_text: {
-    fontSize: scale(24),
-  },
-  ball_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ball_wrap_container: {//换行
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-  },
   ball_item: {
     margin: scale(4),
-  },
-  zodiac_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  zodiac_text_container: {
-    borderRadius: scale(8),
-    borderWidth: scale(1),
-    borderColor: UGColor.LineColor4,
-    marginHorizontal: scale(4),
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: scale(36),
-    aspectRatio: 1,
-  },
-  zodiac_text: {
-    color: UGColor.TextColor3,
-    fontSize: scale(24),
-    textAlign: 'center',
   },
   history_list_container: {
     width: scale(540),

@@ -236,8 +236,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                                                 setShowBetPayment(false)
                                                 setBetResult(data)
                                               }}/>}
-        {/*{betResult && <PayResultComponent showCallback={() => setBetResult(null)}/>}*/}
-        <PayResultComponent showCallback={() => setBetResult(null)}/>
+        {betResult && <PayResultComponent betData={betResult}
+                                          showCallback={() => setBetResult(null)}/>}
       </View>
     </View>
   )

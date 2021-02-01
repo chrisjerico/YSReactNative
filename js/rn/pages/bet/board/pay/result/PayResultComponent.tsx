@@ -77,9 +77,9 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
           </View>
 
           <View style={_styles.ball_container}>
-            <LotteryZodiacAndBall ballStr={"09,49,02,40,05,42,07"}
-                                  zodiacStr={"龙,鼠,猪,鸡,猴,羊,马"}
-                                  gameType={'lhc'}/>
+            <LotteryZodiacAndBall ballStr={betData?.openNum}
+                                  zodiacStr={betData?.result}
+                                  gameType={betData?.gameType}/>
           </View>
 
           <View style={_styles.close_container}>

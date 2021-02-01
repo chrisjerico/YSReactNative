@@ -1,18 +1,11 @@
-import { ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
-import { IEBall } from '../../../public/components/view/lottery/EBall'
+import { StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
-import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import { isSelectedBallOnId } from '../const/ISelBall'
-import LotteryEBall from './LotteryEBall'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { BallStyles } from '../const/LotteryConst'
 import LotteryBall from '../../../public/components/view/LotteryBall'
-import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 interface ILotteryZodiacAndBallItem {
   gameType?: string; //彩种 六合彩，秒秒彩 等等
