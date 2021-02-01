@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { Platform, StyleSheet, View, Image, Text, ImageBackground, Animated, Easing } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
@@ -54,7 +54,9 @@ import NavBlock from './views/NavBlock'
 
 const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const menu = useRef(null)
-  const { current: v } = useRef<{} & TabComponentApi & HomeRightMenuCP>({})
+  const { current: v } = useRef<{ willShowAnnouncement: boolean } & TabComponentApi & HomeRightMenuCP>({
+    willShowAnnouncement: true
+  })
 
   useEffect(() => {
     setProps({ bgGradientColor: skin1.bgColor })
@@ -67,9 +69,6 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
     }, 500);
   })
 
-  const openMenu = () => {
-    menu?.current?.open()
-  }
 
   const closeMenu = () => {
     menu?.current?.close()
@@ -83,7 +82,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
 
   const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists, announcements } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
@@ -91,6 +90,11 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
 
   // @ts-ignore
   const defaultMenus = config.getDefaultMenus()
+
+  if (v.willShowAnnouncement && announcements?.length) {
+    PushHelper.pushAnnouncement(announcements)
+    v.willShowAnnouncement = false
+  }
 
   const renderGameSubTypeComponent = (games: any[]) => (
     <GameSubTypeComponent
@@ -144,7 +148,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               imageContainerStyle={{ width: sc(95) }}
               titleContainerStyle={{
                 height: sc(50),
-                aspectRatio:5,
+                aspectRatio: 5,
               }}
               secondLevelIconProps={{
                 name: 'appstore1',
@@ -337,7 +341,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               c_ref={v}
               tabGames={homeGames}
               itemHeight={scale(172)}
-              tabWidth={homeGames?.length > 6 ? sc(85) : sc(515 / homeGames?.length)}
+              tabWidth={homeGames?.length > 6 ? (homeGames?.[0]?.name?.length > 3 ? sc(120) : sc(85)) : sc(515 / homeGames?.length)}
               numColumns={3}
               tabBarBackgroundColor={skin1.homeContentColor}
               tabBarStyle={{

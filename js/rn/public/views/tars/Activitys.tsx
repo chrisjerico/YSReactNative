@@ -6,6 +6,7 @@ import { scale } from '../../tools/Scale'
 import { icon_任务弹窗, icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
+import { img_images } from '../../../Res/icon'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -51,7 +52,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         refreshing={refreshing}
         containerStyle={{ top: scale(235), right: 0 }}
         show={redBag?.data}
-        logo={redBagLogo}
+        logo={redBagLogo?.length ? redBagLogo : img_images('pig')}
         onPress={() => {
           // 红包
           PushHelper.pushRedBag(redBag)
