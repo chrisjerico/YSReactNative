@@ -82,6 +82,7 @@ export const Res = {
   mmczdtz: img_root('web/images/zh/mmczdtz'), //自动投注
   mmcBg23: img_root('web/images/mmcBg23'), //牛仔背景
   mmcbackpic: img_root('web/static/vueTemplate/vue/images/mmcbackpic'), //背景
+  mmcbg2_2: img_assets('mmcbg2_2'),//背景2
 
   //筹码
   a10: img_assets('chip/a10'),

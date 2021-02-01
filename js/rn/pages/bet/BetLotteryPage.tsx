@@ -13,6 +13,9 @@ import { TopAreaComponent } from './top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
 import { ugLog } from '../../public/tools/UgLog'
 import { anyEmpty, mergeObject } from '../../public/tools/Ext'
+import FastImage from 'react-native-fast-image'
+import { Res } from '../../Res/icon/Res'
+import { clearLotteryData } from './util/LotteryUtil'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -42,11 +45,9 @@ const BetLotteryPage = ({ navigation, route }) => {
   useEffect(() => {
     setLotteryId(lotteryId)
 
-    return () => {//退出清除数据
-      UGStore.dispatch({type: 'reset', currentPlayOddData: {}})
-      UGStore.dispatch({type: 'reset', nextIssueData: {}})
-      UGStore.dispatch({type: 'reset', playOddDetailData: {}})
-      UGStore.dispatch({type: 'reset', selectedLotteryModel: {}})
+    //退出清除数据
+    return () => {
+      clearLotteryData()
     }
   }, [])
 
@@ -95,18 +96,26 @@ const BetLotteryPage = ({ navigation, route }) => {
         <View key={'lottery content'}
               style={_styles.bs_container}>
           <TopAreaComponent/>
-          <ScrollView key={'lottery middle content'}
-                      style={_styles.sv_container}>
-            <BetRecordHeaderComponent />
-            <ListContentComponent/>
-          </ScrollView>
+          {
+            playOddDetailData ? //有数据才加载
+              <ScrollView key={'lottery middle content'}
+                          style={_styles.sv_container}>
+                {
+                  playOddDetailData?.game?.isInstant == '1' ? //秒秒彩不显示历史记录和倒计时
+                    <FastImage source={{ uri: Res.mmcbg2_2 }}
+                               style={_styles.mmc_image}/> :
+                    <BetRecordHeaderComponent/>
+                }
+                <ListContentComponent/>
+              </ScrollView> :
+              <View style={_styles.sv_container}/>
+          }
           <BetBoardComponent key={'lottery board'}
                              locked={false}
                              lockStr={'封盘中...'}/>
         </View>
       </BaseScreen>
     </BetLotteryContext.Provider>
-
   )
 }
 
@@ -117,6 +126,10 @@ const _styles = StyleSheet.create({
   },
   sv_container: {
     flex: 1,
+  },
+  mmc_image: {
+    width: '100%',
+    aspectRatio: 750 / 172,
   },
   modal_content: {
     alignItems: 'center',

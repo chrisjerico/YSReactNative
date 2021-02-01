@@ -23,10 +23,21 @@ import parseLXData from './ps/ParseLXDataUtil'
 import parseLWData from './ps/ParseLWDataUtil'
 import parseZXBZData from './ps/ParseZXBZDataUtil'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
+import { UGStore } from '../../../redux/store/UGStore'
 
 interface INameOrAlias {
   name?: string; //鼠
   alias?: string;//鼠
+}
+
+/**
+ * 退出的时候清除彩票数据
+ */
+const clearLotteryData = () => {
+  UGStore.dispatch({ type: 'reset', currentPlayOddData: {} })
+  UGStore.dispatch({ type: 'reset', nextIssueData: {} })
+  UGStore.dispatch({ type: 'reset', playOddDetailData: {} })
+  UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
 }
 
 /**
@@ -65,4 +76,5 @@ const filterSelectedData = (selectedData?: Map<string, Map<string, Map<string, S
 export {
   findZodiacByName,
   filterSelectedData,
+  clearLotteryData,
 }

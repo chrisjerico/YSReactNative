@@ -97,7 +97,7 @@ export interface PlayOddGame {
   isSeal: string;
   isClose: string;
   title: string; //"香港六合彩"
-  isInstant: string;
+  isInstant: string;//：是否是即开彩：1=是，0=否
 }
 
 export interface PlayOddDetailData {
