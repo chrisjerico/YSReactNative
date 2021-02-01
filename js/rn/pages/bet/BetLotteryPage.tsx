@@ -15,6 +15,7 @@ import { anyEmpty, dicNull, mergeObject } from '../../public/tools/Ext'
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../Res/icon/Res'
 import { clearLotteryData } from './util/LotteryUtil'
+import InstantLotteryComponent from './counter/InstantLotteryComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -94,10 +95,8 @@ const BetLotteryPage = ({ navigation, route }) => {
             <ScrollView key={'lottery middle content'}
                         style={_styles.sv_container}>
               {
-                playOddDetailData?.game?.isInstant == '1' ? //秒秒彩不显示历史记录和倒计时
-                  <FastImage source={{ uri: Res.mmcbg2_2 }}
-                             style={_styles.mmc_image}/> :
-                  <BetRecordHeaderComponent/>
+                //秒秒彩不显示历史记录和倒计时
+                playOddDetailData?.game?.isInstant == '1' ? <InstantLotteryComponent/> : <BetRecordHeaderComponent/>
               }
               <ListContentComponent/>
             </ScrollView> :
@@ -118,10 +117,6 @@ const _styles = StyleSheet.create({
   },
   sv_container: {
     flex: 1,
-  },
-  mmc_image: {
-    width: '100%',
-    aspectRatio: 750 / 172,
   },
   modal_content: {
     alignItems: 'center',

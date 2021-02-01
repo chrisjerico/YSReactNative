@@ -15,7 +15,7 @@ import { ugLog } from '../../../public/tools/UgLog'
  */
 const UseTime = () => {
 
-  const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
+  const lotteryId = UGStore.globalProps?.lotteryId//彩票数据
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   // const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
@@ -25,7 +25,7 @@ const UseTime = () => {
   const [openTime, setOpenTime] = useState<number>(-1) //开奖时间倒计时
 
   useEffect(()=>{
-    requestNextData(UGStore.globalProps?.lotteryId)
+    requestNextData(lotteryId)
   }, [])
 
   useEffect(() => {
@@ -95,7 +95,7 @@ const UseTime = () => {
 
       //开奖中每2秒取一次数据直到成功
       timer = setInterval(()=>{
-        requestNextData(lotteryId()).then((code) => {
+        requestNextData(lotteryId).then((code) => {
           code == 0 && clearInterval(timer)
         })
       }, 2000)
