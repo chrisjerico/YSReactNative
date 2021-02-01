@@ -3,10 +3,11 @@ import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import { icon_任务弹窗, icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
+import { icon_任务弹窗, icon_利息宝, icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
 import { img_images } from '../../../Res/icon'
+import { appConfig } from '../../../../../config'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -92,6 +93,14 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         show={uid && missionPopUpSwitch == '1'}
         logo={icon_任务弹窗}
         onPress={goToUserCenterType.任务弹窗}
+      />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(590), right: 0 }}
+        enableFastImage={false}
+        show={appConfig.isHomeShowLXB()}
+        logo={icon_利息宝()}
+        onPress={goToUserCenterType.利息宝}
       />
       {floatAds?.map((item: any, index) => {
         // 左上、右上、左下、右下浮窗

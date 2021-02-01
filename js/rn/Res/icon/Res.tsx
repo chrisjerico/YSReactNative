@@ -1,4 +1,5 @@
-import { img_root, UGImageHost, useHtml5Image } from '.'
+import { img_images, img_root, UGImageHost, useHtml5Image } from '.'
+import AppDefine from '../../public/define/AppDefine'
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 /**
@@ -9,6 +10,12 @@ export const ROULETTE_LOGO = img_assets('c018dzp', 'gif') //大转盘
 export const icon_砸金蛋 = img_home('zjd/zjd')    //大转盘
 export const icon_刮刮乐 = img_assets('gyg')    //大转盘
 export const icon_任务弹窗 = img_assets('task_home')    //任务弹框
+export const icon_利息宝 = () => {
+  if (AppDefine.inSites('c085')) {
+    return img_platform('c085', 'lxb', 'gif')
+  }
+  return img_images('lxb', 'gif')
+}
 
 export const Res = {
 
