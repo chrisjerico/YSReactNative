@@ -35,10 +35,28 @@ export async function setRnPageInfo(force = false) {
       允许未登录访问: false,
     })
 
-    // 2级游戏分类
+    // 2级系列大厅
     pages.push({
-      vcName: 'UGGameListViewController',
-      rnName: PageName.TwoLevelGames,
+      vcName: 'UGYYLotterySecondHomeViewController',
+      rnName: PageName.JDLotterySecondPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+
+    // 资金管理
+    pages.push({
+      vcName: 'UGFundsViewController',
+      rnName: PageName.CapitalPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+
+    // 我的提款账户
+    pages.push({
+      vcName: 'WithdrawalAccountListVC',
+      rnName: PageName.ManageBankListPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: false,
       允许未登录访问: false,
@@ -70,6 +88,22 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(KSPages) // [pages addObjectsFromArray:多个页面]
     }
 
+    // 其他注单
+    pages.push({
+      vcName: 'UGRealBetRecordViewController',
+      rnName: PageName.OtherRecord,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 2级系列大厅
+    pages.push({
+      vcName: 'UGYYLotterySecondHomeViewController',
+      rnName: PageName.JDLotterySecondPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 2级游戏分类
     pages.push({
       vcName: 'UGGameListViewController',

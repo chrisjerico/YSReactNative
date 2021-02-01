@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from 'react'
 import MiddleMenu, { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
 
 /**
- * 资金明细记录
+ * 资金明细记录1
  * @param navigation
  * @constructor
  */
@@ -114,42 +114,50 @@ const CapitalDetailListComponent = () => {
   /**
    * 绘制日历选择
    */
-  const renderCalendar = () => (
-    selectStartDate || selectEndDate ?
-      <View key={'renderCalendar'}
-            style={_styles.calendar_wid}>
-        <Calendar.Picker onDayPress={(date: Date) => {
-          let curDate = date.format('yyyy-MM-dd')
-          if (selectStartDate) {//设置起始日期
-            setSelectStartDate(false)
-            setStartDate(curDate)
-          } else if (selectEndDate) {//设置终止日期
-            setSelectEndDate(false)
-            setEndDate(curDate)
-          }
-        }}
-                         HeaderComponent={({
-                                             currentMonth,
-                                             onPrevMonth,
-                                             onNextMonth,
-                                           }) => {
-                           const arr = currentMonth.split(' ')
-                           return <View style={{ flexDirection: 'row' }}>
-                             <TouchableWithoutFeedback onPress={onPrevMonth}>
-                               <Text style={_styles.calendar_button}>{'上一月'}</Text>
-                             </TouchableWithoutFeedback>
-                             <Text style={_styles.calendar_title}>{arr[1] + '年'}</Text>
-                             <TouchableWithoutFeedback onPress={onNextMonth}>
-                               <Text style={_styles.calendar_button}>{'下一月'}</Text>
-                             </TouchableWithoutFeedback>
-                           </View>
-                         }}
-                         disabledDayPick={false}
-                         weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
-        />
-      </View> :
-      null
-  )
+  const renderCalendar = () => {
+    let curDate
+    if(selectStartDate) curDate = new Date(startDate)
+    if(selectEndDate) curDate = new Date(endDate)
+
+    return (
+      selectStartDate || selectEndDate ?
+        <View key={'renderCalendar'}
+              style={_styles.calendar_wid}>
+          <Calendar.Picker selectedDate={curDate}
+                           onDayPress={(date: Date) => {
+                             let curDate = date.format('yyyy-MM-dd')
+                             if (selectStartDate) {//设置起始日期
+                               setSelectStartDate(false)
+                               setStartDate(curDate)
+                             } else if (selectEndDate) {//设置终止日期
+                               setSelectEndDate(false)
+                               setEndDate(curDate)
+                             }
+                           }}
+                           HeaderComponent={({
+                                               currentMonth,
+                                               onPrevMonth,
+                                               onNextMonth,
+                                             }) => {
+                             const arr = currentMonth.split(' ')
+                             return <View style={{ flexDirection: 'row' }}>
+                               <TouchableWithoutFeedback onPress={onPrevMonth}>
+                                 <Text style={_styles.calendar_button}>{'上一月'}</Text>
+                               </TouchableWithoutFeedback>
+                               <Text style={_styles.calendar_title}>{arr[1] + '年'}</Text>
+                               <TouchableWithoutFeedback onPress={onNextMonth}>
+                                 <Text style={_styles.calendar_button}>{'下一月'}</Text>
+                               </TouchableWithoutFeedback>
+                             </View>
+                           }}
+                           disabledDayPick={false}
+                           weekdays={['周天', '周一', '周二', '周三', '周四', '周五', '周六']}
+          />
+        </View> :
+        null
+    )
+
+  }
 
   /**
    * 绘制提示标题
@@ -205,7 +213,17 @@ const CapitalDetailListComponent = () => {
                     })
                   }}
                   onEndReachedThreshold={0.2}
-                  renderItem={({ item, index }) => renderItemContent(item, index)}/>}
+                  renderItem={({ item, index }) => renderItemContent(item, index)}
+                  ListFooterComponent={
+                    <View
+                    style={{
+                        height:100,
+
+                    }}
+                  >
+                  </View>
+                  }
+                  />}
     {renderCalendar()}
   </View>
 
@@ -225,6 +243,7 @@ const CapitalDetailListComponent = () => {
       {renderListContent()}
 
       <MiddleMenu key={menuItem?.map((item) => item?.title)?.toString()}
+                  curId={curGroup?.toString()}
                   ref={refMenu}
                   onMenuClick={clickMenu}
                   menu={menuItem}/>

@@ -5,16 +5,16 @@ import React from 'react'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import { PageName } from '../../public/navigation/Navigation'
-import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
+import { getCurrentPage, getCurrentRoute, navigationRef } from '../../public/navigation/RootNavigation'
 import { UGThemeConst } from '../../public/theme/const/UGThemeConst'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import { deepMergeProps } from '../../public/tools/FUtils'
 import { ugLog } from '../../public/tools/UgLog'
 import { UGNavigationBar, UGNavigationBarProps } from '../../public/widget/UGNavigationBar'
 import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import { Platform } from 'react-native'
+import { Platform, View } from 'react-native'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 
@@ -22,15 +22,17 @@ import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 export interface UGBasePageProps<P extends UGBasePageProps = {}, F = any> {
   // React-Navigation
   navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}> // 导航助手
-  route?: { name: PageName; params: F }
+  route?: { name: PageName; key: string, params: F }
 
   // 提供自定义api给页面使用
   setProps?(props?: P, willRender?: boolean): void // 设置Props并刷新
+  setNavbarProps?(props: UGNavigationBarProps): void
 
   // —————————— 配置UI ——————————
   didFocus?: (p: F) => void // 成为焦点时回调
   didBlur?: () => void // 失去焦点时回调
-  backgroundColor?: string[] // 背景色
+  backgroundColor?: string // 背景色
+  bgGradientColor?: string[] // 背景渐变色
   backgroundImage?: string
   navbarOpstions?: UGNavigationBarProps
 }
@@ -39,7 +41,7 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, F = any> {
 export default (Page: Function) => {
   return class extends React.Component<UGBasePageProps> {
     private unsubscribe: () => void
-    private newProps: UGBasePageProps = null
+    private navBar: UGNavigationBar = {}
 
     constructor(props: UGBasePageProps) {
       super(props)
@@ -49,9 +51,9 @@ export default (Page: Function) => {
       let lastParams
       navigation.removeListener('focus', null)
       navigation.addListener('focus', () => {
-        const { name, params = {} } = this.props.route
-        const { didFocus } = this.newProps
-        console.log('成为焦点', name, params)
+        const { name, key, params = {} } = this.props.route
+        const { didFocus } = UGStore.getPageProps<UGBasePageProps>(key) ?? {}
+        console.log('成为焦点', name, didFocus, params)
 
         if (lastParams !== params) {
           lastParams = params
@@ -63,8 +65,8 @@ export default (Page: Function) => {
       })
       navigation.removeListener('blur', null)
       navigation.addListener('blur', () => {
-        const { name } = this.props.route
-        const { didBlur } = this.newProps
+        const { name, key } = this.props.route
+        const { didBlur } = UGStore.getPageProps<UGBasePageProps>(key) ?? {}
         console.log('失去焦点', name)
         didBlur && didBlur()
       })
@@ -77,21 +79,11 @@ export default (Page: Function) => {
       })
       // 监听dispatch
       this.unsubscribe = UGStore.subscribe(
-        route.name,
+        route?.key,
         (() => {
-          this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name))
           this.setState({})
         }).bind(this)
       )
-
-      // 设置props
-      const defaultProps: UGBasePageProps = {
-        //Android渐变色数量必须 >= 2
-        backgroundColor: [UGColor.BackgroundColor1, UGColor.BackgroundColor1],
-        navbarOpstions: { hidden: true, gradientColor: Skin1.navBarBgColor },
-      }
-      this.newProps = deepMergeProps(defaultProps, this.props)
-      this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name))
     }
 
     /**
@@ -132,20 +124,33 @@ export default (Page: Function) => {
       this.unsubscribe && this.unsubscribe()
     }
 
-    setProps<P>(props: P, willRender = true): void {
+    setProps<P extends UGBasePageProps>(props: P, willRender = true): void {
       // console.log('setProps, name = ', this.props.route.name, props);
-      UGStore.dispatch({ type: 'merge', page: this.props.route.name, props: props }, willRender)
+      UGStore.dispatch({ type: 'merge', page: this.props?.route?.key, props: props }, willRender)
+    }
+
+    setNavbarProps(navBarProps: UGNavigationBarProps): void {
+      const { route: { key } } = this.props
+      const props = UGStore.getPageProps<UGBasePageProps>(key) ?? {}
+      props.navbarOpstions = deepMergeProps(props.navbarOpstions, navBarProps)
+      this.navBar?.setNavBarProps && this.navBar.setNavBarProps(props.navbarOpstions)
     }
 
     render() {
-      // console.log('渲染', this.props.route.name);
-      let { backgroundColor = [UGColor.BackgroundColor1, UGColor.BackgroundColor1], backgroundImage = '', navbarOpstions = {} } = this.newProps
+      const { route: { key } } = this.props
+      const props = UGStore.getPageProps<UGBasePageProps>(key) ?? {}
+      let { backgroundColor = skin1.backgroundColor ?? '#fff', bgGradientColor, backgroundImage, navbarOpstions } = props
 
       return (
-        <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
+        <LinearGradient colors={bgGradientColor ?? [backgroundColor, backgroundColor]} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
-            {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
-            <Page {...this.newProps} setProps={this.setProps.bind(this)} />
+            {navbarOpstions && !navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} c_ref={this.navBar} />}
+            <Page
+              {...this.props}
+              {...props}
+              setProps={this.setProps.bind(this)}
+              setNavbarProps={this.setNavbarProps.bind(this)}
+            />
           </FastImage>
         </LinearGradient>
       ) // navigation={this.props.navigation}
@@ -155,5 +160,5 @@ export default (Page: Function) => {
 
 // 全局使用的setProps （刷新当前正在显示的页面）
 export function setProps<P extends UGBasePageProps>(props?: P, willRender = true): void {
-  UGStore.dispatch({ type: 'merge', page: getCurrentPage(), props: props }, willRender)
+  UGStore.dispatch({ type: 'merge', page: getCurrentRoute()?.key, props: props }, willRender)
 }

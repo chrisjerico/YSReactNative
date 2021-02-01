@@ -34,6 +34,10 @@ export function jumpTo<P extends object>(page: PageName, props?: P, willTransiti
     return goFirstTransitionPage(page, props, RouterType.Tab, willTransition);
 }
 
+export function refresh<P extends object>(props?: P) {
+    navigationRef?.current?.navigate(getCurrentPage(), props)
+}
+
 export function pop(): boolean {
     const count = navigationRef?.current?.getRootState().routes.length;
     if (count < 3) {
@@ -101,6 +105,14 @@ export function getCurrentPage(): PageName {
         return name;
     }
     return undefined;
+}
+
+export function getCurrentRoute(): { name: PageName, key: string } {
+    if (navigationRef?.current?.getCurrentRoute) {
+        // @ts-ignore
+        return navigationRef?.current?.getCurrentRoute() ?? {};
+    }
+    return { name: undefined, key: undefined };
 }
 
 export function replace(name: string, params?: any) {

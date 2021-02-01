@@ -19,7 +19,7 @@ const UseTransferPay = () => {
   const [inputName, setInputName] = useState(null) //输入姓名
   const [inputRemark, setInputRemark] = useState(null) //输入备注
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
-  const [moneyOption, setMoneyOption] = useState<Array<string>>(null) //输入金额
+  const [moneyOption, setMoneyOption] = useState<Array<string>>(null) //输入金额选项
   const [payData, setPayData] = useState<PayAisleListData>(null) //当前数据
   const [payBigData, setPayBigData] = useState<PayAisleData>(null) //总数据
 
@@ -73,7 +73,9 @@ const UseTransferPay = () => {
   }
 }
 
-
+/**
+ * 支付宝微信类提示语
+ */
 const TMP = {
   'bank_name': '姓名: ',
   'payee': '账号: ',
@@ -82,6 +84,9 @@ const TMP = {
   'type': 'other',
 }
 
+/**
+ * 银行类提示语
+ */
 const BNK = {
   'bank_name': '银行名称: ',
   'payee': '收款人: ',
@@ -90,6 +95,16 @@ const BNK = {
   'type': 'bank',
 }
 
+const BNK_ALI = {
+  'bank_name': '银行名称: ',
+  'payee': '收款人: ',
+  'bank_account': '银行账号: ',
+  'type': 'bank',
+}
+
+/**
+ * 聊呗这类提示语
+ */
 const LB = {
   'bank_name': '银行名称: ',
   'payee': '收款人: ',
@@ -110,6 +125,12 @@ const transName = (payData?: PayAisleListData, payChannelBean?: PayChannelBean):
       transInfo = {
         ...BNK,
         'trans_hint': '请填写实际转账人姓名',
+      }
+      break
+    case 'bankalipay_transfer'://银行支付宝
+      transInfo = {
+        ...BNK_ALI,
+        'trans_hint': '请填写付款的银行支付宝昵称',
       }
       break
     case 'alipay_transfer'://"支付宝转账"
@@ -192,6 +213,7 @@ const transName = (payData?: PayAisleListData, payChannelBean?: PayChannelBean):
         ...LB,
         'trans_hint': '请填写付款的聊呗用户昵称',
       }
+      break
   }
 
   //不同类型显示的顺序不一样

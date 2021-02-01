@@ -12,6 +12,7 @@ import AppDefine from '../../../define/AppDefine';
 import { UGStore } from '../../../../redux/store/UGStore';
 import { BetMode } from '../../../../pages/经典/Model/UGChanglongaideModel';
 import { IBetLotteryParams } from '../../it/bet/IBetLotteryParams'
+import { NormalModel } from '../../Model/NormalModel'
 
 
 
@@ -62,6 +63,11 @@ export class api_user {
     return this.c.post('exists', { usr: usr });
   }
 
+  // 获取用户余额
+  static balance() {
+    return this.c.get<{ balance: string }>('balance');
+  }
+
   // 退出登录
   static logout() {
     return this.c.post('logout');
@@ -81,8 +87,8 @@ export class api_user {
   }
 
   // 获取资金明细
-  static fundLogs(startTime: string, endTime?: string, page = 1, rows = 20,group?:string) {
-    return this.c.get('fundLogs', { startTime: startTime, endTime: endTime, page: page, rows: rows ,group :group});
+  static fundLogs(startDate: string, endDate?: string, page = 1, rows = 20,group?:string) {
+    return this.c.get('fundLogs', { startDate: startDate, endDate: endDate, page: page, rows: rows ,group :group});
   }
 
   // 设置取款密码
@@ -142,20 +148,20 @@ export class api_user {
   static guestBet(params: {}) {
 
     console.log('guestBet  params ===',params);
-    return this.c.post('guestBet',params);
+    return this.c.post<NormalModel>('guestBet',params);
   }
 
   // 用户投注（待完善）
   static bet(params: {}) {
     console.log('bet  params ===',params);
-    return this.c.post('bet',params);
+    return this.c.post<NormalModel>('bet',params);
   }
 
   // 即时投注（待完善）
   static instantBet(params: {}) {
     console.log('instantBet  params ===',params);
 
-    return this.c.post('instantBet',params);
+    return this.c.post<NormalModel>('instantBet',params);
   }
 
   // 提交反馈

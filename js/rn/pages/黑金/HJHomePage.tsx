@@ -51,6 +51,7 @@ import ActivityComponent from "../../public/components/temp/ActivityComponent";
 import {ROULETTE_LOGO} from "../../Res/icon/Res";
 import { skinColors } from "../../public/theme/const/UGSkinColor"
 import { getActivityPosition } from "../../public/tools/tars"
+import { UGBasePageProps } from "../base/UGPage"
 
 /**
  * 主页
@@ -58,7 +59,7 @@ import { getActivityPosition } from "../../public/tools/tars"
  * @param setProps
  * @constructor
  */
-const HJHomePage = ({navigation, setProps}) => {
+const HJHomePage = ({navigation, setProps}: UGBasePageProps) => {
 
   const {width,} = useDimensions().window
   const {onPopViewPress} = usePopUpView()
@@ -127,7 +128,7 @@ const HJHomePage = ({navigation, setProps}) => {
   }
   useEffect(() => {
     setProps({
-      backgroundColor: skinColors.bgColor.黑金,
+      bgGradientColor: skinColors.bgColor.黑金,
       didFocus: async () => {
         //ugLog('home focus')
         _requestBalance()

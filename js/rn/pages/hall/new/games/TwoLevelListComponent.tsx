@@ -20,6 +20,7 @@ import { CMD } from '../../../../public/define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
+import { ImagePlaceholder } from '../../../经典/tools/ImagePlaceholder'
 
 interface ITwoLevelGameList {
   refreshing?: boolean //刷新
@@ -83,16 +84,29 @@ const TwoLevelListComponent = ({ refreshing,
         
       }}>
       <View style={_styles.game_item_container}>
-        <ImageBackground 
+        <ImagePlaceholder 
           style={{ height: scale(160), width: scale(160)}} 
-          source={{ uri: item.pic }}>
-            <Text
+          source={{ uri: item.pic }}/>
+
+          <Text
               style={_styles.name}
               >{item.name}</Text>
-          </ImageBackground>
       </View>
       </TouchableWithoutFeedback>
     )
+  }
+
+    /**
+   * Foot页面
+   * 
+   */
+  const _renderListFootComp = () => {
+    return (
+      <View style={{
+        height: 200,
+      }}>
+      </View>
+    );
   }
 
   return (
@@ -111,7 +125,10 @@ const TwoLevelListComponent = ({ refreshing,
                   return (
                     renderItemContent(item)
                   )
-                }}/>,
+                }}
+                ListFooterComponent={ ()=>  _renderListFootComp() }
+            
+                />,
         ]
       }
     </View>

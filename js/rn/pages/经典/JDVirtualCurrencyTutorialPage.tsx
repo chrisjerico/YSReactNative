@@ -23,12 +23,7 @@ export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialPr
   useEffect(() => {
     setProps({
       navbarOpstions: { hidden: false, title: '充值教程', back: true },
-      backgroundColor: ['#aaa', '#aaa'],
-      didFocus: () => {
-        AppDefine.checkHeaderShowBackButton((show) => {
-          setProps({ navbarOpstions: { back: show } });
-        });
-      },
+      backgroundColor: '#aaa',
     });
   }, [])
 

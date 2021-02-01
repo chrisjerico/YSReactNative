@@ -32,6 +32,7 @@ import PromotionsBlock from '../../public/components/PromotionsBlock'
 import LinearGradient from 'react-native-linear-gradient'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import Activitys from '../../public/views/tars/Activitys'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
@@ -94,7 +95,8 @@ const LLHomePage = ({ setProps, navigation }) => {
               marginTop: 8,
             }}
             onPress={() => {
-              (!uid || uid === '') ? PushHelper.pushLogin() : PushHelper.pushUserCenterType(5)
+              const type = (!uid || uid === '') ? UGUserCenterType.登录页 : UGUserCenterType.推荐收益
+              PushHelper.pushUserCenterType(type)
             }}
             uri={httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/llhhr.png'}
           />

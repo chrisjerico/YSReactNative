@@ -1,11 +1,12 @@
-import PushHelper from "../../../public/define/PushHelper"
+import AppDefine from "../../../public/define/AppDefine"
+import PushHelper, { UGLinkPositionType } from "../../../public/define/PushHelper"
 import { SeriesId, GameType } from "../../../public/models/Enum"
 import { PageName } from "../../../public/navigation/Navigation"
 import { navigate, push } from "../../../public/navigation/RootNavigation"
 import { skinColors } from "../../../public/theme/const/UGSkinColor"
 import { goToUserCenterType } from "../../../public/tools/tars"
 import { UGStore } from "../../../redux/store/UGStore"
-import { useHtml5Image, UGImageHost } from "../../../Res/icon"
+import { useHtml5Image, UGImageHost, img_platform } from "../../../Res/icon"
 
 const { getHtml5Image, img_assets } = useHtml5Image(UGImageHost.t132f)
 const { isTest = false, uid = '' } = UGStore.globalProps.userInfo
@@ -44,97 +45,35 @@ const config = {
     33: getHtml5Image(23, 'center/activity_hall'), // 优惠活动
     34: getHtml5Image(23, 'center/my_chat'), // 聊天室
   },
-  menus: [
-    {
-      title: '会员中心',
-      onPress: goToUserCenterType.我的页, // navigate(PageName.WNZMinePage)
-    },
-    {
-      title: '额度转换',
-      onPress: goToUserCenterType.额度转换,
-    },
-    {
-      title: '幸运棋牌',
-      onPress: () => {
-        PushHelper.pushHomeGame({ seriesId: SeriesId.棋牌, gameId: 51, subId: 51 })
-      },
-    },
-    {
-      title: '彩票游戏',
-      onPress: goToUserCenterType.彩票大厅,
-    },
-    {
-      title: 'AG视讯',
-      onPress: () => {
-        PushHelper.pushHomeGame({ gameId: 59, seriesId: SeriesId.真人, subId: 59 })
-      },
-    },
-    {
-      title: '真人视讯',
-      onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '真人视讯', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 42 })
-      },
-    },
-    {
-      title: '电子游艺',
-      onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '电子游艺', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 44 })
-      },
-    },
-    {
-      title: '捕鱼达人',
-      onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '捕鱼达人', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 48 })
-      },
-    },
-    {
-      title: '体育游戏',
-      onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '体育游戏', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 45 })
-      },
-    },
-    {
-      title: '棋牌游戏',
-      onPress: () => {
-        navigate(PageName.SeriesLobbyPage, { name: '棋牌游戏', headerColor: skinColors.themeColor.威尼斯, homePage: PageName.WNZHomePage, subId: 43 })
-      },
-    },
-    {
-      title: '更多彩种',
-      onPress: goToUserCenterType.彩票大厅,
-    },
-    {
-      title: '投注记录',
-      onPress: goToUserCenterType.彩票注单记录,
-    },
-    {
-      title: '开奖结果',
-      onPress: goToUserCenterType.开奖结果,
-    },
-    {
-      title: '长龙排行',
-      onPress: goToUserCenterType.长龙助手,
-    },
-    {
-      title: '游戏大厅',
-      onPress: () => {
-        navigate(PageName.GameLobbyPage, {})
-      }
-    },
-  ],
-  menuSignIn: [
-    {
-      title: '登录/注册',
-      onPress: () => push(PageName.WNZSignInPage),
-    },
-  ],
-  menuSignOut: [
-    {
-      gameId: 31,
-      title: '安全退出',
-      onPress: () => {},
-    },
-  ],
+  getDefaultMenus() {
+    if (AppDefine.inSites('h005')) {
+      return [
+        { title: '返回首页', subId: UGLinkPositionType.返回首页, icon: img_assets('home') },
+        { title: '站内信', subId: UGLinkPositionType.站内信, icon: img_assets('zhanneixin@2x') },
+        { title: '优惠活动', subId: UGLinkPositionType.优惠活动, icon: img_assets('礼品-(1)') },
+        { title: '退出登录', subId: UGLinkPositionType.退出登录, icon: img_assets('tuichudenglu@2x') },
+        { title: '当前版本号', subId: UGLinkPositionType.当前版本号, icon: img_assets('banbenhao') },
+      ]
+    }
+
+    let menus = [
+      { title: '返回首页', subId: UGLinkPositionType.返回首页, icon: img_assets('home') },
+      { title: '即时注单', subId: UGLinkPositionType.即时注单, icon: img_assets('gw') },
+      { title: '今日输赢', subId: UGLinkPositionType.今日输赢, icon: img_assets('qk1') },
+      { title: '投注记录', subId: UGLinkPositionType.投注记录, icon: img_assets('zdgl@2x') },
+      { title: '开奖记录', subId: UGLinkPositionType.开奖记录, icon: img_assets('kaijiangjieguo@2x') },
+      { title: '长龙助手', subId: UGLinkPositionType.长龙助手, icon: img_assets('changlong@2x'), isHot: true },
+      { title: '利息宝', subId: UGLinkPositionType.利息宝, icon: img_assets('lixibao'), isHot: true },
+      { title: '站内信', subId: UGLinkPositionType.站内信, icon: img_assets('zhanneixin@2x') },
+      { title: '退出登录', subId: UGLinkPositionType.退出登录, icon: img_assets('tuichudenglu@2x') },
+      { title: '当前版本号', subId: UGLinkPositionType.当前版本号, icon: img_assets('banbenhao') },
+    ]
+    const { yuebaoSwitch } = UGStore.globalProps?.userInfo
+    if (yuebaoSwitch == false) {
+      menus = menus.filter((ele) => ele.title != '利息宝')
+    }
+    return menus
+  },
 }
 
 export default config

@@ -25,4 +25,5 @@ export const appConfig = {
   isWNZBottomTabHot: () => AppDefine.inSites('c245,c251'), // 威尼斯首页底部官方玩法改热门彩种，信用玩法改中奖排行
   isBgColorForMoneyVC: () => AppDefine.inSites('c134,test29'), // /**< 存款页面进去的底色为bg色   */
   isHomeWhiteBorder: () => AppDefine.inSites('c213,c012'), // 首页游戏cell加白边
+  isShowOneLevel: () => AppDefine.inSites('c085'), //推荐收益只显示一级，
 }

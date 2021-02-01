@@ -6,7 +6,7 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import UGSysConfModel, { UGUserCenterItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from '../../public/define/AppDefine';
-import PushHelper from '../../public/define/PushHelper';
+import PushHelper, { UGLinkPositionType } from '../../public/define/PushHelper';
 import { connect } from 'react-redux';
 import { UGColor } from '../../public/theme/UGThemeColor';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
@@ -63,10 +63,10 @@ export const XBJMinePage = (props: XBJMineProps) => {
   useEffect(() => {
     setProps({
       navbarOpstions: {
-        hidden: false,
         title: '我的',
         gradientColor: Skin1.bgColor,
         hideUnderline: true,
+        back: true,
         rightComponent: (
           <TouchableOpacity
             onPress={() => {
@@ -76,11 +76,8 @@ export const XBJMinePage = (props: XBJMineProps) => {
           </TouchableOpacity>
         ),
       },
-      backgroundColor: Skin1.bgColor,
+      bgGradientColor: Skin1.bgColor,
       didFocus: () => {
-        AppDefine.checkHeaderShowBackButton((show) => {
-          setProps({ navbarOpstions: { back: show } });
-        });
         // 获取用户信息
         UGUserModel.updateFromNetwork();
       },

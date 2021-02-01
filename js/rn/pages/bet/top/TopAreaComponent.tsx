@@ -4,12 +4,13 @@ import { pop } from '../../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../../public/tools/Scale'
 import CommStyles from '../../base/CommStyles'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, dicNull } from '../../../public/tools/Ext'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import * as React from 'react'
 import BetRecordHeaderComponent from '../counter/red/BetRecordHeaderComponent'
 import { useState } from 'react'
 import UseTopArea from './UseTopArea'
+import { syncUserInfo } from '../../../public/tools/user/UserTools'
 
 /**
  * 顶部功能区域 标题栏，游戏聊天切换 等等
@@ -53,11 +54,13 @@ const TopAreaComponent = () => {
           style={CommStyles.flex}/>
     <Text key={'renderTopBar money' + userInfo?.balance}
           style={[_styles.top_money,
-            { color: Skin1.navBarTitleColor }]}>{!anyEmpty(userInfo) && userInfo?.balance}</Text>
-    <Icon key={'renderTopBar refresh'}
-          size={scale(24)}
-          name={'refresh'}
-          color={Skin1.navBarTitleColor}/>
+            { color: Skin1.navBarTitleColor }]}>{!dicNull(userInfo) && userInfo?.balance}</Text>
+    <TouchableWithoutFeedback onPress={() => syncUserInfo()}>
+      <Icon key={'renderTopBar refresh'}
+            size={scale(24)}
+            name={'refresh'}
+            color={Skin1.navBarTitleColor}/>
+    </TouchableWithoutFeedback>
     <TouchableWithoutFeedback key={'renderTopBar bar'}
                       onPress={() => pop()}>
       <View style={_styles.back_bt_container}>

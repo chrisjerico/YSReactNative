@@ -1,9 +1,10 @@
 import AppDefine from '../../public/define/AppDefine'
 
 // functions
-export const scale = (layout: number): number =>
-  layout * (AppDefine.width / 540)
-export const sc = scale
+export const sc375 = (layout: number): number => layout * (AppDefine.width / 375)
+export const sc500 = (layout: number): number => layout * (AppDefine.width / 500)
+export const sc540 = (layout: number): number => layout * (AppDefine.width / 540)
+export const scale = sc540
 
 export const scaleHeight = (layout: number): number =>
   layout * (AppDefine.height / 540)

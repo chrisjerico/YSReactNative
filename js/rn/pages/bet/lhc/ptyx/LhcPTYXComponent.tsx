@@ -8,7 +8,7 @@ import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcPTYX from './UseLhcPTYX'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
 import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
@@ -39,7 +39,6 @@ const
     setPlayOddData(playOddData)
   }, [])
   const key = 'lottery page' + playOddData?.code
-
 
   /**
    * 绘制 单个Tab
@@ -115,7 +114,7 @@ const
    * 绘制全部的格子
    * @param groupData
    */
-  const renderAllRect = (groupData?: PlayGroupData) => !anyEmpty(groupData) &&
+  const renderAllRect = (groupData?: PlayGroupData) => !dicNull(groupData) &&
     <View key={key + 'renderAllRect' + groupData?.id}
           style={CommStyles.flex}>
 
@@ -178,7 +177,7 @@ const
         <View key={key + 'renderAllBall'}
               style={_styles.content_container}>
           {renderAllRect(currentPageData()[0])}
-          {renderLineBall(currentPageData[1])}
+          {renderLineBall(currentPageData()[1])}
         </View>
       )
     }

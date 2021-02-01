@@ -84,6 +84,8 @@ export enum UGUserCenterType {
   登出 = 103,
   游戏大厅 = 104,
   我的页 = 105,
+  登录页 = 106,
+  注册页 = 107,
   开奖结果 = 109,
   砸金蛋 = 110,
   刮刮乐 = 111,
@@ -224,7 +226,7 @@ export default class UGSysConfModel {
   allowreg?: boolean // 是否开启注册功能。
   allowMemberCancelBet?: boolean // 是否允许会员撤单，1允许 0不允许
   m_promote_pos?: boolean // 优惠活动显示在首页还是内页，1首页，0内页
-  yuebaoSwitch?: boolean // 未登录时是否允许访问利息宝
+  yuebaoSwitch?: boolean // //利息宝开关
   yuebaoName?: string // 利息宝名字
   chatFollowSwitch?: boolean // 是否允许聊天室跟注
   switchBindVerify?: number // 新增提款账号時，校验取款密码
@@ -237,8 +239,22 @@ export default class UGSysConfModel {
   mobileMenu?: Array<UGTabbarItem> // 底部Tab按钮
   userCenter?: Array<UGUserCenterItem> // 我的页功能按钮
 
+
+  switchBalanceChannel?: string //余额提款开关
+  balanceChannelStartTime?: string //开关时间段
+  balanceChannelEndTime?: string //开关时间段
+  balanceChannelPrompt?: string //余额提款关闭提示语
+  switchYuebaoChannel?: string //利息宝开关
+  yuebaoChannelStartTime?: string //开关时间段
+  yuebaoChannelEndTime?: string //开关时间段
+  yuebaoChannelPrompt?: string //利息宝关闭提示语
+
   activeReturnCoinStatus?: boolean// 是否開啟拉條模式
   activeReturnCoinRatio?: number// 拉條最大值
+
+  switchShowFriendReferral?: '0' | '1' //是否显示首页推荐好友 0不显示，1显示
+  showNavigationBar?: '0' | '1'   //首页推荐好友显示在前还是后 1 前 0 后
+
 
   // 登陸頁
   loginVCode?: boolean // 登录增加了滑动验证码配置  默认开

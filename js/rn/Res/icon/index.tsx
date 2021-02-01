@@ -45,6 +45,7 @@ export const img_vueTemplate = (path: string, type: ImageType = 'png') => getIma
 // git服务器的图片
 export const img_assets = (path: string, type: ImageType = 'png') => getImage(UGImageHost.git, 'assets/{p1}', path, undefined, type) 
 export const img_root = (path: string, type: ImageType = 'png') => getImage(UGImageHost.git, '{p1}', path, undefined, type)
+export const img_doy = (path: string, type: ImageType = 'png') => getImage(UGImageHost.git, 'doy/{p1}', path, undefined, type)
 
 export const useHtml5Image = (host?: UGImageHost) => ({ getHtml5Image, img_mobileTemplate, img_home, img_platform, img_images, img_assets, })
 

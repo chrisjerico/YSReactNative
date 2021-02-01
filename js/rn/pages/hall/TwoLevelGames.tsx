@@ -66,33 +66,25 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   setProps({
     didFocus: (params) => {
+      !gameData?.length && requestGameData()
+      setSearchText("");
+    },
+    didBlur: () => {
+      console.log('二級遊戲didBlur');
+      setSearchText("");
+    },
 
-      if (Skin1.skitType.indexOf('威尼斯') != -1) {
-        !gameData?.length && requestGameData()
-      }
-      else {
-        switch (Platform.OS) {
-          case 'ios':
-            let dic = params;
-            for (var key in dic) {
-              if (key == 'game') {
-                game = JSON.parse(JSON.stringify(dic[key]))
-                game.name = game.title
-                requestGameData()
-              }
-            }
-            break;
-          case 'android':
-            //TODO Android 传参
-            !gameData?.length && requestGameData()
-            break;
-        }
-      }
-
-
-
-    }
   }, false)
+
+
+  /**
+   * 游戏数据id
+   */
+  function gameDataId(){
+
+    let gotoId = anyEmpty(game.id)?game.gameId:game.id
+    return gotoId
+  }
 
   /**
    * 请求游戏数据
@@ -104,14 +96,19 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       setRefreshing(false)
       setGameData(data)
       setFilterData(data)
-    }
 
-    api.game.realGameTypes(game.gameId, "").useSuccess(({ data }) => {
+    }
+    
+    api.game.realGameTypes(gameDataId(), "").useSuccess(({ data }) => {
       let res = { data: data }
+     
+      if ( anyEmpty(res.data)) {
+        return;
+      }
       setIsSetData(true)
       for (let index = 0; index < res.data.length; index++) {
         const v = res.data[index];
-        v.id = game.gameId;
+        v.id = gameDataId();
       }
       refreshUI(res.data)
     })
@@ -131,7 +128,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       <TwoLevelListComponent
         refreshing={refreshing}
         gameData={item}
-        gameID={game.gameId}
+        gameID= {gameDataId()}
         requestGameData={requestGameData} />
     </>
 
@@ -153,15 +150,16 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                 }}>
                 <Text style={{
                   fontSize: scale(23),
-                  color: Skin1.themeColor,
+                  color: Skin1.textColor1,
                   marginRight: scale(15),
                 }}>全部游戏</Text>
               </TouchableOpacity>
               <TextInput
-                style={_styles.searchInput}
+                style={[_styles.searchInput,{ color: Skin1.textColor1,}]}
                 onChangeText={(text) => {
                   setSearchText(text)
                 }}
+                value={searchText}
               />
               <Button
                 title={'搜索'}
@@ -179,11 +177,11 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
             <ScrollView >
               {renderDataList(filterData)}
               <View
-              style={{
-                  height:200,
-              }}
-            >
-            </View>
+                style={{
+                  height: 20,
+                }}
+              >
+              </View>
             </ScrollView>
 
           </View>
@@ -200,7 +198,7 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
             pop()
           }
           }
-          title={game.name ?? game.title}
+          title={game?.name ?? game?.title}
         />
       </SafeAreaHeader>
       {

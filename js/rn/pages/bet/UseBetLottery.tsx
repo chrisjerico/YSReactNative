@@ -5,6 +5,7 @@ import { anyEmpty } from '../../public/tools/Ext'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { parseLotteryDetailData } from './util/LotteryUtil'
+import { ugLog } from '../../public/tools/UgLog'
 
 /**
  * 彩票下注
@@ -32,7 +33,7 @@ const UseBetLottery = () => {
 
     const res = await APIRouter.game_playOdds(id)
       .then(({ data: res }) => res)
-    //ugLog('requestLotteryData data res=', JSON.stringify(res?.data))
+    // ugLog('requestLotteryData data res=', JSON.stringify(res?.data))
 
     if (res?.code == 0) {
       const newPlayOdds = parseLotteryDetailData(res?.data)

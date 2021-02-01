@@ -32,7 +32,7 @@ const NoticeBlock = ({ logo, logoText = '公告', notices, containerStyle, onPre
       </View>
       <View style={styles.noticContainer}>
         <MarqueeHorizontal
-          width={AppDefine.width * 0.85} height={null} textStyle={textStyle} textList={cleanContents} speed={60}
+          width={AppDefine.width * 0.85} height={null} textStyle={textStyle} textList={cleanContents.concat(cleanContents).concat(cleanContents)} speed={60}
           onTextClick={() => onPressNotice({ content: cleanContents.map((ele) => ele.content).join('') })}
           bgContainerStyle={bgContainerStyle} />
       </View>

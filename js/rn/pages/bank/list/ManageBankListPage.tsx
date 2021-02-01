@@ -33,7 +33,7 @@ const ManageBankListPage = ({ navigation, setProps }) => {
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
   const [showRightButton, setShowRightButton] = useState(false) //是否显示右边按钮
-  const [selectType, setSelectType] = useState<number>() //选中了哪个账户
+  const [selectType, setSelectType] = useState<number>(0) //选中了哪个账户
 
   let tabController //tab选择器
 
@@ -49,6 +49,7 @@ const ManageBankListPage = ({ navigation, setProps }) => {
 
   useEffect(() => {
     //判断要不要显示右边按钮
+
     categoryData?.map((item) => {
       if (item.type == selectType) {
         setShowRightButton(arrayLength(item.data) < Number(item.number))
@@ -175,7 +176,7 @@ const ManageBankListPage = ({ navigation, setProps }) => {
               tabBarUnderlineStyle={[_styles.tab_bar_underline,
                 { backgroundColor: Skin1.themeColor }]}
               tabBarActiveTextColor={Skin1.themeColor}
-              tabBarInactiveTextColor={Skin1.tabNoSelectColor}
+              tabBarInactiveTextColor={'#999999'}
               tabBarTextStyle={{ fontSize: scale(20) }}
               style={[_styles.bg_container]}
               renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>

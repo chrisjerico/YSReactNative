@@ -1,4 +1,4 @@
-import { UGImageHost, useHtml5Image } from "."
+import { img_root, UGImageHost, useHtml5Image } from '.'
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 /**
@@ -11,7 +11,7 @@ export const icon_刮刮乐 = img_assets('gyg')    //大转盘
 export const icon_任务弹窗 = img_assets('task_home')    //任务弹框
 
 export const Res = {
-  
+
   bankhl1: img_assets('bankhl1'),
   btc: img_assets('btc'),
   empty: img_assets('empty'),
@@ -73,6 +73,15 @@ export const Res = {
   btc_deposit_icon: img_assets('bank/btc_deposit_icon'),
   aliyin2: img_assets('bank/aliyin2'),
   promotion_more: img_assets('promotion/more', 'gif'),
+
+  //秒秒彩
+  mmckjz: img_root('web/images/zh/mmckjz'), //开奖中
+  mmcwzj: img_root('web/images/zh/mmcwzj'),//未开奖
+  mmczjl: img_root('web/images/zh/mmczjl'), //中奖啦
+  mmczt: img_root('web/images/zh/mmczt'), //暂停
+  mmczdtz: img_root('web/images/zh/mmczdtz'), //自动投注
+  mmcBg23: img_root('web/images/mmcBg23'), //牛仔背景
+  mmcbackpic: img_root('web/static/vueTemplate/vue/images/mmcbackpic'), //背景
 
   //筹码
   a10: img_assets('chip/a10'),

@@ -7,6 +7,7 @@ import PushHelper from "../../../public/define/PushHelper";
 import { Data } from "../../../public/network/Model/LoginModel";
 import { AvatarModel } from "../../../public/network/Model/SystemAvatarListModel";
 import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
+import { goToUserCenterType } from "../../../public/tools/tars";
 import { UGStore } from "../../store/UGStore";
 
 export class UGLoginModel {
@@ -61,19 +62,19 @@ export default class UGUserModel extends UGLoginModel {
     temp.token = user['API-TOKEN'];
     return temp;
   }
-  static checkLogin() {
+  static checkLogin(canTest = false) {  // 是否允许试玩账号
     const { isTest, uid } = UGStore.globalProps.userInfo
     if (!isTest && uid?.length) return true;
 
     if (!uid?.length) {
       Alert.alert("温馨提示", "您还未登录", [
         { text: "取消", onPress: () => { }, style: "cancel" },
-        { text: "马上登录", onPress: () => { PushHelper.pushLogin() }, }
+        { text: "马上登录", onPress: goToUserCenterType.登录页 },
       ])
-    } else if (isTest) {
+    } else if (!canTest && isTest) {
       Alert.alert("温馨提示", "请登录正式账号", [
         { text: "取消", onPress: () => { }, style: "cancel" },
-        { text: "马上登录", onPress: () => { PushHelper.pushLogin() }, }
+        { text: "马上登录", onPress: goToUserCenterType.登录页 },
       ])
     }
     return false;

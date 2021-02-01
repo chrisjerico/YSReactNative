@@ -68,7 +68,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   useEffect(() => {
     setProps({
       navbarOpstions: {
-        hidden: false, title: inviteCode.displayWord,
+        hidden: false, title: inviteCode.displayWord, back: true,
         rightComponent:
           <Button
             title={'生成' + inviteCode.displayWord}
@@ -79,9 +79,6 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
       },
       didFocus: () => {
         onHeaderRefresh()
-        AppDefine.checkHeaderShowBackButton((show) => {
-          setProps({ navbarOpstions: { back: show } });
-        })
       }
     })
 

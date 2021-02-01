@@ -1,10 +1,11 @@
 import React, { memo } from 'react'
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../tools/Scale'
+import { sc540, scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { img_platform } from '../../../Res/icon'
 import { IconProps } from 'react-native-vector-icons/Icon'
+import { FastImagePlaceholder } from '../../../pages/经典/tools/ImagePlaceholder'
 
 interface GameButtonProps {
   logo?: string
@@ -112,14 +113,14 @@ const GameButton = (props: GameButtonProps) => {
               circleContainerStyle,
             ]}>
             <View style={[styles.imageContainer, imageContainerStyle]}>
-              <FastImage style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} />
+              <FastImagePlaceholder style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} placeholderStyle={{ borderRadius: sc540(50), overflow:'hidden' }} />
               {showCenterFlag && (flagIcon ? <FastImage source={{ uri: flagIcon }} style={[styles.image, { position: 'absolute' }]} /> : <DefaultFlag center={true} />)}
               {showSecondLevelIcon && <AntDesign name={'appstore1'} size={scale(25)} {...secondLevelIconProps} style={[styles.secondLevelIcon, secondLevelIconProps?.style, secondLevelIconContainerStyle]} />}
             </View>
           </View>
         ) : (
           <View style={[styles.imageContainer, imageContainerStyle]}>
-            <FastImage style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} />
+            <FastImagePlaceholder style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} placeholderStyle={{ borderRadius: sc540(50), overflow:'hidden' }} />
             {showCenterFlag && (flagIcon ? <FastImage source={{ uri: flagIcon }} style={[styles.image, { position: 'absolute' }]} /> : <DefaultFlag center={true} />)}
             {showSecondLevelIcon && <AntDesign name={'appstore1'} size={scale(25)} {...secondLevelIconProps} style={[styles.secondLevelIcon, secondLevelIconProps?.style, secondLevelIconContainerStyle]} />}
           </View>
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '100%',
+    aspectRatio: 1,
     resizeMode: 'stretch'
   },
   rightTopFlag: {

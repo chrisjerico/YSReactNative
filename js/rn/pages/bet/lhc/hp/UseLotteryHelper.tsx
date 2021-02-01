@@ -1,7 +1,12 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import {
+  PlayData,
+  PlayGroupData,
+  PlayOddData,
+  ZodiacNum,
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import BetLotteryContext from '../../BetLotteryContext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
 import { UGStore } from '../../../../redux/store/UGStore'
@@ -16,10 +21,11 @@ import parseLXData from '../../util/ps/ParseLXDataUtil'
 import parseLWData from '../../util/ps/ParseLWDataUtil'
 import parseZXBZData from '../../util/ps/ParseZXBZDataUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
-import SelectedLotteryModel from '../../../../redux/model/game/SelectedLotteryModel'
+import SelectedLotteryModel, { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
 import { parseLMASelectedData } from '../../util/sel/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/sel/ParseHXSelectedUtil'
-import { Toast } from '../../../../public/tools/ToastUtils'
+import { doc } from 'prettier'
 
 /**
  * 彩票公共处理类
@@ -41,7 +47,8 @@ const UseLotteryHelper = () => {
   useEffect(() => {
 
 
-    const selData = new Map<string, Array<PlayGroupData>>()
+    //生成选中的数据
+    const newSelectedModel = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
 
 //     const subData: SelectedLotterySubData = {
 //       groupId: playOddData?.pageData?.groupTri[tabIndex]
@@ -77,23 +84,73 @@ const UseLotteryHelper = () => {
       case LotteryConst.LX: //连肖
       case LotteryConst.LW: //连尾
       case LotteryConst.ZXBZ:  //自选不中
-        selData[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
+        newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
         break
 
       case LotteryConst.HX://合肖
-        selData[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
+        newSelectedModel[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
         break
     }
 
-    const selectedLotteryModel: SelectedLotteryModel = { selectedData: selData }
+    const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedModel }
     UGStore.dispatch({ type: 'merge', selectedLotteryModel })
-    ugLog(`选中的数据 = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(selectedLotteryModel))
+
+    ugLog('选中的数据 selectedBalls = ', JSON.stringify(selectedBalls))
+    ugLog(`选中的数据 selectedLotteryModel = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(UGStore.globalProps?.selectedLotteryModel))
 
   }, [selectedBalls])
 
   useEffect(() => {
-    ugLog('selectedLotteryModel?.selectedData = ', anyEmpty(selectedLotteryModel?.selectedData), selectedLotteryModel?.selectedData?.size)
-  }, [selectedLotteryModel?.selectedData])
+
+    ugLog('恢复选中的数据')
+    const selModel = UGStore.globalProps?.selectedLotteryModel
+    const curSelectedData: Map<string, Map<string, SelectedPlayModel>> = selModel && selModel[playOddData?.code]
+
+    switch (playOddData?.code) {
+      case LotteryConst.TM:  //特码
+      case LotteryConst.LM: //两面
+      case LotteryConst.ZM: //正码
+      case LotteryConst.ZT:  //正特
+      case LotteryConst.ZM1_6: //正码1T6
+      case LotteryConst.SB: //色波
+      case LotteryConst.ZOX://总肖
+      case LotteryConst.WX:  //五行
+      case LotteryConst.LMA:  //连码
+      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.TX: //特肖
+      case LotteryConst.ZX: //正肖
+      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LotteryConst.LX: //连肖
+      case LotteryConst.LW: //连尾
+      case LotteryConst.ZXBZ:  //自选不中
+      case LotteryConst.HX://合肖
+        // if (arrayLength(playOddData?.pageData?.groupTri) == 1) {//只有1页数据/非特殊玩法，才恢复选中数据
+        //   //第一页第一条数据的 alias是TAB名字，也是TAB的 key
+        //   const groupDataArr: Map<string, SelectedPlayModel> = curSelectedData[playOddData?.pageData?.groupTri[0][0]?.alias]
+        //   if (!dicNull(groupDataArr)) {
+        //     ((Object.values(groupDataArr) as Array<SelectedPlayModel>))?.map((playModel) => {
+        //       switch (playOddData?.code) {
+        //         case LotteryConst.HX://合肖
+        //         {
+        //           const ids = playModel?.zodiacs?.map((zodiac) => zodiac?.id)
+        //           setSelectedBalls(ids)
+        //         }
+        //           break
+        //         default:
+        //         {
+        //           const ids = playModel?.plays?.map((play) => play?.exId ?? play?.id)
+        //           setSelectedBalls(ids)
+        //         }
+        //           break
+        //       }
+        //     })
+        //   }
+        // }
+        break
+    }
+
+  }, [playOddData])
 
   //当前选中的第几页数据
   const currentPageData = (): Array<PlayGroupData> =>
@@ -141,7 +198,7 @@ const UseLotteryHelper = () => {
     const checkMap = zodiac.nums.map((item) => ('0' + item).slice(-2))
 
     return groupData?.plays?.filter((item) => checkMap?.includes(item?.name))
-      .map((item) => item?.id)
+      .map((item) => item?.exId)
   }
 
   return {

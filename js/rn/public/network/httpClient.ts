@@ -40,6 +40,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   //     params[key] = null
   //   }
   // }
+
   let temp = {}
   //过滤掉 null 或 "",
   for (let paramsKey in params) {
@@ -52,6 +53,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
     return temp
   }
 
+  ugLog('params ==444444',params)
   try {
 
     switch (Platform.OS) {
@@ -79,7 +81,7 @@ httpClient.interceptors.response.use(
       OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [config?.url], args2: [Object.assign({token:UGUserModel.getToken()}, config?.orParams)], args3: [data] }]);
     }
 
-    // ugLog("http ful filled res 5 = ", JSON.stringify(response))
+    //ugLog("http ful filled res 5 = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {
     //   if (config?.expiredTime < 1000000000000000) {
@@ -143,7 +145,7 @@ httpClient.interceptors.response.use(
 )
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   if (!config.url.includes('wjapp')) {
-    config.url = 'wjapp/api.php?' + config.url
+    config.url = '/wjapp/api.php?' + config.url
   }
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data })
@@ -151,7 +153,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
 
   console.log('请求的url===',config.url);
   console.log('请求的params===',params);
-  
+
   let { isEncrypt = true } = config
   let encryptData = await encryptParams(params, isEncrypt);
 
@@ -162,7 +164,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
       config.url += '&checkSign=1'
     }
 
-    Object.keys(encryptData).map((res) => {
+    Object.keys(encryptData).forEach((res) => {
       if (!config.params) {
         config.params = {}
       }
@@ -201,7 +203,12 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
     }
   }
 
-  ugLog('http url 1 =', config.method, config.baseURL, config.url)
+
+
+  ugLog('config.baseURL =', config.baseURL)
+  ugLog('config.url =', config.url)
+
+  ugLog('http url 1 =', config.method,config.baseURL,config.url)
 
   // ugLog('http encryptData 1 =', encryptData)
   // ugLog('http config.data 1 =', config.data)

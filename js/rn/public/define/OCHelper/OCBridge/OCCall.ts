@@ -112,4 +112,11 @@ export class NSValue {
   static Block(argTypes: ('Object' | 'Number')[], event: OCEventType) {
     return new NSValue('RNBlock', argTypes.toString(), event);
   }
+
+  static ViewController(vcName: string, params?: { [x: string]: any }) {
+    return {
+      selectors: 'ReactNativeVC.reactNativeWithRPM:params:',
+      args1: [{ clsName: 'RnPageModel', vcName2: vcName }, params]
+    };
+  }
 }

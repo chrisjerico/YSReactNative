@@ -6,7 +6,6 @@ import { CMD } from '../define/ANHelper/hp/CmdDefine'
 import AppDefine from '../define/AppDefine'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { Toast } from '../tools/ToastUtils'
-import { ugLog } from '../tools/UgLog'
 import { UGStore } from './../../redux/store/UGStore'
 import { CachePolicyEnum, httpClient } from './httpClient'
 import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
@@ -20,7 +19,7 @@ import { HallGameModel } from './Model/game/HallGameModel'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
-import { GameUrlModel, HomeRecommendModel, TwoLevelGame } from './Model/HomeRecommendModel'
+import { GameHistoryModel, GameUrlModel, HomeRecommendModel, TwoLevelGame } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
 import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
@@ -40,7 +39,6 @@ import { SystemConfigModel } from './Model/SystemConfigModel'
 import { TaskCenterModel } from './Model/TaskCenterModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { TaskCreditsLogModel } from './Model/TaskCreditsLogModel'
-import { TicketHistoryModel } from './Model/TicketHistoryModel'
 import { TurntableListModel } from './Model/TurntableListModel'
 import { UserChangeFundPwdModel } from './Model/UserChangeFundPwdModel'
 import { UserChangeLoginPwdModel } from './Model/UserChangeLoginPwdModel'
@@ -53,6 +51,7 @@ import { PayAisleModel } from './Model/wd/PayAisleModel'
 import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
 
+//1
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -120,21 +119,6 @@ class APIRouter {
         break
     }
     return httpClient.get<any>('c=activity&a=applyWinLog&token=' + tokenParams)
-  }
-
-  static ticket_history = async () => {
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams = 'token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        tokenParams = 'token=' + pms?.token
-        break
-    }
-    return httpClient.get<TicketHistoryModel>('c=ticket&a=history&category=lottery&status=1&endDate=&startDate=2020-12-16&rows=20&token=' + tokenParams + '&page=1')
   }
 
   static user_changeFundPwd = async ({ oldPwd, newPwd }) => {
@@ -214,33 +198,32 @@ class APIRouter {
   }
 
   static game_realGameTypes = async (gameId: string, searchText: string) => {
-    let tokenParams = await APIRouter.encryptGetParams({
+    let tokenParams = {
       search_text: searchText,
       id: gameId,
-    })
+    }
 
-    return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes' + tokenParams)
+    return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes', { params: tokenParams })
   }
 
   //注单讯息
   static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string) => {
-    let tokenParams = await APIRouter.encryptGetParams({
+    let parameter = {
       page: page,
       rows: rows,
       category: category,
       startDate: startDate,
       endDate: endDate,
-    })
+    }
 
-    return httpClient.get<GameHistoryModel>('c=ticket&a=history' + tokenParams)
+    return httpClient.get<GameHistoryModel>('c=ticket&a=history', { params: parameter })
   }
 
   static real_gotoGame = async (id) => {
-    let params = await APIRouter.encryptGetParams({
+    let parameter = {
       id: id,
-    })
-    ugLog('params: ' + params)
-    return httpClient.get<GameUrlModel>('c=real&a=gotoGame' + params)
+    }
+    return httpClient.get<GameUrlModel>('c=real&a=gotoGame', { params: parameter })
   }
 
   /**
@@ -330,12 +313,12 @@ class APIRouter {
       return null
     }
 
-    let tokenParams = await APIRouter.encryptGetParams({
+    let parameter = {
       status: 0,
       type: category,
-    })
+    }
 
-    return httpClient.get<BankDetailListModel>('c=system&a=bankList' + tokenParams)
+    return httpClient.get<BankDetailListModel>('c=system&a=bankList', { params: parameter })
   }
 
   /**
@@ -445,9 +428,7 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_rechargeRecordList = async (params: IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
-    let tokenParams = await APIRouter.encryptGetParams(params)
-
-    return httpClient.get<DepositRecordModel>('c=recharge&a=logs' + tokenParams)
+    return httpClient.get<DepositRecordModel>('c=recharge&a=logs', { params: params })
   }
 
   /**
@@ -481,9 +462,7 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_withdrawalRecordList = async (params: IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
-    let tokenParams = await APIRouter.encryptGetParams(params)
-
-    return httpClient.get<WithdrawalRecordModel>('c=withdraw&a=logs' + tokenParams)
+    return httpClient.get<WithdrawalRecordModel>('c=withdraw&a=logs', { params: params })
   }
 
   /**
@@ -497,9 +476,7 @@ class APIRouter {
   static capital_capitalDetailRecordList = async (params: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
     console.log('params ==', params)
 
-    let tokenParams = await APIRouter.encryptGetParams(params)
-
-    return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&' + tokenParams)
+    return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&', { params: params })
   }
 
   static activity_redBagDetail = async () => {
@@ -576,9 +553,7 @@ class APIRouter {
    * 实时汇率
    */
   static system_currencyRate = async (params: ICurrencyRateParams): Promise<AxiosResponse<NewRateModel>> => {
-    let tokenParams = await APIRouter.encryptGetParams(params)
-
-    return httpClient.get<NewRateModel>('c=system&a=currencyRate' + tokenParams)
+    return httpClient.get<NewRateModel>('c=system&a=currencyRate', { params: params })
   }
 
   static system_mobileRight = async () => {
@@ -726,11 +701,11 @@ class APIRouter {
    * id 游戏 id
    */
   static game_nextIssue = async (id: string): Promise<AxiosResponse<NextIssueModel>> => {
-    let tokenParams = await APIRouter.encryptGetParams({
+    let parameter = {
       id,
-    })
+    }
 
-    return httpClient.get<NextIssueModel>('c=game&a=nextIssue' + tokenParams)
+    return httpClient.get<NextIssueModel>('c=game&a=nextIssue', { params: parameter })
   }
 
   /**
@@ -738,20 +713,18 @@ class APIRouter {
    * id 游戏 id
    */
   static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDetailModel>> => {
-    let tokenParams = await APIRouter.encryptGetParams({
+    let parameter = {
       id,
-    })
+    }
 
-    return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds' + tokenParams)
+    return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds', { params: parameter })
   }
 
   /**
    * 游戏开奖记录
    */
   static game_lotteryHistory = async (params: IGameHistory): Promise<AxiosResponse<LotteryHistoryModel>> => {
-    ugLog('game_lotteryHistory=', JSON.stringify(params))
-    let tokenParams = await APIRouter.encryptGetParams(params)
-    return httpClient.get<LotteryHistoryModel>('c=game&a=lotteryHistory' + tokenParams)
+    return httpClient.get<LotteryHistoryModel>('c=game&a=lotteryHistory', { params: params })
   }
 
   /**

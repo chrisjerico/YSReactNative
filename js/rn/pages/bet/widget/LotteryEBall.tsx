@@ -30,7 +30,7 @@ const renderContent = ({
                          ballStyle,
                          callback,
                        }: ILotteryEBall) => {
-  let isSel = isSelectedBallOnId(selectedBalls, item?.id)
+  let isSel = isSelectedBallOnId(selectedBalls, item?.exId ?? item?.id) //优先使用本地生成的唯一识别ID
 
   return (
     <View key={'e ball content' + item?.id}
@@ -75,7 +75,7 @@ const LotteryEBall = (iBall: ILotteryEBall) => {
   const { item, callback } = iBall
 
   return (
-    callback != null ? <TouchableWithoutFeedback key={'LotteryEBall' + item?.id}
+    callback != null ? <TouchableWithoutFeedback key={`LotteryEBall-${item?.exId}-${item?.id}`}
                                          onPress={() => callback && callback()}>
         {renderContent(iBall)}
       </TouchableWithoutFeedback> :
@@ -103,6 +103,7 @@ const _styles = StyleSheet.create({
  */
 interface ILotteryEBallItem {
   id?: string; //708501
+  exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, TM,特码B,708550
   name?: string; //01
   alias?: string;//特码A"
   code?: string;//01

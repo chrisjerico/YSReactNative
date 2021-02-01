@@ -87,9 +87,7 @@ const LobbyGameListComponent = ({
           PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
         } else {
 
-          //TODO
-          switch (Platform.OS) {
-            case 'ios':
+
               //如果是威尼斯
               if (Skin1.skitType.indexOf('威尼斯') != -1) {
                 push(PageName.SeriesLobbyPage,
@@ -102,50 +100,22 @@ const LobbyGameListComponent = ({
                   })
               }
               else {
-                // 打开原生
-                OCHelper.call('UGNavigationController.current.pushViewController:animated:',
-                  [
-                    {
-                      selectors: 'UGYYLotterySecondHomeViewController.new[setTitle:][setDataArray:]',
-                      args1: [item.categoryName + '系列'],
-                      args2: [{
-                        selectors: 'UGYYGames.arrayOfModelsFromDictionaries:error:',
-                        args1: [item.games]
-                      }]
-                    },
-                    true
-                  ]);
-              }
 
-              break
-            case 'android':
-               //如果是威尼斯
-               if (Skin1.skitType.indexOf('威尼斯') != -1) {
-                push(PageName.SeriesLobbyPage,
-                  {
-                    gameId: 0,
-                    subId: games.subId[item.category],
-                    name: item.categoryName,
-                    headerColor: Skin1.themeColor,
-                    homePage: PageName.WNZHomePage
-                  })
+                push(PageName.JDLotterySecondPage, {
+                  dataArray: item.games,
+                  title: item.categoryName+'系列',
+                 
+                })
               }
-              else {
-                // 打开原生
-                 PushHelper.pushUserCenterType(games.subId[item.category])
-              }
-              break
-          }
-
         }
       }}>
         <View style={[_styles.game_item_container, { backgroundColor: Skin1.homeContentColor, }]}>
           <Image
-            style={{ width: 60, height: 60, marginRight: 10, }}
+            style={{ width: 60, height: 60, marginRight: 10,marginTop:10,marginLeft:10 }}
             source={{ uri: games.icons[item.category] }} />
           <View>
             <Text
-              style={[_styles.category_name, { color: Skin1.textColor1, marginRight: 10, },]}
+              style={[_styles.category_name, { color: Skin1.textColor1, marginRight: 10,marginTop:18 },]}
             >{item.categoryName}系列</Text>
             <Text
               style={[_styles.play_now, { marginTop: 10, },]}
@@ -187,10 +157,10 @@ const _styles = StyleSheet.create({
   },
   game_item_container: {
     flexDirection: 'row',
-    // justifyContent: 'space-around',
     marginHorizontal: scale(16),
     marginVertical: scale(16),
-    padding: scale(24),
+    width:scale(230),
+    height:scale(130),
     borderRadius: scale(10),
 
   },

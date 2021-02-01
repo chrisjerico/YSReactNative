@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { Component } from 'react'
 import CodePush from 'react-native-code-push'
+import { DoyLaunchPage } from '../../../doy/pages/DoyLaunchPage'
 import { AlipayProfitView } from '../../public/components/alipay/AlipayProfitView'
 import { AlipayTransferRecordView } from '../../public/components/alipay/AlipayTransferRecordView'
 import { AlipayTransferView } from '../../public/components/alipay/AlipayTransferView'
@@ -33,7 +34,6 @@ import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
-import TaskCenterPage from '../base/TaskCenterPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
@@ -100,6 +100,7 @@ import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
 import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
 import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
+import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
 import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
 import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
@@ -170,16 +171,16 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferView, //额度转页-经典版
   TransferLineView, //额度转页-天空蓝版
   TransferTKLMainView, //额度转页-新版
-  TaskCenterPage, // 任务中心
   JDRecommendedIncomePage, //推荐收益
   JDPromotionCodeListPage, //邀请码
   JDChangLongPage, //长龙主页
   JDBetRecordDetailPage, //长龙注单详情
   JDBetDetailPage, //下注明细
   OnlineService, //在线客服
+  JDLotterySecondPage, //2级系列游戏
   // ———————————— 模板页面 —————————————
 
-  JDHomePage,
+  JDHomePage, // 经典-首页
 
   LCMinePage, //乐橙-我的页
   LCHomePage, //乐橙-首页
@@ -242,6 +243,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   LLMinePage, //利来-我的页
   LLLoginPage, //利来-登录
   LLRegisterPage, //利来-注册
+
+  // Doy钱包
+  DoyLaunchPage, // 启动页
 }
 
 // TabbarController

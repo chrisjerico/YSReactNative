@@ -94,7 +94,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
       } else {
         setProps({
           navbarOpstions: { hidden: false, gradientColor:['#0000', '#0000'], hideUnderline: true, back: true },
-          backgroundColor: Skin1.bgColor,
+          bgGradientColor: Skin1.bgColor,
           backgroundImage:img_assets('login_bg', 'jpg'),
           rememberPassword: isRemember,
           didFocus: (params) => {

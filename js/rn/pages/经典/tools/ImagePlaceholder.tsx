@@ -1,18 +1,22 @@
-import { Image, ImageBackground, ImageProps, StyleProp, View, ViewStyle } from "react-native";
+import { Image, ImageBackground, ImageBackgroundProps, ImageProps, StyleProp, View, ViewStyle } from "react-native";
 import * as React from "react";
 import FastImage, { FastImageProperties } from "react-native-fast-image";
 import { img_assets } from "../../../Res/icon";
 
 interface ImagePlaceholder {
   placeholderURL?: string,
+  placeholderStyle?: StyleProp<ViewStyle>
 }
 
 export const ImagePlaceholder = (props: ImageProps & ImagePlaceholder) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
-  const style: any = props?.style
-  const { placeholderURL = img_assets('placeholder', 'jpg') } = props
 
-  return <ImageBackground style={style} resizeMode='cover' source={{ uri: shwoDefaultImage ? placeholderURL : undefined }}>
+  const {style, placeholderStyle}: any = props
+  const { placeholderURL = img_assets('load', 'png') } = props
+
+
+  return <View>
+    {shwoDefaultImage && <ImageBackground style={[style, { position: 'absolute' }, placeholderStyle]} resizeMode='cover' source={{ uri: placeholderURL }} />}
     <Image
       {...props}
       onError={(err) => {
@@ -24,17 +28,19 @@ export const ImagePlaceholder = (props: ImageProps & ImagePlaceholder) => {
         props?.onLoad && props?.onLoad(event)
       }}
     />
-  </ImageBackground>
+  </View>
 }
 
 
 
 export const FastImagePlaceholder = (props: FastImageProperties & ImagePlaceholder) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
-  const style: any = props?.style
-  const { placeholderURL = img_assets('placeholder', 'jpg') } = props
 
-  return <ImageBackground style={style} resizeMode='cover' source={{ uri: shwoDefaultImage ? placeholderURL : undefined }}>
+  const {style, placeholderStyle}: any = props
+  const { placeholderURL = img_assets('load', 'png') } = props
+
+
+  return (
     <FastImage
       {...props}
       onError={() => {
@@ -45,6 +51,8 @@ export const FastImagePlaceholder = (props: FastImageProperties & ImagePlacehold
         setShwoDefaultImage(false)
         props?.onLoad && props?.onLoad(event)
       }}
-    />
-  </ImageBackground>
+    >
+      {shwoDefaultImage && <FastImage style={[{ flex: 1 }, placeholderStyle]} resizeMode='cover' source={{ uri: placeholderURL }} />}
+    </FastImage>
+  )
 }

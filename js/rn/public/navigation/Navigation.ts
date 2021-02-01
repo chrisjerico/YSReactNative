@@ -38,6 +38,7 @@ export enum PageName {
   JDChangLongPage = 'JDChangLongPage',
   JDBetRecordDetailPage = 'JDBetRecordDetailPage',
   JDBetDetailPage = 'JDBetDetailPage',
+  JDLotterySecondPage ='JDLotterySecondPage',
   // ———————————— 模板页面 —————————————
   JDHomePage = 'JDHomePage',
 
@@ -130,5 +131,6 @@ export enum PageName {
   TwoLevelGames = "TwoLevelGames",
   OnlineService = 'OnlineService',
   OtherRecord = "OtherRecord",
-  Game3rdView = "Game3rdView"
+  Game3rdView = "Game3rdView",
+  DoyLaunchPage = "DoyLaunchPage",
 }
