@@ -32,6 +32,7 @@ export class api_user {
   // 注册
   static async reg(params: {
     inviter: string; // 推荐人ID
+    inviteCode: string;// 邀请码
     usr: string; // 账号
     pwd: string; // 密码
     fundPwd: string; // 取款密码

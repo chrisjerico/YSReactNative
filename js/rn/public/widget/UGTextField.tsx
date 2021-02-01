@@ -14,7 +14,7 @@ interface IPorps extends InputProps {
   onChangeText?: (text: string) => void;
 
   // 自定义变量
-  type?: '推荐人ID' | '账号' | '密码' | '确认密码' | '真实姓名' | 'QQ' | '微信' | '邮箱' | '手机号' | '字母验证码' | '短信验证码' | '空' | 'doy验证码' | 'doy密码';
+  type?: '推荐人ID' | '账号' | '密码' | '确认密码' | '真实姓名' | 'QQ' | '微信' | '邮箱' | '手机号' | '字母验证码' | '短信验证码' | '空' | 'doy验证码' | 'doy密码' | '邀请码';
   styleType?: '下划线样式' | '圆角背景样式';
   hidden?: boolean; // 隐藏
   onlyInteger?: boolean; // 仅数字
@@ -58,6 +58,12 @@ export default class UGTextField extends Component<IPorps, IState> {
         case '推荐人ID':
           return {
             placeholder: '推荐人ID',
+            leftIcon: { name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
+            keyboardType: 'number-pad',
+            onlyIntegerAndLetter: true,
+          };
+        case '邀请码':
+          return {
             leftIcon: { name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             keyboardType: 'number-pad',
             onlyIntegerAndLetter: true,
