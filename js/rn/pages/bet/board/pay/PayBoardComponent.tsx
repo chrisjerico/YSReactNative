@@ -35,6 +35,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     moneyMap,
     setMoneyMap,
     itemCount,
+    nextIssueData,
     playOddDetailData,
     selectedData,
     setSelectedData,
@@ -229,9 +230,12 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
                   onPress={() =>
                     startBetting().then((data) => {
-                      //结果为空只需要显示提示信息
-                      dicNull(data?.data) && (Toast(data?.msg))
-                      showCallback(data?.data)
+                      if (nextIssueData?.isInstant == '1') {//秒秒彩
+                        showCallback(data?.data)
+                      } else {
+                       (Toast(data?.msg))
+                        showCallback()
+                      }
                     })}>{'确定'}</Text>
           </View>
         </View>

@@ -18,6 +18,7 @@ import { NormalModel } from '../../../../../public/network/Model/NormalModel'
 import { hideLoading, showLoading } from '../../../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../../../public/network/APIRouter'
 import { syncUserInfo } from '../../../../../public/tools/user/UserTools'
+import { LotteryResultData } from '../../../../../public/network/Model/lottery/result/LotteryResultModel'
 
 /**
  * 下注结果
@@ -29,11 +30,23 @@ const UsePayResult = () => {
   const [counter, setCounter] = useState(0) //倒计时
   const [timer, setTimer] = useState<any>() //时钟
   const [autoBet, setAutoBet] = useState(false) //是否打开自动投注
+  const [betResult, setBetResult] = useState<LotteryResultData>(null) //是否打开自动投注
+  const [closeWindow, setCloseWindow] = useState(false) //是否关闭
 
   useEffect(() => {
     if (autoBet) {
       const timer = setInterval(() => {
-        setCounter(n => n + 1)
+        setCounter(n => {
+          if (n % 4 == 2) {
+            api.user.userGameBetWithParams(betResult?.betParams)
+              ?.useSuccess( ({data, code}) =>
+              {
+                // ugLog('res?.data?.data = ', JSON.stringify(data))
+                code == 0 && setBetResult({ ...data, betParams: betResult?.betParams })
+              })
+          }
+          return n + 1
+        })
       }, 1000)
 
       setTimer(timer)
@@ -48,6 +61,10 @@ const UsePayResult = () => {
   }, [autoBet])
 
   return {
+    closeWindow,
+    setCloseWindow,
+    betResult,
+    setBetResult,
     counter,
     autoBet,
     setAutoBet,

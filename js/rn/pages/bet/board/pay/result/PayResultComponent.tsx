@@ -10,8 +10,9 @@ import { LotteryResultData } from '../../../../../public/network/Model/lottery/r
 import LotteryZodiacAndBall from '../../../widget/LotteryZodiacAndBall'
 import * as Animatable from 'react-native-animatable'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import { forwardRef } from 'react'
+import { forwardRef, useEffect } from 'react'
 import CommStyles from '../../../../base/CommStyles'
+import { ugLog } from '../../../../../public/tools/UgLog'
 
 interface IPayResultComponent {
   betData?: LotteryResultData
@@ -27,21 +28,35 @@ interface IPayResultComponent {
 const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?: any) => {
 
   const {
+    closeWindow,
+    setCloseWindow,
+    betResult,
+    setBetResult,
     counter,
     autoBet,
     setAutoBet,
   } = UsePayResult()
 
+  useEffect(() => {
+    setBetResult(betData)
+  }, [])
+
+  useEffect(() => {
+    //等到timer关闭才关闭窗口
+    closeWindow && !autoBet && showCallback()
+  }, [closeWindow, autoBet])
+
   /**
    * 绘制 是否中奖图标
    */
   const renderPrize = () => {
-    return <Animatable.View animation={zoomOutIn}
-                            iterationCount={1}
-                            duration={500}
-                            iterationDelay={500}
-                            style={CommStyles.flex}>
-      <FastImage source={Number.parseFloat(betData?.bonus) > 0 ? { uri: Res.mmczjl } : { uri: Res.mmcwzj }}
+    return betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
+                                         animation={zoomOutIn}
+                                         iterationCount={1}
+                                         duration={500}
+                                         iterationDelay={500}
+                                         style={CommStyles.flex}>
+      <FastImage source={Number.parseFloat(betResult?.bonus) > 0 ? { uri: Res.mmczjl } : { uri: Res.mmcwzj }}
                  resizeMode={'contain'}
                  style={_styles.zj}/>
     </Animatable.View>
@@ -61,9 +76,16 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
                      style={_styles.mmc_image}/>
 
           <View style={_styles.text_container}>
-            <Text style={_styles.bet_text}>{
-              Number.parseFloat(betData?.bonus) > 0 ? '恭喜中奖' : '再接再厉'
-            }</Text>
+            {
+              betResult && <Animatable.Text key={betResult?.result + betResult?.openNum}
+                                            animation={zoomOutIn}
+                                            iterationCount={1}
+                                            duration={500}
+                                            iterationDelay={100}
+                                            style={_styles.bet_text}>{
+                Number.parseFloat(betResult?.bonus) > 0 ? '恭喜中奖' : '再接再厉'
+              }</Animatable.Text>
+            }
           </View>
 
           {
@@ -96,20 +118,26 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
           </TouchableWithoutFeedback>
 
           <View style={_styles.ball_container}>
-            <Animatable.View animation={zoomInOut}
-                             iterationCount={1}
-                             duration={500}
-                             iterationDelay={400}
-                             style={CommStyles.flex}>
-              <LotteryZodiacAndBall ballStr={betData?.openNum}
-                                    zodiacStr={betData?.result}
-                                    gameType={betData?.gameType}/>
-            </Animatable.View>
+            {
+              betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
+                                            animation={zoomInOut}
+                                            iterationCount={1}
+                                            duration={500}
+                                            iterationDelay={250}
+                                            style={CommStyles.flex}>
+                <LotteryZodiacAndBall ballStr={betResult?.openNum}
+                                      zodiacStr={betResult?.result}
+                                      gameType={betResult?.gameType}/>
+              </Animatable.View>
+            }
           </View>
 
           <View style={_styles.close_container}>
             <Icon size={scale(48)}
-                  onPress={() => showCallback()}
+                  onPress={() => {
+                    setAutoBet(false)
+                    setCloseWindow(true)
+                  }}
                   style={_styles.close}
                   color={'white'}
                   name={'close'}/>
@@ -162,8 +190,8 @@ const _styles = StyleSheet.create({
     marginTop: scale(280),
   },
   close: {
-    marginTop: scale(98),
-    marginRight: scale(64),
+    marginTop: scale(128),
+    marginRight: scale(82),
   },
   close_container: {
     position: 'absolute',
@@ -190,6 +218,7 @@ const _styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: scale(80),
     fontSize: scale(30),
+    fontWeight: 'bold',
   },
   counter_container: {
     position: 'absolute',
@@ -202,6 +231,7 @@ const _styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: scale(80),
     fontSize: scale(30),
+    marginTop: scale(48),
   },
 
 })

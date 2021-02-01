@@ -183,11 +183,12 @@ const UsePayBoard = () => {
     showLoading()
     const { data } = await api.user.userGameBetWithParams(pms).promise
     hideLoading()
-    ugLog('res bet 2 = res', JSON.stringify(data))
+
+    const newData = {...data, data: {...data?.data, betParams: pms}}
 
     syncUserInfo()
 
-    return data
+    return newData
 
     // const { data } = await api.user.myFeedback(0, date, true, 1, 20).promise
   }
@@ -199,6 +200,7 @@ const UsePayBoard = () => {
     moneyMap,
     setMoneyMap,
     itemCount,
+    nextIssueData,
     playOddDetailData,
     selectedData,
     setSelectedData,
