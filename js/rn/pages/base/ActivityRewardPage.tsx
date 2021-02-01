@@ -127,7 +127,8 @@ const ActivityRewardPage = () => {
   const [applyVisible, setApplyVisible] = useState(false)
   const [activityContent, setActivityContent] = useState('')
   const [quickAmounts, setQuickAmounts] = useState([])
-  const [money, setMoney] = useState(null)
+  const [applyMoney, setApplyMoney] = useState(null)
+  const [applyDescription, setApplyDescription] = useState(null)
   const [imgCaptcha, setImgCaptcha] = useState('')
   useEffect(() => {
     Promise.all([
@@ -235,7 +236,7 @@ const ActivityRewardPage = () => {
                     <TouchableWithoutFeedback
                       key={index}
                       onPress={() => {
-                        setMoney(ele)
+                        setApplyMoney(ele)
                       }}>
                       <View style={{ width: 25, aspectRatio: 1, backgroundColor: '#02C874', justifyContent: 'center', alignItems: 'center', marginRight: 5, borderRadius: 5 }}>
                         <Text style={{ color: '#ffffff' }}>{ele}</Text>
@@ -248,12 +249,19 @@ const ActivityRewardPage = () => {
             <TextInput
               style={{ borderColor: '#d9d9d9', width: '90%', height: 30, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5, marginBottom: 10 }}
               placeholder={'申请金额'}
-              value={money}
+              value={applyMoney}
               onChangeText={(text) => {
-                setMoney(text)
+                setApplyMoney(text)
               }}
             />
-            <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }} placeholder={'申请说明'} numberOfLines={5} />
+            <TextInput
+              style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }}
+              placeholder={'申请说明'}
+              numberOfLines={5}
+              onChangeText={(text) => {
+                setApplyDescription(text)
+              }}
+            />
             <View style={{ flexDirection: 'row', marginTop: 10, width: '90%' }}>
               <TextInput placeholder={'请输入验证码'} style={{ width: 150, borderColor: '#d9d9d9', borderWidth: AppDefine.onePx, borderRadius: 5, height: 30 }} />
               <Image source={{ uri: imgCaptcha }} style={{ width: 170, height: 30 }} resizeMode={'contain'} />
@@ -264,7 +272,8 @@ const ActivityRewardPage = () => {
                 containerStyle={{ width: '25%', borderWidth: 1, borderColor: '#8E8E8E', borderRadius: 5, height: 30 }}
                 onPress={() => {
                   setApplyVisible(false)
-                  setMoney(null)
+                  setApplyMoney(null)
+                  setApplyDescription(null)
                 }}
               />
               <Button
@@ -272,11 +281,13 @@ const ActivityRewardPage = () => {
                 containerStyle={{ width: '25%', borderWidth: 1, borderColor: 'transparent', borderRadius: 5, height: 30, backgroundColor: Skin1.themeColor }}
                 titleStyle={{ color: '#ffffff' }}
                 onPress={() => {
-                  if (money) {
-                    setApplyVisible(false)
-                    setMoney(null)
-                  } else {
+                  if (!applyMoney) {
                     Toast('申请金额不能为空')
+                  } else if (!applyDescription) {
+                    Toast('申请说明不能为空')
+                  } else {
+                    setApplyVisible(false)
+                    setApplyMoney(null)
                   }
                 }}
               />
