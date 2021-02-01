@@ -72,6 +72,14 @@ export function CheckError(sm: CCSessionModel<any>): Error {
     }
     err = new Error(sm?.res?.msg ?? '请求失败' + sm?.res?.code);
   }
+
+  if (!err) {
+    // 请求成功
+    if (Platform.OS == 'ios' && sm.url?.indexOf('c=user&a=info') != -1) {
+      // 更新原生用户信息
+      OCHelper.call('UGUserModel.currentUser.setValuesWithDictionary:', [sm.res?.data]);
+    }
+  }
   return sm.err = err;
 }
 
