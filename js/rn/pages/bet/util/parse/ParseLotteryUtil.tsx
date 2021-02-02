@@ -18,7 +18,6 @@ import parseLXData from './lhc/ParseLXDataUtil'
 import parseLWData from './lhc/ParseLWDataUtil'
 import parseZXBZData from './lhc/ParseZXBZDataUtil'
 import parseYZDWData from './cqssc/ParseYZDWDataUtil'
-import parseBDWData from './cqssc/ParseBDWDataUtil'
 
 interface IPageZodiac {
   zodiacNums?: ZodiacNum[] //彩票数据
