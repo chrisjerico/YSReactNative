@@ -3,9 +3,9 @@ import {
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../../public/tools/Ext'
-import { ILotteryEBallItem } from '../../widget/LotteryEBall'
+} from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../../public/tools/Ext'
+import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
 
 interface ITMData {
   playOddData?: PlayOddData

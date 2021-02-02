@@ -3,10 +3,10 @@ import {
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import { ILotteryEBallItem } from '../../widget/LotteryEBall'
-import { ugLog } from '../../../../public/tools/UgLog'
+} from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
+import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
+import { ugLog } from '../../../../../public/tools/UgLog'
 
 interface ITMData {
   playOddData?: PlayOddData

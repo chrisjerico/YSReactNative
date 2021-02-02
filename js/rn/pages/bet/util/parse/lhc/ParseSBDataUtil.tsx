@@ -3,8 +3,8 @@ import {
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+} from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 
 interface ITMData {
   playOddData?: PlayOddData
