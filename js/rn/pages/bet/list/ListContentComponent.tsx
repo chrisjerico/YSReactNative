@@ -20,6 +20,7 @@ import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
+import CqsscYZDWComponent from '../cqssc/yzdw/CqsscYZDWComponent'
 
 const ListContentComponent = () => {
 
@@ -195,6 +196,13 @@ const ListContentComponent = () => {
       case CqsscCode.Q4:  //第4球
       case CqsscCode.Q5:  //第5球
         return <Cqssc1T5Component key={lotteryCode}
+                                  playOddData={playOdds}/>
+
+      case CqsscCode.YZDW:  //一字定位
+      case CqsscCode.EZDW:  //二字定位
+      case CqsscCode.SZDW:  //三字定位
+        ugLog('playOdds = ', JSON.stringify(playOdds))
+        return <CqsscYZDWComponent key={lotteryCode}
                                   playOddData={playOdds}/>
 
       case LhcCode.YX: //平特一肖

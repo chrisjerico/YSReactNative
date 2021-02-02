@@ -17,6 +17,7 @@ import parsePTYXData from './lhc/ParsePTYXDataUtil'
 import parseLXData from './lhc/ParseLXDataUtil'
 import parseLWData from './lhc/ParseLWDataUtil'
 import parseZXBZData from './lhc/ParseZXBZDataUtil'
+import parseYZDWData from './cqssc/ParseYZDWDataUtil'
 
 interface IPageZodiac {
   zodiacNums?: ZodiacNum[] //彩票数据
@@ -78,6 +79,11 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case CqsscCode.SH:  //梭哈
       case CqsscCode.LHD:  //龙虎斗
         return parseSBData({ playOddData, zodiacNum })
+
+      case CqsscCode.YZDW:  //一字定位
+      case CqsscCode.EZDW:  //二字定位
+      case CqsscCode.SZDW:  //三字定位
+        return parseYZDWData({ playOddData, zodiacNum })
 
       case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LhcCode.TX: //特肖

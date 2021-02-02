@@ -6,7 +6,7 @@ import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseLhcLMA from './UseLhcLMA'
+import UseCqsscYZDW from './UseCqsscYZDW'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
@@ -20,7 +20,7 @@ import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
  * @param navigation
  * @constructor
  */
-const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
@@ -31,7 +31,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setSelectedBalls,
     addOrRemoveBall,
     currentPageData,
-  } = UseLhcLMA()
+  } = UseCqsscYZDW()
 
   useEffect(() => {
     setPlayOddData(playOddData)
@@ -39,8 +39,8 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const key = 'lottery page' + playOddData?.code
 
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
-                                                                                           style={CommStyles.flex}
-                                                                                           onPress={() => setTabIndex(index)}>
+                                                                                                   style={CommStyles.flex}
+                                                                                                   onPress={() => setTabIndex(index)}>
     <View key={key + item[0]?.alias}
           style={[
             _styles.tab_item,
@@ -85,10 +85,11 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     return (
       <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                     item={{
-                      ...item?.plays[0],
+                      // ...item?.plays[0],
                       ...ballInfo,
                     }}
                     selectedBalls={selectedBalls}
+                    ballType={{ size: scale(50) }}
                     ballStyle={{ flexDirection: 'column' }}
                     callback={() => addOrRemoveBall(ballInfo?.id)}/>
     )
@@ -98,31 +99,31 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制 连码
    * @param groupData
    */
-  const renderLMA = (groupData?: PlayGroupData) =>
-    <View key={key + ' renderLMA' + groupData?.id}
+  const renderYZDW = (groupData?: PlayGroupData) =>
+    <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
           style={CommStyles.flex}>
 
-      <View key={key + ' sub renderLMA' + groupData?.id}
+      <View key={key + ' sub renderYZDW' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderLMA' + groupData?.id} style={[
+        <Text key={key + ' text renderYZDW' + groupData?.id} style={[
           _styles.sub_title_text,
           { color: Skin1.themeColor },
-        ]}>{groupData?.alias}</Text>
+        ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
-      <View key={key + ' ball renderLMA' + groupData?.id}
+      <View key={key + ' ball renderYZDW' + groupData?.id}
             style={_styles.ball_container}>
         {
           groupData?.exPlays.map((item, index) => renderEBall(groupData, item))
         }
       </View>
     </View>
+
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <View key={key + 'renderAllBall'}
-                                    style={_styles.content_container}>
-    {!anyEmpty(currentPageData()) && renderLMA(currentPageData()[0])}
+  const renderAllBall = () => <View style={_styles.content_container}>
+    { currentPageData()?.map(renderYZDW) }
   </View>
 
   return (
@@ -205,4 +206,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default LhcLMAComponent
+export default CqsscYZDWComponent

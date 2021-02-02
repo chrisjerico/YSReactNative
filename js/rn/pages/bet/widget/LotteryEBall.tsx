@@ -93,8 +93,8 @@ const _styles = StyleSheet.create({
     marginVertical: scale(2),
     borderBottomRightRadius: scale(32),
     borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(16),
-    borderBottomLeftRadius: scale(16),
+    borderTopRightRadius: scale(24),
+    borderBottomLeftRadius: scale(24),
   },
 })
 
