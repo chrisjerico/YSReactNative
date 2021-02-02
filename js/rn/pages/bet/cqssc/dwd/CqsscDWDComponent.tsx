@@ -105,10 +105,11 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
           style={CommStyles.flex}>
       <View key={key + ' sub renderDWD 2=' + groupData?.id + groupData?.alias}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderDWD' + groupData?.id} style={[
-          _styles.sub_title_text,
-          { color: Skin1.themeColor },
-        ]}>{groupData?.exPlays[0]?.alias}</Text>
+        <Text key={key + ' text renderDWD' + groupData?.id}
+              style={[
+                _styles.sub_title_text,
+                { color: Skin1.themeColor },
+              ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
       {renderRowBar(groupData?.exPlays)}

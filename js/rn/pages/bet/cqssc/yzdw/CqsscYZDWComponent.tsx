@@ -99,29 +99,42 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }
 
   /**
-   * 绘制 连码
+   * 绘制 X字定位
    * @param groupData
    */
   const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
     <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
           style={CommStyles.flex}>
 
-      {//第一行显示赔率标题
-        index == 0 && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                            style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id} style={[
-            _styles.sub_big_title_text,
-            { color: Skin1.themeColor },
-          ]}>{`赔率: ${groupData?.plays[0]?.odds}`}</Text>
+      {//显示赔率标题
+        !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
+                                               style={_styles.sub_big_title_container}>
+          <Text key={key + ' text renderYZDW' + groupData?.id}
+                style={[
+                  _styles.sub_big_title_text,
+                  { color: Skin1.themeColor },
+                ]}>{groupData?.exTitle}</Text>
+        </View>
+      }
+
+      {//显示赔率提醒文字
+        !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
+                                              style={_styles.sub_big_title_container}>
+          <Text key={key + ' text renderYZDW' + groupData?.id}
+                style={[
+                  _styles.sub_big_title_text,
+                  { color: Skin1.themeColor },
+                ]}>{groupData?.exHint}</Text>
         </View>
       }
 
       <View key={key + ' sub renderYZDW 2 =' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderYZDW' + groupData?.id} style={[
-          _styles.sub_title_text,
-          { color: Skin1.themeColor },
-        ]}>{groupData?.exPlays[0]?.alias}</Text>
+        <Text key={key + ' text renderYZDW' + groupData?.id}
+              style={[
+                _styles.sub_title_text,
+                { color: Skin1.themeColor },
+              ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
       <View key={key + ' ball renderYZDW' + groupData?.id}
