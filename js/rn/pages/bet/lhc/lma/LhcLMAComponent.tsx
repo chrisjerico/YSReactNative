@@ -30,8 +30,10 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    currentPageData,
   } = UseLhcLMA()
+
+  //当前这一页的数据
+  const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
 
   useEffect(() => {
     setPlayOddData(playOddData)
@@ -122,7 +124,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {!anyEmpty(currentPageData()) && renderLMA(currentPageData()[0])}
+    {!anyEmpty(currentPageData) && renderLMA(currentPageData[0])}
   </View>
 
   return (

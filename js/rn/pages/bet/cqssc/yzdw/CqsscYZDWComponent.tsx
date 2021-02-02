@@ -10,7 +10,7 @@ import UseCqsscYZDW from './UseCqsscYZDW'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
-import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 
@@ -30,29 +30,32 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    currentPageData,
   } = UseCqsscYZDW()
+
+  //当前这一页的数据
+  const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
 
   useEffect(() => {
     setPlayOddData(playOddData)
   }, [])
   const key = 'lottery page' + playOddData?.code
 
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
-                                                                                                   style={CommStyles.flex}
-                                                                                                   onPress={() => setTabIndex(index)}>
-    <View key={key + item[0]?.alias}
-          style={[
-            _styles.tab_item,
-            index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-          ]}>
-      <Text key={key + item[0]?.alias}
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) =>
+    <TouchableWithoutFeedback key={key + item[0]?.alias}
+                              style={CommStyles.flex}
+                              onPress={() => setTabIndex(index)}>
+      <View key={key + item[0]?.alias}
             style={[
-              _styles.tab_title_item_text,
-              index == tabIndex ? { color: `white` } : null,
-            ]}>{item[0]?.alias}</Text>
-    </View>
-  </TouchableWithoutFeedback>
+              _styles.tab_item,
+              index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+            ]}>
+        <Text key={key + item[0]?.alias}
+              style={[
+                _styles.tab_title_item_text,
+                index == tabIndex ? { color: `white` } : null,
+              ]}>{item[0]?.alias}</Text>
+      </View>
+    </TouchableWithoutFeedback>
 
   /**
    * 绘制tab
@@ -123,9 +126,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + ' ball renderYZDW' + groupData?.id}
             style={_styles.ball_container}>
-        {
-          groupData?.exPlays.map((item, index) => renderEBall(groupData, item))
-        }
+        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 
@@ -133,7 +134,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <View style={_styles.content_container}>
-    { currentPageData()?.map(renderYZDW) }
+    {currentPageData?.map(renderYZDW)}
   </View>
 
   return (
