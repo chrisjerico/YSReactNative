@@ -1,13 +1,14 @@
 import * as React from 'react'
-import { useState } from 'react'
-import { ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import UseLotteryHelper from '../hp/UseLotteryHelper'
+import { useEffect } from 'react'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import UseLotteryHelper from '../../lhc/hp/UseLotteryHelper'
+import { PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 /**
- * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
+ * X字定位
  * @constructor
  */
-const UseLhcPTYX = () => {
+const UseCqsscYZDW = () => {
 
   const {
     tabIndex,
@@ -15,13 +16,12 @@ const UseLhcPTYX = () => {
     playOddData,
     setPlayOddData,
     playOddDetailData,
+    // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
     currentPageData,
   } = UseLotteryHelper()
-
-  const [zodiacData, setZodiacData] = useState<Array<ZodiacNum>>([]) //选中了生肖数据
 
   return {
     setPlayOddData,
@@ -34,5 +34,5 @@ const UseLhcPTYX = () => {
   }
 }
 
-export default UseLhcPTYX
+export default UseCqsscYZDW
 

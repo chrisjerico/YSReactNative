@@ -1,14 +1,14 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import CommStyles from '../../../base/CommStyles'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import EmptyView from '../../../../public/components/view/empty/EmptyView'
-import { scale } from '../../../../public/tools/Scale'
-import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryBall from '../../../../public/components/view/LotteryBall'
-import { LotteryHistoryData, PlayData } from '../../../../public/network/Model/lottery/LotteryHistoryModel'
+import CommStyles from '../../../../base/CommStyles'
+import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
+import EmptyView from '../../../../../public/components/view/empty/EmptyView'
+import { scale } from '../../../../../public/tools/Scale'
+import { UGColor } from '../../../../../public/theme/UGThemeColor'
+import LotteryBall from '../../../../../public/components/view/LotteryBall'
+import { LotteryHistoryData, PlayData } from '../../../../../public/network/Model/lottery/LotteryHistoryModel'
 import UseBetRecordList from './UseBetRecordList'
-import { BallStyles } from '../../const/LotteryConst'
+import { BallStyles, LCode } from '../../../const/LotteryConst'
 
 interface IHallGameList {
   historyData?: LotteryHistoryData //所有数据
@@ -72,12 +72,12 @@ const BetRecordListComponent = ({
     let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
     let lastBall = balls.pop() //最后一个球
     let ballStyle = BallStyles[gameType] //球的样式
-    ballStyle = anyEmpty(ballStyle) ? BallStyles['lhc'] : ballStyle
+    ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle
 
     let ballView
     const key = 'header red renderBalls' + gameType
     switch (gameType) {
-      case 'bjkl8'://北京快8
+      case LCode.bjkl8://北京快8
         ballView = (
           [
             <View key={key + ballStr + 'ct'}
@@ -93,9 +93,9 @@ const BetRecordListComponent = ({
           ]
         )
         break
-      case 'pk10'://赛车系列
-      case 'xyft'://飞艇系列
-      case 'pk10nn'://牛牛系列
+      case LCode.pk10://赛车系列
+      case LCode.xyft://飞艇系列
+      case LCode.pk10nn://牛牛系列
         ballView = (
           [
             <View key={key + ballStr + 'line'}
@@ -112,7 +112,7 @@ const BetRecordListComponent = ({
           ]
         )
         break
-      case 'dlt'://大乐透系列
+      case LCode.dlt://大乐透系列
         ballView = (
           [
             <View key={key + ballStr + 'line'}
@@ -131,7 +131,7 @@ const BetRecordListComponent = ({
           ]
         )
         break
-      case 'lhc'://六合彩
+      case LCode.lhc://六合彩
         ballView = (
           [
             <View key={ballStr + 'line'}

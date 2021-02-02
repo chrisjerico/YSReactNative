@@ -32,9 +32,10 @@ export interface IGlobalState {
   banner?: UGBannerModel
 
   //下注
+  lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   currentPlayOddData?: PlayOddData //当前选中的彩种数据 特码 两面 等
   nextIssueData?: NextIssueData //下一期的数据数据
-  playOddDetailData?: PlayOddDetailData //彩票数据
+  playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
 
   // lotteryColumnIndex?: number //彩种索引
@@ -60,6 +61,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.rightMenu && (state.rightMenu = act.rightMenu)
 
     //彩票数据
+    act.lotteryId && (state.lotteryId = act.lotteryId)
     act.currentPlayOddData && (state.currentPlayOddData = act.currentPlayOddData)
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
@@ -75,10 +77,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
-    // ugLog('state.selectedLotteryModel 1 = ', JSON.stringify(state.selectedLotteryModel))
-    // ugLog('state.selectedLotteryModel 2 = ', JSON.stringify(act.selectedLotteryModel))
     state.selectedLotteryModel = mergeObject(state.selectedLotteryModel, act.selectedLotteryModel)
-    // ugLog('state.selectedLotteryModel 3 = ', JSON.stringify(state.selectedLotteryModel))
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
@@ -105,9 +104,10 @@ export interface UGAction<P = {}> extends Action {
   banner?: UGBannerModel
 
   //彩票数据
+  lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   currentPlayOddData?: PlayOddData //当前选中的彩种数据
   nextIssueData?: NextIssueData //下一期的数据数据
-  playOddDetailData?: PlayOddDetailData //彩票数据
+  playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
 
   // lotteryColumnIndex?: number //彩种索引

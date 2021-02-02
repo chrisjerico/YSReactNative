@@ -3,14 +3,14 @@
  * @constructor
  */
 import UseListContent from './UseListContent'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import LotteryConst, { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../const/LotteryConst'
+import { useState } from 'react'
+import { BALL_CONTENT_HEIGHT, CqsscCode, LEFT_ITEM_HEIGHT, LhcCode } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import LhcTMComponent from '../lhc/tm/LhcTMComponent'
-import CommStyles from '../../base/CommStyles'
 import LhcZTComponent from '../lhc/zt/LhcZTComponent'
 import LhcLMAComponent from '../lhc/lma/LhcLMAComponent'
 import LhcSBComponent from '../lhc/sb/LhcSBComponent'
@@ -18,12 +18,14 @@ import LhcPTYXComponent from '../lhc/ptyx/LhcPTYXComponent'
 import LhcHXComponent from '../lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
-import { useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
+import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
+import CqsscYZDWComponent from '../cqssc/yzdw/CqsscYZDWComponent'
 
 const ListContentComponent = () => {
 
   const {
+    ballSelected,
     playOddDetailData, //彩票数据
   } = UseListContent()
 
@@ -37,14 +39,15 @@ const ListContentComponent = () => {
                 showsVerticalScrollIndicator={false}>
       <View style={_styles.left_column_content}>
         {
-          playOddDetailData()?.playOdds?.map((item, index) => {
+          playOddDetailData?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
                                              onPress={() => {
-                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: null })
+                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
                                                UGStore.dispatch({
                                                  type: 'reset',
-                                                 currentPlayOddData: playOddDetailData()?.playOdds[leftColumnIndex],
+                                                 currentPlayOddData: playOddDetailData?.playOdds[leftColumnIndex],
                                                })
+
                                                setLeftColumnIndex(index)
                                              }}>
               <View key={'renderLeftColumn' + item?.code}
@@ -55,7 +58,10 @@ const ListContentComponent = () => {
                         borderColor: leftColumnIndex == index ? Skin1.themeColor : UGColor.LineColor4,
                       },
                     ]}>
-                <View style={_styles.left_column_text_flag}>
+                <View style={[
+                  _styles.left_column_text_flag,
+                  ballSelected[item?.code] ? {backgroundColor: UGColor.WarnningColor1} : null
+                ]}>
                 </View>
                 <Text key={'renderLeftColumn' + item?.code}
                       numberOfLines={1}
@@ -147,7 +153,7 @@ const ListContentComponent = () => {
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContent = () => {
-    const playOdds = playOddDetailData()?.playOdds[leftColumnIndex]
+    const playOdds = playOddDetailData?.playOdds[leftColumnIndex]
     let lotteryCode = playOdds?.code
     ugLog('------------------lotteryCode---------------------------------', lotteryCode)
     // return <View style={CommStyles.flex}>
@@ -158,42 +164,63 @@ const ListContentComponent = () => {
 
 
     switch (lotteryCode) {
-      case LotteryConst.TM:  //特码
+      case LhcCode.TM:  //特码
         return <LhcTMComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT:  //正特
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
         return <LhcZTComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
-      case LotteryConst.LMA:  //连码
+      case LhcCode.LMA:  //连码
         return <LhcLMAComponent key={lotteryCode}
                                 playOddData={playOdds}/>
 
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:  //五行
+      case LhcCode.LM: //两面
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
         return <LhcSBComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
-      case LotteryConst.YX: //平特一肖
-      case LotteryConst.WS: //平特尾数
-      case LotteryConst.TWS: //头尾数
-      case LotteryConst.TX: //特肖
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZX:  //正肖
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+        return <Cqssc1T5Component key={lotteryCode}
+                                  playOddData={playOdds}/>
+
+      case CqsscCode.YZDW:  //一字定位
+      case CqsscCode.EZDW:  //二字定位
+      case CqsscCode.SZDW:  //三字定位
+      case CqsscCode.BDW:  //不定位
+        // ugLog('playOdds = ', JSON.stringify(playOdds))
+        return <CqsscYZDWComponent key={lotteryCode}
+                                  playOddData={playOdds}/>
+
+      case LhcCode.YX: //平特一肖
+      case LhcCode.WS: //平特尾数
+      case LhcCode.TWS: //头尾数
+      case LhcCode.TX: //特肖
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+      case LhcCode.ZX:  //正肖
         return <LhcPTYXComponent key={lotteryCode}
                                  playOddData={playOdds}/>
 
-      case LotteryConst.HX:  //合肖
+      case LhcCode.HX:  //合肖
         return <LhcHXComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
-      case LotteryConst.ZXBZ:  //自选不中
+      case LhcCode.ZXBZ:  //自选不中
         return <LhcZXBZComponent key={lotteryCode}
                                  playOddData={playOdds}/>
 
@@ -240,7 +267,7 @@ const _styles = StyleSheet.create({
     borderRadius: scale(4),
   },
   left_column_text_flag: {
-    backgroundColor: UGColor.WarnningColor1,
+    backgroundColor: UGColor.LineColor2,
     borderRadius: scale(16),
     width: scale(16),
     aspectRatio: 1,

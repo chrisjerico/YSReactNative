@@ -1,5 +1,5 @@
-import { PagePlayOddData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { PagePlayOddData, PlayOddData, ZodiacNum } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 
 interface ITMData {
   playOddData?: PlayOddData

@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { NextIssueData } from '../../../public/network/Model/lottery/NextIssueModel'
-import BetLotteryContext from '../BetLotteryContext'
+import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import moment from 'moment'
-import PushHelper from '../../../public/define/PushHelper'
-import AppDefine from '../../../public/define/AppDefine'
-import { anyEmpty } from '../../../public/tools/Ext'
-import APIRouter from '../../../public/network/APIRouter'
-import { UGStore } from '../../../redux/store/UGStore'
-import { ugLog } from '../../../public/tools/UgLog'
+import PushHelper from '../../../../public/define/PushHelper'
+import AppDefine from '../../../../public/define/AppDefine'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import APIRouter from '../../../../public/network/APIRouter'
+import { UGStore } from '../../../../redux/store/UGStore'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 开奖时间显示
@@ -16,10 +15,7 @@ import { ugLog } from '../../../public/tools/UgLog'
  */
 const UseTime = () => {
 
-  const {
-    lotteryId,
-  } = useContext(BetLotteryContext)
-
+  const lotteryId = UGStore.globalProps?.lotteryId//彩票数据
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   // const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
@@ -29,7 +25,7 @@ const UseTime = () => {
   const [openTime, setOpenTime] = useState<number>(-1) //开奖时间倒计时
 
   useEffect(()=>{
-    requestNextData(lotteryId())
+    requestNextData(lotteryId)
   }, [])
 
   useEffect(() => {
@@ -99,7 +95,7 @@ const UseTime = () => {
 
       //开奖中每2秒取一次数据直到成功
       timer = setInterval(()=>{
-        requestNextData(lotteryId()).then((code) => {
+        requestNextData(lotteryId).then((code) => {
           code == 0 && clearInterval(timer)
         })
       }, 2000)

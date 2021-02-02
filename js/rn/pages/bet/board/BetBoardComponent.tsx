@@ -1,15 +1,5 @@
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { StyleProp, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import * as React from 'react'
-import { useContext, useEffect, useRef } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -18,14 +8,10 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
-import BetLotteryContext from '../BetLotteryContext'
 import PayBoardComponent from './pay/PayBoardComponent'
-import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
-import { Toast } from '../../../public/tools/ToastUtils'
-import { calculateItemCount } from './tl/BetUtil'
 import { ugLog } from '../../../public/tools/UgLog'
+import PayResultComponent from './pay/result/PayResultComponent'
 
 /**
  * 彩票功能区入参
@@ -45,6 +31,8 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    betResult,
+    setBetResult,
     showBetPayment,
     setShowBetPayment,
     userInfo,
@@ -244,7 +232,12 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         {renderInputArea()}
         {locked ? renderLock(lockStr) : null}
         {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}
-                                              showCallback={() => setShowBetPayment(false)}/>}
+                                              showCallback={(data) => {
+                                                setShowBetPayment(false)
+                                                setBetResult(data)
+                                              }}/>}
+        {betResult && <PayResultComponent betData={betResult}
+                                          showCallback={() => setBetResult(null)}/>}
       </View>
     </View>
   )

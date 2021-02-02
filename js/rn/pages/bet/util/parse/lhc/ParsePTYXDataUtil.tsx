@@ -3,9 +3,9 @@ import {
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import { combinePlayAndZodiac } from '../LotteryUtil'
+} from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
+import { combinePlayAndZodiac } from '../ParseLotteryUtil'
 
 interface ITMData {
   playOddData?: PlayOddData
@@ -13,15 +13,15 @@ interface ITMData {
 }
 
 /**
- * 解析尾数等数据
+ * 解析平特一肖等数据
  * 特码取前3个数据 特码 两面 色波
  * @param playOddData
  * @param zodiacNum
  */
-const parseWSData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
+const parsePTYXData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
   if(anyEmpty(playOddData?.playGroups)) return playOddData
 
-  const wsGroup = combinePlayAndZodiac({
+  const zxGroup = combinePlayAndZodiac({
     zodiacNums: zodiacNum,
     playOddData: playOddData,
   })
@@ -29,9 +29,9 @@ const parseWSData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
   return {
     ...playOddData,
     pageData: {
-      groupTri: [wsGroup],
+      groupTri: [zxGroup],
     } as PagePlayOddData,
   }
 }
 
-export default parseWSData
+export default parsePTYXData

@@ -14,7 +14,7 @@ export interface PlayData {
   enable?: string;//1
   from_id?: string;//0
 
-  exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, 优先使用本地ID 避免重复，如 TM,特码B,708550
+  exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, 优先使用本地ID 避免重复，如 TM-特码B-708550
   // exName?: string//本地定义 名字
   // exOdds?: string//本地定义 赔率
   exZodiac?: ZodiacNum; //本地定义 对应的生肖数据
@@ -97,7 +97,7 @@ export interface PlayOddGame {
   isSeal: string;
   isClose: string;
   title: string; //"香港六合彩"
-  isInstant: string;
+  isInstant: string;//：是否是即开彩：1=是，0=否
 }
 
 export interface PlayOddDetailData {

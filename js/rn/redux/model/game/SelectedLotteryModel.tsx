@@ -5,7 +5,7 @@ import { PlayData, PlayGroupData, ZodiacNum } from '../../../public/network/Mode
 import { PlayGroup } from '../../../public/network/Model/PlayOddDataModel'
 
 interface SelectedLotteryModel {
-  //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> TM/LM/SB -> GroupData
+  //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>
 
   inputMoney?: number //输入的游戏金额

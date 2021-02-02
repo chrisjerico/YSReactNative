@@ -13,30 +13,6 @@ import { ugLog } from '../../../../public/tools/UgLog'
  */
 const parseHXSelectedData = (playOddData: PlayOddData,
                              selectedBalls: Array<string>): Map<string, Map<string, SelectedPlayModel>> => {
-  // //选中了哪些球, 3层结构
-  // const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
-  // const tabMap = new Map<string, SelectedPlayModel>() //每一个TAB的数组 如 特码B TMB -> 对应的数据
-  // selGroup[playOddData.code] = tabMap
-  //
-  // playOddData?.pageData?.groupTri?.map((pageData) => {
-  //   const pageArr = new SelectedPlayModel() //每一组数据，如 特码B里面的 两面, 色波
-  //   tabMap[pageData[0].id] = pageArr //取第一组数据的ID作为Tab标识
-  //
-  //   //遍历TAB的每一组数据，如特码B里面有 特码数据，两面数据，色波数据
-  //   pageData?.map((groupData) => {
-  //
-  //     //找出选中的球对应的原始数据
-  //     const selZodiac = playOddData?.pageData?.zodiacNums?.filter(
-  //       (zodiac) => selectedBalls.includes(zodiac?.id),
-  //     )
-  //     //再用原始数组和彩种数据组合成 新的选中数据
-  //     !anyEmpty(selZodiac) && pageArr.push({
-  //       playGroups: groupData,
-  //       zodiacs: selZodiac,
-  //     } as SelectedPlayModel)
-  //
-  //   })
-  // })
 
   //选中了哪些球, 3层结构
   const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
@@ -64,24 +40,7 @@ const parseHXSelectedData = (playOddData: PlayOddData,
 
     })
 
-    // //二维数据变一维数据，比如 选中了 [[两面1，两面2], [色波1，色波2]] 合成 [两面1，两面2, 色波1，色波2]
-    // !anyEmpty(tempGroup) && selGroup.push(...tempGroup)
   })
-
-
-  // const selGroup: Array<PlayGroupData> = []
-  // const selZodiac = playOddData?.pageData?.zodiacNums?.filter(
-  //   (zodiac) => selectedBalls.includes(zodiac?.id),
-  // )
-  //
-  // if (!anyEmpty(selZodiac)) {
-  //   //合肖只有一组数据
-  //   selGroup.push({
-  //     ...playOddData?.pageData?.groupTri[0][0],
-  //     exZodiacs: selZodiac,
-  //   } as PlayGroupData)
-  //
-  // }
 
   return selGroup
 }

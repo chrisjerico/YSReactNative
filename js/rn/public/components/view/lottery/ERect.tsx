@@ -39,7 +39,7 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
   },
   title_text: {
-    fontSize: scale(22),
+    fontSize: scale(24),
     color: UGColor.TextColor7,
     textAlign: 'center',
   },

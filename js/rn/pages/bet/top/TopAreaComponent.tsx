@@ -7,7 +7,7 @@ import CommStyles from '../../base/CommStyles'
 import { anyEmpty, dicNull } from '../../../public/tools/Ext'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import * as React from 'react'
-import BetRecordHeaderComponent from '../counter/red/BetRecordHeaderComponent'
+import BetRecordHeaderComponent from '../counter/lhc/red/BetRecordHeaderComponent'
 import { useState } from 'react'
 import UseTopArea from './UseTopArea'
 import { syncUserInfo } from '../../../public/tools/user/UserTools'
@@ -43,19 +43,21 @@ const TopAreaComponent = () => {
               color={Skin1.navBarTitleColor}/>
       </View>
     </TouchableWithoutFeedback>
-    <Text key={'renderTopBar title' + playOddDetailData()?.game?.title}
+    <Text key={'renderTopBar title' + playOddDetailData?.game?.title}
           style={[_styles.top_game_name,
-            { color: Skin1.navBarTitleColor }]}>{playOddDetailData()?.game?.title}</Text>
+            { color: Skin1.navBarTitleColor }]}>{playOddDetailData?.game?.title}</Text>
     <Icon key={'renderTopBar down'}
           size={scale(28)}
           name={'caret-down'}
           color={Skin1.navBarTitleColor}/>
     <View key={'renderTopBar space'}
           style={CommStyles.flex}/>
-    <Text key={'renderTopBar money' + userInfo?.balance}
-          style={[_styles.top_money,
-            { color: Skin1.navBarTitleColor }]}>{!dicNull(userInfo) && userInfo?.balance}</Text>
-    <TouchableWithoutFeedback onPress={() => syncUserInfo()}>
+    <TouchableWithoutFeedback onPress={() => syncUserInfo(true)}>
+      <Text key={'renderTopBar money' + userInfo?.balance}
+            style={[_styles.top_money,
+              { color: Skin1.navBarTitleColor }]}>{!dicNull(userInfo) && userInfo?.balance}</Text>
+    </TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={() => syncUserInfo(true)}>
       <Icon key={'renderTopBar refresh'}
             size={scale(24)}
             name={'refresh'}

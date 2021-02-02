@@ -5,17 +5,19 @@ import { forwardRef, useMemo } from 'react'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryConst from '../../const/LotteryConst'
+import {LhcCode} from '../../const/LotteryConst'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { anyEmpty } from '../../../../public/tools/Ext'
+import { anyEmpty, dicNull } from '../../../../public/tools/Ext'
 import { calculateItemCount, gatherSelectedItems } from '../tl/BetUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
+import { LotteryResultData } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 
 interface IPayBoardComponent {
-  showCallback?: () => void //窗口 是否显示 回调
+  showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
 }
 
 /**
@@ -33,6 +35,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     moneyMap,
     setMoneyMap,
     itemCount,
+    nextIssueData,
     playOddDetailData,
     selectedData,
     setSelectedData,
@@ -46,7 +49,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
    */
   const renderTMItem = (lotteryCode?: string, selModel?: SelectedPlayModel) => {
     return selModel?.plays?.map((playData) => {
-      const showName = lotteryCode == LotteryConst.LX || lotteryCode == LotteryConst.LW ?
+      const showName = lotteryCode == LhcCode.LX || lotteryCode == LhcCode.LW ?
         playData?.alias :
         playData?.name
       return (<View key={playData?.id + playData?.name}
@@ -146,29 +149,29 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     return selItems?.map((selModel, index) => {
       ugLog('lotteryCode 2 index = ', lotteryCode, index)
       switch (lotteryCode) {
-        case LotteryConst.TM:  //特码
-        case LotteryConst.LM: //两面
-        case LotteryConst.ZM: //正码
-        case LotteryConst.ZT:  //正特
-        case LotteryConst.ZM1_6: //正码1T6
-        case LotteryConst.SB: //色波
-        case LotteryConst.ZOX://总肖
-        case LotteryConst.WX:  //五行
-        case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.TX: //特肖
-        case LotteryConst.ZX: //正肖
-        case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.LX: //连肖
-        case LotteryConst.LW: //连尾
+        case LhcCode.TM:  //特码
+        case LhcCode.LM: //两面
+        case LhcCode.ZM: //正码
+        case LhcCode.ZT:  //正特
+        case LhcCode.ZM1_6: //正码1T6
+        case LhcCode.SB: //色波
+        case LhcCode.ZOX://总肖
+        case LhcCode.WX:  //五行
+        case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LhcCode.TX: //特肖
+        case LhcCode.ZX: //正肖
+        case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        case LhcCode.LX: //连肖
+        case LhcCode.LW: //连尾
           return renderTMItem(lotteryCode, selModel)
 
-        case LotteryConst.HX://合肖
+        case LhcCode.HX://合肖
           return renderHXItem(selModel,
             selModel?.zodiacs?.map((item) => item?.name)?.toString())
 
-        case LotteryConst.LMA:  //连码
-        case LotteryConst.ZXBZ:  //自选不中
+        case LhcCode.LMA:  //连码
+        case LhcCode.ZXBZ:  //自选不中
           return renderHXItem(selModel,
             selModel?.plays?.map((item) => item?.name)?.toString())
       }
@@ -183,8 +186,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   return (
     <View style={_styles.container}>
       <Modal isVisible={true}
-             onBackdropPress={showCallback}
-             onBackButtonPress={showCallback}
              style={_styles.modal_content}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
@@ -197,7 +198,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             _styles.dialog_title_container,
             { backgroundColor: Skin1.themeColor },
           ]}>
-            <Text style={_styles.dialog_title_text}>{playOddDetailData()?.game?.title + '-下注清单'}</Text>
+            <Text style={_styles.dialog_title_text}>{playOddDetailData?.game?.title + '-下注清单'}</Text>
           </View>
           <View style={[_styles.sv_parent, { height: listHeight }]}>
             <ScrollView style={_styles.sv_container}
@@ -228,7 +229,14 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
                   onPress={() =>
-                    startBetting().then((code) => code == 0 && showCallback())}>{'确定'}</Text>
+                    startBetting().then((data) => {
+                      if (nextIssueData?.isInstant == '1') {//秒秒彩
+                        showCallback(data?.data)
+                      } else {
+                       (Toast(data?.msg))
+                        showCallback()
+                      }
+                    })}>{'确定'}</Text>
           </View>
         </View>
       </Modal>
@@ -237,7 +245,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 }
 
 const BET_ITEM_HEIGHT = scale(68) //每个条目高度
-const BET_ITEM_WIDTH = scale(460) //每个条目宽度
+const BET_ITEM_WIDTH = scale(480) //每个条目宽度
 
 const _styles = StyleSheet.create({
   container: {},
