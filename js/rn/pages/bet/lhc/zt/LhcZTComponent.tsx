@@ -20,7 +20,8 @@ import { PlayData, PlayGroupData } from '../../../../public/network/Model/lotter
 import { arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 /**
  * 六合彩 正特 正码 等等

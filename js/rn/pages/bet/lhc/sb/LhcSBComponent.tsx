@@ -8,7 +8,8 @@ import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcSB from './UseLhcSB'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行

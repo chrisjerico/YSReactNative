@@ -9,10 +9,11 @@ import UseLhcHX from './UseLhcHX'
 import { PlayGroupData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { array } from 'prop-types'
+import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 /**
  * 六合彩 合肖 等等

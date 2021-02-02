@@ -10,7 +10,8 @@ import UseLhcLMA from './UseLhcLMA'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 
 /**

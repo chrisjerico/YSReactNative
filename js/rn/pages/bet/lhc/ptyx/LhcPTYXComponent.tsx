@@ -11,9 +11,10 @@ import { PlayData, PlayGroupData } from '../../../../public/network/Model/lotter
 import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等

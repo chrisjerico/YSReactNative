@@ -1,6 +1,4 @@
-import { StyleProp, ViewStyle } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
-import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { BallType } from '../../../public/components/view/LotteryBall'
 
 const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
@@ -51,16 +49,7 @@ const BallStyles = {
   'gd11x5': BallType.pure, //"11选5系列"
 }
 
-/**
- * 彩票界面入参
- */
-interface ILotteryRouteParams {
-  playOddData?: PlayOddData, //当前的彩票对象，正码, 正特, 平特一肖, 平特尾数 等等
-  style?: StyleProp<ViewStyle>
-}
-
 export {
-  ILotteryRouteParams,
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
   BallStyles,
