@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import {LotteryConst} from '../../const/LotteryConst'
+import {LhcCode} from '../../const/LotteryConst'
 import parseTMData from './ParseTMDataUtil'
 import parseHXData from './ParseHXDataUtil'
 import parseZTData from './ParseZTDataUtil'
@@ -49,40 +49,40 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
     const gameCode = playOddData?.code //彩种ID，特码 两面 等等
 
     switch (gameCode) {
-      case LotteryConst.TM:  //特码
+      case LhcCode.TM:  //特码
         return parseTMData({ playOddData, zodiacNum })
 
-      case LotteryConst.HX://合肖
+      case LhcCode.HX://合肖
         return parseHXData({ playOddData, zodiacNum })
 
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT:  //正特
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
         return parseZTData({ playOddData, zodiacNum })
 
-      case LotteryConst.LMA:  //连码
+      case LhcCode.LMA:  //连码
         return parseLMAData({ playOddData, zodiacNum })
 
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:  //五行
+      case LhcCode.LM: //两面
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行
         return parseSBData({ playOddData, zodiacNum })
 
-      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TX: //特肖
-      case LotteryConst.ZX: //正肖
-      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TX: //特肖
+      case LhcCode.ZX: //正肖
+      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         return parsePTYXData({ playOddData, zodiacNum })
 
-      case LotteryConst.LX: //连肖
+      case LhcCode.LX: //连肖
         return parseLXData({ playOddData, zodiacNum })
 
-      case LotteryConst.LW: //连尾
+      case LhcCode.LW: //连尾
         return parseLWData({ playOddData, zodiacNum })
 
-      case LotteryConst.ZXBZ:  //自选不中
+      case LhcCode.ZXBZ:  //自选不中
         return parseZXBZData({ playOddData, zodiacNum })
     }
 
@@ -127,13 +127,13 @@ const combinePlayAndZodiac = ({ zodiacNums, playOddData }: IPageZodiac): PlayGro
  */
 const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): ZodiacNum[] => {
   switch (playOddData?.code) {
-    case LotteryConst.YX: //平特一肖
-    case LotteryConst.TX: //特肖
-    case LotteryConst.ZX: //正肖
+    case LhcCode.YX: //平特一肖
+    case LhcCode.TX: //特肖
+    case LhcCode.ZX: //正肖
       return groupData?.plays.map((item, index) =>
         zodiacNums?.find((zodiac) =>
           zodiac?.name == item?.name))
-    case LotteryConst.LX: //连肖
+    case LhcCode.LX: //连肖
       return groupData?.plays.map((item, index) => {
         let zodiacNum = zodiacNums?.find((zodiac) =>
           zodiac?.name == item?.alias)
@@ -142,7 +142,7 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
           alias: item?.alias,
         }
       })
-    case LotteryConst.WS://平特尾数
+    case LhcCode.WS://平特尾数
       return groupData?.plays.map((item, index) => {
         return {
           id: item?.id,
@@ -151,7 +151,7 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
           nums: LotteryData.WS[index],
         } as ZodiacNum
       })
-    case LotteryConst.TWS://头尾数
+    case LhcCode.TWS://头尾数
       return groupData?.plays.map((item, index) => {
         return {
           id: item?.id,
@@ -160,7 +160,7 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
           nums: LotteryData.WS[index],
         } as ZodiacNum
       })
-    case LotteryConst.LW://连尾
+    case LhcCode.LW://连尾
       return groupData?.plays.map((item, index) => {
         return {
           id: item?.id,

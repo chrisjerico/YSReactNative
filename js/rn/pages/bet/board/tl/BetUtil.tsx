@@ -1,5 +1,5 @@
 import { anyEmpty, arrayEmpty, arrayLength } from '../../../../public/tools/Ext'
-import {LotteryConst} from '../../const/LotteryConst'
+import {LhcCode} from '../../const/LotteryConst'
 import * as React from 'react'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
@@ -33,38 +33,38 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     ugLog('checkBetCount selCount', selCount)
 
     switch (key) {
-      case LotteryConst.TM:  //特码
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT:  //正特
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:  //五行
-      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TX: //特肖
-      case LotteryConst.ZX: //正肖
-      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
+      case LhcCode.TM:  //特码
+      case LhcCode.LM: //两面
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行
+      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TX: //特肖
+      case LhcCode.ZX: //正肖
+      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
         if(selCount <= 0) {
           showMsg && Toast('请选择玩法')
           return false
         }
         break
 
-      case LotteryConst.HX://合肖
+      case LhcCode.HX://合肖
         if(selCount <= 1) {
           showMsg && Toast('合肖请选择2个以上的数据')
           return false
         }
         break
-      case LotteryConst.LMA:  //连码
+      case LhcCode.LMA:  //连码
 
         break
 
-      case LotteryConst.ZXBZ:  //自选不中
+      case LhcCode.ZXBZ:  //自选不中
         const count = calculateActualItemCount(selectedData)
         if(count < 5) {
           showMsg && Toast('自选不中请选择5到12个选项')
@@ -104,9 +104,9 @@ const calculateItemCount = (selectedData?: Map<string, Map<string, Map<string, S
     ugLog('calculateItemCount valueSel key = ', key, scount)
 
     if (scount > 0) {//该彩种是否有选中的数据
-      if (LotteryConst.LMA == key
-        || LotteryConst.HX == key
-        || LotteryConst.ZXBZ == key) {//部分彩种 只计算 1条数据
+      if (LhcCode.LMA == key
+        || LhcCode.HX == key
+        || LhcCode.ZXBZ == key) {//部分彩种 只计算 1条数据
         itemCount++
       } else {
         //选中的数据有多少组
@@ -154,7 +154,7 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
   keys?.map((key) => {
     if (!arrayEmpty(selectedData[key])) {
       switch (key) {
-        case LotteryConst.LMA://部分彩种 只计算 1条数据
+        case LhcCode.LMA://部分彩种 只计算 1条数据
         {
           // const play0 = (selectedData[key][0] as PlayGroupData).plays[0]
           const play0 = gatherSelectedItems(key, selectedData)[0]?.plays[0]
@@ -162,7 +162,7 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
         }
 
           break
-        case LotteryConst.HX://部分彩种 只计算 1条数据
+        case LhcCode.HX://部分彩种 只计算 1条数据
         {
           // const groupData = (selectedData[key][0] as PlayGroupData)
           const selData = gatherSelectedItems(key, selectedData)[0]
@@ -172,7 +172,7 @@ const initItemMoney = (selectedData?: Map<string, Map<string, Map<string, Select
 
           break
 
-        case LotteryConst.ZXBZ://部分彩种 只计算 1条数据
+        case LhcCode.ZXBZ://部分彩种 只计算 1条数据
         {
           // const groupData = (selectedData[key][0] as PlayGroupData)
           const selData = gatherSelectedItems(key, selectedData)[0]

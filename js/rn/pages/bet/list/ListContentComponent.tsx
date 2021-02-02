@@ -5,7 +5,7 @@
 import UseListContent from './UseListContent'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT, LotteryConst } from '../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT, LhcCode } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -164,42 +164,42 @@ const ListContentComponent = () => {
 
 
     switch (lotteryCode) {
-      case LotteryConst.TM:  //特码
+      case LhcCode.TM:  //特码
         return <LhcTMComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT:  //正特
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
         return <LhcZTComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
-      case LotteryConst.LMA:  //连码
+      case LhcCode.LMA:  //连码
         return <LhcLMAComponent key={lotteryCode}
                                 playOddData={playOdds}/>
 
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:  //五行
+      case LhcCode.LM: //两面
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行
         return <LhcSBComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
-      case LotteryConst.YX: //平特一肖
-      case LotteryConst.WS: //平特尾数
-      case LotteryConst.TWS: //头尾数
-      case LotteryConst.TX: //特肖
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZX:  //正肖
+      case LhcCode.YX: //平特一肖
+      case LhcCode.WS: //平特尾数
+      case LhcCode.TWS: //头尾数
+      case LhcCode.TX: //特肖
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+      case LhcCode.ZX:  //正肖
         return <LhcPTYXComponent key={lotteryCode}
                                  playOddData={playOdds}/>
 
-      case LotteryConst.HX:  //合肖
+      case LhcCode.HX:  //合肖
         return <LhcHXComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
-      case LotteryConst.ZXBZ:  //自选不中
+      case LhcCode.ZXBZ:  //自选不中
         return <LhcZXBZComponent key={lotteryCode}
                                  playOddData={playOdds}/>
 

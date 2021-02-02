@@ -4,7 +4,7 @@ import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/networ
 import { arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
 import { UGStore } from '../../../../redux/store/UGStore'
-import { LotteryConst } from '../../const/LotteryConst'
+import { LhcCode } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
 import SelectedLotteryModel, { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
@@ -32,27 +32,27 @@ const UseLotteryHelper = () => {
       JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData))
 
     switch (playOddData?.code) {
-      case LotteryConst.TM:  //特码
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT:  //正特
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:  //五行
-      case LotteryConst.LMA:  //连码
-      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TX: //特肖
-      case LotteryConst.ZX: //正肖
-      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZXBZ:  //自选不中
+      case LhcCode.TM:  //特码
+      case LhcCode.LM: //两面
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行
+      case LhcCode.LMA:  //连码
+      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TX: //特肖
+      case LhcCode.ZX: //正肖
+      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+      case LhcCode.ZXBZ:  //自选不中
         newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
         break
 
-      case LotteryConst.HX://合肖
+      case LhcCode.HX://合肖
         newSelectedModel[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
         break
     }
@@ -72,24 +72,24 @@ const UseLotteryHelper = () => {
     const curSelectedData: Map<string, Map<string, SelectedPlayModel>> = selModel?.selectedData[playOddData?.code]
 
     switch (playOddData?.code) {
-      case LotteryConst.TM:  //特码
-      case LotteryConst.LM: //两面
-      case LotteryConst.ZM: //正码
-      case LotteryConst.ZT:  //正特
-      case LotteryConst.ZM1_6: //正码1T6
-      case LotteryConst.SB: //色波
-      case LotteryConst.ZOX://总肖
-      case LotteryConst.WX:  //五行
-      case LotteryConst.LMA:  //连码
-      case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TX: //特肖
-      case LotteryConst.ZX: //正肖
-      case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LotteryConst.LX: //连肖
-      case LotteryConst.LW: //连尾
-      case LotteryConst.ZXBZ:  //自选不中
-      case LotteryConst.HX://合肖
+      case LhcCode.TM:  //特码
+      case LhcCode.LM: //两面
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行
+      case LhcCode.LMA:  //连码
+      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TX: //特肖
+      case LhcCode.ZX: //正肖
+      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+      case LhcCode.ZXBZ:  //自选不中
+      case LhcCode.HX://合肖
         // ugLog('恢复选中的数据 curSelectedData 1111= ', JSON.stringify(curSelectedData))
         // ugLog('恢复选中的数据 groupTri 2222= ', JSON.stringify(playOddData?.pageData?.groupTri))
         if (curSelectedData && arrayLength(playOddData?.pageData?.groupTri) == 1) {//只有1页数据/非特殊玩法，才恢复选中数据
@@ -99,7 +99,7 @@ const UseLotteryHelper = () => {
           if (!dicNull(groupDataArr)) {
             ((Object.values(groupDataArr) as Array<SelectedPlayModel>))?.map((playModel) => {
               switch (playOddData?.code) {
-                case LotteryConst.HX://合肖
+                case LhcCode.HX://合肖
                 {
                   const ids = playModel?.zodiacs?.map((zodiac) => zodiac?.id)
                   setSelectedBalls(ids)
@@ -136,13 +136,13 @@ const UseLotteryHelper = () => {
     } else {
       //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
       switch (playOddData?.code) {
-        case LotteryConst.HX:  //合肖 最多只能选中11个
+        case LhcCode.HX:  //合肖 最多只能选中11个
           if (arrayLength(selectedBalls) > 10) {
             Toast('合肖请选择2到11个选项')
             return
           }
           break
-        case LotteryConst.ZXBZ:  //自选不中 最多只能选中12个
+        case LhcCode.ZXBZ:  //自选不中 最多只能选中12个
           if (arrayLength(selectedBalls) > 11) {
             Toast('自选不中请选择5到12个选项')
             return

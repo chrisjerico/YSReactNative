@@ -7,7 +7,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it/bet/IBetLotteryParams'
 import moment from 'moment'
-import {LotteryConst} from '../../const/LotteryConst'
+import {LhcCode} from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
 import { calculateItemCount, gatherSelectedItems, initItemMoney } from '../tl/BetUtil'
 import { zodiacPlayX } from '../tl/hx/BetHXUtil'
@@ -94,21 +94,21 @@ const UsePayBoard = () => {
       const selItems = gatherSelectedItems(key, selectedData)
       return selItems?.map((selModel) => {
         switch (key) {
-          case LotteryConst.TM:  //特码
-          case LotteryConst.LM: //两面
-          case LotteryConst.ZM: //正码
-          case LotteryConst.ZT:  //正特
-          case LotteryConst.ZM1_6: //正码1T6
-          case LotteryConst.SB: //色波
-          case LotteryConst.ZOX://总肖
-          case LotteryConst.WX:  //五行
-          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TX: //特肖
-          case LotteryConst.ZX: //正肖
-          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.LX: //连肖
-          case LotteryConst.LW: //连尾
+          case LhcCode.TM:  //特码
+          case LhcCode.LM: //两面
+          case LhcCode.ZM: //正码
+          case LhcCode.ZT:  //正特
+          case LhcCode.ZM1_6: //正码1T6
+          case LhcCode.SB: //色波
+          case LhcCode.ZOX://总肖
+          case LhcCode.WX:  //五行
+          case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LhcCode.TX: //特肖
+          case LhcCode.ZX: //正肖
+          case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LhcCode.LX: //连肖
+          case LhcCode.LW: //连尾
             selModel?.plays?.map((playData) => {
               betBean.push({
                 money: numberToFloatString(moneyMap[playData?.exId ?? playData?.id]),
@@ -119,7 +119,7 @@ const UsePayBoard = () => {
             })
             break
 
-          case LotteryConst.HX://合肖
+          case LhcCode.HX://合肖
           {
             const playX = zodiacPlayX(selModel)
 
@@ -132,7 +132,7 @@ const UsePayBoard = () => {
           }
             break
 
-          case LotteryConst.LMA:  //连码
+          case LhcCode.LMA:  //连码
           {
             const play0 = selModel?.plays[0]
             betBean.push({
@@ -144,7 +144,7 @@ const UsePayBoard = () => {
           }
             break
 
-          case LotteryConst.ZXBZ:  //自选不中
+          case LhcCode.ZXBZ:  //自选不中
           {
             const playX = playDataX(selModel)
 

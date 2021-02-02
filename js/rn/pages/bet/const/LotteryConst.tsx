@@ -7,9 +7,9 @@ const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
 const BALL_CONTENT_HEIGHT = scale(720) //投注区域球的总体高度
 
 /**
- * 彩种
+ * 六合彩CODE
  */
-const LotteryConst = {
+const LhcCode = {
   TM: 'TM', //特码
   LM: 'LM', //两面
   ZM: 'ZM', //正码
@@ -64,5 +64,5 @@ export {
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
   BallStyles,
-  LotteryConst,
+  LhcCode,
 }
