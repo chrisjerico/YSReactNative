@@ -22,6 +22,7 @@ import { useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { arrayLength } from '../../../public/tools/Ext'
 import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
+import CqsscQZHComponent from '../cqssc/qzh/CqsscQZHComponent'
 
 const ListContentComponent = () => {
 
@@ -183,6 +184,10 @@ const ListContentComponent = () => {
       case LhcCode.SB: //色波
       case LhcCode.ZOX://总肖
       case LhcCode.WX:  //五行
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
         return <LhcSBComponent key={lotteryCode}
                                playOddData={playOdds}/>
 
@@ -192,12 +197,8 @@ const ListContentComponent = () => {
       case CqsscCode.Q3:  //第3球
       case CqsscCode.Q4:  //第4球
       case CqsscCode.Q5:  //第5球
-      case CqsscCode.QZH:  //前中后
-      case CqsscCode.DN:  //斗牛
-      case CqsscCode.SH:  //梭哈
-      case CqsscCode.LHD:  //龙虎斗
         return <Cqssc1T5Component key={lotteryCode}
-                               playOddData={playOdds}/>
+                                  playOddData={playOdds}/>
 
       case LhcCode.YX: //平特一肖
       case LhcCode.WS: //平特尾数

@@ -11,6 +11,8 @@ import LotteryERect from '../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 import LotteryEBall from '../../widget/LotteryEBall'
+import { arrayLength } from '../../../../public/tools/Ext'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 /**
  * 1-5球
@@ -49,42 +51,51 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
                                                          oddsStyle={_styles.ball_odds}
                                                          callback={() => addOrRemoveBall(item?.id)}/>
 
-  // /**
-  //  * 绘制 方格式
-  //  * @param item
-  //  * @param index
-  //  */
-  // const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id + index}
-  //                                                                        item={item}
-  //                                                                        selectedBalls={selectedBalls}
-  //                                                                        callback={() => addOrRemoveBall(item?.id)}/>
+  /**
+   * 绘制 方格式
+   * @param item
+   * @param index
+   */
+  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id + index}
+                                                                         item={item}
+                                                                         selectedBalls={selectedBalls}
+                                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 一组格子
    * @param groupData
    * @param index
    */
-  const renderGroupERect = (groupData?: PlayGroupData, index?: number) => <View
-    key={key + 'renderAllBall' + groupData?.id + index}
-    style={CommStyles.flex}>
+  const renderGroupERect = (groupData?: PlayGroupData, index?: number) => {
 
-    <View key={key + 'renderAllBall sub' + groupData?.id + index}
-          style={_styles.sub_title_container}>
-      <Text key={key + 'renderAllBall text' + groupData?.id + index}
-            style={[
-              _styles.sub_title_text,
-              { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
+    let ball1 = groupData?.plays
+    let ball2
+    if (arrayLength(ball1) == 14) {//分2组显示
+      ball1 = groupData?.plays.slice(0, 10)
+      ball2 = groupData?.plays.slice(10, 14)
+    }
+
+    return <View
+      key={key + 'renderAllBall' + groupData?.id + index}
+      style={CommStyles.flex}>
+
+      <View key={key + 'renderAllBall sub' + groupData?.id + index}
+            style={_styles.sub_title_container}>
+        <Text key={key + 'renderAllBall text' + groupData?.id + index}
+              style={[
+                _styles.sub_title_text,
+                { color: Skin1.themeColor },
+              ]}>{groupData?.alias}</Text>
+      </View>
+
+      <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
+            style={_styles.rect_container}>
+        { ball1?.map(renderEBall) }
+        { ball2?.map(renderERect) }
+      </View>
+
     </View>
-
-    <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
-          style={_styles.rect_container}>
-      {
-        groupData?.plays?.map(renderEBall)
-      }
-    </View>
-
-  </View>
+  }
 
   /**
    * 绘制全部的格子
