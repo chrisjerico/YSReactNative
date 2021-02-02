@@ -104,7 +104,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
           style={CommStyles.flex}>
 
       {//第一行显示赔率标题
-        index == 0 && <View key={key + ' sub renderYZDW' + groupData?.id}
+        index == 0 && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
                             style={_styles.sub_big_title_container}>
           <Text key={key + ' text renderYZDW' + groupData?.id} style={[
             _styles.sub_big_title_text,
@@ -113,7 +113,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         </View>
       }
 
-      <View key={key + ' sub renderYZDW' + groupData?.id}
+      <View key={key + ' sub renderYZDW 2 =' + groupData?.id}
             style={_styles.sub_title_container}>
         <Text key={key + ' text renderYZDW' + groupData?.id} style={[
           _styles.sub_title_text,

@@ -115,9 +115,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + ' ball renderDWD 3=' + groupData?.id + groupData?.alias}
             style={_styles.ball_container}>
-        {
-          groupData?.exPlays.map((item, index) => renderEBall(groupData, item))
-        }
+        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 
