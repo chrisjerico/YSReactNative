@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import { CqsscCode, LhcCode } from '../../const/LotteryConst'
+import { CqsscCode, LCode, LhcCode } from '../../const/LotteryConst'
 import parseTMData from './lhc/ParseTMDataUtil'
 import parseHXData from './lhc/ParseHXDataUtil'
 import parseZTData from './lhc/ParseZTDataUtil'
@@ -47,9 +47,10 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
   return playOddDetailData?.playOdds?.map((playOddData) => {
     if (anyEmpty(playOddData?.playGroups)) return playOddData
 
-    // const gameType = playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+    const gameType = playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
     const gameCode = playOddData?.code //彩种ID，特码 两面 等等
 
+    //注意有些彩种的 CODE 完全一样
     switch (gameCode) {
       case LhcCode.TM:  //特码
         return parseTMData({ playOddData, zodiacNum })
@@ -68,7 +69,6 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case LhcCode.ZM1_6: //正码1T6
       case LhcCode.SB: //色波
       case LhcCode.ZOX://总肖
-      case LhcCode.WX:  //五行
       case CqsscCode.ALL:  //1-5球
       case CqsscCode.Q1:  //第1球
       case CqsscCode.Q2:  //第2球
@@ -86,6 +86,14 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case CqsscCode.SZDW:  //三字定位
       case CqsscCode.BDW:  //不定位
         return parseYZDWData({ playOddData, zodiacNum })
+
+      case LhcCode.WX:
+        if (gameType == LCode.lhc) { //五行
+          return parseSBData({ playOddData, zodiacNum })
+        } else if (gameType == LCode.cqssc) { //五星
+          return parseYZDWData({ playOddData, zodiacNum })
+        }
+        break
 
       case CqsscCode.DWD:  //定位胆
         return parseDWDData({ playOddData, zodiacNum })

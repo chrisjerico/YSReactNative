@@ -107,7 +107,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
           style={CommStyles.flex}>
 
       {//显示赔率标题
-        !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
+        index == 0 && !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
                                                style={_styles.sub_big_title_container}>
           <Text key={key + ' text renderYZDW' + groupData?.id}
                 style={[
@@ -118,13 +118,10 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       }
 
       {//显示赔率提醒文字
-        !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                              style={_styles.sub_big_title_container}>
+        index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
+                                              style={_styles.sub_big_hint_container}>
           <Text key={key + ' text renderYZDW' + groupData?.id}
-                style={[
-                  _styles.sub_big_title_text,
-                  { color: Skin1.themeColor },
-                ]}>{groupData?.exHint}</Text>
+                style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
         </View>
       }
 
@@ -172,12 +169,21 @@ const _styles = StyleSheet.create({
   },
   sub_big_title_container: {
     alignItems: 'center',
-    borderRadius: scale(4),
     padding: scale(6),
   },
   sub_big_title_text: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
+    paddingHorizontal: scale(1),
+  },
+  sub_big_hint_container: {
+    alignItems: 'center',
+    paddingHorizontal: scale(4),
+    paddingBottom: scale(6),
+  },
+  sub_big_hint_text: {
+    color: UGColor.TextColor3,
+    fontSize: scale(19),
     paddingHorizontal: scale(1),
   },
   sub_title_container: {

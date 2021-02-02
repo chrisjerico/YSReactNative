@@ -101,7 +101,7 @@ const UsePayBoard = () => {
           case LhcCode.ZM1_6: //正码1T6
           case LhcCode.SB: //色波
           case LhcCode.ZOX://总肖
-          case LhcCode.WX:  //五行
+          case LhcCode.WX:  //五行 或 五星
           case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
           case LhcCode.TX: //特肖
           case LhcCode.ZX: //正肖

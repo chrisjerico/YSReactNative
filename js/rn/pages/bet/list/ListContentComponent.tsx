@@ -6,7 +6,7 @@ import UseListContent from './UseListContent'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
-import { BALL_CONTENT_HEIGHT, CqsscCode, LEFT_ITEM_HEIGHT, LhcCode } from '../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, CqsscCode, LCode, LEFT_ITEM_HEIGHT, LhcCode } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -20,8 +20,10 @@ import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import CqsscDWDComponent from '../cqssc/dwd/CqsscDWDComponent'
-import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
+import parseSBData from '../util/parse/lhc/ParseSBDataUtil'
+import parseYZDWData from '../util/parse/cqssc/ParseYZDWDataUtil'
 import CqsscYZDWComponent from '../cqssc/yzdw/CqsscYZDWComponent'
+import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
 
 const ListContentComponent = () => {
 
@@ -155,7 +157,8 @@ const ListContentComponent = () => {
    */
   const renderRightContent = () => {
     const playOdds = playOddDetailData?.playOdds[leftColumnIndex]
-    let lotteryCode = playOdds?.code
+    let gameType = playOddDetailData?.lotteryLimit?.gameType // 六合彩 秒秒秒彩 等等
+    let lotteryCode = playOdds?.code // 特码 连码 等等
     ugLog('------------------lotteryCode---------------------------------', lotteryCode)
     // return <View style={CommStyles.flex}>
     //   {
@@ -182,7 +185,6 @@ const ListContentComponent = () => {
       case LhcCode.ZM1_6: //正码1T6
       case LhcCode.SB: //色波
       case LhcCode.ZOX://总肖
-      case LhcCode.WX:  //五行
       case CqsscCode.QZH:  //前中后
       case CqsscCode.DN:  //斗牛
       case CqsscCode.SH:  //梭哈
@@ -210,6 +212,17 @@ const ListContentComponent = () => {
         // ugLog('playOdds = ', JSON.stringify(playOdds))
         return <CqsscDWDComponent key={lotteryCode}
                                   playOddData={playOdds}/>
+
+
+      case LhcCode.WX:
+        if (gameType == LCode.lhc) { //五行
+          return <LhcSBComponent key={lotteryCode}
+                                 playOddData={playOdds}/>
+        } else if (gameType == LCode.cqssc) { //五星
+          return <CqsscYZDWComponent key={lotteryCode}
+                                     playOddData={playOdds}/>
+        }
+        break
 
       case LhcCode.YX: //平特一肖
       case LhcCode.WS: //平特尾数
