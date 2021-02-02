@@ -5,7 +5,7 @@
 import UseListContent from './UseListContent'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT, LhcCode } from '../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, CqsscCode, LEFT_ITEM_HEIGHT, LhcCode } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -21,6 +21,7 @@ import { ugLog } from '../../../public/tools/UgLog'
 import { useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { arrayLength } from '../../../public/tools/Ext'
+import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
 
 const ListContentComponent = () => {
 
@@ -183,6 +184,19 @@ const ListContentComponent = () => {
       case LhcCode.ZOX://总肖
       case LhcCode.WX:  //五行
         return <LhcSBComponent key={lotteryCode}
+                               playOddData={playOdds}/>
+
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
+        return <Cqssc1T5Component key={lotteryCode}
                                playOddData={playOdds}/>
 
       case LhcCode.YX: //平特一肖

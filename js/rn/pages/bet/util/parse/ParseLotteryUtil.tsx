@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import {LhcCode} from '../../const/LotteryConst'
+import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import parseTMData from './ParseTMDataUtil'
 import parseHXData from './ParseHXDataUtil'
 import parseZTData from './ParseZTDataUtil'
@@ -45,7 +45,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
   return playOddDetailData?.playOdds?.map((playOddData) => {
     if (anyEmpty(playOddData?.playGroups)) return playOddData
 
-    const gameType = playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+    // const gameType = playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
     const gameCode = playOddData?.code //彩种ID，特码 两面 等等
 
     switch (gameCode) {
@@ -67,6 +67,16 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case LhcCode.SB: //色波
       case LhcCode.ZOX://总肖
       case LhcCode.WX:  //五行
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
         return parseSBData({ playOddData, zodiacNum })
 
       case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
