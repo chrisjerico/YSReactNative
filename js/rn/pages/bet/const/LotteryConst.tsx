@@ -31,6 +31,19 @@ const BallStyles = {
 const LCode = {
   lhc: 'lhc', //六合彩
   cqssc: 'cqssc', //秒秒彩
+  dlt: 'dlt', //大乐透系列
+  pk10nn: 'pk10nn', //牛牛系列
+  xyft: 'xyft', //飞艇系列
+  xync: 'xync', //幸运农场系列
+  pk10: 'pk10', //赛车系列
+  bjkl8: 'bjkl8', //北京快8 快乐8系列
+  qxc: 'qxc', //七星彩系列
+  yncp: 'yncp', //越南彩系列
+  fc3d: 'fc3d', //3D系列
+  gdkl10: 'gdkl10', //快乐10分系列
+  pcdd: 'pcdd', //蛋蛋系列
+  jsk3: 'jsk3', //快三系列
+  gd11x5: 'gd11x5', //11选5系列
 }
 
 /**

@@ -1,21 +1,16 @@
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { HallGameData, HallGameListData } from '../../../../public/network/Model/game/HallGameModel'
+import { HallGameData } from '../../../../public/network/Model/game/HallGameModel'
 import FastImage from 'react-native-fast-image'
 import CommStyles from '../../../base/CommStyles'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import EmptyView from '../../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import Button from '../../../../public/views/tars/Button'
-import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
-import { SeriesId } from '../../../../public/models/Enum'
 import UseFreedomGameList from './UseFreedomGameList'
-import UGNavigationBar from '../../../../public/widget/UGNavigationBar'
 import LinearGradient from 'react-native-linear-gradient'
 import { Res } from '../../../../Res/icon/Res'
+import { LCode } from '../../../bet/const/LotteryConst'
 
 interface IHallGameList {
   gameData?: HallGameData //所有数据
@@ -73,7 +68,7 @@ const FreedomGameListComponent = ({
   const renderLeftContent = () => {
     let shape = LeftColumnStyles[gameData?.gameType]
     if (anyEmpty(shape)) {
-      shape = LeftColumnStyles['lhc']
+      shape = LeftColumnStyles[LCode.lhc]
     }
 
     return (

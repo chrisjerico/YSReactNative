@@ -4,7 +4,7 @@ import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
-import { BallStyles } from '../const/LotteryConst'
+import { BallStyles, LCode } from '../const/LotteryConst'
 import LotteryBall from '../../../public/components/view/LotteryBall'
 
 interface ILotteryZodiacAndBallItem {
@@ -68,12 +68,12 @@ const LotteryZodiacAndBall = ({
       ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
     let lastBall = balls.pop() //最后一个球
     let ballStyle = BallStyles[gameType] //球的样式
-    ballStyle = anyEmpty(ballStyle) ? BallStyles['lhc'] : ballStyle
+    ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle
 
     let ballView
     const key = 'header renderBalls' + gameType
     switch (gameType) {
-      case 'bjkl8'://北京快8
+      case LCode.bjkl8://北京快8
         ballView = (
           [
             <View key={key + ballStr + 'ct'}
@@ -90,9 +90,9 @@ const LotteryZodiacAndBall = ({
           ]
         )
         break
-      case 'pk10'://赛车系列
-      case 'xyft'://飞艇系列
-      case 'pk10nn'://牛牛系列
+      case LCode.pk10://赛车系列
+      case LCode.xyft://飞艇系列
+      case LCode.pk10nn://牛牛系列
         ballView = (
           [
             <View key={key + ballStr + 'line'}/>,
@@ -109,7 +109,7 @@ const LotteryZodiacAndBall = ({
           ]
         )
         break
-      case 'dlt'://大乐透系列
+      case LCode.dlt://大乐透系列
         ballView = (
           [
             <View key={key + ballStr + 'line'}/>,
@@ -128,7 +128,7 @@ const LotteryZodiacAndBall = ({
           ]
         )
         break
-      case 'lhc'://六合彩
+      case LCode.lhc://六合彩
         ballView = (
           [
             <View key={ballStr + 'line'}/>,
