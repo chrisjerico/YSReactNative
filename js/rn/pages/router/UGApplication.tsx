@@ -286,7 +286,6 @@ const pageComponents: { [key in PageName]?: Function } = {
   LLRegisterPage, //利来-注册
 
   // Doy钱包
-  DoyLaunchPage,// 启动页
   DoyLoginPage,
   DoyRegisterPage,
   DoyNickNamePage,
