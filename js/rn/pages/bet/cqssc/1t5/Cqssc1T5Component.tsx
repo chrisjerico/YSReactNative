@@ -45,6 +45,9 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderEBall = (item?: PlayData) => <LotteryEBall key={key + 'renderEBall' + item?.id}
                                                          item={item}
                                                          selectedBalls={selectedBalls}
+                                                         containerStyle={{width: scale(189), paddingHorizontal: scale(28)}}
+                                                         ballType={{size: scale(44)}}
+                                                         oddsStyle={{fontSize: scale(20)}}
                                                          callback={() => addOrRemoveBall(item?.id)}/>
 
   // /**
