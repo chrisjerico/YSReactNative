@@ -99,9 +99,19 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制 连码
    * @param groupData
    */
-  const renderYZDW = (groupData?: PlayGroupData) =>
+  const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
     <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
           style={CommStyles.flex}>
+
+      {
+        index == 0 && <View key={key + ' sub renderYZDW' + groupData?.id}
+                            style={_styles.sub_big_title_container}>
+          <Text key={key + ' text renderYZDW' + groupData?.id} style={[
+            _styles.sub_big_title_text,
+            { color: Skin1.themeColor },
+          ]}>{`赔率: ${groupData?.plays[0]?.odds}`}</Text>
+        </View>
+      }
 
       <View key={key + ' sub renderYZDW' + groupData?.id}
             style={_styles.sub_title_container}>
@@ -145,6 +155,16 @@ const _styles = StyleSheet.create({
   content_container: {
     flex: 1,
     paddingBottom: scale(120),
+  },
+  sub_big_title_container: {
+    alignItems: 'center',
+    borderRadius: scale(4),
+    padding: scale(6),
+  },
+  sub_big_title_text: {
+    color: UGColor.TextColor2,
+    fontSize: scale(26),
+    paddingHorizontal: scale(1),
   },
   sub_title_container: {
     alignItems: 'center',
