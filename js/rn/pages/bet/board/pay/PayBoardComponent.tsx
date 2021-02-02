@@ -5,7 +5,7 @@ import { forwardRef, useMemo } from 'react'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import {LhcCode} from '../../const/LotteryConst'
+import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
@@ -164,6 +164,16 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         case LhcCode.LX: //连肖
         case LhcCode.LW: //连尾
+        case CqsscCode.ALL:  //1-5球
+        case CqsscCode.Q1:  //第1球
+        case CqsscCode.Q2:  //第2球
+        case CqsscCode.Q3:  //第3球
+        case CqsscCode.Q4:  //第4球
+        case CqsscCode.Q5:  //第5球
+        case CqsscCode.QZH:  //前中后
+        case CqsscCode.DN:  //斗牛
+        case CqsscCode.SH:  //梭哈
+        case CqsscCode.LHD:  //龙虎斗
           return renderTMItem(lotteryCode, selModel)
 
         case LhcCode.HX://合肖
