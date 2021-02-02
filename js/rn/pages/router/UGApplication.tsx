@@ -155,7 +155,7 @@ import { DoyWalletRecordDetailPage } from '../../../doy/pages/首页/钱包记�
 import { DoyWalletRecordListPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordListPage'
 import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordSearchPage'
 import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
->>>>>>> master
+
 
 /**
  * 所有界面
