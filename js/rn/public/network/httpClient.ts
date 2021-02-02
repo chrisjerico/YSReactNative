@@ -157,7 +157,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   let { isEncrypt = true } = config
   let encryptData = await encryptParams(params, isEncrypt);
 
-  //ugLog('http isEncrypt encryptData 1 =', isEncrypt, config.url, encryptData)
+  ugLog('http isEncrypt encryptData 1 =', isEncrypt, config.url, encryptData)
 
   if (config?.method?.toLowerCase() == 'get') {
     if (isEncrypt) {

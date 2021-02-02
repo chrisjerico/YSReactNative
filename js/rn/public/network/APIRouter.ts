@@ -15,7 +15,7 @@ import { FloatADModel } from './Model/FloatADModel'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
-import { GameUrlModel, HomeRecommendModel, TwoLevelGame } from './Model/HomeRecommendModel'
+import { GameHistoryModel, GameUrlModel, HomeRecommendModel, TwoLevelGame } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
 import { LottoGamesModel, UGNextIssueModel } from './Model/LottoGamesModel'
@@ -182,13 +182,14 @@ class APIRouter {
   }
 
   //注单讯息
-  static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string) => {
+  static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string,betId?:string ) => {
     let parameter = {
       page: page,
       rows: rows,
       category: category,
       startDate: startDate,
       endDate: endDate,
+      betId:betId,
     }
 
     return httpClient.get<GameHistoryModel>('c=ticket&a=history', { params: parameter })

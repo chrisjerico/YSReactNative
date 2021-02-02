@@ -1,3 +1,4 @@
+import { UGBetsRecordListModel } from "../../../../pages/经典/Model/UGBetsRecordModel";
 import { CCSessionReq, SampleAPI } from "../CCSessionModel";
 
 
@@ -19,6 +20,6 @@ export class api_ticket {
     page = 1,
     rows = 20,
   ) {
-    return this.c.get('history', { category: category, status: status, startDate: startDate, endDate: endDate, page: page, rows: rows ,betId:betId,});
+    return this.c.get<UGBetsRecordListModel>('history', { category: category, status: status, startDate: startDate, endDate: endDate, page: page, rows: rows ,betId:betId,});
   }
 }

@@ -1,53 +1,37 @@
 import { Platform, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { memo, useEffect, useRef, useState } from 'react'
-import { anyEmpty, arrayEmpty } from '../tools/Ext'
+import { anyEmpty } from '../tools/Ext'
 import { scale } from '../tools/Scale'
 import { skin1, Skin1 } from '../theme/UGSkinManagers'
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import { UGColor } from '../theme/UGThemeColor'
 import EmptyView from './view/empty/EmptyView'
 import APIRouter from '../network/APIRouter'
 import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
-import Modal from 'react-native-modal'
-import RightMenu from './menu/RightMenu'
-import Icon from 'react-native-vector-icons/Entypo'
-import PushHelper from '../define/PushHelper'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import SafeAreaHeader from '../views/tars/SafeAreaHeader'
-import BackBtnComponent from './tars/BackBtnComponent'
-import { PageName } from '../navigation/Navigation'
 import MineHeader from '../views/tars/MineHeader'
 import { OCHelper } from '../define/OCHelper/OCHelper'
-import { navigate, pop, push } from '../navigation/RootNavigation'
-import { api } from '../network/NetworkRequest1/NetworkRequest1'
-import { PayAisleListData } from '../network/Model/wd/PayAisleModel'
-import { FlatList, ScrollView, TextInput, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler'
-import { PushHomeGame } from '../models/Interface'
-import Button from '../views/temp/Button'
+import { pop } from '../navigation/RootNavigation'
+import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { UGBasePageProps } from '../../pages/base/UGPage'
 import CommStyles from '../../pages/base/CommStyles'
 import UseGameHall from '../../pages/hall/new/UseGameHall'
 import MiddleMenu, { IMiddleMenuItem } from './menu/MiddleMenu'
 import { GameHistorylistBean, GameHistoryModel } from '../network/Model/HomeRecommendModel'
-import Game3rdView from './Game3rdView'
-import { iteratorSymbol } from 'immer/dist/internal'
 import AppDefine from '../define/AppDefine'
 import { Calendar } from 'react-native-plain-calendar'
-import { format } from 'prettier'
 import moment from 'moment'
 import Dialog from "react-native-dialog";
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { UGStore } from '../../redux/store/UGStore'
-import { color } from 'react-native-reanimated'
 
 /**
- * 其他注单
+ * 其他注单1
  * @param navigation
  * @constructor
  */
-const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
+const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
 
   let { type, showBackButton } = route?.params
   // ugLog('--------------------------route?.params==', route?.params)
@@ -103,7 +87,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   const [currentType, setCurrentType] = useState({})  //選擇注單類形
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
-  const [page, setPage] = useState(1)
+  const [page] = useState(1)
   const [data, setData] = useState<Array<GameHistorylistBean>>([])
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
   const [betTotal, setBetTotal] = useState(0) //是否存取過數據
@@ -113,10 +97,6 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const [startDate, setStartDate] = useState<string>(moment().format('yyyy-MM-DD'))//选中的开始日期
 
   // ugLog('startDate ==  ',startDate)
-  const {
-    systemInfo,
-    userInfo,
-  } = UseGameHall()
 
   useEffect(() => {
     setProps({
@@ -240,7 +220,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                   keyExtractor={(item, index) => item.id + index}
                   data={item}
                   numColumns={1}
-                  renderItem={({ item, index }) => {
+                  renderItem={({ item }) => {
                     return (
                       <View style={[_styles.text_title_container, { backgroundColor: skin1.textColor4 }]}>
                         <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.gameName}{'\n'}{item.gameTypeName}</Text>

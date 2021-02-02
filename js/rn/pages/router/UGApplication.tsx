@@ -118,6 +118,7 @@ import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePag
 import OtherRecord from '../../public/components/OtherRecord'
 import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
 import { DoyLaunchPage } from '../../../doy/pages/DoyLaunchPage'
+import JDDayDetailPage from '../经典/下注明细/某天下注明细(已结算)/JDDayDetailPage'
 
 
 /**
@@ -181,6 +182,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDBetDetailPage,//下注明细
   OnlineService,//在线客服
   JDLotterySecondPage,//2级系列游戏
+  JDDayDetailPage,//莫天下注明细
   // ———————————— 模板页面 —————————————
 
   JDHomePage,// 经典-首页
