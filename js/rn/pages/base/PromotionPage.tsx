@@ -76,7 +76,10 @@ const PromotionPage = (props: any) => {
         break
       case 'android':
           // 弹框
-        setShowPop(true)
+          ANHelper.callAsync(CMD.OPEN_COUPON, {
+            ...item,
+            style,
+          })
         break
     }
   }
