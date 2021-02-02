@@ -59,10 +59,10 @@ interface ILotteryRouteParams {
   style?: StyleProp<ViewStyle>
 }
 
-export default LotteryConst
 export {
   ILotteryRouteParams,
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
   BallStyles,
+  LotteryConst,
 }

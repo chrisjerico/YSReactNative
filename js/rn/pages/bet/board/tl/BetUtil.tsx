@@ -1,32 +1,10 @@
 import { anyEmpty, arrayEmpty, arrayLength } from '../../../../public/tools/Ext'
-import {
-  PagePlayOddData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-  ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryConst from '../../const/LotteryConst'
-import LhcHXComponent from '../../lhc/hx/LhcHXComponent'
-import LhcZXBZComponent from '../../lhc/zxbz/LhcZXBZComponent'
+import {LotteryConst} from '../../const/LotteryConst'
 import * as React from 'react'
-import LotteryData from '../../const/LotteryData'
 import { ugLog } from '../../../../public/tools/UgLog'
-import parseTMData from '../../util/parse/ParseTMDataUtil'
-import parseHXData from '../../util/parse/ParseHXDataUtil'
-import parseZTData from '../../util/parse/ParseZTDataUtil'
-import parseLMAData from '../../util/parse/ParseLMADataUtil'
-import parseSBData from '../../util/parse/ParseSBDataUtil'
-import parsePTYXData from '../../util/parse/ParsePTYXDataUtil'
-import parseWSData from '../../util/parse/ParseWSDataUtil'
-import parseLXData from '../../util/parse/ParseLXDataUtil'
-import parseLWData from '../../util/parse/ParseLWDataUtil'
-import parseZXBZData from '../../util/parse/ParseZXBZDataUtil'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { zodiacPlayX } from './hx/BetHXUtil'
 import { playDataX } from './zxbz/BetZXBZUtil'
-import { numberToFloatString } from '../../../../public/tools/StringUtil'
-import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 

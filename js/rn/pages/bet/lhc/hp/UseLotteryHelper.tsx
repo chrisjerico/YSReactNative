@@ -1,30 +1,15 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
+import { useEffect, useState } from 'react'
+import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
 import { UGStore } from '../../../../redux/store/UGStore'
-import LotteryConst from '../../const/LotteryConst'
-import parseTMData from '../../util/parse/ParseTMDataUtil'
-import parseHXData from '../../util/parse/ParseHXDataUtil'
-import parseZTData from '../../util/parse/ParseZTDataUtil'
-import parseLMAData from '../../util/parse/ParseLMADataUtil'
-import parseSBData from '../../util/parse/ParseSBDataUtil'
-import parsePTYXData from '../../util/parse/ParsePTYXDataUtil'
-import parseLXData from '../../util/parse/ParseLXDataUtil'
-import parseLWData from '../../util/parse/ParseLWDataUtil'
-import parseZXBZData from '../../util/parse/ParseZXBZDataUtil'
+import { LotteryConst } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
 import SelectedLotteryModel, { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { parseLMASelectedData } from '../../util/selecte/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/selecte/ParseHXSelectedUtil'
-import { doc } from 'prettier'
 
 /**
  * 彩票公共处理类

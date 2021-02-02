@@ -1,27 +1,7 @@
 import { anyEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
-import {
-  PagePlayOddData,
-  PlayGroupData,
-  PlayOddData,
-  PlayOddDetailData,
-  ZodiacNum,
-} from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import LotteryConst from '../const/LotteryConst'
-import LhcHXComponent from '../lhc/hx/LhcHXComponent'
-import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
+import { ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import * as React from 'react'
-import LotteryData from '../const/LotteryData'
 import { ugLog } from '../../../public/tools/UgLog'
-import parseTMData from './parse/ParseTMDataUtil'
-import parseHXData from './parse/ParseHXDataUtil'
-import parseZTData from './parse/ParseZTDataUtil'
-import parseLMAData from './parse/ParseLMADataUtil'
-import parseSBData from './parse/ParseSBDataUtil'
-import parsePTYXData from './parse/ParsePTYXDataUtil'
-import parseWSData from './parse/ParseWSDataUtil'
-import parseLXData from './parse/ParseLXDataUtil'
-import parseLWData from './parse/ParseLWDataUtil'
-import parseZXBZData from './parse/ParseZXBZDataUtil'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
 

@@ -5,7 +5,7 @@
 import UseListContent from './UseListContent'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import LotteryConst, { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT, LotteryConst } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'

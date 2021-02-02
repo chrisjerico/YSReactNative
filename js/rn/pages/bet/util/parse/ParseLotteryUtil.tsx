@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import LotteryConst from '../../const/LotteryConst'
+import {LotteryConst} from '../../const/LotteryConst'
 import parseTMData from './ParseTMDataUtil'
 import parseHXData from './ParseHXDataUtil'
 import parseZTData from './ParseZTDataUtil'

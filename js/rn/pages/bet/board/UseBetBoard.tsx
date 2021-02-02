@@ -1,13 +1,11 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
+import { anyEmpty } from '../../../public/tools/Ext'
 import { Toast } from '../../../public/tools/ToastUtils'
-import { calculateItemCount, checkBetCount } from './tl/BetUtil'
-import LotteryConst from '../const/LotteryConst'
-import { ugLog } from '../../../public/tools/UgLog'
+import { checkBetCount } from './tl/BetUtil'
 import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
 
 
