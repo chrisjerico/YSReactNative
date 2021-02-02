@@ -15,7 +15,7 @@ interface ILotteryEBall {
   containerStyle?: StyleProp<ViewStyle> //球的容器风格
   ballStyle?: StyleProp<ViewStyle> //球的风格
   ballType?: ILotteryBall //球风格
-  oddsStyle?: TextStyle, //赔率风格
+  oddsStyle?: StyleProp<TextStyle>, //赔率风格
   callback?: () => void // 按压回调
 }
 
@@ -52,12 +52,14 @@ const renderContent = ({
                ballNumber: item?.name,
                ...ballType,
              }}
-             oddsStyle={{
-               color: isSel ?
-                 UGColor.TextColor6 :
-                 UGColor.TextColor7,
-               ...oddsStyle,
-             }}
+             oddsStyle={[
+               {
+                 color: isSel ?
+                   UGColor.TextColor6 :
+                   UGColor.TextColor7,
+               },
+               oddsStyle
+             ]}
              odds={item?.odds}
              {...ballProps}
              style={ballStyle}/>

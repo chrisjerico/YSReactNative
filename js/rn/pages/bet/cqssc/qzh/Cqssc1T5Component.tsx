@@ -36,28 +36,15 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const key = 'lottery page' + playOddData?.code
 
-
   /**
-   * 绘制 球
+   * 绘制 方格式
    * @param item
+   * @param index
    */
-  const renderEBall = (item?: PlayData) => <LotteryEBall key={key + 'renderEBall' + item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         containerStyle={_styles.ball_container}
-                                                         ballType={{ size: scale(44) }}
-                                                         oddsStyle={_styles.ball_odds}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
-
-  // /**
-  //  * 绘制 方格式
-  //  * @param item
-  //  * @param index
-  //  */
-  // const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id + index}
-  //                                                                        item={item}
-  //                                                                        selectedBalls={selectedBalls}
-  //                                                                        callback={() => addOrRemoveBall(item?.id)}/>
+  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id + index}
+                                                                         item={item}
+                                                                         selectedBalls={selectedBalls}
+                                                                         callback={() => addOrRemoveBall(item?.id)}/>
 
   /**
    * 绘制 一组格子
@@ -80,7 +67,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
           style={_styles.rect_container}>
       {
-        groupData?.plays?.map(renderEBall)
+        groupData?.plays?.map(renderERect)
       }
     </View>
 
