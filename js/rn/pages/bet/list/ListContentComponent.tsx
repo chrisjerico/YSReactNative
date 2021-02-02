@@ -3,14 +3,14 @@
  * @constructor
  */
 import UseListContent from './UseListContent'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
+import { useState } from 'react'
 import { BALL_CONTENT_HEIGHT, CqsscCode, LEFT_ITEM_HEIGHT, LhcCode } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import LhcTMComponent from '../lhc/tm/LhcTMComponent'
-import CommStyles from '../../base/CommStyles'
 import LhcZTComponent from '../lhc/zt/LhcZTComponent'
 import LhcLMAComponent from '../lhc/lma/LhcLMAComponent'
 import LhcSBComponent from '../lhc/sb/LhcSBComponent'
@@ -18,11 +18,8 @@ import LhcPTYXComponent from '../lhc/ptyx/LhcPTYXComponent'
 import LhcHXComponent from '../lhc/hx/LhcHXComponent'
 import LhcZXBZComponent from '../lhc/zxbz/LhcZXBZComponent'
 import { ugLog } from '../../../public/tools/UgLog'
-import { useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
-import { arrayLength } from '../../../public/tools/Ext'
 import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
-import CqsscQZHComponent from '../cqssc/qzh/CqsscQZHComponent'
 
 const ListContentComponent = () => {
 

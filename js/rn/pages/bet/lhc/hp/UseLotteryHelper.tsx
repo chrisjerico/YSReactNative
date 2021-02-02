@@ -4,7 +4,7 @@ import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/networ
 import { arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
 import { UGStore } from '../../../../redux/store/UGStore'
-import { LhcCode } from '../../const/LotteryConst'
+import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
 import SelectedLotteryModel, { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
@@ -49,6 +49,16 @@ const UseLotteryHelper = () => {
       case LhcCode.LX: //连肖
       case LhcCode.LW: //连尾
       case LhcCode.ZXBZ:  //自选不中
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
         newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
         break
 
