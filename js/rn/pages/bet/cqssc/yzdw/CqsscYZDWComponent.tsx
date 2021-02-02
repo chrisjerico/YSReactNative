@@ -15,7 +15,7 @@ import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 
 /**
- * 六合彩连码
+ * X字定位
  *
  * @param navigation
  * @constructor

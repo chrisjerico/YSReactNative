@@ -5,7 +5,7 @@ import UseLotteryHelper from '../../lhc/hp/UseLotteryHelper'
 import { PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 /**
- * X字定位
+ * 定位胆
  * @constructor
  */
 const UseCqsscDWD = () => {
@@ -19,6 +19,7 @@ const UseCqsscDWD = () => {
     // curPlayOddData,
     selectedBalls,
     setSelectedBalls,
+    addAndRemoveBallList,
     addOrRemoveBall,
     currentPageData,
   } = UseLotteryHelper()
@@ -29,6 +30,7 @@ const UseCqsscDWD = () => {
     setTabIndex,
     selectedBalls,
     setSelectedBalls,
+    addAndRemoveBallList,
     addOrRemoveBall,
     currentPageData,
   }

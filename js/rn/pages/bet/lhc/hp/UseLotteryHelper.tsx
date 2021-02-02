@@ -1,6 +1,11 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import {
+  PlayData,
+  PlayGroupData,
+  PlayOddData,
+  ZodiacNum,
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { isSelectedBallOnId } from '../../const/ISelBall'
 import { UGStore } from '../../../../redux/store/UGStore'
@@ -139,14 +144,41 @@ const UseLotteryHelper = () => {
     tabIndex < arrayLength(playOddData?.pageData?.groupTri) ? playOddData?.pageData?.groupTri[tabIndex] : []
 
   /**
+   * 添加或移除选中的球列表
+   * @param addBalls 选中球的ID
+   * @param removeBalls 取消的球ID
+   */
+  const addAndRemoveBallList = (addBalls?: Array<string>, removeBalls?: Array<string>) => {
+    const filterBalls = selectedBalls?.filter((item) => !removeBalls?.includes(item))
+    const newBalls = dicNull(addBalls) ? filterBalls : [...filterBalls, ...addBalls]
+    setSelectedBalls(newBalls)
+  }
+
+  /**
+   * 强制选中它
+   * @param ballId 选中的球ID
+   */
+  const forceAdd = (ballId?: string) => {
+    setSelectedBalls([...selectedBalls, ballId])
+  }
+
+  /**
+   * 强制取消它
+   * @param ballId 取消的球ID
+   */
+  const forceRemove = (ballId?: string) => {
+    let newResult = selectedBalls?.filter((item) => item != ballId)
+    setSelectedBalls(newResult)
+  }
+
+  /**
    * 添加或移除选中的球
    * @param ballId 球的ID
    */
   const addOrRemoveBall = (ballId?: string) => {
     //重组数字
     if (isSelectedBallOnId(selectedBalls, ballId)) {
-      let newResult = selectedBalls?.filter((item) => item != ballId)
-      setSelectedBalls(newResult)
+      forceRemove(ballId)
 
     } else {
       //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
@@ -165,7 +197,7 @@ const UseLotteryHelper = () => {
           break
       }
 
-      setSelectedBalls([...selectedBalls, ballId])
+      forceAdd(ballId)
     }
   }
 
@@ -193,6 +225,7 @@ const UseLotteryHelper = () => {
     selectedBalls,
     setSelectedBalls,
     currentPageData,
+    addAndRemoveBallList,
     addOrRemoveBall,
     zodiacBallIds,
   }

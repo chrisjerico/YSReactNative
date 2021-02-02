@@ -203,12 +203,11 @@ const ListContentComponent = () => {
       case CqsscCode.EZDW:  //二字定位
       case CqsscCode.SZDW:  //三字定位
       case CqsscCode.BDW:  //不定位
-        // ugLog('playOdds = ', JSON.stringify(playOdds))
         return <CqsscYZDWComponent key={lotteryCode}
                                   playOddData={playOdds}/>
 
       case CqsscCode.DWD:  //定位胆
-        ugLog('playOdds = ', JSON.stringify(playOdds))
+        // ugLog('playOdds = ', JSON.stringify(playOdds))
         return <CqsscDWDComponent key={lotteryCode}
                                   playOddData={playOdds}/>
 

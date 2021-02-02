@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -7,15 +7,15 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseCqsscDWD from './UseCqsscDWD'
-import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
-import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 
 /**
- * 六合彩连码
+ * 定位胆
  *
  * @param navigation
  * @constructor
@@ -29,6 +29,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setTabIndex,
     selectedBalls,
     setSelectedBalls,
+    addAndRemoveBallList,
     addOrRemoveBall,
     currentPageData,
   } = UseCqsscDWD()
@@ -59,6 +60,43 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }
 
   /**
+   * 绘制 所有 大 小 栏目
+   * @param plays 当前栏目的所有球
+   */
+  const renderRowBar = (plays: Array<PlayData>) => <View style={_styles.bar_container}>
+    <TouchableOpacity onPress={() => addAndRemoveBallList(plays?.map((play) => play?.id))}>
+      <Text style={_styles.bar_text}>{'所有'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      addAndRemoveBallList(plays?.filter((play) =>
+        Number(play?.name) > 4).map((play) => play?.id), plays?.map((play) => play?.id))
+    }}>
+      <Text style={_styles.bar_text}>{'大'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      addAndRemoveBallList(plays?.filter((play) =>
+        Number(play?.name) < 5).map((play) => play?.id), plays?.map((play) => play?.id))
+    }}>
+      <Text style={_styles.bar_text}>{'小'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      addAndRemoveBallList(plays?.filter((play) =>
+        Number(play?.name) % 2 == 1).map((play) => play?.id), plays?.map((play) => play?.id))
+    }}>
+      <Text style={_styles.bar_text}>{'奇'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      addAndRemoveBallList(plays?.filter((play) =>
+        Number(play?.name) % 2 == 0).map((play) => play?.id), plays?.map((play) => play?.id))
+    }}>
+      <Text style={_styles.bar_text}>{'偶'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => addAndRemoveBallList(null, plays?.map((play) => play?.id))}>
+      <Text style={_styles.bar_text}>{'移除'}</Text>
+    </TouchableOpacity>
+  </View>
+
+  /**
    * 绘制 连码
    * @param groupData
    */
@@ -73,6 +111,8 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
+      {renderRowBar(groupData?.exPlays)}
+
       <View key={key + ' ball renderDWD 3=' + groupData?.id + groupData?.alias}
             style={_styles.ball_container}>
         {
@@ -85,7 +125,6 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <View style={_styles.content_container}>
-    {/*{ currentPageData()?.map(renderDWD) }*/}
     {playOddData?.pageData?.groupTri?.map((item, index) => renderDWD(item[0], index))}
   </View>
 
@@ -173,6 +212,17 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor3,
     fontSize: scale(22),
     paddingLeft: scale(6),
+  },
+  bar_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  bar_text: {
+    fontSize: scale(22),
+    paddingHorizontal: scale(16),
+    paddingVertical: scale(10),
+    borderBottomWidth: scale(1),
+    borderBottomColor: UGColor.LineColor4,
   },
 
 

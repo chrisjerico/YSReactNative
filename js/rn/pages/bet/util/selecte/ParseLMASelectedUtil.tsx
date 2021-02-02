@@ -15,7 +15,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
   //选中了哪些球, 3层结构
   const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
 
-  ugLog(' playOddData ======== ', JSON.stringify(playOddData))
+  // ugLog(' playOddData ======== ', JSON.stringify(playOddData))
   //遍历每一TAB的数据 如 特码B和特码A
   playOddData?.pageData?.groupTri?.map((pageData, index) => {
     const tabMap = new Map<string, SelectedPlayModel>() //每一个TAB的数组 如 特码B TMB -> 对应的数据

@@ -14,7 +14,7 @@ interface ITMData {
 }
 
 /**
- * 解析X字定位等数据
+ * 解析定位胆等数据
  * @param playOddData
  * @param zodiacNum
  */
