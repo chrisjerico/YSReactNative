@@ -119,6 +119,7 @@ const UsePayBoard = () => {
           case CqsscCode.DN:  //斗牛
           case CqsscCode.SH:  //梭哈
           case CqsscCode.LHD:  //龙虎斗
+          case CqsscCode.YZDW:  //一字定位
             selModel?.plays?.map((playData) => {
               betBean.push({
                 money: numberToFloatString(moneyMap[playData?.exId ?? playData?.id]),

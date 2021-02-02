@@ -87,10 +87,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     return (
       <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
-                    item={{
-                      // ...item?.plays[0],
-                      ...ballInfo,
-                    }}
+                    item={ballInfo}
                     selectedBalls={selectedBalls}
                     ballType={{ size: scale(50) }}
                     ballStyle={{ flexDirection: 'column' }}

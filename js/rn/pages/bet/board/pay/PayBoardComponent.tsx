@@ -174,6 +174,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case CqsscCode.DN:  //斗牛
         case CqsscCode.SH:  //梭哈
         case CqsscCode.LHD:  //龙虎斗
+        case CqsscCode.YZDW:  //一字定位
           return renderTMItem(lotteryCode, selModel)
 
         case LhcCode.HX://合肖

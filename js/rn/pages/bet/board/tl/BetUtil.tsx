@@ -58,6 +58,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       case CqsscCode.DN:  //斗牛
       case CqsscCode.SH:  //梭哈
       case CqsscCode.LHD:  //龙虎斗
+      case CqsscCode.YZDW:  //一字定位
         if(selCount <= 0) {
           showMsg && Toast('请选择玩法')
           return false

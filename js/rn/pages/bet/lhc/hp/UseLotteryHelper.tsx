@@ -120,6 +120,7 @@ const UseLotteryHelper = () => {
       case CqsscCode.DN:  //斗牛
       case CqsscCode.SH:  //梭哈
       case CqsscCode.LHD:  //龙虎斗
+      case CqsscCode.YZDW:  //一字定位
         // ugLog('恢复选中的数据 curSelectedData 1111= ', JSON.stringify(curSelectedData))
         // ugLog('恢复选中的数据 groupTri 2222= ', JSON.stringify(playOddData?.pageData?.groupTri))
         if (curSelectedData && arrayLength(playOddData?.pageData?.groupTri) == 1) {//只有1页数据/非特殊玩法，才恢复选中数据
