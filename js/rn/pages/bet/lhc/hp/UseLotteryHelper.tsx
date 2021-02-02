@@ -59,6 +59,11 @@ const UseLotteryHelper = () => {
       case CqsscCode.DN:  //斗牛
       case CqsscCode.SH:  //梭哈
       case CqsscCode.LHD:  //龙虎斗
+      case CqsscCode.YZDW:  //一字定位
+      case CqsscCode.EZDW:  //二字定位
+      case CqsscCode.SZDW:  //三字定位
+      case CqsscCode.BDW:  //不定位
+      case CqsscCode.DWD:  //定位胆
         newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
         break
 

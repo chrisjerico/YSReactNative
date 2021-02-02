@@ -38,43 +38,6 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }, [])
   const key = 'lottery page' + playOddData?.code
 
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
-                                                                                                   style={CommStyles.flex}
-                                                                                                   onPress={() => setTabIndex(index)}>
-    <View key={key + item[0]?.alias}
-          style={[
-            _styles.tab_item,
-            index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-          ]}>
-      <Text key={key + item[0]?.alias}
-            style={[
-              _styles.tab_title_item_text,
-              index == tabIndex ? { color: `white` } : null,
-            ]}>{item[0]?.alias}</Text>
-    </View>
-  </TouchableWithoutFeedback>
-
-  /**
-   * 绘制tab
-   */
-  const renderTab = () => <View key={key + 'tab'}
-                                style={_styles.tab_title_container}>
-    <ScrollView key={key + 'sv'}
-                style={_styles.sv_tab_container}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}>
-      <View key={key + 'content'}
-            style={_styles.tab_title_content}>
-        {
-          playOddData?.pageData?.groupTri?.map(renderTabItem)
-        }
-      </View>
-    </ScrollView>
-    <Icon size={scale(36)}
-          color={Skin1.themeColor}
-          name={'angle-double-left'}/>
-  </View>
-
   /**
    * 绘制 球
    * @param item
@@ -99,29 +62,18 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制 连码
    * @param groupData
    */
-  const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
-    <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
+  const renderDWD = (groupData?: PlayGroupData, index?: number) =>
+    <View key={key + ' renderDWD' + groupData?.id + groupData?.exPlays[0]?.alias}
           style={CommStyles.flex}>
-
-      {//第一行显示赔率标题
-        index == 0 && <View key={key + ' sub renderYZDW' + groupData?.id}
-                            style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id} style={[
-            _styles.sub_big_title_text,
-            { color: Skin1.themeColor },
-          ]}>{`赔率: ${groupData?.plays[0]?.odds}`}</Text>
-        </View>
-      }
-
-      <View key={key + ' sub renderYZDW' + groupData?.id}
+      <View key={key + ' sub renderDWD 2=' + groupData?.id + groupData?.alias}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderYZDW' + groupData?.id} style={[
+        <Text key={key + ' text renderDWD' + groupData?.id} style={[
           _styles.sub_title_text,
           { color: Skin1.themeColor },
         ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
-      <View key={key + ' ball renderYZDW' + groupData?.id}
+      <View key={key + ' ball renderDWD 3=' + groupData?.id + groupData?.alias}
             style={_styles.ball_container}>
         {
           groupData?.exPlays.map((item, index) => renderEBall(groupData, item))
@@ -133,14 +85,14 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <View style={_styles.content_container}>
-    { currentPageData()?.map(renderYZDW) }
+    {/*{ currentPageData()?.map(renderDWD) }*/}
+    {playOddData?.pageData?.groupTri?.map((item, index) => renderDWD(item[0], index))}
   </View>
 
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
                 style={[_styles.sv_container, style]}>
-      {renderTab()}
       {renderAllBall()}
     </ScrollView>
 

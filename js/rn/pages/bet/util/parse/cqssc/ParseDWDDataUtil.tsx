@@ -37,7 +37,7 @@ const parseDWDData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
 const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<PlayGroupData> => {
   const play0 = data?.plays[0]
   let circleCount = 1 //循环次数
-  let aliasArr = [`${play0?.name}定位`] //标题
+  let aliasArr = [`${play0?.name}定位: ${play0?.odds}`] //标题
 
   let arrArr = new Array<PlayGroupData>()
   for (let i = 0; i < circleCount; i++) {
