@@ -393,6 +393,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://398595.com',
     'https://697896.com',
     'https://697956.com',
+    'https://238698.com',
+    'https://923455.com',
   ],
   'c243': [
     'https://55979711.vip',
@@ -435,7 +437,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://yl29003.com',
     'https://yl29005.com',
     'https://yl29006.com',
-
   ],
   'l001': [
     'https://4988wap.com',

@@ -117,9 +117,45 @@ import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePag
 
 import OtherRecord from '../../public/components/OtherRecord'
 import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
-import { DoyLaunchPage } from '../../../doy/pages/DoyLaunchPage'
 import JDDayDetailPage from '../经典/下注明细/某天下注明细(已结算)/JDDayDetailPage'
-
+import { DoyLoginPage } from '../../../doy/pages/启动页/DoyLoginPage'
+import { DoyRegisterPage } from '../../../doy/pages/启动页/DoyRegisterPage'
+import { DoyMinePage } from '../../../doy/pages/我的/DoyMinePage'
+import { DoyNickNamePage } from '../../../doy/pages/我的/个人资料/DoyNickNamePage'
+import { DoyPhoneNumberPage } from '../../../doy/pages/我的/个人资料/DoyPhoneNumberPage'
+import { DoySelfIntroductionPage } from '../../../doy/pages/我的/个人资料/DoySelfIntroductionPage'
+import { DoyUserInfoEditPage } from '../../../doy/pages/我的/个人资料/DoyUserInfoEditPage'
+import { DoyUserInfoPage } from '../../../doy/pages/我的/个人资料/DoyUserInfoPage'
+import { DoyChangeLoginPwdPage } from '../../../doy/pages/我的/修改密码/DoyChangeLoginPwdPage'
+import { DoyChangePayPwdPage } from '../../../doy/pages/我的/修改密码/DoyChangePayPwdPage'
+import { DoyMyCommentPage } from '../../../doy/pages/我的/我的评价/DoyMyCommentPage'
+import { DoyPaymentChannlPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentChannlPage'
+import { DoyChatDetailPage } from '../../../doy/pages/聊聊/DoyChatDetailPage'
+import { DoyChatListPage } from '../../../doy/pages/聊聊/DoyChatListPage'
+import { DoyNoticeListPage } from '../../../doy/pages/通知/DoyNoticeListPage'
+import { DoyNoticeOrderFeedbackPage } from '../../../doy/pages/通知/DoyNoticeOrderFeedbackPage'
+import { DoyNoticeOrderPage } from '../../../doy/pages/通知/DoyNoticeOrderPage'
+import { DoyNoticeSentSuccessPage } from '../../../doy/pages/通知/DoyNoticeSentSuccessPage'
+import { DoyHomePage } from '../../../doy/pages/首页/DoyHomePage'
+import { DoyMyOrderPage } from '../../../doy/pages/首页/我的订单/DoyMyOrderPage'
+import { DoySearchOrderPage } from '../../../doy/pages/首页/我的订单/DoySearchOrderPage'
+import { DoySearchReultPage } from '../../../doy/pages/首页/我的订单/DoySearchReultPage'
+import { DoyNotifySellerPage } from '../../../doy/pages/首页/我要买/DoyNotifySellerPage'
+import { DoyPendingPaymentPage } from '../../../doy/pages/首页/我要买/DoyPendingPaymentPage'
+import { DoySellOrderPage } from '../../../doy/pages/首页/我要买/DoySellOrderPage'
+import { DoyWantBuy } from '../../../doy/pages/首页/我要买/DoyWantBuy'
+import { DoySellOrderConfirmPage } from '../../../doy/pages/首页/我要卖/DoySellOrderConfirmPage'
+import { DoySetSellOrderPage } from '../../../doy/pages/首页/我要卖/DoySetSellOrderPage'
+import { DoyWantSellPage } from '../../../doy/pages/首页/我要卖/DoyWantSellPage'
+import { DoyReceiveCurrency } from '../../../doy/pages/首页/打币收币/DoyReceiveCurrency'
+import { DoyTransferCurrencyPage } from '../../../doy/pages/首页/打币收币/DoyTransferCurrencyPage'
+import { DoyTransferSuccessPage } from '../../../doy/pages/首页/打币收币/DoyTransferSuccessPage'
+import { DoyScanPage } from '../../../doy/pages/首页/扫一扫/DoyScanPage'
+import { DoyWalletRecordDetailPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordDetailPage'
+import { DoyWalletRecordListPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordListPage'
+import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordSearchPage'
+import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
+>>>>>>> master
 
 /**
  * 所有界面
@@ -251,6 +287,43 @@ const pageComponents: { [key in PageName]?: Function } = {
 
   // Doy钱包
   DoyLaunchPage,// 启动页
+  DoyLoginPage,
+  DoyRegisterPage,
+  DoyNickNamePage,
+  DoyPhoneNumberPage,
+  DoySelfIntroductionPage,
+  DoyUserInfoEditPage,
+  DoyUserInfoPage,
+  DoyChangeLoginPwdPage,
+  DoyChangePayPwdPage,
+  DoyMyCommentPage,
+  DoyPaymentChannlPage,
+  DoyPaymentEditPage,
+  DoyMinePage,
+  DoyChatDetailPage,
+  DoyChatListPage,
+  DoyNoticeListPage,
+  DoyNoticeOrderFeedbackPage,
+  DoyNoticeOrderPage,
+  DoyNoticeSentSuccessPage,
+  DoyMyOrderPage,
+  DoySearchOrderPage,
+  DoySearchReultPage,
+  DoyNotifySellerPage,
+  DoyPendingPaymentPage,
+  DoySellOrderPage,
+  DoyWantBuy,
+  DoySellOrderConfirmPage,
+  DoySetSellOrderPage,
+  DoyWantSellPage,
+  DoyReceiveCurrency,
+  DoyTransferCurrencyPage,
+  DoyTransferSuccessPage,
+  DoyScanPage,
+  DoyWalletRecordDetailPage,
+  DoyWalletRecordListPage,
+  DoyWalletRecordSearchPage,
+  DoyHomePage,
 }
 
 // TabbarController

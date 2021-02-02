@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import BetLotteryContext from '../../BetLotteryContext'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
@@ -8,7 +7,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it/bet/IBetLotteryParams'
 import moment from 'moment'
-import LotteryConst from '../../const/LotteryConst'
+import {LhcCode} from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
 import { calculateItemCount, gatherSelectedItems, initItemMoney } from '../tl/BetUtil'
 import { zodiacPlayX } from '../tl/hx/BetHXUtil'
@@ -19,6 +18,7 @@ import { NormalModel } from '../../../../public/network/Model/NormalModel'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../../public/network/APIRouter'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
+import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 
 /**
  * 下注面板
@@ -27,10 +27,7 @@ import { syncUserInfo } from '../../../../public/tools/user/UserTools'
  */
 const UsePayBoard = () => {
 
-  const {
-    playOddDetailData,//彩票数据
-  } = useContext(BetLotteryContext)
-
+  const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   const [selectedData, setSelectedData] = useState<Map<string, Map<string, Map<string, SelectedPlayModel>>>>(null) //当前选中的数据 结构和SelectedLotteryModel一样
@@ -53,20 +50,14 @@ const UsePayBoard = () => {
    */
   useEffect(() => {
     if (selectedData == null) return
-
     // ugLog(' calculate selectedData  =', JSON.stringify(selectedData))
 
-    if (nextIssueData?.gameType == 'lhc') {
-      //总共有多少条数据
-      setItemCount(calculateItemCount(selectedData))
+    //总共有多少条数据
+    setItemCount(calculateItemCount(selectedData))
 
-      //只有第1次需要初始化
-      if (anyEmpty(moneyMap)) {
-        setMoneyMap(initItemMoney(selectedData))
-      }
-
-    } else {
-
+    //第1次需要初始化
+    if (anyEmpty(moneyMap)) {
+      setMoneyMap(initItemMoney(selectedData))
     }
 
   }, [selectedData])
@@ -95,7 +86,7 @@ const UsePayBoard = () => {
    *
    * 开始下注
    */
-  const startBetting = async (): Promise<number> => {
+  const startBetting = async (): Promise<LotteryResultModel> => {
     const betBean: Array<BetLotteryData> = []
 
     //Map<string, Map<string, Map<string, SelectedPlayModel>>>
@@ -103,21 +94,21 @@ const UsePayBoard = () => {
       const selItems = gatherSelectedItems(key, selectedData)
       return selItems?.map((selModel) => {
         switch (key) {
-          case LotteryConst.TM:  //特码
-          case LotteryConst.LM: //两面
-          case LotteryConst.ZM: //正码
-          case LotteryConst.ZT:  //正特
-          case LotteryConst.ZM1_6: //正码1T6
-          case LotteryConst.SB: //色波
-          case LotteryConst.ZOX://总肖
-          case LotteryConst.WX:  //五行
-          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TX: //特肖
-          case LotteryConst.ZX: //正肖
-          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.LX: //连肖
-          case LotteryConst.LW: //连尾
+          case LhcCode.TM:  //特码
+          case LhcCode.LM: //两面
+          case LhcCode.ZM: //正码
+          case LhcCode.ZT:  //正特
+          case LhcCode.ZM1_6: //正码1T6
+          case LhcCode.SB: //色波
+          case LhcCode.ZOX://总肖
+          case LhcCode.WX:  //五行
+          case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LhcCode.TX: //特肖
+          case LhcCode.ZX: //正肖
+          case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+          case LhcCode.LX: //连肖
+          case LhcCode.LW: //连尾
             selModel?.plays?.map((playData) => {
               betBean.push({
                 money: numberToFloatString(moneyMap[playData?.exId ?? playData?.id]),
@@ -128,7 +119,7 @@ const UsePayBoard = () => {
             })
             break
 
-          case LotteryConst.HX://合肖
+          case LhcCode.HX://合肖
           {
             const playX = zodiacPlayX(selModel)
 
@@ -141,7 +132,7 @@ const UsePayBoard = () => {
           }
             break
 
-          case LotteryConst.LMA:  //连码
+          case LhcCode.LMA:  //连码
           {
             const play0 = selModel?.plays[0]
             betBean.push({
@@ -153,7 +144,7 @@ const UsePayBoard = () => {
           }
             break
 
-          case LotteryConst.ZXBZ:  //自选不中
+          case LhcCode.ZXBZ:  //自选不中
           {
             const playX = playDataX(selModel)
 
@@ -186,12 +177,12 @@ const UsePayBoard = () => {
     showLoading()
     const { data } = await api.user.userGameBetWithParams(pms).promise
     hideLoading()
-    // ugLog('res bet 2 = res', data)
-    Toast(data?.msg)
+
+    const newData = {...data, data: {...data?.data, betParams: pms}}
 
     syncUserInfo()
 
-    return data?.code
+    return newData
 
     // const { data } = await api.user.myFeedback(0, date, true, 1, 20).promise
   }
@@ -203,6 +194,7 @@ const UsePayBoard = () => {
     moneyMap,
     setMoneyMap,
     itemCount,
+    nextIssueData,
     playOddDetailData,
     selectedData,
     setSelectedData,

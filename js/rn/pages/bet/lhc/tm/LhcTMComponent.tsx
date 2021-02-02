@@ -11,8 +11,9 @@ import { PlayData, PlayGroupData, ZodiacNum } from '../../../../public/network/M
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, ILotteryRouteParams, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 /**
  * 六合彩特码

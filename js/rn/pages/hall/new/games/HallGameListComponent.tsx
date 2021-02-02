@@ -12,7 +12,7 @@ import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
 import UseHallGameList from './UseHallGameList'
-import { BallStyles } from '../../../bet/const/LotteryConst'
+import { BallStyles, LCode } from '../../../bet/const/LotteryConst'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -51,11 +51,11 @@ const HallGameListComponent = ({
     let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
     let lastBall = balls.pop() //最后一个球
     let ballStyle = BallStyles[gameType] //球的样式
-    ballStyle = anyEmpty(ballStyle) ? BallStyles['lhc'] : ballStyle
+    ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle
 
     let ballView
     switch (gameType) {
-      case 'bjkl8'://北京快8
+      case LCode.bjkl8://北京快8
         ballView = (
           [
             <View style={_styles.ball_wrap_container}>
@@ -69,9 +69,9 @@ const HallGameListComponent = ({
           ]
         )
         break
-      case 'pk10'://赛车系列
-      case 'xyft'://飞艇系列
-      case 'pk10nn'://牛牛系列
+      case LCode.pk10://赛车系列
+      case LCode.xyft://飞艇系列
+      case LCode.pk10nn://牛牛系列
         ballView = (
           [
             <View style={CommStyles.flex}/>,
@@ -85,7 +85,7 @@ const HallGameListComponent = ({
           ]
         )
         break
-      case 'dlt'://大乐透系列
+      case LCode.dlt://大乐透系列
         ballView = (
           [
             <View style={CommStyles.flex}/>,
@@ -101,7 +101,7 @@ const HallGameListComponent = ({
           ]
         )
         break
-      case 'lhc'://六合彩
+      case LCode.lhc://六合彩
         ballView = (
           [
             <View style={CommStyles.flex}/>,
