@@ -5,7 +5,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { Toast } from '../../../public/tools/ToastUtils'
-import { checkBetCount } from './tl/BetUtil'
+import { checkBetCount } from './tools/BetUtil'
 import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
 
 

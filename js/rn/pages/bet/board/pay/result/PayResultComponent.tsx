@@ -55,7 +55,6 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
       autoBet && <View style={_styles.counter_container}>
         <Animatable.Text animation="pulse"
                          easing="linear"
-                         iterationDelay={500}
                          iterationCount={'infinite'}
                          style={_styles.counter_text}>{
           `倒计时: ${3 - counter % 4}s`
@@ -74,7 +73,6 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
                                       animation={zoomOutIn}
                                       iterationCount={1}
                                       duration={500}
-                                      iterationDelay={100}
                                       style={_styles.bet_text}>{
           Number.parseFloat(betResult?.bonus) > 0 ? `+${betResult?.bonus}` : '再接再厉'
         }</Animatable.Text>
@@ -92,7 +90,7 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
                                       animation={zoomOutIn}
                                       iterationCount={1}
                                       duration={500}
-                                      iterationDelay={500}
+                                      iterationDelay={99}
                                       style={CommStyles.flex}>
           <FastImage source={Number.parseFloat(betResult?.bonus) > 0 ? { uri: Res.mmczjl } : { uri: Res.mmcwzj }}
                      resizeMode={'contain'}
@@ -130,7 +128,7 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
                                       animation={zoomInOut}
                                       iterationCount={1}
                                       duration={500}
-                                      iterationDelay={250}
+                                      iterationDelay={33}
                                       style={_styles.ball_content}>
           <LotteryZodiacAndBall ballStr={betResult?.openNum}
                                 zodiacStr={nextIssueData?.gameType == 'cqssc' ? null : betResult?.result}

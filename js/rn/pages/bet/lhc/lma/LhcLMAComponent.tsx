@@ -10,7 +10,7 @@ import UseLhcLMA from './UseLhcLMA'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
-import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 
@@ -30,17 +30,20 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    currentPageData,
   } = UseLhcLMA()
+
+  //当前这一页的数据
+  const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
 
   useEffect(() => {
     setPlayOddData(playOddData)
   }, [])
   const key = 'lottery page' + playOddData?.code
 
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
-                                                                                           style={CommStyles.flex}
-                                                                                           onPress={() => setTabIndex(index)}>
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback
+    key={key + item[0]?.alias}
+    style={CommStyles.flex}
+    onPress={() => setTabIndex(index)}>
     <View key={key + item[0]?.alias}
           style={[
             _styles.tab_item,
@@ -104,10 +107,11 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + ' sub renderLMA' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderLMA' + groupData?.id} style={[
-          _styles.sub_title_text,
-          { color: Skin1.themeColor },
-        ]}>{groupData?.alias}</Text>
+        <Text key={key + ' text renderLMA' + groupData?.id}
+              style={[
+                _styles.sub_title_text,
+                { color: Skin1.themeColor },
+              ]}>{groupData?.alias}</Text>
       </View>
 
       <View key={key + ' ball renderLMA' + groupData?.id}
@@ -122,7 +126,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {!anyEmpty(currentPageData()) && renderLMA(currentPageData()[0])}
+    {!anyEmpty(currentPageData) && renderLMA(currentPageData[0])}
   </View>
 
   return (

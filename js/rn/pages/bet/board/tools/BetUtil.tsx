@@ -1,5 +1,5 @@
 import { anyEmpty, arrayEmpty, arrayLength } from '../../../../public/tools/Ext'
-import {LhcCode} from '../../const/LotteryConst'
+import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import * as React from 'react'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
@@ -40,7 +40,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       case LhcCode.ZM1_6: //正码1T6
       case LhcCode.SB: //色波
       case LhcCode.ZOX://总肖
-      case LhcCode.WX:  //五行
+      case LhcCode.WX:  //五行 或 五星
       case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LhcCode.TX: //特肖
       case LhcCode.ZX: //正肖
@@ -48,6 +48,17 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LhcCode.LX: //连肖
       case LhcCode.LW: //连尾
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
+      case CqsscCode.YZDW:  //一字定位
         if(selCount <= 0) {
           showMsg && Toast('请选择玩法')
           return false

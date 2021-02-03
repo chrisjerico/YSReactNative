@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -6,8 +6,8 @@ import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseCqsscYZDW from './UseCqsscYZDW'
-import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import UseCqsscDWD from './UseCqsscDWD'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
@@ -15,12 +15,12 @@ import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 
 /**
- * X字定位
+ * 定位胆
  *
  * @param navigation
  * @constructor
  */
-const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
@@ -29,54 +29,15 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setTabIndex,
     selectedBalls,
     setSelectedBalls,
+    addAndRemoveBallList,
     addOrRemoveBall,
-  } = UseCqsscYZDW()
-
-  //当前这一页的数据
-  const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
+    currentPageData,
+  } = UseCqsscDWD()
 
   useEffect(() => {
     setPlayOddData(playOddData)
   }, [])
   const key = 'lottery page' + playOddData?.code
-
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) =>
-    <TouchableWithoutFeedback key={key + item[0]?.alias}
-                              style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
-      <View key={key + item[0]?.alias}
-            style={[
-              _styles.tab_item,
-              index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-            ]}>
-        <Text key={key + item[0]?.alias}
-              style={[
-                _styles.tab_title_item_text,
-                index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-
-  /**
-   * 绘制tab
-   */
-  const renderTab = () => <View key={key + 'tab'}
-                                style={_styles.tab_title_container}>
-    <ScrollView key={key + 'sv'}
-                style={_styles.sv_tab_container}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}>
-      <View key={key + 'content'}
-            style={_styles.tab_title_content}>
-        {
-          playOddData?.pageData?.groupTri?.map(renderTabItem)
-        }
-      </View>
-    </ScrollView>
-    <Icon size={scale(36)}
-          color={Skin1.themeColor}
-          name={'angle-double-left'}/>
-  </View>
 
   /**
    * 绘制 球
@@ -88,8 +49,8 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     return (
       <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                     item={{
+                      // ...item?.plays[0],
                       ...ballInfo,
-                      odds: null,
                     }}
                     selectedBalls={selectedBalls}
                     ballType={{ size: scale(50) }}
@@ -99,42 +60,61 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }
 
   /**
-   * 绘制 X字定位
+   * 绘制 所有 大 小 栏目
+   * @param plays 当前栏目的所有球
+   */
+  const renderRowBar = (plays: Array<PlayData>) => <View style={_styles.bar_container}>
+    <TouchableOpacity onPress={() => addAndRemoveBallList(plays?.map((play) => play?.id))}>
+      <Text style={_styles.bar_text}>{'所有'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      addAndRemoveBallList(plays?.filter((play) =>
+        Number(play?.name) > 4).map((play) => play?.id), plays?.map((play) => play?.id))
+    }}>
+      <Text style={_styles.bar_text}>{'大'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      addAndRemoveBallList(plays?.filter((play) =>
+        Number(play?.name) < 5).map((play) => play?.id), plays?.map((play) => play?.id))
+    }}>
+      <Text style={_styles.bar_text}>{'小'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      addAndRemoveBallList(plays?.filter((play) =>
+        Number(play?.name) % 2 == 1).map((play) => play?.id), plays?.map((play) => play?.id))
+    }}>
+      <Text style={_styles.bar_text}>{'奇'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      addAndRemoveBallList(plays?.filter((play) =>
+        Number(play?.name) % 2 == 0).map((play) => play?.id), plays?.map((play) => play?.id))
+    }}>
+      <Text style={_styles.bar_text}>{'偶'}</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => addAndRemoveBallList(null, plays?.map((play) => play?.id))}>
+      <Text style={_styles.bar_text}>{'移除'}</Text>
+    </TouchableOpacity>
+  </View>
+
+  /**
+   * 绘制 连码
    * @param groupData
    */
-  const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
-    <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
+  const renderDWD = (groupData?: PlayGroupData, index?: number) =>
+    <View key={key + ' renderDWD' + groupData?.id + groupData?.exPlays[0]?.alias}
           style={CommStyles.flex}>
-
-      {//显示赔率标题
-        index == 0 && !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                               style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
-                style={[
-                  _styles.sub_big_title_text,
-                  { color: Skin1.themeColor },
-                ]}>{groupData?.exTitle}</Text>
-        </View>
-      }
-
-      {//显示赔率提醒文字
-        index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                              style={_styles.sub_big_hint_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
-                style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
-        </View>
-      }
-
-      <View key={key + ' sub renderYZDW 2 =' + groupData?.id}
+      <View key={key + ' sub renderDWD 2=' + groupData?.id + groupData?.alias}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderYZDW' + groupData?.id}
+        <Text key={key + ' text renderDWD' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
               ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
-      <View key={key + ' ball renderYZDW' + groupData?.id}
+      {renderRowBar(groupData?.exPlays)}
+
+      <View key={key + ' ball renderDWD 3=' + groupData?.id + groupData?.alias}
             style={_styles.ball_container}>
         {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
@@ -144,14 +124,13 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <View style={_styles.content_container}>
-    {currentPageData?.map(renderYZDW)}
+    {playOddData?.pageData?.groupTri?.map((item, index) => renderDWD(item[0], index))}
   </View>
 
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
                 style={[_styles.sv_container, style]}>
-      {renderTab()}
       {renderAllBall()}
     </ScrollView>
 
@@ -169,21 +148,12 @@ const _styles = StyleSheet.create({
   },
   sub_big_title_container: {
     alignItems: 'center',
+    borderRadius: scale(4),
     padding: scale(6),
   },
   sub_big_title_text: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
-    paddingHorizontal: scale(1),
-  },
-  sub_big_hint_container: {
-    alignItems: 'center',
-    paddingHorizontal: scale(4),
-    paddingBottom: scale(6),
-  },
-  sub_big_hint_text: {
-    color: UGColor.TextColor3,
-    fontSize: scale(19),
     paddingHorizontal: scale(1),
   },
   sub_title_container: {
@@ -242,8 +212,19 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingLeft: scale(6),
   },
+  bar_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  bar_text: {
+    fontSize: scale(22),
+    paddingHorizontal: scale(16),
+    paddingVertical: scale(10),
+    borderBottomWidth: scale(1),
+    borderBottomColor: UGColor.LineColor4,
+  },
 
 
 })
 
-export default CqsscYZDWComponent
+export default CqsscDWDComponent
