@@ -39,7 +39,7 @@ export enum PageName {
   JDBetRecordDetailPage = 'JDBetRecordDetailPage',
   JDBetDetailPage = 'JDBetDetailPage',
   JDLotterySecondPage ='JDLotterySecondPage',
-
+  JDDayDetailPage = 'JDDayDetailPage',
 
   // ———————————— 模板页面 —————————————
   JDHomePage = 'JDHomePage',

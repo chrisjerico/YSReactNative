@@ -16,10 +16,10 @@ export class api_ticket {
     status: number,// 注单状态：1=待开奖，2=已中奖，3=未中奖，4=已撤单 5：已结
     startDate: string,
     endDate?: string,
-    betId?:string,//注单Id参数
+    gameId?:string,//彩种id参数
     page = 1,
     rows = 20,
   ) {
-    return this.c.get<UGBetsRecordListModel>('history', { category: category, status: status, startDate: startDate, endDate: endDate, page: page, rows: rows ,betId:betId,});
+    return this.c.get<UGBetsRecordListModel>('history', { category: category, status: status, startDate: startDate, endDate: endDate, page: page, rows: rows ,gameId:gameId,});
   }
 }

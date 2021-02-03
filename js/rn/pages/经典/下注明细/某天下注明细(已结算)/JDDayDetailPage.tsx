@@ -43,7 +43,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
     {
       totalWinAmount: '0',
       totalBetAmount: '0',
-      pageSize: 20,
+      pageSize: 30,
       pageNumber: 1,
       items: [],
       state: {
@@ -53,7 +53,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
       }
     })
 
-  let betId: string;//下注id
+  let gameId: string;//下注id
   let date: string;//下注时间
 
   const [totalBetMoney, setTotalBetMoney] = useState('0') //下注
@@ -71,9 +71,9 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
           case 'ios':
             let dic = params;
             for (var key in dic) {
-              if (key == 'betId') {
+              if (key == 'gameId') {
                 if (!anyEmpty(dic[key])) {
-                  betId = dic[key];
+                  gameId = dic[key];
                 }
               }
               if (key == 'date') {
@@ -82,7 +82,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
                 }
               }
             }
-            if (!anyEmpty(betId) && !anyEmpty(date)) {
+            if (!anyEmpty(gameId) && !anyEmpty(date)) {
               v.items.length = 0;
               v.pageNumber = 1;
               v.state.showFoot = 0;
@@ -172,7 +172,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
     console.log('获取注单列表===', v.pageNumber);
 
-    //  APIRouter.ticket_history_args('1','20','lottery',date,date,betId,).then(({ data: res }) => {
+    //  APIRouter.ticket_history_args('1','20','lottery',date,date,gameId,).then(({ data: res }) => {
     //   ugLog('获取注單數據=======', res)
     //   if (res?.code == 0) {
       
@@ -184,7 +184,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
     // })
 
 
-    api.ticket.history('lottery', 5, date, date, betId, v.pageNumber, v.pageSize).useSuccess(({ data }) => {
+    api.ticket.history('lottery', 5, date, date, gameId, v.pageNumber, v.pageSize).useSuccess(({ data }) => {
       let dicData = data;
       v.totalWinAmount = dicData.totalWinAmount
       v.totalBetAmount = dicData.totalBetAmount
@@ -301,26 +301,26 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
     {
       return (
         <View style={[_styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
-          <View style={{ flex: 1, flexDirection: 'column' , borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(90), justifyContent: 'center',}}>
+          <View style={{ flex: 1, flexDirection: 'column' , borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), justifyContent: 'center',}}>
             <Text style={{ color: Skin1.textColor1, fontSize: scale(20),marginHorizontal:5 }}>{item.issue}</Text>
             <Text style={{ color: 'red', fontSize: scale(20),marginHorizontal:5 }}>{item.id}</Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center',flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(90), alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center',flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), alignItems: 'center' }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
             {item.playGroupName +'  '+item.playName+'  ' + '@'+'  ' + item.odds}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(90), alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), alignItems: 'center' }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
             {item.lotteryNo}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(90), alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), alignItems: 'center' }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
             {item.betAmount}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(90), alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), alignItems: 'center' }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5 }}>
             {item.settleAmount}
             </Text>
@@ -406,11 +406,11 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
       <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
         <View style={[_styles.text_content_bottom, { alignItems: 'flex-start',  flexDirection: 'row', justifyContent: 'center', }]}>
           <Text style={{ fontSize: scale(22), color: skin1.textColor1, }}>{'下注: '}</Text>
-          <Text style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2  }]}>{totalBetMoney}</Text>
+          <Text style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2  }]}>{v.totalBetAmount}</Text>
         </View>
         <View style={[_styles.text_content_bottom, { alignItems: 'flex-start',  flexDirection: 'row', justifyContent: 'center', }]}>
           <Text style={{ fontSize: scale(22), color: skin1.textColor1, }}>{'输赢: '}</Text>
-          <Text style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2 }]}>{totalResultMoney}</Text>
+          <Text style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2 }]}>{v.totalWinAmount}</Text>
         </View>
 
       </View>
@@ -488,7 +488,7 @@ const _styles = StyleSheet.create({
   },
   viewItem: {
     flexDirection: 'row',
-    height: scale(90),
+    // height: scale(110),
   },
 
 })

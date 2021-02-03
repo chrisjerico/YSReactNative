@@ -13,6 +13,7 @@ import EmptyView from '../../../public/components/view/empty/EmptyView';
 import { push } from '../../../public/navigation/RootNavigation';
 import { PageName } from '../../../public/navigation/Navigation';
 import { ugLog } from '../../../public/tools/UgLog';
+import JDDayDetailPage from './某天下注明细(已结算)/JDDayDetailPage';
 
 
 interface JDBetDetailPage {
@@ -97,10 +98,10 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
    */
   function inviteCodeListData(date: string) {
 
-    console.log('得到数据===', date);
+    // console.log('得到数据===', date);
     api.user.lotteryDayStat(date).useSuccess(({ data }) => {
 
-      console.log('data =', data);
+      // console.log('data =', data);
 
       let dicData = data;
 
@@ -158,7 +159,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
             ugLog('item===',item)
             push(PageName.JDDayDetailPage,
               {
-                betId:item.gameId,
+                gameId:item.gameId,
                 date:v.date,
               }
               )
