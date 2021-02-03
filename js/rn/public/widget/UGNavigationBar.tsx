@@ -3,10 +3,11 @@ import { Component, ReactElement, useEffect, useRef } from 'react'
 import { Header, HeaderProps, Button } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
 import { deepMergeProps } from '../tools/FUtils'
-import { Platform, View, ViewProps } from 'react-native'
+import { Platform, StyleProp, View, ViewProps, ViewStyle } from 'react-native'
 import { pop } from '../navigation/RootNavigation'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { skin1 } from '../theme/UGSkinManagers'
+import { sc375 } from '../tools/Scale'
 
 
 export interface UGNavigationBar {
@@ -17,6 +18,7 @@ export interface UGNavigationBar {
 export interface UGNavigationBarProps extends HeaderProps {
   hidden?: boolean; // 隐藏导航条
   back?: boolean; // 是否显示返回按钮
+  backIconColor?: string // 返回按钮颜色
   title?: string; // 标题
   gradientColor?: string[]; // 背景渐变色
   hideUnderline?: boolean; // 隐藏下划线
@@ -37,7 +39,7 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
   const { current: v } = useRef<UGNavigationBarProps>(defaultProps)
   Object.assign(v, props)
 
-  const { title, c_ref, leftComponent, back, hideUnderline } = props
+  const { title, c_ref, leftComponent, back = true, hideUnderline, gradientColor, backgroundColor, backIconColor } = props
   const [, setState] = useState({})
 
   useEffect(() => {
@@ -59,7 +61,7 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
   // 左侧按钮
   v.leftComponent = (
     <View style={{ flexDirection: 'row' }}>
-      <BackButton style={{ height: back ? 40 : 0 }} />
+      <BackButton style={{ height: back ? 40 : 0 }} backIconColor={backIconColor} />
       {leftComponent}
     </View>
   )
@@ -69,15 +71,16 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
   }
 
   // 渐变色
-  const gradientColor = props.gradientColor ?? skin1.navBarBgColor
-  Object.assign(v, deepMergeProps(v, {
-    ViewComponent: LinearGradient,
-    linearGradientProps: {
-      colors: gradientColor,
-      start: { x: 0, y: 1 },
-      end: { x: 1, y: 1 },
-    },
-  }))
+  if (!gradientColor && !backgroundColor) {
+    Object.assign(v, deepMergeProps(v, {
+      ViewComponent: LinearGradient,
+      linearGradientProps: {
+        colors: skin1.navBarBgColor,
+        start: { x: 0, y: 1 },
+        end: { x: 1, y: 1 },
+      },
+    }))
+  }
 
   return <Header {...v} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top - 2, height: useSafeArea()?.top + 45 }} />
 }
@@ -85,10 +88,12 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
 
 
 // 返回按钮
-const BackButton = ({ style }: ViewProps) => {
+const BackButton = ({ style, backIconColor }: { style: StyleProp<ViewStyle>, backIconColor: string }) => {
+  const isDoy = skin1?.skitType?.indexOf('doyWallet')
+  const icon = !isDoy ? { name: 'arrowleft', type: 'antdesign', size: sc375(25) } : { name: 'ios-arrow-back', type: 'ionicon' }
   return (
     <Button
-      icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
+      icon={{ ...icon, color: backIconColor ?? 'white' }}
       buttonStyle={Object.assign({ backgroundColor: 'transparent', marginLeft: -8, }, style)}
       onPress={() => {
         pop();

@@ -136,7 +136,8 @@ export enum PageName {
   // Doy
   DoyLaunchPage = "DoyLaunchPage",
   DoyLoginPage = "DoyLoginPage",
-  DoyRegisterPage = "DoyRegisterPage",
+  DoyRegisterPage1 = "DoyRegisterPage1",
+  DoyRegisterPage2 = "DoyRegisterPage2",
   DoyNickNamePage = "DoyNickNamePage",
   DoyPhoneNumberPage = "DoyPhoneNumberPage",
   DoySelfIntroductionPage = "DoySelfIntroductionPage",
