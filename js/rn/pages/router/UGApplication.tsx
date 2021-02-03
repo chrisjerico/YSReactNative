@@ -119,7 +119,7 @@ import OtherRecord from '../../public/components/OtherRecord'
 import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
 import JDDayDetailPage from '../经典/下注明细/某天下注明细(已结算)/JDDayDetailPage'
 import { DoyLoginPage } from '../../../doy/pages/启动页/DoyLoginPage'
-import { DoyRegisterPage } from '../../../doy/pages/启动页/DoyRegisterPage'
+import { DoyRegisterPage1 } from '../../../doy/pages/启动页/DoyRegisterPage1'
 import { DoyMinePage } from '../../../doy/pages/我的/DoyMinePage'
 import { DoyNickNamePage } from '../../../doy/pages/我的/个人资料/DoyNickNamePage'
 import { DoyPhoneNumberPage } from '../../../doy/pages/我的/个人资料/DoyPhoneNumberPage'
@@ -155,6 +155,7 @@ import { DoyWalletRecordDetailPage } from '../../../doy/pages/首页/钱包记�
 import { DoyWalletRecordListPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordListPage'
 import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordSearchPage'
 import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
+import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
 
 
 /**
@@ -287,7 +288,8 @@ const pageComponents: { [key in PageName]?: Function } = {
 
   // Doy钱包
   DoyLoginPage,
-  DoyRegisterPage,
+  DoyRegisterPage1,
+  DoyRegisterPage2,
   DoyNickNamePage,
   DoyPhoneNumberPage,
   DoySelfIntroductionPage,

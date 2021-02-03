@@ -13,6 +13,7 @@ import { sc375 } from "../../../rn/public/tools/Scale"
 import { showLoading, showReload } from "../../../rn/public/widget/UGLoadingCP"
 import UGTextField from "../../../rn/public/widget/UGTextField"
 import { img_doy } from "../../../rn/Res/icon"
+import { DoyButton1 } from "../../public/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 
@@ -55,20 +56,13 @@ export const DoyLoginPage = ({ }: UGBasePageProps) => {
       }}
     />}
     <Button title={isPwd ? '用短信验证码登录' : '用密码登录'} buttonStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start', paddingHorizontal: 0, paddingVertical: sc(16) }} titleStyle={{ color: themeColor, fontSize: sc(14), fontWeight: '600' }} onPress={() => { setIsPwd(!isPwd) }} />
-    <Button title='登录'
-      ViewComponent={LinearGradient}
-      linearGradientProps={{
-        colors: navBarBgColor,
-        start: { x: 0, y: 0.5 },
-        end: { x: 1, y: 0.5 },
-      }}
-      containerStyle={{ marginTop: sc(16) }}
-      buttonStyle={{ paddingHorizontal: 0, paddingVertical: sc(16) }} titleStyle={{ fontSize: sc(16), fontWeight: '600' }}
-    />
+    <DoyButton1 title='登录' onPress={() => {
+      push(PageName.DoyHomePage)
+    }} />
     <View style={{ flex: 1 }} />
     <View style={{ flexDirection: 'row', marginBottom: sc(15), justifyContent: 'center' }}>
       <Button title='忘记密码' buttonStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start', paddingHorizontal: 0, paddingVertical: sc(16) }} titleStyle={{ color: themeColor, fontSize: sc(14), fontWeight: '600' }} onPress={() => { Alert.alert('请联系客服') }} />
-      <Button title='注册账号' buttonStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start', paddingHorizontal: 0, paddingVertical: sc(16) }} titleStyle={{ color: themeColor, fontSize: sc(14), fontWeight: '600' }} containerStyle={{ marginLeft: sc(40) }} onPress={() => { push(PageName.DoyRegisterPage) }} />
+      <Button title='注册账号' buttonStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start', paddingHorizontal: 0, paddingVertical: sc(16) }} titleStyle={{ color: themeColor, fontSize: sc(14), fontWeight: '600' }} containerStyle={{ marginLeft: sc(40) }} onPress={() => { push(PageName.DoyRegisterPage1) }} />
     </View>
   </View>
 }
