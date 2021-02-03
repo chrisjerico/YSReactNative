@@ -405,11 +405,11 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
       }
       <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
         <View style={[_styles.text_content_bottom, { alignItems: 'flex-start',  flexDirection: 'row', justifyContent: 'center', }]}>
-          <Text style={{ fontSize: scale(22), color: skin1.textColor1, }}>{'下注: '}</Text>
+          <Text style={{ fontSize: scale(22), color: skin1.navBarTitleColor, }}>{'下注: '}</Text>
           <Text style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2  }]}>{v.totalBetAmount}</Text>
         </View>
         <View style={[_styles.text_content_bottom, { alignItems: 'flex-start',  flexDirection: 'row', justifyContent: 'center', }]}>
-          <Text style={{ fontSize: scale(22), color: skin1.textColor1, }}>{'输赢: '}</Text>
+          <Text style={{ fontSize: scale(22), color: skin1.navBarTitleColor, }}>{'输赢: '}</Text>
           <Text style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2 }]}>{v.totalWinAmount}</Text>
         </View>
 
