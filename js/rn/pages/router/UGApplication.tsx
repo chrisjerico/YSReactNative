@@ -143,11 +143,11 @@ import { DoySearchReultPage } from '../../../doy/pages/首页/我的订单/DoySe
 import { DoyNotifySellerPage } from '../../../doy/pages/首页/我要买/DoyNotifySellerPage'
 import { DoyPendingPaymentPage } from '../../../doy/pages/首页/我要买/DoyPendingPaymentPage'
 import { DoySellOrderPage } from '../../../doy/pages/首页/我要买/DoySellOrderPage'
-import { DoyWantBuy } from '../../../doy/pages/首页/我要买/DoyWantBuy'
+import { DoyWantBuyPage } from '../../../doy/pages/首页/我要买/DoyWantBuyPage'
 import { DoySellOrderConfirmPage } from '../../../doy/pages/首页/我要卖/DoySellOrderConfirmPage'
 import { DoySetSellOrderPage } from '../../../doy/pages/首页/我要卖/DoySetSellOrderPage'
 import { DoyWantSellPage } from '../../../doy/pages/首页/我要卖/DoyWantSellPage'
-import { DoyReceiveCurrency } from '../../../doy/pages/首页/打币收币/DoyReceiveCurrency'
+import { DoyReceiveCurrencyPage } from '../../../doy/pages/首页/打币收币/DoyReceiveCurrencyPage'
 import { DoyTransferCurrencyPage } from '../../../doy/pages/首页/打币收币/DoyTransferCurrencyPage'
 import { DoyTransferSuccessPage } from '../../../doy/pages/首页/打币收币/DoyTransferSuccessPage'
 import { DoyScanPage } from '../../../doy/pages/首页/扫一扫/DoyScanPage'
@@ -315,11 +315,11 @@ const pageComponents: { [key in PageName]?: Function } = {
   DoyNotifySellerPage,//doy告诉卖方
   DoyPendingPaymentPage,//doy待付款
   DoySellOrderPage,//doy卖方订单
-  DoyWantBuy,//doy我想买
+  DoyWantBuyPage,//doy我想买
   DoySellOrderConfirmPage,//doy确认卖单设置
   DoySetSellOrderPage,//doy设置卖单
   DoyWantSellPage,//doy我想卖
-  DoyReceiveCurrency,//doy收币
+  DoyReceiveCurrencyPage,//doy收币
   DoyTransferCurrencyPage,//doy打币
   DoyTransferSuccessPage,//doy打币成功
   DoyScanPage,//doy扫一扫

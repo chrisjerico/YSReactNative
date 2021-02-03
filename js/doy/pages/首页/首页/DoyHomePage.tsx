@@ -9,6 +9,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
+import { PageName } from "../../../../rn/public/navigation/Navigation"
+import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import BannerBlock from "../../../../rn/public/views/tars/BannerBlock"
@@ -25,27 +27,27 @@ const navBtnInfos: { icon: string, title: string, onPress: () => void }[] = [
   {
     icon: img_doy('我要买@3x'),
     title: '我要买',
-    onPress: () => { }
+    onPress: () => { push(PageName.DoyWantBuyPage) }
   }, {
     icon: img_doy('我要卖@3x'),
     title: '我要卖',
-    onPress: () => { }
+    onPress: () => { push(PageName.DoyWantSellPage) }
   }, {
     icon: img_doy('我的订单@3x'),
     title: '我的订单',
-    onPress: () => { }
+    onPress: () => { push(PageName.DoyWantSellPage) }
   }, {
     icon: img_doy('打币@3x'),
     title: '打币',
-    onPress: () => { }
+    onPress: () => { push(PageName.DoyTransferCurrencyPage) }
   }, {
     icon: img_doy('收币@3x'),
     title: '收币',
-    onPress: () => { }
+    onPress: () => { push(PageName.DoyReceiveCurrencyPage) }
   }, {
     icon: img_doy('钱包记录@3x'),
     title: '钱包记录',
-    onPress: () => { }
+    onPress: () => { push(PageName.DoyWalletRecordListPage) }
   }
 ]
 
@@ -54,24 +56,23 @@ const midBanners: {} = [{ image: img_assets('c186HeaderBgImg') }, { image: img_a
 
 
 export const DoyHomePage = ({ setProps }: UGBasePageProps) => {
-  useEffect(() => {
-
-  }, [])
 
   const { current: v } = useRef<DoyAboutTotalAmountCP>({})
 
-  const { themeColor, navBarBgColor } = skin1
-
   const navBtns = navBtnInfos?.map((ele) => {
-    return <View style={{ width: '33.3%', alignItems: 'center' }}>
-      <FastImage source={{ uri: ele?.icon }} style={{ marginTop: sc(23), width: sc(36), aspectRatio: 1 }} resizeMode='contain' />
-      <Text style={{ marginTop: sc(11), marginBottom: sc(9), fontSize: sc(14) }} >{ele?.title}</Text>
+    const { title, icon, onPress } = ele
+    return <View style={{ width: '33.3%' }}>
+      <TouchableOpacity style={{ alignItems: 'center' }} onPress={onPress}>
+        <FastImage source={{ uri: icon }} style={{ marginTop: sc(23), width: sc(36), aspectRatio: 1 }} resizeMode='contain' />
+        <Text style={{ marginTop: sc(11), marginBottom: sc(9), fontSize: sc(14) }} >{title}</Text>
+      </TouchableOpacity>
     </View>
   })
 
   return [<View style={{ flex: 1 }}>
     <ImageBackground source={{ uri: img_doy('首页_背景@2x') }} style={{ width: '100%', height: sc(227), }}>
       <View style={{ paddingHorizontal: sc(16) }}>
+        {/* 扫一扫 */}
         <View style={{ flexDirection: 'row', marginTop: useSafeArea()?.top + sc(16), justifyContent: 'space-between' }}>
           <FastImage source={{ uri: img_doy('导航栏/首页_logo@3x') }} style={{ width: sc(93), height: sc(20) }} />
           <TouchableOpacity onPress={() => {
@@ -80,6 +81,7 @@ export const DoyHomePage = ({ setProps }: UGBasePageProps) => {
             <FastImage source={{ uri: img_doy('导航栏/扫码@3x') }} style={{ width: sc(20), aspectRatio: 1 }} />
           </TouchableOpacity>
         </View>
+        {/* 总资产 */}
         <TouchableOpacity style={{ marginTop: sc(32), flexDirection: 'row', alignItems: 'center' }} onPress={() => {
           v.showAboutTotalAmountAlert && v.showAboutTotalAmountAlert()
         }}>
@@ -101,6 +103,7 @@ export const DoyHomePage = ({ setProps }: UGBasePageProps) => {
       </View>
     </ImageBackground>
     <View style={{ paddingHorizontal: sc(16) }}>
+      {/* 导航按钮 */}
       <View style={{ marginTop: sc(16), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', flexWrap: 'wrap', paddingBottom: sc(15) }}>
         {navBtns}
       </View>
@@ -128,5 +131,6 @@ export const DoyHomePage = ({ setProps }: UGBasePageProps) => {
       />
     </View>
   </View>,
-  <DoyAboutTotalAmountCP c_ref={v} />]
+  <DoyAboutTotalAmountCP c_ref={v} />
+  ]
 }
