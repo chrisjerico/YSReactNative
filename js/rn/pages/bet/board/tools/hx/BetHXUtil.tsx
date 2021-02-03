@@ -3,17 +3,18 @@ import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lot
 import { arrayLength } from '../../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
 /**
- * 自选不中下注工具类
+ * 合肖下注工具类
  */
 
 /**
- * 自选不中根据选中的数据找出对应的赔率
+ * 合肖根据选中的数据找出对应的赔率
  * @param selData
  */
-const playDataX = (selData?: SelectedPlayModel): PlayData => {
-  return selData.playGroups.plays[arrayLength(selData?.plays) - 5]
+const zodiacPlayX = (selData?: SelectedPlayModel): PlayData => {
+  // return groupData.plays[arrayLength(groupData?.exZodiacs) - 2]
+  return selData?.plays[arrayLength(selData?.zodiacs) - 2]
 }
 
 export {
-  playDataX,
+  zodiacPlayX,
 }

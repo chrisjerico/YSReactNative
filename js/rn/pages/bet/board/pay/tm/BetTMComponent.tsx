@@ -6,7 +6,7 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import * as React from 'react'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import { BET_ITEM_HEIGHT, BET_ITEM_WIDTH } from '../PayBoardComponent'
-import { calculateItemCount } from '../../tl/BetUtil'
+import { calculateItemCount } from '../../tools/BetUtil'
 import CommStyles from '../../../../base/CommStyles'
 
 interface IBetTMComponentParams {
