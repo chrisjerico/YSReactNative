@@ -52,6 +52,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         containerStyle={{ top: scale(235), right: 0 }}
         show={redBag?.data}
         logo={redBagLogo}
+        type={0}
         onPress={() => {
           // 红包
           PushHelper.pushRedBag(redBag)

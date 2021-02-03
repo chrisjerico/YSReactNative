@@ -793,6 +793,23 @@ class APIRouter {
     return httpClient.get<YueBaoStatModel>('c=yuebao&a=stat')
   }
 
+  //獲取活動配置
+  static config_setting = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+
+    return httpClient.get<any>('c=activity&a=settings&' + tokenParams)
+  }
+
   /**
    * 加密 GET 参数
    * @param params

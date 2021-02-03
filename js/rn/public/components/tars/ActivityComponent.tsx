@@ -3,6 +3,7 @@ import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
+import RedBagModal from '../RedBagModal'
 
 interface ActivityComponentProps {
   logo: string
@@ -11,9 +12,10 @@ interface ActivityComponentProps {
   enableFastImage?: boolean
   containerStyle?: StyleProp<ViewStyle>
   refreshing?: boolean
+  type?: number
 }
 
-const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, containerStyle, refreshing }: ActivityComponentProps) => {
+const ActivityComponent = ({ type, logo, onPress, show, enableFastImage = true, containerStyle, refreshing }: ActivityComponentProps) => {
   const [hide, setHide] = useState(false)
 
   useEffect(() => {
@@ -32,6 +34,7 @@ const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, contai
             <AntDesign name={'closecircleo'} size={scale(35)} color={'red'} />
           </View>
         </TouchableWithoutFeedback>
+        {type == 0 ? <RedBagModal /> : null}
       </View>
     )
   } else {
