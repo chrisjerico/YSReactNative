@@ -24,6 +24,7 @@ import parseSBData from '../util/parse/lhc/ParseSBDataUtil'
 import parseYZDWData from '../util/parse/cqssc/ParseYZDWDataUtil'
 import CqsscYZDWComponent from '../cqssc/yzdw/CqsscYZDWComponent'
 import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
+import CqsscWXComponent from '../cqssc/wx/CqsscWXComponent'
 
 const ListContentComponent = () => {
 
@@ -219,7 +220,7 @@ const ListContentComponent = () => {
           return <LhcSBComponent key={lotteryCode}
                                  playOddData={playOdds}/>
         } else if (gameType == LCode.cqssc) { //五星
-          return <CqsscYZDWComponent key={lotteryCode}
+          return <CqsscWXComponent key={lotteryCode}
                                      playOddData={playOdds}/>
         }
         break

@@ -19,7 +19,7 @@ export const checkTrue = (value?: any) => value != null && value === true
  */
 export const arrayEmpty = (value?: Array<any>) => value == null || value.length <= 0
 export const arrayLength = (value?: Array<any>) => arrayEmpty(value) ? 0 : value?.length
-export const anyNull = (value?: any) => value == null || value == 'undefined'
+export const anyNull = (value?: any) => value == null || value == 'undefined' || value == undefined
 export const anyEmpty = (value?: any) => anyNull(value) || value === '' || value.length <= 0
 export const anyLength = (value?: any) => anyEmpty(value) ? 0 : value.length
 export const dicNull = (value?: any) => anyNull(value) || JSON.stringify(value) == '{}';
@@ -29,7 +29,7 @@ const isArray = (arr) => Array.isArray(arr)
 
 /**
  * 数组取第一个元素
- * @param value
+ * @param array
  */
 export const firstObj = (array?: any) => array && array.length ? array[0] : undefined;
 
@@ -46,10 +46,11 @@ export const mergeObject = (src?: any, des?: any): any => {
     || anyNull(src)) {
     return des // 如果其中一个不是对象 就返回 des
   }
-  ugLog('mergeObject = ', JSON.stringify(src))
-  ugLog('mergeObject = ', JSON.stringify(des))
+  ugLog('mergeObject 1 = ', JSON.stringify(src))
+  ugLog('mergeObject 2 = ', JSON.stringify(des))
+  ugLog('mergeObject 3 = ', dicNull(des))
   let obj = JSON.parse(JSON.stringify(src))
-  if (!anyEmpty(des)) {
+  if (!dicNull(des)) {
     for (let key in des) {
       // 如果target也存在 那就再次合并
       if (src.hasOwnProperty(key)) {
