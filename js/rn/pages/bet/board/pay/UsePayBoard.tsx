@@ -41,10 +41,10 @@ const UsePayBoard = () => {
   const [moneyMap, setMoneyMap] = useState<Map<string, number>>(null) //输入单项价格列表，id -> money
 
   useEffect(() => {
-    // const newSelectedData = combineSelectedData(currentPlayOddData, UGStore.globalProps?.selectedLotteryModel?.selectedData)
-    // ugLog('newSelectedData = ', JSON.stringify(newSelectedData))
+    const newSelectedData = combineSelectedData(currentPlayOddData, UGStore.globalProps?.selectedLotteryModel?.selectedData)
+    ugLog('newSelectedData = ', JSON.stringify(newSelectedData))
 
-    setSelectedData(JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData)))
+    // setSelectedData(JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData)))
   }, [])
 
   useEffect(() => {
