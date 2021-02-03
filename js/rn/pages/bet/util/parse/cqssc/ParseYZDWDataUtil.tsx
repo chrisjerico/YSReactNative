@@ -98,6 +98,7 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
         id: `${titleArr[i]},${play0?.id},${ballIndex}`,
         name: ballIndex,
         alias: titleArr[i],
+        odds: play0?.odds,
       } as ILotteryEBallItem)
     })
     arrArr.push({...data,

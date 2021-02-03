@@ -25,6 +25,8 @@ import parseYZDWData from '../util/parse/cqssc/ParseYZDWDataUtil'
 import CqsscYZDWComponent from '../cqssc/yzdw/CqsscYZDWComponent'
 import Cqssc1T5Component from '../cqssc/1t5/Cqssc1T5Component'
 import CqsscWXComponent from '../cqssc/wx/CqsscWXComponent'
+import CommStyles from '../../base/CommStyles'
+import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 
 const ListContentComponent = () => {
 
@@ -64,7 +66,7 @@ const ListContentComponent = () => {
                     ]}>
                 <View style={[
                   _styles.left_column_text_flag,
-                  ballSelected[item?.code] ? {backgroundColor: UGColor.WarnningColor1} : null
+                  ballSelected[item?.code] ? { backgroundColor: UGColor.WarnningColor1 } : null,
                 ]}>
                 </View>
                 <Text key={'renderLeftColumn' + item?.code}
@@ -78,95 +80,127 @@ const ListContentComponent = () => {
     </ScrollView>
   </View>
 
-  // /**
-  //  * 加载彩票对象
-  //  * @param targetLotteryCode 目标彩票
-  //  * @param currentLotteryCode 当前选中的彩票
-  //  * @constructor
-  //  */
-  // const LotteryComponent = (targetLotteryCode?: string, currentLotteryCode?: string) => {
-  //
-  //   // <LhcTMComponent key={LotteryConst.TM + (LotteryConst.TM == targetLotteryCode)}
-  //   //                 style={targetLotteryCode == LotteryConst.TM ? null : { display: 'none' }}
-  //   //                 targetLotteryCode={LotteryConst.TM}/>
-  //
-  //   const isEqual = targetLotteryCode == currentLotteryCode //加载的彩票和选中的彩票是否相同
-  //   // const key = targetLotteryCode + isEqual
-  //   // ugLog('current key key={key} =', targetLotteryCode, currentLotteryCode, key)
-  //   switch (targetLotteryCode) {
-  //     case LotteryConst.TM: { //特码
-  //       return <LhcTMComponent key={targetLotteryCode}
-  //                              lotteryCode={targetLotteryCode}
-  //                              style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-  //       />
-  //     }
-  //     case LotteryConst.ZM: //正码
-  //     case LotteryConst.ZT: { //正特
-  //       return <LhcZTComponent key={targetLotteryCode}
-  //                              lotteryCode={targetLotteryCode}
-  //                              style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-  //       />
-  //     }
-  //     case LotteryConst.LMA: { //连码
-  //       return <LhcLMAComponent key={targetLotteryCode}
-  //                               lotteryCode={targetLotteryCode}
-  //                               style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-  //       />
-  //     }
-  //     case LotteryConst.LM: //两面
-  //     case LotteryConst.ZM1_6: //正码1T6
-  //     case LotteryConst.SB: //色波
-  //     case LotteryConst.ZOX://总肖
-  //     case LotteryConst.WX: { //五行
-  //       return <LhcSBComponent key={targetLotteryCode}
-  //                              lotteryCode={targetLotteryCode}
-  //                              style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-  //       />
-  //     }
-  //     case LotteryConst.YX: //平特一肖
-  //     case LotteryConst.WS: //平特尾数
-  //     case LotteryConst.TWS: //头尾数
-  //     case LotteryConst.TX: //特肖
-  //     case LotteryConst.LX: //连肖
-  //     case LotteryConst.LW: //连尾
-  //     case LotteryConst.ZX: { //正肖
-  //       return <LhcPTYXComponent key={targetLotteryCode}
-  //                                lotteryCode={targetLotteryCode}
-  //                                style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-  //       />
-  //     }
-  //     case LotteryConst.HX: { //合肖
-  //       return <LhcHXComponent key={targetLotteryCode}
-  //                              lotteryCode={targetLotteryCode}
-  //                              style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-  //       />
-  //     }
-  //     case LotteryConst.ZXBZ: { //自选不中
-  //       return <LhcZXBZComponent key={targetLotteryCode}
-  //                                lotteryCode={targetLotteryCode}
-  //                                style={isEqual ? CommStyles.flex : { width: 0, height: 0, opacity: 0 }}
-  //       />
-  //     }
-  //
-  //   }
-  //
-  //   return null
-  // }
+  /**
+   * 加载彩票对象
+   * @param targetPlayOdds
+   */
+  const renderLotteryComponent = (targetPlayOdds?: PlayOddData) => {
+
+    let gameType = playOddDetailData?.lotteryLimit?.gameType // 六合彩 秒秒秒彩 等等
+
+    const targetLotteryCode = targetPlayOdds?.code // 特码code 连码code 等等
+    const currentPlayOdds = playOddDetailData?.playOdds[leftColumnIndex] // 特码 连码 等等
+    const currentLotteryCode = currentPlayOdds?.code // 特码code 连码code 等等
+    const isEqual = currentLotteryCode == targetLotteryCode //加载的彩票和选中的彩票是否相同
+
+    ugLog('------------------lotteryCode---------------------------------', isEqual, targetLotteryCode, currentLotteryCode)
+
+    switch (targetLotteryCode) {
+      case LhcCode.TM:  //特码
+        return <LhcTMComponent key={targetLotteryCode}
+                               playOddData={targetPlayOdds}
+                               style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
+        return <LhcZTComponent key={targetLotteryCode}
+                               playOddData={targetPlayOdds}
+                               style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+      case LhcCode.LMA:  //连码
+        return <LhcLMAComponent key={targetLotteryCode}
+                                playOddData={targetPlayOdds}
+                                style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+      case LhcCode.LM: //两面
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
+        return <LhcSBComponent key={targetLotteryCode}
+                               playOddData={targetPlayOdds}
+                               style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+        return <Cqssc1T5Component key={targetLotteryCode}
+                                  playOddData={targetPlayOdds}
+                                  style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+      case CqsscCode.YZDW:  //一字定位
+      case CqsscCode.EZDW:  //二字定位
+      case CqsscCode.SZDW:  //三字定位
+      case CqsscCode.BDW:  //不定位
+        return <CqsscYZDWComponent key={targetLotteryCode}
+                                   playOddData={targetPlayOdds}
+                                   style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+      case CqsscCode.DWD:  //定位胆
+        // ugLog('playOdds = ', JSON.stringify(playOdds))
+        return <CqsscDWDComponent key={targetLotteryCode}
+                                  playOddData={targetPlayOdds}
+                                  style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+
+      case LhcCode.WX:
+        if (gameType == LCode.lhc) { //五行
+          return <LhcSBComponent key={targetLotteryCode}
+                                 playOddData={targetPlayOdds}
+                                 style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+        } else if (gameType == LCode.cqssc) { //五星
+          return <CqsscWXComponent key={targetLotteryCode}
+                                   playOddData={targetPlayOdds}
+                                   style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+        }
+        break
+
+      case LhcCode.YX: //平特一肖
+      case LhcCode.WS: //平特尾数
+      case LhcCode.TWS: //头尾数
+      case LhcCode.TX: //特肖
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+      case LhcCode.ZX:  //正肖
+        return <LhcPTYXComponent key={targetLotteryCode}
+                                 playOddData={targetPlayOdds}
+                                 style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+      case LhcCode.HX:  //合肖
+        return <LhcHXComponent key={targetLotteryCode}
+                               playOddData={targetPlayOdds}
+                               style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+      case LhcCode.ZXBZ:  //自选不中
+        return <LhcZXBZComponent key={targetLotteryCode}
+                                 playOddData={targetPlayOdds}
+                                 style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+
+    }
+
+    return null
+  }
 
   /**
    * 绘制右边彩票区域，彩球 等等
    */
   const renderRightContent = () => {
+    // return <View style={CommStyles.flex}>
+    //   {
+    //     playOddDetailData?.playOdds?.map((playOddData) => renderLotteryComponent(playOddData))
+    //   }
+    // </View>
+
     const playOdds = playOddDetailData?.playOdds[leftColumnIndex]
     let gameType = playOddDetailData?.lotteryLimit?.gameType // 六合彩 秒秒秒彩 等等
     let lotteryCode = playOdds?.code // 特码 连码 等等
     ugLog('------------------lotteryCode---------------------------------', lotteryCode)
-    // return <View style={CommStyles.flex}>
-    //   {
-    //     Object.values(LotteryConst)?.map((item) => LotteryComponent(item, lotteryCode))
-    //   }
-    // </View>
-
 
     switch (lotteryCode) {
       case LhcCode.TM:  //特码

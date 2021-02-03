@@ -19,6 +19,7 @@ import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../../public/network/APIRouter'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
+import { jsDic } from '../../../经典/Model/UGChanglongaideModel'
 
 /**
  * 下注面板
@@ -119,7 +120,6 @@ const UsePayBoard = () => {
           case CqsscCode.DN:  //斗牛
           case CqsscCode.SH:  //梭哈
           case CqsscCode.LHD:  //龙虎斗
-          case CqsscCode.YZDW:  //一字定位
             selModel?.plays?.map((playData) => {
               betBean.push({
                 money: numberToFloatString(moneyMap[playData?.exId ?? playData?.id]),
@@ -133,22 +133,40 @@ const UsePayBoard = () => {
           case LhcCode.HX://合肖
           {
             const playX = zodiacPlayX(selModel)
-
             betBean.push({
               money: numberToFloatString(moneyMap[playX?.exId ?? playX?.id]),
-              odds: playX?.odds,
               playId: playX?.id,
+              odds: playX?.odds,
               betInfo: selModel?.zodiacs?.map((item) => item?.name).toString(),
             } as BetLotteryData)
           }
             break
 
+          case CqsscCode.YZDW:  //一字定位
+          {
+            const play0 = selModel?.playGroups?.plays[0]
+            selModel?.plays?.map((playData) => {
+              betBean.push({
+                money: numberToFloatString(moneyMap[playData?.exId ?? playData?.id]),
+                playId: play0?.id,
+                odds: play0?.odds,
+                playIds: nextIssueData?.id,
+                betInfo: playData?.name,
+              } as BetLotteryData)
+            })
+          }
+            break
+
           case LhcCode.LMA:  //连码
           {
+            const groupPlay0 = selModel?.playGroups?.plays[0]
             const play0 = selModel?.plays[0]
+            ugLog('moneyMap = ', JSON.stringify(moneyMap))
+            ugLog('selModel = ', JSON.stringify(selModel))
             betBean.push({
               money: numberToFloatString(moneyMap[play0?.exId ?? play0?.id]),
-              playId: play0?.id,
+              playId: groupPlay0?.id,
+              odds: groupPlay0?.odds,
               playIds: nextIssueData?.id,
               betInfo: selModel?.plays?.map((item) => item?.name).toString(),
             } as BetLotteryData)
@@ -158,7 +176,6 @@ const UsePayBoard = () => {
           case LhcCode.ZXBZ:  //自选不中
           {
             const playX = playDataX(selModel)
-
             betBean.push({
               money: numberToFloatString(moneyMap[playX?.exId ?? playX?.id]),
               odds: playX?.odds,
