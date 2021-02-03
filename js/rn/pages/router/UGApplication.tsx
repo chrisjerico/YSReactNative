@@ -117,7 +117,7 @@ import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePag
 
 import OtherRecord from '../../public/components/OtherRecord'
 import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
-import JDDayDetailPage from '../经典/下注明细/某天下注明细(已结算)/JDDayDetailPage'
+import JDDayDetailPage from '../经典/下注明细/下注明细(已结算)/JDDayDetailPage'
 import { DoyLoginPage } from '../../../doy/pages/启动页/DoyLoginPage'
 import { DoyRegisterPage1 } from '../../../doy/pages/启动页/DoyRegisterPage1'
 import { DoyMinePage } from '../../../doy/pages/我的/DoyMinePage'

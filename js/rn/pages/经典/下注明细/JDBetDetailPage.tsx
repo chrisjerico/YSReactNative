@@ -13,7 +13,7 @@ import EmptyView from '../../../public/components/view/empty/EmptyView';
 import { push } from '../../../public/navigation/RootNavigation';
 import { PageName } from '../../../public/navigation/Navigation';
 import { ugLog } from '../../../public/tools/UgLog';
-import JDDayDetailPage from './某天下注明细(已结算)/JDDayDetailPage';
+import JDDayDetailPage from './下注明细(已结算)/JDDayDetailPage';
 
 
 interface JDBetDetailPage {

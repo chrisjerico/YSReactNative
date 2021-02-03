@@ -168,7 +168,11 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
       setRefreshing(false)
       setData(data.data.list)
       let vBetTotal = data.data.totalValidBetAmount
-      setValidBetTotal(vBetTotal)
+      
+      if (!anyEmpty(vBetTotal)) {
+        setValidBetTotal(vBetTotal)
+      }
+    
       let total = 0
       data.data.list.forEach((e) => {
         total += Number(e.betAmount)
@@ -399,16 +403,16 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
       </View>
       <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'下注总金额: '}</Text>
+          <Text style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'下注总金额: '}</Text>
           <Text style={[_styles.text_content_bottom, { color: 'yellow', }]}>{betTotal}</Text>
         </View>
         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'有效下注总金额:'}</Text>
+          <Text style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'有效下注总金额:'}</Text>
           <Text style={[_styles.text_content_bottom, { color: 'yellow', }]}>{validbetTotal}</Text>
         </View>
         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'输赢金额: '}</Text>
-          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, }]}>{winTotal}</Text>
+          <Text style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'输赢金额: '}</Text>
+          <Text style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, }]}>{winTotal}</Text>
         </View>
 
       </View>
