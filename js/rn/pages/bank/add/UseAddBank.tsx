@@ -128,28 +128,32 @@ const UseAddBank = () => {
             Toast('请输入取款密码')
             return
           }
-        } else {
-          params = {
-            type: curAccountType,
-            bank_id: curBankID,
-            bank_card: bankNumber,
-            bank_addr: bankAddr,
-            pwd: anyEmpty(bankPassword) ? null : md5(bankPassword),
-            owner_name: userInfo?.fullName,
-          }
+        }
+        params = {
+          type: curAccountType,
+          bank_id: curBankID,
+          bank_card: bankNumber,
+          bank_addr: bankAddr,
+          pwd: anyEmpty(bankPassword) ? null : md5(bankPassword),
+          owner_name: userInfo?.fullName,
         }
         break
       case BankConst.BTC:
         if (anyEmpty(btcAddr)) {
           Toast('请输入您的虚拟币收款钱包地址')
           return
-        } else {
-          params = {
-            type: curAccountType,
-            bank_id: curBtcID,
-            bank_card: btcAddr,
-            bank_addr: curChainValue,
+        } else if (systemInfo?.switchBindVerify == 1) {
+          if (anyEmpty(bankPassword)) {
+            Toast('请输入取款密码')
+            return
           }
+        }
+        params = {
+          type: curAccountType,
+          bank_id: curBtcID,
+          bank_card: btcAddr,
+          pwd: anyEmpty(bankPassword) ? null : md5(bankPassword),
+          bank_addr: curChainValue,
         }
         break
       case BankConst.WX:
@@ -159,23 +163,33 @@ const UseAddBank = () => {
         } else if (!anyEmpty(wxPhone) && anyLength(wxPhone) < 11) {
           Toast('请输入11位手机号码')
           return
-        } else {
-          params = {
-            type: curAccountType,
-            bank_card: wxAccount,
-            bank_addr: wxPhone,
+        } else if (systemInfo?.switchBindVerify == 1) {
+          if (anyEmpty(bankPassword)) {
+            Toast('请输入取款密码')
+            return
           }
+        }
+        params = {
+          type: curAccountType,
+          bank_card: wxAccount,
+          pwd: anyEmpty(bankPassword) ? null : md5(bankPassword),
+          bank_addr: wxPhone,
         }
         break
       case BankConst.ALI:
         if (anyEmpty(aliAccount)) {
           Toast('请输入您的支付宝账号')
           return
-        } else {
-          params = {
-            type: curAccountType,
-            bank_card: aliAccount,
+        } else if (systemInfo?.switchBindVerify == 1) {
+          if (anyEmpty(bankPassword)) {
+            Toast('请输入取款密码')
+            return
           }
+        }
+        params = {
+          type: curAccountType,
+          pwd: anyEmpty(bankPassword) ? null : md5(bankPassword),
+          bank_card: aliAccount,
         }
         break
     }
