@@ -20,6 +20,7 @@ import APIRouter from '../../../../public/network/APIRouter'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 import { jsDic } from '../../../经典/Model/UGChanglongaideModel'
+import { combineEZDWArray, combineSelectedData } from '../tools/ezdw/BetEZDWUtil'
 
 /**
  * 下注面板
@@ -28,6 +29,7 @@ import { jsDic } from '../../../经典/Model/UGChanglongaideModel'
  */
 const UsePayBoard = () => {
 
+  const currentPlayOddData = UGStore.globalProps?.currentPlayOddData//当前彩种数据
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
@@ -38,7 +40,7 @@ const UsePayBoard = () => {
   const [moneyMap, setMoneyMap] = useState<Map<string, number>>(null) //输入单项价格列表，id -> money
 
   useEffect(() => {
-    setSelectedData(JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData)))
+    setSelectedData(combineSelectedData(currentPlayOddData, UGStore.globalProps?.selectedLotteryModel?.selectedData))
   }, [])
 
   useEffect(() => {
@@ -51,7 +53,6 @@ const UsePayBoard = () => {
    */
   useEffect(() => {
     if (selectedData == null) return
-    // ugLog(' calculate selectedData  =', JSON.stringify(selectedData))
 
     //总共有多少条数据
     setItemCount(calculateItemCount(selectedData))
@@ -90,7 +91,6 @@ const UsePayBoard = () => {
   const startBetting = async (): Promise<LotteryResultModel> => {
     const betBean: Array<BetLotteryData> = []
 
-    //Map<string, Map<string, Map<string, SelectedPlayModel>>>
     Object.keys(selectedData).map((key) => {
       const selItems = gatherSelectedItems(key, selectedData)
       return selItems?.map((selModel) => {
@@ -168,7 +168,7 @@ const UsePayBoard = () => {
               playId: groupPlay0?.id,
               odds: groupPlay0?.odds,
               playIds: nextIssueData?.id,
-              betInfo: selModel?.plays?.map((item) => item?.name).toString(),
+              betInfo: combineEZDWArray(selModel).toString(),
             } as BetLotteryData)
           }
             break
@@ -180,7 +180,7 @@ const UsePayBoard = () => {
               money: numberToFloatString(moneyMap[playX?.exId ?? playX?.id]),
               odds: playX?.odds,
               playId: playX?.id,
-              betInfo: selModel?.plays?.map((item) => item?.name).toString(),
+              betInfo: combineEZDWArray(selModel).toString(),
             } as BetLotteryData)
           }
           break
@@ -200,19 +200,13 @@ const UsePayBoard = () => {
       totalMoney: numberToFloatString(totalMoney),
       isInstant: nextIssueData?.isInstant,
     }
-    // api.user.userGameBetWithParams(pms).useSuccess(((res, sm) =>
-    // ))
-    showLoading()
+
     const { data } = await api.user.userGameBetWithParams(pms).promise
+    await syncUserInfo(false)
     hideLoading()
 
-    const newData = {...data, data: {...data?.data, betParams: pms}}
+    return {...data, data: {...data?.data, betParams: pms}}
 
-    syncUserInfo()
-
-    return newData
-
-    // const { data } = await api.user.myFeedback(0, date, true, 1, 20).promise
   }
 
   return {
