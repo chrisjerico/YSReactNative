@@ -34,13 +34,15 @@ const UsePayBoard = () => {
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   const [selectedData, setSelectedData] = useState<Map<string, Map<string, Map<string, SelectedPlayModel>>>>(null) //当前选中的数据 结构和SelectedLotteryModel一样
+  const [oneDenData, setOneDenData] = useState<Array<SelectedPlayModel>>(null) //将选中的数据转换成1维数据
   const [totalMoney, setTotalMoney] = useState(0) //计算总价格
   const [averageMoney, setAverageMoney] = useState(1) //输入平均价格
   const [itemCount, setItemCount] = useState(0) //选中的条目数据
   const [moneyMap, setMoneyMap] = useState<Map<string, number>>(null) //输入单项价格列表，id -> money
 
   useEffect(() => {
-    setSelectedData(combineSelectedData(currentPlayOddData, UGStore.globalProps?.selectedLotteryModel?.selectedData))
+    const newSelectedData = combineSelectedData(currentPlayOddData, UGStore.globalProps?.selectedLotteryModel?.selectedData)
+    setSelectedData(newSelectedData)
   }, [])
 
   useEffect(() => {
