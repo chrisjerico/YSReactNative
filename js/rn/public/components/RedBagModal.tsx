@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, Modal, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { Res } from '../../Res/icon/Res'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { scale } from '../tools/Scale'
@@ -17,6 +18,14 @@ interface RedBagModalProps {
 
 const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
   const [hide, setHide] = useState(false)
+
+  const requestBag = () => {
+    if (redBag.data.isTest) {
+      UGUserModel.checkLogin()
+      return
+    }
+    
+  }
 
   ugLog("redBag=", redBag)
   return (
@@ -36,27 +45,27 @@ const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
             <View style={styles.imageContainer}>
               <View style={styles.col}>
                 <Text style={styles.title}>帐号：</Text>
-                <Text style={styles.text}>{}</Text>
+                <Text style={styles.text}>{redBag.data.username}</Text>
               </View>
               <View style={styles.col}>
                 <Text style={styles.title}>红包余额：</Text>
-                <Text style={styles.text}>{}</Text>
+                <Text style={styles.text}>{redBag.data.leftAmount}</Text>
               </View>
               <View style={styles.col}>
                 <Text style={styles.title}>可抢红包：</Text>
-                <Text style={styles.text}>{}</Text>
+                <Text style={styles.text}>{redBag.data.leftCount}</Text>
               </View>
               <View style={[styles.col, {justifyContent: 'center'}]}>
                 <Button
-                  title={'立即开抢'}
-                  onPress={()=>{}}
+                  title={redBag.data.isTest? '登录抢红包' : (redBag.data.canGet && redBag.data.attendedTimes == 1 ? '已参与活动' : '立即开抢')}
+                  onPress={requestBag}
                   containerStyle={styles.button}
                   titleStyle={{ color: '#ffffff'}}
                 />
               </View>
               <View style={styles.row}>
                 <Text style={[styles.title, {color: '#FFC950', alignSelf: 'center'}]}>活动介绍</Text>
-                <Text style={[styles.title, {color: '#ffffff'}]}>{redBag.data.intro}</Text>
+                <Text style={[styles.title, {color: '#ffffff'}]}>{redBag.data.intro.replace('<br />', '')}</Text>
               </View>
             </View>
           </ImageBackground>

@@ -11,6 +11,7 @@ export interface Data {
     id: string;
     intro: string;
     username: string;
+    isTest: boolean;
     hasLogin: boolean;
     attendedTimes: number;
     attendTimesLimit: number;
