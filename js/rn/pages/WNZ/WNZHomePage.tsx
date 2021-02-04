@@ -62,7 +62,7 @@ const WNZHomePage = () => {
   if (AppDefine.siteId == 'c245') {
     var newNavs = uid ? config.c245AuthNavs : config.c245UnAuthNavs
     newNavs.forEach(ele => {
-      ele.icon = navs.find(e => e.name == ele.name).icon
+      ele.icon = navs?.find(e => e?.name == ele?.name)?.icon
     })
     return newNavs
   }

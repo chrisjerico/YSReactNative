@@ -62,6 +62,12 @@ export default class UGUserModel extends UGLoginModel {
     temp.token = user['API-TOKEN'];
     return temp;
   }
+
+  static checkTestorUser() {
+    const { isTest, uid } = UGStore.globalProps.userInfo
+    if (isTest || uid?.length) return true;
+  }
+
   static checkLogin(canTest = false) {  // 是否允许试玩账号
     const { isTest, uid } = UGStore.globalProps.userInfo
     if (!isTest && uid?.length) return true;
