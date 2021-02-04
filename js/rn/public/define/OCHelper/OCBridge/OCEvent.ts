@@ -90,12 +90,13 @@ export class OCEvent extends OCCall {
     this.addEvent(OCEventType.UGNotificationGetSystemConfigComplete, (sysConf: UGSysConfModel) => {
       UGStore.dispatch({ type: 'merge', sysConf: sysConf })
     })
-    this.addEvent(OCEventType.AppDefineSetupSiteAndSkinParams, () => {
+    this.addEvent(OCEventType.AppDefineSetupSiteAndSkinParams, async () => {
       if (AppDefine.siteId == 'c116') {
-        OCHelper.call('AppDefine.shared.setIsNoOnLineDoc:', [false]);
+        await OCHelper.call('AppDefine.shared.setIsNoOnLineDoc:', [false]);
       }
       if (Skin1.skitType == '香槟金') {
-        OCHelper.call('AppDefine.shared.setIsTabMassageBadge:', [false]);
+        await OCHelper.call('AppDefine.shared.setIsTabMassageBadge:', [false]);
+        await OCHelper.call('AppDefine.shared.setBetBgIsWhite:', [true]);
       }
     })
     this.addEvent(OCEventType.UGNotificationUserLogout, () => {
