@@ -61,6 +61,12 @@ export default class UGUserModel extends UGLoginModel {
     temp.token = user['API-TOKEN'];
     return temp;
   }
+
+  static checkTestorUser() {
+    const { isTest, uid } = UGStore.globalProps.userInfo
+    if (isTest || uid?.length) return true;
+  }
+
   static checkLogin() {
     const { isTest, uid } = UGStore.globalProps.userInfo
     if (!isTest && uid?.length) return true;
