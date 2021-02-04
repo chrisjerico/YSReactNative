@@ -6,6 +6,7 @@ import {
 } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
+import { doubleDigit } from '../../../../../public/tools/StringUtil'
 
 interface ITMData {
   playOddData?: PlayOddData
@@ -41,7 +42,7 @@ const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
   return new Array(
     49,
   ).fill(0).map((item, index) => {
-    let ballIndex = ('0' + index).slice(-2)
+    let ballIndex = doubleDigit(index + 1)
     return (
       {
         id: play0?.id + ',' + ballIndex,

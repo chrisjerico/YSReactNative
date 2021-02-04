@@ -1,4 +1,9 @@
 /**
+ * 转成2位数
+ */
+const doubleDigit = (value?: string | number) => ('0' + value).slice(-2)
+
+/**
  * 删除HTML标签
  * @param s
  */
@@ -36,4 +41,5 @@ export {
   deleteHtml,
   endString,
   numberToFloatString,
+  doubleDigit,
 }

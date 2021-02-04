@@ -14,7 +14,7 @@ import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
-import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayGroupData, PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, mergeObject } from '../../public/tools/Ext'
 import { ugLog } from '../../public/tools/UgLog'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
@@ -33,6 +33,7 @@ export interface IGlobalState {
 
   //下注
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
+  currentPlayGroupData?: Array<PlayGroupData> //当前选中的彩种界面数据 二字定位 -> 万千
   currentPlayOddData?: PlayOddData //当前选中的彩种数据 特码 两面 等
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
@@ -62,6 +63,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 
     //彩票数据
     act.lotteryId && (state.lotteryId = act.lotteryId)
+    act.currentPlayGroupData && (state.currentPlayGroupData = act.currentPlayGroupData)
     act.currentPlayOddData && (state.currentPlayOddData = act.currentPlayOddData)
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
@@ -74,6 +76,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.banner = { ...state.banner, ...act.banner }
 
     //彩票数据
+    state.currentPlayGroupData = { ...state.currentPlayGroupData, ...act.currentPlayGroupData }
     state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
@@ -105,6 +108,7 @@ export interface UGAction<P = {}> extends Action {
 
   //彩票数据
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
+  currentPlayGroupData?: Array<PlayGroupData> //当前选中的彩种界面数据 二字定位 -> 万千
   currentPlayOddData?: PlayOddData //当前选中的彩种数据
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩

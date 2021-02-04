@@ -15,8 +15,9 @@ import { calculateItemCount, gatherSelectedItems } from '../tools/BetUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { LotteryResultData } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
-import { combineEZDWArray } from '../tools/ezdw/BetEZDWUtil'
+import { combineEZDWArray, filterPlayData } from '../tools/ezdw/BetEZDWUtil'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
+import { zodiacPlayX } from '../tools/hx/BetHXUtil'
 
 interface IPayBoardComponent {
   showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
@@ -39,8 +40,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     itemCount,
     nextIssueData,
     playOddDetailData,
-    selectedData,
-    setSelectedData,
+    selectedCombineData,
+    setSelectedCombineData,
     startBetting,
   } = UsePayBoard()
 
@@ -49,9 +50,9 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
    * @param lotteryCode 彩种CODE，特码,合肖等
    * @param selModel 选中的数据
    */
-  const renderTMItem = (lotteryCode?: string, selModel?: SelectedPlayModel) => {
+  const renderTMItem = (selModel?: SelectedPlayModel) => {
     return selModel?.plays?.map((playData) => {
-      const showName = lotteryCode == LhcCode.LX || lotteryCode == LhcCode.LW ?
+      const showName = selModel?.code == LhcCode.LX || selModel?.code == LhcCode.LW ?
         playData?.alias :
         playData?.name
       return (<View key={playData?.id + playData?.name}
@@ -74,30 +75,14 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                    style={_styles.item_input}/>
         <Icon size={scale(36)}
               onPress={() => {
-                //选中了哪些数据 code -> code -> value, 如 正特 -> 正特1 -> 01,03,04
-                //Map<string, Map<string, Map<string, SelectedPlayModel>>>
-                const newSelectedData = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
-
-                for (const [key1, value1] of Object.entries(selectedData)) {
-                  newSelectedData[key1] = value1
-                  for (const [key2, value2] of Object.entries(value1)) {
-                    value1[key2] = value2
-                    for (const [key3, value3] of Object.entries(value2)) {
-                      value2[key3] = {
-                        ...value3,
-                        plays: value3?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData)),
-
-                      } as SelectedPlayModel
-                    }
-                  }
-                }
-
+                //过滤掉选中的数据
+                const newSelectedData = filterPlayData(selectedCombineData, playData)
                 ugLog('newSelectedData = ', JSON.stringify(newSelectedData))
                 //数据少于1了就关闭窗口
                 if (calculateItemCount(newSelectedData) <= 0) {
                   showCallback && showCallback()
                 } else {
-                  setSelectedData(newSelectedData)
+                  setSelectedCombineData(newSelectedData)
                 }
 
               }}
@@ -115,8 +100,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
    */
   const renderHXItem = (selModel?: SelectedPlayModel,
                         des?: string) => {
-    const play0 = selModel?.plays[0]
-    return (<View key={play0?.id + play0?.name}
+    const playX = zodiacPlayX(selModel)
+    return (<View key={playX?.id + playX?.name}
                   style={_styles.item_container}>
       <Text style={_styles.item_title}
             numberOfLines={2}>{
@@ -125,7 +110,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
       <TextInput defaultValue={averageMoney?.toString()}
                  onChangeText={text => setMoneyMap(prevState => {
                    const moneyMap = new Map<string, number>()
-                   moneyMap[play0?.exId ?? play0?.id] = Number.parseFloat(text)
+                   moneyMap[playX?.exId ?? playX?.id] = Number.parseFloat(text)
                    // ugLog('prevState = ', JSON.stringify(prevState))
                    // ugLog('moneyMap = ', JSON.stringify(moneyMap))
                    return { ...prevState, ...moneyMap }
@@ -144,53 +129,47 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   }
 
-  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((lotteryCode, keyIndex) => {
-    const selItems = gatherSelectedItems(lotteryCode, selectedData)
-    // const groupDataArr: Array<PlayGroupData> = selectedData[lotteryCode]
-    return selItems?.map((selModel, index) => {
-      ugLog('lotteryCode 2 index = ', lotteryCode, index)
-      switch (lotteryCode) {
-        case LhcCode.TM:  //特码
-        case LhcCode.LM: //两面
-        case LhcCode.ZM: //正码
-        case LhcCode.ZT:  //正特
-        case LhcCode.ZM1_6: //正码1T6
-        case LhcCode.SB: //色波
-        case LhcCode.ZOX://总肖
-        case LhcCode.WX:  //五行 或 五星
-        case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LhcCode.TX: //特肖
-        case LhcCode.ZX: //正肖
-        case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LhcCode.LX: //连肖
-        case LhcCode.LW: //连尾
-        case CqsscCode.ALL:  //1-5球
-        case CqsscCode.Q1:  //第1球
-        case CqsscCode.Q2:  //第2球
-        case CqsscCode.Q3:  //第3球
-        case CqsscCode.Q4:  //第4球
-        case CqsscCode.Q5:  //第5球
-        case CqsscCode.QZH:  //前中后
-        case CqsscCode.DN:  //斗牛
-        case CqsscCode.SH:  //梭哈
-        case CqsscCode.LHD:  //龙虎斗
-        case CqsscCode.YZDW:  //一字定位
-          return renderTMItem(lotteryCode, selModel)
+  const itemViewArr = selectedCombineData == null ? null : selectedCombineData?.map((selModel, index) => {
+    ugLog('pay board itemViewArr = ', selModel?.code, index)
+    switch (selModel?.code) {
+      case LhcCode.TM:  //特码
+      case LhcCode.LM: //两面
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行 或 五星
+      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TX: //特肖
+      case LhcCode.ZX: //正肖
+      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
+      case CqsscCode.YZDW:  //一字定位
+        return renderTMItem(selModel)
 
-        case LhcCode.HX://合肖
-          return renderHXItem(selModel,
-            selModel?.zodiacs?.map((item) => item?.name)?.toString())
+      case LhcCode.HX://合肖
+        return renderHXItem(selModel,
+          selModel?.zodiacs?.map((item) => item?.name)?.toString())
 
-        case LhcCode.LMA:  //连码
-        case LhcCode.ZXBZ:  //自选不中
-          return renderHXItem(selModel, combineEZDWArray(selModel)?.toString())
-      }
+      case LhcCode.LMA:  //连码
+      case LhcCode.ZXBZ:  //自选不中
+        return renderHXItem(selModel, combineEZDWArray(selModel)?.toString())
+    }
 
-
-    })
-
-  }).flat(2)
+  }).flat(Infinity)
 
   const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * BET_ITEM_HEIGHT, [itemCount])
 

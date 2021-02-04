@@ -7,6 +7,7 @@ import {
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { doubleDigit } from '../../../../../public/tools/StringUtil'
 
 interface ITMData {
   playOddData?: PlayOddData
@@ -45,7 +46,7 @@ const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
     arr = new Array(
       47,
     ).fill(0).map((item, index) => {
-      let ballIndex = ('0' + (index + 1)).slice(-2)
+      let ballIndex = doubleDigit(index + 1)
       return ({
         id: `${play0?.id},${ballIndex}`,
         name: ballIndex,
@@ -56,7 +57,7 @@ const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
     arr = new Array(
       49,
     ).fill(0).map((item, index) => {
-      let ballIndex = ('0' + index).slice(-2)
+      let ballIndex = doubleDigit(index)
       return ({
         id: play0?.id + ballIndex,
         name: ballIndex,

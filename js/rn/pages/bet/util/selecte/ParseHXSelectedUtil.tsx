@@ -34,7 +34,8 @@ const parseHXSelectedData = (playOddData: PlayOddData,
       !anyEmpty(selZodiac) && (
         tabMap[groupData?.code] = {
           playGroups: groupData,
-          zodiacs: selZodiac
+          zodiacs: selZodiac,
+          code: playOddData?.code,
         } as SelectedPlayModel //key=取第一组数据的ID作为Tab标识, value=每一组数据，如 特码B里面的 两面, 色波
       )
 

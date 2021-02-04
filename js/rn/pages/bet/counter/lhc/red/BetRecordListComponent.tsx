@@ -9,6 +9,7 @@ import LotteryBall from '../../../../../public/components/view/LotteryBall'
 import { LotteryHistoryData, PlayData } from '../../../../../public/network/Model/lottery/LotteryHistoryModel'
 import UseBetRecordList from './UseBetRecordList'
 import { BallStyles, LCode } from '../../../const/LotteryConst'
+import { doubleDigit } from '../../../../../public/tools/StringUtil'
 
 interface IHallGameList {
   historyData?: LotteryHistoryData //所有数据
@@ -69,7 +70,7 @@ const BetRecordListComponent = ({
    */
   const renderBalls = (gameType?: string,
                        ballStr?: string) => {
-    let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
+    let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => doubleDigit(item)) //球的数组
     let lastBall = balls.pop() //最后一个球
     let ballStyle = BallStyles[gameType] //球的样式
     ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle

@@ -6,6 +6,7 @@ import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { BallStyles, LCode } from '../const/LotteryConst'
 import LotteryBall from '../../../public/components/view/LotteryBall'
+import { doubleDigit } from '../../../public/tools/StringUtil'
 
 interface ILotteryZodiacAndBallItem {
   gameType?: string; //彩种 六合彩，秒秒彩 等等
@@ -65,7 +66,7 @@ const LotteryZodiacAndBall = ({
   const renderBalls = (gameType?: string,
                        ballStr?: string) => {
     let balls = anyEmpty(ballStr) ? [] :
-      ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
+      ballStr.split(',').map((item) => doubleDigit(item)) //球的数组
     let lastBall = balls.pop() //最后一个球
     let ballStyle = BallStyles[gameType] //球的样式
     ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle

@@ -2,12 +2,29 @@ import * as React from 'react'
 import { PlayData, PlayOddData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
-import { CqsscCode } from '../../../const/LotteryConst'
+import { CqsscCode, LhcCode } from '../../../const/LotteryConst'
 import { gatherSelectedItems } from '../BetUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { zodiacPlayX } from '../hx/BetHXUtil'
+import { numberToFloatString } from '../../../../../public/tools/StringUtil'
+import { BetLotteryData } from '../../../../../public/network/it/bet/IBetLotteryParams'
+import { playDataX } from '../zxbz/BetZXBZUtil'
 /**
  * X字定位下注工具类
  */
+
+/**
+ * 过滤出某个彩种
+ * @param allData 所有数据
+ * @param playData 需要过滤的数据
+ */
+const filterPlayData = (allData?: Array<SelectedPlayModel>, playData?: PlayData): Array<SelectedPlayModel> => {
+  return allData?.map((comData) => ({
+    ...comData,
+    plays: comData?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData))
+  }))
+
+}
 
 /**
  * 重新组合出N组下注数据，如 二字定位[1,2] -> [3,4] 重组成 [13,14,23,34]
@@ -80,19 +97,40 @@ const combineEZDWPlayData = (selData?: Array<SelectedPlayModel>, plays?: Array<P
  */
 const combineSelectedData = (currentPlayOddData?: PlayOddData,
                              selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
-  const newSelectedData = JSON.parse(JSON.stringify(selectedData))
-  return Object.keys(newSelectedData).map((key) => {
+  return Object.keys(selectedData).map((key) => {
+    const value = selectedData[key]
     switch (key) {
       case CqsscCode.EZDW: //二字定位，多组数据合成1组数据
         // ugLog('key data - = ', JSON.stringify(Object.values(newSelectedData[key])))
         // ugLog('key data 2 - = ', JSON.stringify(Object.values(newSelectedData[key]).map((data) => Object.values(data))))
-        const ezData = (Object.values(newSelectedData[key]).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+        const ezData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
         // ugLog('ezData 1 = ', JSON.stringify(ezData))
         const arr = combineEZDWModel(ezData)
         // ugLog('arr 1 = ', JSON.stringify(arr))
+
         return arr
+      // case LhcCode.HX://合肖
+      // {
+      //   const ezData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+      //   const name = ezData[0]?.zodiacs?.map((item) => item?.name).toString()
+      //   const playX = playDataX(ezData[0])
+      //   return [{...ezData[0], plays: [{...playX, name: name}]} as SelectedPlayModel]
+      // }
+      //
+      // case LhcCode.LMA:  //连码
+      // {
+      //   const ezData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+      //   const name = combineEZDWArray(...ezData).toString()
+      //   return [{...ezData[0], plays: [{...ezData[0].plays[0], name: name}]} as SelectedPlayModel]
+      // }
+      //
+      // case LhcCode.ZXBZ:  //自选不中
+      // {
+      //
+      // }
+      //   break
       default:
-        return gatherSelectedItems(key, newSelectedData)
+        return gatherSelectedItems(key, selectedData)
     }
   }).flat(Infinity) as Array<SelectedPlayModel>
 }
@@ -101,4 +139,5 @@ export {
   combineEZDWArray,
   combineSelectedData,
   combineEZDWModel,
+  filterPlayData,
 }

@@ -38,7 +38,8 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
       !anyEmpty(selBalls) && (
         tabMap[pageAlias] = {
           playGroups: groupData,
-          plays: selBalls
+          plays: selBalls,
+          code: playOddData?.code,
         } as SelectedPlayModel //key=取第一组数据的ID作为Tab标识, value=每一组数据，如 特码B里面的 两面, 色波
       )
 

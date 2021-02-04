@@ -8,6 +8,7 @@ import { anyEmpty } from '../../../../public/tools/Ext'
 import APIRouter from '../../../../public/network/APIRouter'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { doubleDigit } from '../../../../public/tools/StringUtil'
 
 /**
  * 开奖时间显示
@@ -72,9 +73,9 @@ const UseTime = () => {
    */
   useEffect(() => {
     if (closeTime >= 0) {
-      const closeHour = ('0' + Math.floor(closeTime / HOUR_1)).slice(-2)
-      const closeMinute = ('0' + Math.floor((closeTime % HOUR_1) / MINUTE_1)).slice(-2)
-      const closeSecond = ('0' + Math.floor((closeTime % MINUTE_1) / SECOND_1)).slice(-2)
+      const closeHour = doubleDigit(Math.floor(closeTime / HOUR_1))
+      const closeMinute = doubleDigit(Math.floor((closeTime % HOUR_1) / MINUTE_1))
+      const closeSecond = doubleDigit(Math.floor((closeTime % MINUTE_1) / SECOND_1))
 
       setDisplayCloseTime(`${closeHour}:${closeMinute}:${closeSecond}`)
 
@@ -85,9 +86,9 @@ const UseTime = () => {
     let timer
 
     if (openTime >= 0) {
-      const openHour = ('0' + Math.floor(openTime / HOUR_1)).slice(-2)
-      const openMinute = ('0' + Math.floor((openTime % HOUR_1) / MINUTE_1)).slice(-2)
-      const openSecond = ('0' + Math.floor((openTime % MINUTE_1) / SECOND_1)).slice(-2)
+      const openHour = doubleDigit(Math.floor(openTime / HOUR_1))
+      const openMinute = doubleDigit(Math.floor((openTime % HOUR_1) / MINUTE_1))
+      const openSecond = doubleDigit(Math.floor((openTime % MINUTE_1) / SECOND_1))
 
       setDisplayOpenTime(`${openHour}:${openMinute}:${openSecond}`)
     } else {

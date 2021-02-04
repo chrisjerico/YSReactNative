@@ -13,6 +13,7 @@ import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
 import UseHallGameList from './UseHallGameList'
 import { BallStyles, LCode } from '../../../bet/const/LotteryConst'
+import { doubleDigit } from '../../../../public/tools/StringUtil'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -48,7 +49,7 @@ const HallGameListComponent = ({
    */
   const renderBalls = (gameType?: string,
                        ballStr?: string) => {
-    let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
+    let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => doubleDigit(item)) //球的数组
     let lastBall = balls.pop() //最后一个球
     let ballStyle = BallStyles[gameType] //球的样式
     ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle

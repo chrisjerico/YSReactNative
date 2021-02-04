@@ -15,6 +15,7 @@ import SelectedLotteryModel, { SelectedPlayModel } from '../../../../redux/model
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { parseLMASelectedData } from '../../util/selecte/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/selecte/ParseHXSelectedUtil'
+import { doubleDigit } from '../../../../public/tools/StringUtil'
 
 /**
  * 彩票公共处理类
@@ -154,6 +155,10 @@ const UseLotteryHelper = () => {
   const currentPageData = (): Array<PlayGroupData> =>
     tabIndex < arrayLength(playOddData?.pageData?.groupTri) ? playOddData?.pageData?.groupTri[tabIndex] : []
 
+  useEffect(() => {
+    UGStore.dispatch({ type: 'reset', currentPlayGroupData: currentPageData() })
+  }, [tabIndex])
+
   /**
    * 添加或移除选中的球列表
    * @param addBalls 选中球的ID
@@ -220,7 +225,7 @@ const UseLotteryHelper = () => {
   const zodiacBallIds = (zodiac?: ZodiacNum,
                          groupData?: PlayGroupData): string[] => {
     //重组数字
-    const checkMap = zodiac.nums.map((item) => ('0' + item).slice(-2))
+    const checkMap = zodiac.nums.map((item) => doubleDigit(item))
 
     return groupData?.plays?.filter((item) => checkMap?.includes(item?.name))
       .map((item) => item?.exId)
