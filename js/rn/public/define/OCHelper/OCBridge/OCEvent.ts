@@ -19,7 +19,7 @@ export enum OCEventType {
   AppDefineSetupSiteAndSkinParams = 'AppDefine-SetupSiteAndSkinParams',
   TZImagePickerControllerDidFinishPickingPhotosHandle = 'TZImagePickerController-DidFinishPickingPhotosHandle',
 }
-
+//1
 export class OCEvent extends OCCall {
   protected static events: { type: OCEventType; event: Function }[] = []
 
