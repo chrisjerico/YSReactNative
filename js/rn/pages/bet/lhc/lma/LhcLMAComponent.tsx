@@ -46,6 +46,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     style={CommStyles.flex}
     onPress={() => {
       UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+      setSelectedBalls([])
       setTabIndex(index)
     }}>
     <View key={key + item[0]?.alias}

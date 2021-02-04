@@ -55,6 +55,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     key={key + item[0]?.alias}
     onPress={() => {
       UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+      setSelectedBalls([])
       setTabIndex(index)
     }}>
     <View key={key + item[0]?.id}

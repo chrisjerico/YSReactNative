@@ -56,6 +56,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <TouchableWithoutFeedback key={key + 'renderTabItem Text'}
                                 onPress={() => {
                                   UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+                                  setSelectedBalls([])
                                   setTabIndex(tab)
                                 }}
                                 style={_styles.tab_title_tb}>

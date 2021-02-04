@@ -46,8 +46,6 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       case LhcCode.ZX: //正肖
       case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
       case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.LX: //连肖
-      case LhcCode.LW: //连尾
       case CqsscCode.ALL:  //1-5球
       case CqsscCode.Q1:  //第1球
       case CqsscCode.Q2:  //第2球
@@ -66,6 +64,84 @@ const checkBetCount = (showMsg?: boolean): boolean => {
         if (selCountMap[key] <= 0) {
           showMsg && Toast('请选择玩法')
           return false
+        }
+      }
+        break
+      case LhcCode.LX: //连肖
+      {
+        for (let data of currentPlayGroupData) {
+          const selCount = filterSelectedSubData(key, data?.alias, selectedData)
+          ugLog('selCount = ', selCount, key, data?.alias)
+          if (selCount <= 0) {
+            Toast(`请选择${data?.alias}数据`)
+            return
+          }
+          switch (data?.alias) {
+            case '二连肖':
+              if (selCount < 2) {
+                Toast(`${data?.alias}需要选择至少2个数据`)
+                return
+              }
+              break
+            case '三连肖':
+              if (selCount < 3) {
+                Toast(`${data?.alias}需要选择至少3个数据`)
+                return
+              }
+              break
+            case '四连肖':
+              if (selCount < 4) {
+                Toast(`${data?.alias}需要选择至少4个数据`)
+                return
+              }
+              break
+            case '五连肖':
+              if (selCount < 5) {
+                Toast(`${data?.alias}需要选择至少5个数据`)
+                return
+              }
+              break
+
+          }
+        }
+      }
+        break
+      case LhcCode.LW: //连尾
+      {
+        for (let data of currentPlayGroupData) {
+          const selCount = filterSelectedSubData(key, data?.alias, selectedData)
+          ugLog('selCount = ', selCount, key, data?.alias)
+          if (selCount <= 0) {
+            Toast(`请选择${data?.alias}数据`)
+            return
+          }
+          switch (data?.alias) {
+            case '二连尾':
+              if (selCount < 2) {
+                Toast(`${data?.alias}需要选择至少2个数据`)
+                return
+              }
+              break
+            case '三连尾':
+              if (selCount < 3) {
+                Toast(`${data?.alias}需要选择至少3个数据`)
+                return
+              }
+              break
+            case '四连尾':
+              if (selCount < 4) {
+                Toast(`${data?.alias}需要选择至少4个数据`)
+                return
+              }
+              break
+            case '五连尾':
+              if (selCount < 5) {
+                Toast(`${data?.alias}需要选择至少5个数据`)
+                return
+              }
+              break
+
+          }
         }
       }
         break
