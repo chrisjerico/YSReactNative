@@ -24,4 +24,34 @@ const combination = (arr?: Array<any>, len?: number) => {
   return resultArr
 }
 
-export {combination}
+/**
+ * N个数组 组成 新的组合
+ * @param arg N个数组
+ */
+const combineArr = (...arg: Array<any>) => {
+  let heads = arg[0]
+  for (let i = 1, len = arg.length; i < len; i++) {
+    heads = addNewType(heads, arg[i])
+  }
+  return heads
+}
+
+/**
+ *
+ * @param heads
+ * @param choices
+ */
+const addNewType = (heads?: any, choices?: any) => {
+  let result = []
+  for (let i = 0, lenI = heads.length; i < lenI; i++) {
+    for (let j = 0, lenJ = choices.length; j < lenJ; j++) {
+      result.push([heads[i], choices[j]].flat(Infinity))
+    }
+  }
+  return result
+}
+
+export {
+  combination,
+  combineArr,
+}

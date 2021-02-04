@@ -9,6 +9,7 @@ import { zodiacPlayX } from '../hx/BetHXUtil'
 import { numberToFloatString } from '../../../../../public/tools/StringUtil'
 import { BetLotteryData } from '../../../../../public/network/it/bet/IBetLotteryParams'
 import { playDataX } from '../zxbz/BetZXBZUtil'
+import { combineArr } from '../../../util/ArithUtil'
 /**
  * X字定位下注工具类
  */
@@ -49,48 +50,6 @@ const combineEZDWArray = (...selData: Array<SelectedPlayModel>): Array<string> =
 }
 
 /**
- * 重新组合出N组下注数据，如 二字定位[1,2] -> [3,4] 重组成 [13,14,23,34]，
- * 并且剔除多余的数据将结果返回
- * @param selData
- */
-const combineEZDWModel = (selData: Array<SelectedPlayModel>): SelectedPlayModel => {
-  if (arrayLength(selData) > 0) {
-    return {
-      ...selData[0],
-      plays: combineEZDWPlayData(selData),
-    } as SelectedPlayModel
-  }
-
-  return null
-}
-
-/**
- * 把多页数据组合成 一维数组
- * @param selData
- * @param plays 追加的彩球数据
- */
-const combineEZDWPlayData = (selData?: Array<SelectedPlayModel>, plays?: Array<PlayData>): Array<PlayData> => {
-  if (arrayLength(selData) > 1) {
-    const arr0 = selData.slice(0, 1) as Array<SelectedPlayModel>
-    const arr1 = selData.slice(1) as Array<SelectedPlayModel>
-    // ugLog('arr0 = ', JSON.stringify(arr0))
-    // ugLog('arr1 = ', JSON.stringify(arr1))
-    return arr0[0]?.plays?.map((play) =>
-      combineEZDWPlayData(arr1, anyEmpty(plays) ? [play] : [...plays, play])).flat(Infinity) as Array<PlayData>
-  } else if (arrayLength(selData) == 1) {
-    // ugLog('selData arr = 1 = ', JSON.stringify(selData))
-    // ugLog('selData plays = 1 = ', JSON.stringify(plays))
-    return selData[0]?.plays?.map((play) =>
-      ({
-        ...play,
-        name: [...plays, play].map((item) => item?.name).toString(),
-      } as PlayData))
-  }
-
-  return null
-}
-
-/**
  * 重新组合下载数据，多维数据转一维数据
  * @param currentPlayOddData
  * @param selectedData
@@ -100,12 +59,27 @@ const combineSelectedData = (currentPlayOddData?: PlayOddData,
   return Object.keys(selectedData).map((key) => {
     const value = selectedData[key]
     switch (key) {
+      case LhcCode.LX:
+      {
+        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+        ugLog('combineSelectedData pageData = ', JSON.stringify(pageData))
+        return pageData?.map((item) =>({
+          ...item,
+          
+        }))
+      }
+
+        break
+      case LhcCode.LW:
+
+        break
       case CqsscCode.EZDW: //二字定位，多组数据合成1组数据
         // ugLog('key data - = ', JSON.stringify(Object.values(newSelectedData[key])))
         // ugLog('key data 2 - = ', JSON.stringify(Object.values(newSelectedData[key]).map((data) => Object.values(data))))
-        const ezData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
-        // ugLog('ezData 1 = ', JSON.stringify(ezData))
-        const arr = combineEZDWModel(ezData)
+        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+        const pagePlayArr: Array<Array<PlayData>> = pageData?.map((item) => item?.plays)
+        ugLog('pagePlayArr = ', JSON.stringify(pagePlayArr))
+        const arr = combineArr(...pagePlayArr)
         // ugLog('arr 1 = ', JSON.stringify(arr))
 
         return arr
@@ -138,6 +112,5 @@ const combineSelectedData = (currentPlayOddData?: PlayOddData,
 export {
   combineEZDWArray,
   combineSelectedData,
-  combineEZDWModel,
   filterPlayData,
 }
