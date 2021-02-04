@@ -9,6 +9,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
+import { FastImagePlaceholder, ImagePlaceholder } from "../../../../rn/pages/经典/tools/ImagePlaceholder"
 import { PageName } from "../../../../rn/public/navigation/Navigation"
 import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
@@ -20,7 +21,7 @@ import { img_assets, img_doy, img_root } from "../../../../rn/Res/icon"
 import { DoyAboutTotalAmountCP } from "./cp/DoyAboutTotalAmountCP"
 
 const sc = sc375
-
+const headerColos = ['#1F65E6', '#3581F5']
 const subTextColor = '#ffffffcc'
 
 const navBtnInfos: { icon: string, title: string, onPress: () => void }[] = [
@@ -70,7 +71,7 @@ export const DoyHomePage = ({ setProps }: UGBasePageProps) => {
   })
 
   return [<View style={{ flex: 1 }}>
-    <ImageBackground source={{ uri: img_doy('首页_背景@2x') }} style={{ width: '100%', height: sc(227), }}>
+    <FastImagePlaceholder placeholderGradientColor={headerColos} source={{ uri: img_doy('首页_背景@2x') }} style={{ width: '100%', height: sc(227), }}>
       <View style={{ paddingHorizontal: sc(16) }}>
         {/* 扫一扫 */}
         <View style={{ flexDirection: 'row', marginTop: useSafeArea()?.top + sc(16), justifyContent: 'space-between' }}>
@@ -101,7 +102,7 @@ export const DoyHomePage = ({ setProps }: UGBasePageProps) => {
           </View>
         </View>
       </View>
-    </ImageBackground>
+    </FastImagePlaceholder>
     <View style={{ paddingHorizontal: sc(16) }}>
       {/* 导航按钮 */}
       <View style={{ marginTop: sc(16), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', flexWrap: 'wrap', paddingBottom: sc(15) }}>
