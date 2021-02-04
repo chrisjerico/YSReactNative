@@ -93,7 +93,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
   }
 
   /**
-   * 得到邀请码列表数据
+   * 得到列表数据
    * 
    */
   function inviteCodeListData(date: string) {

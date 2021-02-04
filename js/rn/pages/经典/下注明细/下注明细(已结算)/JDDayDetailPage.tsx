@@ -18,6 +18,9 @@ import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 
 
 interface JDDayDetailPage {
+
+  gameId?: string;//下注id
+  date?: string;//下注时间
   totalWinAmount?: string/**<   输赢总金额 */
   totalBetAmount?: string/**<   总下注金额 */
   //========================
@@ -53,9 +56,6 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
       }
     })
 
-  let gameId: string;//下注id
-  let date: string;//下注时间
-
   const [totalBetMoney, setTotalBetMoney] = useState('0') //下注
   const [totalResultMoney, setTotalResultMoney] = useState('0') //输赢
 
@@ -73,16 +73,16 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
             for (var key in dic) {
               if (key == 'gameId') {
                 if (!anyEmpty(dic[key])) {
-                  gameId = dic[key];
+                  v.gameId = dic[key];
                 }
               }
               if (key == 'date') {
                 if (!anyEmpty(dic[key])) {
-                  date = dic[key];
+                  v.date = dic[key];
                 }
               }
             }
-            if (!anyEmpty(gameId) && !anyEmpty(date)) {
+            if (!anyEmpty(v.gameId) && !anyEmpty(v.date)) {
               v.items.length = 0;
               v.pageNumber = 1;
               v.state.showFoot = 0;
@@ -184,7 +184,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
     // })
 
 
-    api.ticket.history('lottery', 5, date, date, gameId, v.pageNumber, v.pageSize).useSuccess(({ data }) => {
+    api.ticket.history('lottery', 5, v.date, v.date, v.gameId, v.pageNumber, v.pageSize).useSuccess(({ data }) => {
       let dicData = data;
       v.totalWinAmount = dicData.totalWinAmount
       v.totalBetAmount = dicData.totalBetAmount
