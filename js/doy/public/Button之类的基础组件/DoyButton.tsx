@@ -31,8 +31,9 @@ export const DoyButton2 = (p: ButtonProps) => {
   return (
     <Button title='取消'
       titleStyle={{ fontSize: sc(16), fontWeight: '600', color: themeColor, }}
+      containerStyle={{ marginTop: sc(16) }}
       {...p}
-      buttonStyle={[{ marginTop: sc(16), height: sc(48), backgroundColor: 'transparent', borderWidth: 2, borderColor: themeColor }, p?.buttonStyle]}
+      buttonStyle={[{ height: sc(48), backgroundColor: 'transparent', borderWidth: 2, borderColor: themeColor }, p?.buttonStyle]}
     />
   )
 }

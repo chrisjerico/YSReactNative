@@ -8,6 +8,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 import SegmentedControl from "rn-segmented-control"
 import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
 import AppDefine from "../../../../rn/public/define/AppDefine"
+import { PageName } from "../../../../rn/public/navigation/Navigation"
+import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
@@ -78,11 +80,12 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
         <TouchableOpacity style={{ paddingHorizontal: sc(8), marginRight: sc(-7), flex: 1, justifyContent: 'center' }}>
           <FontAwesome name='close' size={sc(10)} color='#FAE4CF' style={{ width: sc(16), aspectRatio: 1, backgroundColor: '#52575A', paddingTop: sc(2), paddingLeft: sc(4), borderRadius: sc(8), overflow: 'hidden' }} />
         </TouchableOpacity>
-        {/* <Button icon={{ name: '' }} /> */}
       </LinearGradient>
       {/* 搜索结果 */}
       <List data={v.searchReults} uniqueKey='我要买-订单列表' style={{ padding: sc(16), flex: 1 }} renderItem={(ele) => {
-        return <View style={{ height: sc(48), marginBottom: sc(8), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', alignItems: 'center' }}>
+        return <TouchableOpacity style={{ height: sc(48), marginBottom: sc(8), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', alignItems: 'center' }} onPress={() => {
+          push(PageName.DoySellOrderPage)
+        }}>
           <Text style={{ marginLeft: sc(24), fontSize: sc(14) }}>售</Text>
           <FastImage source={{ uri: img_doy('DOY币@3x') }} style={{ width: sc(14), aspectRatio: 1, marginHorizontal: sc(8) }} />
           <Text style={{ fontSize: sc(16), fontWeight: '600' }}>200</Text>
@@ -94,7 +97,7 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
           <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
           <FastImage source={{ uri: img_doy('星星_未激活(浅)@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(32) }} />
           <FastImage source={{ uri: img_doy('更多_小@3x') }} style={{ width: sc(6), aspectRatio: 6 / 10, marginRight: sc(16) }} />
-        </View>
+        </TouchableOpacity>
       }} />
       {/* 搜索无结果 */}
       {!v?.searchReults?.length && <View style={{ position: 'absolute', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
