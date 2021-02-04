@@ -28,5 +28,5 @@ export const appConfig = {
   isBgColorForMoneyVC: () => AppDefine.inSites('c134,test29'), // /**< 存款页面进去的底色为bg色   */
   isHomeWhiteBorder: () => AppDefine.inSites('c213,c012'), // 首页游戏cell加白边
   isShowOneLevel: () => AppDefine.inSites('c085'), //推荐收益只显示一级，
-
+  isHideButtion: () => AppDefine.inSites('c085,c084'), //推荐收益隐藏邀请码，
 }
