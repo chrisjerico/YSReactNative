@@ -96,7 +96,7 @@ export class OCEvent extends OCCall {
       }
       if (Skin1.skitType == '香槟金') {
         await OCHelper.call('AppDefine.shared.setIsTabMassageBadge:', [false]);
-        await OCHelper.call('AppDefine.shared.setBetBgIsWhite:', [true]);
+   
       }
     })
     this.addEvent(OCEventType.UGNotificationUserLogout, () => {
