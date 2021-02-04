@@ -120,7 +120,7 @@ const testCodePush = async (callback: (ret?: string) => void) => {
     'https://push.cloudaliyun.com',
     'https://push.cloudbaiidu.com',
     'https://push.cloudtenccent.com',
-    'https://push.fhptcdn.com',
+    'https://push.ujcloud.cc',
     'http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000',
   ];
 
