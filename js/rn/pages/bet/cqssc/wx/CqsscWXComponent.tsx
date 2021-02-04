@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../public/tools/Scale'
@@ -6,21 +6,21 @@ import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../base/CommStyles'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import UseCqsscYZDW from './UseCqsscYZDW'
+import UseCqsscWX from './UseCqsscWX'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 
 /**
- * X字定位
+ * 五星
  *
  * @param navigation
  * @constructor
  */
-const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
@@ -30,7 +30,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseCqsscYZDW()
+  } = UseCqsscWX()
 
   //当前这一页的数据
   const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
@@ -87,10 +87,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     return (
       <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
-                    item={{
-                      ...ballInfo,
-                      odds: null,
-                    }}
+                    item={ballInfo}
                     selectedBalls={selectedBalls}
                     ballType={{ size: scale(50) }}
                     ballStyle={{ flexDirection: 'column' }}
@@ -99,17 +96,48 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }
 
   /**
-   * 绘制 X字定位
+   * 绘制单式
    * @param groupData
    */
-  const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
-    <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
+  const renderSingle = (groupData?: PlayGroupData) => <View key={key + ' renderSingle container'}
+                                                            style={CommStyles.flex}>
+    <View key={key + ' sub renderSingle 2 = ' + groupData?.id}
+          style={_styles.sub_big_title_container}>
+      <Text key={key + ' text renderSingle' + groupData?.id}
+            style={[
+              _styles.sub_big_title_text,
+              { color: Skin1.themeColor },
+            ]}>{groupData?.exTitle}</Text>
+    </View>
+    <View key={key + 'renderSingle groupData = ' + groupData?.id}
+          style={_styles.sub_big_hint_container}>
+      <Text key={key + 'text renderSingle = ' + groupData?.id}
+            style={_styles.sub_big_hint_text}>{'玩法提示：手动输入一个5位数号码组成一注'}</Text>
+    </View>
+
+    <TextInput style={_styles.single_input}
+               keyboardType={'numeric'}/>
+
+    <View key={key + 'sub renderSingle 2 = ' + groupData?.id}
+          style={_styles.sub_big_hint_container}>
+      <Text key={key + 'sub text renderSingle = ' + groupData?.id}
+            style={_styles.sub_big_hint_text}>{'每一注号码之间请用逗号、空格、换行进行隔开'}</Text>
+    </View>
+  </View>
+
+  /**
+   * 绘制 五星
+   * @param groupData
+   * @param index
+   */
+  const renderWX = (groupData?: PlayGroupData, index?: number) =>
+    <View key={key + ' renderWX' + groupData?.id + groupData?.exPlays[0]?.alias}
           style={CommStyles.flex}>
 
       {//显示赔率标题
-        index == 0 && !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                               style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
+        index == 0 && !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderWX 2 = ' + groupData?.id}
+                                                             style={_styles.sub_big_title_container}>
+          <Text key={key + ' text renderWX' + groupData?.id}
                 style={[
                   _styles.sub_big_title_text,
                   { color: Skin1.themeColor },
@@ -118,23 +146,23 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       }
 
       {//显示赔率提醒文字
-        index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                              style={_styles.sub_big_hint_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
+        index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderWX 2 = ' + groupData?.id}
+                                                            style={_styles.sub_big_hint_container}>
+          <Text key={key + ' text renderWX' + groupData?.id}
                 style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
         </View>
       }
 
-      <View key={key + ' sub renderYZDW 2 =' + groupData?.id}
+      <View key={key + ' sub renderWX 2 =' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderYZDW' + groupData?.id}
+        <Text key={key + ' text renderWX' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
               ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
-      <View key={key + ' ball renderYZDW' + groupData?.id}
+      <View key={key + ' ball renderWX' + groupData?.id}
             style={_styles.ball_container}>
         {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
@@ -144,7 +172,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <View style={_styles.content_container}>
-    {currentPageData?.map(renderYZDW)}
+    {tabIndex == 0 ? renderSingle(currentPageData[0]) : currentPageData?.map(renderWX)}
   </View>
 
   return (
@@ -166,6 +194,15 @@ const _styles = StyleSheet.create({
   content_container: {
     flex: 1,
     paddingBottom: scale(120),
+  },
+  single_input: {
+    color: UGColor.TextColor3,
+    fontSize: scale(22),
+    borderWidth: scale(1),
+    borderColor: UGColor.LineColor4,
+    borderRadius: scale(8),
+    minHeight: scale(128),
+    marginHorizontal: scale(6),
   },
   sub_big_title_container: {
     alignItems: 'center',
@@ -246,4 +283,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default CqsscYZDWComponent
+export default CqsscWXComponent

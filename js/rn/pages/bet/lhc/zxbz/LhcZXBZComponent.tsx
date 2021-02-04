@@ -29,8 +29,10 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    currentPageData,
   } = UseLhcZXBZ()
+
+  //当前这一页的数据
+  const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
 
   useEffect(() => {
     setPlayOddData(playOddData)
@@ -93,7 +95,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'render all ball'}
                                     style={_styles.content_container}>
-    {!anyEmpty(currentPageData()) && renderLMA(currentPageData()[0])}
+    {!anyEmpty(currentPageData) && renderLMA(currentPageData[0])}
   </View>
 
   return (

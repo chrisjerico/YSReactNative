@@ -8,6 +8,7 @@ const sc = sc375
 
 // 背景渐变色样式
 export const DoyButton1 = (p: ButtonProps) => {
+  const { titleStyle, buttonStyle } = p
   return (
     <Button title='确认'
       ViewComponent={LinearGradient}
@@ -17,9 +18,9 @@ export const DoyButton1 = (p: ButtonProps) => {
         end: { x: 1, y: 0.5 },
       }}
       containerStyle={{ marginTop: sc(16) }}
-      titleStyle={{ fontSize: sc(16), fontWeight: '600' }}
       {...p}
-      buttonStyle={[{ height: sc(48) }, p?.buttonStyle]}
+      titleStyle={[{ fontSize: sc(16), fontWeight: '600' }, titleStyle]}
+      buttonStyle={[{ height: sc(48) }, buttonStyle]}
     />
   )
 }

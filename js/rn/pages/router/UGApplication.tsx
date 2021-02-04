@@ -136,18 +136,18 @@ import { DoyNoticeListPage } from '../../../doy/pages/通知/DoyNoticeListPage'
 import { DoyNoticeOrderFeedbackPage } from '../../../doy/pages/通知/DoyNoticeOrderFeedbackPage'
 import { DoyNoticeOrderPage } from '../../../doy/pages/通知/DoyNoticeOrderPage'
 import { DoyNoticeSentSuccessPage } from '../../../doy/pages/通知/DoyNoticeSentSuccessPage'
-import { DoyHomePage } from '../../../doy/pages/首页/DoyHomePage'
+import { DoyHomePage } from '../../../doy/pages/首页/首页/DoyHomePage'
 import { DoyMyOrderPage } from '../../../doy/pages/首页/我的订单/DoyMyOrderPage'
 import { DoySearchOrderPage } from '../../../doy/pages/首页/我的订单/DoySearchOrderPage'
 import { DoySearchReultPage } from '../../../doy/pages/首页/我的订单/DoySearchReultPage'
 import { DoyNotifySellerPage } from '../../../doy/pages/首页/我要买/DoyNotifySellerPage'
 import { DoyPendingPaymentPage } from '../../../doy/pages/首页/我要买/DoyPendingPaymentPage'
 import { DoySellOrderPage } from '../../../doy/pages/首页/我要买/DoySellOrderPage'
-import { DoyWantBuy } from '../../../doy/pages/首页/我要买/DoyWantBuy'
+import { DoyWantBuyPage } from '../../../doy/pages/首页/我要买/DoyWantBuyPage'
 import { DoySellOrderConfirmPage } from '../../../doy/pages/首页/我要卖/DoySellOrderConfirmPage'
 import { DoySetSellOrderPage } from '../../../doy/pages/首页/我要卖/DoySetSellOrderPage'
 import { DoyWantSellPage } from '../../../doy/pages/首页/我要卖/DoyWantSellPage'
-import { DoyReceiveCurrency } from '../../../doy/pages/首页/打币收币/DoyReceiveCurrency'
+import { DoyReceiveCurrencyPage } from '../../../doy/pages/首页/打币收币/DoyReceiveCurrencyPage'
 import { DoyTransferCurrencyPage } from '../../../doy/pages/首页/打币收币/DoyTransferCurrencyPage'
 import { DoyTransferSuccessPage } from '../../../doy/pages/首页/打币收币/DoyTransferSuccessPage'
 import { DoyScanPage } from '../../../doy/pages/首页/扫一扫/DoyScanPage'
@@ -156,6 +156,7 @@ import { DoyWalletRecordListPage } from '../../../doy/pages/首页/钱包记录/
 import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordSearchPage'
 import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
 import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
+import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
 
 
 /**
@@ -287,43 +288,44 @@ const pageComponents: { [key in PageName]?: Function } = {
   LLRegisterPage, //利来-注册
 
   // Doy钱包
-  DoyLoginPage,
-  DoyRegisterPage1,
-  DoyRegisterPage2,
-  DoyNickNamePage,
-  DoyPhoneNumberPage,
-  DoySelfIntroductionPage,
-  DoyUserInfoEditPage,
-  DoyUserInfoPage,
-  DoyChangeLoginPwdPage,
-  DoyChangePayPwdPage,
-  DoyMyCommentPage,
-  DoyPaymentChannlPage,
-  DoyPaymentEditPage,
-  DoyMinePage,
-  DoyChatDetailPage,
-  DoyChatListPage,
-  DoyNoticeListPage,
-  DoyNoticeOrderFeedbackPage,
-  DoyNoticeOrderPage,
-  DoyNoticeSentSuccessPage,
-  DoyMyOrderPage,
-  DoySearchOrderPage,
-  DoySearchReultPage,
-  DoyNotifySellerPage,
-  DoyPendingPaymentPage,
-  DoySellOrderPage,
-  DoyWantBuy,
-  DoySellOrderConfirmPage,
-  DoySetSellOrderPage,
-  DoyWantSellPage,
-  DoyReceiveCurrency,
-  DoyTransferCurrencyPage,
-  DoyTransferSuccessPage,
-  DoyScanPage,
-  DoyWalletRecordDetailPage,
-  DoyWalletRecordListPage,
-  DoyWalletRecordSearchPage,
+  DoyLaunchPage,  // doy启动页
+  DoyLoginPage,//doy登录页
+  DoyRegisterPage1,//doy注册步骤1
+  DoyRegisterPage2,//doy注册步骤2
+  DoyNickNamePage,//doy修改昵称
+  DoyPhoneNumberPage,//doy修改手机号
+  DoySelfIntroductionPage,//doy
+  DoyUserInfoEditPage,//doy编辑个人资料
+  DoyUserInfoPage,//doy个人资料
+  DoyChangeLoginPwdPage,//doy修改登录密码
+  DoyChangePayPwdPage,//doy修改支付密码
+  DoyMyCommentPage,//doy我的评论
+  DoyPaymentChannlPage,//doy收付款方式
+  DoyPaymentEditPage,//doy编辑收付款方式
+  DoyMinePage,//doy我的页
+  DoyChatDetailPage,//doy聊天页
+  DoyChatListPage,//doy聊天列表
+  DoyNoticeListPage,//doy通知列表
+  DoyNoticeOrderFeedbackPage,//doy通知评价卖方
+  DoyNoticeOrderPage,//doy通知订单页
+  DoyNoticeSentSuccessPage,//doy通知doy支付成功页
+  DoyMyOrderPage,//doy我的订单
+  DoySearchOrderPage,//doy查询订单
+  DoySearchReultPage,//doy订单查询结果
+  DoyNotifySellerPage,//doy告诉卖方
+  DoyPendingPaymentPage,//doy待付款
+  DoySellOrderPage,//doy卖方订单
+  DoyWantBuyPage,//doy我想买
+  DoySellOrderConfirmPage,//doy确认卖单设置
+  DoySetSellOrderPage,//doy设置卖单
+  DoyWantSellPage,//doy我想卖
+  DoyReceiveCurrencyPage,//doy收币
+  DoyTransferCurrencyPage,//doy打币
+  DoyTransferSuccessPage,//doy打币成功
+  DoyScanPage,//doy扫一扫
+  DoyWalletRecordDetailPage,//doy钱包记录详情
+  DoyWalletRecordListPage,//doy钱包记录列表
+  DoyWalletRecordSearchPage,//doy钱包记录查询
   DoyHomePage,
 }
 

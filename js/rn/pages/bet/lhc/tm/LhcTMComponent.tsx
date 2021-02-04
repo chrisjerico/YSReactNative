@@ -33,8 +33,10 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setSelectedBalls,
     addOrRemoveZodiac,
     addOrRemoveBall,
-    currentPageData,
   } = UseLhcTM()
+
+  //当前这一页的数据
+  const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
 
   useEffect(() => {
     setPlayOddData(playOddData)
@@ -207,9 +209,9 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {arrayLength(currentPageData()) > 0 && renderTM(currentPageData()[0])}
-    {arrayLength(currentPageData()) > 1 && renderLM(currentPageData()[1])}
-    {arrayLength(currentPageData()) > 2 && renderSB(currentPageData()[2])}
+    {arrayLength(currentPageData) > 0 && renderTM(currentPageData[0])}
+    {arrayLength(currentPageData) > 1 && renderLM(currentPageData[1])}
+    {arrayLength(currentPageData) > 2 && renderSB(currentPageData[2])}
   </View>
 
   return (

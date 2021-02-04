@@ -29,8 +29,10 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    currentPageData,
   } = UseCqssc1T5()
+
+  //当前这一页的数据
+  const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
 
   useEffect(() => {
     setPlayOddData(playOddData)
@@ -102,7 +104,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {currentPageData()?.map(renderGroupERect)}
+    {currentPageData?.map(renderGroupERect)}
   </View>
 
   return (

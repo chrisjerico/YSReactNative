@@ -11,7 +11,7 @@ import { PlayData, PlayGroupData } from '../../../../public/network/Model/lotter
 import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import LotteryERect from '../../widget/LotteryERect'
 import LotteryLineEBall from '../../widget/LotteryLineEBall'
-import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
@@ -22,8 +22,7 @@ import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
  * @param navigation
  * @constructor
  */
-const
-  LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
@@ -33,8 +32,10 @@ const
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-    currentPageData,
   } = UseLhcPTYX()
+
+  //当前这一页的数据
+  const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
 
   useEffect(() => {
     setPlayOddData(playOddData)
@@ -69,7 +70,7 @@ const
    * 绘制tab，只有1个数据不绘制Tab
    */
   const renderTab = () => arrayLength(playOddData?.pageData?.groupTri) > 1 && <View key={key + 'renderTab'}
-                                                             style={_styles.tab_title_container}>
+                                                                                    style={_styles.tab_title_container}>
     <ScrollView key={key + 'sv'}
                 style={_styles.sv_tab_container}
                 showsHorizontalScrollIndicator={false}
@@ -166,19 +167,19 @@ const
    * 绘制全部的球
    */
   const renderAllBall = () => {
-    if (arrayLength(currentPageData()) == 1) {
+    if (arrayLength(currentPageData) == 1) {
       return (
         <View key={key + 'renderAllBall'}
               style={_styles.content_container}>
-          {renderLineBall(currentPageData()[0])}
+          {renderLineBall(currentPageData[0])}
         </View>
       )
-    } else if (arrayLength(currentPageData()) == 2) {
+    } else if (arrayLength(currentPageData) == 2) {
       return (
         <View key={key + 'renderAllBall'}
               style={_styles.content_container}>
-          {renderAllRect(currentPageData()[0])}
-          {renderLineBall(currentPageData()[1])}
+          {renderAllRect(currentPageData[0])}
+          {renderLineBall(currentPageData[1])}
         </View>
       )
     }

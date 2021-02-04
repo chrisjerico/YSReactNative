@@ -41,6 +41,7 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
 
   const { title, c_ref, leftComponent, back = true, hideUnderline, gradientColor, backgroundColor, backIconColor } = props
   const [, setState] = useState({})
+  const isDoy = skin1?.skitType == 'doyWallet'
 
   useEffect(() => {
     c_ref && (c_ref.setNavBarProps = (p) => {
@@ -54,7 +55,7 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
     Object.assign(v, {
       centerComponent: {
         text: title,
-        style: { color: 'white', fontSize: 18 },
+        style: { color: 'white', fontSize: 18, fontWeight: isDoy ? '800' : '400' },
       },
     })
   }
@@ -71,16 +72,18 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
   }
 
   // 渐变色
+  let colors = gradientColor
   if (!gradientColor && !backgroundColor) {
-    Object.assign(v, deepMergeProps(v, {
-      ViewComponent: LinearGradient,
-      linearGradientProps: {
-        colors: skin1.navBarBgColor,
-        start: { x: 0, y: 1 },
-        end: { x: 1, y: 1 },
-      },
-    }))
+    colors = skin1.navBarBgColor
   }
+  colors && Object.assign(v, deepMergeProps(v, {
+    ViewComponent: LinearGradient,
+    linearGradientProps: {
+      colors: colors,
+      start: { x: 0, y: 1 },
+      end: { x: 1, y: 1 },
+    },
+  }))
 
   return <Header {...v} style={{ height: 100 }} containerStyle={{ paddingTop: useSafeArea()?.top - 2, height: useSafeArea()?.top + 45 }} />
 }
@@ -89,8 +92,8 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
 
 // 返回按钮
 const BackButton = ({ style, backIconColor }: { style: StyleProp<ViewStyle>, backIconColor: string }) => {
-  const isDoy = skin1?.skitType?.indexOf('doyWallet')
-  const icon = !isDoy ? { name: 'arrowleft', type: 'antdesign', size: sc375(25) } : { name: 'ios-arrow-back', type: 'ionicon' }
+  const isDoy = skin1?.skitType == 'doyWallet'
+  const icon = isDoy ? { name: 'arrowleft', type: 'antdesign', size: sc375(25) } : { name: 'ios-arrow-back', type: 'ionicon' }
   return (
     <Button
       icon={{ ...icon, color: backIconColor ?? 'white' }}

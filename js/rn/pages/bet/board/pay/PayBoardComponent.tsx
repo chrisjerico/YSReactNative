@@ -5,16 +5,18 @@ import { forwardRef, useMemo } from 'react'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import {LhcCode} from '../../const/LotteryConst'
+import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { anyEmpty, dicNull } from '../../../../public/tools/Ext'
-import { calculateItemCount, gatherSelectedItems } from '../tl/BetUtil'
+import { calculateItemCount, gatherSelectedItems } from '../tools/BetUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { LotteryResultData } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
+import { combineEZDWArray } from '../tools/ezdw/BetEZDWUtil'
+import { showLoading } from '../../../../public/widget/UGLoadingCP'
 
 interface IPayBoardComponent {
   showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
@@ -76,15 +78,14 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                 //Map<string, Map<string, Map<string, SelectedPlayModel>>>
                 const newSelectedData = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
 
-                //注释以特码为例
-                for(const [key1, value1] of Object.entries(selectedData)) {
+                for (const [key1, value1] of Object.entries(selectedData)) {
                   newSelectedData[key1] = value1
-                  for(const [key2, value2] of Object.entries(value1)) {
+                  for (const [key2, value2] of Object.entries(value1)) {
                     value1[key2] = value2
-                    for(const [key3, value3] of Object.entries(value2)) {
+                    for (const [key3, value3] of Object.entries(value2)) {
                       value2[key3] = {
                         ...value3,
-                        plays: value3?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData))
+                        plays: value3?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData)),
 
                       } as SelectedPlayModel
                     }
@@ -156,7 +157,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LhcCode.ZM1_6: //正码1T6
         case LhcCode.SB: //色波
         case LhcCode.ZOX://总肖
-        case LhcCode.WX:  //五行
+        case LhcCode.WX:  //五行 或 五星
         case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         case LhcCode.TX: //特肖
         case LhcCode.ZX: //正肖
@@ -164,6 +165,17 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         case LhcCode.LX: //连肖
         case LhcCode.LW: //连尾
+        case CqsscCode.ALL:  //1-5球
+        case CqsscCode.Q1:  //第1球
+        case CqsscCode.Q2:  //第2球
+        case CqsscCode.Q3:  //第3球
+        case CqsscCode.Q4:  //第4球
+        case CqsscCode.Q5:  //第5球
+        case CqsscCode.QZH:  //前中后
+        case CqsscCode.DN:  //斗牛
+        case CqsscCode.SH:  //梭哈
+        case CqsscCode.LHD:  //龙虎斗
+        case CqsscCode.YZDW:  //一字定位
           return renderTMItem(lotteryCode, selModel)
 
         case LhcCode.HX://合肖
@@ -172,8 +184,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
         case LhcCode.LMA:  //连码
         case LhcCode.ZXBZ:  //自选不中
-          return renderHXItem(selModel,
-            selModel?.plays?.map((item) => item?.name)?.toString())
+          return renderHXItem(selModel, combineEZDWArray(selModel)?.toString())
       }
 
 
@@ -228,15 +239,17 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                   onPress={() => showCallback && showCallback()}>{'取消'}</Text>
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
-                  onPress={() =>
+                  onPress={() => {
+                    showLoading()
                     startBetting().then((data) => {
                       if (nextIssueData?.isInstant == '1') {//秒秒彩
                         showCallback(data?.data)
                       } else {
-                       (Toast(data?.msg))
+                        (Toast(data?.msg))
                         showCallback()
                       }
-                    })}>{'确定'}</Text>
+                    })
+                  }}>{'确定'}</Text>
           </View>
         </View>
       </Modal>
