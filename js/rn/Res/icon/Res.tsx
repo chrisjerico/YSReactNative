@@ -142,4 +142,5 @@ export const Res = {
   back_home: img_assets('back_home'),
   //紅包
   redBg: img_root('web/static/vueTemplate/vue/images/my/red_pack_big'),
+  closeDialog: img_assets('dialog/dialog_close'),
 }

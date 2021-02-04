@@ -57,6 +57,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
           // 红包
           PushHelper.pushRedBag(redBag)
         }}
+        redBag={redBag}
       />
       <ActivityComponent
         refreshing={refreshing}
