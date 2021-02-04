@@ -10,20 +10,19 @@ import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryM
 import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
 
 /**
- * 下注辅助类
- */
-
-/**
  * 计算彩票下注时候，选中的条目数量是否符合要求
  *
  * @param showMsg 显示提示语
  */
 const checkBetCount = (showMsg?: boolean): boolean => {
-  const currentPlayGroupData = UGStore.globalProps?.currentPlayGroupData //当前界面
-  const currentPlayOddData = UGStore.globalProps?.currentPlayOddData //当前彩种
+  const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前彩种
+  const currentPlayGroupData = currentPlayOddData?.pageData?.groupTri[UGStore.globalProps?.lotteryTabIndex] //当前界面
   const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //选中的数据
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
 
+  ugLog('UGStore.globalProps?.lotteryTabIndex = ', UGStore.globalProps?.lotteryTabIndex)
+  ugLog('currentPlayOddData?.pageData?.groupTri = ', JSON.stringify(currentPlayOddData?.pageData?.groupTri))
+  ugLog('currentPlayGroupData = ', JSON.stringify(currentPlayGroupData))
   ugLog('checkBetCount selectedData', JSON.stringify(keys))
   if (anyEmpty(keys)) {
     Toast('请选择玩法')
@@ -94,7 +93,38 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       }
         break
       case LhcCode.LMA:  //连码
+        for (let data of currentPlayGroupData) {
+          const selCount = filterSelectedSubData(key, data?.alias, selectedData)
+          ugLog('selCount = ', selCount, key, data?.alias)
+          if (selCount <= 0) {
+            Toast(`请选择${data?.alias}数据`)
+            return
+          }
+          switch (data?.alias) {
+            case '二全中':
+            case '二中特':
+            case '特串':
+              if (selCount < 2) {
+                Toast(`${data?.alias}需要选择至少2个数据`)
+                return
+              }
+              break
+            case '三全中':
+            case '三中二':
+              if (selCount < 3) {
+                Toast(`${data?.alias}需要选择至少3个数据`)
+                return
+              }
+              break
+            case '四全中':
+              if (selCount < 4) {
+                Toast(`${data?.alias}需要选择至少4个数据`)
+                return
+              }
+              break
 
+          }
+        }
         break
 
       case LhcCode.ZXBZ:  //自选不中

@@ -33,8 +33,8 @@ export interface IGlobalState {
 
   //下注
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
-  currentPlayGroupData?: Array<PlayGroupData> //当前选中的彩种界面数据 二字定位 -> 万千
-  currentPlayOddData?: PlayOddData //当前选中的彩种数据 特码 两面 等
+  lotteryTabIndex?: number //当前的彩种处于哪一页
+  currentColumnIndex?: number //当前彩种栏目索引
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
@@ -63,8 +63,8 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 
     //彩票数据
     act.lotteryId && (state.lotteryId = act.lotteryId)
-    act.currentPlayGroupData && (state.currentPlayGroupData = act.currentPlayGroupData)
-    act.currentPlayOddData && (state.currentPlayOddData = act.currentPlayOddData)
+    act.lotteryTabIndex >= 0 && (state.lotteryTabIndex = act.lotteryTabIndex)
+    act.currentColumnIndex >= 0 && (state.currentColumnIndex = act.currentColumnIndex)
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
     act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
@@ -76,8 +76,6 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.banner = { ...state.banner, ...act.banner }
 
     //彩票数据
-    state.currentPlayGroupData = { ...state.currentPlayGroupData, ...act.currentPlayGroupData }
-    state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
     state.selectedLotteryModel = mergeObject(state.selectedLotteryModel, act.selectedLotteryModel)
@@ -108,8 +106,8 @@ export interface UGAction<P = {}> extends Action {
 
   //彩票数据
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
-  currentPlayGroupData?: Array<PlayGroupData> //当前选中的彩种界面数据 二字定位 -> 万千
-  currentPlayOddData?: PlayOddData //当前选中的彩种数据
+  lotteryTabIndex?: number //当前的彩种处于哪一页
+  currentColumnIndex?: number //当前彩种栏目索引
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个

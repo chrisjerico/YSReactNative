@@ -15,6 +15,7 @@ import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { findZodiacByName } from '../../util/LotteryUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
@@ -52,7 +53,10 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     return <TouchableWithoutFeedback
       key={key + 'tab' + index + item[0]?.id}
       style={CommStyles.flex}
-      onPress={() => setTabIndex(index)}>
+      onPress={() => {
+        UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+        setTabIndex(index)
+      }}>
       <View key={key + 'tab' + index + item[0]?.id}
             style={[
               _styles.tab_item,

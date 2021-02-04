@@ -12,6 +12,7 @@ import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 
 /**
@@ -43,7 +44,10 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number) =>
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
+                              onPress={() => {
+                                UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+                                setTabIndex(index)
+                              }}>
       <View key={key + item[0]?.alias}
             style={[
               _styles.tab_item,
@@ -108,7 +112,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       {//显示赔率标题
         index == 0 && !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                               style={_styles.sub_big_title_container}>
+                                                             style={_styles.sub_big_title_container}>
           <Text key={key + ' text renderYZDW' + groupData?.id}
                 style={[
                   _styles.sub_big_title_text,
@@ -119,7 +123,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       {//显示赔率提醒文字
         index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                              style={_styles.sub_big_hint_container}>
+                                                            style={_styles.sub_big_hint_container}>
           <Text key={key + ' text renderYZDW' + groupData?.id}
                 style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
         </View>

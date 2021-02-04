@@ -26,9 +26,9 @@ const combineOddsName = (plays?: Array<PlayData>): string => {
  * 退出的时候清除彩票数据
  */
 const clearLotteryData = () => {
-  UGStore.dispatch({ type: 'reset', lotteryId: '-1' })
-  UGStore.dispatch({ type: 'reset', currentPlayGroupData: [] })
-  UGStore.dispatch({ type: 'reset', currentPlayOddData: {} })
+  UGStore.dispatch({ type: 'reset', lotteryId: null })
+  UGStore.dispatch({ type: 'reset', lotteryTabIndex: 0 })
+  UGStore.dispatch({ type: 'reset', currentColumnIndex: 0 })
   UGStore.dispatch({ type: 'reset', nextIssueData: {} })
   UGStore.dispatch({ type: 'reset', playOddDetailData: {} })
   UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
@@ -84,7 +84,7 @@ const filterSelectedSubData = (code?: string, alias?: string, selectedData?: Map
       for (let value2 of Object.values(selectedData[key1])) {// 如 二字定位的 万千、万百、百十
         for (let value3 of Object.values(value2)) {// 万定位 千定位
           const sel: SelectedPlayModel = value3
-          if (code == sel?.code && !anyEmpty(sel?.plays) && sel?.plays[0]?.alias == alias) {
+          if (code == sel?.code && !anyEmpty(sel?.plays) && (sel?.plays[0]?.alias == alias || sel?.playGroups?.alias == alias)) {
             return arrayLength(sel?.zodiacs) + arrayLength(sel?.plays)
           }
         }

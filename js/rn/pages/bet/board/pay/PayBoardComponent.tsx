@@ -18,6 +18,8 @@ import { LotteryResultData } from '../../../../public/network/Model/lottery/resu
 import { combineEZDWArray, filterPlayData } from '../tools/ezdw/BetEZDWUtil'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
 import { zodiacPlayX } from '../tools/hx/BetHXUtil'
+import { Play } from '../../../../public/network/Model/PlayOddDataModel'
+import { playDataX } from '../tools/zxbz/BetZXBZUtil'
 
 interface IPayBoardComponent {
   showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
@@ -94,13 +96,12 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   }
 
   /**
-   * 绘制合肖等数据
+   * 绘制连码等数据
    * @param selModel
+   * @param playX
    * @param des
    */
-  const renderHXItem = (selModel?: SelectedPlayModel,
-                        des?: string) => {
-    const playX = zodiacPlayX(selModel)
+  const renderLMAItem = (selModel?: SelectedPlayModel, playX?: PlayData, des?: string) => {
     return (<View key={playX?.id + playX?.name}
                   style={_styles.item_container}>
       <Text style={_styles.item_title}
@@ -126,7 +127,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             color={Skin1.themeColor}
             name={'trash-o'}/>
     </View>)
-
   }
 
   const itemViewArr = selectedCombineData == null ? null : selectedCombineData?.map((selModel, index) => {
@@ -161,12 +161,16 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         return renderTMItem(selModel)
 
       case LhcCode.HX://合肖
-        return renderHXItem(selModel,
+        return renderLMAItem(selModel, zodiacPlayX(selModel),
           selModel?.zodiacs?.map((item) => item?.name)?.toString())
 
       case LhcCode.LMA:  //连码
+        return renderLMAItem(selModel, selModel?.plays[0],
+          combineEZDWArray(selModel)?.toString())
+
       case LhcCode.ZXBZ:  //自选不中
-        return renderHXItem(selModel, combineEZDWArray(selModel)?.toString())
+        return renderLMAItem(selModel, playDataX(selModel),
+          combineEZDWArray(selModel)?.toString())
     }
 
   }).flat(Infinity)

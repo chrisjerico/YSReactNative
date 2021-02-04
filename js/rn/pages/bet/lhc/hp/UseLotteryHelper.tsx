@@ -24,7 +24,7 @@ import { doubleDigit } from '../../../../public/tools/StringUtil'
 const UseLotteryHelper = () => {
 
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
-  const currentPlayOddData = UGStore.globalProps?.currentPlayOddData //当前选中的彩种数据 特码 两面 等
+  const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前选中的彩种数据 特码 两面 等
   // const selectedLotteryModel = UGStore.globalProps?.selectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
@@ -156,7 +156,7 @@ const UseLotteryHelper = () => {
     tabIndex < arrayLength(playOddData?.pageData?.groupTri) ? playOddData?.pageData?.groupTri[tabIndex] : []
 
   useEffect(() => {
-    UGStore.dispatch({ type: 'reset', currentPlayGroupData: currentPageData() })
+    UGStore.dispatch({ type: 'reset', lotteryTabIndex: tabIndex })
   }, [tabIndex])
 
   /**

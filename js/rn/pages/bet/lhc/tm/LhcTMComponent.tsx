@@ -14,6 +14,7 @@ import LotteryERect from '../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 /**
  * 六合彩特码
@@ -53,8 +54,11 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
             tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
           ]}>
       <TouchableWithoutFeedback key={key + 'renderTabItem Text'}
-                        onPress={() => setTabIndex(tab)}
-                        style={_styles.tab_title_tb}>
+                                onPress={() => {
+                                  UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+                                  setTabIndex(tab)
+                                }}
+                                style={_styles.tab_title_tb}>
         <Text key={key + 'renderTabItem Text'}
               style={[
                 _styles.tab_title,
@@ -77,8 +81,9 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderZodiacItem = (item?: ZodiacNum, index?: number) => <TouchableWithoutFeedback key={key + `${item?.name}_select`}
-                                                                                   onPress={() => addOrRemoveZodiac(item)}>
+  const renderZodiacItem = (item?: ZodiacNum, index?: number) => <TouchableWithoutFeedback
+    key={key + `${item?.name}_select`}
+    onPress={() => addOrRemoveZodiac(item)}>
     <View key={key + `${item?.name}_select`}
           style={_styles.zodiac_item}>
       {
@@ -117,20 +122,22 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={`${key}-LotteryEBall-${item?.exId}-${item?.id}`}
-                                                                         item={item}
-                                                                         selectedBalls={selectedBalls}
-                                                                         callback={() => addOrRemoveBall(item?.exId)}/>
+  const renderERect = (item?: PlayData, index?: number) => <LotteryERect
+    key={`${key}-LotteryEBall-${item?.exId}-${item?.id}`}
+    item={item}
+    selectedBalls={selectedBalls}
+    callback={() => addOrRemoveBall(item?.exId)}/>
 
   /**
    * 绘制 球
    * @param item
    * @param index
    */
-  const renderEBall = (item?: PlayData, index?: number) => <LotteryEBall key={`${key}-LotteryEBall-${item?.exId}-${item?.id}`}
-                                                                         item={item}
-                                                                         selectedBalls={selectedBalls}
-                                                                         callback={() => addOrRemoveBall(item?.exId)}/>
+  const renderEBall = (item?: PlayData, index?: number) => <LotteryEBall
+    key={`${key}-LotteryEBall-${item?.exId}-${item?.id}`}
+    item={item}
+    selectedBalls={selectedBalls}
+    callback={() => addOrRemoveBall(item?.exId)}/>
 
   /**
    * 绘制 特码B/A

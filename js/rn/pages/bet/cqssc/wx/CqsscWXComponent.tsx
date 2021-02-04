@@ -12,6 +12,7 @@ import { anyEmpty } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 
 /**
@@ -43,7 +44,10 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number) =>
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
+                              onPress={() => {
+                                UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+                                setTabIndex(index)
+                              }}>
       <View key={key + item[0]?.alias}
             style={[
               _styles.tab_item,

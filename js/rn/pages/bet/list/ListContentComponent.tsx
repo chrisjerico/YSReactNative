@@ -48,12 +48,10 @@ const ListContentComponent = () => {
           playOddDetailData?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
                                              onPress={() => {
-                                               UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
                                                UGStore.dispatch({
-                                                 type: 'reset',
-                                                 currentPlayOddData: playOddDetailData?.playOdds[leftColumnIndex],
+                                                 type: 'reset', selectedLotteryModel: {},
+                                                 currentColumnIndex: index,
                                                })
-
                                                setLeftColumnIndex(index)
                                              }}>
               <View key={'renderLeftColumn' + item?.code}
@@ -99,18 +97,18 @@ const ListContentComponent = () => {
       case LhcCode.TM:  //特码
         return <LhcTMComponent key={targetLotteryCode}
                                playOddData={targetPlayOdds}
-                               style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                               style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
       case LhcCode.ZM: //正码
       case LhcCode.ZT:  //正特
         return <LhcZTComponent key={targetLotteryCode}
                                playOddData={targetPlayOdds}
-                               style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                               style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
       case LhcCode.LMA:  //连码
         return <LhcLMAComponent key={targetLotteryCode}
                                 playOddData={targetPlayOdds}
-                                style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                                style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
       case LhcCode.LM: //两面
       case LhcCode.ZM1_6: //正码1T6
@@ -122,7 +120,7 @@ const ListContentComponent = () => {
       case CqsscCode.LHD:  //龙虎斗
         return <LhcSBComponent key={targetLotteryCode}
                                playOddData={targetPlayOdds}
-                               style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                               style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
       case CqsscCode.ALL:  //1-5球
       case CqsscCode.Q1:  //第1球
@@ -132,7 +130,7 @@ const ListContentComponent = () => {
       case CqsscCode.Q5:  //第5球
         return <Cqssc1T5Component key={targetLotteryCode}
                                   playOddData={targetPlayOdds}
-                                  style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                                  style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
       case CqsscCode.YZDW:  //一字定位
       case CqsscCode.EZDW:  //二字定位
@@ -140,24 +138,24 @@ const ListContentComponent = () => {
       case CqsscCode.BDW:  //不定位
         return <CqsscYZDWComponent key={targetLotteryCode}
                                    playOddData={targetPlayOdds}
-                                   style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                                   style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
       case CqsscCode.DWD:  //定位胆
         // ugLog('playOdds = ', JSON.stringify(playOdds))
         return <CqsscDWDComponent key={targetLotteryCode}
                                   playOddData={targetPlayOdds}
-                                  style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                                  style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
 
       case LhcCode.WX:
         if (gameType == LCode.lhc) { //五行
           return <LhcSBComponent key={targetLotteryCode}
                                  playOddData={targetPlayOdds}
-                                 style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                                 style={isEqual ? CommStyles.flex : { display: 'none' }}/>
         } else if (gameType == LCode.cqssc) { //五星
           return <CqsscWXComponent key={targetLotteryCode}
                                    playOddData={targetPlayOdds}
-                                   style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                                   style={isEqual ? CommStyles.flex : { display: 'none' }}/>
         }
         break
 
@@ -170,17 +168,17 @@ const ListContentComponent = () => {
       case LhcCode.ZX:  //正肖
         return <LhcPTYXComponent key={targetLotteryCode}
                                  playOddData={targetPlayOdds}
-                                 style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                                 style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
       case LhcCode.HX:  //合肖
         return <LhcHXComponent key={targetLotteryCode}
                                playOddData={targetPlayOdds}
-                               style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                               style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
       case LhcCode.ZXBZ:  //自选不中
         return <LhcZXBZComponent key={targetLotteryCode}
                                  playOddData={targetPlayOdds}
-                                 style={isEqual ? CommStyles.flex : {display: 'none'}}/>
+                                 style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
     }
 
@@ -241,7 +239,7 @@ const ListContentComponent = () => {
       case CqsscCode.SZDW:  //三字定位
       case CqsscCode.BDW:  //不定位
         return <CqsscYZDWComponent key={lotteryCode}
-                                  playOddData={playOdds}/>
+                                   playOddData={playOdds}/>
 
       case CqsscCode.DWD:  //定位胆
         // ugLog('playOdds = ', JSON.stringify(playOdds))
@@ -255,7 +253,7 @@ const ListContentComponent = () => {
                                  playOddData={playOdds}/>
         } else if (gameType == LCode.cqssc) { //五星
           return <CqsscWXComponent key={lotteryCode}
-                                     playOddData={playOdds}/>
+                                   playOddData={playOdds}/>
         }
         break
 

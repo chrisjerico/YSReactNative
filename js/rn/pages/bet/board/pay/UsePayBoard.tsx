@@ -30,7 +30,7 @@ import { combineOddsName } from '../../util/LotteryUtil'
  */
 const UsePayBoard = () => {
 
-  const currentPlayOddData = UGStore.globalProps?.currentPlayOddData//当前彩种数据
+  const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex]//当前彩种数据
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
@@ -147,12 +147,10 @@ const UsePayBoard = () => {
         {
           const groupPlay0 = selModel?.playGroups?.plays[0]
           const play0 = selModel?.plays[0]
-          ugLog('moneyMap = ', JSON.stringify(moneyMap))
-          ugLog('selModel = ', JSON.stringify(selModel))
           betBean.push({
             money: numberToFloatString(moneyMap[play0?.exId ?? play0?.id]),
             playId: groupPlay0?.id,
-            odds: combineOddsName(selModel?.playGroups?.plays),
+            // odds: combineOddsName(selModel?.playGroups?.plays),
             playIds: nextIssueData?.id,
             betInfo: combineEZDWArray(selModel).toString(),
           } as BetLotteryData)

@@ -20,8 +20,9 @@ import { PlayData, PlayGroupData } from '../../../../public/network/Model/lotter
 import { arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall from '../../widget/LotteryEBall'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 /**
  * 六合彩 正特 正码 等等
@@ -50,8 +51,12 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }, [])
   const key = 'lottery page' + playOddData?.code
 
-  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableWithoutFeedback key={key + item[0]?.alias}
-                                                                                         onPress={() => setTabIndex(index)}>
+  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableWithoutFeedback
+    key={key + item[0]?.alias}
+    onPress={() => {
+      UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+      setTabIndex(index)
+    }}>
     <View key={key + item[0]?.id}
           style={[
             _styles.tab_item,
@@ -69,7 +74,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制tab，只有1个数据不绘制Tab
    */
   const renderTab = () => arrayLength(playOddData?.pageData?.groupTri) > 1 && <View key={key + 'tab'}
-                                                             style={_styles.tab_title_container}>
+                                                                                    style={_styles.tab_title_container}>
     <ScrollView key={key + 'sv'}
                 style={_styles.sv_tab_container}
                 showsHorizontalScrollIndicator={false}
@@ -139,7 +144,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + ' sub renderZT2' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderZT2' +  + groupData?.id}
+      <Text key={key + ' sub renderZT2' + +groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
@@ -240,7 +245,7 @@ const _styles = StyleSheet.create({
     borderRadius: scale(8),
     paddingVertical: scale(8),
     paddingHorizontal: scale(30),
-    backgroundColor: 'red'
+    backgroundColor: 'red',
   },
   tab_title_item_text: {
     color: UGColor.TextColor3,
