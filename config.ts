@@ -2,7 +2,7 @@ import { UGSkinType1 } from './js/rn/public/theme/const/UGSkinConf'
 import { isTest } from './js/rn/public/config/CodePushKeys'
 import AppDefine from './js/rn/public/define/AppDefine'
 
-// 调试环境配置
+// 调试环境配置1
 export const devConfig = {
   isDebug: __DEV__, // 是否本地环境
   isTest: () => {
