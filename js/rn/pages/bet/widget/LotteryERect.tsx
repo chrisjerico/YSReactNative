@@ -49,7 +49,7 @@ const LotteryERect = ({
                    UGColor.TextColor6 :
                    UGColor.TextColor7,
                }}
-               odds={item?.odds}
+               odds={item?.enable != '0' ? item?.odds : '- -'}
                oddsStyle={{
                  color: isSel ?
                    UGColor.TextColor6 :

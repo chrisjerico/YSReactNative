@@ -194,30 +194,33 @@ const UseLotteryHelper = () => {
   /**
    * 添加或移除选中的球
    * @param ballId 球的ID
+   * @param groupEnable 当前页是否开启
+   * @param ballEnable 当前的球是否开启; 有的球没有该数据，只能依靠 groupEnable 来判断
    */
-  const addOrRemoveBall = (ballId?: string) => {
-    //重组数字
-    if (isSelectedBallOnId(selectedBalls, ballId)) {
-      forceRemove(ballId)
+  const addOrRemoveBall = (ballId?: string, groupEnable?: string, ballEnable?: string) => {
+    if (ballEnable != '0' && groupEnable == '1') {
+      if (isSelectedBallOnId(selectedBalls, ballId)) {
+        forceRemove(ballId)
 
-    } else {
-      //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
-      switch (playOddData?.code) {
-        case LhcCode.HX:  //合肖 最多只能选中11个
-          if (arrayLength(selectedBalls) > 10) {
-            Toast('合肖请选择2到11个选项')
-            return
-          }
-          break
-        case LhcCode.ZXBZ:  //自选不中 最多只能选中12个
-          if (arrayLength(selectedBalls) > 11) {
-            Toast('自选不中请选择5到12个选项')
-            return
-          }
-          break
+      } else {
+        //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
+        switch (playOddData?.code) {
+          case LhcCode.HX:  //合肖 最多只能选中11个
+            if (arrayLength(selectedBalls) > 10) {
+              Toast('合肖请选择2到11个选项')
+              return
+            }
+            break
+          case LhcCode.ZXBZ:  //自选不中 最多只能选中12个
+            if (arrayLength(selectedBalls) > 11) {
+              Toast('自选不中请选择5到12个选项')
+              return
+            }
+            break
+        }
+
+        forceAdd(ballId)
       }
-
-      forceAdd(ballId)
     }
   }
 

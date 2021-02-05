@@ -43,16 +43,17 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 生肖和球
    * @param item
+   * @param zodiac
    * @param index
    */
-  const renderEBall = (item?: ZodiacNum, index?: number) => <LotteryLineEBall key={key + 'renderEBall' + item?.id}
+  const renderEBall = (item?: PlayGroupData, zodiac?: ZodiacNum, index?: number) => <LotteryLineEBall key={key + 'renderEBall' + zodiac?.id}
                                                                               item={{
-                                                                                id: item?.id,
-                                                                                name: item?.name,
-                                                                                zodiacItem: item,
+                                                                                id: zodiac?.id,
+                                                                                name: zodiac?.name,
+                                                                                zodiacItem: zodiac,
                                                                               }}
                                                                               selectedBalls={selectedBalls}
-                                                                              callback={() => addOrRemoveBall(item?.id)}/>
+                                                                              callback={() => addOrRemoveBall(zodiac?.id, item?.enable)}/>
   /**
    * 绘制 一行球
    * @param groupData
@@ -76,7 +77,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + 'renderLineBall sub' + groupData?.id}
             style={_styles.ball_container}>
-        { playOddData?.pageData?.zodiacNums?.map(renderEBall) }
+        { playOddData?.pageData?.zodiacNums?.map((item, index) => renderEBall(groupData, item, index)) }
       </View>
     </View>
 

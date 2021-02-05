@@ -46,12 +46,10 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) =>
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
-                  item={{
-                    ...ballInfo,
-                  }}
+                  item={ballInfo}
                   selectedBalls={selectedBalls}
                   containerStyle={{ width: scale(78) }}
-                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
+                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
 
   /**
    * 绘制 自选不中

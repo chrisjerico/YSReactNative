@@ -99,7 +99,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                         zodiacItem: ballInfo?.exZodiac,
                       }}
                       selectedBalls={selectedBalls}
-                      callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
+                      callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
 
   /**
    * 绘制 方格式
@@ -111,7 +111,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryERect key={key + 'renderEBall' + ballInfo?.id}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
+                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
 
   /**
    * 绘制全部的格子

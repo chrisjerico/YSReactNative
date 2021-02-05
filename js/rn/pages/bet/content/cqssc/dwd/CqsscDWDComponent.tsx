@@ -49,7 +49,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   selectedBalls={selectedBalls}
                   ballType={{ size: scale(50) }}
                   ballStyle={{ flexDirection: 'column' }}
-                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
+                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
 
   /**
    * 绘制 所有 大 小 栏目

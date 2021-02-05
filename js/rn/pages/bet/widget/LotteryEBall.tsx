@@ -62,7 +62,7 @@ const renderContent = ({
                },
                oddsStyle
              ]}
-             odds={item?.odds}
+             odds={item?.enable != '0' ? item?.odds : '- -'}
              {...ballProps}
              style={ballStyle}/>
     </View>

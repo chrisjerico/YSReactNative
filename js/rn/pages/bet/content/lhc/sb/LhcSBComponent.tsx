@@ -47,7 +47,7 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryERect key={key + 'renderERect' + ballInfo?.id + index}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
+                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
 
   /**
    * 绘制 一组格子

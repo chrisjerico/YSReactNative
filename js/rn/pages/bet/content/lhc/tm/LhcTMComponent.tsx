@@ -119,22 +119,22 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderERect = (item?: PlayData, index?: number) => <LotteryERect
-    key={`${key}-LotteryEBall-${item?.exId}-${item?.id}`}
-    item={item}
-    selectedBalls={selectedBalls}
-    callback={() => addOrRemoveBall(item?.exId)}/>
+  const renderERect = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) =>
+    <LotteryERect key={`${key}-LotteryEBall-${ballInfo?.exId}-${ballInfo?.id}`}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  callback={() => addOrRemoveBall(ballInfo?.exId, item?.enable, ballInfo?.enable)}/>
 
   /**
    * 绘制 球
    * @param item
    * @param index
    */
-  const renderEBall = (item?: PlayData, index?: number) => <LotteryEBall
-    key={`${key}-LotteryEBall-${item?.exId}-${item?.id}`}
-    item={item}
-    selectedBalls={selectedBalls}
-    callback={() => addOrRemoveBall(item?.exId)}/>
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) =>
+    <LotteryEBall key={`${key}-LotteryEBall-${ballInfo?.exId}-${ballInfo?.id}`}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  callback={() => addOrRemoveBall(ballInfo?.exId, item?.enable, ballInfo?.enable)}/>
 
   /**
    * 绘制 特码B/A
@@ -154,7 +154,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <View key={key + 'renderTM sub 2' + groupData?.id}
           style={_styles.ball_container}>
       {
-        groupData?.plays?.map(renderEBall)
+        groupData?.plays?.map((item, index) => renderEBall(groupData, item, index))
       }
     </View>
   </View>
@@ -177,7 +177,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + 'renderSB sub 2' + groupData?.id}
           style={_styles.ball_container}>
-      {groupData?.plays?.map(renderERect)}
+      {groupData?.plays?.map((item, index) => renderERect(groupData, item, index))}
     </View>
   </View>
 
