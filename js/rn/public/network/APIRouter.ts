@@ -810,6 +810,12 @@ class APIRouter {
     return httpClient.get<any>('c=activity&a=settings&' + tokenParams)
   }
 
+  static request_redbag = async (redBagId): Promise<AxiosResponse<NormalModel>> => {
+    return httpClient.post<NormalModel>('c=activity&a=getRedBag', {
+      id: redBagId,
+    })
+  }
+
   /**
    * 加密 GET 参数
    * @param params

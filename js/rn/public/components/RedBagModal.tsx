@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Image, ImageBackground, Modal, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { Alert, Image, ImageBackground, Modal, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { Res } from '../../Res/icon/Res'
+import APIRouter from '../network/APIRouter'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { scale } from '../tools/Scale'
 import { ugLog } from '../tools/UgLog'
@@ -18,16 +19,28 @@ interface RedBagModalProps {
 
 const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
   const [hide, setHide] = useState(false)
+  const [redBagData, setRedBagData] = useState(redBag)
 
-  const requestBag = () => {
-    if (redBag.data.isTest) {
+  const requestBag = async () => {
+    if (!redBag.data.hasLogin) {
       UGUserModel.checkLogin()
       return
     }
-    
+    const response = await APIRouter.request_redbag(redBag.data.id)
+    Alert.alert(null, response.data.msg, [
+      { text: "确认" },
+    ])
+    await APIRouter.activity_redBagDetail().then((value) => {
+      if (value.data.code == 0) {
+        setRedBagData(value.data)
+      }
+    })
   }
 
-  ugLog("redBag=", redBag)
+  useEffect(()=> {
+  }, [redBagData])
+
+  ugLog("redBagData=", redBagData)
   return (
     <Modal 
       style={{ zIndex: 2}}
@@ -45,19 +58,19 @@ const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
             <View style={styles.imageContainer}>
               <View style={styles.col}>
                 <Text style={styles.title}>帐号：</Text>
-                <Text style={styles.text}>{redBag.data.username}</Text>
+                <Text style={styles.text}>{redBagData.data.username}</Text>
               </View>
               <View style={styles.col}>
                 <Text style={styles.title}>红包余额：</Text>
-                <Text style={styles.text}>{redBag.data.leftAmount}</Text>
+                <Text style={styles.text}>{redBagData.data.leftAmount}</Text>
               </View>
               <View style={styles.col}>
                 <Text style={styles.title}>可抢红包：</Text>
-                <Text style={styles.text}>{redBag.data.leftCount}</Text>
+                <Text style={styles.text}>{redBagData.data.leftCount}</Text>
               </View>
               <View style={[styles.col, {justifyContent: 'center'}]}>
                 <Button
-                  title={redBag.data.isTest? '登录抢红包' : (redBag.data.canGet && redBag.data.attendedTimes == 1 ? '已参与活动' : '立即开抢')}
+                  title={redBagData.data.hasLogin? (redBagData.data.canGet == 0 && redBagData.data.attendedTimes > 0 ? '已参与活动' : '立即开抢') : '登录抢红包'}
                   onPress={requestBag}
                   containerStyle={styles.button}
                   titleStyle={{ color: '#ffffff'}}
@@ -65,7 +78,7 @@ const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
               </View>
               <View style={styles.row}>
                 <Text style={[styles.title, {color: '#FFC950', alignSelf: 'center'}]}>活动介绍</Text>
-                <Text style={[styles.title, {color: '#ffffff'}]}>{redBag.data.intro.replace('<br />', '')}</Text>
+                <Text style={[styles.title, {color: '#ffffff'}]}>{redBagData.data.intro.replace('<br />', '')}</Text>
               </View>
             </View>
           </ImageBackground>
