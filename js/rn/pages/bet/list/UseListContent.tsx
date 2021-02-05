@@ -12,6 +12,14 @@ import { UGStore } from '../../../redux/store/UGStore'
 const UseListContent = () => {
 
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
+  const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
+
+  useEffect(() => {
+    UGStore.dispatch({
+      type: 'reset', selectedLotteryModel: {},
+      currentColumnIndex: leftColumnIndex,
+    })
+  }, [leftColumnIndex])
 
   //各彩种选中的数量
   const ballSelected = useMemo(() => {
@@ -19,6 +27,8 @@ const UseListContent = () => {
   }, [UGStore.globalProps?.selectedLotteryModel?.selectedData])
 
   return {
+    leftColumnIndex,
+    setLeftColumnIndex,
     ballSelected, //彩票数据
     playOddDetailData, //彩票数据
   }

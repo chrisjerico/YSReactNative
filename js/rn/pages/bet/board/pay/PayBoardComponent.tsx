@@ -15,7 +15,7 @@ import { calculateItemCount, gatherSelectedItems } from '../tools/BetUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { LotteryResultData } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
-import { combineEZDWArray, filterPlayData } from '../tools/ezdw/BetEZDWUtil'
+import { combineArrayName, filterPlayData } from '../tools/ezdw/BetEZDWUtil'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
 import { zodiacPlayX } from '../tools/hx/BetHXUtil'
 import { Play } from '../../../../public/network/Model/PlayOddDataModel'
@@ -72,9 +72,12 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
         <TextInput defaultValue={averageMoney?.toString()}
                    onChangeText={text => setMoneyMap(prevState => {
                      const moneyMap = new Map<string, number>()
-                     selModel?.code == LhcCode.LX || selModel?.code == LhcCode.LW ?
-                       moneyMap[playData?.exId ?? playData?.id] = Number.parseFloat(text) :
-                       moneyMap[playData?.alias] = Number.parseFloat(text)
+                     selModel?.code == LhcCode.LX
+                     || selModel?.code == LhcCode.LW
+                     || selModel?.code == CqsscCode.EZDW
+                     || selModel?.code == CqsscCode.SZDW ?
+                       moneyMap[playData?.alias] = Number.parseFloat(text) :
+                       moneyMap[playData?.exId ?? playData?.id] = Number.parseFloat(text)
                      return { ...prevState, ...moneyMap }
                    })}
                    keyboardType={'numeric'}
@@ -83,7 +86,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
               onPress={() => {
                 //过滤掉选中的数据
                 const newSelectedData = filterPlayData(selectedCombineData, playData)
-                ugLog('newSelectedData = ', JSON.stringify(newSelectedData))
+                ugLog('filterPlayData newSelectedData = ', JSON.stringify(newSelectedData))
                 //数据少于1了就关闭窗口
                 if (calculateItemCount(newSelectedData) <= 0) {
                   showCallback && showCallback()
@@ -160,6 +163,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
       case CqsscCode.SH:  //梭哈
       case CqsscCode.LHD:  //龙虎斗
       case CqsscCode.YZDW:  //一字定位
+      case CqsscCode.EZDW:  //二字定位
+      case CqsscCode.SZDW:  //三字定位
         return renderTMItem(selModel)
 
       case LhcCode.HX://合肖
@@ -168,11 +173,11 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
       case LhcCode.LMA:  //连码
         return renderLMAItem(selModel, selModel?.plays[0],
-          combineEZDWArray(selModel)?.toString())
+          combineArrayName(selModel)?.toString())
 
       case LhcCode.ZXBZ:  //自选不中
         return renderLMAItem(selModel, playDataX(selModel),
-          combineEZDWArray(selModel)?.toString())
+          combineArrayName(selModel)?.toString())
     }
 
   }).flat(Infinity)

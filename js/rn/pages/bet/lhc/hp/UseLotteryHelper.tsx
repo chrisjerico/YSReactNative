@@ -155,8 +155,12 @@ const UseLotteryHelper = () => {
   const currentPageData = (): Array<PlayGroupData> =>
     tabIndex < arrayLength(playOddData?.pageData?.groupTri) ? playOddData?.pageData?.groupTri[tabIndex] : []
 
+  /**
+   * Tab有变化就清除选择的数据
+   */
   useEffect(() => {
     UGStore.dispatch({ type: 'reset', lotteryTabIndex: tabIndex })
+    setSelectedBalls([])
   }, [tabIndex])
 
   /**

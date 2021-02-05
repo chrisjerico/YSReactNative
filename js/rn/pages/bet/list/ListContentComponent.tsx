@@ -31,11 +31,12 @@ import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetail
 const ListContentComponent = () => {
 
   const {
+    leftColumnIndex,
+    setLeftColumnIndex,
     ballSelected,
     playOddDetailData, //彩票数据
   } = UseListContent()
 
-  const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
 
   /**
    * 绘制左边列表 特码 双面 正码 等等
@@ -48,10 +49,6 @@ const ListContentComponent = () => {
           playOddDetailData?.playOdds?.map((item, index) => {
             return <TouchableWithoutFeedback key={'renderLeftColumn' + item?.code}
                                              onPress={() => {
-                                               UGStore.dispatch({
-                                                 type: 'reset', selectedLotteryModel: {},
-                                                 currentColumnIndex: index,
-                                               })
                                                setLeftColumnIndex(index)
                                              }}>
               <View key={'renderLeftColumn' + item?.code}

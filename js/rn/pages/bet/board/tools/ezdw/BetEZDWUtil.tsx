@@ -28,10 +28,10 @@ const filterPlayData = (allData?: Array<SelectedPlayModel>, playData?: PlayData)
 }
 
 /**
- * 重新组合出N组下注数据，如 二字定位[1,2] -> [3,4] 重组成 [13,14,23,34]
+ * 重新组合数组的名字
  * @param selData
  */
-const combineEZDWArray = (...selData: Array<SelectedPlayModel>): Array<string> => {
+const combineArrayName = (...selData: Array<SelectedPlayModel>): Array<string> => {
   // return selData1?.plays.map((item1) => selData2?.plays.map((item2) => `${item1?.name},${item2?.name}`))?.flat(Infinity)
   if (arrayLength(selData) == 1) {
     return selData[0].plays?.map((play) => play?.name)
@@ -63,10 +63,10 @@ const combineSelectedData = (currentPlayOddData?: PlayOddData,
       case LhcCode.LW://连尾
       {
         const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
-        ugLog('combineSelectedData pageData = ', JSON.stringify(pageData))
+        ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
         const newArr = pageData?.map((item) => {
           const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
-          const newPage = {
+          const newPage: SelectedPlayModel = {
             ...item,
             plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
               ...arr[0],
@@ -74,43 +74,37 @@ const combineSelectedData = (currentPlayOddData?: PlayOddData,
               exPlayIds: arr?.map((item) => item?.id).toString(),
             } as PlayData)),
           }
-          // ugLog('combineSelectedData newPage = ', JSON.stringify(newPage))
+          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
           return newPage
         })
-        ugLog('combineSelectedData newArr = ', JSON.stringify(newArr))
+        ugLog('combineSelectedData newArr = ', key, JSON.stringify(newArr))
 
         return newArr
       }
-      case CqsscCode.EZDW: //二字定位，多组数据合成1组数据
-        // ugLog('key data - = ', JSON.stringify(Object.values(newSelectedData[key])))
-        // ugLog('key data 2 - = ', JSON.stringify(Object.values(newSelectedData[key]).map((data) => Object.values(data))))
-        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
-        const pagePlayArr: Array<Array<PlayData>> = pageData?.map((item) => item?.plays)
-        ugLog('pagePlayArr = ', JSON.stringify(pagePlayArr))
-        const arr = combineArr(...pagePlayArr)
-        // ugLog('arr 1 = ', JSON.stringify(arr))
 
-        return arr
-      // case LhcCode.HX://合肖
-      // {
-      //   const ezData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
-      //   const name = ezData[0]?.zodiacs?.map((item) => item?.name).toString()
-      //   const playX = playDataX(ezData[0])
-      //   return [{...ezData[0], plays: [{...playX, name: name}]} as SelectedPlayModel]
-      // }
-      //
-      // case LhcCode.LMA:  //连码
-      // {
-      //   const ezData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
-      //   const name = combineEZDWArray(...ezData).toString()
-      //   return [{...ezData[0], plays: [{...ezData[0].plays[0], name: name}]} as SelectedPlayModel]
-      // }
-      //
-      // case LhcCode.ZXBZ:  //自选不中
-      // {
-      //
-      // }
-      //   break
+      case CqsscCode.EZDW: //二字定位
+      case CqsscCode.SZDW: //三字定位
+      {
+        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+        ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
+        if (arrayLength(pageData) > 1) { //二字定位有2页数据，三字定位有3组数据
+          const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
+          const newPage: SelectedPlayModel = {
+            ...pageData[0],
+            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+              ...arr[0],
+              name: arr?.map((item) => item?.name).toString(),
+            } as PlayData)),
+          }
+          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          return newPage
+
+        }
+        ugLog('combineSelectedData newArr = ', key, JSON.stringify([pageData]))
+
+        return [pageData]
+      }
+
       default:
         return gatherSelectedItems(key, selectedData)
     }
@@ -118,7 +112,7 @@ const combineSelectedData = (currentPlayOddData?: PlayOddData,
 }
 
 export {
-  combineEZDWArray,
+  combineArrayName,
   combineSelectedData,
   filterPlayData,
 }

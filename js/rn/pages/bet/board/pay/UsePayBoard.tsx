@@ -20,7 +20,7 @@ import APIRouter from '../../../../public/network/APIRouter'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 import { jsDic } from '../../../经典/Model/UGChanglongaideModel'
-import { combineEZDWArray, combineSelectedData } from '../tools/ezdw/BetEZDWUtil'
+import { combineArrayName, combineSelectedData } from '../tools/ezdw/BetEZDWUtil'
 import { combineOddsName } from '../../util/LotteryUtil'
 
 /**
@@ -45,7 +45,7 @@ const UsePayBoard = () => {
   useEffect(() => {
     const copyData = JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData))
     const newSelectedData = combineSelectedData(currentPlayOddData, copyData)
-    ugLog('newSelectedData = ', JSON.stringify(newSelectedData))
+    ugLog('combineSelectedData newSelectedData = ', JSON.stringify(newSelectedData))
     setSelectedCombineData(newSelectedData)
   }, [])
 
@@ -158,9 +158,8 @@ const UsePayBoard = () => {
           betBean.push({
             money: numberToFloatString(moneyMap[play0?.exId ?? play0?.id]),
             playId: groupPlay0?.id,
-            // odds: combineOddsName(selModel?.playGroups?.plays),
             playIds: nextIssueData?.id,
-            betInfo: combineEZDWArray(selModel).toString(),
+            betInfo: combineArrayName(selModel).toString(),
           } as BetLotteryData)
         }
           break
@@ -172,7 +171,7 @@ const UsePayBoard = () => {
             money: numberToFloatString(moneyMap[playX?.exId ?? playX?.id]),
             odds: playX?.odds,
             playId: playX?.id,
-            betInfo: combineEZDWArray(selModel).toString(),
+            betInfo: combineArrayName(selModel).toString(),
           } as BetLotteryData)
         }
           break
@@ -186,6 +185,22 @@ const UsePayBoard = () => {
               playId: play0?.id,
               odds: play0?.odds,
               playIds: nextIssueData?.id,
+              betInfo: playData?.name,
+            } as BetLotteryData)
+          })
+        }
+          break
+
+        case CqsscCode.EZDW:  //二字定位
+        case CqsscCode.SZDW:  //三字定位
+        {
+          const groupPlay0 = selModel?.playGroups?.plays[0]
+          const play0 = selModel?.playGroups?.plays[0]
+          selModel?.plays?.map((playData) => {
+            betBean.push({
+              money: numberToFloatString(moneyMap[playData?.name]),
+              playId: groupPlay0?.id,
+              odds: play0?.odds,
               betInfo: playData?.name,
             } as BetLotteryData)
           })

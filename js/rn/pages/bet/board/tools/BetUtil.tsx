@@ -317,7 +317,7 @@ const initItemMoney = (selectedCombineData?: Array<SelectedPlayModel>): Map<stri
       default:
         //选中的数据有多少组
         selModel?.plays?.map((playData) => {
-          moneyMap[playData?.exId ?? playData?.id] = defaultMoney
+          moneyMap[playData?.name] = defaultMoney
         })
 
         break

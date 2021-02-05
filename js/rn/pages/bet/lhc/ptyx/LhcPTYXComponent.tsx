@@ -53,11 +53,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     return <TouchableWithoutFeedback
       key={key + 'tab' + index + item[0]?.id}
       style={CommStyles.flex}
-      onPress={() => {
-        UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
-        setSelectedBalls([])
-        setTabIndex(index)
-      }}>
+      onPress={() => setTabIndex(index)}>
       <View key={key + 'tab' + index + item[0]?.id}
             style={[
               _styles.tab_item,
