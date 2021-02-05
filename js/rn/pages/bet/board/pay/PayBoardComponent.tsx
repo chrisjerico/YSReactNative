@@ -49,7 +49,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   /**
    * 绘制 特码 等条目
-   * @param lotteryCode 彩种CODE，特码,合肖等
    * @param selModel 选中的数据
    */
   const renderTMItem = (selModel?: SelectedPlayModel) => {
@@ -57,20 +56,24 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
       const showName = selModel?.code == LhcCode.LX || selModel?.code == LhcCode.LW ?
         playData?.alias :
         playData?.name
-      return (<View key={playData?.id + playData?.name}
+      return (<View key={'renderTMItem=' + playData?.id + showName}
                     style={_styles.item_container}>
         <Text style={_styles.item_title}
               numberOfLines={2}>{
           `[ ${selModel?.playGroups?.alias}- ${showName} ]`
         }</Text>
-        <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
-        <Text style={_styles.item_x}>{'X'}</Text>
+        <Text style={_styles.item_odds}>{
+          `@${playData?.odds}`
+        }</Text>
+        <Text style={_styles.item_x}>{
+          'X'
+        }</Text>
         <TextInput defaultValue={averageMoney?.toString()}
                    onChangeText={text => setMoneyMap(prevState => {
                      const moneyMap = new Map<string, number>()
-                     moneyMap[playData?.exId ?? playData?.id] = Number.parseFloat(text)
-                     // ugLog('prevState = ', JSON.stringify(prevState))
-                     // ugLog('moneyMap = ', JSON.stringify(moneyMap))
+                     selModel?.code == LhcCode.LX || selModel?.code == LhcCode.LW ?
+                       moneyMap[playData?.exId ?? playData?.id] = Number.parseFloat(text) :
+                       moneyMap[playData?.alias] = Number.parseFloat(text)
                      return { ...prevState, ...moneyMap }
                    })}
                    keyboardType={'numeric'}
@@ -112,8 +115,6 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                  onChangeText={text => setMoneyMap(prevState => {
                    const moneyMap = new Map<string, number>()
                    moneyMap[playX?.exId ?? playX?.id] = Number.parseFloat(text)
-                   // ugLog('prevState = ', JSON.stringify(prevState))
-                   // ugLog('moneyMap = ', JSON.stringify(moneyMap))
                    return { ...prevState, ...moneyMap }
                  })}
                  keyboardType={'numeric'}

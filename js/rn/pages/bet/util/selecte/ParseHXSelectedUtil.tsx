@@ -2,6 +2,7 @@ import { PlayGroupData, PlayOddData } from '../../../../public/network/Model/lot
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { calculateLimitCount } from './ParseSelectedUtil'
 
 /**
  * 将选中的球转换为固定格式存储下来
@@ -30,12 +31,15 @@ const parseHXSelectedData = (playOddData: PlayOddData,
       //找出选中的球对应的原始数据
       const selZodiac = playOddData?.pageData?.zodiacNums?.filter((zodiac) => selectedBalls.includes(zodiac?.id))
 
+      let limitCount = calculateLimitCount(playOddData?.code, groupData?.alias)
+
       //再用原始数组和彩种数据组合成 新的选中数据
       !anyEmpty(selZodiac) && (
         tabMap[groupData?.code] = {
           playGroups: groupData,
           zodiacs: selZodiac,
           code: playOddData?.code,
+          limitCount: limitCount
         } as SelectedPlayModel //key=取第一组数据的ID作为Tab标识, value=每一组数据，如 特码B里面的 两面, 色波
       )
 

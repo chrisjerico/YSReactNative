@@ -8,6 +8,7 @@ import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
+import { expandSelectedData } from '../../util/selecte/ParseSelectedUtil'
 
 /**
  * 计算彩票下注时候，选中的条目数量是否符合要求
@@ -21,8 +22,8 @@ const checkBetCount = (showMsg?: boolean): boolean => {
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
 
   ugLog('UGStore.globalProps?.lotteryTabIndex = ', UGStore.globalProps?.lotteryTabIndex)
-  ugLog('currentPlayOddData?.pageData?.groupTri = ', JSON.stringify(currentPlayOddData?.pageData?.groupTri))
-  ugLog('currentPlayGroupData = ', JSON.stringify(currentPlayGroupData))
+  // ugLog('currentPlayOddData?.pageData?.groupTri = ', JSON.stringify(currentPlayOddData?.pageData?.groupTri))
+  // ugLog('currentPlayGroupData = ', JSON.stringify(currentPlayGroupData))
   ugLog('checkBetCount selectedData', JSON.stringify(keys))
   if (anyEmpty(keys)) {
     Toast('请选择玩法')
@@ -304,6 +305,15 @@ const initItemMoney = (selectedCombineData?: Array<SelectedPlayModel>): Map<stri
       }
 
         break
+      case LhcCode.LX://连肖
+      case LhcCode.LW://连尾
+        //选中的数据有多少组
+        selModel?.plays?.map((playData) => {
+          moneyMap[playData?.alias] = defaultMoney
+        })
+
+        break
+
       default:
         //选中的数据有多少组
         selModel?.plays?.map((playData) => {

@@ -9,7 +9,7 @@ import { zodiacPlayX } from '../hx/BetHXUtil'
 import { numberToFloatString } from '../../../../../public/tools/StringUtil'
 import { BetLotteryData } from '../../../../../public/network/it/bet/IBetLotteryParams'
 import { playDataX } from '../zxbz/BetZXBZUtil'
-import { combineArr } from '../../../util/ArithUtil'
+import { combination, combineArr } from '../../../util/ArithUtil'
 /**
  * X字定位下注工具类
  */
@@ -22,7 +22,7 @@ import { combineArr } from '../../../util/ArithUtil'
 const filterPlayData = (allData?: Array<SelectedPlayModel>, playData?: PlayData): Array<SelectedPlayModel> => {
   return allData?.map((comData) => ({
     ...comData,
-    plays: comData?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData))
+    plays: comData?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData)),
   }))
 
 }
@@ -59,20 +59,28 @@ const combineSelectedData = (currentPlayOddData?: PlayOddData,
   return Object.keys(selectedData).map((key) => {
     const value = selectedData[key]
     switch (key) {
-      case LhcCode.LX:
+      case LhcCode.LX://连肖
+      case LhcCode.LW://连尾
       {
         const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
         ugLog('combineSelectedData pageData = ', JSON.stringify(pageData))
-        return pageData?.map((item) =>({
-          ...item,
-          
-        }))
+        const newArr = pageData?.map((item) => {
+          const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
+          const newPage = {
+            ...item,
+            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+              ...arr[0],
+              alias: arr?.map((item) => item?.alias).toString(),
+              exPlayIds: arr?.map((item) => item?.id).toString(),
+            } as PlayData)),
+          }
+          // ugLog('combineSelectedData newPage = ', JSON.stringify(newPage))
+          return newPage
+        })
+        ugLog('combineSelectedData newArr = ', JSON.stringify(newArr))
+
+        return newArr
       }
-
-        break
-      case LhcCode.LW:
-
-        break
       case CqsscCode.EZDW: //二字定位，多组数据合成1组数据
         // ugLog('key data - = ', JSON.stringify(Object.values(newSelectedData[key])))
         // ugLog('key data 2 - = ', JSON.stringify(Object.values(newSelectedData[key]).map((data) => Object.values(data))))

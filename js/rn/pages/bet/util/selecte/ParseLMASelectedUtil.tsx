@@ -2,6 +2,10 @@ import { PlayData, PlayGroupData, PlayOddData } from '../../../../public/network
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { CqsscCode, LhcCode } from '../../const/LotteryConst'
+import { filterSelectedData, filterSelectedSubData } from '../LotteryUtil'
+import { Toast } from '../../../../public/tools/ToastUtils'
+import { calculateLimitCount } from './ParseSelectedUtil'
 
 /**
  * 将选中的球转换为固定格式存储下来
@@ -31,8 +35,10 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
         groupData?.exPlays?.filter((item) => selectedBalls.includes(item?.exId ?? item?.id)) :
         groupData?.plays?.filter((item) => selectedBalls.includes(item?.exId ?? item?.id))
 
-      const pageAlias = `${groupData?.alias},${index}`
+      const pageAlias = `${groupData?.alias},${index}` //当前页的唯一识别
       ugLog('pageAlias = ', pageAlias)
+
+      let limitCount = calculateLimitCount(playOddData?.code, groupData?.alias)
 
       //再用原始数组和彩种数据组合成 新的选中数据
       !anyEmpty(selBalls) && (
@@ -40,6 +46,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
           playGroups: groupData,
           plays: selBalls,
           code: playOddData?.code,
+          limitCount: limitCount,
         } as SelectedPlayModel //key=取第一组数据的ID作为Tab标识, value=每一组数据，如 特码B里面的 两面, 色波
       )
 

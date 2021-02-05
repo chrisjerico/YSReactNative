@@ -59,20 +59,15 @@ const UsePayBoard = () => {
   useEffect(() => {
     //总共有多少条数据
     setItemCount(calculateItemCount(selectedCombineData))
-
-    //第1次需要初始化
-    if (dicNull(moneyMap)) {
-      setMoneyMap(initItemMoney(selectedCombineData))
-    }
-
+    setMoneyMap(initItemMoney(selectedCombineData))
   }, [selectedCombineData])
 
   /**
    * 平均价格和条目变化时重新计算总金额
    */
   useEffect(() => {
-    ugLog('averageMoney total money = ', totalMoney)
     setTotalMoney(itemCount * averageMoney)
+    ugLog('averageMoney total money = ', itemCount, averageMoney)
   }, [averageMoney, itemCount])
 
   /**
@@ -84,6 +79,7 @@ const UsePayBoard = () => {
       0 :
       Object.values(moneyMap)?.reduce((previousValue, currentValue) =>
         previousValue + currentValue)
+
     setTotalMoney(money)
   }, [moneyMap])
 
@@ -109,8 +105,6 @@ const UsePayBoard = () => {
         case LhcCode.ZX: //正肖
         case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LhcCode.LX: //连肖
-        case LhcCode.LW: //连尾
         case CqsscCode.ALL:  //1-5球
         case CqsscCode.Q1:  //第1球
         case CqsscCode.Q2:  //第2球
@@ -127,6 +121,19 @@ const UsePayBoard = () => {
               odds: playData?.odds,
               playId: playData?.id,
               playIds: nextIssueData?.id,
+            } as BetLotteryData)
+          })
+          break
+
+        case LhcCode.LX: //连肖
+        case LhcCode.LW: //连尾
+          selModel?.plays?.map((playData) => {
+            betBean.push({
+              money: numberToFloatString(moneyMap[playData?.alias]),
+              odds: playData?.odds,
+              playId: playData?.id,
+              playIds: playData?.exPlayIds,
+              betInfo: playData?.alias,
             } as BetLotteryData)
           })
           break
