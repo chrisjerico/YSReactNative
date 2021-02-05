@@ -14,11 +14,10 @@ import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText13, DoyText14, DoyText16 } from "../../../public/Button之类的基础组件/DoyButton"
 
 const sc = sc375
-const headerColos = ['#1F65E6', '#3581F5']
-const searchingColos = ['#FFEDD4', '#FAE4CF']
+const tipsBarColos = ['#FFEDD4', '#FAE4CF']
 
 export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
   const { themeColor, navBarBgColor } = skin1
@@ -26,11 +25,11 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
   const { current: v } = useRef({ searchReults: [{}] })
 
   useEffect(() => {
-    setProps({ navbarOpstions: { title: '我要买', gradientColor: headerColos } })
+    setProps({ navbarOpstions: { title: '我要买' } })
   }, [])
 
   return <View style={{ flex: 1 }}>
-    <LinearGradient colors={headerColos} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: sc(228), paddingHorizontal: sc(16) }}>
+    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: sc(228), paddingHorizontal: sc(16) }}>
       <SegmentedControl
         tabs={['银行卡', '支付宝', '微信支付']}
         onChange={(idx) => {
@@ -50,14 +49,14 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
         }}
         theme={'DARK'}
       />
-      <Text style={{ marginTop: sc(24), color: 'white', fontSize: sc(14), fontWeight: '500' }}>输入DOY数量</Text>
+      <DoyText14 white bold1 style={{ marginTop: sc(24), }}>输入DOY数量</DoyText14>
       <TextInput placeholder='范围100~10000 DOY' placeholderTextColor='#FFFFFF99' clearButtonMode='while-editing'
         style={{ marginTop: sc(12), height: sc(46), borderRadius: sc(4), backgroundColor: '#1052BE', paddingHorizontal: sc(16), fontSize: sc(15), color: 'white', fontWeight: '700' }}
       />
       <DoyButton1 title='开始搜寻' containerStyle={{ marginTop: sc(24) }} buttonStyle={{ height: sc(40) }} titleStyle={{ color: themeColor }} linearGradientProps={{
         colors: ['#E0EBFF', '#fff'],
         start: { x: 0, y: 0 },
-        end: { x: 1, y: 0 },
+        end: { x: 1, y: 1 },
       }} onPress={() => {
         if (v.searchReults?.length) {
           v.searchReults = []
@@ -69,15 +68,15 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
     </LinearGradient>
     <View style={{ flex: 1 }}>
       {/* 正在搜索 */}
-      <LinearGradient colors={searchingColos} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flexDirection: 'row', height: sc(36), paddingHorizontal: sc(16), alignItems: 'center' }}>
+      <LinearGradient colors={tipsBarColos} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flexDirection: 'row', height: sc(36), paddingHorizontal: sc(16), alignItems: 'center' }}>
         <FastImage source={{ uri: img_doy('卖单通知@3x') }} style={{ width: sc(15), aspectRatio: 1 }} resizeMode='contain' />
-        <Text style={{ marginLeft: sc(8), fontSize: sc(12) }}>等待</Text>
+        <DoyText12 style={{ marginLeft: sc(8), }}>等待</DoyText12>
         <FastImage source={{ uri: img_doy('DOY币@3x') }} style={{ width: sc(14), height: sc(14), marginHorizontal: sc(4) }} />
-        <Text style={{ marginTop: sc(1), fontSize: sc(13), fontWeight: '700' }}>100</Text>
-        <Text style={{ fontSize: sc(12) }}>、银行卡卖单通知。</Text>
+        <DoyText13 bold3 style={{ marginTop: sc(1), }}>100</DoyText13>
+        <DoyText12>、银行卡卖单通知。</DoyText12>
         <View style={{ flex: 1 }} />
-        <Text style={{ marginTop: sc(1), fontSize: sc(12), fontWeight: '700', color: '#585A5E' }}>29:50</Text>
-        <TouchableOpacity style={{ paddingHorizontal: sc(8), marginRight: sc(-7), flex: 1, justifyContent: 'center' }}>
+        <DoyText12 bold3 gray1 style={{ marginTop: sc(1), }}>29:50</DoyText12>
+        <TouchableOpacity style={{ paddingHorizontal: sc(8), marginRight: sc(-7), justifyContent: 'center' }}>
           <FontAwesome name='close' size={sc(10)} color='#FAE4CF' style={{ width: sc(16), aspectRatio: 1, backgroundColor: '#52575A', paddingTop: sc(2), paddingLeft: sc(4), borderRadius: sc(8), overflow: 'hidden' }} />
         </TouchableOpacity>
       </LinearGradient>
@@ -86,9 +85,9 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
         return <TouchableOpacity style={{ height: sc(48), marginBottom: sc(8), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', alignItems: 'center' }} onPress={() => {
           push(PageName.DoySellOrderPage)
         }}>
-          <Text style={{ marginLeft: sc(24), fontSize: sc(14) }}>售</Text>
+          <DoyText14 style={{ marginLeft: sc(24), }}>售</DoyText14>
           <FastImage source={{ uri: img_doy('DOY币@3x') }} style={{ width: sc(14), aspectRatio: 1, marginHorizontal: sc(8) }} />
-          <Text style={{ fontSize: sc(16), fontWeight: '600' }}>200</Text>
+          <DoyText16 bold2>200</DoyText16>
           <View style={{ flex: 1 }} />
           <FastImage source={{ uri: img_doy('收付款方式/银行卡@3x') }} style={{ width: sc(16), aspectRatio: 1, marginRight: sc(32) }} />
           <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
@@ -102,10 +101,10 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
       {/* 搜索无结果 */}
       {!v?.searchReults?.length && <View style={{ position: 'absolute', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <FastImage source={{ uri: img_doy('暂无符合卖单@3x') }} style={{ width: sc(234), height: sc(156) }} />
-        <Text style={{ textAlign: 'center', color: '#8E929A', lineHeight: sc(20) }}>{`暂无符合卖单
+        <DoyText14 gray2 style={{ textAlign: 'center', lineHeight: sc(20) }}>{`暂无符合卖单
 开启通知后，有符合卖单会及时通知您`
         }
-        </Text>
+        </DoyText14>
         <Button title='开启通知' titleStyle={{ color: themeColor, fontSize: sc(14), fontWeight: '700' }} buttonStyle={{ backgroundColor: 'transparent', paddingVertical: sc(16) }} />
       </View>}
     </View>

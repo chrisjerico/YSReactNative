@@ -3,6 +3,7 @@ import * as React from "react";
 import FastImage, { FastImageProperties, ImageStyle } from "react-native-fast-image";
 import { img_assets } from "../../../Res/icon";
 import LinearGradient from "react-native-linear-gradient";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 type PlaceholderImageType = '默认占位图' | '彩票占位图'
 interface PlaceholderProps {
@@ -10,7 +11,10 @@ interface PlaceholderProps {
   placeholderImageType?: PlaceholderImageType  // 占位图
   placeholderGradientColor?: string[] // 占位渐变色
   placeholderStyle?: StyleProp<ImageStyle>
+
+  // 仅 FastImagePlaceholder可用
   children?: any
+  onPress?: () => void
 }
 
 function getPlaceholderImage(type: PlaceholderImageType) {
@@ -52,10 +56,10 @@ export const ImagePlaceholder = (props: ImageProps & PlaceholderProps) => {
 export const FastImagePlaceholder = (props: FastImageProperties & PlaceholderProps) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
 
-  const { placeholderURL, placeholderImageType, placeholderGradientColor, style, placeholderStyle, children } = props
+  const { placeholderURL, placeholderImageType, placeholderGradientColor, style, placeholderStyle, children, onPress } = props
   const placeholderImage = placeholderURL ?? getPlaceholderImage(placeholderImageType)
 
-  return (
+  const cp = (
     <FastImage
       {...props}
       onError={() => {
@@ -71,5 +75,14 @@ export const FastImagePlaceholder = (props: FastImageProperties & PlaceholderPro
       {shwoDefaultImage && !placeholderGradientColor && <FastImage style={[{ position: 'absolute', width: '100%', height: '100%' }, placeholderStyle]} resizeMode='cover' source={{ uri: placeholderImage }} />}
       {children}
     </FastImage>
+  )
+
+  if (!onPress) {
+    return cp
+  }
+  return (
+    <TouchableOpacity onPress={onPress}>
+      {cp}
+    </TouchableOpacity>
   )
 }
