@@ -9,7 +9,7 @@ import { UGStore } from '../../../redux/store/UGStore'
  * 彩票内容
  * @constructor
  */
-const UseListContent = () => {
+const UseLotteryContent = () => {
 
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const [leftColumnIndex, setLeftColumnIndex] = useState(0) // 左边大类选择了哪个，特码 正码 双面
@@ -34,4 +34,4 @@ const UseListContent = () => {
   }
 }
 
-export default UseListContent
+export default UseLotteryContent

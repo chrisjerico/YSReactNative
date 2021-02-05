@@ -7,7 +7,7 @@ import { scale } from '../../public/tools/Scale'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import BetBoardComponent from './board/BetBoardComponent'
 import BetRecordHeaderComponent from './counter/lhc/red/BetRecordHeaderComponent'
-import ListContentComponent from './list/ListContentComponent'
+import LotteryContentComponent from './content/LotteryContentComponent'
 import { TopAreaComponent } from './top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
 import { ugLog } from '../../public/tools/UgLog'
@@ -98,7 +98,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                 //秒秒彩不显示历史记录和倒计时
                 playOddDetailData?.game?.isInstant == '1' ? <InstantLotteryComponent/> : <BetRecordHeaderComponent/>
               }
-              <ListContentComponent/>
+              <LotteryContentComponent/>
             </ScrollView> :
             <View style={_styles.sv_container}/>
         }

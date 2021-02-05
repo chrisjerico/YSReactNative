@@ -159,31 +159,6 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     </View>
   </View>
 
-
-  /**
-   * 绘制 连码
-   * @param groupData
-   */
-  const renderLM = (groupData?: PlayGroupData) => <View key={key + 'renderLM' + groupData?.id}
-                                                        style={CommStyles.flex}>
-
-    <View key={key + 'renderLM sub' + groupData?.id}
-          style={_styles.sub_title_container}>
-      <Text key={key + 'renderLM sub text' + groupData?.id}
-            style={[
-              _styles.sub_title_text,
-              { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
-    </View>
-
-    <View key={key + 'renderLM sub 2' + groupData?.id}
-          style={_styles.ball_container}>
-      {
-        groupData?.plays?.map(renderERect)
-      }
-    </View>
-  </View>
-
   /**
    * 绘制 色波
    * @param groupData
@@ -202,9 +177,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + 'renderSB sub 2' + groupData?.id}
           style={_styles.ball_container}>
-      {
-        groupData?.plays?.map(renderERect)
-      }
+      {groupData?.plays?.map(renderERect)}
     </View>
   </View>
 
@@ -214,7 +187,7 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
     {arrayLength(currentPageData) > 0 && renderTM(currentPageData[0])}
-    {arrayLength(currentPageData) > 1 && renderLM(currentPageData[1])}
+    {arrayLength(currentPageData) > 1 && renderSB(currentPageData[1])}
     {arrayLength(currentPageData) > 2 && renderSB(currentPageData[2])}
   </View>
 

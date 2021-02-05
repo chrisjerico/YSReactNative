@@ -2,7 +2,7 @@
  * 彩票内容
  * @constructor
  */
-import UseListContent from './UseListContent'
+import UseLotteryContent from './UseLotteryContent'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
@@ -28,14 +28,14 @@ import CqsscWXComponent from '../cqssc/wx/CqsscWXComponent'
 import CommStyles from '../../base/CommStyles'
 import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 
-const ListContentComponent = () => {
+const LotteryContentComponent = () => {
 
   const {
     leftColumnIndex,
     setLeftColumnIndex,
     ballSelected,
     playOddDetailData, //彩票数据
-  } = UseListContent()
+  } = UseLotteryContent()
 
 
   /**
@@ -325,4 +325,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default ListContentComponent
+export default LotteryContentComponent

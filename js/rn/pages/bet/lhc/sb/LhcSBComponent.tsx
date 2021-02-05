@@ -54,27 +54,27 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param groupData
    * @param index
    */
-  const renderGroupERect = (groupData?: PlayGroupData, index?: number) => <View
-    key={key + 'renderAllBall' + groupData?.id + index}
-    style={CommStyles.flex}>
+  const renderGroupERect = (groupData?: PlayGroupData, index?: number) =>
+    <View key={key + 'renderAllBall' + groupData?.id + index}
+          style={CommStyles.flex}>
 
-    <View key={key + 'renderAllBall sub' + groupData?.id + index}
-          style={_styles.sub_title_container}>
-      <Text key={key + 'renderAllBall text' + groupData?.id + index}
-            style={[
-              _styles.sub_title_text,
-              { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
+      <View key={key + 'renderAllBall sub' + groupData?.id + index}
+            style={_styles.sub_title_container}>
+        <Text key={key + 'renderAllBall text' + groupData?.id + index}
+              style={[
+                _styles.sub_title_text,
+                { color: Skin1.themeColor },
+              ]}>{groupData?.alias}</Text>
+      </View>
+
+      <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
+            style={_styles.rect_container}>
+        {
+          groupData?.plays?.map((item) => renderERect(groupData, item))
+        }
+      </View>
+
     </View>
-
-    <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
-          style={_styles.rect_container}>
-      {
-        groupData?.plays?.map((item) => renderERect(groupData, item))
-      }
-    </View>
-
-  </View>
 
   /**
    * 绘制全部的格子
