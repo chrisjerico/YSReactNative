@@ -155,9 +155,9 @@ const WithdrawComponent = ({ navigation, route }) => {
       a = '= ' + btcMoney + ' ' + curBank?.bankCode
     }
     if (anyEmpty(newUsd) || isNaN(newUsd)) {
-      b = ',   ' + curBank?.bankCode + ' = 0' + ' CNY'
+      b = ',   1 ' + curBank?.bankCode + ' = 0' + ' CNY'
     } else {
-      b = ',   ' + curBank?.bankCode + ' = ' + newUsd + ' CNY'
+      b = ',   1 ' + curBank?.bankCode + ' = ' + newUsd + ' CNY'
     }
     return a + ' ' + b
 

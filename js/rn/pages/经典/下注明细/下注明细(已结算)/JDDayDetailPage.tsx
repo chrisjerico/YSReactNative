@@ -56,10 +56,6 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
       }
     })
 
-  const [totalBetMoney, setTotalBetMoney] = useState('0') //下注
-  const [totalResultMoney, setTotalResultMoney] = useState('0') //输赢
-
-
 
   useEffect(() => {
     setProps({

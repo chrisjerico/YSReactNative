@@ -85,7 +85,15 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
   ]
 
 
-  const [currentType, setCurrentType] = useState({})  //選擇注單類形
+  const [currentType, setCurrentType] = useState<IMiddleMenuItem>(
+    {
+      title: '真人注单', //菜单名字
+      subTitle: null, // 次级名字
+      icon: null, //图标地址
+      id: '23', //识别标识
+      type: 'real'
+    }
+  )  //選擇注單類形
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [page] = useState(1)
   const [data, setData] = useState<Array<GameHistorylistBean>>([])
@@ -104,26 +112,27 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
         ugLog('--------------------------params==', params)
         switch (Platform.OS) {
           case 'ios':
-            let dic = params;
-            for (var key in dic) {
-              if (key == 'gameType') {
-                if (anyEmpty(dic[key])) {
-                  type = 'real';
+              let dic = params;
+              for (var key in dic) {
+                if (key == 'gameType') {
+                  if (anyEmpty(dic[key])) {
+                    type = 'real';
+                  }
+                  else {
+                    type = dic[key];
+                  }
+                  setCurrentType(typeArray.find((v) => v.type == type))
+                  requestGameData()
                 }
-                else {
-                  type = dic[key];
-                }
-                setCurrentType(typeArray.find((v) => v.type == type))
-                 requestGameData()
               }
-            }
+
             break;
           case 'android':
             //TODO Android 传参
             break;
         }
 
-        
+
       },
     }, false)
   }, [])
@@ -132,6 +141,7 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
 
   useEffect(() => {
     ugLog("startDate: " + startDate)
+    ugLog("currentType: " + currentType?.type)
     requestGameData()
   }, [currentType, startDate])
 
@@ -168,11 +178,11 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
       setRefreshing(false)
       setData(data.data.list)
       let vBetTotal = data.data.totalValidBetAmount
-      
+
       if (!anyEmpty(vBetTotal)) {
         setValidBetTotal(vBetTotal)
       }
-    
+
       let total = 0
       data.data.list.forEach((e) => {
         total += Number(e.betAmount)
@@ -186,9 +196,9 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
       renderAllData()
     }
 
-// ugLog('page==',page)
-// ugLog('currentType?.type==',currentType?.type)
-// ugLog('startDate==',startDate)
+    // ugLog('page==',page)
+    // ugLog('currentType?.type==',currentType?.type)
+    // ugLog('startDate==',startDate)
     // 获取注單數據
     APIRouter.ticket_history_args(
       page + '', '20', currentType?.type, startDate, startDate
