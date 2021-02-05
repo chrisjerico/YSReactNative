@@ -9,6 +9,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
+import { FastImagePlaceholder, ImagePlaceholder } from "../../../../rn/pages/经典/tools/ImagePlaceholder"
 import { PageName } from "../../../../rn/public/navigation/Navigation"
 import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
@@ -17,10 +18,10 @@ import BannerBlock from "../../../../rn/public/views/tars/BannerBlock"
 import TouchableImage from "../../../../rn/public/views/tars/TouchableImage"
 import { showError, showMessage } from "../../../../rn/public/widget/UGLoadingCP"
 import { img_assets, img_doy, img_root } from "../../../../rn/Res/icon"
+import { DoyText14, DoyText18, DoyText35 } from "../../../public/Button之类的基础组件/DoyButton"
 import { DoyAboutTotalAmountCP } from "./cp/DoyAboutTotalAmountCP"
 
 const sc = sc375
-
 const subTextColor = '#ffffffcc'
 
 const navBtnInfos: { icon: string, title: string, onPress: () => void }[] = [
@@ -58,19 +59,19 @@ const midBanners: {} = [{ image: img_assets('c186HeaderBgImg') }, { image: img_a
 export const DoyHomePage = ({ setProps }: UGBasePageProps) => {
 
   const { current: v } = useRef<DoyAboutTotalAmountCP>({})
-
+  const { navBarBgColor } = skin1
   const navBtns = navBtnInfos?.map((ele) => {
     const { title, icon, onPress } = ele
     return <View style={{ width: '33.3%' }}>
       <TouchableOpacity style={{ alignItems: 'center' }} onPress={onPress}>
         <FastImage source={{ uri: icon }} style={{ marginTop: sc(23), width: sc(36), aspectRatio: 1 }} resizeMode='contain' />
-        <Text style={{ marginTop: sc(11), marginBottom: sc(9), fontSize: sc(14) }} >{title}</Text>
+        <DoyText14 style={{ marginTop: sc(11), marginBottom: sc(9), }} >{title}</DoyText14>
       </TouchableOpacity>
     </View>
   })
 
   return [<View style={{ flex: 1 }}>
-    <ImageBackground source={{ uri: img_doy('首页_背景@2x') }} style={{ width: '100%', height: sc(227), }}>
+    <FastImagePlaceholder placeholderGradientColor={navBarBgColor} source={{ uri: img_doy('首页_背景@2x') }} style={{ width: '100%', height: sc(227), }}>
       <View style={{ paddingHorizontal: sc(16) }}>
         {/* 扫一扫 */}
         <View style={{ flexDirection: 'row', marginTop: useSafeArea()?.top + sc(16), justifyContent: 'space-between' }}>
@@ -85,23 +86,23 @@ export const DoyHomePage = ({ setProps }: UGBasePageProps) => {
         <TouchableOpacity style={{ marginTop: sc(32), flexDirection: 'row', alignItems: 'center' }} onPress={() => {
           v.showAboutTotalAmountAlert && v.showAboutTotalAmountAlert()
         }}>
-          <Text style={{ fontSize: sc(14), color: subTextColor }}>总资产</Text>
+          <DoyText14 style={{ color: subTextColor }}>总资产</DoyText14>
           <Entypo name='info-with-circle' size={sc(12)} color={subTextColor} style={{ marginLeft: sc(4) }} />
         </TouchableOpacity>
-        <Text style={{ marginTop: sc(8), fontSize: sc(35), fontWeight: '700', color: 'white' }}>30910</Text>
+        <DoyText35 bold3 white style={{ marginTop: sc(8), }}>30910</DoyText35>
         <View style={{ marginTop: sc(23), height: sc(1), backgroundColor: '#00000022' }} />
         <View style={{ flexDirection: 'row', marginTop: sc(16) }}>
           <View style={{ flexDirection: 'row', flex: 1 }}>
-            <Text style={{ fontSize: sc(14), color: subTextColor }}>可动数量</Text>
-            <Text style={{ marginLeft: sc(8), marginTop: sc(-3), color: 'white', fontSize: sc(18), fontWeight: '600' }}>30910</Text>
+            <DoyText14 style={{ color: subTextColor }}>可动数量</DoyText14>
+            <DoyText18 bold2 white style={{ marginLeft: sc(8), marginTop: sc(-3), }}>30910</DoyText18>
           </View>
           <View style={{ flexDirection: 'row', flex: 1 }}>
-            <Text style={{ fontSize: sc(14), color: subTextColor }}>担保数量</Text>
-            <Text style={{ marginLeft: sc(8), marginTop: sc(-3), color: 'white', fontSize: sc(18), fontWeight: '600' }}>0</Text>
+            <DoyText14 style={{ color: subTextColor }}>担保数量</DoyText14>
+            <DoyText18 white bold2 style={{ marginLeft: sc(8), marginTop: sc(-3), }}>0</DoyText18>
           </View>
         </View>
       </View>
-    </ImageBackground>
+    </FastImagePlaceholder>
     <View style={{ paddingHorizontal: sc(16) }}>
       {/* 导航按钮 */}
       <View style={{ marginTop: sc(16), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', flexWrap: 'wrap', paddingBottom: sc(15) }}>

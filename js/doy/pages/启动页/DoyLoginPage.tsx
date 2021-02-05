@@ -13,7 +13,7 @@ import { sc375 } from "../../../rn/public/tools/Scale"
 import { showLoading, showReload } from "../../../rn/public/widget/UGLoadingCP"
 import UGTextField from "../../../rn/public/widget/UGTextField"
 import { img_doy } from "../../../rn/Res/icon"
-import { DoyButton1 } from "../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText14 } from "../../public/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 
@@ -37,7 +37,7 @@ export const DoyLoginPage = ({ }: UGBasePageProps) => {
     <FastImage source={{ uri: img_doy('登录页logo@3x') }} style={{ marginTop: sc(116), marginBottom: sc(24), width: sc(147), height: sc(36) }} />
     <View style={{ backgroundColor: 'white', height: sc(46), borderRadius: sc(4), alignContent: 'center', alignItems: 'center', paddingHorizontal: sc(16), flexDirection: 'row' }}>
       <FastImage source={{ uri: img_doy('简体中文@3x') }} style={{ width: sc(24), height: sc(16) }} />
-      <Text style={{ marginLeft: sc(8), fontSize: sc(14), fontWeight: '600' }}>+86</Text>
+      <DoyText14 bold2 style={{ marginLeft: sc(8), marginTop: sc(1) }}>+86</DoyText14>
       <AntDesign name='caretdown' size={sc(8)} color='#b2b2b2' style={{ marginLeft: sc(8) }} />
       <TextInput placeholder='请输入手机号' style={{ flex: 1, marginLeft: sc(24), fontSize: sc(14) }} />
     </View>
