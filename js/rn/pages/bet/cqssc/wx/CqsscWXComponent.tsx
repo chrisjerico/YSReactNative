@@ -41,6 +41,11 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }, [])
   const key = 'lottery page' + playOddData?.code
 
+  /**
+   * 单个TAB
+   * @param item
+   * @param index
+   */
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number) =>
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               style={CommStyles.flex}
@@ -54,7 +59,7 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
       </View>
     </TouchableWithoutFeedback>
 
@@ -69,9 +74,7 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 horizontal={true}>
       <View key={key + 'content'}
             style={_styles.tab_title_content}>
-        {
-          playOddData?.pageData?.groupTri?.map(renderTabItem)
-        }
+        {playOddData?.pageData?.groupTri?.map(renderTabItem)}
       </View>
     </ScrollView>
     <Icon size={scale(36)}
@@ -84,20 +87,16 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
-
-    return (
-      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
-                    item={ballInfo}
-                    selectedBalls={selectedBalls}
-                    ballType={{ size: scale(50) }}
-                    ballStyle={{ flexDirection: 'column' }}
-                    callback={() => addOrRemoveBall(ballInfo?.id)}/>
-    )
-  }
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) =>
+    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  ballType={{ size: scale(50) }}
+                  ballStyle={{ flexDirection: 'column' }}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
-   * 绘制单式
+   * 特殊，绘制 五星玩法单式
    * @param groupData
    */
   const renderSingle = (groupData?: PlayGroupData) => <View key={key + ' renderSingle container'}
@@ -117,6 +116,7 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     </View>
 
     <TextInput style={_styles.single_input}
+               editable={groupData?.enable == '1'}
                keyboardType={'numeric'}/>
 
     <View key={key + 'sub renderSingle 2 = ' + groupData?.id}

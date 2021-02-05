@@ -11,7 +11,7 @@ export interface PlayData {
   maxMoney?: string//1000000
   maxTurnMoney?: string//50000000
   isBan?: string//0
-  enable?: string//1
+  enable?: string//1 //彩种是否开启
   from_id?: string//0
 
   exPlayIds?: string //部分彩种下注的时候需要联合其它彩种的ID 如 连肖
@@ -27,7 +27,7 @@ export interface PlayGroupData {
   name: string //"两面"
   code: string //"LM"
   isShow: string //"1"
-  enable: string //"1"
+  enable: string //"1" //彩种是否开启
   isBan: string //0
   from_id: string //0
   alias: string //"两面"

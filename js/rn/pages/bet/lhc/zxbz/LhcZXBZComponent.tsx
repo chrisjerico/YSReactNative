@@ -9,7 +9,7 @@ import UseLhcZXBZ from './UseLhcZXBZ'
 import { PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import LotteryEBall, { ILotteryEBallItem } from '../../widget/LotteryEBall'
-import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
@@ -41,20 +41,17 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   /**
    * 绘制 球
+   * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (ballInfo?: ILotteryEBallItem) => {
-
-    return (
-      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
-                    item={{
-                      ...ballInfo,
-                    }}
-                    selectedBalls={selectedBalls}
-                    containerStyle={{ width: scale(78) }}
-                    callback={() => addOrRemoveBall(ballInfo?.id)}/>
-    )
-  }
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) =>
+    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
+                  item={{
+                    ...ballInfo,
+                  }}
+                  selectedBalls={selectedBalls}
+                  containerStyle={{ width: scale(78) }}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 自选不中
@@ -73,9 +70,9 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   _styles.sub_title_text,
                   { color: Skin1.themeColor },
                 ]}>{
-                  groupData?.alias + (arrayLength(selectedBalls) > 4 ?
-                    `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 5]?.odds}）` :
-                    '')
+            groupData?.alias + (arrayLength(selectedBalls) > 4 ?
+              `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 5]?.odds}）` :
+              '')
 
           }</Text>
         </View>
@@ -83,7 +80,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         <View key={key + 'render LMA sub2' + groupData?.id}
               style={_styles.ball_container}>
           {
-            playOddData?.pageData?.groupTri[0][0]?.exPlays?.map((item, index) => renderEBall(item))
+            playOddData?.pageData?.groupTri[0][0]?.exPlays?.map((item, index) => renderEBall(groupData, item))
           }
         </View>
       </View>

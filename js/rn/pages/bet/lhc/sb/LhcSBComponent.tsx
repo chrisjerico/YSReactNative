@@ -8,7 +8,7 @@ import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UseLhcSB from './UseLhcSB'
 import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT} from '../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
 
 /**
@@ -40,12 +40,14 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 方格式
    * @param item
+   * @param ballInfo
    * @param index
    */
-  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id + index}
-                                                                         item={item}
-                                                                         selectedBalls={selectedBalls}
-                                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderERect = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) =>
+    <LotteryERect key={key + 'renderERect' + ballInfo?.id + index}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 一组格子
@@ -68,7 +70,7 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
           style={_styles.rect_container}>
       {
-        groupData?.plays?.map(renderERect)
+        groupData?.plays?.map((item) => renderERect(groupData, item))
       }
     </View>
 
@@ -79,7 +81,7 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    { currentPageData?.map(renderGroupERect) }
+    {currentPageData?.map(renderGroupERect)}
   </View>
 
   return (

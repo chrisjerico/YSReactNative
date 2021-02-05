@@ -41,7 +41,13 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }, [])
   const key = 'lottery page' + playOddData?.code
 
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) =>
+  /**
+   * 单个TAB
+   * @param item
+   * @param index
+   * @param tabLen 总共有多少个TAB
+   */
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number, tabLen?: number) =>
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               style={CommStyles.flex}
                               onPress={() => setTabIndex(index)}>
@@ -49,59 +55,63 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
             style={[
               _styles.tab_item,
               index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+              tabLen > 3 ? null: { width: scale(400/tabLen) },//tab 少于4个 就平均分配空间
             ]}>
         <Text key={key + item[0]?.alias}
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
       </View>
     </TouchableWithoutFeedback>
 
   /**
    * 绘制tab
    */
-  const renderTab = () => <View key={key + 'tab'}
-                                style={_styles.tab_title_container}>
-    <ScrollView key={key + 'sv'}
-                style={_styles.sv_tab_container}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}>
-      <View key={key + 'content'}
-            style={_styles.tab_title_content}>
-        {
-          playOddData?.pageData?.groupTri?.map(renderTabItem)
-        }
-      </View>
-    </ScrollView>
-    <Icon size={scale(36)}
-          color={Skin1.themeColor}
-          name={'angle-double-left'}/>
-  </View>
+  const renderTab = () => {
+    const tabLen = arrayLength(playOddData?.pageData?.groupTri)//tab数量
+
+    return <View key={key + 'tab'}
+                 style={_styles.tab_title_container}>
+      <ScrollView key={key + 'sv'}
+                  style={_styles.sv_tab_container}
+                  showsHorizontalScrollIndicator={false}
+                  horizontal={true}>
+        <View key={key + 'content'}
+              style={_styles.tab_title_content}>
+          {playOddData?.pageData?.groupTri?.map(
+            (item, index) => renderTabItem(item, index, tabLen),
+          )}
+        </View>
+      </ScrollView>
+      {
+        tabLen > 3 && <Icon size={scale(36)}
+                            color={Skin1.themeColor}
+                            name={'angle-double-left'}/>
+      }
+    </View>
+  }
 
   /**
    * 绘制 球
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
-
-    return (
-      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
-                    item={{
-                      ...ballInfo,
-                      odds: null,
-                    }}
-                    selectedBalls={selectedBalls}
-                    ballType={{ size: scale(50) }}
-                    ballStyle={{ flexDirection: 'column' }}
-                    callback={() => addOrRemoveBall(ballInfo?.id)}/>
-    )
-  }
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) =>
+    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
+                  item={{
+                    ...ballInfo,
+                    odds: null,
+                  }}
+                  selectedBalls={selectedBalls}
+                  ballType={{ size: scale(50) }}
+                  ballStyle={{ flexDirection: 'column' }}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 X字定位
    * @param groupData
+   * @param index
    */
   const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
     <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
@@ -230,6 +240,7 @@ const _styles = StyleSheet.create({
   },
   tab_title_content: {
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   tab_item: {
     justifyContent: 'center',

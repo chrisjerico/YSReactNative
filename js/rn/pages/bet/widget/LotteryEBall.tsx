@@ -7,6 +7,8 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { isSelectedBallOnId } from '../const/ISelBall'
 import { BallStyles } from '../const/LotteryConst'
 import { BallType, ILotteryBall } from '../../../public/components/view/LotteryBall'
+import { Play } from '../../../public/network/Model/PlayOddDataModel'
+import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 
 interface ILotteryEBall {
   item?: ILotteryEBallItem // 要绘制的数据
@@ -101,13 +103,13 @@ const _styles = StyleSheet.create({
 /**
  * 球的数据 和 PlayData 结构类似
  */
-interface ILotteryEBallItem {
-  id?: string; //708501
-  exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, TM,特码B,708550
-  name?: string; //01
-  alias?: string;//特码A"
-  code?: string;//01
-  odds?: string;//42.5500
+interface ILotteryEBallItem extends PlayData{
+  // id?: string; //708501
+  // exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, TM,特码B,708550
+  // name?: string; //01
+  // alias?: string;//特码A"
+  // code?: string;//01
+  // odds?: string;//42.5500
 }
 
 export default LotteryEBall

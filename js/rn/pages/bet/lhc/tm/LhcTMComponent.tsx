@@ -47,30 +47,30 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 特码A 特码B Tab
    */
-  const renderTabItem = (tab?: number) =>
-    <View key={key + 'renderTabItem' + tab}
-          style={[
-            _styles.tab_item,
-            tabIndex == tab ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-          ]}>
-      <TouchableWithoutFeedback key={key + 'renderTabItem Text'}
-                                onPress={() => setTabIndex(tab)}
-                                style={_styles.tab_title_tb}>
-        <Text key={key + 'renderTabItem Text'}
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) =>
+    <TouchableWithoutFeedback
+      key={key + item[0]?.alias}
+      style={CommStyles.flex}
+      onPress={() => setTabIndex(index)}>
+      <View key={key + item[0]?.alias}
+            style={[
+              _styles.tab_item,
+              index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+            ]}>
+        <Text key={key + item[0]?.alias}
               style={[
-                _styles.tab_title,
-                tabIndex == tab ? { color: 'white' } : null,
-              ]}>{!anyEmpty(playOddData?.pageData?.groupTri) && playOddData?.pageData?.groupTri[tab][0].alias}</Text>
-      </TouchableWithoutFeedback>
-    </View>
+                _styles.tab_title_item_text,
+                index == tabIndex ? { color: `white` } : null,
+              ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
+      </View>
+    </TouchableWithoutFeedback>
 
   /**
    * 绘制 特码A 特码B 容器
    */
   const renderTab = () => <View key={key + 'renderTab'}
                                 style={_styles.tab_container}>
-    {renderTabItem(0)}
-    {renderTabItem(1)}
+    {playOddData?.pageData?.groupTri?.map(renderTabItem)}
   </View>
 
   /**
@@ -78,25 +78,25 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderZodiacItem = (item?: ZodiacNum, index?: number) => <TouchableWithoutFeedback
-    key={key + `${item?.name}_select`}
-    onPress={() => addOrRemoveZodiac(item)}>
-    <View key={key + `${item?.name}_select`}
-          style={_styles.zodiac_item}>
-      {
-        selectedZodiac?.includes(item) ?
-          <Icon key={key + `${item?.name}_select true`}
-                size={scale(36)}
-                color={Skin1.themeColor}
-                name={'check-circle'}/> :
-          <Icon key={key + `${item?.name}_select false`}
-                size={scale(36)}
-                name={'circle-o'}/>
-      }
-      <Text key={key + `${item?.name}_select name`}
-            style={_styles.zodiac_item_text}>{item?.name}</Text>
-    </View>
-  </TouchableWithoutFeedback>
+  const renderZodiacItem = (item?: ZodiacNum, index?: number) =>
+    <TouchableWithoutFeedback key={key + `${item?.name}_select`}
+                              onPress={() => addOrRemoveZodiac(item)}>
+      <View key={key + `${item?.name}_select`}
+            style={_styles.zodiac_item}>
+        {
+          selectedZodiac?.includes(item) ?
+            <Icon key={key + `${item?.name}_select true`}
+                  size={scale(36)}
+                  color={Skin1.themeColor}
+                  name={'check-circle'}/> :
+            <Icon key={key + `${item?.name}_select false`}
+                  size={scale(36)}
+                  name={'circle-o'}/>
+        }
+        <Text key={key + `${item?.name}_select name`}
+              style={_styles.zodiac_item_text}>{item?.name}</Text>
+      </View>
+    </TouchableWithoutFeedback>
 
   /**
    * 绘制生肖
@@ -267,7 +267,7 @@ const _styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  tab_title: {
+  tab_title_item_text: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
     padding: scale(6),

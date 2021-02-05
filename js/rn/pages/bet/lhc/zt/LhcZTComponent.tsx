@@ -51,25 +51,30 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }, [])
   const key = 'lottery page' + playOddData?.code
 
-  const renderTabItem = (item: Array<PlayGroupData>, index: number) => <TouchableWithoutFeedback
-    key={key + item[0]?.alias}
-    onPress={() => {
-      UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
-      setSelectedBalls([])
-      setTabIndex(index)
-    }}>
-    <View key={key + item[0]?.id}
-          style={[
-            _styles.tab_item,
-            index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-          ]}>
-      <Text key={key + item[0]?.id}
+  /**
+   * 绘制 单个Tab
+   * @param item
+   * @param index
+   */
+  const renderTabItem = (item: Array<PlayGroupData>, index: number) =>
+    <TouchableWithoutFeedback key={key + item[0]?.alias}
+                              onPress={() => {
+                                UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+                                setSelectedBalls([])
+                                setTabIndex(index)
+                              }}>
+      <View key={key + item[0]?.id}
             style={[
-              _styles.tab_title_item_text,
-              index == tabIndex ? { color: `white` } : null,
-            ]}>{item[0]?.alias}</Text>
-    </View>
-  </TouchableWithoutFeedback>
+              _styles.tab_item,
+              index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
+            ]}>
+        <Text key={key + item[0]?.id}
+              style={[
+                _styles.tab_title_item_text,
+                index == tabIndex ? { color: `white` } : null,
+              ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
+      </View>
+    </TouchableWithoutFeedback>
 
   /**
    * 绘制tab，只有1个数据不绘制Tab
@@ -82,9 +87,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 horizontal={true}>
       <View key={key + 'content'}
             style={_styles.tab_title_content}>
-        {
-          playOddData?.pageData?.groupTri?.map(renderTabItem)
-        }
+        {playOddData?.pageData?.groupTri?.map(renderTabItem)}
       </View>
     </ScrollView>
     <Icon key={key + 'tab Icon'}
@@ -96,20 +99,24 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 方格式
    * @param item
+   * @param ballInfo
    */
-  const renderERect = (item?: PlayData) => <LotteryERect key={key + 'renderERect' + item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderERect = (item?: PlayGroupData, ballInfo?: PlayData) =>
+    <LotteryERect key={key + 'renderERect' + ballInfo?.id}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 球
    * @param item
+   * @param ballInfo
    */
-  const renderEBall = (item?: PlayData) => <LotteryEBall key={key + 'renderEBall' + item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) =>
+    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 正特
@@ -129,9 +136,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + ' sub2 renderZT1' + groupData?.id}
           style={_styles.ball_container}>
-      {
-        groupData?.plays?.map((item) => renderEBall(item))
-      }
+      {groupData?.plays?.map((item) => renderEBall(groupData, item))}
     </View>
   </View>
 
@@ -154,9 +159,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + ' sub2 renderZT2' + groupData?.id}
           style={_styles.ball_container}>
-      {
-        groupData?.plays?.map((item) => renderERect(item))
-      }
+      {groupData?.plays?.map((item) => renderERect(groupData, item))}
     </View>
   </View>
 

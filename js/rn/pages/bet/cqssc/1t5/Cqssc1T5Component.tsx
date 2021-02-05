@@ -44,24 +44,28 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 球
    * @param item
+   * @param ballInfo
    */
-  const renderEBall = (item?: PlayData) => <LotteryEBall key={key + 'renderEBall' + item?.id}
-                                                         item={item}
-                                                         selectedBalls={selectedBalls}
-                                                         containerStyle={_styles.ball_container}
-                                                         ballType={{ size: scale(50) }}
-                                                         oddsStyle={_styles.ball_odds}
-                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) =>
+    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  containerStyle={_styles.ball_container}
+                  ballType={{ size: scale(50) }}
+                  oddsStyle={_styles.ball_odds}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 方格式
    * @param item
+   * @param ballInfo
    * @param index
    */
-  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderERect' + item?.id + index}
-                                                                         item={item}
-                                                                         selectedBalls={selectedBalls}
-                                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderERect = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) =>
+    <LotteryERect key={key + 'renderERect' + ballInfo?.id + index}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 一组格子
@@ -71,15 +75,14 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderGroupERect = (groupData?: PlayGroupData, index?: number) => {
 
     let ball1 = groupData?.plays
-    let ball2
+    let ball2: Array<PlayData>
     if (arrayLength(ball1) == 14) {//分2组显示
       ball1 = groupData?.plays.slice(0, 10)
       ball2 = groupData?.plays.slice(10, 14)
     }
 
-    return <View
-      key={key + 'renderAllBall' + groupData?.id + index}
-      style={CommStyles.flex}>
+    return <View key={key + 'renderAllBall' + groupData?.id + index}
+                 style={CommStyles.flex}>
 
       <View key={key + 'renderAllBall sub' + groupData?.id + index}
             style={_styles.sub_title_container}>
@@ -92,8 +95,8 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
             style={_styles.rect_container}>
-        { ball1?.map(renderEBall) }
-        { ball2?.map(renderERect) }
+        {ball1?.map((item) => renderEBall(groupData, item))}
+        {ball2?.map((item) => renderERect(groupData, item))}
       </View>
 
     </View>

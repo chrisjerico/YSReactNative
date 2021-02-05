@@ -22,7 +22,6 @@ import { ILotteryRouteParams } from '../../const/ILotteryRouteParams'
  */
 const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
-
   const {
     setPlayOddData,
     tabIndex,
@@ -44,20 +43,13 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
-
-    return (
-      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
-                    item={{
-                      // ...item?.plays[0],
-                      ...ballInfo,
-                    }}
-                    selectedBalls={selectedBalls}
-                    ballType={{ size: scale(50) }}
-                    ballStyle={{ flexDirection: 'column' }}
-                    callback={() => addOrRemoveBall(ballInfo?.id)}/>
-    )
-  }
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) =>
+    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  ballType={{ size: scale(50) }}
+                  ballStyle={{ flexDirection: 'column' }}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 所有 大 小 栏目
@@ -99,6 +91,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 连码
    * @param groupData
+   * @param index
    */
   const renderDWD = (groupData?: PlayGroupData, index?: number) =>
     <View key={key + ' renderDWD' + groupData?.id + groupData?.exPlays[0]?.alias}

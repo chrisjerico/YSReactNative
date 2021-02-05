@@ -41,6 +41,11 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }, [])
   const key = 'lottery page' + playOddData?.code
 
+  /**
+   * 绘制 单个Tab
+   * @param item
+   * @param index
+   */
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => <TouchableWithoutFeedback
     key={key + item[0]?.alias}
     style={CommStyles.flex}
@@ -54,7 +59,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
             style={[
               _styles.tab_title_item_text,
               index == tabIndex ? { color: `white` } : null,
-            ]}>{item[0]?.alias}</Text>
+            ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
     </View>
   </TouchableWithoutFeedback>
 
@@ -69,9 +74,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 horizontal={true}>
       <View key={key + 'content'}
             style={_styles.tab_title_content}>
-        {
-          playOddData?.pageData?.groupTri?.map(renderTabItem)
-        }
+        {playOddData?.pageData?.groupTri?.map(renderTabItem)}
       </View>
     </ScrollView>
     <Icon size={scale(36)}
@@ -84,19 +87,15 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) => {
-
-    return (
-      <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
-                    item={{
-                      ...item?.plays[0],
-                      ...ballInfo,
-                    }}
-                    selectedBalls={selectedBalls}
-                    ballStyle={{ flexDirection: 'column' }}
-                    callback={() => addOrRemoveBall(ballInfo?.id)}/>
-    )
-  }
+  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) =>
+    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
+                  item={{
+                    ...item?.plays[0],
+                    ...ballInfo,
+                  }}
+                  selectedBalls={selectedBalls}
+                  ballStyle={{ flexDirection: 'column' }}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 连码

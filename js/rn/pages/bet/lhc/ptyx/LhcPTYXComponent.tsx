@@ -48,12 +48,10 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param index
    */
-  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) => {
-
-    return <TouchableWithoutFeedback
-      key={key + 'tab' + index + item[0]?.id}
-      style={CommStyles.flex}
-      onPress={() => setTabIndex(index)}>
+  const renderTabItem = (item?: Array<PlayGroupData>, index?: number) =>
+    <TouchableWithoutFeedback key={key + 'tab' + index + item[0]?.id}
+                              style={CommStyles.flex}
+                              onPress={() => setTabIndex(index)}>
       <View key={key + 'tab' + index + item[0]?.id}
             style={[
               _styles.tab_item,
@@ -63,10 +61,11 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
       </View>
     </TouchableWithoutFeedback>
-  }
+
+
   /**
    * 绘制tab，只有1个数据不绘制Tab
    */
@@ -78,9 +77,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 horizontal={true}>
       <View key={key + 'renderTab sub'}
             style={_styles.tab_title_content}>
-        {
-          playOddData?.pageData?.groupTri?.map(renderTabItem)
-        }
+        {playOddData?.pageData?.groupTri?.map(renderTabItem)}
       </View>
     </ScrollView>
     <Icon key={key + 'tab icon'}
@@ -92,26 +89,29 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 生肖和球
    * @param item
+   * @param ballInfo
    * @param index
    */
-  const renderEBall = (item?: PlayData, index?: number) => item?.exZodiac &&
-    <LotteryLineEBall key={key + 'renderEBall' + item?.id}
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) => ballInfo?.exZodiac &&
+    <LotteryLineEBall key={key + 'renderEBall' + ballInfo?.id}
                       item={{
-                        ...item,
-                        zodiacItem: item?.exZodiac,
+                        ...ballInfo,
+                        zodiacItem: ballInfo?.exZodiac,
                       }}
                       selectedBalls={selectedBalls}
-                      callback={() => addOrRemoveBall(item?.id)}/>
+                      callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制 方格式
    * @param item
+   * @param ballInfo
    * @param index
    */
-  const renderERect = (item?: PlayData, index?: number) => <LotteryERect key={key + 'renderEBall' + item?.id}
-                                                                         item={item}
-                                                                         selectedBalls={selectedBalls}
-                                                                         callback={() => addOrRemoveBall(item?.id)}/>
+  const renderERect = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) =>
+    <LotteryERect key={key + 'renderEBall' + ballInfo?.id}
+                  item={ballInfo}
+                  selectedBalls={selectedBalls}
+                  callback={() => ballInfo?.enable != '0' && item?.enable == '1' && addOrRemoveBall(ballInfo?.id)}/>
 
   /**
    * 绘制全部的格子
@@ -133,7 +133,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View key={key + 'renderAllRect sub2' + groupData?.id}
             style={_styles.rect_container}>
         {
-          groupData?.plays?.map(renderERect)
+          groupData?.plays?.map((item) => renderERect(groupData, item))
         }
       </View>
 
@@ -159,7 +159,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View key={key + 'renderLineBall sub' + groupData?.id}
             style={_styles.ball_container}>
         {
-          groupData?.plays?.map(renderEBall)
+          groupData?.plays?.map((item) => renderEBall(groupData, item))
         }
       </View>
     </View>
