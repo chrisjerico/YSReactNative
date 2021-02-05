@@ -8,7 +8,7 @@ import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
-import { expandSelectedData } from '../../util/selecte/ParseSelectedUtil'
+import { expandSelectedData } from '../../util/select/ParseSelectedUtil'
 
 /**
  * 计算彩票下注时候，选中的条目数量是否符合要求

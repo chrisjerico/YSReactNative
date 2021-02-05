@@ -40,6 +40,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     moneyMap,
     setMoneyMap,
     itemCount,
+    currentPlayGroupData,
     nextIssueData,
     playOddDetailData,
     selectedCombineData,
@@ -176,26 +177,21 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   }).flat(Infinity)
 
-  const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * BET_ITEM_HEIGHT, [itemCount])
-
   return (
     <View style={_styles.container}>
       <Modal isVisible={true}
              style={_styles.modal_content}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
-             backdropOpacity={0.3}>
-        <View style={[
-          _styles.content,
-          { height: listHeight + scale(310) }, //还要算上条目下面的下注按钮等元素的高度
-        ]}>
+             backdropOpacity={0.5}>
+        <View style={_styles.content}>
           <View style={[
             _styles.dialog_title_container,
             { backgroundColor: Skin1.themeColor },
           ]}>
-            <Text style={_styles.dialog_title_text}>{playOddDetailData?.game?.title + '-下注清单'}</Text>
+            <Text style={_styles.dialog_title_text}>{'下注清单'}</Text>
           </View>
-          <View style={[_styles.sv_parent, { height: listHeight }]}>
+          <View style={_styles.sv_parent}>
             <ScrollView style={_styles.sv_container}
                         showsVerticalScrollIndicator={false}>
               <View style={_styles.sv_content}>
@@ -262,6 +258,7 @@ const _styles = StyleSheet.create({
   },
   sv_container: {
     width: '100%',
+    maxHeight: scale(512),
   },
   sv_content: {
     width: '100%',
@@ -337,7 +334,6 @@ const _styles = StyleSheet.create({
     paddingHorizontal: scale(8),
   },
   total_info_container: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: scale(8),

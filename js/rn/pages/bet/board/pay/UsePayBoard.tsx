@@ -30,7 +30,8 @@ import { combineOddsName } from '../../util/LotteryUtil'
  */
 const UsePayBoard = () => {
 
-  const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex]//当前彩种数据
+  const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前彩种
+  const currentPlayGroupData = currentPlayOddData?.pageData?.groupTri[UGStore.globalProps?.lotteryTabIndex] //当前界面
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
@@ -220,6 +221,7 @@ const UsePayBoard = () => {
     moneyMap,
     setMoneyMap,
     itemCount,
+    currentPlayGroupData,
     nextIssueData,
     playOddDetailData,
     selectedCombineData,

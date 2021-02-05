@@ -13,8 +13,8 @@ import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
 import SelectedLotteryModel, { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
-import { parseLMASelectedData } from '../../util/selecte/ParseLMASelectedUtil'
-import { parseHXSelectedData } from '../../util/selecte/ParseHXSelectedUtil'
+import { parseLMASelectedData } from '../../util/select/ParseLMASelectedUtil'
+import { parseHXSelectedData } from '../../util/select/ParseHXSelectedUtil'
 import { doubleDigit } from '../../../../public/tools/StringUtil'
 
 /**
