@@ -40,12 +40,7 @@ const renderContent = ({
     <View key={'e ball content' + item?.id}
           style={[
             _styles.ball_item_tm,
-            {
-              backgroundColor:
-                isSel ?
-                  `${Skin1.themeColor}dd` :
-                  null,
-            },
+            { backgroundColor: isSel ? `${Skin1.themeColor}dd` : null },
             containerStyle,
           ]}>
       <EBall key={'e ball content e' + item?.id}
@@ -55,12 +50,8 @@ const renderContent = ({
                ...ballType,
              }}
              oddsStyle={[
-               {
-                 color: isSel ?
-                   UGColor.TextColor6 :
-                   UGColor.TextColor7,
-               },
-               oddsStyle
+               { color: isSel ? UGColor.TextColor6 : UGColor.TextColor7 },
+               oddsStyle,
              ]}
              odds={item?.enable != '0' ? item?.odds : '- -'}
              {...ballProps}
@@ -78,7 +69,7 @@ const LotteryEBall = (iBall: ILotteryEBall) => {
 
   return (
     callback != null ? <TouchableWithoutFeedback key={`LotteryEBall-${item?.exId}-${item?.id}`}
-                                         onPress={() => callback && callback()}>
+                                                 onPress={() => callback && callback()}>
         {renderContent(iBall)}
       </TouchableWithoutFeedback> :
       renderContent(iBall)
@@ -103,7 +94,7 @@ const _styles = StyleSheet.create({
 /**
  * 球的数据 和 PlayData 结构类似
  */
-interface ILotteryEBallItem extends PlayData{
+interface ILotteryEBallItem extends PlayData {
   // id?: string; //708501
   // exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, TM,特码B,708550
   // name?: string; //01

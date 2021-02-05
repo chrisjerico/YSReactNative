@@ -100,13 +100,13 @@ const LotteryBall = ({
   return (
     <View key={key + 'content'}
           style={[_styles.ball_item,
-      {
-        backgroundColor: bColor,
-        borderRadius: round,
-        width: width,
-        margin: scale(2),
-      },
-      style]}>
+            {
+              backgroundColor: bColor,
+              borderRadius: round,
+              width: width,
+              margin: scale(2),
+            },
+            style]}>
       {
         renderBalls(type)
       }
