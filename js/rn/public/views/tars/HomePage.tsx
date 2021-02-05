@@ -6,6 +6,7 @@ import PushHelper from '../../define/PushHelper'
 import { RankingListType } from '../../models/Enum'
 import { httpClient } from '../../network/httpClient'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
+import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
 import { scale } from '../../tools/Scale'
 import Activitys, { FloatAd, GoldenEgg, Roulette } from './Activitys'
 import BannerBlock from './BannerBlock'
@@ -36,6 +37,7 @@ interface HomePageProps {
   isTest?: boolean
   redBagLogo: string
   redBag: RedBagDetailActivityModel
+  activitySetting: ActivitySettingModel
   roulette: Roulette[]
   floatAds: FloatAd[]
   goldenEggs: GoldenEgg[]
@@ -116,6 +118,7 @@ const HomePage = ({
   isTest,
   redBagLogo,
   redBag,
+  activitySetting,
   roulette,
   floatAds,
   goldenEggs,
@@ -246,7 +249,7 @@ const HomePage = ({
             </>
           )}
         />
-        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} activitySetting={activitySetting} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
         {renderRestComponent && renderRestComponent()}
       </>
     )

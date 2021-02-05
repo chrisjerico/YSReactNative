@@ -40,6 +40,7 @@ import { CapitalDetailModel } from './Model/wd/CapitalDetailModel'
 import { DepositRecordModel } from './Model/wd/DepositRecordModel'
 import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
+import { ActivitySettingModel } from './Model/ActivitySettingModel'
 import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
 import { HallGameModel } from './Model/game/HallGameModel'
@@ -794,7 +795,7 @@ class APIRouter {
   }
 
   //獲取活動配置
-  static config_setting = async () => {
+  static activity_setting = async () => {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -807,7 +808,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<any>('c=activity&a=settings&' + tokenParams)
+    return httpClient.get<ActivitySettingModel>('c=activity&a=settings&' + tokenParams)
   }
 
   static request_redbag = async (redBagId): Promise<AxiosResponse<NormalModel>> => {

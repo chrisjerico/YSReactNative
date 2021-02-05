@@ -5,6 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { Res } from '../../Res/icon/Res'
 import APIRouter from '../network/APIRouter'
+import { ActivitySettingModel } from '../network/Model/ActivitySettingModel'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { scale } from '../tools/Scale'
 import { ugLog } from '../tools/UgLog'
@@ -15,11 +16,13 @@ interface RedBagModalProps {
   show?: any
   onPress?: () => any
   redBag?: RedBagDetailActivityModel
+  activitySetting?: ActivitySettingModel
 }
 
-const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
+const RedBagModal = ({ show, onPress, redBag, activitySetting }: RedBagModalProps) => {
   const [hide, setHide] = useState(false)
   const [redBagData, setRedBagData] = useState(redBag)
+  const [bagSkin, setBagSkin] = useState(activitySetting?.data?.redBagSkin)
 
   const requestBag = async () => {
     if (!redBag.data.hasLogin) {
@@ -30,6 +33,8 @@ const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
     Alert.alert(null, response.data.msg, [
       { text: "确认" },
     ])
+    const activity_setting = await APIRouter.activity_setting()
+    ugLog("activity_setting= ", activity_setting)
     await APIRouter.activity_redBagDetail().then((value) => {
       if (value.data.code == 0) {
         setRedBagData(value.data)
@@ -40,7 +45,6 @@ const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
   useEffect(()=> {
   }, [redBagData])
 
-  ugLog("redBagData=", redBagData)
   return (
     <Modal 
       style={{ zIndex: 2}}
@@ -53,7 +57,7 @@ const RedBagModal = ({ show, onPress, redBag }: RedBagModalProps) => {
         <View style={styles.bg_container} />
         <View style={styles.redBagImage}>
           <ImageBackground 
-            source={{ uri: Res.redBg }}
+            source={{ uri: bagSkin ? bagSkin : Res.redBg }}
             style={styles.image} >
             <View style={styles.imageContainer}>
               <View style={styles.col}>

@@ -5,6 +5,7 @@ import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActiv
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
 import RedBagModal from '../RedBagModal'
+import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
 
 interface ActivityComponentProps {
   logo: string
@@ -14,28 +15,19 @@ interface ActivityComponentProps {
   containerStyle?: StyleProp<ViewStyle>
   refreshing?: boolean
   type?: number
-  redBag?: RedBagDetailActivityModel
 }
 
-const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, containerStyle, refreshing, type, redBag }: ActivityComponentProps) => {
+const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, containerStyle, refreshing, type }: ActivityComponentProps) => {
   const [hide, setHide] = useState(false)
-  const [redDialog, setRedDialog] = useState(false)
 
   useEffect(() => {
     refreshing && setHide(false)
   }, [refreshing])
 
-  const pressHandler = () => {
-    onPress
-    if (type == 0) {
-      setRedDialog(!redDialog)
-    }
-  }
-
   if (show && !hide) {
     return (
       <View style={[styles.container, containerStyle]}>
-        <TouchableImage containerStyle={{ padding: scale(20) }} enableFastImage={enableFastImage} pic={logo} onPress={pressHandler} resizeMode={'contain'} />
+        <TouchableImage containerStyle={{ padding: scale(20) }} enableFastImage={enableFastImage} pic={logo} onPress={onPress} resizeMode={'contain'} />
         <TouchableWithoutFeedback
           onPress={() => {
             setHide(true)
@@ -44,14 +36,6 @@ const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, contai
             <AntDesign name={'closecircleo'} size={scale(35)} color={'red'} />
           </View>
         </TouchableWithoutFeedback>
-        { redDialog 
-          ? <RedBagModal
-              onPress={() => {
-                setRedDialog(!redDialog)
-              }}
-              redBag={redBag}
-            /> 
-          : null }
       </View>
     )
   } else {

@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
@@ -6,6 +6,8 @@ import { scale } from '../../tools/Scale'
 import { icon_任务弹窗, icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
+import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
+import RedBagModal from '../../components/RedBagModal'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -17,6 +19,7 @@ interface ActivitysProps {
   redBag: RedBagDetailActivityModel
   goldenEggs: GoldenEgg[]
   scratchs: unknown
+  activitySetting?: ActivitySettingModel
 }
 
 export interface FloatAd {
@@ -43,8 +46,10 @@ export interface GoldenEgg {
   type: string
 }
 
-const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
+const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs, activitySetting }: ActivitysProps) => {
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
+  const [redDialog, setRedDialog] = useState(false)
+  
   return (
     <>
       <ActivityComponent
@@ -55,9 +60,9 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         type={0}
         onPress={() => {
           // 红包
-          PushHelper.pushRedBag(redBag)
+          // PushHelper.pushRedBag(redBag)
+          setRedDialog(!redDialog)
         }}
-        redBag={redBag}
       />
       <ActivityComponent
         refreshing={refreshing}
@@ -111,6 +116,15 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
           />
         )
       })}
+      { redDialog 
+        ? <RedBagModal
+            onPress={() => {
+              setRedDialog(!redDialog)
+            }}
+            redBag={redBag}
+            activitySetting={activitySetting}
+          /> 
+        : null }
     </>
   )
 }
