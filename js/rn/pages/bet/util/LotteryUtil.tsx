@@ -4,6 +4,7 @@ import * as React from 'react'
 import { ugLog } from '../../../public/tools/UgLog'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
+import { GameTab } from '../const/LotteryConst'
 
 interface INameOrAlias {
   name?: string; //鼠
@@ -29,6 +30,7 @@ const clearLotteryData = () => {
   ugLog('clearLotteryData')
   UGStore.dispatch({ type: 'reset', lotteryId: null })
   UGStore.dispatch({ type: 'reset', lotteryTabIndex: 0 })
+  UGStore.dispatch({ type: 'reset', gameTabIndex: GameTab.LOTTERY })
   UGStore.dispatch({ type: 'reset', currentColumnIndex: 0 })
   UGStore.dispatch({ type: 'reset', nextIssueData: {} })
   UGStore.dispatch({ type: 'reset', playOddDetailData: {} })

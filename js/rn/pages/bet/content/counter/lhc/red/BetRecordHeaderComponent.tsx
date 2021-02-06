@@ -15,7 +15,7 @@ interface IHallGameList {
 }
 
 /**
- * 彩票开奖头部，特殊的一个
+ * 彩票开奖头部
  * @param navigation
  * @constructor
  */

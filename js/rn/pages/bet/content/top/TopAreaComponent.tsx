@@ -11,6 +11,7 @@ import BetRecordHeaderComponent from '../counter/lhc/red/BetRecordHeaderComponen
 import { useState } from 'react'
 import UseTopArea from './UseTopArea'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
+import { GameTab } from '../../const/LotteryConst'
 
 /**
  * 顶部功能区域 标题栏，游戏聊天切换 等等
@@ -20,8 +21,6 @@ const TopAreaComponent = () => {
   const {
     userInfo,
     systemInfo,
-    // nextIssueData,
-    // setNextIssueData,
     gameTabIndex,
     setGameTabIndex,
     playOddDetailData,
@@ -83,24 +82,24 @@ const TopAreaComponent = () => {
 
     <TouchableWithoutFeedback key={'renderGameTab left'}
                       style={CommStyles.flex}
-                      onPress={() => setGameTabIndex(0)}>
+                      onPress={() => setGameTabIndex(GameTab.LOTTERY)}>
       <View key={'renderGameTab left'}
             style={[
               _styles.game_tab,
               _styles.game_tab_left,
-              gameTabIndex == 0 ? { backgroundColor: UGColor.transparent2 } : null]}>
+              gameTabIndex == GameTab.LOTTERY ? { backgroundColor: UGColor.transparent2 } : null]}>
         <Text key={'renderGameTab 投注区'}
               style={_styles.tab_text}>{'投注区'}</Text>
       </View>
     </TouchableWithoutFeedback>
     <TouchableWithoutFeedback key={'renderGameTab right'}
                       style={CommStyles.flex}
-                      onPress={() => setGameTabIndex(1)}>
+                      onPress={() => setGameTabIndex(GameTab.CHAT)}>
       <View key={'renderGameTab right'}
             style={[
               _styles.game_tab,
               _styles.game_tab_right,
-              gameTabIndex == 1 ? { backgroundColor: UGColor.transparent2 } : null]}>
+              gameTabIndex == GameTab.CHAT ? { backgroundColor: UGColor.transparent2 } : null]}>
         <Text key={'renderGameTab 主房间'}
               style={_styles.tab_text}>{'主房间'}</Text>
       </View>
@@ -154,12 +153,12 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
   },
   game_tab_left: {
-    borderTopRightRadius: scale(12),
-    borderBottomRightRadius: scale(12),
+    borderTopRightRadius: scale(8),
+    borderBottomRightRadius: scale(8),
   },
   game_tab_right: {
-    borderTopLeftRadius: scale(12),
-    borderBottomLeftRadius: scale(12),
+    borderTopLeftRadius: scale(8),
+    borderBottomLeftRadius: scale(8),
   },
   tab_text: {
     fontSize: scale(22),

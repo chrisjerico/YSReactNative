@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
+import { GameTab } from '../../const/LotteryConst'
 
 /**
  * 顶部功能区域 标题栏，游戏聊天切换 等等
@@ -11,8 +12,11 @@ const UseTopArea = () => {
   const systemInfo = UGStore.globalProps.sysConf //系统信息
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
 
-  const [gameTabIndex, setGameTabIndex] = useState(0) // 彩票和聊天切换TAB
-  // const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) // 下一期的彩票信息
+  const [gameTabIndex, setGameTabIndex] = useState(GameTab.LOTTERY) // 彩票和聊天切换TAB
+
+  useEffect(() => {
+    UGStore.dispatch({type: 'reset', gameTabIndex: gameTabIndex})
+  }, [gameTabIndex])
 
   return {
     userInfo,

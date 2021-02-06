@@ -12,6 +12,7 @@ import PayBoardComponent from './pay/PayBoardComponent'
 import { UGStore } from '../../../redux/store/UGStore'
 import { ugLog } from '../../../public/tools/UgLog'
 import PayResultComponent from './pay/result/PayResultComponent'
+import { GameTab } from '../const/LotteryConst'
 
 /**
  * 彩票功能区入参
@@ -31,6 +32,7 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    gameTabIndex,
     betResult,
     setBetResult,
     showBetPayment,
@@ -198,7 +200,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
       <TouchableWithoutFeedback onPress={() => {
         ugLog('clear selected')
-        UGStore.dispatch({type: 'reset', selectedLotteryModel: {}})}
+        UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+      }
       }>
         <Text key={'renderInputArea input 重置'}
               style={_styles.start_reset}>重置</Text>
@@ -226,7 +229,11 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   return (
     <View key={'bet board content'}
           pointerEvents={'box-none'}
-          style={[_styles.container, style]}>
+          style={[
+            _styles.container,
+            style,
+            gameTabIndex == GameTab.LOTTERY ? null : { height: 0, width: 0, opacity: 0, display: 'none' }, //非彩票界面不需要显示 下注面板
+          ]}>
       <View style={_styles.bet_container}>
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}

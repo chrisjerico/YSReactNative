@@ -17,6 +17,7 @@ import { Res } from '../../Res/icon/Res'
 import { clearLotteryData } from './util/LotteryUtil'
 import InstantLotteryComponent from './content/counter/mmc/InstantLotteryComponent'
 import * as Animatable from 'react-native-animatable'
+import WebChatComponent from './chat/WebChatComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -90,18 +91,20 @@ const BetLotteryPage = ({ navigation, route }) => {
       <View key={'lottery content'}
             style={_styles.bs_container}>
         <TopAreaComponent/>
-        {
-          !dicNull(playOddDetailData) ? //有数据才加载
-            <ScrollView key={'lottery middle content'}
-                        style={_styles.sv_container}>
+        <View style={_styles.sv_container}>
+          {
+            !dicNull(playOddDetailData) && <ScrollView key={'lottery middle content'}
+                                                       style={_styles.sv_container}>
               {
                 //秒秒彩不显示历史记录和倒计时
                 playOddDetailData?.game?.isInstant == '1' ? <InstantLotteryComponent/> : <BetRecordHeaderComponent/>
               }
               <LotteryContentComponent/>
-            </ScrollView> :
-            <View style={_styles.sv_container}/>
-        }
+            </ScrollView>
+          }
+          <WebChatComponent/>
+        </View>
+
         <BetBoardComponent key={'lottery board'}
                            locked={false}
                            lockStr={'封盘中...'}/>

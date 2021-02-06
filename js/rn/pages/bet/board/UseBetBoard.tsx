@@ -24,6 +24,7 @@ const UseBetBoard = () => {
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
+  const gameTabIndex = UGStore.globalProps?.gameTabIndex //GameTab 当前TAB是 彩票0 还是 聊天室1
 
   // const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
@@ -49,6 +50,7 @@ const UseBetBoard = () => {
   }
 
   return {
+    gameTabIndex,
     betResult,
     setBetResult,
     showBetPayment,
