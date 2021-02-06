@@ -112,7 +112,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     //@ts-ignore
     const homeGamesConcat = homeGames?.flatMap((ele) => ele?.list)
 
-    ugLog('homeGamesConcat ==========================',JSON.stringify(homeGamesConcat))
+    // ugLog('homeGamesConcat ==========================',JSON.stringify(homeGamesConcat))
     const homeGamesHot = homeGamesConcat?.filter((ele) => ele?.is_hot == '1') // 官
     ugLog('homeGamesHot ==========================',JSON.stringify(homeGamesHot))
 
