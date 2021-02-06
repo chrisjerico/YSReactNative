@@ -117,11 +117,12 @@ const UseVersion = ({
    */
 const testCodePush = async (callback: (ret?: string) => void) => {
   const hosts = [
-    'https://push.cloudaliyun.com',
-    'https://push.cloudbaiidu.com',
-    'https://push.cloudtenccent.com',
-    'https://push.ujcloud.cc',
-    'http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000',
+    'https://push.cloudaliyun.com',//aws
+    'https://push.cloudbaiidu.com',//aws
+    'https://push.cloudtenccent.com',//aws
+    'https://push.ujcloud.cc',//aws（建议）
+    'http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000',//源地址
+    'https://push.qijun2099.com',//阿里云
   ];
 
   let firstHost = undefined
