@@ -14,6 +14,7 @@ import { Platform } from 'react-native'
 import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { MenuType } from '../../define/ANHelper/hp/GotoDefine'
+import { ugLog } from '../../tools/UgLog'
 
 interface UseHomePage {
   onSuccessSignOut?: () => any
@@ -111,7 +112,11 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     //@ts-ignore
     const homeGamesConcat = homeGames?.flatMap((ele) => ele?.list)
 
-    return { navs, homeGames, homeGamesConcat }
+    // ugLog('homeGamesConcat ==========================',JSON.stringify(homeGamesConcat))
+    const homeGamesHot = homeGamesConcat?.filter((ele) => ele?.is_hot == '1') // 官
+    ugLog('homeGamesHot ==========================',JSON.stringify(homeGamesHot))
+
+    return { navs, homeGames, homeGamesConcat,homeGamesHot}
   }, [homeGame])
 
   const lotteryData = useMemo(() => {

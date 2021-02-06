@@ -19,7 +19,7 @@ export enum OCEventType {
   AppDefineSetupSiteAndSkinParams = 'AppDefine-SetupSiteAndSkinParams',
   TZImagePickerControllerDidFinishPickingPhotosHandle = 'TZImagePickerController-DidFinishPickingPhotosHandle',
 }
-
+//1
 export class OCEvent extends OCCall {
   protected static events: { type: OCEventType; event: Function }[] = []
 
@@ -90,12 +90,12 @@ export class OCEvent extends OCCall {
     this.addEvent(OCEventType.UGNotificationGetSystemConfigComplete, (sysConf: UGSysConfModel) => {
       UGStore.dispatch({ type: 'merge', sysConf: sysConf })
     })
-    this.addEvent(OCEventType.AppDefineSetupSiteAndSkinParams, async () => {
+    this.addEvent(OCEventType.AppDefineSetupSiteAndSkinParams, () => {
       if (AppDefine.siteId == 'c116') {
-        await OCHelper.call('AppDefine.shared.setIsNoOnLineDoc:', [false]);
+         OCHelper.call('AppDefine.shared.setIsNoOnLineDoc:', [false]);
       }
       if (Skin1.skitType == '香槟金') {
-        await OCHelper.call('AppDefine.shared.setIsTabMassageBadge:', [false]);
+         OCHelper.call('AppDefine.shared.setIsTabMassageBadge:', [false]);
    
       }
     })
