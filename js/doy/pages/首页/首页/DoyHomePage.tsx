@@ -36,7 +36,7 @@ const navBtnInfos: { icon: string, title: string, onPress: () => void }[] = [
   }, {
     icon: img_doy('我的订单@3x'),
     title: '我的订单',
-    onPress: () => { push(PageName.DoyWantSellPage) }
+    onPress: () => { push(PageName.DoyMyOrderPage) }
   }, {
     icon: img_doy('打币@3x'),
     title: '打币',

@@ -8,7 +8,7 @@ import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_platform, img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText14, DoyText15 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText14, DoyText15, DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 
@@ -25,7 +25,7 @@ export const DoyNotifySellerPage = ({ setProps }: UGBasePageProps) => {
         <DoyText14 style={{ marginLeft: sc(1) }}>付款时间</DoyText14>
         <DoyText15 bold3 style={{ backgroundColor: '#F7F7F9', height: sc(46), paddingTop: sc(15), paddingLeft: sc(16), marginTop: sc(12), borderRadius: sc(4), overflow: 'hidden' }}>2021/01/26 15:30</DoyText15>
         <DoyText14 style={{ marginLeft: sc(1), marginTop: sc(24) }}>转账单号后六位</DoyText14>
-        <DoyText15 bold3 style={{ backgroundColor: '#F7F7F9', height: sc(46), paddingTop: sc(15), paddingLeft: sc(16), marginTop: sc(12), borderRadius: sc(4), overflow: 'hidden' }}>AKSIX3</DoyText15>
+        <DoyTextInput1 bold3 style={{ fontSize: sc(15), backgroundColor: '#F7F7F9', }}>AKSIX3</DoyTextInput1>
         <View style={{ flex: 1 }} />
         <DoyButton1 title='发送' onPress={() => { }} />
       </View>
