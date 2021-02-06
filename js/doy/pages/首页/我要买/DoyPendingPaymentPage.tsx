@@ -25,7 +25,7 @@ export const DoyPendingPaymentPage = ({ setProps }: UGBasePageProps) => {
       <DoyText40 bold2 style={{ textAlign: 'center', fontWeight: '600', color: '#DC550C' }}>14:19</DoyText40>
       {/* 二维码 */}
       <FastImagePlaceholder source={{ uri: img_platform('c006', 'apple_qrcode', 'jpg') }} style={{ marginTop: sc(15), width: sc(160), aspectRatio: 1, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }} >
-        <FastImage source={{ uri: img_doy('注册页 logo@3x') }} style={{ width: sc(40), aspectRatio: 1 }} />
+        <FastImage source={{ uri: img_doy('二维码logo') }} style={{ width: sc(40), aspectRatio: 1 }} />
       </FastImagePlaceholder>
       <View style={{ padding: sc(24), paddingTop: sc(10), flex: 1 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: sc(13) }}>

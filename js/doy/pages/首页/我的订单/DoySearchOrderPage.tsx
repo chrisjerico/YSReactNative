@@ -11,7 +11,7 @@ import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyText20, DoyText12, DoyText14, DoyText28, DoyButton1, DoyText13, DoyText16, DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyText20, DoyText12, DoyText14, DoyText28, DoyButton1, DoyText13, DoyText16, DoyTextInput1, DoyCheckbox1 } from "../../../public/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 
@@ -35,7 +35,19 @@ export const DoySearchOrderPage = ({ }: UGBasePageProps) => {
       <View style={{ height: sc(2), width: sc(9), marginTop: sc(33), backgroundColor: '#979797', }} />
       <DoyTextInput1 bold3 style={{ width: '44%' }}>100000</DoyTextInput1>
       <DoyText14 style={{ width: '100%', marginTop: sc(20) }}>成立时间</DoyText14>
-
+      <DoyTextInput1 bold3 style={{ width: '44%' }}>2020/12/28</DoyTextInput1>
+      <View style={{ height: sc(2), width: sc(9), marginTop: sc(33), backgroundColor: '#979797', }} />
+      <DoyTextInput1 bold3 style={{ width: '44%' }}>2021/01/27</DoyTextInput1>
+      <DoyText14 style={{ width: '100%', marginTop: sc(20) }}>付款方式</DoyText14>
+      <DoyCheckbox1 title='支付宝' style={{ width: '31.6%' }} onClick={(selected) => {
+        return true
+      }} />
+      <DoyCheckbox1 title='微信支付' style={{ width: '31.6%' }} onClick={(selected) => {
+        return true
+      }} />
+      <DoyCheckbox1 title='银行卡' style={{ width: '31.6%' }} onClick={(selected) => {
+        return true
+      }} />
     </View>
     <View style={{ flex: 1 }} />
     <DoyButton1 title='查询' onPress={() => {

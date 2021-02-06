@@ -1,9 +1,12 @@
-import React, { ReactElement } from "react";
-import { StyleProp, TextInput, TextInputProps, TextProps, TextStyle, View } from "react-native";
-import { Button, ButtonProps, Text } from "react-native-elements";
+import React, { ReactElement, useRef, useState } from "react";
+import { StyleProp, TextInput, TextInputProps, TextProps, TextStyle, View, ViewProps, ViewStyle } from "react-native";
+import { Button, ButtonProps, CheckBox, Text } from "react-native-elements";
+import FastImage from "react-native-fast-image";
+import { TouchableNativeFeedback, TouchableOpacity } from "react-native-gesture-handler";
 import LinearGradient from "react-native-linear-gradient";
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers";
-import { sc375 } from "../../../rn/public/tools/Scale";
+import { sc375, scale } from "../../../rn/public/tools/Scale";
+import { img_doy } from "../../../rn/Res/icon";
 
 const sc = sc375
 
@@ -39,6 +42,49 @@ export const DoyButton2 = (p: ButtonProps) => {
     />
   )
 }
+
+
+
+interface DoyCheckboxProps {
+  selected?: boolean
+  onClick?: (selected: boolean) => boolean
+  style?: StyleProp<ViewStyle>
+  title?: string
+  titleProps?: DoyTextProps
+}
+export const DoyCheckbox1 = (p: DoyCheckboxProps) => {
+  const [, setState] = useState({})
+
+  const { onClick, titleProps, title, style } = p
+  const { themeColor } = skin1
+  const { current: v } = useRef({
+    internalRender: false,  // 是否内部渲染
+    selected: false
+  })
+  if (!v.internalRender) {
+    v.selected = p?.selected // 从外部渲染的情况下，直接从外部取值
+  }
+  v.internalRender = false
+
+  return <TouchableNativeFeedback onPress={() => {
+    if (!onClick || onClick(v.selected)) {
+      v.selected = !v.selected
+      v.internalRender = true
+      setState({})
+    }
+  }}>
+    <View style={[{
+      marginTop: sc(12), borderRadius: sc(4), overflow: 'hidden', alignItems: 'center', padding: sc(14), borderWidth: sc(2),
+      borderColor: v.selected ? themeColor : 'transparent',
+      backgroundColor: v.selected ? '#EAF1FF' : 'white',
+    }, style]}>
+      <DoyText14 {...titleProps}>{title}</DoyText14>
+      {v.selected && < FastImage source={{ uri: img_doy('选择@3x') }} style={{ width: sc(17), aspectRatio: 1, position: 'absolute', right: 0 }} />}
+    </View>
+  </TouchableNativeFeedback>
+}
+
+
 
 
 
