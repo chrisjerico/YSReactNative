@@ -32,6 +32,7 @@ const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     gameTabIndex,
     userInfo,
     systemInfo,
+    handleMessage,
   } = UseWebChat()
 
   const [progress, setProgress] = useState(0) //进度条
@@ -69,7 +70,8 @@ const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                allowsLinkPreview
                allowUniversalAccessFromFileURLs
                onLoadProgress={((event) => setProgress(event?.nativeEvent?.progress))}
-               source={{ uri: chatUrl }}/>
+               source={{ uri: chatUrl }}
+      onMessage={handleMessage}/>
       {renderProgress()}
     </View>
   )

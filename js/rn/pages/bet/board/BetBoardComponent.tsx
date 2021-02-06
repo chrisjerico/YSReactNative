@@ -244,6 +244,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                                                 setBetResult(data)
                                               }}/>}
         {betResult && <PayResultComponent betData={betResult}
+                                          nextIssueData={UGStore.globalProps?.nextIssueData}
                                           showCallback={() => setBetResult(null)}/>}
       </View>
     </View>

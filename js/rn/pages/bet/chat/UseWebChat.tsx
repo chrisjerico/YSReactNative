@@ -14,6 +14,8 @@ import { ugLog } from '../../../public/tools/UgLog'
 import APIRouter from '../../../public/network/APIRouter'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { Platform } from 'react-native'
+import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes'
+import { GameTab } from '../const/LotteryConst'
 
 
 /**
@@ -43,11 +45,25 @@ const UseWebChat = () => {
     }
   }, [])
 
+  /**
+   * 处理消息交互
+   * @param event
+   */
+  const handleMessage = (event: WebViewMessageEvent) => {
+    ugLog('web chat = ', event?.nativeEvent?.data)
+    switch (event?.nativeEvent?.data) {
+      case 'return_lottery':
+        UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.LOTTERY})
+        break
+    }
+  }
+
   return {
     chatUrl,
     gameTabIndex,
     userInfo,
     systemInfo,
+    handleMessage,
   }
 }
 

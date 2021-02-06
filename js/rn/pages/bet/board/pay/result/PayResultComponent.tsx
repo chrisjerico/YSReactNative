@@ -13,9 +13,11 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import { forwardRef, useEffect } from 'react'
 import CommStyles from '../../../../base/CommStyles'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { NextIssueData } from '../../../../../public/network/Model/lottery/NextIssueModel'
 
 interface IPayResultComponent {
-  betData?: LotteryResultData
+  betData?: LotteryResultData //下注结果
+  nextIssueData?: NextIssueData //下一期数据
   showCallback?: () => void //窗口 是否显示 回调
 }
 
@@ -25,10 +27,10 @@ interface IPayResultComponent {
  * @param ref
  * @constructor
  */
-const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?: any) => {
+const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResultComponent, ref?: any) => {
 
   const {
-    nextIssueData,
+    setNextIssueData,
     closeWindow,
     setCloseWindow,
     betResult,
@@ -40,6 +42,7 @@ const PayResultComponent = ({ betData, showCallback }: IPayResultComponent, ref?
 
   useEffect(() => {
     setBetResult(betData)
+    setNextIssueData(nextIssueData)
   }, [])
 
   useEffect(() => {
