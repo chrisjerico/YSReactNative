@@ -9,7 +9,7 @@ import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it
 import moment from 'moment'
 import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
-import { calculateItemCount, gatherSelectedItems, initItemMoney } from '../tools/BetUtil'
+import { calculateItemCount, combineSelectedData, gatherSelectedItems, initItemMoney } from '../tools/BetUtil'
 import { zodiacPlayX } from '../tools/hx/BetHXUtil'
 import { playDataX } from '../tools/zxbz/BetZXBZUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
@@ -20,7 +20,7 @@ import APIRouter from '../../../../public/network/APIRouter'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 import { jsDic } from '../../../经典/Model/UGChanglongaideModel'
-import { combineArrayName, combineSelectedData } from '../tools/ezdw/BetEZDWUtil'
+import { combineArrayName} from '../tools/ezdw/BetEZDWUtil'
 import { combineOddsName } from '../../util/LotteryUtil'
 
 /**
