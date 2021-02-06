@@ -35,7 +35,7 @@ const UseWebChat = () => {
         break;
       case 'android':
         ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: {} }).then((res) => {
-          const chatUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=0&color=${Skin1.themeColor}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
+          const chatUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=0&color=${Skin1.themeColor.slice(1)}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
           ugLog('chatUrl = ', chatUrl)
           setChatUrl(chatUrl)
         })

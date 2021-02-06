@@ -19,7 +19,6 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { Router } from '../../public/navigation/Router'
 import { ugLog } from '../../public/tools/UgLog'
-import ExtUGApplication from '../../public/tools/ui/ExtUGApplication'
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import AddBankPage from '../bank/add/AddBankPage'
 import ManageBankListPage from '../bank/list/ManageBankListPage'
@@ -337,10 +336,8 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
   render() {
-    const initialName = ExtUGApplication.tabUI()
-    ugLog('tab initialName=', initialName)
     return (
-      <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
+      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         {Object.keys(pageComponents).map((key) => {
           // ugLog('tab page key=', key)
@@ -352,10 +349,8 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
 }
 
 const StackScreens = () => {
-  const initialName = ExtUGApplication.stackUI()
-  ugLog('stack initialName=', initialName)
   return (
-    <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
+    <Router.StackNavigator headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
       {Object.keys(pageComponents)
         .filter((value) => value.indexOf('Home') <= 0) //过滤掉首页

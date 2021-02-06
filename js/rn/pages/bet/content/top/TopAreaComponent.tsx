@@ -12,6 +12,7 @@ import { useState } from 'react'
 import UseTopArea from './UseTopArea'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { GameTab } from '../../const/LotteryConst'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 /**
  * 顶部功能区域 标题栏，游戏聊天切换 等等
@@ -82,7 +83,10 @@ const TopAreaComponent = () => {
 
     <TouchableWithoutFeedback key={'renderGameTab left'}
                       style={CommStyles.flex}
-                      onPress={() => setGameTabIndex(GameTab.LOTTERY)}>
+                      onPress={() => {
+                        UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.LOTTERY})
+                        setGameTabIndex(GameTab.LOTTERY)
+                      }}>
       <View key={'renderGameTab left'}
             style={[
               _styles.game_tab,
@@ -94,7 +98,10 @@ const TopAreaComponent = () => {
     </TouchableWithoutFeedback>
     <TouchableWithoutFeedback key={'renderGameTab right'}
                       style={CommStyles.flex}
-                      onPress={() => setGameTabIndex(GameTab.CHAT)}>
+                      onPress={() => {
+                        UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.CHAT})
+                        setGameTabIndex(GameTab.CHAT)
+                      }}>
       <View key={'renderGameTab right'}
             style={[
               _styles.game_tab,

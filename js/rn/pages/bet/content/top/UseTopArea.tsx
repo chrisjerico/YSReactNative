@@ -14,10 +14,6 @@ const UseTopArea = () => {
 
   const [gameTabIndex, setGameTabIndex] = useState(GameTab.LOTTERY) // 彩票和聊天切换TAB
 
-  useEffect(() => {
-    UGStore.dispatch({type: 'reset', gameTabIndex: gameTabIndex})
-  }, [gameTabIndex])
-
   return {
     userInfo,
     systemInfo,
