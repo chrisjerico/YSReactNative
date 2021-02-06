@@ -9,7 +9,13 @@ import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it
 import moment from 'moment'
 import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
-import { calculateItemCount, combineSelectedData, gatherSelectedItems, initItemMoney } from '../tools/BetUtil'
+import {
+  calculateItemCount,
+  combineSelectedData,
+  gatherSelectedItems,
+  generateBetArray,
+  initItemMoney,
+} from '../tools/BetUtil'
 import { zodiacPlayX } from '../tools/hx/BetHXUtil'
 import { playDataX } from '../tools/zxbz/BetZXBZUtil'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
@@ -44,9 +50,11 @@ const UsePayBoard = () => {
 
   useEffect(() => {
     const copyData = JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData))
-    const newSelectedData = combineSelectedData(currentPlayOddData, copyData)
+    const newSelectedData = combineSelectedData(copyData)
     ugLog('combineSelectedData newSelectedData = ', JSON.stringify(newSelectedData))
     setSelectedCombineData(newSelectedData)
+
+    const betData = generateBetArray(nextIssueData, copyData)
   }, [])
 
   useEffect(() => {

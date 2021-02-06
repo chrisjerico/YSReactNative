@@ -1,15 +1,20 @@
 import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import * as React from 'react'
-import { ugLog } from '../../../../public/tools/UgLog'
+import { ugError, ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { zodiacPlayX } from './hx/BetHXUtil'
 import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
-import { PlayData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { combination, combineArr } from '../../util/ArithUtil'
+import { numberToFloatString } from '../../../../public/tools/StringUtil'
+import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
+import { combineArrayName } from './ezdw/BetEZDWUtil'
+import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/BetShareModel'
+import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 
 /**
  * 计算彩票下注时候，选中的条目数量是否符合要求
@@ -274,6 +279,66 @@ const calculateActualItemCount = (selectedCombineData?: Array<SelectedPlayModel>
 }
 
 /**
+ * 重新组合下注数据，多维数据转一维数据
+ * @param selectedData
+ */
+const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
+  return Object.keys(selectedData).map((key) => {
+    const value = selectedData[key]
+    switch (key) {
+      case LhcCode.LX://连肖
+      case LhcCode.LW://连尾
+      {
+        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+        ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
+        const newArr = pageData?.map((item) => {
+          const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
+          const newPage: SelectedPlayModel = {
+            ...item,
+            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+              ...arr[0],
+              alias: arr?.map((item) => item?.alias).toString(),
+              exPlayIds: arr?.map((item) => item?.id).toString(),
+            } as PlayData)),
+          }
+          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          return newPage
+        })
+        ugLog('combineSelectedData newArr = ', key, JSON.stringify(newArr))
+
+        return newArr
+      }
+
+      case CqsscCode.EZDW: //二字定位
+      case CqsscCode.SZDW: //三字定位
+      {
+        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+        ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
+        if (arrayLength(pageData) > 1) { //二字定位有2页数据，三字定位有3组数据
+          const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
+          const newPage: SelectedPlayModel = {
+            ...pageData[0],
+            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+              ...arr[0],
+              name: arr?.map((item) => item?.name).toString(),
+            } as PlayData)),
+          }
+          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          return newPage
+
+        }
+        ugLog('combineSelectedData newArr = ', key, JSON.stringify([pageData]))
+
+        return [pageData]
+      }
+
+      default:
+        return gatherSelectedItems(key, selectedData)
+    }
+  }).flat(Infinity) as Array<SelectedPlayModel>
+}
+
+/**
  * 计算彩票下注时候，初始化选中的条目默认金额
  * @param selectedCombineData
  */
@@ -331,65 +396,281 @@ const initItemMoney = (selectedCombineData?: Array<SelectedPlayModel>): Map<stri
 }
 
 /**
- * 重新组合下载数据，多维数据转一维数据
- * @param currentPlayOddData
+ * 根据选中的数据，计算并组合出 下注栏目的名字选项
+ * @param nextIssueData
+ * @param combinationData
+ */
+const generateBetNameArray = (nextIssueData?: NextIssueData,
+                              combinationData?: Array<SelectedPlayModel>): Array<PlayNameArray> => {
+
+  const playNameArray: Array<PlayNameArray> = [] // 下注彩种条目名字 如特码B
+  combinationData?.map((selModel, index) => {
+    ugLog('pay board itemViewArr = ', selModel?.code, index)
+    switch (selModel?.code) {
+      case LhcCode.TM:  //特码
+      case LhcCode.LM: //两面
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行 或 五星
+      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TX: //特肖
+      case LhcCode.ZX: //正肖
+      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
+      case CqsscCode.YZDW:  //一字定位
+        selModel?.plays?.map((playData) => {
+          const exFlag = playData?.exId ?? playData?.id
+          playNameArray.push({
+            playName2: playData?.name,
+            exFlag: exFlag,
+          } as PlayNameArray)
+        })
+        break
+
+      case CqsscCode.EZDW:  //二字定位
+      case CqsscCode.SZDW:  //三字定位
+        selModel?.plays?.map((playData) => {
+          const exFlag = playData?.alias
+          playNameArray.push({
+            playName2: playData?.name,
+            exFlag: exFlag,
+          } as PlayNameArray)
+        })
+        break
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+        selModel?.plays?.map((playData) => {
+          const exFlag = playData?.alias
+          playNameArray.push({
+            playName2: playData?.alias,
+            exFlag: exFlag,
+          } as PlayNameArray)
+        })
+        break
+
+      case LhcCode.HX://合肖
+      {
+        const playX = zodiacPlayX(selModel)
+        const exFlag = playX?.exId ?? playX?.id
+        playNameArray.push({
+          playName2: selModel?.zodiacs?.map((item) => item?.name)?.toString(),
+          exFlag: exFlag,
+        } as PlayNameArray)
+      }
+        break
+
+      case LhcCode.LMA:  //连码
+      {
+        const play0 = selModel?.plays[0]
+        const exFlag = play0?.exId ?? play0?.id
+
+        playNameArray.push({
+          playName2: combineArrayName(selModel).toString(),
+          exFlag: exFlag,
+        } as PlayNameArray)
+      }
+        break
+
+      case LhcCode.ZXBZ:  //自选不中
+      {
+        const playX = playDataX(selModel)
+        const exFlag = playX?.exId ?? playX?.id
+        playNameArray.push({
+          playName2: selModel?.zodiacs?.map((item) => item?.name)?.toString(),
+          exFlag: exFlag,
+        } as PlayNameArray)
+      }
+        break
+    }
+
+  })
+
+  ugLog('playNameArray = ', JSON.stringify(playNameArray))
+
+  return playNameArray
+}
+
+
+/**
+ * 根据选中的数据，计算并组合出 下注信息
+ * @param nextIssueData
+ * @param money
+ * @param combinationData
+ */
+const generateBetInfoArray = (nextIssueData?: NextIssueData,
+                              combinationData?: Array<SelectedPlayModel>): Array<BetLotteryData> => {
+
+  const betBeanArray: Array<BetLotteryData> = [] //下注数据
+  combinationData?.map((selModel) => {
+    switch (selModel?.code) {
+      case LhcCode.TM:  //特码
+      case LhcCode.LM: //两面
+      case LhcCode.ZM: //正码
+      case LhcCode.ZT:  //正特
+      case LhcCode.ZM1_6: //正码1T6
+      case LhcCode.SB: //色波
+      case LhcCode.ZOX://总肖
+      case LhcCode.WX:  //五行 或 五星
+      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TX: //特肖
+      case LhcCode.ZX: //正肖
+      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case CqsscCode.ALL:  //1-5球
+      case CqsscCode.Q1:  //第1球
+      case CqsscCode.Q2:  //第2球
+      case CqsscCode.Q3:  //第3球
+      case CqsscCode.Q4:  //第4球
+      case CqsscCode.Q5:  //第5球
+      case CqsscCode.QZH:  //前中后
+      case CqsscCode.DN:  //斗牛
+      case CqsscCode.SH:  //梭哈
+      case CqsscCode.LHD:  //龙虎斗
+        selModel?.plays?.map((playData) => {
+          const exFlag = playData?.exId ?? playData?.id
+          betBeanArray.push({
+            odds: playData?.odds,
+            playId: playData?.id,
+            playIds: nextIssueData?.id,
+            exFlag: exFlag,
+          } as BetLotteryData)
+        })
+        break
+
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+        selModel?.plays?.map((playData) => {
+          const exFlag = playData?.alias
+          betBeanArray.push({
+            odds: playData?.odds,
+            playId: playData?.id,
+            playIds: playData?.exPlayIds,
+            betInfo: playData?.alias,
+            exFlag: exFlag,
+          } as BetLotteryData)
+        })
+        break
+
+      case LhcCode.HX://合肖
+      {
+        const playX = zodiacPlayX(selModel)
+        const exFlag = playX?.exId ?? playX?.id
+        betBeanArray.push({
+          playId: playX?.id,
+          odds: playX?.odds,
+          betInfo: selModel?.zodiacs?.map((item) => item?.name).toString(),
+          exFlag: exFlag,
+        } as BetLotteryData)
+      }
+        break
+
+      case LhcCode.LMA:  //连码
+      {
+        const groupPlay0 = selModel?.playGroups?.plays[0]
+        const play0 = selModel?.plays[0]
+        const exFlag = play0?.exId ?? play0?.id
+        betBeanArray.push({
+          playId: groupPlay0?.id,
+          playIds: nextIssueData?.id,
+          betInfo: combineArrayName(selModel).toString(),
+          exFlag: exFlag,
+        } as BetLotteryData)
+      }
+        break
+
+      case LhcCode.ZXBZ:  //自选不中
+      {
+        const playX = playDataX(selModel)
+        const exFlag = playX?.exId ?? playX?.id
+        betBeanArray.push({
+          odds: playX?.odds,
+          playId: playX?.id,
+          betInfo: combineArrayName(selModel).toString(),
+          exFlag: exFlag,
+        } as BetLotteryData)
+      }
+        break
+
+      case CqsscCode.YZDW:  //一字定位
+      {
+        const play0 = selModel?.playGroups?.plays[0]
+        selModel?.plays?.map((playData) => {
+          const exFlag = playData?.exId ?? playData?.id
+          betBeanArray.push({
+            playId: play0?.id,
+            odds: play0?.odds,
+            playIds: nextIssueData?.id,
+            betInfo: playData?.name,
+            exFlag: exFlag,
+          } as BetLotteryData)
+        })
+      }
+        break
+
+      case CqsscCode.EZDW:  //二字定位
+      case CqsscCode.SZDW:  //三字定位
+      {
+        const groupPlay0 = selModel?.playGroups?.plays[0]
+        const play0 = selModel?.playGroups?.plays[0]
+        selModel?.plays?.map((playData) => {
+          const exFlag = playData?.name
+          betBeanArray.push({
+            playId: groupPlay0?.id,
+            odds: play0?.odds,
+            betInfo: playData?.name,
+            exFlag: exFlag,
+          } as BetLotteryData)
+        })
+      }
+        break
+    }
+  })
+
+  ugLog('betBeanArray =', JSON.stringify(betBeanArray))
+
+  return betBeanArray
+}
+
+
+/**
+ * 根据选中的数据，计算并组合出 下注所需要的数据结构
+ * @param nextIssueData
  * @param selectedData
  */
-const combineSelectedData = (currentPlayOddData?: PlayOddData,
-                             selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
-  return Object.keys(selectedData).map((key) => {
-    const value = selectedData[key]
-    switch (key) {
-      case LhcCode.LX://连肖
-      case LhcCode.LW://连尾
-      {
-        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
-        ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
-        const newArr = pageData?.map((item) => {
-          const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
-          const newPage: SelectedPlayModel = {
-            ...item,
-            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
-              ...arr[0],
-              alias: arr?.map((item) => item?.alias).toString(),
-              exPlayIds: arr?.map((item) => item?.id).toString(),
-            } as PlayData)),
-          }
-          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
-          return newPage
-        })
-        ugLog('combineSelectedData newArr = ', key, JSON.stringify(newArr))
+const generateBetArray = (nextIssueData?: NextIssueData,
+                          selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): BetShareModel => {
 
-        return newArr
-      }
+  const combinationData = combineSelectedData(selectedData)
+  const playNameArray = generateBetNameArray(nextIssueData, combinationData)
+  const betBeanArray = generateBetInfoArray(nextIssueData, combinationData)
 
-      case CqsscCode.EZDW: //二字定位
-      case CqsscCode.SZDW: //三字定位
-      {
-        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
-        ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
-        if (arrayLength(pageData) > 1) { //二字定位有2页数据，三字定位有3组数据
-          const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
-          const newPage: SelectedPlayModel = {
-            ...pageData[0],
-            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
-              ...arr[0],
-              name: arr?.map((item) => item?.name).toString(),
-            } as PlayData)),
-          }
-          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
-          return newPage
+  arrayLength(playNameArray) != arrayLength(betBeanArray) && ugError('警告错误数据 playNameArray与betBeanArray 长度应一致')
 
-        }
-        ugLog('combineSelectedData newArr = ', key, JSON.stringify([pageData]))
+  const newData = {
+    turnNum: nextIssueData?.curIssue,
+    issue_displayNumber: nextIssueData?.displayNumber,
+    gameName: nextIssueData?.title,
+    gameId: nextIssueData?.id,
+    playNameArray: playNameArray,
+    betBean: betBeanArray,
+  } as BetShareModel
 
-        return [pageData]
-      }
+  ugLog('下注数据 newData =', JSON.stringify(newData))
 
-      default:
-        return gatherSelectedItems(key, selectedData)
-    }
-  }).flat(Infinity) as Array<SelectedPlayModel>
+  return newData
 }
 
 export {
@@ -399,4 +680,5 @@ export {
   initItemMoney,
   checkBetCount,
   combineSelectedData,
+  generateBetArray,
 }
