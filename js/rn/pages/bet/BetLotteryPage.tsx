@@ -9,12 +9,15 @@ import BetRecordHeaderComponent from './content/counter/lhc/red/BetRecordHeaderC
 import LotteryContentComponent from './content/LotteryContentComponent'
 import { TopAreaComponent } from './content/top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
-import { dicNull } from '../../public/tools/Ext'
+import { arrayEmpty, dicNull } from '../../public/tools/Ext'
 import { clearLotteryData } from './util/LotteryUtil'
 import InstantLotteryComponent from './content/counter/mmc/InstantLotteryComponent'
 import WebChatComponent from './chat/WebChatComponent'
 import PayBoardComponent from './board/pay/PayBoardComponent'
 import PayResultComponent from './board/pay/result/PayResultComponent'
+import MiddleMenu, { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
+import { Toast } from '../../public/tools/ToastUtils'
+import { currentChatRoomId } from './board/tools/chat/ChatTools'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -39,6 +42,8 @@ const BetLotteryPage = ({ navigation, route }) => {
     playOddDetailData,
     loadedLottery,
     setLoadedLottery,
+    chatMenu,
+    setChatMenu,
     requestLotteryData,
   } = UseBetLottery()
 
@@ -52,6 +57,16 @@ const BetLotteryPage = ({ navigation, route }) => {
       clearLotteryData()
     }
   }, [])
+
+
+  /**
+   * 点击菜单
+   * @param index
+   * @param item
+   */
+  const clickMenu = (index: number, item: IMiddleMenuItem) => {
+
+  }
 
   return (
     <BaseScreen key={'lottery BaseScreen'}
@@ -111,12 +126,33 @@ const BetLotteryPage = ({ navigation, route }) => {
         {!dicNull(betShareModel) && <PayBoardComponent key={'BetBoardComponent'}
                                                        showCallback={(data) => {
                                                          UGStore.dispatch({ type: 'reset', betShareModel: {} })
-                                                         setBetResult(data)
+
+                                                         if (data?.betParams?.isInstant == '1') {//秒秒彩
+                                                           setBetResult(data)
+                                                         } else {
+                                                           setBetResult(null)
+                                                           setChatMenu(UGStore.globalProps?.chatRoomData?.chatAry?.map((item) => {
+                                                               return (({
+                                                                 title: `${item?.roomName}`,
+                                                                 id: item?.roomId,
+                                                               } as IMiddleMenuItem))
+                                                             }),
+                                                           )
+                                                         }
+
                                                        }}/>}
         {!dicNull(betResult) && <PayResultComponent key={'PayResultComponent'}
                                                     betData={betResult}
                                                     nextIssueData={UGStore.globalProps?.nextIssueData}
                                                     showCallback={() => setBetResult(null)}/>}
+
+        {
+          !arrayEmpty(chatMenu) && <MiddleMenu onMenuClick={clickMenu}
+                                               menuTitle={'分享到聊天室'}
+                                               curId={currentChatRoomId()}
+                                               showMenu={!arrayEmpty(chatMenu)}
+                                               menu={chatMenu}/>
+        }
       </View>
     </BaseScreen>
   )

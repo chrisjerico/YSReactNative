@@ -7,6 +7,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { ugLog } from '../../public/tools/UgLog'
 import { parseLotteryDetailData } from './util/parse/ParseLotteryUtil'
 import { LotteryResultData } from '../../public/network/Model/lottery/result/LotteryResultModel'
+import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 
 /**
  * 彩票下注
@@ -22,6 +23,7 @@ const UseBetLottery = () => {
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const [loadedLottery, setLoadedLottery] = useState<Array<string>>([])//需要加载进来的彩票列表
   const [betResult, setBetResult] = useState<LotteryResultData>(null) //下注结果
+  const [chatMenu, setChatMenu] = useState<Array<IMiddleMenuItem>>(null) //聊天室菜单
 
   useEffect(() => {
     requestLotteryData(lotteryId)
@@ -55,6 +57,8 @@ const UseBetLottery = () => {
     playOddDetailData,
     loadedLottery,
     setLoadedLottery,
+    chatMenu,
+    setChatMenu,
     requestLotteryData,
   }
 }

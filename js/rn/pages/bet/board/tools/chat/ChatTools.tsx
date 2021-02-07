@@ -6,7 +6,7 @@ import { ugLog } from '../../../../../public/tools/UgLog'
 const currentChatRoomId = () => {
   const chatRoomIndex = UGStore.globalProps?.chatRoomIndex//当前聊天室索引
   const chatRoomData = UGStore.globalProps?.chatRoomData//聊天室
-  return dicNull(chatRoomData) && chatRoomIndex < arrayLength(chatRoomData?.chatAry) ?
+  return dicNull(chatRoomData) || chatRoomIndex >= arrayLength(chatRoomData?.chatAry) ?
     null :
     chatRoomData?.chatAry[chatRoomIndex]?.roomId
 }
@@ -15,7 +15,7 @@ const currentChatRoomId = () => {
 const currentChatRoomName = () => {
   const chatRoomIndex = UGStore.globalProps?.chatRoomIndex//当前聊天室索引
   const chatRoomData = UGStore.globalProps?.chatRoomData//聊天室
-  return dicNull(chatRoomData) && chatRoomIndex < arrayLength(chatRoomData?.chatAry) ?
+  return dicNull(chatRoomData) || chatRoomIndex >= arrayLength(chatRoomData?.chatAry) ?
     null :
     chatRoomData?.chatAry[chatRoomIndex]?.roomName
 }
