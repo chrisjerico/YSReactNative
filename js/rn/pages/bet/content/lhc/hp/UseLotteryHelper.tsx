@@ -11,7 +11,7 @@ import { isSelectedBallOnId } from '../../../const/ISelBall'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { CqsscCode, LhcCode } from '../../../const/LotteryConst'
 import { ugLog } from '../../../../../public/tools/UgLog'
-import SelectedLotteryModel, { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
+import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../../public/tools/ToastUtils'
 import { parseLMASelectedData } from '../../../util/select/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../../util/select/ParseHXSelectedUtil'
@@ -25,7 +25,6 @@ const UseLotteryHelper = () => {
 
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前选中的彩种数据 特码 两面 等
-  // const selectedLotteryModel = UGStore.globalProps?.selectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
 
   const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //此页显示的彩种数据
@@ -33,9 +32,9 @@ const UseLotteryHelper = () => {
 
   useEffect(() => {
     //生成选中的数据
-    const newSelectedModel = dicNull(UGStore.globalProps?.selectedLotteryModel?.selectedData) ?
+    const newSelectedModel = dicNull(UGStore.globalProps?.selectedData) ?
       new Map<string, Map<string, Map<string, SelectedPlayModel>>>() :
-      JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData))
+      JSON.parse(JSON.stringify(UGStore.globalProps?.selectedData))
 
     switch (playOddData?.code) {
       case LhcCode.TM:  //特码
@@ -78,19 +77,17 @@ const UseLotteryHelper = () => {
         break
     }
 
-    const selectedLotteryModel: SelectedLotteryModel = { selectedData: newSelectedModel }
-    UGStore.dispatch({ type: 'reset', selectedLotteryModel })
+    UGStore.dispatch({ type: 'reset', selectedData: newSelectedModel })
 
     ugLog('选中的数据 selectedBalls = ', JSON.stringify(selectedBalls))
-    ugLog(`选中的数据 selectedLotteryModel = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(UGStore.globalProps?.selectedLotteryModel))
+    ugLog(`选中的数据 selectedData = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(UGStore.globalProps?.selectedData))
 
   }, [selectedBalls])
 
   useEffect(() => {
 
     ugLog('恢复选中的数据')
-    const selModel = UGStore.globalProps?.selectedLotteryModel
-    const curSelectedData: Map<string, Map<string, SelectedPlayModel>> = selModel?.selectedData[playOddData?.code]
+    const curSelectedData: Map<string, Map<string, SelectedPlayModel>> = UGStore.globalProps?.selectedData[playOddData?.code]
 
     switch (playOddData?.code) {
       case LhcCode.TM:  //特码

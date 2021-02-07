@@ -6,15 +6,34 @@ import { UGStore } from '../../../../redux/store/UGStore'
 import { zodiacPlayX } from './hx/BetHXUtil'
 import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
-import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
-import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
+import { filterSelectedData, filterSelectedSubData, playDataUniqueId } from '../../util/LotteryUtil'
 import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { combination, combineArr } from '../../util/ArithUtil'
-import { numberToFloatString } from '../../../../public/tools/StringUtil'
 import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
 import { combineArrayName } from './ezdw/BetEZDWUtil'
 import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/BetShareModel'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
+import moment from 'moment'
+import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+
+/**
+ * 过滤出某个选中的数量
+ * @param betShareModel //下注数据
+ * @param exFlag 唯一标识
+ */
+const filterShareItem = (betShareModel?: BetShareModel, exFlag?: string): BetShareModel => {
+  const newResult = {
+    ...betShareModel,
+    playNameArray: betShareModel?.playNameArray.filter((item) => item?.exFlag != exFlag),
+    betBean: betShareModel?.betBean?.filter((item) => item?.exFlag != exFlag),
+  }  as  BetShareModel
+
+  ugLog('filterShareItem betShareModel = ', exFlag, JSON.stringify(betShareModel))
+  ugLog('filterShareItem newResult = ', exFlag, JSON.stringify(newResult))
+
+  return newResult
+
+}
 
 /**
  * 计算彩票下注时候，选中的条目数量是否符合要求
@@ -24,7 +43,7 @@ import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssu
 const checkBetCount = (showMsg?: boolean): boolean => {
   const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前彩种
   const currentPlayGroupData = currentPlayOddData?.pageData?.groupTri[UGStore.globalProps?.lotteryTabIndex] //当前界面
-  const selectedData = UGStore.globalProps?.selectedLotteryModel?.selectedData //选中的数据
+  const selectedData = UGStore.globalProps?.selectedData //选中的数据
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
 
   ugLog('UGStore.globalProps?.lotteryTabIndex = ', UGStore.globalProps?.lotteryTabIndex)
@@ -239,30 +258,6 @@ const gatherSelectedItems = (code?: string, selectedData?: Map<string, Map<strin
 }
 
 /**
- * 计算彩票下注时候，选中的条目占位数量，有的彩票计算实际数量，有的彩票计算相对数量
- * @param selectedCombineData
- */
-const calculateItemCount = (selectedCombineData?: Array<SelectedPlayModel>): number => {
-  let itemCount = 0
-  selectedCombineData?.map((selModel) => {
-    const scount = arrayLength(selModel.zodiacs || selModel.plays)
-    if (scount > 0) {//该彩种是否有选中的数据
-      const key = selModel?.code
-      if (LhcCode.LMA == key
-        || LhcCode.HX == key
-        || LhcCode.ZXBZ == key) {//部分彩种 只计算 1条数据
-        itemCount++
-      } else {
-        //选中的数据有多少组
-        itemCount += scount
-      }
-    }
-  })
-
-  return itemCount
-}
-
-/**
  * 计算彩票下注时候，选中的条目实际数量
  * @param selectedCombineData
  */
@@ -280,7 +275,7 @@ const calculateActualItemCount = (selectedCombineData?: Array<SelectedPlayModel>
 
 /**
  * 重新组合下注数据，多维数据转一维数据
- * @param selectedData
+ * @param selectedData 选中的数据
  */
 const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
   return Object.keys(selectedData).map((key) => {
@@ -339,66 +334,9 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 }
 
 /**
- * 计算彩票下注时候，初始化选中的条目默认金额
- * @param selectedCombineData
- */
-const initItemMoney = (selectedCombineData?: Array<SelectedPlayModel>): Map<string, number> => {
-  const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
-  const moneyMap = new Map<string, number>()
-
-  selectedCombineData?.map((selModel) => {
-    const key = selModel?.code
-    switch (key) {
-      case LhcCode.LMA://部分彩种 只计算 1条数据
-      {
-        const play0 = selModel?.plays[0]
-        moneyMap[play0?.exId ?? play0?.id] = defaultMoney
-      }
-
-        break
-      case LhcCode.HX://部分彩种 只计算 1条数据
-      {
-        const playX = zodiacPlayX(selModel)
-        moneyMap[playX?.exId ?? playX?.id] = defaultMoney
-      }
-
-        break
-
-      case LhcCode.ZXBZ://部分彩种 只计算 1条数据
-      {
-        const playX = playDataX(selModel)
-        moneyMap[playX?.exId ?? playX?.id] = defaultMoney
-      }
-
-        break
-      case LhcCode.LX://连肖
-      case LhcCode.LW://连尾
-        //选中的数据有多少组
-        selModel?.plays?.map((playData) => {
-          moneyMap[playData?.alias] = defaultMoney
-        })
-
-        break
-
-      default:
-        //选中的数据有多少组
-        selModel?.plays?.map((playData) => {
-          moneyMap[playData?.name] = defaultMoney
-        })
-
-        break
-    }
-
-  })
-
-  ugLog('moneyMap = ', JSON.stringify(moneyMap))
-  return moneyMap
-}
-
-/**
  * 根据选中的数据，计算并组合出 下注栏目的名字选项
- * @param nextIssueData
- * @param combinationData
+ * @param nextIssueData 下期数据
+ * @param combinationData 重新组合的下注数据
  */
 const generateBetNameArray = (nextIssueData?: NextIssueData,
                               combinationData?: Array<SelectedPlayModel>): Array<PlayNameArray> => {
@@ -432,10 +370,10 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
       case CqsscCode.LHD:  //龙虎斗
       case CqsscCode.YZDW:  //一字定位
         selModel?.plays?.map((playData) => {
-          const exFlag = playData?.exId ?? playData?.id
           playNameArray.push({
+            playName1: playData?.alias,
             playName2: playData?.name,
-            exFlag: exFlag,
+            exFlag: playDataUniqueId(playData),
           } as PlayNameArray)
         })
         break
@@ -443,31 +381,30 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
       case CqsscCode.EZDW:  //二字定位
       case CqsscCode.SZDW:  //三字定位
         selModel?.plays?.map((playData) => {
-          const exFlag = playData?.alias
           playNameArray.push({
+            playName1: playData?.alias,
             playName2: playData?.name,
-            exFlag: exFlag,
+            exFlag: playDataUniqueId(playData),
           } as PlayNameArray)
         })
         break
       case LhcCode.LX: //连肖
       case LhcCode.LW: //连尾
         selModel?.plays?.map((playData) => {
-          const exFlag = playData?.alias
           playNameArray.push({
             playName2: playData?.alias,
-            exFlag: exFlag,
+            exFlag: playDataUniqueId(playData),
           } as PlayNameArray)
         })
         break
 
       case LhcCode.HX://合肖
       {
-        const playX = zodiacPlayX(selModel)
-        const exFlag = playX?.exId ?? playX?.id
+        const zodiacX = zodiacPlayX(selModel)
         playNameArray.push({
+          playName1: zodiacX?.alias,
           playName2: selModel?.zodiacs?.map((item) => item?.name)?.toString(),
-          exFlag: exFlag,
+          exFlag: playDataUniqueId(zodiacX),
         } as PlayNameArray)
       }
         break
@@ -475,11 +412,11 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
       case LhcCode.LMA:  //连码
       {
         const play0 = selModel?.plays[0]
-        const exFlag = play0?.exId ?? play0?.id
 
         playNameArray.push({
+          playName1: play0?.alias,
           playName2: combineArrayName(selModel).toString(),
-          exFlag: exFlag,
+          exFlag: playDataUniqueId(play0),
         } as PlayNameArray)
       }
         break
@@ -487,10 +424,10 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
       case LhcCode.ZXBZ:  //自选不中
       {
         const playX = playDataX(selModel)
-        const exFlag = playX?.exId ?? playX?.id
         playNameArray.push({
+          playName1: playX?.alias,
           playName2: selModel?.zodiacs?.map((item) => item?.name)?.toString(),
-          exFlag: exFlag,
+          exFlag: playDataUniqueId(playX),
         } as PlayNameArray)
       }
         break
@@ -506,11 +443,12 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
 
 /**
  * 根据选中的数据，计算并组合出 下注信息
- * @param nextIssueData
- * @param money
- * @param combinationData
+ * @param nextIssueData 下期数据
+ * @param inputMoney 下注金额
+ * @param combinationData 重新组合的下注数据
  */
 const generateBetInfoArray = (nextIssueData?: NextIssueData,
+                              inputMoney?: string,
                               combinationData?: Array<SelectedPlayModel>): Array<BetLotteryData> => {
 
   const betBeanArray: Array<BetLotteryData> = [] //下注数据
@@ -540,12 +478,12 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       case CqsscCode.SH:  //梭哈
       case CqsscCode.LHD:  //龙虎斗
         selModel?.plays?.map((playData) => {
-          const exFlag = playData?.exId ?? playData?.id
           betBeanArray.push({
+            money: inputMoney,
             odds: playData?.odds,
             playId: playData?.id,
             playIds: nextIssueData?.id,
-            exFlag: exFlag,
+            exFlag: playDataUniqueId(playData),
           } as BetLotteryData)
         })
         break
@@ -553,26 +491,26 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       case LhcCode.LX: //连肖
       case LhcCode.LW: //连尾
         selModel?.plays?.map((playData) => {
-          const exFlag = playData?.alias
           betBeanArray.push({
+            money: inputMoney,
             odds: playData?.odds,
             playId: playData?.id,
             playIds: playData?.exPlayIds,
             betInfo: playData?.alias,
-            exFlag: exFlag,
+            exFlag: playDataUniqueId(playData),
           } as BetLotteryData)
         })
         break
 
       case LhcCode.HX://合肖
       {
-        const playX = zodiacPlayX(selModel)
-        const exFlag = playX?.exId ?? playX?.id
+        const zodiacX = zodiacPlayX(selModel)
         betBeanArray.push({
-          playId: playX?.id,
-          odds: playX?.odds,
+          money: inputMoney,
+          playId: zodiacX?.id,
+          odds: zodiacX?.odds,
           betInfo: selModel?.zodiacs?.map((item) => item?.name).toString(),
-          exFlag: exFlag,
+          exFlag: playDataUniqueId(zodiacX),
         } as BetLotteryData)
       }
         break
@@ -581,12 +519,12 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       {
         const groupPlay0 = selModel?.playGroups?.plays[0]
         const play0 = selModel?.plays[0]
-        const exFlag = play0?.exId ?? play0?.id
         betBeanArray.push({
+          money: inputMoney,
           playId: groupPlay0?.id,
           playIds: nextIssueData?.id,
           betInfo: combineArrayName(selModel).toString(),
-          exFlag: exFlag,
+          exFlag: playDataUniqueId(play0),
         } as BetLotteryData)
       }
         break
@@ -594,12 +532,12 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       case LhcCode.ZXBZ:  //自选不中
       {
         const playX = playDataX(selModel)
-        const exFlag = playX?.exId ?? playX?.id
         betBeanArray.push({
+          money: inputMoney,
           odds: playX?.odds,
           playId: playX?.id,
           betInfo: combineArrayName(selModel).toString(),
-          exFlag: exFlag,
+          exFlag: playDataUniqueId(playX),
         } as BetLotteryData)
       }
         break
@@ -608,13 +546,13 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       {
         const play0 = selModel?.playGroups?.plays[0]
         selModel?.plays?.map((playData) => {
-          const exFlag = playData?.exId ?? playData?.id
           betBeanArray.push({
+            money: inputMoney,
             playId: play0?.id,
             odds: play0?.odds,
             playIds: nextIssueData?.id,
             betInfo: playData?.name,
-            exFlag: exFlag,
+            exFlag: playDataUniqueId(playData),
           } as BetLotteryData)
         })
       }
@@ -626,12 +564,12 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
         const groupPlay0 = selModel?.playGroups?.plays[0]
         const play0 = selModel?.playGroups?.plays[0]
         selModel?.plays?.map((playData) => {
-          const exFlag = playData?.name
           betBeanArray.push({
+            money: inputMoney,
             playId: groupPlay0?.id,
             odds: play0?.odds,
             betInfo: playData?.name,
-            exFlag: exFlag,
+            exFlag: playDataUniqueId(playData),
           } as BetLotteryData)
         })
       }
@@ -647,19 +585,26 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
 
 /**
  * 根据选中的数据，计算并组合出 下注所需要的数据结构
- * @param nextIssueData
- * @param selectedData
+ * @param nextIssueData 下期数据
+ * @param activeReturnCoinRatio 退水
+ * @param inputMoney 下注金额
+ * @param selectedData 选中的数据
  */
 const generateBetArray = (nextIssueData?: NextIssueData,
+                          activeReturnCoinRatio?: string,
+                          inputMoney?: string,
                           selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): BetShareModel => {
 
   const combinationData = combineSelectedData(selectedData)
   const playNameArray = generateBetNameArray(nextIssueData, combinationData)
-  const betBeanArray = generateBetInfoArray(nextIssueData, combinationData)
+  const betBeanArray = generateBetInfoArray(nextIssueData, inputMoney, combinationData)
 
   arrayLength(playNameArray) != arrayLength(betBeanArray) && ugError('警告错误数据 playNameArray与betBeanArray 长度应一致')
 
   const newData = {
+    ftime: (moment(nextIssueData?.curCloseTime).toDate().getTime() / 1000).toString(),
+    isInstant: nextIssueData?.isInstant,
+    activeReturnCoinRatio: activeReturnCoinRatio,
     turnNum: nextIssueData?.curIssue,
     issue_displayNumber: nextIssueData?.displayNumber,
     gameName: nextIssueData?.title,
@@ -675,10 +620,9 @@ const generateBetArray = (nextIssueData?: NextIssueData,
 
 export {
   gatherSelectedItems,
-  calculateItemCount,
   calculateActualItemCount,
-  initItemMoney,
   checkBetCount,
   combineSelectedData,
   generateBetArray,
+  filterShareItem,
 }

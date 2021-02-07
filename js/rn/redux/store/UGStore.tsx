@@ -3,7 +3,6 @@ import { Platform } from 'react-native'
 import { Action, Unsubscribe } from 'redux'
 import { setProps, UGBasePageProps } from '../../pages/base/UGPage'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import { PageName } from '../../public/navigation/Navigation'
 import UGBannerModel from '../model/全局/UGBannerModel'
 import UGGameLobbyModel from '../model/全局/UGGameLobbyModel'
 import UGRightMenuModel from '../model/全局/UGRightMenuModel'
@@ -13,11 +12,11 @@ import UGSystemModel from '../model/全局/UGSystemModel'
 import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
-import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
-import { PlayGroupData, PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, mergeObject } from '../../public/tools/Ext'
-import { ugLog } from '../../public/tools/UgLog'
+import { SelectedPlayModel } from '../model/game/SelectedLotteryModel'
+import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
+import { mergeObject } from '../../public/tools/Ext'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
+import { BetShareModel } from '../model/game/bet/BetShareModel'
 
 // 整个State的树结构
 
@@ -36,9 +35,12 @@ export interface IGlobalState {
   lotteryTabIndex?: number //当前的彩种处于哪一页
   gameTabIndex?: number //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
+  betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
-  selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+
+  selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
+  inputMoney?: number //输入的游戏金额
 
   // lotteryColumnIndex?: number //彩种索引
 
@@ -67,9 +69,12 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.lotteryTabIndex >= 0 && (state.lotteryTabIndex = act.lotteryTabIndex)
     act.gameTabIndex >= 0 && (state.gameTabIndex = act.gameTabIndex)
     act.currentColumnIndex >= 0 && (state.currentColumnIndex = act.currentColumnIndex)
+    act.betShareModel && (state.betShareModel = act.betShareModel)
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
-    act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
+
+    act.selectedData && (state.selectedData = act.selectedData)
+    act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
 
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
@@ -78,9 +83,10 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.banner = { ...state.banner, ...act.banner }
 
     //彩票数据
+    state.betShareModel = { ...state.betShareModel, ...act.betShareModel }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
-    state.selectedLotteryModel = mergeObject(state.selectedLotteryModel, act.selectedLotteryModel)
+    state.selectedData = mergeObject(state.selectedData, act.selectedData)
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
@@ -111,9 +117,12 @@ export interface UGAction<P = {}> extends Action {
   lotteryTabIndex?: number //当前的彩种处于哪一页
   gameTabIndex?: number //当前TAB是彩票还是聊天室
   currentColumnIndex?: number //当前彩种栏目索引
+  betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
-  selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+
+  selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
+  inputMoney?: number //输入的游戏金额
 
   // lotteryColumnIndex?: number //彩种索引
 

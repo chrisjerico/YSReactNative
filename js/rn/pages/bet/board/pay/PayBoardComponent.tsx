@@ -1,25 +1,20 @@
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef } from 'react'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import { CqsscCode, LhcCode } from '../../const/LotteryConst'
-import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { anyEmpty, dicNull } from '../../../../public/tools/Ext'
-import { calculateItemCount, gatherSelectedItems } from '../tools/BetUtil'
-import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { LotteryResultData } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
-import { combineArrayName, filterPlayData } from '../tools/ezdw/BetEZDWUtil'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
-import { zodiacPlayX } from '../tools/hx/BetHXUtil'
-import { Play } from '../../../../public/network/Model/PlayOddDataModel'
-import { playDataX } from '../tools/zxbz/BetZXBZUtil'
+import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
+import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/BetShareModel'
+import { filterShareItem } from '../tools/BetUtil'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 interface IPayBoardComponent {
   showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
@@ -39,94 +34,48 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     setAverageMoney,
     moneyMap,
     setMoneyMap,
-    itemCount,
-    currentPlayGroupData,
-    nextIssueData,
-    playOddDetailData,
-    selectedCombineData,
-    setSelectedCombineData,
+    betShareModel,
+    setBetShareModel,
     startBetting,
   } = UsePayBoard()
 
   /**
-   * 绘制 特码 等条目
-   * @param selModel 选中的数据
-   */
-  const renderTMItem = (selModel?: SelectedPlayModel) => {
-    return selModel?.plays?.map((playData) => {
-      const showName = selModel?.code == LhcCode.LX || selModel?.code == LhcCode.LW ?
-        playData?.alias :
-        playData?.name
-      return (<View key={'renderTMItem=' + playData?.id + showName}
-                    style={_styles.item_container}>
-        <Text style={_styles.item_title}
-              numberOfLines={2}>{
-          `[ ${selModel?.playGroups?.alias}- ${showName} ]`
-        }</Text>
-        <Text style={_styles.item_odds}>{
-          `@${playData?.odds}`
-        }</Text>
-        <Text style={_styles.item_x}>{
-          'X'
-        }</Text>
-        <TextInput defaultValue={averageMoney?.toString()}
-                   onChangeText={text => setMoneyMap(prevState => {
-                     const moneyMap = new Map<string, number>()
-                     selModel?.code == LhcCode.LX
-                     || selModel?.code == LhcCode.LW
-                     || selModel?.code == CqsscCode.EZDW
-                     || selModel?.code == CqsscCode.SZDW ?
-                       moneyMap[playData?.alias] = Number.parseFloat(text) :
-                       moneyMap[playData?.exId ?? playData?.id] = Number.parseFloat(text)
-                     return { ...prevState, ...moneyMap }
-                   })}
-                   keyboardType={'numeric'}
-                   style={_styles.item_input}/>
-        <Icon size={scale(36)}
-              onPress={() => {
-                //过滤掉选中的数据
-                const newSelectedData = filterPlayData(selectedCombineData, playData)
-                ugLog('filterPlayData newSelectedData = ', JSON.stringify(newSelectedData))
-                //数据少于1了就关闭窗口
-                if (calculateItemCount(newSelectedData) <= 0) {
-                  showCallback && showCallback()
-                } else {
-                  setSelectedCombineData(newSelectedData)
-                }
-
-              }}
-              style={_styles.item_trash}
-              color={Skin1.themeColor}
-              name={'trash-o'}/>
-      </View>)
-    })
-  }
-
-  /**
    * 绘制连码等数据
-   * @param selModel
-   * @param playX
-   * @param des
+   * @param nameArr
+   * @param betInfo
+   * @param betShareModel
    */
-  const renderLMAItem = (selModel?: SelectedPlayModel, playX?: PlayData, des?: string) => {
-    return (<View key={playX?.id + playX?.name}
+  const renderItem = (nameArr?: PlayNameArray,
+                      betInfo?: BetLotteryData,
+                      betShareModel?: BetShareModel) => {
+    const showName = !anyEmpty(nameArr?.playName1) ?
+      `[ ${nameArr?.playName1}- ${nameArr?.playName2} ]` :
+      `[ ${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name} ]`
+    return (<View key={nameArr?.exFlag}
                   style={_styles.item_container}>
       <Text style={_styles.item_title}
-            numberOfLines={2}>{
-        `[ ${selModel?.playGroups?.alias}- ${des} ]`
+            numberOfLines={2}>{showName}</Text>
+      <Text style={_styles.item_odds}>{
+        `@${betInfo?.odds}`
+      }</Text>
+      <Text style={_styles.item_x}>{
+        'X'
       }</Text>
       <TextInput defaultValue={averageMoney?.toString()}
                  onChangeText={text => setMoneyMap(prevState => {
                    const moneyMap = new Map<string, number>()
-                   moneyMap[playX?.exId ?? playX?.id] = Number.parseFloat(text)
+                   moneyMap[nameArr?.exFlag] = Number.parseFloat(text)
                    return { ...prevState, ...moneyMap }
                  })}
                  keyboardType={'numeric'}
                  style={_styles.item_input}/>
       <Icon size={scale(36)}
             onPress={() => {
-              showCallback && showCallback()
-
+              if (arrayLength(betShareModel?.playNameArray) <= 1) { //数量只有1个的时候关闭窗口
+                showCallback && showCallback()
+              } else {
+                setBetShareModel(filterShareItem(betShareModel, nameArr?.exFlag))
+              }
             }}
             style={_styles.item_trash}
             color={Skin1.themeColor}
@@ -134,53 +83,10 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     </View>)
   }
 
-  const itemViewArr = selectedCombineData == null ? null : selectedCombineData?.map((selModel, index) => {
-    ugLog('pay board itemViewArr = ', selModel?.code, index)
-    switch (selModel?.code) {
-      case LhcCode.TM:  //特码
-      case LhcCode.LM: //两面
-      case LhcCode.ZM: //正码
-      case LhcCode.ZT:  //正特
-      case LhcCode.ZM1_6: //正码1T6
-      case LhcCode.SB: //色波
-      case LhcCode.ZOX://总肖
-      case LhcCode.WX:  //五行 或 五星
-      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.TX: //特肖
-      case LhcCode.ZX: //正肖
-      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.LX: //连肖
-      case LhcCode.LW: //连尾
-      case CqsscCode.ALL:  //1-5球
-      case CqsscCode.Q1:  //第1球
-      case CqsscCode.Q2:  //第2球
-      case CqsscCode.Q3:  //第3球
-      case CqsscCode.Q4:  //第4球
-      case CqsscCode.Q5:  //第5球
-      case CqsscCode.QZH:  //前中后
-      case CqsscCode.DN:  //斗牛
-      case CqsscCode.SH:  //梭哈
-      case CqsscCode.LHD:  //龙虎斗
-      case CqsscCode.YZDW:  //一字定位
-      case CqsscCode.EZDW:  //二字定位
-      case CqsscCode.SZDW:  //三字定位
-        return renderTMItem(selModel)
-
-      case LhcCode.HX://合肖
-        return renderLMAItem(selModel, zodiacPlayX(selModel),
-          selModel?.zodiacs?.map((item) => item?.name)?.toString())
-
-      case LhcCode.LMA:  //连码
-        return renderLMAItem(selModel, selModel?.plays[0],
-          combineArrayName(selModel)?.toString())
-
-      case LhcCode.ZXBZ:  //自选不中
-        return renderLMAItem(selModel, playDataX(selModel),
-          combineArrayName(selModel)?.toString())
-    }
-
-  }).flat(Infinity)
+  const itemViewArr = betShareModel?.betBean?.map((betInfo, index) => {
+    const nameArr = betShareModel?.playNameArray[index]
+    return renderItem(nameArr, betInfo, betShareModel)
+  })
 
   return (
     <View style={_styles.container}>
@@ -194,7 +100,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             _styles.dialog_title_container,
             { backgroundColor: Skin1.themeColor },
           ]}>
-            <Text style={_styles.dialog_title_text}>{`第${nextIssueData?.displayNumber}期 ${nextIssueData?.title} 下注清单`}</Text>
+            <Text
+              style={_styles.dialog_title_text}>{`第${betShareModel?.issue_displayNumber}期 ${betShareModel?.gameName} 下注清单`}</Text>
           </View>
           <View style={_styles.sv_parent}>
             <ScrollView style={_styles.sv_container}
@@ -214,7 +121,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
           <View style={_styles.last_info_container}>
             <Text style={_styles.bet_result}>{'合计注数：'}</Text>
             <Text style={[_styles.bet_result,
-              { color: Skin1.themeColor }]}>{itemCount}</Text>
+              { color: Skin1.themeColor }]}>{arrayLength(betShareModel?.betBean)}</Text>
             <Text style={_styles.bet_result2}>{'总金额：'}</Text>
             <Text style={[_styles.bet_result_total_money,
               { color: Skin1.themeColor }]}>{totalMoney}</Text>
@@ -227,7 +134,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                   onPress={() => {
                     showLoading()
                     startBetting().then((data) => {
-                      if (nextIssueData?.isInstant == '1') {//秒秒彩
+                      if (betShareModel?.isInstant == '1') {//秒秒彩
                         showCallback(data?.data)
                       } else {
                         (Toast(data?.msg))

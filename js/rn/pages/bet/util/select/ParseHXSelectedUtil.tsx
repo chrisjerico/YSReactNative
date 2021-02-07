@@ -7,7 +7,7 @@ import { calculateLimitCount } from './ParseSelectedUtil'
 /**
  * 将选中的球转换为固定格式存储下来
  *
- * 存储格式对应 SelectedLotteryModel
+ * 存储格式对应 UGStore.selectedData
  *
  * @param playOddData
  * @param selectedBalls

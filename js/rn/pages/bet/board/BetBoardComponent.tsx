@@ -13,6 +13,8 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { ugLog } from '../../../public/tools/UgLog'
 import PayResultComponent from './pay/result/PayResultComponent'
 import { GameTab } from '../const/LotteryConst'
+import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
+import { dicNull } from '../../../public/tools/Ext'
 
 /**
  * 彩票功能区入参
@@ -35,8 +37,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     gameTabIndex,
     betResult,
     setBetResult,
-    showBetPayment,
-    setShowBetPayment,
+    betShareModel,
     userInfo,
     systemInfo,
     showSlider,
@@ -200,7 +201,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
       <TouchableWithoutFeedback onPress={() => {
         ugLog('clear selected')
-        UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+        UGStore.dispatch({ type: 'reset', selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>() })
       }
       }>
         <Text key={'renderInputArea input 重置'}
@@ -238,9 +239,9 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
         {locked ? renderLock(lockStr) : null}
-        {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}
+        {!dicNull(betShareModel) && <PayBoardComponent key={'BetBoardComponent'}
                                               showCallback={(data) => {
-                                                setShowBetPayment(false)
+                                                UGStore.dispatch({ type: 'reset', betShareModel: {} })
                                                 setBetResult(data)
                                               }}/>}
         {betResult && <PayResultComponent betData={betResult}

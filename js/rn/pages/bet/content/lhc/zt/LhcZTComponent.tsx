@@ -23,6 +23,7 @@ import LotteryERect from '../../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
+import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
 
 /**
  * 六合彩 正特 正码 等等
@@ -59,7 +60,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderTabItem = (item: Array<PlayGroupData>, index: number) =>
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               onPress={() => {
-                                UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+                                UGStore.dispatch({ type: 'reset', selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>() })
                                 setSelectedBalls([])
                                 setTabIndex(index)
                               }}>

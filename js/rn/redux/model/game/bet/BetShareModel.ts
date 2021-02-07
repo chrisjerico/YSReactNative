@@ -4,6 +4,7 @@
 import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
 
 export interface BetShareModel {
+  isInstant?: string//：是否是即开彩：1=是，0=否
   ftime?: string //"1612616575", 封盘时间
   gameId?: string //"232", 彩种ID
   turnNum?: string //"2102060422", issue号

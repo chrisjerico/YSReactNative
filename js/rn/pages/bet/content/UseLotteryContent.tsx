@@ -4,6 +4,7 @@ import { DeviceEventEmitter } from 'react-native'
 import { ugLog } from '../../../public/tools/UgLog'
 import { filterSelectedData } from '../util/LotteryUtil'
 import { UGStore } from '../../../redux/store/UGStore'
+import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 
 /**
  * 彩票内容
@@ -16,15 +17,16 @@ const UseLotteryContent = () => {
 
   useEffect(() => {
     UGStore.dispatch({
-      type: 'reset', selectedLotteryModel: {},
+      type: 'reset', selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
       currentColumnIndex: leftColumnIndex,
+      inputMoney: 0,
     })
   }, [leftColumnIndex])
 
   //各彩种选中的数量
   const ballSelected = useMemo(() => {
-    return filterSelectedData(UGStore.globalProps?.selectedLotteryModel?.selectedData)
-  }, [UGStore.globalProps?.selectedLotteryModel?.selectedData])
+    return filterSelectedData(UGStore.globalProps?.selectedData)
+  }, [UGStore.globalProps?.selectedData])
 
   return {
     leftColumnIndex,

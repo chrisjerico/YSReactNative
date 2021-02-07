@@ -12,6 +12,12 @@ interface INameOrAlias {
 }
 
 /**
+ * 根据数据生成唯一识别ID
+ * @param play
+ */
+const playDataUniqueId = (play?: PlayData): string => `${play?.exId},${play?.id},${play?.name},${play?.alias}`
+
+/**
  * 赔率串联成名字
  * @param plays
  */
@@ -23,18 +29,26 @@ const combineOddsName = (plays?: Array<PlayData>): string => {
   return null
 }
 
+ugLog(' test tes 1 ', '' && true)
+ugLog(' test tes 2 ', '0' && true)
+
 /**
  * 退出的时候清除彩票数据
  */
 const clearLotteryData = () => {
   ugLog('clearLotteryData')
-  UGStore.dispatch({ type: 'reset', lotteryId: null })
-  UGStore.dispatch({ type: 'reset', lotteryTabIndex: 0 })
-  UGStore.dispatch({ type: 'reset', gameTabIndex: GameTab.LOTTERY })
-  UGStore.dispatch({ type: 'reset', currentColumnIndex: 0 })
-  UGStore.dispatch({ type: 'reset', nextIssueData: {} })
-  UGStore.dispatch({ type: 'reset', playOddDetailData: {} })
-  UGStore.dispatch({ type: 'reset', selectedLotteryModel: {} })
+  UGStore.dispatch({
+    type: 'reset',
+    lotteryId: '0',
+    lotteryTabIndex: 0,
+    gameTabIndex: GameTab.LOTTERY,
+    currentColumnIndex: 0,
+    betShareModel: {},
+    nextIssueData: {},
+    playOddDetailData: {},
+    inputMoney: 0,
+    selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
+  })
 }
 
 /**
@@ -104,4 +118,5 @@ export {
   filterSelectedSubData,
   clearLotteryData,
   combineOddsName,
+  playDataUniqueId,
 }
