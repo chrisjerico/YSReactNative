@@ -146,7 +146,8 @@ const BetLotteryPage = ({ navigation, route }) => {
                                                menuTitle={'分享到聊天室'}
                                                curId={currentChatRoomId()}
                                                showMenu={!arrayEmpty(chatMenu)}
-                                               menu={chatMenu}/>
+                                               menu={chatMenu}
+                                               onClose={() => setChatMenu(null)}/>
         }
       </View>
     </BaseScreen>

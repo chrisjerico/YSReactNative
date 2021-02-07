@@ -27,12 +27,13 @@ interface IMiddleMenu {
   menu?: Array<IMiddleMenuItem> //菜单
   showMenu?: boolean //是否直接显示菜单
   onMenuClick?: (index: number, item: IMiddleMenuItem) => void //点击了哪个菜单
+  onClose?: () => void // 关闭了窗口回调
 }
 
 /**
  * 中间菜单
  */
-const MiddleMenu = ({ curId, menuTitle, showMenu = false, menu, onMenuClick }: IMiddleMenu, ref?: any) => {
+const MiddleMenu = ({ curId, menuTitle, showMenu = false, menu, onMenuClick, onClose }: IMiddleMenu, ref?: any) => {
 
   const [show, setShow] = useState(showMenu)
 
@@ -63,12 +64,20 @@ const MiddleMenu = ({ curId, menuTitle, showMenu = false, menu, onMenuClick }: I
                  style={_styles.bank_name_icon}/>)
   }
 
+  /**
+   * 关闭窗口
+   */
+  const closeWindow = () => {
+    setShow(false)
+    onClose()
+  }
+
   return (
     <View style={_styles.container}>
       <Modal isVisible={show}
              style={_styles.modal_content}
-             onBackdropPress={() => setShow(false)}
-             onBackButtonPress={() => setShow(false)}
+             onBackdropPress={() => closeWindow()}
+             onBackButtonPress={() => closeWindow()}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
              backdropOpacity={0.5}>
