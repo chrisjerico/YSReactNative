@@ -9,7 +9,7 @@ import BetRecordHeaderComponent from './content/counter/lhc/red/BetRecordHeaderC
 import LotteryContentComponent from './content/LotteryContentComponent'
 import { TopAreaComponent } from './content/top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
-import { arrayEmpty, dicNull } from '../../public/tools/Ext'
+import { arrayEmpty, arrayLength, dicNull } from '../../public/tools/Ext'
 import { clearLotteryData } from './util/LotteryUtil'
 import InstantLotteryComponent from './content/counter/mmc/InstantLotteryComponent'
 import WebChatComponent from './chat/WebChatComponent'
@@ -44,7 +44,6 @@ const BetLotteryPage = ({ navigation, route }) => {
     loadedLottery,
     setLoadedLottery,
     chatMenu,
-    setChatMenu,
     showShareRoom,
     requestLotteryData,
   } = UseBetLottery()
@@ -68,9 +67,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    */
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     ugLog('index = ', index)
-    UGStore.dispatch({type: 'reset', chatRoomIndex: index})
-    UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.CHAT})
-    setChatMenu(null)
+    UGStore.dispatch({type: 'reset', chatRoomIndex: index, chatMenu: [], gameTabIndex: GameTab.CHAT})
   }
 
   return (
@@ -151,7 +148,8 @@ const BetLotteryPage = ({ navigation, route }) => {
                                                curId={currentChatRoomId()}
                                                showMenu={!arrayEmpty(chatMenu)}
                                                menu={chatMenu}
-                                               onClose={() => setChatMenu(null)}/>
+                                               onClose={() => UGStore.dispatch({type: 'reset', chatMenu: []})}/>
+
         }
       </View>
     </BaseScreen>

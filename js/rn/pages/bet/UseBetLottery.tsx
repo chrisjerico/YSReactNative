@@ -7,6 +7,7 @@ import { parseLotteryDetailData } from './util/parse/ParseLotteryUtil'
 import { LotteryResultData } from '../../public/network/Model/lottery/result/LotteryResultModel'
 import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 import { IBetLotteryParams } from '../../public/network/it/bet/IBetLotteryParams'
+import { chatMenuArray } from './board/tools/chat/ChatTools'
 
 /**
  * 彩票下注
@@ -17,12 +18,12 @@ const UseBetLottery = () => {
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
   const betShareModel = UGStore.globalProps.betShareModel //下注数据结构
+  const chatMenu = UGStore.globalProps.chatMenu //聊天菜单
 
   const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const [loadedLottery, setLoadedLottery] = useState<Array<string>>([])//需要加载进来的彩票列表
   const [betResult, setBetResult] = useState<LotteryResultData>(null) //下注结果
-  const [chatMenu, setChatMenu] = useState<Array<IMiddleMenuItem>>(null) //聊天室菜单
 
   useEffect(() => {
     requestLotteryData(lotteryId)
@@ -52,13 +53,7 @@ const UseBetLottery = () => {
    */
   const showShareRoom = (betData?: IBetLotteryParams) => {
     if (systemInfo?.chatRoomSwitch && userInfo?.chatShareBet == 1 && Number(betData?.totalMoney) >= Number(systemInfo?.chatShareBetMinAmount)) {
-      setChatMenu(UGStore.globalProps?.chatRoomData?.chatAry?.map((item) => {
-          return (({
-            title: `${item?.roomName}`,
-            id: item?.roomId,
-          } as IMiddleMenuItem))
-        }),
-      )
+      UGStore.dispatch({type: 'reset', chatMenu: chatMenuArray()})
     }
 
   }
@@ -74,7 +69,6 @@ const UseBetLottery = () => {
     loadedLottery,
     setLoadedLottery,
     chatMenu,
-    setChatMenu,
     showShareRoom,
     requestLotteryData,
   }

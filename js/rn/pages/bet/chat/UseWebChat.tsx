@@ -42,9 +42,9 @@ const UseWebChat = () => {
         break
       case 'android':
         ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: {} }).then((res) => {
-          const chatUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=${currentChatRoomId()}&color=${Skin1.themeColor.slice(1)}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
-          ugLog('chatUrl = ', chatUrl)
-          setChatUrl(chatUrl)
+          const newUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=${currentChatRoomId()}&color=${Skin1.themeColor.slice(1)}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
+          ugLog('chatUrl = ', newUrl != chatUrl, newUrl)
+          newUrl != chatUrl && setChatUrl(newUrl)
         })
         break
     }
