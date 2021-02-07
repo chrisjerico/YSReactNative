@@ -1,20 +1,16 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
-import { Toast } from '../../../public/tools/ToastUtils'
-import { checkBetCount } from '../board/tools/BetUtil'
-import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
 import AppDefine from '../../../public/define/AppDefine'
 import { ANHelper } from '../../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../../public/define/ANHelper/hp/CmdDefine'
 import { ugLog } from '../../../public/tools/UgLog'
-import APIRouter from '../../../public/network/APIRouter'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { Platform } from 'react-native'
 import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes'
 import { GameTab } from '../const/LotteryConst'
-
+import { BetShareModel, PlayNameArray } from '../../../redux/model/game/bet/BetShareModel'
+import { BetLotteryData } from '../../../public/network/it/bet/IBetLotteryParams'
 
 /**
  * 彩票下注 功能面板
@@ -32,26 +28,49 @@ const UseWebChat = () => {
     switch (Platform.OS) {
       case 'ios':
         //TODO iOS 生成聊天室链接
-        break;
+        break
       case 'android':
         ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: {} }).then((res) => {
           const chatUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=0&color=${Skin1.themeColor.slice(1)}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
           ugLog('chatUrl = ', chatUrl)
           setChatUrl(chatUrl)
         })
-        break;
+        break
     }
   }, [])
 
   /**
-   * 处理消息交互
+   * 下注数据转换为聊天数据
+   * @param betData
+   */
+  const follow2Bet = (betData?: BetShareModel) => {
+    const newData = {
+      ...betData,
+      playNameArray: betData?.playNameArray?.map((item, index) => (
+        { ...item, exFlag: index.toString() } as PlayNameArray),
+      ),
+      betBean: betData?.betBean?.map((item, index) => (
+        { ...item, exFlag: index.toString() } as BetLotteryData),
+      ),
+    } as BetShareModel
+
+    UGStore.dispatch({ type: 'reset', betShareModel: newData })
+  }
+
+  /**
+   * 处理Web消息交互
    * @param event
    */
   const handleMessage = (event: WebViewMessageEvent) => {
     ugLog('web chat = ', event?.nativeEvent?.data)
-    switch (event?.nativeEvent?.data) {
+    const dataJson: IWebViewMessageEventData = JSON.parse(event?.nativeEvent?.data)
+    switch (dataJson?.type) {
       case 'return_lottery':
-        UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.LOTTERY})
+        UGStore.dispatch({ type: 'reset', gameTabIndex: GameTab.LOTTERY })
+        break
+      case 'bet_lottery':
+        const betData = dataJson?.data as BetShareModel
+        follow2Bet(betData)
         break
     }
   }
@@ -63,6 +82,11 @@ const UseWebChat = () => {
     systemInfo,
     handleMessage,
   }
+}
+
+interface IWebViewMessageEventData {
+  type?: string, //类型 返回聊天室 或 跟注
+  data?: string, //具体附带数据
 }
 
 export default UseWebChat

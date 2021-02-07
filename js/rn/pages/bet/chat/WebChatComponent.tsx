@@ -71,7 +71,8 @@ const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                allowUniversalAccessFromFileURLs
                onLoadProgress={((event) => setProgress(event?.nativeEvent?.progress))}
                source={{ uri: chatUrl }}
-      onMessage={handleMessage}/>
+               onMessage={handleMessage}/>
+
       {renderProgress()}
     </View>
   )

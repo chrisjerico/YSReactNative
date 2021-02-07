@@ -8,13 +8,10 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
-import PayBoardComponent from './pay/PayBoardComponent'
 import { UGStore } from '../../../redux/store/UGStore'
 import { ugLog } from '../../../public/tools/UgLog'
-import PayResultComponent from './pay/result/PayResultComponent'
 import { GameTab } from '../const/LotteryConst'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
-import { dicNull } from '../../../public/tools/Ext'
 
 /**
  * 彩票功能区入参
@@ -35,8 +32,6 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
     gameTabIndex,
-    betResult,
-    setBetResult,
     betShareModel,
     userInfo,
     systemInfo,
@@ -239,14 +234,6 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
         {locked ? renderLock(lockStr) : null}
-        {!dicNull(betShareModel) && <PayBoardComponent key={'BetBoardComponent'}
-                                              showCallback={(data) => {
-                                                UGStore.dispatch({ type: 'reset', betShareModel: {} })
-                                                setBetResult(data)
-                                              }}/>}
-        {betResult && <PayResultComponent betData={betResult}
-                                          nextIssueData={UGStore.globalProps?.nextIssueData}
-                                          showCallback={() => setBetResult(null)}/>}
       </View>
     </View>
   )

@@ -16,7 +16,6 @@ const UseBetBoard = () => {
 
   const [sliderValue, setSliderValue] = useState<number>(0) //拉条数据
   const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
-  const [betResult, setBetResult] = useState<LotteryResultData>(null) //下注结果
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
   const userInfo = UGStore.globalProps.userInfo //用户信息
@@ -51,8 +50,6 @@ const UseBetBoard = () => {
 
   return {
     gameTabIndex,
-    betResult,
-    setBetResult,
     betShareModel,
     userInfo,
     systemInfo,
