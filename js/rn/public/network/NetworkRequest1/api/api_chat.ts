@@ -1,12 +1,15 @@
 import { CCSessionReq, SampleAPI } from "../CCSessionModel";
+import { LotteryResultModel } from '../../Model/lottery/result/LotteryResultModel'
+import { ChatRoomModel } from '../../Model/chat/ChatRoomModel'
 
 
 export class api_chat {
   static c = new SampleAPI('c=chat&a=');
 
   // 聊天室列表
-  static getToken() {
-    return this.c.post('getToken', { t: new Date().getTime() / 1000 });
+  static chatList() {
+    // return this.c.post('getToken', { t: new Date().getTime() / 1000 });
+    return this.c.post<ChatRoomModel>('getToken', { t: new Date().getTime() });
   }
 
   // 红包日志

@@ -17,6 +17,7 @@ import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDet
 import { mergeObject } from '../../public/tools/Ext'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
 import { BetShareModel } from '../model/game/bet/BetShareModel'
+import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
 
 // 整个State的树结构
 
@@ -38,6 +39,8 @@ export interface IGlobalState {
   betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
+  chatRoomIndex?: number //当前聊天室索引
+  chatRoomData?: ChatRoomData //聊天数据
 
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   inputMoney?: number //输入的游戏金额
@@ -72,6 +75,8 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.betShareModel && (state.betShareModel = act.betShareModel)
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
+    act.chatRoomIndex >= 0 && (state.chatRoomIndex = act.chatRoomIndex)
+    act.chatRoomData && (state.chatRoomData = act.chatRoomData)
 
     act.selectedData && (state.selectedData = act.selectedData)
     act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
@@ -86,6 +91,8 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.betShareModel = { ...state.betShareModel, ...act.betShareModel }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
+    state.chatRoomData = { ...state.chatRoomData, ...act.chatRoomData }
+
     state.selectedData = mergeObject(state.selectedData, act.selectedData)
 
     state.sys = { ...state.sys, ...act.sys }
@@ -120,6 +127,8 @@ export interface UGAction<P = {}> extends Action {
   betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
+  chatRoomIndex?: number //当前聊天室索引
+  chatRoomData?: ChatRoomData //聊天数据
 
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   inputMoney?: number //输入的游戏金额

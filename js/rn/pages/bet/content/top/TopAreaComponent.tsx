@@ -13,6 +13,7 @@ import UseTopArea from './UseTopArea'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { GameTab } from '../../const/LotteryConst'
 import { UGStore } from '../../../../redux/store/UGStore'
+import { currentChatRoomName } from '../../board/tools/chat/ChatTools'
 
 /**
  * 顶部功能区域 标题栏，游戏聊天切换 等等
@@ -108,7 +109,7 @@ const TopAreaComponent = () => {
               _styles.game_tab_right,
               gameTabIndex == GameTab.CHAT ? { backgroundColor: UGColor.transparent2 } : null]}>
         <Text key={'renderGameTab 主房间'}
-              style={_styles.tab_text}>{'主房间'}</Text>
+              style={_styles.tab_text}>{currentChatRoomName()}</Text>
       </View>
     </TouchableWithoutFeedback>
 
