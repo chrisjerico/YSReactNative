@@ -18,6 +18,7 @@ import { mergeObject } from '../../public/tools/Ext'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
 import { BetShareModel } from '../model/game/bet/BetShareModel'
 import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
+import { GameTab } from '../../pages/bet/const/LotteryConst'
 
 // 整个State的树结构
 
@@ -34,7 +35,7 @@ export interface IGlobalState {
   //下注
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   lotteryTabIndex?: number //当前的彩种处于哪一页
-  gameTabIndex?: number //GameTab 当前TAB是 彩票0 还是 聊天室1
+  gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
@@ -122,7 +123,7 @@ export interface UGAction<P = {}> extends Action {
   //彩票数据
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   lotteryTabIndex?: number //当前的彩种处于哪一页
-  gameTabIndex?: number //当前TAB是彩票还是聊天室
+  gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据

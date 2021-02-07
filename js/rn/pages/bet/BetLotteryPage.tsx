@@ -16,8 +16,9 @@ import WebChatComponent from './chat/WebChatComponent'
 import PayBoardComponent from './board/pay/PayBoardComponent'
 import PayResultComponent from './board/pay/result/PayResultComponent'
 import MiddleMenu, { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
-import { Toast } from '../../public/tools/ToastUtils'
 import { currentChatRoomId } from './board/tools/chat/ChatTools'
+import { GameTab } from './const/LotteryConst'
+import { ugLog } from '../../public/tools/UgLog'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -66,7 +67,10 @@ const BetLotteryPage = ({ navigation, route }) => {
    * @param item
    */
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
-
+    ugLog('index = ', index)
+    UGStore.dispatch({type: 'reset', chatRoomIndex: index})
+    UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.CHAT})
+    setChatMenu(null)
   }
 
   return (
