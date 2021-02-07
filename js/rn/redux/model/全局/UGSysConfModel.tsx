@@ -135,7 +135,7 @@ export class UGUserCenterItem {
 }
 
 // 六合发帖价格范围
-export class LHPriceModel {}
+export class LHPriceModel { }
 
 // 系统配置Model
 export default class UGSysConfModel {
@@ -155,7 +155,7 @@ export default class UGSysConfModel {
   static updateFromNetwork(completed?: () => void) {
     return api.system.config().useSuccess(({ data }, sm) => {
       sm.noShowErrorHUD = true
-      console.log('系统配置数据：',data);
+      console.log('系统配置数据：', data);
 
       UGStore.dispatch({ type: 'merge', sysConf: data })
       completed && completed()
@@ -205,28 +205,30 @@ export default class UGSysConfModel {
   coinPwdAuditOptionAry?: Array<string> //忘记密码有哪些选项 mobile, bank, id
   chatShareBetMinAmount?: string /**<   聊天室 注单分享最小金额限制*/
   // 邀请码
-  inviteCode ?: InviteCodeConfigModel
+  inviteCode?: InviteCodeConfigModel
   // 注册页
-  hide_reco?: number // 代理人 0不填，1选填，2必填
-  reg_name?: number // 真实姓名 0不填，1选填，2必填
-  reg_fundpwd?: number // 取款密码 0不填，1选填，2必填
-  reg_qq?: number // QQ 0不填，1选填，2必填
-  reg_wx?: number // 微信 0不填，1选填，2必填
-  reg_phone?: number // 手机 0不填，1选填，2必填
-  reg_email?: number // 邮箱 0不填，1选填，2必填
-  reg_vcode?: number // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-  pass_limit?: number // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-  pass_length_min?: number // 注册密码最小长度
-  pass_length_max?: number // 注册密码最大长度
-  smsVerify?: boolean // 手机短信验证
+  hide_reco?: '0' | '1' | '2' // 代理人 0不填，1选填，2必填
+  inviteCodeSwitch?: '0' | '1' | '2' // 邀请码开关 0不填，1选填，2必填
+  inviteWord?: string // 邀请码文案
+  reg_name?: '0' | '1' | '2' // 真实姓名 0不填，1选填，2必填
+  reg_fundpwd?: '0' | '1' | '2' // 取款密码 0不填，1选填，2必填
+  reg_qq?: '0' | '1' | '2' // QQ 0不填，1选填，2必填
+  reg_wx?: '0' | '1' | '2' // 微信 0不填，1选填，2必填
+  reg_phone?: '0' | '1' | '2' // 手机 0不填，1选填，2必填
+  reg_email?: '0' | '1' | '2' // 邮箱 0不填，1选填，2必填
+  reg_vcode?: '0' | '1' | '2' // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
+  pass_limit?: '0' | '1' | '2' // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
+  pass_length_min?: string // 注册密码最小长度
+  pass_length_max?: string // 注册密码最大长度
+  smsVerify?: '0' | '1' // 手机短信验证
 
-  rankingListSwitch?: number // 是否显示中奖/投注排行榜
+  rankingListSwitch?: 0 | 1 // 是否显示中奖/投注排行榜
   googleVerifier?: boolean // 是否开启google 验证
   recharge?: boolean // 上级充值开关
   allowreg?: boolean // 是否开启注册功能。
   allowMemberCancelBet?: boolean // 是否允许会员撤单，1允许 0不允许
   m_promote_pos?: boolean // 优惠活动显示在首页还是内页，1首页，0内页
-  yuebaoSwitch?: boolean // 未登录时是否允许访问利息宝
+  yuebaoSwitch?: boolean // //利息宝开关
   yuebaoName?: string // 利息宝名字
   chatFollowSwitch?: boolean // 是否允许聊天室跟注
   switchBindVerify?: number // 新增提款账号時，校验取款密码
@@ -238,6 +240,16 @@ export default class UGSysConfModel {
 
   mobileMenu?: Array<UGTabbarItem> // 底部Tab按钮
   userCenter?: Array<UGUserCenterItem> // 我的页功能按钮
+
+
+  switchBalanceChannel?: string //余额提款开关
+  balanceChannelStartTime?: string //开关时间段
+  balanceChannelEndTime?: string //开关时间段
+  balanceChannelPrompt?: string //余额提款关闭提示语
+  switchYuebaoChannel?: string //利息宝开关
+  yuebaoChannelStartTime?: string //开关时间段
+  yuebaoChannelEndTime?: string //开关时间段
+  yuebaoChannelPrompt?: string //利息宝关闭提示语
 
   activeReturnCoinStatus?: boolean// 是否開啟拉條模式
   activeReturnCoinRatio?: number// 拉條最大值

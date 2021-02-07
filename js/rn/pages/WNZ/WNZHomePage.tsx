@@ -24,7 +24,7 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
 import { ugLog } from '../../public/tools/UgLog'
 import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
 import { getParentsTagsRecursively } from 'react-native-render-html'
@@ -54,12 +54,18 @@ const WNZHomePage = () => {
 
   const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames,homeGamesHot, rankLists } = homeInfo
 
   const getNavs = () => {
+    ugLog("navs = ", navs)
 
-  if (AppDefine.siteId == 'c245')
-    return uid ? config.c245AuthNavs : config.c245UnAuthNavs
+  if (AppDefine.siteId == 'c245') {
+    var newNavs = uid ? config.c245AuthNavs : config.c245UnAuthNavs
+    newNavs.forEach(ele => {
+      ele.icon = navs?.find(e => e?.name == ele?.name)?.icon
+    })
+    return newNavs
+  }
   if (AppDefine.siteId.includes('c108') && !uid)
     return config.c108UnAuthNavs
   return navs
@@ -71,6 +77,7 @@ const WNZHomePage = () => {
   const tabGames = [
     {
       // @ts-ignore
+      // games: homeGamesHot.concat(config?.moreGame),
       games: officialGames?.slice(0, 9).concat(config?.moreGame),
     },
     {
@@ -226,6 +233,10 @@ const WNZHomePage = () => {
                     width: '20%',
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
+                    borderRightWidth:1,
+                    borderBottomWidth:1,
+                    borderColor:'#F1F1F1',
+                    
                   }}
                   imageContainerStyle={{
                     width: '75%',
@@ -288,6 +299,7 @@ const WNZHomePage = () => {
               tabBarBackgroundColor={'#ffffff'}
               tabBarStyle={{
                 marginHorizontal: scale(5),
+                marginTop:scale(5),
               }}
               tabTextStyle={{
                 fontSize: scale(20),

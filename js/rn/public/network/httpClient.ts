@@ -40,7 +40,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   //     params[key] = null
   //   }
   // }
-  
+
   let temp = {}
   //过滤掉 null 或 "",
   for (let paramsKey in params) {
@@ -89,7 +89,7 @@ httpClient.interceptors.response.use(
       }
     }
 
-    // ugLog("http ful filled res 5 = ", JSON.stringify(response))
+    ugLog("http ful filled res 5 = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {
     //   if (config?.expiredTime < 1000000000000000) {
@@ -161,11 +161,11 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
 
   console.log('请求的url===',config.url);
   console.log('请求的params===',params);
-  
+
   let { isEncrypt = true } = config
   let encryptData = await encryptParams(params, isEncrypt);
 
-  //ugLog('http isEncrypt encryptData 1 =', isEncrypt, config.url, encryptData)
+  ugLog('http isEncrypt encryptData 1 =', isEncrypt, config.url, encryptData)
 
   if (config?.method?.toLowerCase() == 'get') {
     if (isEncrypt) {
@@ -200,7 +200,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
     if (config.noToken == true) {
       delete encryptData?.token
     }
-    debugger
+
     for (let paramsKey in encryptData) {
       // if (paramsKey.includes("slideCode")) {
       //   config.data[paramsKey] = config.data[paramsKey];

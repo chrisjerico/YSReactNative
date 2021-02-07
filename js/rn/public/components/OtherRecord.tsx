@@ -1,53 +1,41 @@
 import { Platform, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { memo, useEffect, useRef, useState } from 'react'
-import { anyEmpty, arrayEmpty } from '../tools/Ext'
+import { anyEmpty } from '../tools/Ext'
 import { scale } from '../tools/Scale'
 import { skin1, Skin1 } from '../theme/UGSkinManagers'
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import { UGColor } from '../theme/UGThemeColor'
 import EmptyView from './view/empty/EmptyView'
 import APIRouter from '../network/APIRouter'
 import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
-import Modal from 'react-native-modal'
-import RightMenu from './menu/RightMenu'
-import Icon from 'react-native-vector-icons/Entypo'
-import PushHelper from '../define/PushHelper'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import SafeAreaHeader from '../views/tars/SafeAreaHeader'
-import BackBtnComponent from './tars/BackBtnComponent'
-import { PageName } from '../navigation/Navigation'
 import MineHeader from '../views/tars/MineHeader'
 import { OCHelper } from '../define/OCHelper/OCHelper'
-import { navigate, pop, push } from '../navigation/RootNavigation'
-import { api } from '../network/NetworkRequest1/NetworkRequest1'
-import { PayAisleListData } from '../network/Model/wd/PayAisleModel'
-import { FlatList, ScrollView, TextInput, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler'
-import { PushHomeGame } from '../models/Interface'
-import Button from '../views/temp/Button'
+import { pop } from '../navigation/RootNavigation'
+import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { UGBasePageProps } from '../../pages/base/UGPage'
 import CommStyles from '../../pages/base/CommStyles'
 import UseGameHall from '../../pages/hall/new/UseGameHall'
 import MiddleMenu, { IMiddleMenuItem } from './menu/MiddleMenu'
 import { GameHistorylistBean, GameHistoryModel } from '../network/Model/HomeRecommendModel'
-import Game3rdView from './Game3rdView'
-import { iteratorSymbol } from 'immer/dist/internal'
 import AppDefine from '../define/AppDefine'
 import { Calendar } from 'react-native-plain-calendar'
-import { format } from 'prettier'
 import moment from 'moment'
 import Dialog from "react-native-dialog";
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { UGStore } from '../../redux/store/UGStore'
 
 /**
- * 其他注单
+ * 其他注单1
  * @param navigation
  * @constructor
  */
-const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
+const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
 
   let { type, showBackButton } = route?.params
+  // ugLog('--------------------------route?.params==', route?.params)
+
   const refMenu = useRef(null)
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   // 游戏分类：lottery=彩票，real=真人，card=棋牌，game=电子游戏，sport=体育，fish=捕鱼, esport=电竞
@@ -96,70 +84,64 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     },
   ]
 
-  console.log('type0===========', type);
-  const [currentType, setCurrentType] = useState(typeArray[0])  //選擇注單類形
+
+  const [currentType, setCurrentType] = useState<IMiddleMenuItem>(
+    {
+      title: '真人注单', //菜单名字
+      subTitle: null, // 次级名字
+      icon: null, //图标地址
+      id: '23', //识别标识
+      type: 'real'
+    }
+  )  //選擇注單類形
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
-  const [page, setPage] = useState(1)
+  const [page] = useState(1)
   const [data, setData] = useState<Array<GameHistorylistBean>>([])
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
   const [betTotal, setBetTotal] = useState(0) //是否存取過數據
+  const [validbetTotal, setValidBetTotal] = useState('0') //是否存取過數據
   const [winTotal, setWinTotal] = useState(0) //是否存取過數據
   const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //正在选择开始日期
-  const [startDate, setStartDate] = useState<string>(null)//选中的开始日期
+  const [startDate, setStartDate] = useState<string>(moment().format('yyyy-MM-DD'))//选中的开始日期
 
-  const {
-    systemInfo,
-    userInfo,
-  } = UseGameHall()
+  // ugLog('startDate ==  ',startDate)
 
   useEffect(() => {
-    console.log('useEffect');
-    console.log('type1===========', type);
-    switch (Platform.OS) {
-      case 'ios':
-        if (anyEmpty(type)) {
-          type = 'real';
+    setProps({
+      didFocus: (params) => {
+        ugLog('--------------------------params==', params)
+        switch (Platform.OS) {
+          case 'ios':
+              let dic = params;
+              for (var key in dic) {
+                if (key == 'gameType') {
+                  if (anyEmpty(dic[key])) {
+                    type = 'real';
+                  }
+                  else {
+                    type = dic[key];
+                  }
+                  setCurrentType(typeArray.find((v) => v.type == type))
+                  requestGameData()
+                }
+              }
+
+            break;
+          case 'android':
+            //TODO Android 传参
+            break;
         }
-        setCurrentType(typeArray.find((v) => v.type == type))
-        break;
-      case 'android':
-        if (anyEmpty(type)) {
-          type = '23';
-        }
-        setCurrentType(typeArray.find((v) => v.id == type))
-        break;
-    }
+
+
+      },
+    }, false)
   }, [])
 
-  setProps({
-    didFocus: (params) => {
-      ugLog('params==',params)
-      switch (Platform.OS) {
-        case 'ios':
-          let dic = params;
-          for (var key in dic) {
-            if (key == 'gameType') {
-              if (anyEmpty(dic[key])) {
-                type = 'real';
-              }
-              else {
-                type = dic[key];
-              }
-              ugLog('type3====', type)
-              setCurrentType(typeArray.find((v) => v.type == type))
-            }
-          }
-          break;
-        case 'android':
-          //TODO Android 传参
-          break;
-      }
-      !data?.length && requestGameData()
-    }
-  }, false)
+
 
   useEffect(() => {
     ugLog("startDate: " + startDate)
+    ugLog("currentType: " + currentType?.type)
     requestGameData()
   }, [currentType, startDate])
 
@@ -175,8 +157,8 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     refMenu?.current?.toggleMenu()
     setCurrentType(item)
-    let date = moment().format('yyyy-MM-DD');
-    setStartDate(date)
+
+
   }
 
   //刷新控件
@@ -195,6 +177,12 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     function refreshUI(data: GameHistoryModel) {
       setRefreshing(false)
       setData(data.data.list)
+      let vBetTotal = data.data.totalValidBetAmount
+
+      if (!anyEmpty(vBetTotal)) {
+        setValidBetTotal(vBetTotal)
+      }
+
       let total = 0
       data.data.list.forEach((e) => {
         total += Number(e.betAmount)
@@ -208,11 +196,14 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       renderAllData()
     }
 
+    // ugLog('page==',page)
+    // ugLog('currentType?.type==',currentType?.type)
+    // ugLog('startDate==',startDate)
     // 获取注單數據
     APIRouter.ticket_history_args(
       page + '', '20', currentType?.type, startDate, startDate
     ).then(({ data: res }) => {
-      // ugLog('data res=', res)
+      // ugLog('获取注單數據=======', res)
       if (res?.code == 0) {
         setIsSetData(true)
         refreshUI(res)
@@ -243,21 +234,36 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                   keyExtractor={(item, index) => item.id + index}
                   data={item}
                   numColumns={1}
-                  renderItem={({ item, index }) => {
+                  renderItem={({ item }) => {
                     return (
                       <View style={[_styles.text_title_container, { backgroundColor: skin1.textColor4 }]}>
-                        <Text style={_styles.text_content_0}>{item.gameName}{'\n'}{item.gameTypeName}</Text>
-                        <Text style={_styles.text_content_0}>{item.betTime}</Text>
-                        <Text style={_styles.text_content_0}>{item.betAmount}</Text>
-                        <Text style={_styles.text_content_0}>{item.winAmount}</Text>
+                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.gameName}{'\n'}{item.gameTypeName}</Text>
+                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.betTime}</Text>
+                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.betAmount}</Text>
+                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.winAmount}</Text>
                         <View style={_styles.text_content_0}>
                           <TouchableOpacity onPress={
                             () => {
-                              ugLog("URL: ", AppDefine.host + '/' + item.bet_details.url)
-                              push(PageName.Game3rdView, { uriPath: AppDefine.host + '/' + item.bet_details.url })
+                              let url2 = AppDefine.host + item.bet_details.url;
+                              const { token, sessid } = UGStore.globalProps?.userInfo
+                              const newUrl2 = `${url2}&loginsessid=${sessid}&logintoken=${token}`
+                              let url1 = `${AppDefine.host}/chat/appcheck?from=app`
+                              const newUrl1 = `${url1}&loginsessid=${sessid}&logintoken=${token}`
+                              switch (Platform.OS) {
+                                case 'ios':
+                                  OCHelper.call('CMCommon.goTGWebUrl:url2:title:', [
+                                    newUrl1, newUrl2, '注单详情'
+                                  ]
+                                  )
+                                  break
+                                case 'android':
+                                  //TODO android 注单详情
+                                  break
+                              }
+
                             }
                           }>
-                            <Text>{'详情'}</Text>
+                            <Text style={{ color: 'red' }}>{'详情'}</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -303,7 +309,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
    */
   let renderCalendar = () => {
     let curDate = new Date(startDate)
-
+    // ugLog('curDate ==  ',curDate)
     return (
 
       <View key={'renderCalendar'}
@@ -344,82 +350,6 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
   const MemoCalendar = memo(renderCalendar)
 
-  function MineHeaderTitle() {
-    ugLog('MineHeaderTitle')
-    setCurrentType(typeArray.find((v) => v.id == type))
-    // let item: IMiddleMenuItem = {
-    //   title: '真人注单', //菜单名字
-    //   subTitle: null, // 次级名字
-    //   icon: null, //图标地址
-    //   id: '23', //识别标识
-    //   type: 'real'
-    // }
-
-    // if (type == 'real') {
-    //   ugLog('real')
-    //   item = {
-    //     title: '真人注单', //菜单名字
-    //     subTitle: null, // 次级名字
-    //     icon: null, //图标地址
-    //     id: '23', //识别标识
-    //     type: 'real'
-    //   }
-    // }
-    // else if (type == 'card') {
-    //   ugLog('card')
-    //   item = {
-    //     title: '棋牌注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '24',
-    //     type: 'card'
-    //   }
-    // }
-    // else if (type == 'fish') {
-    //   ugLog('fish')
-    //   item = {
-    //     title: '捕鱼注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '25',
-    //     type: 'fish'
-    //   }
-    // }
-    // else if (type == 'game') {
-    //   ugLog('game')
-    //   item = {
-    //     title: '电子注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '22',
-    //     type: 'game'
-    //   }
-    // }
-    // else if (type == 'esport') {
-    //   ugLog('esport')
-    //   item = {
-    //     title: '电竞注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '26',
-    //     type: 'esport'
-    //   }
-    // }
-    // else if (type == 'sport') {
-    //   ugLog('sport')
-    //   item = {
-    //     title: '体育注单',
-    //     subTitle: null,
-    //     icon: null,
-    //     id: '27',
-    //     type: 'sport'
-    //   }
-    // }
-
-
-    // ugLog('item==', JSON.stringify(item))
-    // setCurrentType(item)
-  }
   /**
    * 绘制右按钮
    */
@@ -440,6 +370,9 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
           rightButton={rightButton}
           showRightTitle={true}
           onPressBackBtn={() => {
+            // ugLog('999999')
+            //情况网络数据
+            setData([]);
             pop()
           }
           }
@@ -453,6 +386,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       </SafeAreaHeader>
       <MiddleMenu
         styles={{ width: scale(200) }}
+        curId={currentType.id}
         key={currentType?.id}
         ref={refMenu}
         onMenuClick={clickMenu}
@@ -478,8 +412,19 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
         <Text style={_styles.text_content_0}>{'详情'}</Text>
       </View>
       <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
-        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-start', color: skin1.textColor4, }]}>{'下注总金额: ' + betTotal}</Text>
-        <Text style={[_styles.text_content_bottom, { alignItems: 'flex-end', color: skin1.textColor4, }]}>{'输赢金额: ' + winTotal}</Text>
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+          <Text style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'下注总金额: '}</Text>
+          <Text style={[_styles.text_content_bottom, { color: 'yellow', }]}>{betTotal}</Text>
+        </View>
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+          <Text style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'有效下注总金额:'}</Text>
+          <Text style={[_styles.text_content_bottom, { color: 'yellow', }]}>{validbetTotal}</Text>
+        </View>
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+          <Text style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'输赢金额: '}</Text>
+          <Text style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, }]}>{winTotal}</Text>
+        </View>
+
       </View>
       {
         renderAllData()
@@ -514,7 +459,7 @@ const _styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-around',
     color: skin1.textColor4,
     position: 'absolute',
 

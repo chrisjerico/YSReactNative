@@ -18,6 +18,7 @@ import { Badge, Button } from 'react-native-elements';
 import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { img_assets, useHtml5Image } from '../../../Res/icon';
+import { appConfig } from '../../../../../config';
 
 
 interface JDPromotionTabDrawlRcordCP {
@@ -51,7 +52,7 @@ const JDPromotionTabDrawlRcordCP = ({ pageTitle, titleArray }: { pageTitle?: str
       levelArray: [],
       pageSize: 20,
       pageNumber: 1,
-      levelindex: 0,
+      levelindex: appConfig.isShowOneLevel() ? 1 : 0,
       state: {
         showFoot: 0,
         isRefreshing: true,
@@ -60,7 +61,8 @@ const JDPromotionTabDrawlRcordCP = ({ pageTitle, titleArray }: { pageTitle?: str
     }
   )
   let capitalController //类型选择
-  v.levelArray = [{ value: 0, label: '全部下线' },
+  v.levelArray = appConfig.isShowOneLevel() ? [{ value: 1, label: '1级下线' },] :
+  [{ value: 0, label: '全部下线' },
   { value: 1, label: '1级下线' },
   { value: 2, label: '2级下线' },
   { value: 3, label: '3级下线' },
@@ -259,7 +261,7 @@ function teamWithdrawListData() {
         <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-            {item.level + '级下线'}
+            {item.level == 0 ? '全部下线' : item.level + '级下线'}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  }}>

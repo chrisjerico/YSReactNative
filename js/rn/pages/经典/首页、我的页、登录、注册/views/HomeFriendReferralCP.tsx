@@ -7,12 +7,13 @@ import { PageName } from "../../../../public/navigation/Navigation"
 import { push } from "../../../../public/navigation/RootNavigation"
 import { api } from "../../../../public/network/NetworkRequest1/NetworkRequest1"
 import { skin1 } from "../../../../public/theme/UGSkinManagers"
-import { sc } from "../../../../public/tools/Scale"
+import { sc540 } from "../../../../public/tools/Scale"
 import { hideLoading, showLoading } from "../../../../public/widget/UGLoadingCP"
 import UGUserModel from "../../../../redux/model/全局/UGUserModel"
 import { UGStore } from "../../../../redux/store/UGStore"
 import { img_assets } from "../../../../Res/icon"
 
+const sc = sc540
 interface HomeFriendReferralProps {
   visible: boolean
   onPress?: () => void

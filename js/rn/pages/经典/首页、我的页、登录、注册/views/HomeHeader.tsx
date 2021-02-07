@@ -7,9 +7,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Feather from 'react-native-vector-icons/Feather'
 import PushHelper from '../../../../public/define/PushHelper'
-import { sc, scale } from '../../../../public/tools/Scale'
+import { sc540, scale } from '../../../../public/tools/Scale'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 import { img_assets, img_mobileTemplate } from '../../../../Res/icon'
+
+const sc = sc540
 
 const HomeHeader = ({ logo, uid, name, onPressSignIn, onPressSignUp, onPressTryPlay, onPressMenu, onPressMessege }) => {
   return (
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   logo: {
-    height: '100%',
+    height: '95%',
     aspectRatio: 3.7,
   },
   bar: {

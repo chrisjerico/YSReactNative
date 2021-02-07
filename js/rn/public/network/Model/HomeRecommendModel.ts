@@ -74,6 +74,7 @@ export interface GameHistoryData {
   total: number
   totalBetAmount: string
   totalWinAmount: string
+  totalValidBetAmount: string //有效投注金额
 }
 
 export interface GameHistorylistBean {

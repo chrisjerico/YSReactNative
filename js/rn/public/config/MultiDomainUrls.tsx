@@ -191,6 +191,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.ya442778111.cc',
     'https://www.ya557887.cc',
   ],
+  'c085ahy': [
+    'https://www.ya1237888.cc',
+    'https://www.ya2238888.cc',
+    'https://www.ya3388888.cc',
+    'https://www.ya442778111.cc',
+    'https://www.ya557887.cc',
+  ],
   'c085yw': [
     'https://x558.cc',
   ],
@@ -312,14 +319,14 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://288388i.com',
   ],
   'c190': [
-    'https://549595.com',
+    'https://474745.com',
   ],
   'c193': [
-    'https://4906211.com',
-    'https://4906212.com',
     'https://49060333.com',
     'https://49060222.com',
     'https://49061111.com',
+    'https://4906213.com',
+    'https://4906214.com',
   ],
   'c198': [
     'https://2909tycjt.com',
@@ -358,11 +365,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4504506.com',
-    'https://vip45022.com',
-    'https://45033app.com',
-    'https://4504505.com',
-    'https://4508450.com',
+    'https://4504508.com',
+    'https://4503450.com',
+    'https://4504450.com',
+    'https://4506450.com',
+    'https://4507450.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -380,7 +387,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.hilliot.com',
   ],
   'c237': [
-    'https://13478116.com',
+    'https://13478107.com',
     'https://13478117.com',
     'https://13478118.com',
     'https://13478119.com',
@@ -393,6 +400,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://398595.com',
     'https://697896.com',
     'https://697956.com',
+    'https://238698.com',
+    'https://923455.com',
   ],
   'c243': [
     'https://55979711.vip',
@@ -428,6 +437,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://l816.com',
     'https://wf7.co',
     'https://667568.com'
+  ],
+  'c261': [
+    'https://yl29001.com',
+    'https://yl29002.com',
+    'https://yl29003.com',
+    'https://yl29005.com',
+    'https://yl29006.com',
   ],
   'l001': [
     'https://4988wap.com',

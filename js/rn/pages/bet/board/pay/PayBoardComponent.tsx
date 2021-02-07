@@ -1,21 +1,23 @@
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef } from 'react'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryConst from '../../const/LotteryConst'
-import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { ugLog } from '../../../../public/tools/UgLog'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { anyEmpty } from '../../../../public/tools/Ext'
-import { calculateItemCount, gatherSelectedItems } from '../tl/BetUtil'
-import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { Toast } from '../../../../public/tools/ToastUtils'
+import { LotteryResultData } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
+import { showLoading } from '../../../../public/widget/UGLoadingCP'
+import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
+import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/BetShareModel'
+import { filterShareItem } from '../tools/BetUtil'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 interface IPayBoardComponent {
-  showCallback?: () => void //窗口 是否显示 回调
+  showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
 }
 
 /**
@@ -32,174 +34,76 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
     setAverageMoney,
     moneyMap,
     setMoneyMap,
-    itemCount,
-    playOddDetailData,
-    selectedData,
-    setSelectedData,
+    betShareModel,
+    setBetShareModel,
     startBetting,
   } = UsePayBoard()
 
   /**
-   * 绘制 特码 等条目
-   * @param lotteryCode 彩种CODE，特码,合肖等
-   * @param selModel 选中的数据
+   * 绘制连码等数据
+   * @param nameArr
+   * @param betInfo
+   * @param betShareModel
    */
-  const renderTMItem = (lotteryCode?: string, selModel?: SelectedPlayModel) => {
-    return selModel?.plays?.map((playData) => {
-      const showName = lotteryCode == LotteryConst.LX || lotteryCode == LotteryConst.LW ?
-        playData?.alias :
-        playData?.name
-      return (<View key={playData?.id + playData?.name}
-                    style={_styles.item_container}>
-        <Text style={_styles.item_title}
-              numberOfLines={2}>{
-          `[ ${selModel?.playGroups?.alias}- ${showName} ]`
-        }</Text>
-        <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
-        <Text style={_styles.item_x}>{'X'}</Text>
-        <TextInput defaultValue={averageMoney?.toString()}
-                   onChangeText={text => setMoneyMap(prevState => {
-                     const moneyMap = new Map<string, number>()
-                     moneyMap[playData?.exId ?? playData?.id] = Number.parseFloat(text)
-                     // ugLog('prevState = ', JSON.stringify(prevState))
-                     // ugLog('moneyMap = ', JSON.stringify(moneyMap))
-                     return { ...prevState, ...moneyMap }
-                   })}
-                   keyboardType={'numeric'}
-                   style={_styles.item_input}/>
-        <Icon size={scale(36)}
-              onPress={() => {
-                //选中了哪些数据 code -> code -> value, 如 正特 -> 正特1 -> 01,03,04
-                //Map<string, Map<string, Map<string, SelectedPlayModel>>>
-                const newSelectedData = new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
-
-                //注释以特码为例
-                for(const [key1, value1] of Object.entries(selectedData)) {
-                  newSelectedData[key1] = value1
-                  for(const [key2, value2] of Object.entries(value1)) {
-                    value1[key2] = value2
-                    for(const [key3, value3] of Object.entries(value2)) {
-                      value2[key3] = {
-                        ...value3,
-                        plays: value3?.plays?.filter((play: PlayData, index) => JSON.stringify(play) != JSON.stringify(playData))
-
-                      } as SelectedPlayModel
-                    }
-                  }
-                }
-
-                ugLog('newSelectedData = ', JSON.stringify(newSelectedData))
-                //数据少于1了就关闭窗口
-                if (calculateItemCount(newSelectedData) <= 0) {
-                  showCallback && showCallback()
-                } else {
-                  setSelectedData(newSelectedData)
-                }
-
-              }}
-              style={_styles.item_trash}
-              color={Skin1.themeColor}
-              name={'trash-o'}/>
-      </View>)
-    })
-  }
-
-  /**
-   * 绘制合肖等数据
-   * @param selModel
-   * @param des
-   */
-  const renderHXItem = (selModel?: SelectedPlayModel,
-                        des?: string) => {
-    const play0 = selModel?.plays[0]
-    return (<View key={play0?.id + play0?.name}
+  const renderItem = (nameArr?: PlayNameArray,
+                      betInfo?: BetLotteryData,
+                      betShareModel?: BetShareModel) => {
+    const showName = !anyEmpty(nameArr?.playName1) ?
+      `[ ${nameArr?.playName1}- ${nameArr?.playName2} ]` :
+      `[ ${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name} ]`
+    return (<View key={nameArr?.exFlag}
                   style={_styles.item_container}>
       <Text style={_styles.item_title}
-            numberOfLines={2}>{
-        `[ ${selModel?.playGroups?.alias}- ${des} ]`
+            numberOfLines={2}>{showName}</Text>
+      <Text style={_styles.item_odds}>{
+        `@${betInfo?.odds}`
+      }</Text>
+      <Text style={_styles.item_x}>{
+        'X'
       }</Text>
       <TextInput defaultValue={averageMoney?.toString()}
                  onChangeText={text => setMoneyMap(prevState => {
                    const moneyMap = new Map<string, number>()
-                   moneyMap[play0?.exId ?? play0?.id] = Number.parseFloat(text)
-                   // ugLog('prevState = ', JSON.stringify(prevState))
-                   // ugLog('moneyMap = ', JSON.stringify(moneyMap))
+                   moneyMap[nameArr?.exFlag] = Number.parseFloat(text)
                    return { ...prevState, ...moneyMap }
                  })}
                  keyboardType={'numeric'}
                  style={_styles.item_input}/>
       <Icon size={scale(36)}
             onPress={() => {
-              showCallback && showCallback()
-
+              if (arrayLength(betShareModel?.playNameArray) <= 1) { //数量只有1个的时候关闭窗口
+                showCallback && showCallback()
+              } else {
+                setBetShareModel(filterShareItem(betShareModel, nameArr?.exFlag))
+              }
             }}
             style={_styles.item_trash}
             color={Skin1.themeColor}
             name={'trash-o'}/>
     </View>)
-
   }
 
-  const itemViewArr = selectedData == null ? null : Object.keys(selectedData).map((lotteryCode, keyIndex) => {
-    const selItems = gatherSelectedItems(lotteryCode, selectedData)
-    // const groupDataArr: Array<PlayGroupData> = selectedData[lotteryCode]
-    return selItems?.map((selModel, index) => {
-      ugLog('lotteryCode 2 index = ', lotteryCode, index)
-      switch (lotteryCode) {
-        case LotteryConst.TM:  //特码
-        case LotteryConst.LM: //两面
-        case LotteryConst.ZM: //正码
-        case LotteryConst.ZT:  //正特
-        case LotteryConst.ZM1_6: //正码1T6
-        case LotteryConst.SB: //色波
-        case LotteryConst.ZOX://总肖
-        case LotteryConst.WX:  //五行
-        case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.TX: //特肖
-        case LotteryConst.ZX: //正肖
-        case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-        case LotteryConst.LX: //连肖
-        case LotteryConst.LW: //连尾
-          return renderTMItem(lotteryCode, selModel)
-
-        case LotteryConst.HX://合肖
-          return renderHXItem(selModel,
-            selModel?.zodiacs?.map((item) => item?.name)?.toString())
-
-        case LotteryConst.LMA:  //连码
-        case LotteryConst.ZXBZ:  //自选不中
-          return renderHXItem(selModel,
-            selModel?.plays?.map((item) => item?.name)?.toString())
-      }
-
-
-    })
-
-  }).flat(2)
-
-  const listHeight = useMemo(() => (itemCount < 8 ? itemCount : 8) * BET_ITEM_HEIGHT, [itemCount])
+  const itemViewArr = betShareModel?.betBean?.map((betInfo, index) => {
+    const nameArr = betShareModel?.playNameArray[index]
+    return renderItem(nameArr, betInfo, betShareModel)
+  })
 
   return (
     <View style={_styles.container}>
       <Modal isVisible={true}
-             onBackdropPress={showCallback}
-             onBackButtonPress={showCallback}
              style={_styles.modal_content}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
-             backdropOpacity={0.3}>
-        <View style={[
-          _styles.content,
-          { height: listHeight + scale(310) }, //还要算上条目下面的下注按钮等元素的高度
-        ]}>
+             backdropOpacity={0.5}>
+        <View style={_styles.content}>
           <View style={[
             _styles.dialog_title_container,
             { backgroundColor: Skin1.themeColor },
           ]}>
-            <Text style={_styles.dialog_title_text}>{playOddDetailData()?.game?.title + '-下注清单'}</Text>
+            <Text
+              style={_styles.dialog_title_text}>{`第${betShareModel?.issue_displayNumber}期 ${betShareModel?.gameName} 下注清单`}</Text>
           </View>
-          <View style={[_styles.sv_parent, { height: listHeight }]}>
+          <View style={_styles.sv_parent}>
             <ScrollView style={_styles.sv_container}
                         showsVerticalScrollIndicator={false}>
               <View style={_styles.sv_content}>
@@ -217,7 +121,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
           <View style={_styles.last_info_container}>
             <Text style={_styles.bet_result}>{'合计注数：'}</Text>
             <Text style={[_styles.bet_result,
-              { color: Skin1.themeColor }]}>{itemCount}</Text>
+              { color: Skin1.themeColor }]}>{arrayLength(betShareModel?.betBean)}</Text>
             <Text style={_styles.bet_result2}>{'总金额：'}</Text>
             <Text style={[_styles.bet_result_total_money,
               { color: Skin1.themeColor }]}>{totalMoney}</Text>
@@ -227,7 +131,17 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                   onPress={() => showCallback && showCallback()}>{'取消'}</Text>
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
-                  onPress={() => startBetting()}>{'确定'}</Text>
+                  onPress={() => {
+                    showLoading()
+                    startBetting().then((data) => {
+                      if (betShareModel?.isInstant == '1') {//秒秒彩
+                        showCallback(data?.data)
+                      } else {
+                        (Toast(data?.msg))
+                        showCallback()
+                      }
+                    })
+                  }}>{'确定'}</Text>
           </View>
         </View>
       </Modal>
@@ -236,7 +150,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 }
 
 const BET_ITEM_HEIGHT = scale(68) //每个条目高度
-const BET_ITEM_WIDTH = scale(460) //每个条目宽度
+const BET_ITEM_WIDTH = scale(480) //每个条目宽度
 
 const _styles = StyleSheet.create({
   container: {},
@@ -256,6 +170,7 @@ const _styles = StyleSheet.create({
   },
   sv_container: {
     width: '100%',
+    maxHeight: scale(512),
   },
   sv_content: {
     width: '100%',
@@ -331,7 +246,6 @@ const _styles = StyleSheet.create({
     paddingHorizontal: scale(8),
   },
   total_info_container: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: scale(8),

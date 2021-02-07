@@ -1443,7 +1443,7 @@ export const getGameList = (data: UGNextIssueModel[]) => {
     let trendGameList: UGNextIssueModel[] = []
     if (AppDefine.siteId != 'c085_2' || AppDefine.siteId != 'c085_3') {
         for (let i = 0; i < games.length; i++) {
-            debugger
+
             let element = games[i];
             if (element.gameType == 'pcdd' || element.gameType == 'cqssc' || element.gameType == 'qxc' || element.gameType == 'xyft' || element.gameType == 'pk10nn' || element.gameType == 'pk10' || element.gameType == 'gd11x5' || element.gameType == 'jsk3' || element.gameType == 'gdkl10' || element.gameType == 'xync') {
                 let mmcIndex = element.name.indexOf("mmc");  //过滤秒秒彩

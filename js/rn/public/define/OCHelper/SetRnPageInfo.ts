@@ -37,14 +37,14 @@ export async function setRnPageInfo(force = false) {
       允许未登录访问: false,
     })
 
-    // // 2级游戏分类
-    // pages.push({
-    //   vcName: 'UGGameListViewController',
-    //   rnName: PageName.TwoLevelGames,
-    //   fd_prefersNavigationBarHidden: true,
-    //   允许游客访问: false,
-    //   允许未登录访问: false,
-    // })
+    // 2级系列大厅
+    pages.push({
+      vcName: 'UGYYLotterySecondHomeViewController',
+      rnName: PageName.JDLotterySecondPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
 
     // 资金管理
     pages.push({
@@ -94,6 +94,22 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(JDPages.filter((ele) => ele.rnName == PageName.JDHomePage))
     }
 
+    // 其他注单
+    pages.push({
+      vcName: 'UGRealBetRecordViewController',
+      rnName: PageName.OtherRecord,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
+    // 2级系列大厅
+    pages.push({
+      vcName: 'UGYYLotterySecondHomeViewController',
+      rnName: PageName.JDLotterySecondPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
     // 2级游戏分类
     pages.push({
       vcName: 'UGGameListViewController',
@@ -201,7 +217,30 @@ export async function setRnPageInfo(force = false) {
 
 
 
-
+  // 其他注单
+  pages.push({
+    vcName: 'UGRealBetRecordViewController',
+    rnName: PageName.OtherRecord,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+  // 2级系列大厅
+  pages.push({
+    vcName: 'UGYYLotterySecondHomeViewController',
+    rnName: PageName.JDLotterySecondPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+  // 2级游戏分类
+  pages.push({
+    vcName: 'UGGameListViewController',
+    rnName: PageName.TwoLevelGames,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 游戏大厅
   pages.push({
     vcName: 'UGYYLotteryHomeViewController',
@@ -219,13 +258,13 @@ export async function setRnPageInfo(force = false) {
     允许未登录访问: false,
   })
   // 下注明细
-  pages.push({
-    vcName: 'BetDetailViewController',
-    rnName: PageName.JDBetDetailPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: false,
-    允许未登录访问: false,
-  })
+  // pages.push({
+  //   vcName: 'BetDetailViewController',
+  //   rnName: PageName.JDBetDetailPage,
+  //   fd_prefersNavigationBarHidden: true,
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
   // 推荐信息
   pages.push({
     vcName: 'UGPromotionIncomeController',

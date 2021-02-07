@@ -12,7 +12,7 @@ import PushHelper, { UGLinkPositionType } from "../../../../public/define/PushHe
 import { api } from "../../../../public/network/NetworkRequest1/NetworkRequest1"
 import { skin1 } from "../../../../public/theme/UGSkinManagers"
 import { UGColor } from "../../../../public/theme/UGThemeColor"
-import { sc } from "../../../../public/tools/Scale"
+import { sc540 } from "../../../../public/tools/Scale"
 import { goToUserCenterType } from "../../../../public/tools/tars"
 import List from "../../../../public/views/tars/List"
 import { UGUserCenterType } from "../../../../redux/model/全局/UGSysConfModel"
@@ -20,6 +20,7 @@ import { UGStore } from "../../../../redux/store/UGStore"
 import { img_assets, img_images } from "../../../../Res/icon"
 import { FastImagePlaceholder, ImagePlaceholder } from "../../tools/ImagePlaceholder"
 
+const sc = sc540
 
 export interface HomeRightMenuCP {
   showRightMenuCP: () => void

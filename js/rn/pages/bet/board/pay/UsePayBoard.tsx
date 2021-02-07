@@ -1,19 +1,15 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import BetLotteryContext from '../../BetLotteryContext'
+import { useEffect, useState } from 'react'
 import { UGStore } from '../../../../redux/store/UGStore'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
-import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it/bet/IBetLotteryParams'
-import moment from 'moment'
-import LotteryConst from '../../const/LotteryConst'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
-import { calculateItemCount, gatherSelectedItems, initItemMoney } from '../tl/BetUtil'
-import { zodiacPlayX } from '../tl/hx/BetHXUtil'
-import { playDataX } from '../tl/zxbz/BetZXBZUtil'
-import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { hideLoading } from '../../../../public/widget/UGLoadingCP'
+import { syncUserInfo } from '../../../../public/tools/user/UserTools'
+import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
+import { BetShareModel } from '../../../../redux/model/game/bet/BetShareModel'
 
 /**
  * 下注面板
@@ -21,68 +17,52 @@ import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryM
  * @constructor
  */
 const UsePayBoard = () => {
+  const orgBetShareModel = UGStore.globalProps.betShareModel //下注数据
 
-  const {
-    playOddDetailData,//彩票数据
-  } = useContext(BetLotteryContext)
-
-  const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
-
-  const [selectedData, setSelectedData] = useState<Map<string, Map<string, Map<string, SelectedPlayModel>>>>(null) //当前选中的数据 结构和SelectedLotteryModel一样
+  const [betShareModel, setBetShareModel] = useState<BetShareModel>() //下注数据结构
   const [totalMoney, setTotalMoney] = useState(0) //计算总价格
   const [averageMoney, setAverageMoney] = useState(1) //输入平均价格
-  const [itemCount, setItemCount] = useState(0) //选中的条目数据
+  // const [itemCount, setItemCount] = useState(0) //选中的条目数据
   const [moneyMap, setMoneyMap] = useState<Map<string, number>>(null) //输入单项价格列表，id -> money
 
   useEffect(() => {
-    setSelectedData(JSON.parse(JSON.stringify(UGStore.globalProps?.selectedLotteryModel?.selectedData)))
+    // const copyData = JSON.parse(JSON.stringify(UGStore.globalProps?.selectedData))
+    // const betData = generateBetArray(nextIssueData, copyData)
+
+    //初始化默认金额
+    setAverageMoney(Number(orgBetShareModel?.singleAmount)) //平均价格
+
+    const moneyMap = new Map<string, number>()
+    orgBetShareModel?.betBean?.map((bet) => {
+      moneyMap[bet?.exFlag] = Number(orgBetShareModel?.singleAmount)
+    })
+    setMoneyMap(moneyMap)
+
+    setBetShareModel(orgBetShareModel)
+
   }, [])
 
-  useEffect(() => {
-    const defaultMoney = UGStore.globalProps?.selectedLotteryModel?.inputMoney ?? 1
-    setAverageMoney(defaultMoney)
-  }, [UGStore.globalProps?.selectedLotteryModel?.inputMoney])
-
   /**
-   * 选中的数据变化时重新计算条目
+   * 平均价格变化时重新计算金额
    */
   useEffect(() => {
-    if (selectedData == null) return
-
-    // ugLog(' calculate selectedData  =', JSON.stringify(selectedData))
-
-    if (nextIssueData?.gameType == 'lhc') {
-      //总共有多少条数据
-      setItemCount(calculateItemCount(selectedData))
-
-      //只有第1次需要初始化
-      if (anyEmpty(moneyMap)) {
-        setMoneyMap(initItemMoney(selectedData))
-      }
-
-    } else {
-
-    }
-
-  }, [selectedData])
+    const moneyMap = new Map<string, number>()
+    betShareModel?.betBean?.map((bet) => {
+      moneyMap[bet?.exFlag] = averageMoney
+    })
+    setMoneyMap(moneyMap)
+  }, [averageMoney])
 
   /**
-   * 平均价格和条目变化时重新计算总金额
+   * 价格列表变化时重新计算总金额
    */
   useEffect(() => {
-    ugLog('averageMoney total money = ', totalMoney)
-    setTotalMoney(itemCount * averageMoney)
-  }, [averageMoney, itemCount])
-
-  /**
-   * 价格变化时重新计算总金额
-   */
-  useEffect(() => {
-    ugLog('moneyMap total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
-    const money = anyEmpty(moneyMap) ?
+    const money = dicNull(moneyMap) ?
       0 :
-      Object.values(moneyMap)?.reduce((previousValue, currentValue) =>
-        previousValue + currentValue)
+      Object.values(moneyMap)?.reduce((previousValue, currentValue) => previousValue + currentValue)
+
+    ugLog('moneyMap total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
+
     setTotalMoney(money)
   }, [moneyMap])
 
@@ -90,93 +70,25 @@ const UsePayBoard = () => {
    *
    * 开始下注
    */
-  const startBetting = () => {
-    const betBean: Array<BetLotteryData> = []
-
-    //Map<string, Map<string, Map<string, SelectedPlayModel>>>
-    Object.keys(selectedData).map((key) => {
-      const selItems = gatherSelectedItems(key, selectedData)
-      return selItems?.map((selModel) => {
-        switch (key) {
-          case LotteryConst.TM:  //特码
-          case LotteryConst.LM: //两面
-          case LotteryConst.ZM: //正码
-          case LotteryConst.ZT:  //正特
-          case LotteryConst.ZM1_6: //正码1T6
-          case LotteryConst.SB: //色波
-          case LotteryConst.ZOX://总肖
-          case LotteryConst.WX:  //五行
-          case LotteryConst.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TX: //特肖
-          case LotteryConst.ZX: //正肖
-          case LotteryConst.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-          case LotteryConst.LX: //连肖
-          case LotteryConst.LW: //连尾
-            selModel?.plays?.map((playData) => {
-              betBean.push({
-                money: numberToFloatString(moneyMap[playData?.exId ?? playData?.id]),
-                odds: playData?.odds,
-                playId: playData?.id,
-                playIds: nextIssueData?.id,
-              } as BetLotteryData)
-            })
-            break
-
-          case LotteryConst.HX://合肖
-          {
-            const playX = zodiacPlayX(selModel)
-
-            betBean.push({
-              money: numberToFloatString(moneyMap[playX?.exId ?? playX?.id]),
-              odds: playX?.odds,
-              playId: playX?.id,
-              betInfo: selModel?.zodiacs?.map((item) => item?.name).toString(),
-            } as BetLotteryData)
-          }
-            break
-
-          case LotteryConst.LMA:  //连码
-          {
-            const play0 = selModel?.plays[0]
-            betBean.push({
-              money: numberToFloatString(moneyMap[play0?.exId ?? play0?.id]),
-              playId: play0?.id,
-              playIds: nextIssueData?.id,
-              betInfo: selModel?.plays?.map((item) => item?.name).toString(),
-            } as BetLotteryData)
-          }
-            break
-
-          case LotteryConst.ZXBZ:  //自选不中
-          {
-            const playX = playDataX(selModel)
-
-            betBean.push({
-              money: numberToFloatString(moneyMap[playX?.exId ?? playX?.id]),
-              odds: playX?.odds,
-              playId: playX?.id,
-              betInfo: selModel?.plays?.map((item) => item?.name).toString(),
-            } as BetLotteryData)
-          }
-          break
-        }
-
-      })
-
-    })
-
+  const startBetting = async (): Promise<LotteryResultModel> => {
     const pms: IBetLotteryParams = {
-      activeReturnCoinRatio: '0',
-      betBean: betBean,
-      betIssue: nextIssueData?.curIssue,
-      endTime: (moment(nextIssueData?.curCloseTime).toDate().getTime() / 1000).toString(),
-      gameId: nextIssueData?.id,
-      totalNum: itemCount?.toString(),
+      activeReturnCoinRatio: betShareModel?.activeReturnCoinRatio,
+      betBean: betShareModel?.betBean?.map((item) =>
+        ({ ...item, money: numberToFloatString(Number(item?.money)) } as BetLotteryData)),
+      betIssue: betShareModel?.turnNum,
+      endTime: betShareModel?.ftime,
+      gameId: betShareModel?.gameId,
+      totalNum: arrayLength(betShareModel?.betBean)?.toString(),
       totalMoney: numberToFloatString(totalMoney),
-      isInstant: nextIssueData?.isInstant,
+      isInstant: betShareModel?.isInstant,
     }
-    api.user.userGameBetWithParams(pms)
+
+    const { data } = await api.user.userGameBetWithParams(pms).promise
+    await syncUserInfo(false)
+    hideLoading()
+
+    return { ...data, data: { ...data?.data, betParams: pms } }
+
   }
 
   return {
@@ -185,10 +97,8 @@ const UsePayBoard = () => {
     setAverageMoney,
     moneyMap,
     setMoneyMap,
-    itemCount,
-    playOddDetailData,
-    selectedData,
-    setSelectedData,
+    betShareModel,
+    setBetShareModel,
     startBetting,
   }
 }

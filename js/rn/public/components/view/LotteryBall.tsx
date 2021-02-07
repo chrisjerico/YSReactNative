@@ -100,13 +100,13 @@ const LotteryBall = ({
   return (
     <View key={key + 'content'}
           style={[_styles.ball_item,
-      {
-        backgroundColor: bColor,
-        borderRadius: round,
-        width: width,
-        margin: scale(2),
-      },
-      style]}>
+            {
+              backgroundColor: bColor,
+              borderRadius: round,
+              width: width,
+              margin: scale(2),
+            },
+            style]}>
       {
         renderBalls(type)
       }
@@ -139,12 +139,12 @@ const _styles = StyleSheet.create({
  * 球的种类
  */
 const BallType = {
-  'round': '圆球',
-  'square': '方球',
-  'colorful': '花球',
-  'pure': '纯色球',
-  'vegetable': '蔬菜',
-  'sz': '骰子',
+  'round': '圆球', //彩色
+  'square': '方球', //彩色
+  'colorful': '花球', //多种图片
+  'pure': '纯色球', //纯色
+  'vegetable': '蔬菜', //蔬菜
+  'sz': '骰子', //骰子
 }
 
 export default LotteryBall

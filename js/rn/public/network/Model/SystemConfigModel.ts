@@ -57,8 +57,18 @@ export interface UserCenter {
 }
 
 export interface Data {
-  activeReturnCoinRatio: number;
-  activeReturnCoinStatus: boolean;
+  switchBalanceChannel?: string //余额提款开关
+  balanceChannelStartTime?: string //开关时间段
+  balanceChannelEndTime?: string //开关时间段
+  balanceChannelPrompt?: string //余额提款关闭提示语
+  switchYuebaoChannel?: string //利息宝开关
+  yuebaoChannelStartTime?: string //开关时间段
+  yuebaoChannelEndTime?: string //开关时间段
+  yuebaoChannelPrompt?: string //利息宝关闭提示语
+
+  activeReturnCoinStatus?: boolean// 是否開啟拉條模式
+  activeReturnCoinRatio?: number// 拉條最大值
+
   adSliderTimer: string;
   agentRegbutton: string;
   agent_m_apply: string;
@@ -139,7 +149,7 @@ export interface Data {
   userCenter: UserCenter[];
   webName: string;
   yuebaoName: string;
-  yuebaoSwitch: boolean;
+  yuebaoSwitch: boolean; //利息宝开关
   znxNotify: string;
   zxkfUrl: string;
   zxkfUrl2: string;

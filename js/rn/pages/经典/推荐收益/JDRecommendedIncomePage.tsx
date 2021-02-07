@@ -27,6 +27,7 @@ import { push } from '../../../public/navigation/RootNavigation';
 import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader';
 import { skinColors } from '../../../public/theme/const/UGSkinColor';
 import { UGNavigationBar } from '../../../public/widget/UGNavigationBar';
+import { appConfig } from '../../../../../config';
 
 
 interface JDRecommendedIncomePage {
@@ -72,7 +73,7 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
   }, [])
 
   const ZLHeader = () => {
-    if (isHideBut()) {
+    if (appConfig.isHideButtion()) {
       return(
         <View></View>
       )
@@ -89,15 +90,6 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
 
   }
 
-  function isHideBut(){
-    
-    if (AppDefine.siteId ==='c084') {
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
 
   /**
      * 跳到邀请码界面

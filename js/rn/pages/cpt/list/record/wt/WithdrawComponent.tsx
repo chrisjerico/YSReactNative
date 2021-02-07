@@ -74,11 +74,13 @@ const WithdrawComponent = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
     }
-    <View style={_styles.forget_pwd_container}>
-      <TouchableOpacity onPress={() => setWithdrawType(0)}>
-        <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
-      </TouchableOpacity>
-    </View>
+    {
+      systemInfo?.switchBalanceChannel == '1' && <View style={_styles.forget_pwd_container}>
+        <TouchableOpacity onPress={() => setWithdrawType(0)}>
+          <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
+        </TouchableOpacity>
+      </View>
+    }
   </View>
 
   /**
@@ -142,25 +144,25 @@ const WithdrawComponent = ({ navigation, route }) => {
     </TouchableOpacity>
 
   }
-  function bankLabel(){
- // `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
-    let a:string ;
-    let b:string ;
-    if (anyEmpty(btcMoney)|| isNaN(btcMoney)) {
-      a ='= 0 '+curBank?.bankCode;
+
+  function bankLabel() {
+    // `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
+    let a: string
+    let b: string
+    if (anyEmpty(btcMoney) || isNaN(btcMoney)) {
+      a = '= 0 ' + curBank?.bankCode
     } else {
-      a ='= '+btcMoney+' '+curBank?.bankCode;
+      a = '= ' + btcMoney + ' ' + curBank?.bankCode
     }
-    if (anyEmpty(newUsd)|| isNaN(newUsd)) {
-      b =',   '+curBank?.bankCode+' = 0'+ ' CNY';
+    if (anyEmpty(newUsd) || isNaN(newUsd)) {
+      b = ',   1 ' + curBank?.bankCode + ' = 0' + ' CNY'
+    } else {
+      b = ',   1 ' + curBank?.bankCode + ' = ' + newUsd + ' CNY'
     }
-     else {
-      b =',   '+curBank?.bankCode+' = '+ newUsd + ' CNY';
-    }
-    return a+' '+b;
-    
+    return a + ' ' + b
+
   }
-  
+
   /**
    * 利息宝绘制输入金额和密码
    */
@@ -328,7 +330,7 @@ const WithdrawComponent = ({ navigation, route }) => {
         </View>
       }
       {
-        userInfo?.yuebaoSwitch &&
+        systemInfo?.switchYuebaoChannel == '1' &&
         <View style={_styles.forget_pwd_container}>
           <TouchableOpacity onPress={() => setWithdrawType(1)}>
             <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{
@@ -339,6 +341,30 @@ const WithdrawComponent = ({ navigation, route }) => {
       }
     </View>
   }
+
+  /**
+   * 绘制TAB
+   */
+  const renderTab = () => <View style={_styles.sub_tab_container}>
+    <TouchableOpacity onPress={() => setTabIndex(0)}>
+      <View
+        style={[_styles.sub_tab_item,
+          { borderBottomColor: tabIndex == 0 ? Skin1.themeColor : 'transparent' }]}>
+        <Text
+          style={[_styles.sub_tab_text,
+            { color: tabIndex == 0 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[0]}</Text>
+      </View>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => setTabIndex(1)}>
+      <View
+        style={[_styles.sub_tab_item,
+          { borderBottomColor: tabIndex == 1 ? Skin1.themeColor : 'transparent' }]}>
+        <Text
+          style={[_styles.sub_tab_text,
+            { color: tabIndex == 1 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[1]}</Text>
+      </View>
+    </TouchableOpacity>
+  </View>
 
   /**
    * 绘制取款条目
@@ -372,34 +398,34 @@ const WithdrawComponent = ({ navigation, route }) => {
                           })
                         }}/>
     }
+    if (systemInfo?.switchBalanceChannel == '1' && systemInfo?.switchYuebaoChannel != '1') {//只开启了余额
+      return renderToBank()
+    } else if (systemInfo?.switchBalanceChannel != '1' && systemInfo?.switchYuebaoChannel == '1') {//只开启了利息宝付款
+      return (
+        <View>
+          {renderTab()}
+          {tabIndex == 0 ? renderToYueBaoBank() : renderToYueBao()}
+        </View>
+      )
+    }
 
     return withdrawType == 0 ?
       renderToBank() :
       <View>
-        <View style={_styles.sub_tab_container}>
-          <TouchableOpacity onPress={() => setTabIndex(0)}>
-            <View
-              style={[_styles.sub_tab_item,
-                { borderBottomColor: tabIndex == 0 ? Skin1.themeColor : 'transparent' }]}>
-              <Text
-                style={[_styles.sub_tab_text,
-                  { color: tabIndex == 0 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[0]}</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTabIndex(1)}>
-            <View
-              style={[_styles.sub_tab_item,
-                { borderBottomColor: tabIndex == 1 ? Skin1.themeColor : 'transparent' }]}>
-              <Text
-                style={[_styles.sub_tab_text,
-                  { color: tabIndex == 1 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[1]}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        {
-          tabIndex == 0 ? renderToYueBaoBank() : renderToYueBao()
-        }
+        {renderTab()}
+        {tabIndex == 0 ? renderToYueBaoBank() : renderToYueBao()}
       </View>
+  }
+
+  /**
+   * 绘制内容
+   */
+  const renderContent = () => {
+    if (systemInfo?.switchBalanceChannel != '1' && systemInfo?.switchYuebaoChannel != '1') {
+      return <EmptyView style={{ flex: 1 }} text={'该功能暂时关闭'}/>
+    }
+
+    return (getYueBaoInfo() == null ? <EmptyView style={{ flex: 1 }}/> : renderItem())
   }
 
   /**
@@ -408,15 +434,16 @@ const WithdrawComponent = ({ navigation, route }) => {
    */
   const onSubmitFullName = (text?: string) => {
     ugLog('onSubmitFullName=', text)
-    bindRealName(text).then( () => {})
+    bindRealName(text).then(() => {
+    })
   }
 
   return (
     <View style={_styles.container}>
       {
-        getYueBaoInfo == null ?
+        getYueBaoInfo() == null ?
           <EmptyView style={{ flex: 1 }}/> :
-          renderItem()
+          renderContent()
       }
 
       <MiddleMenu key={menuItem?.toString()}
@@ -514,7 +541,7 @@ const _styles = StyleSheet.create({
     marginLeft: scale(8),
   },
   pwd_top_space: {
-    height: scale(32)
+    height: scale(32),
   },
 
 

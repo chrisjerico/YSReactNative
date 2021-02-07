@@ -10,9 +10,14 @@ import { scale } from "../../../public/tools/Scale";
 import { UGStore } from '../../../redux/store/UGStore';
 import { anyEmpty } from '../../../public/tools/Ext';
 import EmptyView from '../../../public/components/view/empty/EmptyView';
+import { push } from '../../../public/navigation/RootNavigation';
+import { PageName } from '../../../public/navigation/Navigation';
+import { ugLog } from '../../../public/tools/UgLog';
+import JDDayDetailPage from './下注明细(已结算)/JDDayDetailPage';
 
 
 interface JDBetDetailPage {
+  date?:string,//日期
   pageTitle?: string,//界面名称数据
   titleArray?: Array<string>,// 按钮名称数据
 
@@ -51,7 +56,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
           console.log("key: " + key + " ,value: " + dic[key]);
           if (key == 'date') {
             let date = dic[key];
-
+            v.date = date;
             if (!anyEmpty(date)) {
               onHeaderRefresh(date)
             }
@@ -88,20 +93,20 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
   }
 
   /**
-   * 得到邀请码列表数据
+   * 得到列表数据
    * 
    */
   function inviteCodeListData(date: string) {
 
-    console.log('得到数据===', date);
+    // console.log('得到数据===', date);
     api.user.lotteryDayStat(date).useSuccess(({ data }) => {
 
-      console.log('data =', data);
+      // console.log('data =', data);
 
       let dicData = data;
-      
+
       if (anyEmpty(data)) {
-        v.items.length = 0     
+        v.items.length = 0
         v.state.isRefreshing = false;
         setProps();
         return;
@@ -109,7 +114,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
       let arrayData = returnData(dicData);
       if (arrayData.length == 0) {
         console.log('进来了：==================');
-        v.items.length = 0     
+        v.items.length = 0
         v.state.isRefreshing = false;
         setProps();
         return;
@@ -148,7 +153,18 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
   const _renderItem = ({ item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
+        <TouchableOpacity style={[styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}
+          onPress={() => {
+
+            ugLog('item===',item)
+            push(PageName.JDDayDetailPage,
+              {
+                gameId:item.gameId,
+                date:v.date,
+              }
+              )
+          }}
+        >
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.title}
@@ -169,39 +185,39 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
               {item.rewardRebate}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
       );
     }
   }
   return (
     anyEmpty(v.items) ?
-    <EmptyView style={{ flex: 1 }} /> :
-    <View style={styles.container}>
-      <View style={{}}>
-        <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.CLBgColor }}>
-          {v.titleArray?.map((title) => {
-            return (
-              <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}
-                onPress={() => {
-                }}>
-                <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
-                  {title}
-                </Text>
-              </TouchableOpacity>
-            )
-          })}
+      <EmptyView style={{ flex: 1 }} /> :
+      <View style={styles.container}>
+        <View style={{}}>
+          <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.CLBgColor }}>
+            {v.titleArray?.map((title) => {
+              return (
+                <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}
+                  onPress={() => {
+                  }}>
+                  <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+                    {title}
+                  </Text>
+                </TouchableOpacity>
+              )
+            })}
+          </View>
         </View>
-      </View>
-      <View style={{flex:1}}>
-        <FlatList
-          data={v.items}
-          renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
-          keyExtractor={(item, index) => index.toString()}
-          ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
-        />
-      </View>
-    </View >
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={v.items}
+            renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
+            keyExtractor={(item, index) => index.toString()}
+            ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
+          />
+        </View>
+      </View >
   )
 
 }

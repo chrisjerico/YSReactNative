@@ -18,6 +18,7 @@ import { Badge, Button } from 'react-native-elements';
 import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { img_assets, useHtml5Image } from '../../../Res/icon';
+import { appConfig } from '../../../../../config';
 
 
 interface JDPromotionTabRealityReportCP {
@@ -51,7 +52,7 @@ const JDPromotionTabRealityReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
       levelArray: [],
       pageSize: 20,
       pageNumber: 1,
-      levelindex: 0,
+      levelindex: appConfig.isShowOneLevel() ? 1 : 0,
       state: {
         showFoot: 0,
         isRefreshing: true,
@@ -60,7 +61,8 @@ const JDPromotionTabRealityReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
     }
   )
   let capitalController //类型选择
-  v.levelArray = [{ value: 0, label: '全部下线' },
+  v.levelArray = appConfig.isShowOneLevel() ? [{ value: 1, label: '1级下线' },] :
+  [{ value: 0, label: '全部下线' },
   { value: 1, label: '1级下线' },
   { value: 2, label: '2级下线' },
   { value: 3, label: '3级下线' },
@@ -71,6 +73,7 @@ const JDPromotionTabRealityReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
   { value: 8, label: '8级下线' },
   { value: 9, label: '9级下线' },
   { value: 10, label: '10级下线' }];
+
   //初始化
   useEffect(() => {
         onHeaderRefresh()
@@ -141,7 +144,7 @@ const JDPromotionTabRealityReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
 function teamRealBetStatData() {
 
   // console.log('v.state.isLastPage1：', v.state.isLastPage);
-  console.log('真人报表列表页码===', v.pageNumber);
+  console.log('真人报表列表v.levelindex===', v.levelindex);
     api.team.realBetStat(v.levelindex, '', '', v.pageNumber, v.pageSize).useSuccess(({ data }) => {
     let dicData = data;
     let arrayData = returnData(dicData);

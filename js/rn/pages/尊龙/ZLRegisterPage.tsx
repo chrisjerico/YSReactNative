@@ -395,12 +395,12 @@ const ZLRegisterPage = () => {
 
                                     const regex = /^(?=.*\d)(?=.*[a-zA-Z])/
                                     console.log(regex.test(value))
-                                    debugger
+
                                     return regex.test(value) || '密码须有数字及字母'
                                 } else if (pass_limit == 2) {
                                     const regex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/
                                     console.log(regex.test(value))
-                                    debugger
+
                                     return regex.test(value) || '密码须有数字及字母及字符'
                                 }
 

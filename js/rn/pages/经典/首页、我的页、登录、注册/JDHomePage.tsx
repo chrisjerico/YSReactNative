@@ -27,7 +27,7 @@ import { skin1, Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { deepMergeProps } from '../../../public/tools/FUtils'
-import { sc, scale } from '../../../public/tools/Scale'
+import { sc540, scale } from '../../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../../public/tools/tars'
 import { ugLog } from '../../../public/tools/UgLog'
 import BannerBlock from '../../../public/views/tars/BannerBlock'
@@ -51,6 +51,8 @@ import { HomeFriendReferralCP } from './views/HomeFriendReferralCP'
 import HomeHeader from './views/HomeHeader'
 import { HomeRightMenuCP } from './views/HomeRightMenuCP'
 import NavBlock from './views/NavBlock'
+
+const sc = sc540
 
 const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const menu = useRef(null)
@@ -99,7 +101,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const renderGameSubTypeComponent = (games: any[]) => (
     <GameSubTypeComponent
       uniqueKey={'JDHomePage_GameSubTypeComponent'}
-      containerStyle={{ marginHorizontal: sc(6.5), paddingVertical: scale(5) }}
+      containerStyle={{ marginHorizontal: sc(6.5), paddingVertical: sc(5) }}
       numColumns={3}
       games={games}
       subTypeContainerStyle={{
@@ -141,7 +143,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                 width: '100%',
                 backgroundColor: skin1.homeContentColor,
                 aspectRatio: 1.04,
-                borderRadius: scale(15),
+                borderRadius: sc(15),
                 justifyContent: 'center',
                 ...getWhiteBorderStyle(),
               }}
@@ -280,7 +282,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                   titleStyle={{
                     color: 'black',
                     fontWeight: '500',
-                    fontSize: scale(18),
+                    fontSize: sc(18),
                   }}
                   circleContainerStyle={{ width: '85%', height: sc(92) }}
                   circleColor={'transparent'}
@@ -315,7 +317,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
           <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '0'} containerStyle={{ marginLeft: sc(10), width: '96%', marginBottom: sc(10) }} />
           {/* 腰部广告图 */}
           <BannerBlock
-            containerStyle={{ marginHorizontal: sc(10), marginTop: scale(0), marginBottom: scale(15), width: '96%', aspectRatio: 540 / 135 }}
+            containerStyle={{ marginHorizontal: sc(10), marginTop: sc(0), marginBottom: sc(15), width: '96%', aspectRatio: 540 / 135 }}
             visible={midBanners?.length > 0}
             autoplayTimeout={midBannerTimer}
             showOnlineNum={false}
@@ -340,12 +342,12 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
             <TabComponent
               c_ref={v}
               tabGames={homeGames}
-              itemHeight={scale(172)}
+              itemHeight={sc(172)}
               tabWidth={homeGames?.length > 6 ? (homeGames?.[0]?.name?.length > 3 ? sc(120) : sc(85)) : sc(515 / homeGames?.length)}
               numColumns={3}
               tabBarBackgroundColor={skin1.homeContentColor}
               tabBarStyle={{
-                marginHorizontal: scale(5),
+                marginHorizontal: sc(5),
                 borderRadius: sc(15),
                 marginLeft: sc(10),
                 width: '96%',
@@ -354,7 +356,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               }}
               tabTextStyle={{
                 marginTop: 3,
-                fontSize: scale(25),
+                fontSize: sc(25),
               }}
               enableMinWidth={false}
               showIndicator={false}
@@ -386,10 +388,10 @@ const styles = StyleSheet.create({
     width: '33.3%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: scale(5),
+    padding: sc(5),
   },
   subComponent: {
-    marginTop: scale(10),
+    marginTop: sc(10),
     backgroundColor: 'transparent',
   }
 })
@@ -397,21 +399,21 @@ const styles = StyleSheet.create({
 const noticeBlockStyles = () => StyleSheet.create({
   containerStyle: {
     borderRadius: 0,
-    marginBottom: scale(5),
+    marginBottom: sc(5),
     height: sc(62),
     backgroundColor: skin1.homeContentColor,
   },
   iconContainerStyle: {
-    marginHorizontal: scale(10),
+    marginHorizontal: sc(10),
   },
   logoTextStyle: {
     color: 'red',
-    fontSize: scale(16),
-    padding: scale(5),
+    fontSize: sc(16),
+    padding: sc(5),
   },
   textStyle: {
     backgroundColor: 'transparent',
-    fontSize: scale(20),
+    fontSize: sc(20),
   },
   bgContainerStyle: {
     backgroundColor: 'transparent',

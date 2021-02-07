@@ -1,34 +1,8 @@
-import { StyleProp, ViewStyle } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
-import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { BallType } from '../../../public/components/view/LotteryBall'
 
 const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
 const BALL_CONTENT_HEIGHT = scale(720) //投注区域球的总体高度
-
-/**
- * 彩种
- */
-const LotteryConst = {
-  TM: 'TM', //特码
-  LM: 'LM', //两面
-  ZM: 'ZM', //正码
-  ZM1_6: 'ZM1-6', //正码1T6
-  ZT: 'ZT', //正特
-  LMA: 'LMA', //连码
-  SB: 'SB', //色波
-  YX: 'YX', //平特一肖
-  WS: 'WS', //平特尾数
-  TWS: 'TWS', //头尾数
-  ZOX: 'ZOX', //总肖
-  TX: 'TX', //特肖
-  LX: 'LX', //连肖
-  HX: 'HX', //合肖
-  LW: 'LW', //连尾
-  ZX: 'ZX', //正肖
-  WX: 'WX', //五行
-  ZXBZ: 'ZXBZ', //自选不中
-}
 
 /**
  * 球的样式
@@ -52,17 +26,87 @@ const BallStyles = {
 }
 
 /**
- * 彩票界面入参
+ * 各大彩种
  */
-interface ILotteryRouteParams {
-  playOddData?: PlayOddData, //当前的彩票对象，正码, 正特, 平特一肖, 平特尾数 等等
-  style?: StyleProp<ViewStyle>
+const LCode = {
+  lhc: 'lhc', //六合彩
+  cqssc: 'cqssc', //秒秒彩
+  dlt: 'dlt', //大乐透系列
+  pk10nn: 'pk10nn', //牛牛系列
+  xyft: 'xyft', //飞艇系列
+  xync: 'xync', //幸运农场系列
+  pk10: 'pk10', //赛车系列
+  bjkl8: 'bjkl8', //北京快8 快乐8系列
+  qxc: 'qxc', //七星彩系列
+  yncp: 'yncp', //越南彩系列
+  fc3d: 'fc3d', //3D系列
+  gdkl10: 'gdkl10', //快乐10分系列
+  pcdd: 'pcdd', //蛋蛋系列
+  jsk3: 'jsk3', //快三系列
+  gd11x5: 'gd11x5', //11选5系列
 }
 
-export default LotteryConst
+/**
+ * 六合彩
+ */
+const LhcCode = {
+  TM: 'TM', //特码
+  LM: 'LM', //两面
+  ZM: 'ZM', //正码
+  ZM1_6: 'ZM1-6', //正码1T6
+  ZT: 'ZT', //正特
+  LMA: 'LMA', //连码
+  SB: 'SB', //色波
+  YX: 'YX', //平特一肖
+  WS: 'WS', //平特尾数
+  TWS: 'TWS', //头尾数
+  ZOX: 'ZOX', //总肖
+  TX: 'TX', //特肖
+  LX: 'LX', //连肖
+  HX: 'HX', //合肖
+  LW: 'LW', //连尾
+  ZX: 'ZX', //正肖
+  WX: 'WX', //五行
+  ZXBZ: 'ZXBZ', //自选不中
+}
+
+/**
+ * 秒秒彩
+ */
+const CqsscCode = {
+  LM: 'LM', //两面
+  ALL: 'ALL', //1-5球
+  Q1: 'Q1', //第1球
+  Q2: 'Q2', //第2球
+  Q3: 'Q3', //第3球
+  Q4: 'Q4', //第4球
+  Q5: 'Q5', //第5球
+  QZH: 'QZH', //前中后
+  DN: 'DN', //斗牛
+  SH: 'SH', //梭哈
+  LHD: 'LHD', //龙虎斗
+  YZDW: 'YZDW', //一字定位
+  EZDW: 'EZDW', //二字定位
+  SZDW: 'SZDW', //三字定位
+  WX: 'WX', //五星
+  BDW: 'BDW', //不定位
+  DWD: 'DWD', //定位胆
+}
+
+/**
+ * 当前TAB是 彩票0 还是 聊天室1
+ */
+const GameTab = {
+  LOTTERY: 0, //彩票0
+  CHAT: 1, //聊天室1
+}
+
 export {
-  ILotteryRouteParams,
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
   BallStyles,
+  LCode,
+  LhcCode,
+  CqsscCode,
+  GameTab,
 }

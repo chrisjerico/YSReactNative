@@ -20,6 +20,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { img_assets, useHtml5Image } from '../../../Res/icon';
+import { appConfig } from '../../../../../config';
 
 
 interface JDPromotionTabMemberCP {
@@ -53,7 +54,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
       levelArray: [],
       pageSize: 20,
       pageNumber: 1,
-      levelindex: 0,
+      levelindex: appConfig.isShowOneLevel() ? 1 : 0,
       state: {
         showFoot: 0,
         isRefreshing: true,
@@ -63,23 +64,24 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   )
   let capitalController //类型选择
 
-  v.levelArray = [{ value: 0, label: '全部下线' },
-  { value: 1, label: '1级下线' },
-  { value: 2, label: '2级下线' },
-  { value: 3, label: '3级下线' },
-  { value: 4, label: '4级下线' },
-  { value: 5, label: '5级下线' },
-  { value: 6, label: '6级下线' },
-  { value: 7, label: '7级下线' },
-  { value: 8, label: '8级下线' },
-  { value: 9, label: '9级下线' },
-  { value: 10, label: '10级下线' }];
-  
+  v.levelArray = appConfig.isShowOneLevel() ? [{ value: 1, label: '1级下线' },] :
+    [{ value: 0, label: '全部下线' },
+    { value: 1, label: '1级下线' },
+    { value: 2, label: '2级下线' },
+    { value: 3, label: '3级下线' },
+    { value: 4, label: '4级下线' },
+    { value: 5, label: '5级下线' },
+    { value: 6, label: '6级下线' },
+    { value: 7, label: '7级下线' },
+    { value: 8, label: '8级下线' },
+    { value: 9, label: '9级下线' },
+    { value: 10, label: '10级下线' }];
+
   //初始化
   useEffect(() => {
     onHeaderRefresh()
   }, [])
- 
+
   /**
  * 下拉刷新
  * 
@@ -146,7 +148,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   function teamInviteListData() {
 
     console.log('下线信息列表页码===', v.pageNumber);
-    api.team.inviteList(v.levelindex, 1, v.pageSize).useSuccess(({ data }) => {
+    api.team.inviteList(v.levelindex, v.pageNumber, v.pageSize).useSuccess(({ data }) => {
       let dicData = data;
       let arrayData = returnData(dicData);
       if (arrayData.length == 0) {
@@ -172,7 +174,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
         v.state.isLastPage = true;
         v.state.showFoot = 2
       }
-      else{
+      else {
         v.state.isLastPage = false;
         v.state.showFoot = 0
       }
@@ -210,7 +212,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
       return (
-        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
+        <TouchableOpacity style={{ paddingBottom: 150 }} onPress={() => {
           // onEndReached()
         }}
         >
@@ -223,7 +225,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
       );
     } else if (v.state.showFoot === 1) {
       return (
-        <TouchableOpacity  style={{paddingBottom:150}} onPress={() => {
+        <TouchableOpacity style={{ paddingBottom: 150 }} onPress={() => {
           // onEndReached()  //测试的时候可以打开，打开也没有影响
         }}
         >
@@ -237,7 +239,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
       );
     } else if (v.state.showFoot === 2) {
       return (
-        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
+        <TouchableOpacity style={{ paddingBottom: 150 }} onPress={() => {
           // onEndReached()//测试的时候可以打开，打开也没有影响
         }}
         >
@@ -261,28 +263,28 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   const _renderItem = ({ index, item }) => {
     {
       return (
-        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
+        <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
-              {item.level + '级下线'}
+              {item.level == 0 ? '全部下线' : item.level + '级下线'}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6+10, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6 + 10, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.username}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6-10, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6 - 10, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.is_online == 1 ? '在线' : '离线'}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {anyEmpty(item.regtime) ? '--' : item.regtime}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center',  width: AppDefine.width / 6-26, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6 - 26, }}>
             <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.sunyi}
             </Text>
@@ -308,7 +310,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
                           // TODO Android 跳充值弹框
                           break
                       }
-                     
+
                     }
                   }
 
@@ -402,12 +404,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
             )
           })}
         </View>
-
       </View>
-
-
-
-
     </View >
   )
 
