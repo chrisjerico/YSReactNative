@@ -8,6 +8,7 @@ import { ugLog } from '../../public/tools/UgLog'
 import { parseLotteryDetailData } from './util/parse/ParseLotteryUtil'
 import { LotteryResultData } from '../../public/network/Model/lottery/result/LotteryResultModel'
 import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
+import { IBetLotteryParams } from '../../public/network/it/bet/IBetLotteryParams'
 
 /**
  * 彩票下注
@@ -41,10 +42,27 @@ const UseBetLottery = () => {
 
     if (res?.code == 0) {
       const newPlayOdds = parseLotteryDetailData(res?.data)
-      UGStore.dispatch({type: 'reset', playOddDetailData: {...res?.data, playOdds: newPlayOdds}})
+      UGStore.dispatch({ type: 'reset', playOddDetailData: { ...res?.data, playOdds: newPlayOdds } })
     }
 
     return res?.code
+  }
+
+  /**
+   * 是否显示分享聊天室
+   * @param betData
+   */
+  const showShareRoom = (betData?: IBetLotteryParams) => {
+    if (systemInfo?.chatRoomSwitch && userInfo?.chatShareBet == 1 && Number(betData?.totalMoney) >= Number(systemInfo?.chatShareBetMinAmount)) {
+      setChatMenu(UGStore.globalProps?.chatRoomData?.chatAry?.map((item) => {
+          return (({
+            title: `${item?.roomName}`,
+            id: item?.roomId,
+          } as IMiddleMenuItem))
+        }),
+      )
+    }
+
   }
 
   return {
@@ -59,6 +77,7 @@ const UseBetLottery = () => {
     setLoadedLottery,
     chatMenu,
     setChatMenu,
+    showShareRoom,
     requestLotteryData,
   }
 }

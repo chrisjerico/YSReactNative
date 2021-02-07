@@ -44,6 +44,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     setLoadedLottery,
     chatMenu,
     setChatMenu,
+    showShareRoom,
     requestLotteryData,
   } = UseBetLottery()
 
@@ -131,13 +132,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                                                            setBetResult(data)
                                                          } else {
                                                            setBetResult(null)
-                                                           setChatMenu(UGStore.globalProps?.chatRoomData?.chatAry?.map((item) => {
-                                                               return (({
-                                                                 title: `${item?.roomName}`,
-                                                                 id: item?.roomId,
-                                                               } as IMiddleMenuItem))
-                                                             }),
-                                                           )
+                                                           showShareRoom(data?.betParams)
                                                          }
 
                                                        }}/>}
