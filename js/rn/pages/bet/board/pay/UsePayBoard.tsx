@@ -87,7 +87,7 @@ const UsePayBoard = () => {
     await syncUserInfo(false)
     hideLoading()
 
-    return { ...data, data: { ...data?.data, betParams: pms } }
+    return { ...data, data: { ...data?.data, betParams: pms, betShareModel: betShareModel } }
 
   }
 
