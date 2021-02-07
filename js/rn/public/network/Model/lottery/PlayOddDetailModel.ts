@@ -11,9 +11,10 @@ export interface PlayData {
   maxMoney?: string//1000000
   maxTurnMoney?: string//50000000
   isBan?: string//0
-  enable?: string//1
+  enable?: string//1 //彩种是否开启
   from_id?: string//0
 
+  exPlayIds?: string //部分彩种下注的时候需要联合其它彩种的ID 如 连肖
   exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, 优先使用本地ID 避免重复，如 TM-特码B-708550
   // exName?: string//本地定义 名字
   // exOdds?: string//本地定义 赔率
@@ -26,7 +27,7 @@ export interface PlayGroupData {
   name: string //"两面"
   code: string //"LM"
   isShow: string //"1"
-  enable: string //"1"
+  enable: string //"1" //彩种是否开启
   isBan: string //0
   from_id: string //0
   alias: string //"两面"

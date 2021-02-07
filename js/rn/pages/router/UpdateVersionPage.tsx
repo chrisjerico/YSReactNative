@@ -22,6 +22,7 @@ import UseVersion from './us/UseVersion'
 import { Toast } from '../../public/tools/ToastUtils'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
+import { combination, combineArr } from '../bet/util/ArithUtil'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {

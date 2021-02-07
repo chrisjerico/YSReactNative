@@ -1,22 +1,20 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
 import UseBetLottery from './UseBetLottery'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
-import { scale } from '../../public/tools/Scale'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import BetBoardComponent from './board/BetBoardComponent'
-import BetRecordHeaderComponent from './counter/lhc/red/BetRecordHeaderComponent'
-import ListContentComponent from './list/ListContentComponent'
-import { TopAreaComponent } from './top/TopAreaComponent'
+import BetRecordHeaderComponent from './content/counter/lhc/red/BetRecordHeaderComponent'
+import LotteryContentComponent from './content/LotteryContentComponent'
+import { TopAreaComponent } from './content/top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
-import { ugLog } from '../../public/tools/UgLog'
-import { anyEmpty, dicNull, mergeObject } from '../../public/tools/Ext'
-import FastImage from 'react-native-fast-image'
-import { Res } from '../../Res/icon/Res'
+import { dicNull } from '../../public/tools/Ext'
 import { clearLotteryData } from './util/LotteryUtil'
-import InstantLotteryComponent from './counter/mmc/InstantLotteryComponent'
-import * as Animatable from 'react-native-animatable'
+import InstantLotteryComponent from './content/counter/mmc/InstantLotteryComponent'
+import WebChatComponent from './chat/WebChatComponent'
+import PayBoardComponent from './board/pay/PayBoardComponent'
+import PayResultComponent from './board/pay/result/PayResultComponent'
 
 interface IRouteParams {
   lotteryId: string //当前彩票 id
@@ -34,6 +32,9 @@ const BetLotteryPage = ({ navigation, route }) => {
   const {
     userInfo,
     systemInfo,
+    betShareModel,
+    betResult,
+    setBetResult,
     setLotteryId,
     playOddDetailData,
     loadedLottery,
@@ -90,21 +91,32 @@ const BetLotteryPage = ({ navigation, route }) => {
       <View key={'lottery content'}
             style={_styles.bs_container}>
         <TopAreaComponent/>
-        {
-          !dicNull(playOddDetailData) ? //有数据才加载
-            <ScrollView key={'lottery middle content'}
-                        style={_styles.sv_container}>
+        <View style={_styles.sv_container}>
+          {
+            !dicNull(playOddDetailData) && <ScrollView key={'lottery middle content'}
+                                                       style={_styles.sv_container}>
               {
                 //秒秒彩不显示历史记录和倒计时
                 playOddDetailData?.game?.isInstant == '1' ? <InstantLotteryComponent/> : <BetRecordHeaderComponent/>
               }
-              <ListContentComponent/>
-            </ScrollView> :
-            <View style={_styles.sv_container}/>
-        }
+              <LotteryContentComponent/>
+            </ScrollView>
+          }
+          <WebChatComponent/>
+        </View>
+
         <BetBoardComponent key={'lottery board'}
                            locked={false}
                            lockStr={'封盘中...'}/>
+        {!dicNull(betShareModel) && <PayBoardComponent key={'BetBoardComponent'}
+                                                       showCallback={(data) => {
+                                                         UGStore.dispatch({ type: 'reset', betShareModel: {} })
+                                                         setBetResult(data)
+                                                       }}/>}
+        {!dicNull(betResult) && <PayResultComponent key={'PayResultComponent'}
+                                                    betData={betResult}
+                                                    nextIssueData={UGStore.globalProps?.nextIssueData}
+                                                    showCallback={() => setBetResult(null)}/>}
       </View>
     </BaseScreen>
   )

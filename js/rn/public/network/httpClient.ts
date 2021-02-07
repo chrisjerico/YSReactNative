@@ -192,7 +192,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
     if (config.noToken == true) {
       delete encryptData?.token
     }
-    debugger
+
     for (let paramsKey in encryptData) {
       // if (paramsKey.includes("slideCode")) {
       //   config.data[paramsKey] = config.data[paramsKey];

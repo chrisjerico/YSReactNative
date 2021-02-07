@@ -12,7 +12,7 @@ import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotte
  */
 const zodiacPlayX = (selData?: SelectedPlayModel): PlayData => {
   // return groupData.plays[arrayLength(groupData?.exZodiacs) - 2]
-  return selData?.plays[arrayLength(selData?.zodiacs) - 2]
+  return selData?.playGroups?.plays[arrayLength(selData?.zodiacs) - 2]
 }
 
 export {

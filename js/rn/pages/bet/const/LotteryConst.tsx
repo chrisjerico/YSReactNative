@@ -93,6 +93,14 @@ const CqsscCode = {
   DWD: 'DWD', //定位胆
 }
 
+/**
+ * 当前TAB是 彩票0 还是 聊天室1
+ */
+const GameTab = {
+  LOTTERY: 0, //彩票0
+  CHAT: 1, //聊天室1
+}
+
 export {
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
@@ -100,4 +108,5 @@ export {
   LCode,
   LhcCode,
   CqsscCode,
+  GameTab,
 }

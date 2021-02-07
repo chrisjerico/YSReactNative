@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { api } from '../../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { LotteryResultData } from '../../../../../public/network/Model/lottery/result/LotteryResultModel'
+import { NextIssueData } from '../../../../../public/network/Model/lottery/NextIssueModel'
 
 /**
  * 下注结果
@@ -11,12 +12,11 @@ import { LotteryResultData } from '../../../../../public/network/Model/lottery/r
  */
 const UsePayResult = () => {
 
-  const nextIssueData = UGStore.globalProps?.nextIssueData
-
+  const [nextIssueData, setNextIssueData] = useState<NextIssueData>() //下期数据
   const [counter, setCounter] = useState(0) //倒计时
   const [timer, setTimer] = useState<any>() //时钟
   const [autoBet, setAutoBet] = useState(false) //是否打开自动投注
-  const [betResult, setBetResult] = useState<LotteryResultData>(null) //是否打开自动投注
+  const [betResult, setBetResult] = useState<LotteryResultData>(null) //下注结果
   const [closeWindow, setCloseWindow] = useState(false) //是否关闭
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const UsePayResult = () => {
   }, [autoBet])
 
   return {
-    nextIssueData,
+    setNextIssueData,
     closeWindow,
     setCloseWindow,
     betResult,

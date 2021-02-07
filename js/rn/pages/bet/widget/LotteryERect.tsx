@@ -31,30 +31,17 @@ const LotteryERect = ({
   let isSel = isSelectedBallOnId(selectedBalls, item?.exId ?? item?.id) //优先使用本地生成的唯一识别ID
   return (
     <TouchableWithoutFeedback key={`${key}-lottery erect-${item?.exId}-${item?.id}`}
-                      onPress={() => callback && callback()}>
+                              onPress={() => callback && callback()}>
       <View key={key + item?.id}
             style={[
               _styles.ball_item_lm,
-              {
-                backgroundColor:
-                  isSel ?
-                    `${Skin1.themeColor}dd` :
-                    null,
-              },
+              { backgroundColor: isSel ? `${Skin1.themeColor}dd` : null },
             ]}>
         <ERect key={key + item?.id}
                title={item?.name}
-               titleStyle={{
-                 color: isSel ?
-                   UGColor.TextColor6 :
-                   UGColor.TextColor7,
-               }}
-               odds={item?.odds}
-               oddsStyle={{
-                 color: isSel ?
-                   UGColor.TextColor6 :
-                   UGColor.TextColor7,
-               }}/>
+               titleStyle={{ color: isSel ? UGColor.TextColor6 : UGColor.TextColor7 }}
+               odds={item?.enable != '0' ? item?.odds : '- -'}
+               oddsStyle={{ color: isSel ? UGColor.TextColor6 : UGColor.TextColor7 }}/>
       </View>
     </TouchableWithoutFeedback>
   )

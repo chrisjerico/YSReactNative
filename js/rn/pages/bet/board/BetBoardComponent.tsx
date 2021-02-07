@@ -8,10 +8,10 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
-import PayBoardComponent from './pay/PayBoardComponent'
 import { UGStore } from '../../../redux/store/UGStore'
 import { ugLog } from '../../../public/tools/UgLog'
-import PayResultComponent from './pay/result/PayResultComponent'
+import { GameTab } from '../const/LotteryConst'
+import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 
 /**
  * 彩票功能区入参
@@ -31,10 +31,8 @@ interface IBetBoardParams {
 const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
-    betResult,
-    setBetResult,
-    showBetPayment,
-    setShowBetPayment,
+    gameTabIndex,
+    betShareModel,
     userInfo,
     systemInfo,
     showSlider,
@@ -198,7 +196,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
       <TouchableWithoutFeedback onPress={() => {
         ugLog('clear selected')
-        UGStore.dispatch({type: 'reset', selectedLotteryModel: {}})}
+        UGStore.dispatch({ type: 'reset', selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>() })
+      }
       }>
         <Text key={'renderInputArea input 重置'}
               style={_styles.start_reset}>重置</Text>
@@ -226,18 +225,15 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   return (
     <View key={'bet board content'}
           pointerEvents={'box-none'}
-          style={[_styles.container, style]}>
+          style={[
+            _styles.container,
+            style,
+            gameTabIndex == GameTab.LOTTERY ? null : { height: 0, width: 0, opacity: 0, display: 'none' }, //非彩票界面不需要显示 下注面板
+          ]}>
       <View style={_styles.bet_container}>
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
         {locked ? renderLock(lockStr) : null}
-        {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}
-                                              showCallback={(data) => {
-                                                setShowBetPayment(false)
-                                                setBetResult(data)
-                                              }}/>}
-        {betResult && <PayResultComponent betData={betResult}
-                                          showCallback={() => setBetResult(null)}/>}
       </View>
     </View>
   )
