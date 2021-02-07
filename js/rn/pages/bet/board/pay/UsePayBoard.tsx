@@ -6,7 +6,6 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it/bet/IBetLotteryParams'
 import { numberToFloatString } from '../../../../public/tools/StringUtil'
-import { generateBetArray } from '../tools/BetUtil'
 import { hideLoading } from '../../../../public/widget/UGLoadingCP'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
@@ -31,12 +30,11 @@ const UsePayBoard = () => {
     // const betData = generateBetArray(nextIssueData, copyData)
 
     //初始化默认金额
-    const defaultMoney = UGStore.globalProps?.inputMoney ?? 1
-    setAverageMoney(defaultMoney) //平均价格
+    setAverageMoney(Number(orgBetShareModel?.singleAmount)) //平均价格
 
     const moneyMap = new Map<string, number>()
     orgBetShareModel?.betBean?.map((bet) => {
-      moneyMap[bet?.exFlag] = defaultMoney
+      moneyMap[bet?.exFlag] = Number(orgBetShareModel?.singleAmount)
     })
     setMoneyMap(moneyMap)
 

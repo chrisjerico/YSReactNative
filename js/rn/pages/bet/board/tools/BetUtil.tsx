@@ -603,6 +603,7 @@ const generateBetArray = (nextIssueData?: NextIssueData,
 
   const newData = {
     ftime: (moment(nextIssueData?.curCloseTime).toDate().getTime() / 1000).toString(),
+    singleAmount: inputMoney,
     isInstant: nextIssueData?.isInstant,
     activeReturnCoinRatio: activeReturnCoinRatio,
     turnNum: nextIssueData?.curIssue,
