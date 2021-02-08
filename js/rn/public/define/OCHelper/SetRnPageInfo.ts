@@ -270,13 +270,13 @@ export async function setRnPageInfo(force = false) {
     允许未登录访问: false,
   })
   // 下注明细
-  // pages.push({
-  //   vcName: 'BetDetailViewController',
-  //   rnName: PageName.JDBetDetailPage,
-  //   fd_prefersNavigationBarHidden: true,
-  //   允许游客访问: false,
-  //   允许未登录访问: false,
-  // })
+  pages.push({
+    vcName: 'BetDetailViewController',
+    rnName: PageName.JDBetDetailPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 推荐信息
   pages.push({
     vcName: 'UGPromotionIncomeController',
