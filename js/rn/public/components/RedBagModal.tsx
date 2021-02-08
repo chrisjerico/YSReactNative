@@ -4,6 +4,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { Res } from '../../Res/icon/Res'
+import AppDefine from '../define/AppDefine'
 import APIRouter from '../network/APIRouter'
 import { ActivitySettingModel } from '../network/Model/ActivitySettingModel'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
@@ -80,13 +81,16 @@ const RedBagModal = ({ show, onPress, redBag, activitySetting }: RedBagModalProp
                   titleStyle={{ color: '#ffffff'}}
                 />
               </View>
-              <View style={styles.row}>
-                <Text style={[styles.title, {color: '#FFC950', alignSelf: 'center'}]}>活动介绍</Text>
-                <Text style={[styles.title, {color: '#ffffff'}]}>{redBagData.data.intro.replace('<br />', '')}</Text>
-              </View>
+              {bagSkin ? null : 
+                <View style={styles.row}>
+                  <Text style={[styles.title, {color: '#FFC950', alignSelf: 'center'}]}>活动介绍</Text>
+                  <Text style={[styles.title, {color: '#ffffff'}]}>{redBagData.data.intro.replace('<br />', '')}</Text>
+                </View>
+              }
             </View>
           </ImageBackground>
         </View>
+      </View>
         <View style={styles.closeDialog}>
           <TouchableWithoutFeedback
             onPress={onPress}>
@@ -95,7 +99,6 @@ const RedBagModal = ({ show, onPress, redBag, activitySetting }: RedBagModalProp
               source={{ uri: Res.closeDialog }}/>
           </TouchableWithoutFeedback>
         </View>
-      </View>
     </Modal>
   )
 }
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%', 
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   redBagImage: { 
     height: '60%',
@@ -128,10 +131,11 @@ const styles = StyleSheet.create({
     marginLeft: scale(20),
   },
   closeDialog: { 
-    width: scale(37), 
-    height: scale(37), 
-    marginTop: '35%', 
-    marginLeft: scale(10),
+    position: 'absolute',
+    width: scale(35), 
+    height: scale(35), 
+    marginTop: (AppDefine.height)/5,
+    marginLeft: (AppDefine.width-50),
   },
   col: { 
     flexDirection: 'row',
