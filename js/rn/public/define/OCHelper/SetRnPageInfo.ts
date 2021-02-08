@@ -213,7 +213,22 @@ export async function setRnPageInfo(force = false) {
   }
 
 
-
+   // 我的提款账户
+   pages.push({
+    vcName: 'WithdrawalAccountListVC',
+    rnName: PageName.ManageBankListPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+  // 资金管理
+  pages.push({
+    vcName: 'UGFundsViewController',
+    rnName: PageName.CapitalPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 其他注单
   pages.push({
     vcName: 'UGRealBetRecordViewController',
