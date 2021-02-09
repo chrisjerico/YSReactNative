@@ -24,8 +24,8 @@ interface UseVersion {
  * @constructor
  */
 const UseVersion = ({
-                      testResult,
-                    }: UseVersion) => {
+  testResult,
+}: UseVersion) => {
 
   //测试网络情况
   const testNetwork = () => {
@@ -59,7 +59,14 @@ const UseVersion = ({
    * @param callback 是否有正常的域名
    */
   let siteHost = undefined //哪条速度最快用哪条
-  const testSite = async (callback: (result?: boolean) => void) => {
+  const testSite = async (callback: (result?: boolean) => void, force = true) => {
+    if (force) {
+      siteHost = undefined
+    } else if (siteHost) {
+      callback(siteHost)
+      return
+    }
+
     // 站点编号
     let siteId = ''
     switch (Platform.OS) {
@@ -104,7 +111,7 @@ const UseVersion = ({
 
     setTimeout(() => {
       if (!siteHost) {
-        testSite(callback)
+        testSite(callback, false)
       }
     }, 5 * 1000);
   }
@@ -116,12 +123,19 @@ const UseVersion = ({
   }
 }
 
- /**
-   * 查找最快的热更新域名
-   * @param callback 是否有正常的域名
-   */
+/**
+  * 查找最快的热更新域名
+  * @param callback 是否有正常的域名
+  */
 let codePushHost = undefined
-const testCodePush = async (callback: (ret?: string) => void) => {
+const testCodePush = async (callback: (ret?: string) => void, force = true) => {
+  if (force) {
+    codePushHost = undefined
+  } else if (codePushHost) {
+    callback(codePushHost)
+    return
+  }
+
   const hosts = [
     'https://push.cloudaliyun.com',//aws
     'https://push.cloudbaiidu.com',//aws
@@ -130,6 +144,8 @@ const testCodePush = async (callback: (ret?: string) => void) => {
     'http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000',//源地址
     'https://push.qijun2099.com',//阿里云
   ];
+
+  console.log('查找热更新域名');
 
   hosts.forEach(ele => {
     axios.create({
@@ -148,7 +164,7 @@ const testCodePush = async (callback: (ret?: string) => void) => {
 
   setTimeout(() => {
     if (!codePushHost) {
-      testCodePush(callback)
+      testCodePush(callback, false)
     }
   }, 5 * 1000);
 }
