@@ -11,7 +11,7 @@ import BetRecordHeaderComponent from './counter/red/BetRecordHeaderComponent'
 import ListContentComponent from './list/ListContentComponent'
 import { TopAreaComponent } from './top/TopAreaComponent'
 
-interface IRouteParams {
+interface IBetLotteryPage {
   lotteryId: string //当前彩票 id
 }
 
@@ -115,3 +115,4 @@ const _styles = StyleSheet.create({
 })
 
 export default BetLotteryPage
+export {IBetLotteryPage}

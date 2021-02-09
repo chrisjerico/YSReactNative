@@ -113,6 +113,7 @@ import { OnlineService } from '../../public/components/OnlineService'
 import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
 import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
 import OtherRecord from '../../public/components/OtherRecord'
+import WebPage from '../common/web/WebPage'
 
 
 /**
@@ -154,6 +155,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferPayPage, //银行支付
   EmptyPage, //空界面
   BetLotteryPage, //彩票下注
+  WebPage, //网页
   BtcPayPage, //虚拟币支付
   BtcTutorialPage, //虚拟币教程
   AlipayView, //利息宝

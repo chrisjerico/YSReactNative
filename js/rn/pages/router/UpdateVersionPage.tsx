@@ -19,9 +19,9 @@ import { UGStore } from '../../redux/store/UGStore'
 import { DefaultMenu } from '../../Res/DefaultMenu'
 import { UGBasePageProps } from '../base/UGPage'
 import UseVersion from './us/UseVersion'
-import { Toast } from '../../public/tools/ToastUtils'
-import { navigate } from '../../public/navigation/RootNavigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
+import { IWebPage } from '../common/web/WebPage'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -250,6 +250,12 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               Alert.alert('温馨提示',
                 '访问出现异常，请检查网络情况，重新打开App再试试。\n或者联系客服...',
                 [
+                  {
+                    text: '尝试直接打开',
+                    onPress: () => {
+                      push(PageName.WebPage, {url: AppDefine.host} as IWebPage)
+                    }, style: 'default',
+                  },
                   {
                     text: '退出',
                     onPress: () => {
