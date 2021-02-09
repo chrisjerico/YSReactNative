@@ -4,6 +4,7 @@ export interface Data {
   scratchOffLogo: string;
   goldenEggLogo: string;
   redBagSkin: string;
+  redBagIntro: string;
 }
 
 export interface ActivitySettingModel {

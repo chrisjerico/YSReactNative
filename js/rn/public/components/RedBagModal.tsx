@@ -18,12 +18,13 @@ interface RedBagModalProps {
   onPress?: () => any
   redBag?: RedBagDetailActivityModel
   activitySetting?: ActivitySettingModel
+  bagSkin?: string
 }
 
-const RedBagModal = ({ show, onPress, redBag, activitySetting }: RedBagModalProps) => {
+const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBagModalProps) => {
   const [hide, setHide] = useState(false)
   const [redBagData, setRedBagData] = useState(redBag)
-  const [bagSkin, setBagSkin] = useState(activitySetting?.data?.redBagSkin)
+  // const [bagSkin, setBagSkin] = useState(activitySetting?.data?.redBagSkin)
 
   const requestBag = async () => {
     if (!redBag.data.hasLogin) {
@@ -34,8 +35,6 @@ const RedBagModal = ({ show, onPress, redBag, activitySetting }: RedBagModalProp
     Alert.alert(null, response.data.msg, [
       { text: "确认" },
     ])
-    const activity_setting = await APIRouter.activity_setting()
-    ugLog("activity_setting= ", activity_setting)
     await APIRouter.activity_redBagDetail().then((value) => {
       if (value.data.code == 0) {
         setRedBagData(value.data)
@@ -58,7 +57,7 @@ const RedBagModal = ({ show, onPress, redBag, activitySetting }: RedBagModalProp
         <View style={styles.bg_container} />
         <View style={styles.redBagImage}>
           <ImageBackground 
-            source={{ uri: bagSkin ? bagSkin : Res.redBg }}
+            source={{ uri: bagSkin?.includes("red_pack_big_niu") ? bagSkin : Res.redBg }}
             style={styles.image} >
             <View style={styles.imageContainer}>
               <View style={styles.col}>
@@ -81,10 +80,10 @@ const RedBagModal = ({ show, onPress, redBag, activitySetting }: RedBagModalProp
                   titleStyle={{ color: '#ffffff'}}
                 />
               </View>
-              {bagSkin ? null : 
+              {bagSkin?.includes("red_pack_big_niu") ? null : 
                 <View style={styles.row}>
                   <Text style={[styles.title, {color: '#FFC950', alignSelf: 'center'}]}>活动介绍</Text>
-                  <Text style={[styles.title, {color: '#ffffff'}]}>{redBagData.data.intro.replace('<br />', '')}</Text>
+                  <Text style={[styles.title, {color: '#ffffff'}]}>{activitySetting.data.redBagIntro}</Text>
                 </View>
               }
             </View>
