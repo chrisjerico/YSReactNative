@@ -19,6 +19,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { Router } from '../../public/navigation/Router'
 import { ugLog } from '../../public/tools/UgLog'
+import ExtUGApplication from '../../public/tools/ui/ExtUGApplication'
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import AddBankPage from '../bank/add/AddBankPage'
 import ManageBankListPage from '../bank/list/ManageBankListPage'
@@ -158,6 +159,9 @@ import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
 import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
 import JDPromoteDetailPage from '../经典/优惠详情/JDPromoteDetailPage'
 import WebPage from '../common/web/WebPage'
+import { Platform } from 'react-native'
+import { ANHelper } from '../../public/define/ANHelper/ANHelper'
+import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 
 
 /**
@@ -342,8 +346,16 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
   render() {
+    let initialName = null
+    switch (Platform.OS) {//暂时保留 兼容旧版本 以后可以删除
+      case 'android':
+        initialName = ExtUGApplication.tabUI()
+        ugLog('tab initialName=', initialName)
+        break;
+    }
+
     return (
-      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
+      <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         {Object.keys(pageComponents).map((key) => {
           // ugLog('tab page key=', key)
@@ -355,8 +367,16 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
 }
 
 const StackScreens = () => {
+  let initialName = null
+  switch (Platform.OS) {//暂时保留 兼容旧版本 以后可以删除
+    case 'android':
+      initialName = ExtUGApplication.stackUI()
+      ugLog('stack initialName=', initialName)
+      break;
+  }
+
   return (
-    <Router.StackNavigator headerMode={'screen'}>
+    <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
       {Object.keys(pageComponents)
         .filter((value) => value.indexOf('Home') <= 0) //过滤掉首页
