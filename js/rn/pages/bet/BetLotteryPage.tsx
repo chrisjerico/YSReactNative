@@ -20,7 +20,7 @@ import { currentChatRoomId } from './board/tools/chat/ChatTools'
 import { GameTab } from './const/LotteryConst'
 import { ugLog } from '../../public/tools/UgLog'
 
-interface IRouteParams {
+interface IBetLotteryPage {
   lotteryId: string //当前彩票 id
 }
 
@@ -171,3 +171,4 @@ const _styles = StyleSheet.create({
 })
 
 export default BetLotteryPage
+export {IBetLotteryPage}

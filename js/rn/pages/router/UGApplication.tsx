@@ -156,6 +156,7 @@ import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记�
 import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
 import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
 import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
+import WebPage from '../common/web/WebPage'
 
 
 /**
@@ -196,6 +197,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferPayPage, //银行支付
   EmptyPage, //空界面
   BetLotteryPage, //彩票下注
+  WebPage, //网页
   BtcPayPage, //虚拟币支付
   BtcTutorialPage, //虚拟币教程
   AlipayView, //利息宝
