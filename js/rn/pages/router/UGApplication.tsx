@@ -173,7 +173,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   GameLobbyPage,  // 游戏大厅主页-默认
   TwoLevelGames,//二级游戏分类
   OtherRecord,//其他投注记录（真人、棋牌、电子、体育、捕鱼、电竞）
-  Game3rdView,//优惠活动详情
+  Game3rdView,//游戏
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
