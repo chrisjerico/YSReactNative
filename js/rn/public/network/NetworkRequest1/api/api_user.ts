@@ -148,18 +148,21 @@ export class api_user {
 
   // 游客投注（待完善）
   static guestBet(params: {}) {
-
-    console.log('guestBet  params ===',params);
     return this.c.post<LotteryResultModel>('guestBet',params);
   }
 
-  // 用户投注（待完善）
+  /**
+   * 用户投注
+   * @param params
+   */
   static bet(params: {}) {
-    console.log('bet  params ===',params);
     return this.c.post<LotteryResultModel>('bet',params);
   }
 
-  // 即时投注（待完善）
+  /**
+   * 即时投注
+   * @param params
+   */
   static instantBet(params: {}) {
     return this.c.post<LotteryResultModel>('instantBet',params);
   }

@@ -27,7 +27,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
-  timeout: 3000, // 0 no limit
+  timeout: 60000, // 0 no limit
   headers: { 'Content-Type': 'application/json' },
 })
 const publicParams = {
@@ -89,7 +89,7 @@ httpClient.interceptors.response.use(
       }
     }
 
-    ugLog("http ful filled res 5 = ", JSON.stringify(response))
+    //ugLog("http ful filled res 5 = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {
     //   if (config?.expiredTime < 1000000000000000) {

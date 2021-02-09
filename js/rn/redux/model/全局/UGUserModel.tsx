@@ -126,5 +126,5 @@ export default class UGUserModel extends UGLoginModel {
   unreadFaq?: number;
   unreadMsg?: number; // 站内信未读消息数量
 
-  chatShareBet?: boolean;;    /**<   是否允许注单分享 */
+  chatShareBet?: number    /**<   是否允许注单分享 */
 }

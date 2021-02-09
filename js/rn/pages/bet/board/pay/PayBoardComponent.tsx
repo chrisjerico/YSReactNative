@@ -134,12 +134,9 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                   onPress={() => {
                     showLoading()
                     startBetting().then((data) => {
-                      if (betShareModel?.isInstant == '1') {//秒秒彩
-                        showCallback(data?.data)
-                      } else {
-                        (Toast(data?.msg))
-                        showCallback()
-                      }
+                      //不是秒秒彩就给出提示语
+                      betShareModel?.isInstant != '1' && data?.code == 0 && Toast(data?.msg)
+                      showCallback(data?.data)
                     })
                   }}>{'确定'}</Text>
           </View>

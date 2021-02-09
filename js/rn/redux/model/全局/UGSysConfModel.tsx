@@ -241,7 +241,7 @@ export default class UGSysConfModel {
   mobileMenu?: Array<UGTabbarItem> // 底部Tab按钮
   userCenter?: Array<UGUserCenterItem> // 我的页功能按钮
 
-
+  chatRoomSwitch?: boolean //聊天室开关
   switchBalanceChannel?: string //余额提款开关
   balanceChannelStartTime?: string //开关时间段
   balanceChannelEndTime?: string //开关时间段

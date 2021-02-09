@@ -10,6 +10,7 @@ import { hideLoading } from '../../../../public/widget/UGLoadingCP'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 import { BetShareModel } from '../../../../redux/model/game/bet/BetShareModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
 
 /**
  * 下注面板
@@ -87,7 +88,10 @@ const UsePayBoard = () => {
     await syncUserInfo(false)
     hideLoading()
 
-    return { ...data, data: { ...data?.data, betParams: pms } }
+    //异常数据
+    if(data?.code != 0) Toast(data?.msg)
+
+    return { ...data, data: { ...data?.data, betParams: pms, betShareModel: betShareModel } }
 
   }
 

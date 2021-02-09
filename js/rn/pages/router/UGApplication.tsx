@@ -19,6 +19,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { Router } from '../../public/navigation/Router'
 import { ugLog } from '../../public/tools/UgLog'
+import ExtUGApplication from '../../public/tools/ui/ExtUGApplication'
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import AddBankPage from '../bank/add/AddBankPage'
 import ManageBankListPage from '../bank/list/ManageBankListPage'
@@ -156,6 +157,11 @@ import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记�
 import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
 import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
 import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
+import JDPromoteDetailPage from '../经典/优惠详情/JDPromoteDetailPage'
+import WebPage from '../common/web/WebPage'
+import { Platform } from 'react-native'
+import { ANHelper } from '../../public/define/ANHelper/ANHelper'
+import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 
 
 /**
@@ -173,7 +179,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   GameLobbyPage,  // 游戏大厅主页-默认
   TwoLevelGames,//二级游戏分类
   OtherRecord,//其他投注记录（真人、棋牌、电子、体育、捕鱼、电竞）
-  Game3rdView,//优惠活动详情
+  Game3rdView,//游戏
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
@@ -196,6 +202,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferPayPage, //银行支付
   EmptyPage, //空界面
   BetLotteryPage, //彩票下注
+  WebPage, //网页
   BtcPayPage, //虚拟币支付
   BtcTutorialPage, //虚拟币教程
   AlipayView, //利息宝
@@ -219,7 +226,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDBetDetailPage,//下注明细
   OnlineService,//在线客服
   JDLotterySecondPage,//2级系列游戏
-  JDDayDetailPage,//莫天下注明细
+  JDDayDetailPage,//下注明细明细
+  JDPromoteDetailPage,//优惠列表详情
   // ———————————— 模板页面 —————————————
 
   JDHomePage,// 经典-首页
@@ -338,8 +346,16 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
   render() {
+    let initialName = null
+    switch (Platform.OS) {//暂时保留 兼容旧版本 以后可以删除
+      case 'android':
+        initialName = ExtUGApplication.tabUI()
+        ugLog('tab initialName=', initialName)
+        break;
+    }
+
     return (
-      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
+      <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         {Object.keys(pageComponents).map((key) => {
           // ugLog('tab page key=', key)
@@ -351,8 +367,16 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
 }
 
 const StackScreens = () => {
+  let initialName = null
+  switch (Platform.OS) {//暂时保留 兼容旧版本 以后可以删除
+    case 'android':
+      initialName = ExtUGApplication.stackUI()
+      ugLog('stack initialName=', initialName)
+      break;
+  }
+
   return (
-    <Router.StackNavigator headerMode={'screen'}>
+    <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
       {Object.keys(pageComponents)
         .filter((value) => value.indexOf('Home') <= 0) //过滤掉首页

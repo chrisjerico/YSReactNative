@@ -46,6 +46,9 @@ const clearLotteryData = () => {
     betShareModel: {},
     nextIssueData: {},
     playOddDetailData: {},
+    chatRoomIndex: 0,
+    chatRoomData: {},
+    chatMenu: [],
     inputMoney: 0,
     selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
   })

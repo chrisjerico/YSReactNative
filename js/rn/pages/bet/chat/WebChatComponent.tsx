@@ -50,6 +50,8 @@ const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                   width={AppDefine.width}/>
   </View>
 
+  ugLog('chatUrl chatUrl chatUrl ======', chatUrl)
+
   return (
     <View key={'chat content'}
           pointerEvents={'box-none'}

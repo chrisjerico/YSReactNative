@@ -99,7 +99,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t126f.6yc.com',
+    'http://t136f.fhptcdn.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
@@ -120,7 +120,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t126f.6yc.com',
+    'http://t136f.fhptcdn.com',
   ],
   'tstksm': [
     'http://t133f.6yc.com',
@@ -185,11 +185,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://papghawshugposwaughwsoohu.com',
   ],
   'c085': [
-    'https://www.ya1237888.cc',
-    'https://www.ya2238888.cc',
-    'https://www.ya3388888.cc',
-    'https://www.ya442778111.cc',
-    'https://www.ya557887.cc',
+    'https://www.97971hh.cc',
+    'https://www.97971ii.cc',
+    'https://www.97971jj.cc',
+    'https://www.97971kk.cc',
   ],
   'c085ahy': [
     'https://www.ya1237888.cc',
@@ -454,7 +453,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'l002': [
     'https://70333a.org',
     'https://70333s.org',
-    'https://70333d.org',
+    'https://70333h.org',
     'https://70333f.org',
     'https://70333g.org',
   ],
