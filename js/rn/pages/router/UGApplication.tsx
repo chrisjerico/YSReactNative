@@ -156,7 +156,7 @@ import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记�
 import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
 import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
 import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
-
+import JDPromoteDetailPage from '../经典/优惠详情/JDPromoteDetailPage'
 
 /**
  * 所有界面
@@ -219,7 +219,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDBetDetailPage,//下注明细
   OnlineService,//在线客服
   JDLotterySecondPage,//2级系列游戏
-  JDDayDetailPage,//莫天下注明细
+  JDDayDetailPage,//下注明细明细
+  JDPromoteDetailPage,//优惠列表详情
   // ———————————— 模板页面 —————————————
 
   JDHomePage,// 经典-首页

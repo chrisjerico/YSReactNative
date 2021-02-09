@@ -28,50 +28,15 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-    // 其他注单
+    // 优惠列表详情
     pages.push({
-      vcName: 'UGRealBetRecordViewController',
-      rnName: PageName.OtherRecord,
+      vcName: 'UGPromoteDetailController',
+      rnName: PageName.JDPromoteDetailPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: false,
       允许未登录访问: false,
     })
 
-    // 2级系列大厅
-    pages.push({
-      vcName: 'UGYYLotterySecondHomeViewController',
-      rnName: PageName.JDLotterySecondPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-
-    // 资金管理
-    pages.push({
-      vcName: 'UGFundsViewController',
-      rnName: PageName.CapitalPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-
-    // 我的提款账户
-    pages.push({
-      vcName: 'WithdrawalAccountListVC',
-      rnName: PageName.ManageBankListPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-
-    // 游戏大厅
-    pages.push({
-      vcName: 'UGYYLotteryHomeViewController',
-      rnName: PageName.GameLobbyPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
 
   }
 
