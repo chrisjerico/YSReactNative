@@ -106,7 +106,7 @@ const UseVersion = ({
       if (!siteHost) {
         testSite(callback)
       }
-    }, 8 * 1000);
+    }, 5 * 1000);
   }
 
   return {
@@ -150,7 +150,7 @@ const testCodePush = async (callback: (ret?: string) => void) => {
     if (!codePushHost) {
       testCodePush(callback)
     }
-  }, 8 * 1000);
+  }, 5 * 1000);
 }
 
 export default UseVersion
