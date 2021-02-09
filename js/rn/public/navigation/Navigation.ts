@@ -1,3 +1,5 @@
+import WebPage from '../../pages/common/web/WebPage'
+
 export enum PageName {
   // ———————————— 通用页面 —————————————
   TransitionPage = 'TransitionPage',
@@ -15,6 +17,7 @@ export enum PageName {
   ManageBankListPage = 'ManageBankListPage',
   EmptyPage = 'EmptyPage', //空界面
   BetLotteryPage = 'BetLotteryPage', //彩票下注
+  WebPage = 'WebPage', //网页
   BtcPayPage = 'BtcPayPage', //虚拟币支付
   BtcTutorialPage = 'BtcTutorialPage', //虚拟币教程
   CapitalPage = 'CapitalPage', //资金管理

@@ -2,38 +2,27 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
 import { scale } from '../../../public/tools/Scale'
-import UseWebChat from './UseWebChat'
 import WebView from 'react-native-webview'
 import * as Progress from 'react-native-progress'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import AppDefine from '../../../public/define/AppDefine'
-import { GameTab } from '../const/LotteryConst'
 import { ugLog } from '../../../public/tools/UgLog'
 
 /**
  * 彩票功能区入参
  */
 interface IBetBoardParams {
-  locked?: boolean // 是否封盘中
-  lockStr?: string // 封盘文字提醒
+  url: string //url
   style?: StyleProp<ViewStyle>
 }
 
 /**
- * 彩票下注 聊天
+ * 加载网页
  *
  * @param navigation
  * @constructor
  */
-const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
-
-  const {
-    chatUrl,
-    gameTabIndex,
-    userInfo,
-    systemInfo,
-    handleMessage,
-  } = UseWebChat()
+const WebComponent = ({ url, style }: IBetBoardParams) => {
 
   const [progress, setProgress] = useState(0) //进度条
 
@@ -50,7 +39,7 @@ const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                   width={AppDefine.width}/>
   </View>
 
-  ugLog('chatUrl chatUrl chatUrl ======', chatUrl)
+  ugLog('web url ======', url)
 
   return (
     <View key={'chat content'}
@@ -58,7 +47,6 @@ const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           style={[
             _styles.container,
             style,
-            gameTabIndex == GameTab.CHAT ? null : { height: 0, width: 0, opacity: 0, display: 'none' }, //非彩票界面不需要显示 下注面板
           ]}>
       <WebView javaScriptEnabled
                sharedCookiesEnabled
@@ -72,8 +60,7 @@ const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                allowsLinkPreview
                allowUniversalAccessFromFileURLs
                onLoadProgress={((event) => setProgress(event?.nativeEvent?.progress))}
-               source={{ uri: chatUrl }}
-               onMessage={handleMessage}/>
+               source={{ uri: url }}/>
 
       {renderProgress()}
     </View>
@@ -94,5 +81,5 @@ const _styles = StyleSheet.create({
   },
 })
 
-export default WebChatComponent
+export default WebComponent
 export { IBetBoardParams }

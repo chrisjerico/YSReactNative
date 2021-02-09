@@ -1,4 +1,5 @@
 import { IBetLotteryParams } from '../../../it/bet/IBetLotteryParams'
+import { BetShareModel } from '../../../../../redux/model/game/bet/BetShareModel'
 
 /**
  * 彩票下注结果
@@ -18,4 +19,5 @@ export interface LotteryResultData {
   result?: string // 龙,鼠,猪,鸡,猴,羊,马
 
   betParams?: IBetLotteryParams//下注的参数
+  betShareModel?: BetShareModel//下注的分享对象
 }

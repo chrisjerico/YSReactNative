@@ -1,12 +1,13 @@
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import APIRouter from '../../public/network/APIRouter'
 import { anyEmpty } from '../../public/tools/Ext'
-import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import { UGStore } from '../../redux/store/UGStore'
-import { ugLog } from '../../public/tools/UgLog'
 import { parseLotteryDetailData } from './util/parse/ParseLotteryUtil'
 import { LotteryResultData } from '../../public/network/Model/lottery/result/LotteryResultModel'
+import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
+import { IBetLotteryParams } from '../../public/network/it/bet/IBetLotteryParams'
+import { chatMenuArray } from './board/tools/chat/ChatTools'
 
 /**
  * 彩票下注
@@ -17,6 +18,7 @@ const UseBetLottery = () => {
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
   const betShareModel = UGStore.globalProps.betShareModel //下注数据结构
+  const chatMenu = UGStore.globalProps.chatMenu //聊天菜单
 
   const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
@@ -39,10 +41,21 @@ const UseBetLottery = () => {
 
     if (res?.code == 0) {
       const newPlayOdds = parseLotteryDetailData(res?.data)
-      UGStore.dispatch({type: 'reset', playOddDetailData: {...res?.data, playOdds: newPlayOdds}})
+      UGStore.dispatch({ type: 'reset', playOddDetailData: { ...res?.data, playOdds: newPlayOdds } })
     }
 
     return res?.code
+  }
+
+  /**
+   * 是否显示分享聊天室
+   * @param betData
+   */
+  const showShareRoom = (betData?: IBetLotteryParams) => {
+    if (systemInfo?.chatRoomSwitch && userInfo?.chatShareBet == 1 && Number(betData?.totalMoney) >= Number(systemInfo?.chatShareBetMinAmount)) {
+      UGStore.dispatch({type: 'reset', chatMenu: chatMenuArray()})
+    }
+
   }
 
   return {
@@ -55,6 +68,8 @@ const UseBetLottery = () => {
     playOddDetailData,
     loadedLottery,
     setLoadedLottery,
+    chatMenu,
+    showShareRoom,
     requestLotteryData,
   }
 }

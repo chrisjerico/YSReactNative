@@ -1,18 +1,17 @@
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { pop } from '../../../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../../../public/tools/Scale'
 import CommStyles from '../../../base/CommStyles'
-import { anyEmpty, dicNull } from '../../../../public/tools/Ext'
+import { dicNull } from '../../../../public/tools/Ext'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import * as React from 'react'
-import BetRecordHeaderComponent from '../counter/lhc/red/BetRecordHeaderComponent'
-import { useState } from 'react'
 import UseTopArea from './UseTopArea'
 import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { GameTab } from '../../const/LotteryConst'
 import { UGStore } from '../../../../redux/store/UGStore'
+import { chatMenuArray, currentChatRoomName } from '../../board/tools/chat/ChatTools'
 
 /**
  * 顶部功能区域 标题栏，游戏聊天切换 等等
@@ -99,8 +98,12 @@ const TopAreaComponent = () => {
     <TouchableWithoutFeedback key={'renderGameTab right'}
                       style={CommStyles.flex}
                       onPress={() => {
-                        UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.CHAT})
-                        setGameTabIndex(GameTab.CHAT)
+                        if (gameTabIndex == GameTab.CHAT) {
+                          UGStore.dispatch({ type: 'reset', chatMenu: chatMenuArray() })
+                        } else {
+                          UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.CHAT})
+                          setGameTabIndex(GameTab.CHAT)
+                        }
                       }}>
       <View key={'renderGameTab right'}
             style={[
@@ -108,7 +111,7 @@ const TopAreaComponent = () => {
               _styles.game_tab_right,
               gameTabIndex == GameTab.CHAT ? { backgroundColor: UGColor.transparent2 } : null]}>
         <Text key={'renderGameTab 主房间'}
-              style={_styles.tab_text}>{'主房间'}</Text>
+              style={_styles.tab_text}>{currentChatRoomName()}</Text>
       </View>
     </TouchableWithoutFeedback>
 
