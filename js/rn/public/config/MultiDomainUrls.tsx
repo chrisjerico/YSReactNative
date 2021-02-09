@@ -185,7 +185,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://papghawshugposwaughwsoohu.com',
   ],
   'c085': [
-    'https://www.97971gg.cc',
     'https://www.97971hh.cc',
     'https://www.97971ii.cc',
     'https://www.97971jj.cc',
