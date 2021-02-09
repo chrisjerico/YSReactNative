@@ -101,6 +101,8 @@ export default class ExtUGApplication {
    * 该暂存的UI是不是 tab UI
    */
   static tabUI = () => {
+    if(B_DEBUG) return null
+
     const pageName = ExtUGApplication.syncCurrentPage()
     const isTab = ExtUGApplication.TAB_LIST.includes(pageName)
     if (isTab) return pageName
@@ -112,6 +114,8 @@ export default class ExtUGApplication {
    * 该暂存的UI是不是 stack UI
    */
   static stackUI = () => {
+    if(B_DEBUG) return null
+
     const pageName = ExtUGApplication.syncCurrentPage()
     const isStack = ExtUGApplication.STACK_LIST.includes(pageName)
     if (isStack) return pageName

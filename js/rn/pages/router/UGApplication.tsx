@@ -158,6 +158,9 @@ import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/Do
 import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
 import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
 import WebPage from '../common/web/WebPage'
+import { Platform } from 'react-native'
+import { ANHelper } from '../../public/define/ANHelper/ANHelper'
+import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 
 
 /**
@@ -341,8 +344,14 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
   render() {
-    const initialName = ExtUGApplication.tabUI() //暂时保留 兼容旧版本 以后可以删除
-    ugLog('tab initialName=', initialName)
+    let initialName = null
+    switch (Platform.OS) {//暂时保留 兼容旧版本 以后可以删除
+      case 'android':
+        initialName = ExtUGApplication.tabUI()
+        ugLog('tab initialName=', initialName)
+        break;
+    }
+
     return (
       <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
@@ -356,8 +365,14 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
 }
 
 const StackScreens = () => {
-  const initialName = ExtUGApplication.stackUI() //暂时保留 兼容旧版本 以后可以删除
-  ugLog('stack initialName=', initialName)
+  let initialName = null
+  switch (Platform.OS) {//暂时保留 兼容旧版本 以后可以删除
+    case 'android':
+      initialName = ExtUGApplication.stackUI()
+      ugLog('stack initialName=', initialName)
+      break;
+  }
+
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
