@@ -10,7 +10,15 @@ import { Platform } from 'react-native'
 import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes'
 import { GameTab } from '../const/LotteryConst'
 import { BetShareModel, PlayNameArray } from '../../../redux/model/game/bet/BetShareModel'
-import { BetLotteryData } from '../../../public/network/it/bet/IBetLotteryParams'
+import { BetLotteryData, IBetLotteryParams } from '../../../public/network/it/bet/IBetLotteryParams'
+import { LotteryResultModel } from '../../../public/network/Model/lottery/result/LotteryResultModel'
+import { numberToFloatString } from '../../../public/tools/StringUtil'
+import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
+import { syncUserInfo } from '../../../public/tools/user/UserTools'
+import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
+import { ChatRoomModel } from '../../../public/network/Model/chat/ChatRoomModel'
+import { currentChatRoomId } from '../board/tools/chat/ChatTools'
 
 /**
  * 彩票下注 功能面板
@@ -25,19 +33,44 @@ const UseWebChat = () => {
   const [chatUrl, setChatUrl] = useState<string>(null) //聊天链接
 
   useEffect(() => {
+
+    if(anyEmpty(currentChatRoomId())) return
+
     switch (Platform.OS) {
       case 'ios':
         //TODO iOS 生成聊天室链接
         break
       case 'android':
         ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: {} }).then((res) => {
-          const chatUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=0&color=${Skin1.themeColor.slice(1)}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
-          ugLog('chatUrl = ', chatUrl)
-          setChatUrl(chatUrl)
+          const newUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=${currentChatRoomId()}&color=${Skin1.themeColor.slice(1)}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
+          ugLog('chatUrl = ', newUrl != chatUrl, newUrl)
+          newUrl != chatUrl && setChatUrl(newUrl)
         })
         break
     }
+  }, [currentChatRoomId()])
+
+  useEffect(() => {
+    showLoading()
+    requestChatRoom().then((res) => {
+      UGStore.dispatch({type: 'reset', chatRoomIndex: 0, chatRoomData: res?.data})
+    })
   }, [])
+
+  /**
+   *
+   * 请求聊天室列表
+   */
+  const requestChatRoom = async (): Promise<ChatRoomModel> => {
+
+    const { data } = await api.chat.chatList().promise
+    hideLoading()
+
+    ugLog('requestChatRoom data = ', JSON.stringify(data))
+
+    return data
+
+  }
 
   /**
    * 下注数据转换为聊天数据

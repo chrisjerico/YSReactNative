@@ -14,9 +14,12 @@ import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../r
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import { SelectedPlayModel } from '../model/game/SelectedLotteryModel'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
-import { mergeObject } from '../../public/tools/Ext'
+import { arrayEmpty, mergeObject } from '../../public/tools/Ext'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
 import { BetShareModel } from '../model/game/bet/BetShareModel'
+import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
+import { GameTab } from '../../pages/bet/const/LotteryConst'
+import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 
 // 整个State的树结构
 
@@ -33,11 +36,14 @@ export interface IGlobalState {
   //下注
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   lotteryTabIndex?: number //当前的彩种处于哪一页
-  gameTabIndex?: number //GameTab 当前TAB是 彩票0 还是 聊天室1
+  gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
+  chatRoomIndex?: number //当前聊天室索引
+  chatRoomData?: ChatRoomData //聊天数据
+  chatMenu?: Array<IMiddleMenuItem> //聊天菜单
 
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   inputMoney?: number //输入的游戏金额
@@ -72,6 +78,9 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.betShareModel && (state.betShareModel = act.betShareModel)
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
+    act.chatRoomIndex >= 0 && (state.chatRoomIndex = act.chatRoomIndex)
+    act.chatRoomData && (state.chatRoomData = act.chatRoomData)
+    act.chatMenu && (state.chatMenu = act.chatMenu)
 
     act.selectedData && (state.selectedData = act.selectedData)
     act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
@@ -86,6 +95,8 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.betShareModel = { ...state.betShareModel, ...act.betShareModel }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
+    state.chatRoomData = { ...state.chatRoomData, ...act.chatRoomData }
+
     state.selectedData = mergeObject(state.selectedData, act.selectedData)
 
     state.sys = { ...state.sys, ...act.sys }
@@ -115,11 +126,14 @@ export interface UGAction<P = {}> extends Action {
   //彩票数据
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   lotteryTabIndex?: number //当前的彩种处于哪一页
-  gameTabIndex?: number //当前TAB是彩票还是聊天室
+  gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
+  chatRoomIndex?: number //当前聊天室索引
+  chatRoomData?: ChatRoomData //聊天数据
+  chatMenu?: Array<IMiddleMenuItem> //聊天菜单
 
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   inputMoney?: number //输入的游戏金额
