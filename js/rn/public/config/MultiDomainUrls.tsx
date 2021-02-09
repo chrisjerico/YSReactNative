@@ -454,7 +454,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'l002': [
     'https://70333a.org',
     'https://70333s.org',
-    'https://70333d.org',
+    'https://70333h.org',
     'https://70333f.org',
     'https://70333g.org',
   ],
