@@ -99,7 +99,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t136f.fhptcdn.com',
+    'http://t136f.6yc.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
