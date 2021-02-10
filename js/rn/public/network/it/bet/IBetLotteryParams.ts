@@ -29,3 +29,11 @@ export interface BetLotteryData {
 
   exFlag?: string //本地使用，该条目唯一识别标识
 }
+
+export interface ShareBetLotteryData {
+  betMoney?: string // 金额10.00
+  index?: string // 顺序
+  name?: string //1,  彩球编号
+  odds?: string // 赔率48.8000
+
+}

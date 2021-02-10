@@ -102,7 +102,7 @@ const _styles = StyleSheet.create({
   },
   text_content_issue: {
     color: UGColor.TextColor3,
-    fontSize: scale(24),
+    fontSize: scale(22),
     textAlign: 'center',
   },
   ball_item: {

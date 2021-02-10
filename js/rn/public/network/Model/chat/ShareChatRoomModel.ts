@@ -1,5 +1,6 @@
 import { IMiddleMenuItem } from '../../../components/menu/MiddleMenu'
 import { IBetLotteryParams } from '../../it/bet/IBetLotteryParams'
+import { LotteryResultData } from '../lottery/result/LotteryResultModel'
 
 /**
  * 分享数据状态
@@ -13,6 +14,6 @@ export enum Share2ChatStatus {
  * 分享信息
  */
 export interface ShareChatRoomModel {
-  betData?: IBetLotteryParams  //下注信息
+  betData?: LotteryResultData  //下注信息
   shareStatus?: Share2ChatStatus //该数据需要分享
 }

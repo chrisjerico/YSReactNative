@@ -154,7 +154,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                                                            setBetResult(data)
                                                          } else {
                                                            setBetResult(null)
-                                                           showShareRoom(data?.betParams)
+                                                           showShareRoom(data)
                                                          }
 
                                                        }}/>}

@@ -10,7 +10,7 @@ import { Platform } from 'react-native'
 import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes'
 import { GameTab } from '../const/LotteryConst'
 import { BetShareModel, PlayNameArray } from '../../../redux/model/game/bet/BetShareModel'
-import { BetLotteryData } from '../../../public/network/it/bet/IBetLotteryParams'
+import { BetLotteryData, ShareBetLotteryData } from '../../../public/network/it/bet/IBetLotteryParams'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { ChatRoomModel } from '../../../public/network/Model/chat/ChatRoomModel'
@@ -52,7 +52,7 @@ const UseWebChat = () => {
         break
       case 'android':
         ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: {} }).then((res) => {
-          const newUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=${currentChatRoomId()}&color=${Skin1.themeColor.slice(1)}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
+          const newUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=${3}&color=${Skin1.themeColor.slice(1)}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
           ugLog('chatUrl = ', newUrl != chatUrl, newUrl)
           newUrl != chatUrl && setChatUrl(newUrl)
         })
@@ -63,13 +63,25 @@ const UseWebChat = () => {
   useEffect(() => {
     if (shareChatModel?.shareStatus == Share2ChatStatus.STARTING) {
       if (sharable) {//开始分享
-        const shareBet = shareChatModel?.betData?.betBean
-        const shareBetAllInfo = shareChatModel?.betData
+        const shareBet = shareChatModel?.betData?.betParams?.betBean?.map((item, index) => ({
+          betMoney: item?.money,
+          index: index.toString(),
+          name: item?.name,
+          odds: item?.odds,
+        } as ShareBetLotteryData))
+
+        const shareBetAllInfo = {
+          ...shareChatModel?.betData?.betShareModel,
+          roomId: currentChatRoomId(),
+        } as BetShareModel
+
         const shareInfo = `shareBet(${JSON.stringify(shareBet)},${JSON.stringify(shareBetAllInfo)})`
+        ugLog('shareInfo = ', shareInfo)
         webChatRef?.current?.injectJavaScript(shareInfo)
         UGStore.dispatch({
           type: 'reset', chatArray: [], shareChatModel: {},
         })
+
       } else {
         Toast('该聊天室不支持分享')
       }
@@ -125,6 +137,8 @@ const UseWebChat = () => {
       case 'window.canShare'://是否可以分享
         const blShare = dataJson?.data == 'true'
         setSharable(blShare)
+        // const shareInfo = `shareBet([{"betMoney":"10.00","index":"0","name":"01","odds":"48.8000"},{"betMoney":"10.00","index":"1","name":"02","odds":"48.8000"}],{"activeReturnCoinRatio":"0","betParams":[{"money":"10.00","name":"01","odds":"48.8000","playId":"7108938"},{"money":"10.00","name":"02","odds":"48.8000","playId":"7108939"}],"code":"TM","displayNumber":"2102100064","ftime":"1612961990","gameId":"129","gameName":"二十分六合彩","playNameArray":[{"playName1":"特码B-01","playName2":"01"},{"playName1":"特码B-02","playName2":"02"}],"specialPlay":false,"totalMoney":"20.00","totalNums":"2","turnNum":"2102100064","roomId":"0"})`
+        // webChatRef?.current?.injectJavaScript(shareInfo)
         break
       case 'return_lottery'://返回下注
         UGStore.dispatch({ type: 'reset', gameTabIndex: GameTab.LOTTERY })

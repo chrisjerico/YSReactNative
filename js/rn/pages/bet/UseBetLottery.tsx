@@ -53,8 +53,8 @@ const UseBetLottery = () => {
    * 是否显示分享聊天室
    * @param betData
    */
-  const showShareRoom = (betData?: IBetLotteryParams) => {
-    if (systemInfo?.chatRoomSwitch && userInfo?.chatShareBet == 1 && Number(betData?.totalMoney) >= Number(systemInfo?.chatShareBetMinAmount)) {
+  const showShareRoom = (betData?: LotteryResultData) => {
+    if (systemInfo?.chatRoomSwitch && userInfo?.chatShareBet == 1 && Number(betData?.betParams?.totalMoney) >= Number(systemInfo?.chatShareBetMinAmount)) {
       UGStore.dispatch({
         type: 'reset',
         chatArray: chatMenuArray(),
