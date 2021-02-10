@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
@@ -8,6 +8,8 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
 import { img_images } from '../../../Res/icon'
 import { appConfig } from '../../../../../config'
+import { api } from '../../network/NetworkRequest1/NetworkRequest1'
+import { anyEmpty, anyString } from '../../tools/Ext'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -45,8 +47,17 @@ export interface GoldenEgg {
   type: string
 }
 
-const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
+const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
+
+  const [activitySettings, setActivitySettings] = useState<Settings>()
+  const { goldenEggLogo, redBagLogo, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
+  if (!activitySettings) {
+    api.activity.settings().useSuccess((res) => {
+      setActivitySettings(res?.data)
+    })
+  }
+
   return (
     <>
       <ActivityComponent
@@ -64,7 +75,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         containerStyle={{ top: scale(355), right: 0 }}
         enableFastImage={false}
         show={uid && roulette}
-        logo={ROULETTE_LOGO}
+        logo={anyString(turntableLogo) ?? ROULETTE_LOGO}
         onPress={() => {
           // 大转盘
           PushHelper.pushWheel(roulette)
@@ -75,7 +86,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         containerStyle={{ top: scale(465), right: 0 }}
         enableFastImage={false}
         show={uid && goldenEggs}
-        logo={icon_砸金蛋}
+        logo={anyString(goldenEggLogo) ?? icon_砸金蛋}
         onPress={goToUserCenterType.砸金蛋}
       />
       <ActivityComponent
@@ -83,7 +94,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         containerStyle={{ top: scale(590), right: 0 }}
         enableFastImage={false}
         show={uid && scratchs}
-        logo={icon_刮刮乐}
+        logo={anyString(scratchOffLogo) ?? icon_刮刮乐}
         onPress={goToUserCenterType.刮刮乐}
       />
       <ActivityComponent

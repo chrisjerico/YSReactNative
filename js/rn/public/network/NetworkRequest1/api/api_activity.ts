@@ -83,4 +83,8 @@ export class api_activity {
     return this.c.post('scratchWin', { scratchId: scratchId });
   }
 
+  // 获取红包、转盘、刮刮乐、砸金蛋图片
+  static settings() {
+    return this.c.get<Settings>('settings');
+  }
 }
