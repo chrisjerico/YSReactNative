@@ -1,5 +1,9 @@
-import { GoldenEggModel } from '../../Model/GoldenEggModel';
-import { ScratchDataModel } from '../../Model/ScratchDataModel';
+import goldenEggList from '../model/activity/goldenEggList';
+import redBagDetail from '../model/activity/redBagDetail';
+import scratchList from '../model/activity/scratchList';
+import settings from '../model/activity/settings';
+import turntableList from '../model/activity/turntableList';
+import winApplyList from '../model/activity/winApplyList';
 import { SampleAPI } from './../CCSessionModel';
 
 
@@ -10,32 +14,32 @@ export class api_activity {
 
   // 获取首页转盘活动
   static turntableList() {
-    return this.c.get('turntableList');
+    return this.c.get<turntableList>('turntableList');
   }
 
   // 获取首页砸金蛋活动
   static goldenEggList() {
-    return this.c.get<GoldenEggModel[]>('goldenEggList');
+    return this.c.get<goldenEggList>('goldenEggList');
   }
 
   // 获取首页刮刮乐
   static scratchList() {
-    return this.c.get<ScratchDataModel>('scratchList');
+    return this.c.get<scratchList>('scratchList');
   }
 
   // 红包详情
   static redBagDetail() {
-    return this.c.get('redBagDetail');
+    return this.c.get<redBagDetail>('redBagDetail');
   }
 
   // 领红包
   static getRedBag(id: string) {
-    return this.c.post('getRedBag', { id: id });
+    return this.c.post<null>('getRedBag', { id: id });
   }
 
   // 获取申请活动彩金列表（接口待完善）
   static winApplyList() {
-    return this.c.get('winApplyList');
+    return this.c.get<winApplyList>('winApplyList');
   }
 
   // 获取申请活动彩金记录
@@ -85,6 +89,6 @@ export class api_activity {
 
   // 获取红包、转盘、刮刮乐、砸金蛋图片
   static settings() {
-    return this.c.get<Settings>('settings');
+    return this.c.get<settings>('settings');
   }
 }

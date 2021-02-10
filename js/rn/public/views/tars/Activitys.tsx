@@ -10,6 +10,7 @@ import { img_images } from '../../../Res/icon'
 import { appConfig } from '../../../../../config'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import { anyEmpty, anyString } from '../../tools/Ext'
+import settings from '../../network/NetworkRequest1/model/activity/settings'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -50,7 +51,7 @@ export interface GoldenEgg {
 const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
 
-  const [activitySettings, setActivitySettings] = useState<Settings>()
+  const [activitySettings, setActivitySettings] = useState<settings>()
   const { goldenEggLogo, redBagLogo, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
   if (!activitySettings) {
     api.activity.settings().useSuccess((res) => {
