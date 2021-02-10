@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import AppDefine from '../../../public/define/AppDefine'
 import { ANHelper } from '../../../public/define/ANHelper/ANHelper'
@@ -10,15 +10,13 @@ import { Platform } from 'react-native'
 import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes'
 import { GameTab } from '../const/LotteryConst'
 import { BetShareModel, PlayNameArray } from '../../../redux/model/game/bet/BetShareModel'
-import { BetLotteryData, IBetLotteryParams } from '../../../public/network/it/bet/IBetLotteryParams'
-import { LotteryResultModel } from '../../../public/network/Model/lottery/result/LotteryResultModel'
-import { numberToFloatString } from '../../../public/tools/StringUtil'
-import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
+import { BetLotteryData } from '../../../public/network/it/bet/IBetLotteryParams'
+import { anyEmpty } from '../../../public/tools/Ext'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
-import { syncUserInfo } from '../../../public/tools/user/UserTools'
-import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
 import { ChatRoomModel } from '../../../public/network/Model/chat/ChatRoomModel'
 import { currentChatRoomId } from '../board/tools/chat/ChatTools'
+import { Toast } from '../../../public/tools/ToastUtils'
+import { Share2ChatStatus } from '../../../public/network/Model/chat/ShareChatRoomModel'
 
 /**
  * 彩票下注 功能面板
@@ -29,12 +27,24 @@ const UseWebChat = () => {
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
   const gameTabIndex = UGStore.globalProps?.gameTabIndex//当前是 彩票Tab / 聊天Tab
+  const shareChatModel = UGStore.globalProps?.shareChatModel//分享数据和聊天菜单
 
   const [chatUrl, setChatUrl] = useState<string>(null) //聊天链接
+  const [sharable, setSharable] = useState(false) //当前聊天室可不可以分享
+  const webChatRef = useRef(null)
 
   useEffect(() => {
+    requestChatRoom().then((res) => {
+      UGStore.dispatch({ type: 'reset', chatRoomIndex: 0, chatRoomData: res?.data })
+    })
+  }, [])
 
-    if(anyEmpty(currentChatRoomId())) return
+  /**
+   * 切换了聊天室
+   */
+  useEffect(() => {
+
+    if (anyEmpty(currentChatRoomId())) return
 
     switch (Platform.OS) {
       case 'ios':
@@ -51,11 +61,20 @@ const UseWebChat = () => {
   }, [currentChatRoomId()])
 
   useEffect(() => {
-    showLoading()
-    requestChatRoom().then((res) => {
-      UGStore.dispatch({type: 'reset', chatRoomIndex: 0, chatRoomData: res?.data})
-    })
-  }, [])
+    if (shareChatModel?.shareStatus == Share2ChatStatus.STARTING) {
+      if (sharable) {//开始分享
+        const shareBet = shareChatModel?.betData?.betBean
+        const shareBetAllInfo = shareChatModel?.betData
+        const shareInfo = `shareBet(${JSON.stringify(shareBet)},${JSON.stringify(shareBetAllInfo)})`
+        webChatRef?.current?.injectJavaScript(shareInfo)
+        UGStore.dispatch({
+          type: 'reset', chatArray: [], shareChatModel: {},
+        })
+      } else {
+        Toast('该聊天室不支持分享')
+      }
+    }
+  }, [shareChatModel?.shareStatus])
 
   /**
    *
@@ -64,7 +83,6 @@ const UseWebChat = () => {
   const requestChatRoom = async (): Promise<ChatRoomModel> => {
 
     const { data } = await api.chat.chatList().promise
-    hideLoading()
 
     ugLog('requestChatRoom data = ', JSON.stringify(data))
 
@@ -98,10 +116,20 @@ const UseWebChat = () => {
     ugLog('web chat = ', event?.nativeEvent?.data)
     const dataJson: IWebViewMessageEventData = JSON.parse(event?.nativeEvent?.data)
     switch (dataJson?.type) {
-      case 'return_lottery':
+      case 'bet'://聊天室加载完毕
+        setTimeout(() => {
+          //当前聊天室是否支持分享
+          webChatRef?.current?.injectJavaScript('window.canShare')
+        }, 1000)
+        break
+      case 'window.canShare'://是否可以分享
+        const blShare = dataJson?.data == 'true'
+        setSharable(blShare)
+        break
+      case 'return_lottery'://返回下注
         UGStore.dispatch({ type: 'reset', gameTabIndex: GameTab.LOTTERY })
         break
-      case 'bet_lottery':
+      case 'bet_lottery'://跟注
         const betData = dataJson?.data as BetShareModel
         follow2Bet(betData)
         break
@@ -109,6 +137,8 @@ const UseWebChat = () => {
   }
 
   return {
+    sharable,
+    webChatRef,
     chatUrl,
     gameTabIndex,
     userInfo,
