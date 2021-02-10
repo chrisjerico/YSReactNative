@@ -128,7 +128,7 @@ export interface Data {
   pass_limit: string;
   popup_announce: string;
   popup_hour: string;
-  popup_type: string;
+  popup_type: '0' | '1'
   rankingListSwitch: number;
   reg_email: string;
   reg_fundpwd: string;

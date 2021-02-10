@@ -88,13 +88,15 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
 
   const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType, switchShowFriendReferral, showNavigationBar } = sysInfo
+  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType, switchShowFriendReferral, showNavigationBar, popup_type } = sysInfo
 
   // @ts-ignore
   const defaultMenus = config.getDefaultMenus()
 
   if (v.willShowAnnouncement && announcements?.length) {
-    PushHelper.pushAnnouncement(announcements)
+    if (popup_type == '1' && !uid?.length) {} else {
+      PushHelper.pushAnnouncement(announcements)
+    }
     v.willShowAnnouncement = false
   }
 
