@@ -244,7 +244,7 @@ const WNZHomePage = () => {
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
-                    fontSize: scale(19),
+                    fontSize: scale(18),
                   }}
                   circleContainerStyle = {{ width: '85%'}}
                   circleColor={'transparent'}
