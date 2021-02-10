@@ -166,30 +166,8 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                   const subTypeHeight = row * sc(55)
                   v.updateGameSubTypeHeight && v.updateGameSubTypeHeight(isShow ? subTypeHeight : 0)
                 } else {
-                  //ugLog('GameType item=', JSON.stringify(item))
-                  if (gameId == GameType.大厅
-                    && (subId != MenuType.CQK &&
-                      subId != MenuType.CZ &&
-                      subId != MenuType.TX &&
-                      subId != MenuType.ZHGL &&
-                      subId != MenuType.CZJL &&
-                      subId != MenuType.TXJL)) {
-                    if (subId == 47) {//彩票大厅
-                      PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
-                    } else {
-                      push(PageName.SeriesLobbyPage,
-                        {
-                          gameId,
-                          subId,
-                          name,
-                          headerColor: Skin1.themeColor,
-                          homePage: PageName.JDHomePage
-                        })
-                    }
-                  } else {
-                    //@ts-ignore
-                    PushHelper.pushHomeGame(item)
-                  }
+                  //@ts-ignore
+                  PushHelper.pushHomeGame(item)
                 }
               }}
             />
