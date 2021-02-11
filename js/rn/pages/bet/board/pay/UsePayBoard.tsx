@@ -74,8 +74,12 @@ const UsePayBoard = () => {
   const startBetting = async (): Promise<LotteryResultModel> => {
     const pms: IBetLotteryParams = {
       activeReturnCoinRatio: betShareModel?.activeReturnCoinRatio,
-      betBean: betShareModel?.betBean?.map((item) =>
-        ({ ...item, money: numberToFloatString(Number(item?.money)) } as BetLotteryData)),
+      betBean: betShareModel?.betBean?.map((item) => {
+        return {
+          ...item,
+          money: numberToFloatString(Number(item?.money)),
+        } as BetLotteryData
+      }),
       betIssue: betShareModel?.turnNum,
       endTime: betShareModel?.ftime,
       gameId: betShareModel?.gameId,
@@ -89,7 +93,7 @@ const UsePayBoard = () => {
     hideLoading()
 
     //异常数据
-    if(data?.code != 0) Toast(data?.msg)
+    if (data?.code != 0) Toast(data?.msg)
 
     return { ...data, data: { ...data?.data, betParams: pms, betShareModel: betShareModel } }
 

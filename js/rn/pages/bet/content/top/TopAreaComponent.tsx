@@ -31,9 +31,9 @@ const TopAreaComponent = () => {
    */
   const renderTopBar = () => <View key={'renderTopBar'}
                                    style={[_styles.top_bar_container,
-    { backgroundColor: Skin1.themeColor }]}>
+                                     { backgroundColor: Skin1.themeColor }]}>
     <TouchableWithoutFeedback key={'renderTopBar left back'}
-                      onPress={() => pop()}>
+                              onPress={() => pop()}>
       <View key={'renderTopBar left back'}
             style={_styles.back_bt_container}>
         <Icon key={'renderTopBar left back'}
@@ -63,7 +63,7 @@ const TopAreaComponent = () => {
             color={Skin1.navBarTitleColor}/>
     </TouchableWithoutFeedback>
     <TouchableWithoutFeedback key={'renderTopBar bar'}
-                      onPress={() => pop()}>
+                              onPress={() => pop()}>
       <View style={_styles.back_bt_container}>
         <Icon key={'renderTopBar bar'}
               size={scale(32)}
@@ -81,11 +81,13 @@ const TopAreaComponent = () => {
                                     style={[_styles.game_tab_container, { backgroundColor: Skin1.themeColor }]}>
 
     <TouchableWithoutFeedback key={'renderGameTab left'}
-                      style={CommStyles.flex}
-                      onPress={() => {
-                        UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.LOTTERY})
-                        setGameTabIndex(GameTab.LOTTERY)
-                      }}>
+                              style={CommStyles.flex}
+                              onPress={() => {
+                                if (gameTabIndex != GameTab.LOTTERY) {
+                                  UGStore.dispatch({ type: 'reset', gameTabIndex: GameTab.LOTTERY })
+                                  setGameTabIndex(GameTab.LOTTERY)
+                                }
+                              }}>
       <View key={'renderGameTab left'}
             style={[
               _styles.game_tab,
@@ -96,15 +98,15 @@ const TopAreaComponent = () => {
       </View>
     </TouchableWithoutFeedback>
     <TouchableWithoutFeedback key={'renderGameTab right'}
-                      style={CommStyles.flex}
-                      onPress={() => {
-                        if (gameTabIndex == GameTab.CHAT) {
-                          UGStore.dispatch({ type: 'reset', chatMenu: chatMenuArray() })
-                        } else {
-                          UGStore.dispatch({type: 'reset', gameTabIndex: GameTab.CHAT})
-                          setGameTabIndex(GameTab.CHAT)
-                        }
-                      }}>
+                              style={CommStyles.flex}
+                              onPress={() => {
+                                if (gameTabIndex == GameTab.CHAT) {
+                                  UGStore.dispatch({ type: 'reset', chatArray: chatMenuArray() })
+                                } else {
+                                  UGStore.dispatch({ type: 'reset', gameTabIndex: GameTab.CHAT })
+                                  setGameTabIndex(GameTab.CHAT)
+                                }
+                              }}>
       <View key={'renderGameTab right'}
             style={[
               _styles.game_tab,
@@ -182,4 +184,4 @@ const _styles = StyleSheet.create({
   },
 })
 
-export {TopAreaComponent}
+export { TopAreaComponent }
