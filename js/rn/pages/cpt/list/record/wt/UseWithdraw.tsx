@@ -42,14 +42,11 @@ const UseWithdraw = () => {
   const [showAddBank, setShowAddBank] = useState(false) //是否显示添加银行卡等帐户
   const [userInfo, setUserInfo] = useState(null) //个人信息
 
+
   useEffect(() => {
     setUserInfo(UGStore.globalProps.userInfo)
-    UGUserModel.updateFromNetwork()?.useSuccess( ({data, code}) =>
-    {
-      ugLog('kkk==',data);
-      setUserInfo(UGStore.globalProps.userInfo)
-    })
-  }, [])
+  }, [UGStore.globalProps.userInfo])
+
 
 
   /**
