@@ -21,6 +21,7 @@ import UGUserModel from '../../../../../redux/model/全局/UGUserModel'
 
 /**
  * 提现界面
+ * 提现界面1
  * @constructor
  */
 const UseWithdraw = () => {
@@ -43,7 +44,13 @@ const UseWithdraw = () => {
 
   useEffect(() => {
     setUserInfo(UGStore.globalProps.userInfo)
-  }, [UGStore.globalProps.userInfo])
+    UGUserModel.updateFromNetwork()?.useSuccess( ({data, code}) =>
+    {
+      ugLog('kkk==',data);
+      setUserInfo(UGStore.globalProps.userInfo)
+    })
+  }, [])
+
 
   /**
    * 初始化1次数据
