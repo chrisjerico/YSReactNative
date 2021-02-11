@@ -297,7 +297,7 @@ export async function setRnPageInfo(force = false) {
   if (AppDefine.siteId != 'c012') {
     pages.push({
       vcName: 'HelpDocViewController',
-      rnName: PageName.JDVirtualCurrencyTutorialPage,
+      rnName: PageName.BtcTutorialPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,

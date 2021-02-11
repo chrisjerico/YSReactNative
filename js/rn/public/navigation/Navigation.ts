@@ -24,7 +24,6 @@ export enum PageName {
   SetPasswordPage = 'SetPasswordPage', //取消界面
   ForgetPasswordPage = 'ForgetPasswordPage', //忘记密码
   AddBankPage = 'AddBankPage', //添加银行卡
-  JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',
   TrendView = 'TrendView',
   LottoSelector = 'LottoSelector',
   LottoBetting = 'LottoBetting',
