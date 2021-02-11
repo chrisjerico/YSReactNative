@@ -11,12 +11,15 @@ import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes'
 import { GameTab } from '../const/LotteryConst'
 import { BetShareModel, PlayNameArray } from '../../../redux/model/game/bet/BetShareModel'
 import { BetLotteryData, ShareBetLotteryData } from '../../../public/network/it/bet/IBetLotteryParams'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { ChatRoomModel } from '../../../public/network/Model/chat/ChatRoomModel'
 import { currentChatRoomId } from '../board/tools/chat/ChatTools'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { Share2ChatStatus } from '../../../public/network/Model/chat/ShareChatRoomModel'
+import { ReadyShareModel } from '../../../redux/model/game/bet/ReadyShareModel'
+import { array } from 'prop-types'
+import { numberToFloatString } from '../../../public/tools/StringUtil'
 
 /**
  * 彩票下注 功能面板
@@ -63,19 +66,54 @@ const UseWebChat = () => {
   useEffect(() => {
     if (shareChatModel?.shareStatus == Share2ChatStatus.STARTING) {
       if (sharable) {//开始分享
-        const shareBet = shareChatModel?.betData?.betParams?.betBean?.map((item, index) => ({
-          betMoney: item?.money,
-          index: index.toString(),
-          name: item?.name,
-          odds: item?.odds,
-        } as ShareBetLotteryData))
+        const shareData = shareChatModel?.betData
+        const betParams = shareData?.betParams //下注数据
+        const betShareModel = shareData?.betShareModel //分享数据
 
+        const shareBet1 = betShareModel?.betBean?.map((item, index) => {
+          const nameArr = betShareModel?.playNameArray[index]
+          const showName = !anyEmpty(nameArr?.playName1) ? `${nameArr?.playName2 ?? ''}` : `${item?.betInfo ?? item?.name}`
+          return {
+            betMoney: numberToFloatString(Number(item?.money)),
+            index: index.toString(),
+            name: showName,
+            odds: item?.odds,
+          } as ShareBetLotteryData
+        })
+
+        const shareBet = betShareModel?.betBean?.map((item, index) => {
+          const nameArr = betShareModel?.playNameArray[index]
+          const showName = !anyEmpty(nameArr?.playName1) ? `${nameArr?.playName2 ?? ''}` : `${item?.betInfo ?? item?.name}`
+          return {
+            ...item,
+            name: showName,
+          } as ShareBetLotteryData
+        })
+
+        //组建分享数据模型
         const shareBetAllInfo = {
-          ...shareChatModel?.betData?.betShareModel,
+          betFollowFlag: '1',
+          activeReturnCoinRatio: betParams?.activeReturnCoinRatio,
+          code: betShareModel?.paneCode,
+          displayNumber: betShareModel?.issue_displayNumber,
+          ftime: betShareModel?.ftime,
+          gameId: betShareModel?.gameId,
+          gameName: betShareModel?.gameName,
+          turnNum: betShareModel?.turnNum,
+          totalNums: arrayLength(betShareModel?.betBean).toString(),
+          totalMoney: betParams?.totalMoney,
           roomId: currentChatRoomId(),
-        } as BetShareModel
+          playNameArray: betShareModel?.playNameArray?.map((nameArr, index) => {
+            const betInfo = betShareModel?.betBean[index]
+            const showName = !anyEmpty(nameArr?.playName1) ?
+              `${nameArr?.playName1}- ${nameArr?.playName2 ?? ''}` :
+              `${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name}`
+            return {...nameArr, playName1: showName} as PlayNameArray
+          }),
+          betParams: shareBet,
+        } as ReadyShareModel
 
-        const shareInfo = `shareBet(${JSON.stringify(shareBet)},${JSON.stringify(shareBetAllInfo)})`
+        const shareInfo = `shareBet(${JSON.stringify(shareBet1)},${JSON.stringify(shareBetAllInfo)})`
         ugLog('shareInfo = ', shareInfo)
         webChatRef?.current?.injectJavaScript(shareInfo)
         UGStore.dispatch({
