@@ -69,7 +69,7 @@ const MiddleMenu = ({ curId, menuTitle, showMenu = false, menu, onMenuClick, onC
    */
   const closeWindow = () => {
     setShow(false)
-    onClose()
+    onClose && onClose()
   }
 
   return (
