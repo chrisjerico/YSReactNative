@@ -17,6 +17,7 @@ import { hideLoading, showLoading } from '../../../../../public/widget/UGLoading
 import { pop } from '../../../../../public/navigation/RootNavigation'
 import { api } from '../../../../../public/network/NetworkRequest1/NetworkRequest1'
 import moment from 'moment'
+import UGUserModel from '../../../../../redux/model/全局/UGUserModel'
 
 /**
  * 提现界面
@@ -42,7 +43,7 @@ const UseWithdraw = () => {
 
   useEffect(() => {
     setUserInfo(UGStore.globalProps.userInfo)
-  }, [])
+  }, [UGStore.globalProps.userInfo])
 
   /**
    * 初始化1次数据

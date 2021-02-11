@@ -6,6 +6,7 @@ import { CapitalConst } from '../const/CapitalConst'
 import APIRouter from '../../../public/network/APIRouter'
 import { Data } from '../../../public/network/Model/YueBaoStatModel'
 import { Data as UserData } from '../../../public/network/Model/UserInfoModel'
+import UGUserModel from '../../../redux/model/全局/UGUserModel'
 
 /**
  * 存款提现
@@ -24,10 +25,8 @@ const UseCapital = () => {
   //余额宝数据
   const [yueBaoData, setYueBaoData] = useState<Data>(null)
 
-  //个人信息
-  const [userInfo, setUserInfo] = useState<UserData>(null)
-
   const systemInfo = UGStore.globalProps.sysConf //系统信息
+  const userInfo = UGStore.globalProps.userInfo //个人信息
 
   /**
    * 初始化1次数据
@@ -47,11 +46,7 @@ const UseCapital = () => {
       }
     })
 
-    APIRouter.user_info().then(({data: res}) => {
-      if (res?.code == 0) {
-        setUserInfo(res?.data)
-      }
-    })
+    UGUserModel.updateFromNetwork()
   }
 
   return {

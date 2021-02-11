@@ -239,7 +239,7 @@ class APIRouter {
         break
     }
     if (token) {
-      const tokenParams = Platform.OS == 'ios' ? 'token=' + token : token
+      const tokenParams = 'token=' + token//Platform.OS == 'ios' ? 'token=' + token : token
       return httpClient.get<UserInfoModel>('c=user&a=info&' + tokenParams)
     } else {
       UGStore.dispatch({ type: 'reset', userInfo: {} })
