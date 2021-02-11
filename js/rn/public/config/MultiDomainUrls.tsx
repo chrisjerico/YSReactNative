@@ -18,7 +18,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://zhibot071f.fhptcdn.com',
   ],
   'txt005': [
-    'https://t005f.fhptcdn.com',
+    'http://t005f.fhptcdn.com',
   ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
@@ -99,7 +99,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t136f.fhptcdn.com',
+    'http://t136f.6yc.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
@@ -120,7 +120,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t136f.fhptcdn.com',
+    'http://t136f.6yc.com',
   ],
   'tstksm': [
     'http://t133f.6yc.com',
@@ -320,14 +320,14 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c190': [
     'https://474745.com',
     'https://243939.com',
-    'https://141464.com',
     'https://141454.com',
+    'https://141464.com',
     'https://489494.com',
   ],
   'c193': [
     'https://49060333.com',
     'https://49060222.com',
-    'https://4906214.com',
+    'https://49061111.com',
     'https://4906213.com',
     'https://4906214.com',
   ],
@@ -455,10 +455,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333k.org',
-    'https://70333j.org',
+    'https://70333a.org',
+    'https://70333s.org',
     'https://70333h.org',
-    'https://70333l.org',
+    'https://70333f.org',
     'https://70333g.org',
   ],
   'h003b': [
