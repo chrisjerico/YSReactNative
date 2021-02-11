@@ -43,11 +43,7 @@ const UseWithdraw = () => {
 
   useEffect(() => {
     setUserInfo(UGStore.globalProps.userInfo)
-    UGUserModel.updateFromNetwork()?.useSuccess( ({data, code}) =>
-    {
-      setUserInfo(UGStore.globalProps.userInfo)
-    })
-  }, [])
+  }, [UGStore.globalProps.userInfo])
 
   /**
    * 初始化1次数据
