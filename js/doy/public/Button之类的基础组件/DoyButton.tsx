@@ -12,7 +12,7 @@ const sc = sc375
 
 // 背景渐变色样式
 export const DoyButton1 = (p: ButtonProps & { linearGradientColors?: string[] }) => {
-  const { titleStyle, buttonStyle, linearGradientColors } = p
+  const { containerStyle, buttonStyle, titleStyle, linearGradientColors } = p
   const { navBarBgColor } = skin1
   return (
     <Button title='确认'
@@ -22,23 +22,24 @@ export const DoyButton1 = (p: ButtonProps & { linearGradientColors?: string[] })
         start: { x: 0, y: 0.5 },
         end: { x: 1, y: 0.5 },
       }}
-      containerStyle={{ marginTop: sc(16) }}
       {...p}
-      titleStyle={[{ fontSize: sc(16), fontWeight: '600' }, titleStyle]}
+      containerStyle={[{ marginTop: sc(16) }, containerStyle]}
       buttonStyle={[{ height: sc(48) }, buttonStyle]}
+      titleStyle={[{ fontSize: sc(16), fontWeight: '600' }, titleStyle]}
     />
   )
 }
 
 // 透明背景色+描边样式
 export const DoyButton2 = (p: ButtonProps) => {
+  const { containerStyle, buttonStyle, titleStyle, } = p
   const { themeColor } = skin1
   return (
     <Button title='取消'
-      titleStyle={{ fontSize: sc(16), fontWeight: '600', color: themeColor, }}
-      containerStyle={{ marginTop: sc(16) }}
       {...p}
-      buttonStyle={[{ height: sc(48), backgroundColor: 'transparent', borderWidth: 2, borderColor: themeColor }, p?.buttonStyle]}
+      containerStyle={[{ marginTop: sc(16) }, containerStyle]}
+      buttonStyle={[{ height: sc(48), backgroundColor: 'transparent', borderWidth: 2, borderColor: themeColor }, buttonStyle]}
+      titleStyle={[{ fontSize: sc(16), fontWeight: '600', color: themeColor, }, titleStyle]}
     />
   )
 }
