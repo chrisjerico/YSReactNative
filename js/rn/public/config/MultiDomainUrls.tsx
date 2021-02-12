@@ -20,6 +20,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'txt005': [
     'http://t005f.fhptcdn.com',
   ],
+  't005': [
+    'http://t005f.fhptcdn.com',
+  ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
   ],
@@ -233,9 +236,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615vv.com',
   ],
   'c116': [
-    'https://20801353.com',
+    'https://58933e.com',
     'https://58922c.com',
-    'https://58922d.com',
+    'https://58933b.com',
     'https://58933c.com',
     'https://58933d.com',
   ],
