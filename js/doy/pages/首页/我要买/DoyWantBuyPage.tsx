@@ -29,7 +29,7 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
   }, [])
 
   return <View style={{ flex: 1 }}>
-    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: sc(228), paddingHorizontal: sc(16) }}>
+    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ padding: sc(16), paddingTop: sc(8) }}>
       <SegmentedControl
         tabs={['银行卡', '支付宝', '微信支付']}
         onChange={(idx) => {
@@ -39,10 +39,7 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
         segmentedControlBackgroundColor='#1052BE'
         activeSegmentBackgroundColor='#3B7FF1'
         width={AppDefine.width - sc(32)}
-        containerStyle={{
-          marginTop: sc(5),
-          height: sc(38),
-        }}
+        containerStyle={{ height: sc(38), }}
         textStyle={{
           fontWeight: "500",
           fontSize: 14,
@@ -53,7 +50,7 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
       <TextInput placeholder='范围100~10000 DOY' placeholderTextColor='#FFFFFF99' clearButtonMode='while-editing'
         style={{ marginTop: sc(12), height: sc(46), borderRadius: sc(4), backgroundColor: '#1052BE', paddingHorizontal: sc(16), fontSize: sc(15), color: 'white', fontWeight: '700' }}
       />
-      <DoyButton1 title='开始搜寻' containerStyle={{ marginTop: sc(24) }} buttonStyle={{ height: sc(40) }} titleStyle={{ color: themeColor }} linearGradientProps={{
+      <DoyButton1 title='开始搜寻' containerStyle={{ marginTop: sc(24), marginBottom: sc(5) }} buttonStyle={{ height: sc(40) }} titleStyle={{ color: themeColor }} linearGradientProps={{
         colors: ['#E0EBFF', '#fff'],
         start: { x: 0, y: 0 },
         end: { x: 1, y: 1 },

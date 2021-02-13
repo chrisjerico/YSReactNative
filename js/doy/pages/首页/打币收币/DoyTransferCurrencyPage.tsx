@@ -33,8 +33,8 @@ export const DoyTransferCurrencyPage = ({ setProps, setNavbarProps }: UGBasePage
 
   return [<View style={{ flex: 1 }}>
     {/* 卖单类型 */}
-    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: sc(103), paddingHorizontal: sc(16) }}>
-      <DoyText14 white bold1 style={{ marginTop: sc(5) }}>输入DOY数量</DoyText14>
+    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ padding: sc(16), paddingTop: sc(8 - 2), paddingBottom: sc(24) }}>
+      <DoyText14 white bold1>输入DOY数量</DoyText14>
       <DoyTextInput1 bold3 style={{ backgroundColor: '#1052BE', fontSize: sc(16), color: 'white' }} placeholder='0' placeholderTextColor='#ffffff99'
         rightComponent={<DoyText16 bold3 style={{ color: '#ffffff99' }}>= 0 RMB</DoyText16>}
       />

@@ -4,6 +4,7 @@ import FastImage, { FastImageProperties, ImageStyle } from "react-native-fast-im
 import { img_assets } from "../../../Res/icon";
 import LinearGradient from "react-native-linear-gradient";
 import { TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import Animated, { Easing } from "react-native-reanimated";
 
 type PlaceholderImageType = '默认' | '彩票'
 interface PlaceholderProps {
@@ -70,6 +71,10 @@ export const FastImagePlaceholder = (props: FastImageProperties & PlaceholderPro
   const { placeholderURL, placeholderImageType, placeholderGradientColor, placeholderStyle, children, onPress, containerStyle } = props
   const placeholderImage = placeholderURL ?? getPlaceholderImage(placeholderImageType)
 
+  const { current: v } = React.useRef({
+    opacity: new Animated.Value(1),
+  });
+
   // FastImage包含两个占位元素
   const cp = (
     <FastImage
@@ -91,11 +96,15 @@ export const FastImagePlaceholder = (props: FastImageProperties & PlaceholderPro
 
   if (onPress || containerStyle) {
     return (
-      <TouchableNativeFeedback onPress={onPress} >
-        <View style={[{}, containerStyle]}>
+      <TouchableNativeFeedback onPress={onPress} onPressIn={() => {
+        Animated.timing(v.opacity, { toValue: 0.2, duration: 100, easing: Easing.linear }).start(); // 半透明
+      }} onPressOut={() => {
+        Animated.timing(v.opacity, { toValue: 1, duration: 100, easing: Easing.linear }).start();// 不透明
+      }} >
+        <Animated.View style={[{ opacity: v.opacity }, containerStyle]}>
           {cp}
-        </View>
-      </TouchableNativeFeedback>
+        </Animated.View>
+      </TouchableNativeFeedback >
     )
   }
   return cp

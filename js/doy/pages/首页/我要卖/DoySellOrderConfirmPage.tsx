@@ -20,7 +20,7 @@ export const DoySellOrderConfirmPage = ({ setProps }: UGBasePageProps) => {
   }, [])
 
   return <View style={{ flex: 1 }}>
-    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: sc(51), paddingHorizontal: sc(16) }} />
+    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ padding: sc(16), paddingTop: sc(8 + 27) }} />
     <View style={{ marginTop: sc(-44), paddingHorizontal: sc(16), flex: 1 }}>
       <View style={{ backgroundColor: 'white', height: sc(88), padding: sc(16), borderRadius: sc(4) }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

@@ -25,8 +25,8 @@ export const DoySellOrderPage = ({ }: UGBasePageProps) => {
   }, [])
 
   return [<View style={{ flex: 1 }}>
-    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: sc(143), paddingHorizontal: sc(16) }}>
-      <View style={{ marginTop: sc(8), flexDirection: 'row', alignItems: 'center' }}>
+    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ padding: sc(16), paddingTop: sc(8) }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: sc(60) }}>
         <View style={{ backgroundColor: '#ffffff44', padding: sc(2), width: sc(60), aspectRatio: 1, borderRadius: sc(6) }}>
           <FastImagePlaceholder source={{ uri: '' }} style={{ flex: 1, borderRadius: sc(4) }} />
         </View>

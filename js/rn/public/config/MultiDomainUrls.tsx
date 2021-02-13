@@ -102,7 +102,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t136f.6yc.com',
+    'http://t126f.6yc.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
@@ -123,7 +123,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t136f.6yc.com',
+    'http://t126f.6yc.com',
   ],
   'tstksm': [
     'http://t133f.6yc.com',
@@ -253,11 +253,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'https://jz0222.com',
-    'https://jz0444.com',
-    'https://jz1444.com',
-    'https://jz2444.com',
-    'https://jz2111.com',
+    'https://hqcp00001.com',
+    'https://hqcp00002.com',
+    'https://hqcp00003.com',
+    'https://hqcp00004.com',
+    'https://hqcp00005.com',
   ],
   'c126b': [
     'https://bc44698.com',
