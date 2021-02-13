@@ -159,42 +159,34 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   const renderChaseNumber = () => {
     if (systemInfo?.chaseNumber != '1') return null
 
+    ugLog('systemInfo?.chaseNumber', systemInfo?.chaseNumber)
+    ugLog('systemInfo?.reBetShareModel', reBetShareModel)
+
     return !dicNull(reBetShareModel) ?
       <TouchableWithoutFeedback onPress={() => {
-
         UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
       }}>
-        <Text style={[
-          _styles.bet_again,
-          {
-            backgroundColor: UGColor.TextColor7,
-            color: UGColor.TextColor4,
-          },
-        ]}>追号</Text>
+        <Text style={_styles.bet_again}>追号</Text>
       </TouchableWithoutFeedback> :
-      <Text style={_styles.bet_again}>追号</Text>
+      <Text style={[
+        _styles.bet_again,
+        {
+          backgroundColor: UGColor.TextColor7,
+          color: UGColor.TextColor4,
+        },
+      ]}>追号</Text>
   }
 
   /**
    * 机选
    */
   const renderRandomSelected = () => {
-    if (systemInfo?.chaseNumber != '1') return
 
-    return !dicNull(reBetShareModel) ?
-      <TouchableWithoutFeedback onPress={() => {
+    return <TouchableWithoutFeedback onPress={() => {
 
-      }}>
-        <Text style={[
-          _styles.bet_again,
-          {
-            backgroundColor: UGColor.TextColor7,
-            color: UGColor.TextColor4,
-          },
-        ]}>机选</Text>
-      </TouchableWithoutFeedback> :
-    <Text style={_styles.bet_again}>机选</Text>
-  }
+    }}>
+      <Text style={_styles.bet_again}>机选</Text>
+    </TouchableWithoutFeedback>  }
 
   /**
    * 绘制输入功能区

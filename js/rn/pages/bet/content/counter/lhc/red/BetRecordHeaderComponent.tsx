@@ -39,7 +39,7 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
    */
   const renderItemContent = (item: NextIssueData) => {
     return (
-      <View key={'bet record renderItemContent'}
+      <View key={'bet record renderItemContent' + item?.displayNumber}
             style={_styles.ball_item_container}>
         <View key={'renderItemContent issue_container'}
               style={_styles.issue_container}>

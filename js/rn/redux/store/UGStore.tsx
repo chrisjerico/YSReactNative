@@ -21,6 +21,7 @@ import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
 import { GameTab } from '../../pages/bet/const/LotteryConst'
 import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 import { ShareChatRoomModel } from '../../public/network/Model/chat/ShareChatRoomModel'
+import { ugLog } from '../../public/tools/UgLog'
 
 // 整个State的树结构
 
@@ -192,15 +193,17 @@ export class UGStore {
 
   // 存储到本地
   static async save(key: AsyncStorageKey | string = AsyncStorageKey.IGlobalState, value: any = this.globalProps) {
+    ugLog('save key = ', key)
     if (Platform.OS == 'ios') {
       await OCHelper.call('NSUserDefaults.standardUserDefaults[setObject:forKey:]', [JSON.stringify(value), key])
     } else {
-      await AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(value))
+      await AsyncStorage.setItem(key, JSON.stringify(value))
     }
   }
 
   // 获取本地缓存
   static async load(key: AsyncStorageKey | string): Promise<string> {
+    ugLog('load key = ', key)
     if (Platform.OS == 'ios') {
       return OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', [key])
     } else {

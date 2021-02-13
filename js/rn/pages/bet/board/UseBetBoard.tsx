@@ -36,14 +36,13 @@ const UseBetBoard = () => {
    * 判断当前彩种是不是可以追号
    */
   useEffect(() => {
-    ugLog('当前追号 取出：', AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId)
     UGStore.load(AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId).then((res) => {
       if (!anyEmpty(res)) {
         const newData = JSON.parse(res)
         setReBetShareModel(newData)
       }
     })
-  }, [])
+  }, [UGStore.globalProps?.lotteryId])
 
   /**
    * 输入金额有变化
