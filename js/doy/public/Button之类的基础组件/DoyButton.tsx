@@ -201,7 +201,7 @@ export const DoyTextInput1 = (p: DoyTextInputProps) => {
     return (
       <View style={[textInputDefaultStyle, { alignItems: 'center', flexDirection: 'row', }, p?.style]}>
         {leftComponent}
-        <TextInput {...p} style={[{ fontSize, fontWeight, color, flex: 1 }, p?.style]} >1</TextInput>
+        <TextInput {...p} style={[{ fontSize, fontWeight, color, flex: 1 }, p?.style]} />
         {rightComponent}
       </View>
     )
