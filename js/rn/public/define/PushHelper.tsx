@@ -739,7 +739,7 @@ export default class PushHelper {
         }
         break
       case 'android':
-        // TODO 安卓
+        PushHelper.pushCategory('7', code)
         break
     }
   }
