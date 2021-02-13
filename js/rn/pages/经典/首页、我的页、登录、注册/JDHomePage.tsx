@@ -137,7 +137,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               })()}
               flagContainer={{ width: sc(50), height: sc(50) }}
               showBigCenterFlag={flagType == 4}
-              title={anyEmpty(title) ? name : title}
+              title={name?.length ? name : title}
               showSubTitle={!!subtitle?.length}
               subTitle={subtitle}
               subTitleStyle={{ fontSize: sc(18), color: '#777' }}
