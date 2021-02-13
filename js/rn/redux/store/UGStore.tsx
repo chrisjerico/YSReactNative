@@ -191,7 +191,7 @@ export class UGStore {
   }
 
   // 存储到本地
-  static async save(key = AsyncStorageKey.IGlobalState, value: any = this.globalProps) {
+  static async save(key: AsyncStorageKey | string = AsyncStorageKey.IGlobalState, value: any = this.globalProps) {
     if (Platform.OS == 'ios') {
       await OCHelper.call('NSUserDefaults.standardUserDefaults[setObject:forKey:]', [JSON.stringify(value), key])
     } else {
@@ -200,7 +200,7 @@ export class UGStore {
   }
 
   // 获取本地缓存
-  static async load(key: AsyncStorageKey): Promise<string> {
+  static async load(key: AsyncStorageKey | string): Promise<string> {
     if (Platform.OS == 'ios') {
       return OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', [key])
     } else {

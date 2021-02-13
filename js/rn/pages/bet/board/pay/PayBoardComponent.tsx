@@ -132,7 +132,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
                   onPress={() => {
-                    showLoading()
+                    // showLoading()
                     startBetting().then((data) => {
                       //不是秒秒彩就给出提示语
                       betShareModel?.isInstant != '1' && data?.code == 0 && Toast(data?.msg)

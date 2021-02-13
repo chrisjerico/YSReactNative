@@ -12,6 +12,8 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { ugLog } from '../../../public/tools/UgLog'
 import { GameTab } from '../const/LotteryConst'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
+import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
+import { dicNull } from '../../../public/tools/Ext'
 
 /**
  * 彩票功能区入参
@@ -44,6 +46,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     showChip,
     setShowChip,
     playOddDetailData,
+    reBetShareModel,
+    setReBetShareModel,
     checkShowBetPayment,
   } = UseBetBoard()
 
@@ -152,59 +156,75 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   /**
    * 绘制输入功能区
    */
-  const renderInputArea = () => <View key={'renderInputArea'}
-                                      style={_styles.input_container}>
+  const renderInputArea = () => {
 
-    <View key={'renderInputArea 追号 机选'}>
-      <Text style={_styles.bet_again}>追号</Text>
-      <Text style={_styles.bet_again}>机选</Text>
-    </View>
+    return <View key={'renderInputArea'}
+                 style={_styles.input_container}>
 
-    <View key={'renderInputArea middle'}
-          style={_styles.middle_container}>
-      <View key={'renderInputArea sub middle'}
-            style={_styles.bet_info}>
-        <Text key={'renderInputArea middle 已选中'}
-              style={_styles.lottery_count_hint}>已选中</Text>
-        <Text key={'renderInputArea middle 0'}
-              style={_styles.lottery_count_count}>0</Text>
-        <Text key={'renderInputArea middle 注'}
-              style={_styles.lottery_count_hint}>注</Text>
-        <View key={'renderInputArea ct'}
-              style={CommStyles.flex}/>
-        <TouchableWithoutFeedback key={'renderInputArea 筹码'}
-                                  onPress={() => setShowChip(!showChip)}>
-          <Text key={'renderInputArea 筹码'}
-                style={_styles.lottery_count_chip}>筹码</Text>
+      <View key={'renderInputArea 追号 机选'}>
+        <TouchableWithoutFeedback onPress={() => {
+          !dicNull(reBetShareModel) && UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
+        }}>
+          <Text style={[
+            _styles.bet_again,
+            !dicNull(reBetShareModel) ? {
+              backgroundColor: UGColor.TextColor7,
+              color: UGColor.TextColor4,
+            } : null,
+          ]}>追号</Text>
+        </TouchableWithoutFeedback>
+        <Text style={_styles.bet_again}>机选</Text>
+      </View>
+
+      <View key={'renderInputArea middle'}
+            style={_styles.middle_container}>
+        <View key={'renderInputArea sub middle'}
+              style={_styles.bet_info}>
+          <Text key={'renderInputArea middle 已选中'}
+                style={_styles.lottery_count_hint}>已选中</Text>
+          <Text key={'renderInputArea middle 0'}
+                style={_styles.lottery_count_count}>0</Text>
+          <Text key={'renderInputArea middle 注'}
+                style={_styles.lottery_count_hint}>注</Text>
+          <View key={'renderInputArea ct'}
+                style={CommStyles.flex}/>
+          <TouchableWithoutFeedback key={'renderInputArea 筹码'}
+                                    onPress={() => setShowChip(!showChip)}>
+            <Text key={'renderInputArea 筹码'}
+                  style={_styles.lottery_count_chip}>筹码</Text>
+          </TouchableWithoutFeedback>
+        </View>
+        <TextInput key={'renderInputArea input'}
+                   value={inputMoney}
+                   style={_styles.input_text}
+                   onChangeText={(s) => {
+                     setInputMoney(s)
+                   }}
+                   keyboardType={'numeric'}/>
+      </View>
+
+      <View key={'renderInputArea input 下注 重置'}
+            style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableWithoutFeedback onPress={checkShowBetPayment}>
+          <Text key={'renderInputArea input 下注'}
+                style={_styles.start_bet}>下注</Text>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => {
+          ugLog('clear selected')
+          UGStore.dispatch({
+            type: 'reset',
+            selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
+          })
+        }
+        }>
+          <Text key={'renderInputArea input 重置'}
+                style={_styles.start_reset}>重置</Text>
         </TouchableWithoutFeedback>
       </View>
-      <TextInput key={'renderInputArea input'}
-                 value={inputMoney}
-                 style={_styles.input_text}
-                 onChangeText={(s) => {
-                   setInputMoney(s)
-                 }}
-                 keyboardType={'numeric'}/>
+
     </View>
-
-    <View key={'renderInputArea input 下注 重置'}
-          style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TouchableWithoutFeedback onPress={checkShowBetPayment}>
-        <Text key={'renderInputArea input 下注'}
-              style={_styles.start_bet}>下注</Text>
-      </TouchableWithoutFeedback>
-
-      <TouchableWithoutFeedback onPress={() => {
-        ugLog('clear selected')
-        UGStore.dispatch({ type: 'reset', selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>() })
-      }
-      }>
-        <Text key={'renderInputArea input 重置'}
-              style={_styles.start_reset}>重置</Text>
-      </TouchableWithoutFeedback>
-    </View>
-
-  </View>
+  }
 
   /**
    * 绘制封盘中

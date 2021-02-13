@@ -227,25 +227,15 @@ class APIRouter {
     return httpClient.get<PromotionsModel>('c=system&a=promotions')
   }
   static user_info = async () => {
-    let token = null
-    switch (Platform.OS) {
-      case 'ios':
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        token = user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        token = pms?.token
-        break
-    }
-    if (token) {
-      const tokenParams = 'token=' + token//Platform.OS == 'ios' ? 'token=' + token : token
-      return httpClient.get<UserInfoModel>('c=user&a=info&' + tokenParams)
-    } else {
-      UGStore.dispatch({ type: 'reset', userInfo: {} })
-      UGStore.save()
-      return Promise.reject('使用者未登入，拒絕更新使用者資料')
-    }
+    let tokenParams = await APIRouter.encryptGetParams({})
+    return httpClient.get<UserInfoModel>('c=user&a=info' + tokenParams)
+    // if (tokenParams) {
+    //   return httpClient.get<UserInfoModel>('c=user&a=info' + tokenParams)
+    // } else {
+    //   UGStore.dispatch({ type: 'reset', userInfo: {} })
+    //   UGStore.save()
+    //   return Promise.reject('使用者未登入，拒絕更新使用者資料')
+    // }
   }
 
   static user_guestLogin = async () => {

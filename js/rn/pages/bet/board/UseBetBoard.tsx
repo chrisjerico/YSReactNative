@@ -6,6 +6,8 @@ import { anyEmpty } from '../../../public/tools/Ext'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { checkBetCount, generateBetArray } from './tools/BetUtil'
 import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
+import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
+import { BetShareModel } from '../../../redux/model/game/bet/BetShareModel'
 
 
 /**
@@ -18,6 +20,8 @@ const UseBetBoard = () => {
   const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
+  const [reBetShareModel, setReBetShareModel] = useState<BetShareModel>(null) //追号的下注数据
+
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
 
@@ -26,6 +30,18 @@ const UseBetBoard = () => {
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const gameTabIndex = UGStore.globalProps?.gameTabIndex //GameTab 当前TAB是 彩票0 还是 聊天室1
   const betShareModel = UGStore.globalProps.betShareModel //下注数据
+
+  /**
+   * 判断当前彩种是不是可以追号
+   */
+  useEffect(()=>{
+    UGStore.load(AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId).then((res) =>{
+      if (!anyEmpty(res)) {
+        const newData = JSON.parse(res)
+        setReBetShareModel(newData)
+      }
+    })
+  }, [])
 
   /**
    * 输入金额有变化
@@ -62,6 +78,8 @@ const UseBetBoard = () => {
     showChip,
     setShowChip,
     playOddDetailData,
+    reBetShareModel,
+    setReBetShareModel,
     checkShowBetPayment,
   }
 }

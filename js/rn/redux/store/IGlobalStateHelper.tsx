@@ -9,6 +9,7 @@ import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 export enum AsyncStorageKey {
   IGlobalState = 'IGlobalState',
+  RE_BET_INFO = 'RE_BET_INFO_LOTTERY_ID=', //追号信息
 }
 
 export async function updateUserInfo() {
