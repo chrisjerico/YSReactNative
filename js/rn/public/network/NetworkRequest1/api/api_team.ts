@@ -94,4 +94,13 @@ export class api_team {
   }) {
     return this.c.post('createInviteCode', params)
   }
+
+    // 停用开启邀请码
+    static updateInviteCodeStatus(params: {
+      id: number, // 邀请码id
+      status: number,//状态 ： 0 关闭  1 开启
+
+    }) {
+      return this.c.post('updateInviteCodeStatus', params)
+    }
 }
