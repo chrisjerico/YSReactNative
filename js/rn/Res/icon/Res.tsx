@@ -6,9 +6,9 @@ const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } 
  * 全局资源统一管理
  *
  */
-export const ROULETTE_LOGO = img_assets('c018dzp', 'gif') //大转盘
+export const icon_大转盘 = img_home('dzp') //大转盘
 export const icon_砸金蛋 = img_home('zjd/zjd')    //大转盘
-export const icon_刮刮乐 = img_assets('gyg')    //大转盘
+export const icon_刮刮乐 = img_home('gyg/gyg')    //大转盘
 export const icon_任务弹窗 = img_assets('task_home')    //任务弹框
 export const icon_利息宝 = () => {
   if (AppDefine.inSites('c085')) {

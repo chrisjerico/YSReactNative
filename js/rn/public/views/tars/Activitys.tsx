@@ -3,7 +3,7 @@ import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import { icon_任务弹窗, icon_利息宝, icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
+import { icon_任务弹窗, icon_利息宝, icon_刮刮乐, icon_砸金蛋, icon_大转盘 } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
 import { img_images } from '../../../Res/icon'
@@ -76,7 +76,7 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
         containerStyle={{ top: scale(355), right: 0 }}
         enableFastImage={false}
         show={uid && roulette}
-        logo={anyString(turntableLogo) ?? ROULETTE_LOGO}
+        logo={anyString(turntableLogo) ?? icon_大转盘}
         onPress={() => {
           // 大转盘
           PushHelper.pushWheel(roulette)
