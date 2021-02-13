@@ -93,9 +93,10 @@ const UsePayBoard = () => {
     await syncUserInfo(false)
     hideLoading()
 
-
     if (data?.code == 0) {//下注成功 数据保留 用于 追号
-      UGStore.save(AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId, betShareModel)
+      const betMap = new Map<string, BetShareModel>()
+      betMap[UGStore.globalProps?.lotteryId] = betShareModel
+      UGStore.dispatch({type: 'merge', betChaseMap: betMap})
     } else {//异常数据
       Toast(data?.msg)
     }

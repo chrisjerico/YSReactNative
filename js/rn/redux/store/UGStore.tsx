@@ -44,6 +44,7 @@ export interface IGlobalState {
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
+  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
   inputMoney?: number //输入的游戏金额
 
   chatRoomIndex?: number //当前聊天室索引
@@ -87,6 +88,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.shareChatModel && (state.shareChatModel = act.shareChatModel)
 
     act.selectedData && (state.selectedData = act.selectedData)
+    act.betChaseMap && (state.betChaseMap = act.betChaseMap)
     act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
 
   } else if (act.type == 'merge') {
@@ -100,6 +102,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
     state.chatRoomData = { ...state.chatRoomData, ...act.chatRoomData }
+    state.betChaseMap = { ...state.betChaseMap, ...act.betChaseMap }
 
     state.selectedData = mergeObject(state.selectedData, act.selectedData)
 
@@ -136,6 +139,7 @@ export interface UGAction<P = {}> extends Action {
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
+  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
   inputMoney?: number //输入的游戏金额
 
   chatRoomIndex?: number //当前聊天室索引

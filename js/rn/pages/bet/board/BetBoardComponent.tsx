@@ -47,7 +47,6 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     setShowChip,
     playOddDetailData,
     reBetShareModel,
-    setReBetShareModel,
     checkShowBetPayment,
   } = UseBetBoard()
 
