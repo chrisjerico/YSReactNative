@@ -39,15 +39,15 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
    */
   const renderItemContent = (item: NextIssueData) => {
     return (
-      <View key={'bet record renderItemContent' + item?.displayNumber}
+      <View key={'bet record renderItemContent' + item?.preDisplayNumber}
             style={_styles.ball_item_container}>
         <View key={'renderItemContent issue_container'}
               style={_styles.issue_container}>
           {
-            anyEmpty(item?.displayNumber) ? null :
-              <Text key={'renderItemContent issue_container' + item.displayNumber}
+            anyEmpty(item?.preDisplayNumber) ? null :
+              <Text key={'renderItemContent issue_container' + item.preDisplayNumber}
                     style={_styles.text_content_issue}
-                    numberOfLines={1}>{item.displayNumber + '期'}</Text>
+                    numberOfLines={1}>{item.preDisplayNumber + '期'}</Text>
           }
           <Icon key={'renderItemContent issue_container' + showHistory}
                 size={scale(48)}
