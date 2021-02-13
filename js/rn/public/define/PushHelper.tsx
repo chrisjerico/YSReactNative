@@ -24,6 +24,7 @@ import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
 import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
 import { Skin1 } from '../theme/UGSkinManagers'
+import { IBetLotteryPage } from '../../pages/bet/BetLotteryPage'
 
 
 export enum UGLinkPositionType {
@@ -152,7 +153,7 @@ export default class PushHelper {
         break
       case 'android':
         if (B_DEBUG) {
-          push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
+          push(PageName.BetLotteryPage, {lotteryId: game?.gameId} as IBetLotteryPage)
           return
         }
         if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return

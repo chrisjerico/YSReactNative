@@ -78,7 +78,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         <View key={key + 'render LMA sub2' + groupData?.id}
               style={_styles.ball_container}>
           {
-            playOddData?.pageData?.groupTri[0][0]?.exPlays?.map((item, index) => renderEBall(groupData, item))
+            currentPageData[0]?.exPlays?.map((item, index) => renderEBall(groupData, item))
           }
         </View>
       </View>

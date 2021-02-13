@@ -94,7 +94,7 @@ const UsePayBoard = () => {
     hideLoading()
 
 
-    if (data?.code != 0) {//下注成功 数据保留 用于 追号
+    if (data?.code == 0) {//下注成功 数据保留 用于 追号
       ugLog('当前追号 存下：', AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId)
       UGStore.save(AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId, JSON.stringify(betShareModel))
     } else {//异常数据

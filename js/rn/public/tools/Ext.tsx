@@ -37,6 +37,9 @@ export const firstObj = (array?: any) => array && array.length ? array[0] : unde
 
 /**
  * 合并对象
+ *
+ * 别处的异常可能会导致这里原本正常的递归陷入无限循环
+ *
  * @param src 源对象
  * @param des 新对象
  */

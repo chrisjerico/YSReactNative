@@ -157,10 +157,11 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
    * 追号
    */
   const renderChaseNumber = () => {
-    if (systemInfo?.chaseNumber != '1') return
+    if (systemInfo?.chaseNumber != '1') return null
 
     return !dicNull(reBetShareModel) ?
       <TouchableWithoutFeedback onPress={() => {
+
         UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
       }}>
         <Text style={[
@@ -175,14 +176,14 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   }
 
   /**
-   * 追号
+   * 机选
    */
   const renderRandomSelected = () => {
     if (systemInfo?.chaseNumber != '1') return
 
     return !dicNull(reBetShareModel) ?
       <TouchableWithoutFeedback onPress={() => {
-        UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
+
       }}>
         <Text style={[
           _styles.bet_again,
