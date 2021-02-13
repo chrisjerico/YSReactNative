@@ -48,7 +48,7 @@ export const DoyWantSellPage = ({ setProps, setNavbarProps }: UGBasePageProps) =
 
   return [<View style={{ flex: 1 }}>
     {/* 卖单类型 */}
-    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: sc(62), paddingHorizontal: sc(16) }}>
+    <LinearGradient colors={navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ padding: sc(16), paddingTop: sc(8) }}>
       <SegmentedControl
         tabs={['银行卡(3)', '支付宝(0)', '微信支付(0)']}
         onChange={(idx) => {
@@ -58,10 +58,7 @@ export const DoyWantSellPage = ({ setProps, setNavbarProps }: UGBasePageProps) =
         segmentedControlBackgroundColor='#1052BE'
         activeSegmentBackgroundColor='#3B7FF1'
         width={AppDefine.width - sc(32)}
-        containerStyle={{
-          marginTop: sc(7),
-          height: sc(38),
-        }}
+        containerStyle={{ height: sc(38), }}
         textStyle={{
           fontWeight: "500",
           fontSize: 14,

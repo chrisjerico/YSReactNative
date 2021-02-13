@@ -20,6 +20,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'txt005': [
     'http://t005f.fhptcdn.com',
   ],
+  't005': [
+    'http://t005f.fhptcdn.com',
+  ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
   ],
@@ -99,7 +102,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t136f.6yc.com',
+    'http://t126f.6yc.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
@@ -120,7 +123,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t136f.6yc.com',
+    'http://t126f.6yc.com',
   ],
   'tstksm': [
     'http://t133f.6yc.com',
@@ -233,9 +236,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615vv.com',
   ],
   'c116': [
-    'https://20801353.com',
+    'https://58933e.com',
     'https://58922c.com',
-    'https://58922d.com',
+    'https://58933b.com',
     'https://58933c.com',
     'https://58933d.com',
   ],
@@ -368,11 +371,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4504508.com',
-    'https://4503450.com',
-    'https://4504450.com',
-    'https://4506450.com',
-    'https://4507450.com',
+    'https://2vip450.com',
+    'https://3vip450.com',
+    'https://4vip450.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',

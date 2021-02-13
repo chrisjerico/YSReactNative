@@ -12,7 +12,7 @@ const sc = sc375
 
 // 背景渐变色样式
 export const DoyButton1 = (p: ButtonProps & { linearGradientColors?: string[] }) => {
-  const { titleStyle, buttonStyle, linearGradientColors } = p
+  const { containerStyle, buttonStyle, titleStyle, linearGradientColors } = p
   const { navBarBgColor } = skin1
   return (
     <Button title='确认'
@@ -22,23 +22,24 @@ export const DoyButton1 = (p: ButtonProps & { linearGradientColors?: string[] })
         start: { x: 0, y: 0.5 },
         end: { x: 1, y: 0.5 },
       }}
-      containerStyle={{ marginTop: sc(16) }}
       {...p}
-      titleStyle={[{ fontSize: sc(16), fontWeight: '600' }, titleStyle]}
+      containerStyle={[{ marginTop: sc(16) }, containerStyle]}
       buttonStyle={[{ height: sc(48) }, buttonStyle]}
+      titleStyle={[{ fontSize: sc(16), fontWeight: '600' }, titleStyle]}
     />
   )
 }
 
 // 透明背景色+描边样式
 export const DoyButton2 = (p: ButtonProps) => {
+  const { containerStyle, buttonStyle, titleStyle, } = p
   const { themeColor } = skin1
   return (
     <Button title='取消'
-      titleStyle={{ fontSize: sc(16), fontWeight: '600', color: themeColor, }}
-      containerStyle={{ marginTop: sc(16) }}
       {...p}
-      buttonStyle={[{ height: sc(48), backgroundColor: 'transparent', borderWidth: 2, borderColor: themeColor }, p?.buttonStyle]}
+      containerStyle={[{ marginTop: sc(16) }, containerStyle]}
+      buttonStyle={[{ height: sc(48), backgroundColor: 'transparent', borderWidth: 2, borderColor: themeColor }, buttonStyle]}
+      titleStyle={[{ fontSize: sc(16), fontWeight: '600', color: themeColor, }, titleStyle]}
     />
   )
 }
@@ -97,6 +98,8 @@ interface DoyTextProps extends TextProps {
   bold2?: boolean //中粗
   bold3?: boolean //大粗
 
+  textAlignCenter?: boolean
+
   size12?: boolean
   size13?: boolean
   size14?: boolean
@@ -105,6 +108,7 @@ interface DoyTextProps extends TextProps {
   size18?: boolean
   size20?: boolean
   size28?: boolean
+  size30?: boolean
   size35?: boolean
   size40?: boolean
 
@@ -114,7 +118,8 @@ interface DoyTextProps extends TextProps {
 const DoyText = (p: DoyTextProps) => {
   const { gray1, gray2, white } = p
   const { bold1, bold2, bold3 } = p
-  const { size12, size13, size14, size15, size16, size18, size20, size28, size35, size40 } = p
+  const { textAlignCenter } = p
+  const { size12, size13, size14, size15, size16, size18, size20, size28, size30, size35, size40 } = p
   const { textColor1 = '#19202C', textColor2 = '#585A5E', textColor3 = '#8E929A' } = skin1
 
   let fontWeight = undefined
@@ -136,10 +141,14 @@ const DoyText = (p: DoyTextProps) => {
   size18 && (fontSize = sc(18))
   size20 && (fontSize = sc(20))
   size28 && (fontSize = sc(28))
+  size30 && (fontSize = sc(30))
   size35 && (fontSize = sc(35))
   size40 && (fontSize = sc(40))
 
-  return <Text {...p} style={[{ fontSize, fontWeight, color, }, p?.style]} />
+  let textAlign = undefined
+  textAlignCenter && (textAlign = 'center')
+
+  return <Text {...p} style={[{ fontSize, fontWeight, color, textAlign }, p?.style]} />
 }
 
 export const DoyText12 = (p: DoyTextProps) => <DoyText {...p} size12 />
@@ -150,6 +159,7 @@ export const DoyText16 = (p: DoyTextProps) => <DoyText {...p} size16 />
 export const DoyText18 = (p: DoyTextProps) => <DoyText {...p} size18 />
 export const DoyText20 = (p: DoyTextProps) => <DoyText {...p} size20 />
 export const DoyText28 = (p: DoyTextProps) => <DoyText {...p} size28 />
+export const DoyText30 = (p: DoyTextProps) => <DoyText {...p} size30 />
 export const DoyText35 = (p: DoyTextProps) => <DoyText {...p} size35 />
 export const DoyText40 = (p: DoyTextProps) => <DoyText {...p} size40 />
 
@@ -187,11 +197,11 @@ export const DoyTextInput1 = (p: DoyTextInputProps) => {
   let fontSize = sc(14)
 
   // 左右两边有单位
-  if (leftComponent || leftComponent) {
+  if (leftComponent || rightComponent) {
     return (
       <View style={[textInputDefaultStyle, { alignItems: 'center', flexDirection: 'row', }, p?.style]}>
         {leftComponent}
-        <TextInput {...p} style={[{ fontSize, fontWeight, color, flex: 1 }, p?.style]} >1</TextInput>
+        <TextInput {...p} style={[{ fontSize, fontWeight, color, flex: 1 }, p?.style]} />
         {rightComponent}
       </View>
     )
