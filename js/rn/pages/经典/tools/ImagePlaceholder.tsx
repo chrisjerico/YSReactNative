@@ -97,9 +97,9 @@ export const FastImagePlaceholder = (props: FastImageProperties & PlaceholderPro
   if (onPress || containerStyle) {
     return (
       <TouchableNativeFeedback onPress={onPress} onPressIn={() => {
-        Animated.timing(v.opacity, { toValue: 0.2, duration: 100, easing: Easing.linear }).start(); // 半透明
+        Animated.timing(v.opacity, { toValue: 0.2, duration: 75, easing: Easing.linear }).start(); // 半透明
       }} onPressOut={() => {
-        Animated.timing(v.opacity, { toValue: 1, duration: 100, easing: Easing.linear }).start();// 不透明
+        Animated.timing(v.opacity, { toValue: 1, duration: 75, easing: Easing.linear }).start();// 不透明
       }} >
         <Animated.View style={[{ opacity: v.opacity }, containerStyle]}>
           {cp}
