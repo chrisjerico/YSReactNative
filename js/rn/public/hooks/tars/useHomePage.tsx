@@ -145,6 +145,10 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     return couponList?.data?.list?.slice(0, 5) ?? []
   }, [couponList])
 
+  const couponClickStyle = useMemo(() => {
+    return couponList?.data?.style
+  }, [couponList])
+
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const midBanners = homeAd?.data ?? []
@@ -190,6 +194,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     floatAds,
     goldenEggs,
     scratchs,
+    couponClickStyle,
     ...homeGameData,
     ...lotteryData,
     ...official_customise_Games,
