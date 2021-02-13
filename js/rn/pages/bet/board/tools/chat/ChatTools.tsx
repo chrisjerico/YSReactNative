@@ -7,18 +7,28 @@ import { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMen
 const currentChatRoomId = (): string => {
   const chatRoomIndex = UGStore.globalProps?.chatRoomIndex//当前聊天室索引
   const chatRoomData = UGStore.globalProps?.chatRoomData//聊天室
-  return dicNull(chatRoomData) || chatRoomIndex >= arrayLength(chatRoomData?.chatAry) ?
-    null :
-    chatRoomData?.chatAry[chatRoomIndex]?.roomId
+  if (dicNull(chatRoomData)) {
+    return null
+  } else if (chatRoomIndex >= arrayLength(chatRoomData?.chatAry)) {
+    return chatRoomData?.chatAry[0]?.roomId
+  }
+
+  return chatRoomData?.chatAry[chatRoomIndex]?.roomId
+
 }
 
 //当前聊天室名字
 const currentChatRoomName = (): string => {
   const chatRoomIndex = UGStore.globalProps?.chatRoomIndex//当前聊天室索引
   const chatRoomData = UGStore.globalProps?.chatRoomData//聊天室
-  return dicNull(chatRoomData) || chatRoomIndex >= arrayLength(chatRoomData?.chatAry) ?
-    null :
-    chatRoomData?.chatAry[chatRoomIndex]?.roomName
+
+  if (dicNull(chatRoomData)) {
+    return null
+  } else if (chatRoomIndex >= arrayLength(chatRoomData?.chatAry)) {
+    return chatRoomData?.chatAry[0]?.roomName
+  }
+
+  return chatRoomData?.chatAry[chatRoomIndex]?.roomName
 }
 
 //聊天菜单选项

@@ -9,7 +9,7 @@ import BetRecordHeaderComponent from './content/counter/lhc/red/BetRecordHeaderC
 import LotteryContentComponent from './content/LotteryContentComponent'
 import { TopAreaComponent } from './content/top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
-import { arrayEmpty, arrayLength, dicNull } from '../../public/tools/Ext'
+import { arrayEmpty, dicNull } from '../../public/tools/Ext'
 import { clearLotteryData } from './util/LotteryUtil'
 import InstantLotteryComponent from './content/counter/mmc/InstantLotteryComponent'
 import WebChatComponent from './chat/WebChatComponent'
@@ -19,6 +19,7 @@ import MiddleMenu, { IMiddleMenuItem } from '../../public/components/menu/Middle
 import { currentChatRoomId } from './board/tools/chat/ChatTools'
 import { GameTab } from './const/LotteryConst'
 import { ugLog } from '../../public/tools/UgLog'
+import { Share2ChatStatus } from '../../public/network/Model/chat/ShareChatRoomModel'
 
 interface IBetLotteryPage {
   lotteryId: string //当前彩票 id
@@ -43,7 +44,8 @@ const BetLotteryPage = ({ navigation, route }) => {
     playOddDetailData,
     loadedLottery,
     setLoadedLottery,
-    chatMenu,
+    chatArray,
+    shareChatModel,
     showShareRoom,
     requestLotteryData,
   } = UseBetLottery()
@@ -67,7 +69,26 @@ const BetLotteryPage = ({ navigation, route }) => {
    */
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     ugLog('index = ', index)
-    UGStore.dispatch({type: 'reset', chatRoomIndex: index, chatMenu: [], gameTabIndex: GameTab.CHAT})
+    if (shareChatModel?.shareStatus == Share2ChatStatus.READY) {//关闭聊天选项的同时要分享数据
+      UGStore.dispatch({
+        type: 'reset',
+        chatRoomIndex: index,
+        shareChatModel: {
+          ...UGStore.globalProps?.shareChatModel,
+          shareStatus: Share2ChatStatus.STARTING,
+        },
+        chatArray: [],
+        gameTabIndex: GameTab.CHAT,
+      })
+    } else {
+      UGStore.dispatch({
+        type: 'reset',
+        chatRoomIndex: index,
+        shareChatModel: {},
+        chatArray: [],
+        gameTabIndex: GameTab.CHAT,
+      })
+    }
   }
 
   return (
@@ -133,7 +154,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                                                            setBetResult(data)
                                                          } else {
                                                            setBetResult(null)
-                                                           showShareRoom(data?.betParams)
+                                                           showShareRoom(data)
                                                          }
 
                                                        }}/>}
@@ -143,12 +164,14 @@ const BetLotteryPage = ({ navigation, route }) => {
                                                     showCallback={() => setBetResult(null)}/>}
 
         {
-          !arrayEmpty(chatMenu) && <MiddleMenu onMenuClick={clickMenu}
-                                               menuTitle={'分享到聊天室'}
-                                               curId={currentChatRoomId()}
-                                               showMenu={!arrayEmpty(chatMenu)}
-                                               menu={chatMenu}
-                                               onClose={() => UGStore.dispatch({type: 'reset', chatMenu: []})}/>
+          !arrayEmpty(chatArray) && <MiddleMenu onMenuClick={clickMenu}
+                                                menuTitle={'聊天室'}
+                                                curId={currentChatRoomId()}
+                                                showMenu={!arrayEmpty(chatArray)}
+                                                menu={chatArray}
+                                                onClose={() => UGStore.dispatch({
+                                                  type: 'reset', chatArray: [], shareChatModel: {},
+                                                })}/>
 
         }
       </View>
@@ -171,4 +194,4 @@ const _styles = StyleSheet.create({
 })
 
 export default BetLotteryPage
-export {IBetLotteryPage}
+export { IBetLotteryPage }

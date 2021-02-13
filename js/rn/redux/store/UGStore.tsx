@@ -20,6 +20,7 @@ import { BetShareModel } from '../model/game/bet/BetShareModel'
 import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
 import { GameTab } from '../../pages/bet/const/LotteryConst'
 import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
+import { ShareChatRoomModel } from '../../public/network/Model/chat/ShareChatRoomModel'
 
 // 整个State的树结构
 
@@ -43,7 +44,8 @@ export interface IGlobalState {
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   chatRoomIndex?: number //当前聊天室索引
   chatRoomData?: ChatRoomData //聊天数据
-  chatMenu?: Array<IMiddleMenuItem> //聊天菜单
+  chatArray?: Array<IMiddleMenuItem> //聊天室列表
+  shareChatModel?: ShareChatRoomModel //分享数据
 
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   inputMoney?: number //输入的游戏金额
@@ -80,7 +82,8 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
     act.chatRoomIndex >= 0 && (state.chatRoomIndex = act.chatRoomIndex)
     act.chatRoomData && (state.chatRoomData = act.chatRoomData)
-    act.chatMenu && (state.chatMenu = act.chatMenu)
+    act.chatArray && (state.chatArray = act.chatArray)
+    act.shareChatModel && (state.shareChatModel = act.shareChatModel)
 
     act.selectedData && (state.selectedData = act.selectedData)
     act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
@@ -133,7 +136,8 @@ export interface UGAction<P = {}> extends Action {
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   chatRoomIndex?: number //当前聊天室索引
   chatRoomData?: ChatRoomData //聊天数据
-  chatMenu?: Array<IMiddleMenuItem> //聊天菜单
+  chatArray?: Array<IMiddleMenuItem> //聊天室列表
+  shareChatModel?: ShareChatRoomModel //聊天室列表
 
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   inputMoney?: number //输入的游戏金额

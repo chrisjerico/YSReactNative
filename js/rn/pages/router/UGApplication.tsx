@@ -84,7 +84,6 @@ import ZLLoginPage from '../尊龙/ZLLoginPage'
 import ZLMinePage from '../尊龙/ZLMinePage'
 import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
-import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
 import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
 import { XBJLoginPage } from '../香槟金/XBJLoginPage'
@@ -171,7 +170,6 @@ const pageComponents: { [key in PageName]?: Function } = {
   // ———————————— 测试页面 —————————————
   JDSegmentPage,
   // ———————————— 通用页面 —————————————
-  JDVirtualCurrencyTutorialPage, //虚拟币充值教程
   TransitionPage, //过渡页
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表

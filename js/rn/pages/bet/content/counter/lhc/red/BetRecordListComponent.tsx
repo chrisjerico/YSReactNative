@@ -242,7 +242,7 @@ const _styles = StyleSheet.create({
   text_content_issue: {
     flex: 1,
     color: UGColor.TextColor3,
-    fontSize: scale(24),
+    fontSize: scale(22),
     textAlign: 'center',
   },
   text_content_plus: {

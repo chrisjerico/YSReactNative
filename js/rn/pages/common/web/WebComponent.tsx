@@ -1,19 +1,22 @@
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import * as React from 'react'
-import { useState } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import WebView from 'react-native-webview'
 import * as Progress from 'react-native-progress'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import AppDefine from '../../../public/define/AppDefine'
 import { ugLog } from '../../../public/tools/UgLog'
+import { WebViewErrorEvent, WebViewMessageEvent, WebViewNavigationEvent } from 'react-native-webview/lib/WebViewTypes'
 
 /**
  * 彩票功能区入参
  */
 interface IBetBoardParams {
-  url: string //url
+  url?: string //url
   style?: StyleProp<ViewStyle>
+  onMessage?: (event: WebViewMessageEvent) => void
+  onLoadEnd?: (event: WebViewNavigationEvent | WebViewErrorEvent) => void;
 }
 
 /**
@@ -21,10 +24,18 @@ interface IBetBoardParams {
  *
  * @param navigation
  * @constructor
+ * @param ref
  */
-const WebComponent = ({ url, style }: IBetBoardParams) => {
+const WebComponent = ({ url, style, onMessage, onLoadEnd }: IBetBoardParams, ref?: any) => {
 
   const [progress, setProgress] = useState(0) //进度条
+  const webRef = useRef(null) //webview控制
+
+  useImperativeHandle(ref, () => ({
+    injectJavaScript: (js?: string) => {
+      webRef?.current?.injectJavaScript(js)
+    },
+  }))
 
   /**
    * 绘制进度条
@@ -48,7 +59,8 @@ const WebComponent = ({ url, style }: IBetBoardParams) => {
             _styles.container,
             style,
           ]}>
-      <WebView javaScriptEnabled
+      <WebView ref={webRef}
+               javaScriptEnabled
                sharedCookiesEnabled
                thirdPartyCookiesEnabled
                domStorageEnabled
@@ -60,7 +72,9 @@ const WebComponent = ({ url, style }: IBetBoardParams) => {
                allowsLinkPreview
                allowUniversalAccessFromFileURLs
                onLoadProgress={((event) => setProgress(event?.nativeEvent?.progress))}
-               source={{ uri: url }}/>
+               source={{ uri: url }}
+               onLoadEnd={onLoadEnd}
+               onMessage={onMessage}/>
 
       {renderProgress()}
     </View>
@@ -69,7 +83,6 @@ const WebComponent = ({ url, style }: IBetBoardParams) => {
 
 const _styles = StyleSheet.create({
   container: {
-    position: 'absolute',
     width: '100%',
     height: '100%',
     backgroundColor: 'red',
@@ -81,5 +94,5 @@ const _styles = StyleSheet.create({
   },
 })
 
-export default WebComponent
+export default forwardRef(WebComponent)
 export { IBetBoardParams }

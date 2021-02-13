@@ -18,7 +18,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://zhibot071f.fhptcdn.com',
   ],
   'txt005': [
-    'https://t005f.fhptcdn.com',
+    'http://t005f.fhptcdn.com',
+  ],
+  't005': [
+    'http://t005f.fhptcdn.com',
   ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
@@ -99,7 +102,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t136f.fhptcdn.com',
+    'http://t126f.6yc.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
@@ -120,7 +123,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t136f.fhptcdn.com',
+    'http://t126f.6yc.com',
   ],
   'tstksm': [
     'http://t133f.6yc.com',
@@ -233,9 +236,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615vv.com',
   ],
   'c116': [
-    'https://20801353.com',
+    'https://58933e.com',
     'https://58922c.com',
-    'https://58922d.com',
+    'https://58933b.com',
     'https://58933c.com',
     'https://58933d.com',
   ],
@@ -250,11 +253,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'https://jz0222.com',
-    'https://jz0444.com',
-    'https://jz1444.com',
-    'https://jz2444.com',
-    'https://jz2111.com',
+    'https://hqcp00001.com',
+    'https://hqcp00002.com',
+    'https://hqcp00003.com',
+    'https://hqcp00004.com',
+    'https://hqcp00005.com',
   ],
   'c126b': [
     'https://bc44698.com',
@@ -319,11 +322,15 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c190': [
     'https://474745.com',
+    'https://243939.com',
+    'https://141454.com',
+    'https://141464.com',
+    'https://489494.com',
   ],
   'c193': [
     'https://49060333.com',
     'https://49060222.com',
-    'https://49061111.com',
+    'https://4906202.com',
     'https://4906213.com',
     'https://4906214.com',
   ],
@@ -364,11 +371,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4504508.com',
-    'https://4503450.com',
-    'https://4504450.com',
-    'https://4506450.com',
-    'https://4507450.com',
+    'https://2vip450.com',
+    'https://3vip450.com',
+    'https://4vip450.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -451,10 +456,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333a.org',
-    'https://70333s.org',
+    'https://70333j.org',
+    'https://70333k.org',
     'https://70333h.org',
-    'https://70333f.org',
+    'https://70333l.org',
     'https://70333g.org',
   ],
   'h003b': [

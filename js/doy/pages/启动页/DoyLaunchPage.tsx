@@ -28,6 +28,6 @@ export const DoyLaunchPage = ({ setNavbarProps }: UGBasePageProps) => {
       <Image source={{ uri: img_doy('启动页logo@3x') }} style={{ width: sc(103), height: sc(138) }} />
     </View>
     <DoyButton1 title='登录钱包' onPress={() => { push(PageName.DoyLoginPage) }} />
-    <DoyButton2 title='免费注册' buttonStyle={{ marginBottom: sc(32) }} onPress={() => { push(PageName.DoyRegisterPage1) }} />
+    <DoyButton2 title='免费注册' containerStyle={{ marginBottom: sc(32) }} onPress={() => { push(PageName.DoyRegisterPage1) }} />
   </View>
 }

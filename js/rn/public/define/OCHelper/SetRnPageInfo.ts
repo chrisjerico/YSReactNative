@@ -28,14 +28,14 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-    // 优惠列表详情
-    pages.push({
-      vcName: 'UGPromoteDetailController',
-      rnName: PageName.JDPromoteDetailPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
+    // // 优惠列表详情
+    // pages.push({
+    //   vcName: 'UGPromoteDetailController',
+    //   rnName: PageName.JDPromoteDetailPage,
+    //   fd_prefersNavigationBarHidden: true,
+    //   允许游客访问: false,
+    //   允许未登录访问: false,
+    // })
 
 
   }
@@ -300,7 +300,7 @@ export async function setRnPageInfo(force = false) {
   if (AppDefine.siteId != 'c012') {
     pages.push({
       vcName: 'HelpDocViewController',
-      rnName: PageName.JDVirtualCurrencyTutorialPage,
+      rnName: PageName.BtcTutorialPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,

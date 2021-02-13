@@ -17,9 +17,11 @@ import { hideLoading, showLoading } from '../../../../../public/widget/UGLoading
 import { pop } from '../../../../../public/navigation/RootNavigation'
 import { api } from '../../../../../public/network/NetworkRequest1/NetworkRequest1'
 import moment from 'moment'
+import UGUserModel from '../../../../../redux/model/全局/UGUserModel'
 
 /**
  * 提现界面
+ * 提现界面1
  * @constructor
  */
 const UseWithdraw = () => {
@@ -40,9 +42,12 @@ const UseWithdraw = () => {
   const [showAddBank, setShowAddBank] = useState(false) //是否显示添加银行卡等帐户
   const [userInfo, setUserInfo] = useState(null) //个人信息
 
+
   useEffect(() => {
     setUserInfo(UGStore.globalProps.userInfo)
-  }, [])
+  }, [UGStore.globalProps.userInfo])
+
+
 
   /**
    * 初始化1次数据

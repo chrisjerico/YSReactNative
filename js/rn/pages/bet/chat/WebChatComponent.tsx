@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
 import { scale } from '../../../public/tools/Scale'
@@ -9,6 +9,7 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import AppDefine from '../../../public/define/AppDefine'
 import { GameTab } from '../const/LotteryConst'
 import { ugLog } from '../../../public/tools/UgLog'
+import WebComponent from '../../common/web/WebComponent'
 
 /**
  * 彩票功能区入参
@@ -28,29 +29,14 @@ interface IBetBoardParams {
 const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
   const {
+    sharable,
+    webChatRef,
     chatUrl,
     gameTabIndex,
     userInfo,
     systemInfo,
     handleMessage,
   } = UseWebChat()
-
-  const [progress, setProgress] = useState(0) //进度条
-
-  /**
-   * 绘制进度条
-   */
-  const renderProgress = () => progress < 1 && <View style={_styles.web_container}>
-    <Progress.Bar progress={progress}
-                  borderWidth={0}
-                  borderRadius={0}
-                  unfilledColor="transparent"
-                  color={`${Skin1.themeColor}dd`}
-                  height={scale(8)}
-                  width={AppDefine.width}/>
-  </View>
-
-  ugLog('chatUrl chatUrl chatUrl ======', chatUrl)
 
   return (
     <View key={'chat content'}
@@ -60,22 +46,10 @@ const WebChatComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
             style,
             gameTabIndex == GameTab.CHAT ? null : { height: 0, width: 0, opacity: 0, display: 'none' }, //非彩票界面不需要显示 下注面板
           ]}>
-      <WebView javaScriptEnabled
-               sharedCookiesEnabled
-               thirdPartyCookiesEnabled
-               domStorageEnabled
-               allowFileAccess
-               allowsFullscreenVideo
-               allowFileAccessFromFileURLs
-               mixedContentMode={'always'}
-               allowsInlineMediaPlayback
-               allowsLinkPreview
-               allowUniversalAccessFromFileURLs
-               onLoadProgress={((event) => setProgress(event?.nativeEvent?.progress))}
-               source={{ uri: chatUrl }}
-               onMessage={handleMessage}/>
-
-      {renderProgress()}
+      <WebComponent ref={webChatRef}
+                    url={chatUrl}
+                    onMessage={handleMessage}
+                    />
     </View>
   )
 }
