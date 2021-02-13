@@ -250,11 +250,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'https://jz0222.com',
-    'https://jz0444.com',
-    'https://jz1444.com',
-    'https://jz2444.com',
-    'https://jz2111.com',
+    'https://hqcp00005.com',
+    'https://hqcp00004.com',
+    'https://hqcp00003.com',
+    'https://hqcp00002.com',
+    'https://hqcp00001.com',
   ],
   'c126b': [
     'https://bc44698.com',
