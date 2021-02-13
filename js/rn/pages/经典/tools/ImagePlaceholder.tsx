@@ -3,23 +3,23 @@ import * as React from "react";
 import FastImage, { FastImageProperties, ImageStyle } from "react-native-fast-image";
 import { img_assets } from "../../../Res/icon";
 import LinearGradient from "react-native-linear-gradient";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-type PlaceholderImageType = '默认占位图' | '彩票占位图'
+type PlaceholderImageType = '默认' | '彩票'
 interface PlaceholderProps {
   placeholderURL?: string,// 占位图
   placeholderImageType?: PlaceholderImageType  // 占位图
   placeholderGradientColor?: string[] // 占位渐变色
-  placeholderStyle?: StyleProp<ImageStyle>
+  placeholderStyle?: StyleProp<ImageStyle>// 占位元素样式
 
-  // 仅 FastImagePlaceholder可用
-  children?: any
-  onPress?: () => void
+  containerStyle?: StyleProp<ViewStyle>// 父元素样式
+  children?: any // 支持子元素
+  onPress?: () => void //点击事件
 }
 
 function getPlaceholderImage(type: PlaceholderImageType) {
   switch (type) {
-    case '彩票占位图':
+    case '彩票':
       return img_assets('load')
     default:
       // 默认占位图
@@ -31,10 +31,12 @@ function getPlaceholderImage(type: PlaceholderImageType) {
 export const ImagePlaceholder = (props: ImageProps & PlaceholderProps) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
 
-  const { placeholderURL, placeholderImageType, placeholderGradientColor, style, placeholderStyle } = props
+  const { style } = props
+  const { placeholderURL, placeholderImageType, placeholderGradientColor, placeholderStyle, children, onPress, containerStyle } = props
   const placeholderImage = placeholderURL ?? getPlaceholderImage(placeholderImageType)
 
-  return <>
+  // 并列显示两个absolute的占位元素
+  const cp = <>
     {shwoDefaultImage && placeholderGradientColor && <LinearGradient colors={placeholderGradientColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={[style, { position: 'absolute' }, placeholderStyle]} />}
     {shwoDefaultImage && !placeholderGradientColor && <ImageBackground style={[style, { position: 'absolute' }, placeholderStyle]} resizeMode='cover' source={{ uri: placeholderImage }} />}
     <Image
@@ -49,16 +51,26 @@ export const ImagePlaceholder = (props: ImageProps & PlaceholderProps) => {
       }}
     />
   </>
+
+  if (children || onPress || containerStyle) {
+    return (
+      <TouchableOpacity onPress={onPress} style={[{}, containerStyle]} >
+        {cp}
+        {children && <View style={{ position: 'absolute', width: '100%', height: '100%' }}>{children}</View>}
+      </TouchableOpacity>
+    )
+  }
+  return cp;
 }
 
 
-// 建议使用 FastImagePlaceholder
 export const FastImagePlaceholder = (props: FastImageProperties & PlaceholderProps) => {
   const [shwoDefaultImage, setShwoDefaultImage] = React.useState(true);
 
-  const { placeholderURL, placeholderImageType, placeholderGradientColor, style, placeholderStyle, children, onPress } = props
+  const { placeholderURL, placeholderImageType, placeholderGradientColor, placeholderStyle, children, onPress, containerStyle } = props
   const placeholderImage = placeholderURL ?? getPlaceholderImage(placeholderImageType)
 
+  // FastImage包含两个占位元素
   const cp = (
     <FastImage
       {...props}
@@ -77,12 +89,14 @@ export const FastImagePlaceholder = (props: FastImageProperties & PlaceholderPro
     </FastImage>
   )
 
-  if (!onPress) {
-    return cp
+  if (onPress || containerStyle) {
+    return (
+      <TouchableNativeFeedback onPress={onPress} >
+        <View style={[{}, containerStyle]}>
+          {cp}
+        </View>
+      </TouchableNativeFeedback>
+    )
   }
-  return (
-    <TouchableOpacity onPress={onPress}>
-      {cp}
-    </TouchableOpacity>
-  )
+  return cp
 }

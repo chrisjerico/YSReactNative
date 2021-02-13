@@ -14,7 +14,6 @@ import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
 import { img_doy } from "../../../../rn/Res/icon"
 import { DoyText12, DoyText14, DoyText16, DoyButton1 } from "../../../public/Button之类的基础组件/DoyButton"
-import { DoyInRestModeCP } from "../我要卖/cp/DoyInRestModeCP"
 
 const sc = sc375
 
@@ -25,8 +24,7 @@ interface DoyMyOrderVars {
 export const DoyMyOrderPage = ({ setProps, setNavbarProps }: UGBasePageProps) => {
   const { themeColor, navBarBgColor } = skin1
   const [segmentedIndex, setSegmentedIndex] = useState(0)
-  const [isRestMode, setIsRestMode] = useState(false)
-  const { current: v } = useRef<DoyInRestModeCP & DoyMyOrderVars>({ list: [{}, {}, {}] })
+  const { current: v } = useRef<DoyMyOrderVars>({ list: [{}, {}, {}] })
 
   //setNavbarProps({rightComponent})
   useEffect(() => {
