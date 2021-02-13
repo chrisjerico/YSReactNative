@@ -739,7 +739,7 @@ export default class PushHelper {
         }
         break
       case 'android':
-        PushHelper.pushCategory('7', code)
+        PushHelper.pushCategory(7, code)
         break
     }
   }
