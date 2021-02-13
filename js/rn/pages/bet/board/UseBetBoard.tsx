@@ -8,6 +8,7 @@ import { checkBetCount, generateBetArray } from './tools/BetUtil'
 import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { BetShareModel } from '../../../redux/model/game/bet/BetShareModel'
+import { ugLog } from '../../../public/tools/UgLog'
 
 
 /**
@@ -34,8 +35,9 @@ const UseBetBoard = () => {
   /**
    * 判断当前彩种是不是可以追号
    */
-  useEffect(()=>{
-    UGStore.load(AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId).then((res) =>{
+  useEffect(() => {
+    ugLog('当前追号 取出：', AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId)
+    UGStore.load(AsyncStorageKey.RE_BET_INFO + UGStore.globalProps?.lotteryId).then((res) => {
       if (!anyEmpty(res)) {
         const newData = JSON.parse(res)
         setReBetShareModel(newData)

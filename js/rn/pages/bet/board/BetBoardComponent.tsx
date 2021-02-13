@@ -154,6 +154,48 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   </View>
 
   /**
+   * 追号
+   */
+  const renderChaseNumber = () => {
+    if (systemInfo?.chaseNumber != '1') return
+
+    return !dicNull(reBetShareModel) ?
+      <TouchableWithoutFeedback onPress={() => {
+        UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
+      }}>
+        <Text style={[
+          _styles.bet_again,
+          {
+            backgroundColor: UGColor.TextColor7,
+            color: UGColor.TextColor4,
+          },
+        ]}>追号</Text>
+      </TouchableWithoutFeedback> :
+      <Text style={_styles.bet_again}>追号</Text>
+  }
+
+  /**
+   * 追号
+   */
+  const renderRandomSelected = () => {
+    if (systemInfo?.chaseNumber != '1') return
+
+    return !dicNull(reBetShareModel) ?
+      <TouchableWithoutFeedback onPress={() => {
+        UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
+      }}>
+        <Text style={[
+          _styles.bet_again,
+          {
+            backgroundColor: UGColor.TextColor7,
+            color: UGColor.TextColor4,
+          },
+        ]}>机选</Text>
+      </TouchableWithoutFeedback> :
+    <Text style={_styles.bet_again}>机选</Text>
+  }
+
+  /**
    * 绘制输入功能区
    */
   const renderInputArea = () => {
@@ -162,18 +204,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                  style={_styles.input_container}>
 
       <View key={'renderInputArea 追号 机选'}>
-        <TouchableWithoutFeedback onPress={() => {
-          !dicNull(reBetShareModel) && UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
-        }}>
-          <Text style={[
-            _styles.bet_again,
-            !dicNull(reBetShareModel) ? {
-              backgroundColor: UGColor.TextColor7,
-              color: UGColor.TextColor4,
-            } : null,
-          ]}>追号</Text>
-        </TouchableWithoutFeedback>
-        <Text style={_styles.bet_again}>机选</Text>
+        {renderChaseNumber()}
+        {renderRandomSelected()}
       </View>
 
       <View key={'renderInputArea middle'}

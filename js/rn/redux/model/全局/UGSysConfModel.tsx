@@ -195,6 +195,7 @@ export default class UGSysConfModel {
   homeTypeSelect?: string // 是否开启前台分类
   chatRoomName?: string // 聊天室名称
   chatMinFollowAmount?: string // 聊天室跟注最小金额*/
+  chaseNumber?: string // 是否开启跟注
   easyRememberDomain?: string // 易记域名*/
   chatLink?: string // 聊天的链接*/
   mBonsSwitch?: boolean // 俸禄开关开启。0 为开启， 1 为 关闭
