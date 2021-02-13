@@ -460,7 +460,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://70333k.org',
     'https://70333h.org',
     'https://70333l.org',
-    'https://70333g.org',
+    'https://70333z.org',
   ],
   'h003b': [
     'https://betv5.com',
