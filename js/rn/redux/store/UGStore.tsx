@@ -44,8 +44,9 @@ export interface IGlobalState {
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
-  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
   inputMoney?: number //输入的游戏金额
+
+  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
 
   chatRoomIndex?: number //当前聊天室索引
   chatRoomData?: ChatRoomData //聊天数据
@@ -139,8 +140,9 @@ export interface UGAction<P = {}> extends Action {
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
-  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
   inputMoney?: number //输入的游戏金额
+
+  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
 
   chatRoomIndex?: number //当前聊天室索引
   chatRoomData?: ChatRoomData //聊天数据

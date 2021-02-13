@@ -180,12 +180,10 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
    * 机选
    */
   const renderRandomSelected = () => {
-
-    return <TouchableWithoutFeedback onPress={() => {
-
-    }}>
+    return <TouchableWithoutFeedback onPress={() => renderRandomSelected()}>
       <Text style={_styles.bet_again}>机选</Text>
-    </TouchableWithoutFeedback>  }
+    </TouchableWithoutFeedback>
+  }
 
   /**
    * 绘制输入功能区

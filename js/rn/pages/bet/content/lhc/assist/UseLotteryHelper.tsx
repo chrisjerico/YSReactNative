@@ -16,6 +16,8 @@ import { Toast } from '../../../../../public/tools/ToastUtils'
 import { parseLMASelectedData } from '../../../util/select/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../../util/select/ParseHXSelectedUtil'
 import { doubleDigit } from '../../../../../public/tools/StringUtil'
+import { filterSelectedData, filterSelectedSubData } from '../../../util/LotteryUtil'
+import { randomItem } from '../../../util/ArithUtil'
 
 /**
  * 彩票公共处理类
@@ -233,6 +235,99 @@ const UseLotteryHelper = () => {
 
     return groupData?.plays?.filter((item) => checkMap?.includes(item?.name))
       .map((item) => item?.exId)
+  }
+
+  /**
+   * 机选下注
+   * @param currentPageData 当前这一页的数据
+   */
+  const randomSelectBalls = () => {
+    //当前页的数据
+    const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前选中的彩种数据 特码 两面 等
+    const currentPageData: Array<PlayGroupData> = currentPlayOddData?.pageData?.groupTri[tabIndex]
+    const firstGroupData = currentPageData[0]//一组数据，有的彩票只有一组数据
+    const firstAvailablePlayBalls = (firstGroupData?.exPlays ?? firstGroupData?.plays) //自定义的球使用exPlays
+      ?.filter((ball) => ball?.enable != '0')
+    const zodiacNums = playOddData?.pageData?.zodiacNums
+    ugLog('randomSelect = ', firstGroupData?.code, firstGroupData?.alias, firstAvailablePlayBalls)
+
+    switch (firstGroupData?.code) {
+      case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
+      {
+        switch (firstGroupData?.alias) {
+          case '二连肖':
+          case '二连尾':
+            //需要2个球
+            randomItem(firstAvailablePlayBalls, 2).map((item) =>
+              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+            break
+          case '三连肖':
+          case '三连尾':
+            //需要3个球
+            randomItem(firstAvailablePlayBalls, 3).map((item) =>
+              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+            break
+          case '四连肖':
+          case '四连尾':
+            //需要4个球
+            randomItem(firstAvailablePlayBalls, 4).map((item) =>
+              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+            break
+          case '五连肖':
+          case '五连尾':
+            //需要5个球
+            randomItem(firstAvailablePlayBalls, 5).map((item) =>
+              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+            break
+
+        }
+      }
+        break
+
+      case LhcCode.HX://合肖
+        //需要2个球
+        randomItem(zodiacNums, 2).map((item: ZodiacNum) =>
+          addOrRemoveBall(item?.id, firstGroupData?.enable))
+        break
+      case LhcCode.LMA:  //连码
+        switch (firstGroupData?.alias) {
+          case '二全中':
+          case '二中特':
+          case '特串':
+            //需要2个球
+            randomItem(firstAvailablePlayBalls, 2).map((item) =>
+              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+            break
+          case '三全中':
+          case '三中二':
+            //需要3个球
+            randomItem(firstAvailablePlayBalls, 3).map((item) =>
+              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+            break
+          case '四全中':
+            //需要4个球
+            randomItem(firstAvailablePlayBalls, 4).map((item) =>
+              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+            break
+
+        }
+        break
+
+      case LhcCode.ZXBZ:  //自选不中
+        //需要5个球
+        randomItem(firstAvailablePlayBalls, 5).map((item) =>
+          addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+        break
+
+      default://默认每组选1个
+        currentPageData?.map((groupData) => {
+          //从可用的球里面随机选出1个
+          const item: PlayData = randomItem(groupData?.plays?.filter((ball) => ball?.enable != '0'))[0]
+          addOrRemoveBall(item?.id, groupData?.enable, item?.enable)
+        })
+        break
+    }
   }
 
   return {

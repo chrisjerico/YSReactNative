@@ -7,7 +7,7 @@ import { zodiacPlayX } from './hx/BetHXUtil'
 import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { filterSelectedData, filterSelectedSubData, playDataUniqueId } from '../../util/LotteryUtil'
-import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, PlayGroupData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { combination, combineArr } from '../../util/ArithUtil'
 import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
 import { combineArrayName } from './ezdw/BetEZDWUtil'
@@ -94,44 +94,6 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       }
         break
       case LhcCode.LX: //连肖
-      {
-        for (let data of currentPlayGroupData) {
-          const selCount = filterSelectedSubData(key, data?.alias, selectedData)
-          ugLog('selCount = ', selCount, key, data?.alias)
-          if (selCount <= 0) {
-            Toast(`请选择${data?.alias}数据`)
-            return
-          }
-          switch (data?.alias) {
-            case '二连肖':
-              if (selCount < 2) {
-                Toast(`${data?.alias}需要选择至少2个数据`)
-                return
-              }
-              break
-            case '三连肖':
-              if (selCount < 3) {
-                Toast(`${data?.alias}需要选择至少3个数据`)
-                return
-              }
-              break
-            case '四连肖':
-              if (selCount < 4) {
-                Toast(`${data?.alias}需要选择至少4个数据`)
-                return
-              }
-              break
-            case '五连肖':
-              if (selCount < 5) {
-                Toast(`${data?.alias}需要选择至少5个数据`)
-                return
-              }
-              break
-
-          }
-        }
-      }
-        break
       case LhcCode.LW: //连尾
       {
         for (let data of currentPlayGroupData) {
@@ -142,24 +104,28 @@ const checkBetCount = (showMsg?: boolean): boolean => {
             return
           }
           switch (data?.alias) {
+            case '二连肖':
             case '二连尾':
               if (selCount < 2) {
                 Toast(`${data?.alias}需要选择至少2个数据`)
                 return
               }
               break
+            case '三连肖':
             case '三连尾':
               if (selCount < 3) {
                 Toast(`${data?.alias}需要选择至少3个数据`)
                 return
               }
               break
+            case '四连肖':
             case '四连尾':
               if (selCount < 4) {
                 Toast(`${data?.alias}需要选择至少4个数据`)
                 return
               }
               break
+            case '五连肖':
             case '五连尾':
               if (selCount < 5) {
                 Toast(`${data?.alias}需要选择至少5个数据`)

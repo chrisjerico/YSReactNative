@@ -3,6 +3,9 @@
  * @param arr 数组
  * @param len 组合长度
  */
+import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
+import { ugLog } from '../../../public/tools/UgLog'
+
 const combination = (arr?: Array<any>, len?: number) => {
   let resultArr = []
   if (len <= 0 || len > arr.length) {
@@ -51,7 +54,29 @@ const addNewType = (heads?: any, choices?: any) => {
   return result
 }
 
+/**
+ * 从数据中随机选择N个成员出来
+ * @param list
+ * @param count 需要随机几个数
+ */
+const randomItem = (list?: Array<any>, count: number = 1): Array<any> => {
+  if (anyEmpty(list) || count > arrayLength(list)) return null
+
+  let tempArr = list.slice(0)
+  let newArrList = []
+  for (let i = 0; i < count; i++) {
+    let random = Math.floor(Math.random() * (tempArr.length - 1))
+    let arr = tempArr[random]
+    tempArr.splice(random, 1)
+    newArrList.push(arr)
+  }
+
+  ugLog('randomItem = ', newArrList)
+  return newArrList
+}
+
 export {
   combination,
   combineArr,
+  randomItem,
 }
