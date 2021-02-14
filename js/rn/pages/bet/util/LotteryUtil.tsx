@@ -29,9 +29,6 @@ const combineOddsName = (plays?: Array<PlayData>): string => {
   return null
 }
 
-ugLog(' test tes 1 ', '' && true)
-ugLog(' test tes 2 ', '0' && true)
-
 /**
  * 退出的时候清除彩票数据
  */
