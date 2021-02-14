@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { PlayOddData, ZodiacNum } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../../public/tools/Ext'
-import UseLotteryHelper from '../assist/UseLotteryHelper'
+import UseLotteryHelper from '../../assist/UseLotteryHelper'
 
 /**
  * 六合彩 合肖 等等

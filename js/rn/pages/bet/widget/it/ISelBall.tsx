@@ -1,7 +1,7 @@
 /**
  * 选中的球
  */
-import { ugLog } from '../../../public/tools/UgLog'
+import { ugLog } from '../../../../public/tools/UgLog'
 
 interface ISelBall {
   id?: string //唯一识别的ID

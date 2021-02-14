@@ -5,19 +5,19 @@ import {
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
-} from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { arrayLength, dicNull } from '../../../../../public/tools/Ext'
-import { isSelectedBallOnId } from '../../../const/ISelBall'
-import { UGStore } from '../../../../../redux/store/UGStore'
-import { CqsscCode, LhcCode } from '../../../const/LotteryConst'
-import { ugLog } from '../../../../../public/tools/UgLog'
-import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
-import { Toast } from '../../../../../public/tools/ToastUtils'
-import { parseLMASelectedData } from '../../../util/select/ParseLMASelectedUtil'
-import { parseHXSelectedData } from '../../../util/select/ParseHXSelectedUtil'
-import { doubleDigit } from '../../../../../public/tools/StringUtil'
-import { filterSelectedData, filterSelectedSubData } from '../../../util/LotteryUtil'
-import { randomItem } from '../../../util/ArithUtil'
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { arrayLength, dicNull } from '../../../../public/tools/Ext'
+import { isSelectedBallOnId } from '../../widget/it/ISelBall'
+import { UGStore } from '../../../../redux/store/UGStore'
+import { CqsscCode, LhcCode } from '../../const/LotteryConst'
+import { ugLog } from '../../../../public/tools/UgLog'
+import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
+import { parseLMASelectedData } from '../../util/select/ParseLMASelectedUtil'
+import { parseHXSelectedData } from '../../util/select/ParseHXSelectedUtil'
+import { doubleDigit } from '../../../../public/tools/StringUtil'
+import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
+import { randomItem } from '../../util/ArithUtil'
 
 /**
  * 彩票公共处理类
