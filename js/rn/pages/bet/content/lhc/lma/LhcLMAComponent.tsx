@@ -95,7 +95,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   }}
                   selectedBalls={selectedBalls}
                   ballStyle={{ flexDirection: 'column' }}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 连码

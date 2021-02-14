@@ -93,7 +93,7 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   selectedBalls={selectedBalls}
                   ballType={{ size: scale(50) }}
                   ballStyle={{ flexDirection: 'column' }}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 特殊，绘制 五星玩法单式

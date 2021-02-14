@@ -1,4 +1,4 @@
-import { ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { IEBall } from '../../../public/components/view/lottery/EBall'
 import * as React from 'react'
@@ -13,7 +13,7 @@ import { anyEmpty } from '../../../public/tools/Ext'
 interface ILotteryEBall {
   item?: ILotteryLineEBallItem // 要绘制的数据
   ballProps?: IEBall //球的属性
-  selectedBalls?: Array<string> // 已选中的数据
+  selectedBalls?: Array<PlayData | ZodiacNum> // 已选中的数据
   ballStyle?: StyleProp<ViewStyle>
   callback?: () => void // 按压回调
 }
@@ -47,7 +47,7 @@ const LotteryLineEBall = ({
                             callback,
                           }: ILotteryEBall) => {
 
-  let isSel = isSelectedBallOnId(selectedBalls, item?.id)
+  let isSel = isSelectedBallOnId(selectedBalls, item)
 
   let showName = anyEmpty(item?.alias) ? item?.name : item?.alias
   return (

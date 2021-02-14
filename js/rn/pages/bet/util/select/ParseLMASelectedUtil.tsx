@@ -1,4 +1,9 @@
-import { PlayData, PlayGroupData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import {
+  PlayData,
+  PlayGroupData,
+  PlayOddData,
+  ZodiacNum,
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../public/tools/UgLog'
@@ -6,6 +11,7 @@ import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { filterSelectedData, filterSelectedSubData } from '../LotteryUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { calculateLimitCount } from './ParseSelectedUtil'
+import { isSelectedBallOnId } from '../../widget/it/ISelBall'
 
 /**
  * 将选中的球转换为固定格式存储下来
@@ -15,7 +21,7 @@ import { calculateLimitCount } from './ParseSelectedUtil'
  * @param playOddData
  * @param selectedBalls
  */
-const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<string>): Map<string, Map<string, SelectedPlayModel>> => {
+const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<PlayData | ZodiacNum>): Map<string, Map<string, SelectedPlayModel>> => {
   //选中了哪些球, 3层结构
   const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
 
@@ -32,8 +38,8 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<str
 
       //找出选中的球对应的原始数据, 优先使用 自定义数组 exPlays
       const selBalls = !anyEmpty(groupData?.exPlays) ?
-        groupData?.exPlays?.filter((item) => selectedBalls.includes(item?.exId ?? item?.id)) :
-        groupData?.plays?.filter((item) => selectedBalls.includes(item?.exId ?? item?.id))
+        groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item)) :
+        groupData?.plays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
 
       const pageAlias = `${groupData?.alias},${index}` //当前页的唯一识别
       ugLog('pageAlias = ', pageAlias)

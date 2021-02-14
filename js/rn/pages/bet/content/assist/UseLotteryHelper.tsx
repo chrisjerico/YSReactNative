@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { arrayLength, dicNull } from '../../../../public/tools/Ext'
-import { isSelectedBallOnId } from '../../widget/it/ISelBall'
+import { isSameBall, isSelectedBallOnId } from '../../widget/it/ISelBall'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
@@ -18,6 +18,7 @@ import { parseHXSelectedData } from '../../util/select/ParseHXSelectedUtil'
 import { doubleDigit } from '../../../../public/tools/StringUtil'
 import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
 import { randomItem } from '../../util/ArithUtil'
+import { Play } from '../../../../public/network/Model/PlayOddDataModel'
 
 /**
  * 彩票公共处理类
@@ -28,7 +29,7 @@ const UseLotteryHelper = () => {
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前选中的彩种数据 特码 两面 等
 
-  const [selectedBalls, setSelectedBalls] = useState<Array<string>>([]) //选中了哪些球
+  const [selectedBalls, setSelectedBalls] = useState<Array<PlayData | ZodiacNum>>([]) //选中了哪些球或者生肖
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //此页显示的彩种数据
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
 
@@ -131,15 +132,10 @@ const UseLotteryHelper = () => {
             ((Object.values(groupDataArr) as Array<SelectedPlayModel>))?.map((playModel) => {
               switch (playOddData?.code) {
                 case LhcCode.HX://合肖
-                {
-                  const ids = playModel?.zodiacs?.map((zodiac) => zodiac?.id)
-                  setSelectedBalls(ids)
-                }
+                  setSelectedBalls(playModel?.zodiacs)
                   break
-                default: {
-                  const ids = playModel?.plays?.map((play) => play?.exId ?? play?.id)
-                  setSelectedBalls(ids)
-                }
+                default:
+                  setSelectedBalls(playModel?.plays)
                   break
               }
             })
@@ -164,42 +160,41 @@ const UseLotteryHelper = () => {
 
   /**
    * 添加或移除选中的球列表
-   * @param addBalls 选中球的ID
-   * @param removeBalls 取消的球ID
+   * @param addBalls 选中球
+   * @param removeBalls 取消的球
    */
-  const addAndRemoveBallList = (addBalls?: Array<string>, removeBalls?: Array<string>) => {
-    const filterBalls = selectedBalls?.filter((item) => !removeBalls?.includes(item))
+  const addAndRemoveBallList = (addBalls?: Array<PlayData | ZodiacNum>, removeBalls?: Array<PlayData | ZodiacNum>) => {
+    const filterBalls = selectedBalls?.filter((item) => !isSelectedBallOnId(removeBalls, item))
     const newBalls = dicNull(addBalls) ? filterBalls : [...filterBalls, ...addBalls]
     setSelectedBalls(newBalls)
   }
 
   /**
    * 强制选中它
-   * @param ballId 选中的球ID
+   * @param ballData 选中的球
    */
-  const forceAdd = (ballId?: string) => {
-    setSelectedBalls([...selectedBalls, ballId])
+  const forceAdd = (ballData?: PlayData | ZodiacNum) => {
+    setSelectedBalls([...selectedBalls, ballData])
   }
 
   /**
    * 强制取消它
-   * @param ballId 取消的球ID
+   * @param ballData 取消的球
    */
-  const forceRemove = (ballId?: string) => {
-    let newResult = selectedBalls?.filter((item) => item != ballId)
+  const forceRemove = (ballData?: PlayData | ZodiacNum) => {
+    let newResult = selectedBalls?.filter((item) => !isSameBall(item, ballData))
     setSelectedBalls(newResult)
   }
 
   /**
    * 添加或移除选中的球
-   * @param ballId 球的ID
+   * @param ballData 球
    * @param groupEnable 当前页是否开启
-   * @param ballEnable 当前的球是否开启; 有的球没有该数据，只能依靠 groupEnable 来判断
    */
-  const addOrRemoveBall = (ballId?: string, groupEnable?: string, ballEnable?: string) => {
-    if (ballEnable != '0' && groupEnable == '1') {
-      if (isSelectedBallOnId(selectedBalls, ballId)) {
-        forceRemove(ballId)
+  const addOrRemoveBall = (ballData?: PlayData | ZodiacNum, groupEnable?: string) => {
+    if (ballData?.enable != '0' && groupEnable == '1') {
+      if (isSelectedBallOnId(selectedBalls, ballData)) {
+        forceRemove(ballData)
 
       } else {
         //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
@@ -218,23 +213,22 @@ const UseLotteryHelper = () => {
             break
         }
 
-        forceAdd(ballId)
+        forceAdd(ballData)
       }
     }
   }
 
   /**
-   * 根据生肖数字取出对应的球ID
+   * 根据生肖数字取出对应的球
    * @param zodiac
    * @param groupData
    */
   const zodiacBallIds = (zodiac?: ZodiacNum,
-                         groupData?: PlayGroupData): string[] => {
+                         groupData?: PlayGroupData): Array<PlayData> => {
     //重组数字
     const checkMap = zodiac.nums.map((item) => doubleDigit(item))
 
     return groupData?.plays?.filter((item) => checkMap?.includes(item?.name))
-      .map((item) => item?.exId)
   }
 
   /**
@@ -260,25 +254,25 @@ const UseLotteryHelper = () => {
           case '二连尾':
             //需要2个球
             randomItem(firstAvailablePlayBalls, 2).map((item) =>
-              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+              addOrRemoveBall(item, firstGroupData?.enable))
             break
           case '三连肖':
           case '三连尾':
             //需要3个球
             randomItem(firstAvailablePlayBalls, 3).map((item) =>
-              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+              addOrRemoveBall(item, firstGroupData?.enable))
             break
           case '四连肖':
           case '四连尾':
             //需要4个球
             randomItem(firstAvailablePlayBalls, 4).map((item) =>
-              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+              addOrRemoveBall(item, firstGroupData?.enable))
             break
           case '五连肖':
           case '五连尾':
             //需要5个球
             randomItem(firstAvailablePlayBalls, 5).map((item) =>
-              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+              addOrRemoveBall(item, firstGroupData?.enable))
             break
 
         }
@@ -288,7 +282,7 @@ const UseLotteryHelper = () => {
       case LhcCode.HX://合肖
         //需要2个球
         randomItem(zodiacNums, 2).map((item: ZodiacNum) =>
-          addOrRemoveBall(item?.id, firstGroupData?.enable))
+          addOrRemoveBall(item, firstGroupData?.enable))
         break
       case LhcCode.LMA:  //连码
         switch (firstGroupData?.alias) {
@@ -297,18 +291,18 @@ const UseLotteryHelper = () => {
           case '特串':
             //需要2个球
             randomItem(firstAvailablePlayBalls, 2).map((item) =>
-              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+              addOrRemoveBall(item, firstGroupData?.enable))
             break
           case '三全中':
           case '三中二':
             //需要3个球
             randomItem(firstAvailablePlayBalls, 3).map((item) =>
-              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+              addOrRemoveBall(item, firstGroupData?.enable))
             break
           case '四全中':
             //需要4个球
             randomItem(firstAvailablePlayBalls, 4).map((item) =>
-              addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+              addOrRemoveBall(item, firstGroupData?.enable))
             break
 
         }
@@ -317,14 +311,14 @@ const UseLotteryHelper = () => {
       case LhcCode.ZXBZ:  //自选不中
         //需要5个球
         randomItem(firstAvailablePlayBalls, 5).map((item) =>
-          addOrRemoveBall(item?.id, firstGroupData?.enable, item?.enable))
+          addOrRemoveBall(item, firstGroupData?.enable))
         break
 
       default://默认每组选1个
         currentPageData?.map((groupData) => {
           //从可用的球里面随机选出1个
           const item: PlayData = randomItem(groupData?.plays?.filter((ball) => ball?.enable != '0'))[0]
-          addOrRemoveBall(item?.id, groupData?.enable, item?.enable)
+          addOrRemoveBall(item, groupData?.enable)
         })
         break
     }

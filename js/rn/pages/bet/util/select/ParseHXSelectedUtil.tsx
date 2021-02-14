@@ -1,8 +1,14 @@
-import { PlayGroupData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import {
+  PlayData,
+  PlayGroupData,
+  PlayOddData,
+  ZodiacNum,
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { calculateLimitCount } from './ParseSelectedUtil'
+import { isSelectedBallOnId } from '../../widget/it/ISelBall'
 
 /**
  * 将选中的球转换为固定格式存储下来
@@ -13,7 +19,7 @@ import { calculateLimitCount } from './ParseSelectedUtil'
  * @param selectedBalls
  */
 const parseHXSelectedData = (playOddData: PlayOddData,
-                             selectedBalls: Array<string>): Map<string, Map<string, SelectedPlayModel>> => {
+                             selectedBalls: Array<PlayData | ZodiacNum>): Map<string, Map<string, SelectedPlayModel>> => {
 
   //选中了哪些球, 3层结构
   const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
@@ -29,8 +35,7 @@ const parseHXSelectedData = (playOddData: PlayOddData,
     pageData?.map((groupData) => {
 
       //找出选中的球对应的原始数据
-      const selZodiac = playOddData?.pageData?.zodiacNums?.filter((zodiac) => selectedBalls.includes(zodiac?.id))
-
+      const selZodiac = playOddData?.pageData?.zodiacNums?.filter((zodiac) => isSelectedBallOnId(selectedBalls, zodiac))
       let limitCount = calculateLimitCount(playOddData?.code, groupData?.alias)
 
       //再用原始数组和彩种数据组合成 新的选中数据

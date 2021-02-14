@@ -2,6 +2,8 @@
  * 选中的球
  */
 import { ugLog } from '../../../../public/tools/UgLog'
+import { PlayData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../public/tools/Ext'
 
 interface ISelBall {
   id?: string //唯一识别的ID
@@ -30,10 +32,22 @@ const isSelectedBall = (arr?: Array<ISelBall>,
  * 是否选中某个球
  *
  * @param arr 数组
- * @param id 目标球id
+ * @param ball 当前的球
  */
-const isSelectedBallOnId = (arr?: Array<string>,
-                            id?: string): boolean => arr?.includes(id)
+const isSelectedBallOnId = (arr?: Array<PlayData | ZodiacNum>, ball?: PlayData | ZodiacNum): boolean =>
+  !anyEmpty(arr?.find((item) => isSameBall(item, ball)))
+
+/**
+ * 判断2个球是不是相同
+ * @param ball1
+ * @param ball2
+ */
+const isSameBall = (ball1?: PlayData | ZodiacNum, ball2?: PlayData | ZodiacNum): boolean =>
+  (!anyEmpty(ball1?.exId) && ball1?.exId == ball2?.exId) || (!anyEmpty(ball1?.id) && ball1?.id == ball2?.id)
 
 export default ISelBall
-export { isSelectedBall, isSelectedBallOnId }
+export {
+  isSelectedBall,
+  isSelectedBallOnId,
+  isSameBall,
+}

@@ -1,4 +1,4 @@
-import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -9,7 +9,7 @@ import { isSelectedBallOnId } from './it/ISelBall'
 
 interface ILotteryERect {
   item?: PlayData // 要绘制的数据
-  selectedBalls?: Array<string> // 已选中的数据
+  selectedBalls?: Array<PlayData | ZodiacNum> // 已选中的数据
   callback?: () => void // 按压回调
 }
 
@@ -28,7 +28,7 @@ const LotteryERect = ({
                       }: ILotteryERect) => {
 
   const key = 'LotteryERect'
-  let isSel = isSelectedBallOnId(selectedBalls, item?.exId ?? item?.id) //优先使用本地生成的唯一识别ID
+  let isSel = isSelectedBallOnId(selectedBalls, item) //优先使用本地生成的唯一识别ID
   return (
     <TouchableWithoutFeedback key={`${key}-lottery erect-${item?.exId}-${item?.id}`}
                               onPress={() => callback && callback()}>

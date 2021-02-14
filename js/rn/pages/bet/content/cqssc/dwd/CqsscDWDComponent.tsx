@@ -47,41 +47,37 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   selectedBalls={selectedBalls}
                   ballType={{ size: scale(50) }}
                   ballStyle={{ flexDirection: 'column' }}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 所有 大 小 栏目
    * @param plays 当前栏目的所有球
    */
   const renderRowBar = (plays: Array<PlayData>) => <View style={_styles.bar_container}>
-    <TouchableOpacity onPress={() => addAndRemoveBallList(plays?.map((play) => play?.id))}>
+    <TouchableOpacity onPress={() => addAndRemoveBallList(plays)}>
       <Text style={_styles.bar_text}>{'所有'}</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => {
-      addAndRemoveBallList(plays?.filter((play) =>
-        Number(play?.name) > 4).map((play) => play?.id), plays?.map((play) => play?.id))
+      addAndRemoveBallList(plays?.filter((play) => Number(play?.name) > 4), plays)
     }}>
       <Text style={_styles.bar_text}>{'大'}</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => {
-      addAndRemoveBallList(plays?.filter((play) =>
-        Number(play?.name) < 5).map((play) => play?.id), plays?.map((play) => play?.id))
+      addAndRemoveBallList(plays?.filter((play) => Number(play?.name) < 5), plays)
     }}>
       <Text style={_styles.bar_text}>{'小'}</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => {
-      addAndRemoveBallList(plays?.filter((play) =>
-        Number(play?.name) % 2 == 1).map((play) => play?.id), plays?.map((play) => play?.id))
+      addAndRemoveBallList(plays?.filter((play) => Number(play?.name) % 2 == 1), plays)
     }}>
       <Text style={_styles.bar_text}>{'奇'}</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => {
-      addAndRemoveBallList(plays?.filter((play) =>
-        Number(play?.name) % 2 == 0).map((play) => play?.id), plays?.map((play) => play?.id))
+      addAndRemoveBallList(plays?.filter((play) => Number(play?.name) % 2 == 0), plays)
     }}>
       <Text style={_styles.bar_text}>{'偶'}</Text>
     </TouchableOpacity>
-    <TouchableOpacity onPress={() => addAndRemoveBallList(null, plays?.map((play) => play?.id))}>
+    <TouchableOpacity onPress={() => addAndRemoveBallList(null, plays)}>
       <Text style={_styles.bar_text}>{'移除'}</Text>
     </TouchableOpacity>
   </View>

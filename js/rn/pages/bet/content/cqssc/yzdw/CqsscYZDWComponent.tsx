@@ -106,7 +106,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   selectedBalls={selectedBalls}
                   ballType={{ size: scale(50) }}
                   ballStyle={{ flexDirection: 'column' }}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 X字定位

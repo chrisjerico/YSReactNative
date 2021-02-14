@@ -53,7 +53,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                                                                                 zodiacItem: zodiac,
                                                                               }}
                                                                               selectedBalls={selectedBalls}
-                                                                              callback={() => addOrRemoveBall(zodiac?.id, item?.enable)}/>
+                                                                              callback={() => addOrRemoveBall(zodiac, item?.enable)}/>
   /**
    * 绘制 一行球
    * @param groupData

@@ -53,7 +53,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
                   containerStyle={_styles.ball_container}
                   ballType={{ size: scale(50) }}
                   oddsStyle={_styles.ball_odds}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 方格式
@@ -65,7 +65,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryERect key={key + 'renderERect' + ballInfo?.id + index}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 一组格子

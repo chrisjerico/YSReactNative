@@ -49,7 +49,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   item={ballInfo}
                   selectedBalls={selectedBalls}
                   containerStyle={{ width: scale(78) }}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 自选不中
