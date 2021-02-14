@@ -1,4 +1,5 @@
 
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { View, Image,Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -86,7 +87,7 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
 
     // })
 
-
+    console.log('diff==',moment().unix());
     
 
     // text.style = { fontSize: 20, color: 'blue', marginLeft: 20}
