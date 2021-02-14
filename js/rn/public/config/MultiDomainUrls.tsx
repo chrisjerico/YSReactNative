@@ -30,7 +30,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test08.6yc.com',
   ],
   'tx09': [
-    'http://test09.6yc.com/',
+    'http://test09.6yc.com',
   ],
   'tx10': [
     'https://test10.6yc.com',

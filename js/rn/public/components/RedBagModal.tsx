@@ -44,8 +44,6 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
 
   useEffect(()=> {
   }, [redBagData])
-
-  console.log("bagSkin=", bagSkin);
   
   return (
     <Modal 
@@ -63,19 +61,19 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
             resizeMode='contain'
             style={styles.image} >
             <View style={styles.imageContainer}>
-              <View style={styles.col}>
+              <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>帐号：</Text>
                 <Text style={styles.text}>{redBagData.data.username}</Text>
               </View>
-              <View style={styles.col}>
+              <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>红包余额：</Text>
                 <Text style={styles.text}>{redBagData.data.leftAmount}</Text>
               </View>
-              <View style={styles.col}>
+              <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>可抢红包：</Text>
                 <Text style={styles.text}>{redBagData.data.leftCount}</Text>
               </View>
-              <View style={[styles.col, {justifyContent: 'center'}]}>
+              <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Button
                   title={redBagData.data.hasLogin? (redBagData.data.canGet == 0 && redBagData.data.attendedTimes > 0 ? '已参与活动' : '立即开抢') : '登录抢红包'}
                   onPress={requestBag}
@@ -145,6 +143,12 @@ const styles = StyleSheet.create({
     height: scale(70),
     width: scale(200),
   },
+  niu_col: {
+    flexDirection: 'row',
+    height: scale(45),
+    width: scale(200),
+    justifyContent: 'center'
+  },
   row: { 
     flexDirection: 'column',
     width: scale(270),
@@ -159,7 +163,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: scale(30),
+    marginLeft: scale(-10),
+    marginTop: scale(35),
   },
   button: {
     borderWidth: scale(1),
