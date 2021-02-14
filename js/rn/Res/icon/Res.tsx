@@ -143,4 +143,5 @@ export const Res = {
   //紅包
   redBg: img_root('web/static/vueTemplate/vue/images/my/red_pack_big'),
   closeDialog: img_assets('dialog/dialog_close'),
+  pig: img_assets('pig'),
 }

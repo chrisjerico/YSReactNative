@@ -85,7 +85,7 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
                 <View style={styles.row}>
                   <Text style={[styles.title, {color: '#FFC950', alignSelf: 'center'}]}>活动介绍</Text>
                   <ScrollView style={styles.redBagIntro}>
-                    <Text style={[styles.title, {color: '#ffffff'}]}>{activitySetting.data.redBagIntro}</Text>
+                    <Text style={[styles.title, {color: '#ffffff'}]}>{activitySetting?.data?.redBagIntro}</Text>
                   </ScrollView>
                 </View>
               }
@@ -140,14 +140,16 @@ const styles = StyleSheet.create({
   },
   col: { 
     flexDirection: 'row',
-    height: scale(70),
+    height: scale(60),
     width: scale(200),
+    justifyContent: 'center',
   },
   niu_col: {
     flexDirection: 'row',
     height: scale(45),
     width: scale(200),
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginLeft: scale(-10),
   },
   row: { 
     flexDirection: 'column',
@@ -163,7 +165,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    marginLeft: scale(-10),
     marginTop: scale(35),
   },
   button: {
