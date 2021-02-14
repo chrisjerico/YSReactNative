@@ -51,7 +51,6 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
   const [redDialog, setRedDialog] = useState(false)
   
-  ugLog("redBagLogo=", Res.pig)
   return (
     <>
       <ActivityComponent
