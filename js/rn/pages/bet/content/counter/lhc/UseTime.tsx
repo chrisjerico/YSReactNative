@@ -24,7 +24,6 @@ const UseTime = () => {
   const [displayOpenTime, setDisplayOpenTime] = useState<string>(null) //显示开奖时间
   const [closeTime, setCloseTime] = useState<number>(-1) //封盘时间倒计时
   const [openTime, setOpenTime] = useState<number>(-1) //开奖时间倒计时
-  const [lastTimer, setLastTimer] = useState<any>() //上一次的倒计时
 
   useEffect(() => {
     requestNextData(lotteryId)
@@ -42,7 +41,6 @@ const UseTime = () => {
       setCloseTime(closeTime)
       setOpenTime(openTime)
 
-      lastTimer && clearInterval(lastTimer)
       const timer = setInterval(() => {
         setCloseTime(n => n - SECOND_1)
         setOpenTime(n => {
@@ -54,7 +52,6 @@ const UseTime = () => {
 
       }, 1000)
 
-      setLastTimer(timer)
       return () => clearInterval(timer)
     }
   }, [nextIssueData])

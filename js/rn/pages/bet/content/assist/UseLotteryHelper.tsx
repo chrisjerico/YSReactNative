@@ -21,6 +21,8 @@ import { randomItem } from '../../util/ArithUtil'
 import { Play } from '../../../../public/network/Model/PlayOddDataModel'
 import { currentPlayOddData, currentTabGroupData } from '../../util/select/ParseSelectedUtil'
 import { prepareSelectedBetData } from '../../board/tools/BetUtil'
+import { DeviceEventEmitter } from 'react-native'
+import { EmitterLotteryTypes } from '../../../../public/define/DeviceEventEmitterTypes'
 
 /**
  * 彩票公共处理类
@@ -33,6 +35,15 @@ const UseLotteryHelper = () => {
   const [selectedBalls, setSelectedBalls] = useState<Array<PlayData | ZodiacNum>>([]) //选中了哪些球或者生肖
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //此页显示的彩种数据
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
+
+  useEffect(() => {
+    //收到消息就机投一注
+    const lis = DeviceEventEmitter.addListener(EmitterLotteryTypes.RANDOM_SELECT_LOTTERY, () => {
+      randomSelectBalls()
+    })
+
+    return () => lis.remove()
+  }, [playOddData])
 
   useEffect(() => {
     prepareSelectedBetData(playOddData, selectedBalls)
@@ -188,10 +199,12 @@ const UseLotteryHelper = () => {
    */
   const randomSelectBalls = () => {
     //如果不是当前页，就不作处理
-    if(playOddData !== currentPlayOddData()) return
+    if (playOddData !== currentPlayOddData() || tabIndex != UGStore.globalProps?.lotteryTabIndex) return
 
     //当前页的数据
     const currentPageData = currentTabGroupData()
+
+    ugLog('当前机选=', JSON.stringify(currentPageData))
 
     const firstGroupData = currentPageData[0]//一组数据，有的彩票只有一组数据
     const firstAvailablePlayBalls = (firstGroupData?.exPlays ?? firstGroupData?.plays) //自定义的球使用exPlays
@@ -199,6 +212,7 @@ const UseLotteryHelper = () => {
     const zodiacNums = playOddData?.pageData?.zodiacNums
     ugLog('randomSelect = ', firstGroupData?.code, firstGroupData?.alias, firstAvailablePlayBalls)
 
+    setSelectedBalls([])
     switch (firstGroupData?.code) {
       case LhcCode.LX: //连肖
       case LhcCode.LW: //连尾
@@ -207,26 +221,34 @@ const UseLotteryHelper = () => {
           case '二连肖':
           case '二连尾':
             //需要2个球
-            randomItem(firstAvailablePlayBalls, 2).map((item) =>
-              addOrRemoveBall(item, firstGroupData?.enable))
+          {
+            const ball5 = randomItem(firstAvailablePlayBalls, 2)
+            addAndRemoveBallList(ball5)
+          }
             break
           case '三连肖':
           case '三连尾':
             //需要3个球
-            randomItem(firstAvailablePlayBalls, 3).map((item) =>
-              addOrRemoveBall(item, firstGroupData?.enable))
+          {
+            const ball5 = randomItem(firstAvailablePlayBalls, 3)
+            addAndRemoveBallList(ball5)
+          }
             break
           case '四连肖':
           case '四连尾':
             //需要4个球
-            randomItem(firstAvailablePlayBalls, 4).map((item) =>
-              addOrRemoveBall(item, firstGroupData?.enable))
+          {
+            const ball5 = randomItem(firstAvailablePlayBalls, 4)
+            addAndRemoveBallList(ball5)
+          }
             break
           case '五连肖':
           case '五连尾':
             //需要5个球
-            randomItem(firstAvailablePlayBalls, 5).map((item) =>
-              addOrRemoveBall(item, firstGroupData?.enable))
+          {
+            const ball5 = randomItem(firstAvailablePlayBalls, 5)
+            addAndRemoveBallList(ball5)
+          }
             break
 
         }
@@ -235,8 +257,8 @@ const UseLotteryHelper = () => {
 
       case LhcCode.HX://合肖
         //需要2个球
-        randomItem(zodiacNums, 2).map((item: ZodiacNum) =>
-          addOrRemoveBall(item, firstGroupData?.enable))
+        const zodiac2 = randomItem(zodiacNums, 2)
+        addAndRemoveBallList(zodiac2)
         break
       case LhcCode.LMA:  //连码
         switch (firstGroupData?.alias) {
@@ -244,19 +266,25 @@ const UseLotteryHelper = () => {
           case '二中特':
           case '特串':
             //需要2个球
-            randomItem(firstAvailablePlayBalls, 2).map((item) =>
-              addOrRemoveBall(item, firstGroupData?.enable))
+          {
+            const ball5 = randomItem(firstAvailablePlayBalls, 2)
+            addAndRemoveBallList(ball5)
+          }
             break
           case '三全中':
           case '三中二':
             //需要3个球
-            randomItem(firstAvailablePlayBalls, 3).map((item) =>
-              addOrRemoveBall(item, firstGroupData?.enable))
+          {
+            const ball5 = randomItem(firstAvailablePlayBalls, 3)
+            addAndRemoveBallList(ball5)
+          }
             break
           case '四全中':
             //需要4个球
-            randomItem(firstAvailablePlayBalls, 4).map((item) =>
-              addOrRemoveBall(item, firstGroupData?.enable))
+          {
+            const ball5 = randomItem(firstAvailablePlayBalls, 4)
+            addAndRemoveBallList(ball5)
+          }
             break
 
         }
@@ -264,16 +292,19 @@ const UseLotteryHelper = () => {
 
       case LhcCode.ZXBZ:  //自选不中
         //需要5个球
-        randomItem(firstAvailablePlayBalls, 5).map((item) =>
-          addOrRemoveBall(item, firstGroupData?.enable))
+      {
+        const ball5 = randomItem(firstAvailablePlayBalls, 5)
+        addAndRemoveBallList(ball5)
+      }
         break
 
       default://默认每组选1个
-        currentPageData?.map((groupData) => {
-          //从可用的球里面随机选出1个
-          const item: PlayData = randomItem(groupData?.plays?.filter((ball) => ball?.enable != '0'))[0]
-          addOrRemoveBall(item, groupData?.enable)
-        })
+      {
+        const dataList = currentPageData?.filter((groupData) =>
+          groupData?.enable == '1')?.map((groupData) =>
+          randomItem(groupData?.plays?.filter((ball) => ball?.enable != '0'))[0])
+        addAndRemoveBallList(dataList)
+      }
         break
     }
   }

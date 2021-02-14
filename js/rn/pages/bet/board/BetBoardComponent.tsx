@@ -1,4 +1,13 @@
-import { StyleProp, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import {
+  DeviceEventEmitter,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native'
 import * as React from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -15,6 +24,7 @@ import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryMode
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { dicNull } from '../../../public/tools/Ext'
 import { mapTotalCount } from '../util/ArithUtil'
+import { EmitterLotteryTypes } from '../../../public/define/DeviceEventEmitterTypes'
 
 /**
  * 彩票功能区入参
@@ -182,7 +192,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
    * 机选
    */
   const renderRandomSelected = () => {
-    return <TouchableWithoutFeedback onPress={() => renderRandomSelected()}>
+    return <TouchableWithoutFeedback onPress={() => DeviceEventEmitter.emit(EmitterLotteryTypes.RANDOM_SELECT_LOTTERY)}>
       <Text style={_styles.bet_again}>机选</Text>
     </TouchableWithoutFeedback>
   }
