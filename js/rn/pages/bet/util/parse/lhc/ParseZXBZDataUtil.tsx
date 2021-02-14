@@ -1,11 +1,10 @@
 import {
-  PagePlayOddData,
+  PagePlayOddData, PlayData,
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
 } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../../public/tools/Ext'
-import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
 import { doubleDigit } from '../../../../../public/tools/StringUtil'
 
 interface ITMData {
@@ -36,7 +35,7 @@ const parseZXBZData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
  * 创建数数据
  * @param data
  */
-const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
+const createBalls = (data?: PlayGroupData): Array<PlayData> => {
 
   const play0 = data?.plays[0]
   return new Array(
@@ -47,7 +46,7 @@ const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
       {
         id: play0?.id + ',' + ballIndex,
         name: ballIndex,
-      } as ILotteryEBallItem
+      } as PlayData
     )
   })
 }

@@ -43,7 +43,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) =>
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) =>
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                   item={ballInfo}
                   selectedBalls={selectedBalls}

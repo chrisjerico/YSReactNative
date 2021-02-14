@@ -1,11 +1,10 @@
 import {
-  PagePlayOddData,
+  PagePlayOddData, PlayData,
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
 } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../../public/tools/Ext'
-import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
 import { CqsscCode } from '../../../const/LotteryConst'
 
 interface ITMData {
@@ -99,7 +98,7 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
         name: ballIndex,
         alias: titleArr[i],
         odds: play0?.odds,
-      } as ILotteryEBallItem)
+      } as PlayData)
     })
     arrArr.push({...data,
       exTitle: `赔率: ${play0?.odds}`,
