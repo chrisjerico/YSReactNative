@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Image, ImageBackground, Modal, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
-import { TouchableHighlight } from 'react-native-gesture-handler'
+import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { Res } from '../../Res/icon/Res'
@@ -45,6 +45,8 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
   useEffect(()=> {
   }, [redBagData])
 
+  console.log("bagSkin=", bagSkin);
+  
   return (
     <Modal 
       style={{ zIndex: 2}}
@@ -58,6 +60,7 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
         <View style={styles.redBagImage}>
           <ImageBackground 
             source={{ uri: bagSkin?.includes("red_pack_big_niu") ? bagSkin : Res.redBg }}
+            resizeMode='contain'
             style={styles.image} >
             <View style={styles.imageContainer}>
               <View style={styles.col}>
@@ -83,21 +86,23 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
               {bagSkin?.includes("red_pack_big_niu") ? null : 
                 <View style={styles.row}>
                   <Text style={[styles.title, {color: '#FFC950', alignSelf: 'center'}]}>活动介绍</Text>
-                  <Text style={[styles.title, {color: '#ffffff'}]}>{activitySetting.data.redBagIntro}</Text>
+                  <ScrollView style={styles.redBagIntro}>
+                    <Text style={[styles.title, {color: '#ffffff'}]}>{activitySetting.data.redBagIntro}</Text>
+                  </ScrollView>
                 </View>
               }
             </View>
           </ImageBackground>
         </View>
       </View>
-        <View style={styles.closeDialog}>
-          <TouchableWithoutFeedback
-            onPress={onPress}>
-            <Image 
-              style={styles.image}
-              source={{ uri: Res.closeDialog }}/>
-          </TouchableWithoutFeedback>
-        </View>
+      <View style={styles.closeDialog}>
+        <TouchableWithoutFeedback
+          onPress={onPress}>
+          <Image 
+            style={styles.image}
+            source={{ uri: Res.closeDialog }}/>
+        </TouchableWithoutFeedback>
+      </View>
     </Modal>
   )
 }
@@ -125,16 +130,15 @@ const styles = StyleSheet.create({
   },
   redBagImage: { 
     height: '60%',
-    width: '70%',
+    width: '100%',
     marginTop: '30%', 
-    marginLeft: scale(20),
   },
   closeDialog: { 
     position: 'absolute',
     width: scale(35), 
-    height: scale(35), 
-    marginTop: (AppDefine.height)/5,
-    marginLeft: (AppDefine.width-50),
+    height: scale(35),
+    marginTop: scale(220),
+    marginLeft: scale(450),
   },
   col: { 
     flexDirection: 'row',
@@ -143,7 +147,7 @@ const styles = StyleSheet.create({
   },
   row: { 
     flexDirection: 'column',
-    width: scale(200),
+    width: scale(270),
   },
   title: { 
     color: '#ef6c74'
@@ -155,7 +159,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: scale(20),
+    marginTop: scale(30),
   },
   button: {
     borderWidth: scale(1),
@@ -172,6 +176,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 5,
+  },
+  redBagIntro: {
+    height: scale(270)
   }
 })
 

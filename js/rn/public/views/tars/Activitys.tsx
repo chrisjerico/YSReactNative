@@ -122,6 +122,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
               setRedDialog(!redDialog)
             }}
             redBag={redBag}
+            bagSkin={activitySetting.data.redBagSkin}
             activitySetting={activitySetting}
           /> 
         : null }
