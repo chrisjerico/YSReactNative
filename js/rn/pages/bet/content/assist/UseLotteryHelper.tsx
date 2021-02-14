@@ -19,7 +19,7 @@ import { doubleDigit } from '../../../../public/tools/StringUtil'
 import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
 import { randomItem } from '../../util/ArithUtil'
 import { Play } from '../../../../public/network/Model/PlayOddDataModel'
-import { currentPlayOddData, currentTabGroupData } from '../../util/select/ParseSelectedUtil'
+import { currentPlayOddData, currentTabGroupData, tabGroupData } from '../../util/select/ParseSelectedUtil'
 import { prepareSelectedBetData } from '../../board/tools/BetUtil'
 import { DeviceEventEmitter } from 'react-native'
 import { EmitterLotteryTypes } from '../../../../public/define/DeviceEventEmitterTypes'
@@ -43,7 +43,7 @@ const UseLotteryHelper = () => {
     })
 
     return () => lis.remove()
-  }, [playOddData])
+  }, [tabIndex])
 
   useEffect(() => {
     prepareSelectedBetData(playOddData, selectedBalls)
@@ -198,11 +198,11 @@ const UseLotteryHelper = () => {
    * 机选下注
    */
   const randomSelectBalls = () => {
-    //如果不是当前页，就不作处理
-    if (playOddData !== currentPlayOddData() || tabIndex != UGStore.globalProps?.lotteryTabIndex) return
-
+    const tabData = tabGroupData(tabIndex)
     //当前页的数据
     const currentPageData = currentTabGroupData()
+    //如果不是当前页，就不作处理
+    if (tabData != currentPageData) return
 
     ugLog('当前机选=', JSON.stringify(currentPageData))
 
@@ -213,7 +213,7 @@ const UseLotteryHelper = () => {
     ugLog('randomSelect = ', firstGroupData?.code, firstGroupData?.alias, firstAvailablePlayBalls)
 
     setSelectedBalls([])
-    switch (firstGroupData?.code) {
+    switch (playOddData?.code) {
       case LhcCode.LX: //连肖
       case LhcCode.LW: //连尾
       {
