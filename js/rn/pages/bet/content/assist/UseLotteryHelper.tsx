@@ -13,12 +13,14 @@ import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
-import { parseLMASelectedData } from '../../util/select/ParseLMASelectedUtil'
-import { parseHXSelectedData } from '../../util/select/ParseHXSelectedUtil'
+import { parseLMASelectedData } from '../../util/select/lhc/ParseLMASelectedUtil'
+import { parseHXSelectedData } from '../../util/select/lhc/ParseHXSelectedUtil'
 import { doubleDigit } from '../../../../public/tools/StringUtil'
 import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
 import { randomItem } from '../../util/ArithUtil'
 import { Play } from '../../../../public/network/Model/PlayOddDataModel'
+import { currentPlayOddData } from '../../util/select/ParseSelectedUtil'
+import { prepareSelectedBetData } from '../../board/tools/BetUtil'
 
 /**
  * 彩票公共处理类
@@ -27,63 +29,13 @@ import { Play } from '../../../../public/network/Model/PlayOddDataModel'
 const UseLotteryHelper = () => {
 
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
-  const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前选中的彩种数据 特码 两面 等
 
   const [selectedBalls, setSelectedBalls] = useState<Array<PlayData | ZodiacNum>>([]) //选中了哪些球或者生肖
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //此页显示的彩种数据
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
 
   useEffect(() => {
-    //生成选中的数据
-    const newSelectedModel = dicNull(UGStore.globalProps?.selectedData) ?
-      new Map<string, Map<string, Map<string, SelectedPlayModel>>>() :
-      JSON.parse(JSON.stringify(UGStore.globalProps?.selectedData))
-
-    switch (playOddData?.code) {
-      case LhcCode.TM:  //特码
-      case LhcCode.LM: //两面
-      case LhcCode.ZM: //正码
-      case LhcCode.ZT:  //正特
-      case LhcCode.ZM1_6: //正码1T6
-      case LhcCode.SB: //色波
-      case LhcCode.ZOX://总肖
-      case LhcCode.WX:  //五行 或 五星
-      case LhcCode.LMA:  //连码
-      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.TX: //特肖
-      case LhcCode.ZX: //正肖
-      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.LX: //连肖
-      case LhcCode.LW: //连尾
-      case LhcCode.ZXBZ:  //自选不中
-      case CqsscCode.ALL:  //1-5球
-      case CqsscCode.Q1:  //第1球
-      case CqsscCode.Q2:  //第2球
-      case CqsscCode.Q3:  //第3球
-      case CqsscCode.Q4:  //第4球
-      case CqsscCode.Q5:  //第5球
-      case CqsscCode.QZH:  //前中后
-      case CqsscCode.DN:  //斗牛
-      case CqsscCode.SH:  //梭哈
-      case CqsscCode.LHD:  //龙虎斗
-      case CqsscCode.YZDW:  //一字定位
-      case CqsscCode.EZDW:  //二字定位
-      case CqsscCode.SZDW:  //三字定位
-      case CqsscCode.BDW:  //不定位
-      case CqsscCode.DWD:  //定位胆
-        newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
-        break
-
-      case LhcCode.HX://合肖
-        newSelectedModel[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
-        break
-    }
-
-    UGStore.dispatch({ type: 'reset', selectedData: newSelectedModel })
-
-    ugLog('选中的数据 selectedBalls = ', JSON.stringify(selectedBalls))
-    ugLog(`选中的数据 selectedData = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(UGStore.globalProps?.selectedData))
+    prepareSelectedBetData(playOddData, selectedBalls)
 
   }, [selectedBalls])
 
@@ -237,8 +189,7 @@ const UseLotteryHelper = () => {
    */
   const randomSelectBalls = () => {
     //当前页的数据
-    const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前选中的彩种数据 特码 两面 等
-    const currentPageData: Array<PlayGroupData> = currentPlayOddData?.pageData?.groupTri[tabIndex]
+    const currentPageData: Array<PlayGroupData> = currentPlayOddData()?.pageData?.groupTri[tabIndex]
     const firstGroupData = currentPageData[0]//一组数据，有的彩票只有一组数据
     const firstAvailablePlayBalls = (firstGroupData?.exPlays ?? firstGroupData?.plays) //自定义的球使用exPlays
       ?.filter((ball) => ball?.enable != '0')
@@ -325,7 +276,6 @@ const UseLotteryHelper = () => {
   }
 
   return {
-    currentPlayOddData,
     tabIndex,
     setTabIndex,
     playOddData,

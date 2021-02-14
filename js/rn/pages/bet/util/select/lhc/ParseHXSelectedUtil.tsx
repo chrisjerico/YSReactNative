@@ -3,12 +3,12 @@ import {
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../../public/tools/Ext'
-import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
-import { ugLog } from '../../../../public/tools/UgLog'
-import { calculateLimitCount } from './ParseSelectedUtil'
-import { isSelectedBallOnId } from '../../widget/it/ISelBall'
+} from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty } from '../../../../../public/tools/Ext'
+import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
+import { ugLog } from '../../../../../public/tools/UgLog'
+import { calculateLimitCount } from '../ParseSelectedUtil'
+import { isSelectedBallOnId } from '../../../widget/it/ISelBall'
 
 /**
  * 将选中的球转换为固定格式存储下来
