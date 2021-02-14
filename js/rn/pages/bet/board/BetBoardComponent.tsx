@@ -14,6 +14,7 @@ import { GameTab } from '../const/LotteryConst'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { dicNull } from '../../../public/tools/Ext'
+import { mapTotalCount } from '../util/ArithUtil'
 
 /**
  * 彩票功能区入参
@@ -47,6 +48,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     setShowChip,
     playOddDetailData,
     reBetShareModel,
+    ballSelected,
     checkShowBetPayment,
   } = UseBetBoard()
 
@@ -205,7 +207,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           <Text key={'renderInputArea middle 已选中'}
                 style={_styles.lottery_count_hint}>已选中</Text>
           <Text key={'renderInputArea middle 0'}
-                style={_styles.lottery_count_count}>0</Text>
+                style={_styles.lottery_count_count}>{mapTotalCount(ballSelected)}</Text>
           <Text key={'renderInputArea middle 注'}
                 style={_styles.lottery_count_hint}>注</Text>
           <View key={'renderInputArea ct'}

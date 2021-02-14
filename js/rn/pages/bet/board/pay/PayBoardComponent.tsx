@@ -50,7 +50,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                       betShareModel?: BetShareModel) => {
     const showName = !anyEmpty(nameArr?.playName1) ?
       `[ ${nameArr?.playName1}- ${nameArr?.playName2 ?? ''} ]` :
-      `[ ${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name} ]`
+      `[ ${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name ?? ''} ]`
     return (<View key={nameArr?.exFlag}
                   style={_styles.item_container}>
       <Text style={_styles.item_title}

@@ -1,11 +1,12 @@
+
+import { anyEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
+import { ugLog } from '../../../public/tools/UgLog'
+
 /**
  * 得到组合数量
  * @param arr 数组
  * @param len 组合长度
  */
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
-import { ugLog } from '../../../public/tools/UgLog'
-
 const combination = (arr?: Array<any>, len?: number) => {
   let resultArr = []
   if (len <= 0 || len > arr.length) {
@@ -75,8 +76,18 @@ const randomItem = (list?: Array<any>, count: number = 1): Array<any> => {
   return newArrList
 }
 
+/**
+ * 计算总共选择的数量
+ * @param list
+ */
+const mapTotalCount = (list?: Map<any, number>): number => {
+  return dicNull(list) ? 0 :
+    Object.values(list)?.reduce((previousValue, currentValue) => previousValue + currentValue)
+}
+
 export {
   combination,
   combineArr,
   randomItem,
+  mapTotalCount,
 }
