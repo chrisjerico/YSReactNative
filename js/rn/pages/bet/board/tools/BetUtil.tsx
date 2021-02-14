@@ -20,7 +20,7 @@ import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/B
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import moment from 'moment'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
-import { currentPlayOddData } from '../../util/select/ParseSelectedUtil'
+import { currentPlayOddData, currentTabGroupData } from '../../util/select/ParseSelectedUtil'
 import { parseLMASelectedData } from '../../util/select/lhc/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/select/lhc/ParseHXSelectedUtil'
 
@@ -34,7 +34,7 @@ const filterShareItem = (betShareModel?: BetShareModel, exFlag?: string): BetSha
     ...betShareModel,
     playNameArray: betShareModel?.playNameArray.filter((item) => item?.exFlag != exFlag),
     betBean: betShareModel?.betBean?.filter((item) => item?.exFlag != exFlag),
-  }  as  BetShareModel
+  } as BetShareModel
 
   ugLog('filterShareItem betShareModel = ', exFlag, JSON.stringify(betShareModel))
   ugLog('filterShareItem newResult = ', exFlag, JSON.stringify(newResult))
@@ -107,13 +107,13 @@ const prepareSelectedBetData = (playOddData?: PlayOddData, selectedBalls?: Array
  * @param showMsg 显示提示语
  */
 const checkBetCount = (showMsg?: boolean): boolean => {
-  const currentPlayGroupData = currentPlayOddData()?.pageData?.groupTri[UGStore.globalProps?.lotteryTabIndex] //当前界面
+  const curTabGroupData = currentTabGroupData() //当前界面
   const selectedData = UGStore.globalProps?.selectedData //选中的数据
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
 
   ugLog('UGStore.globalProps?.lotteryTabIndex = ', UGStore.globalProps?.lotteryTabIndex)
   // ugLog('currentPlayOddData?.pageData?.groupTri = ', JSON.stringify(currentPlayOddData?.pageData?.groupTri))
-  // ugLog('currentPlayGroupData = ', JSON.stringify(currentPlayGroupData))
+  // ugLog('currentTabGroupData = ', JSON.stringify(curTabGroupData))
   ugLog('checkBetCount selectedData', JSON.stringify(keys))
   if (anyEmpty(keys)) {
     Toast('请选择玩法')
@@ -161,7 +161,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       case LhcCode.LX: //连肖
       case LhcCode.LW: //连尾
       {
-        for (let data of currentPlayGroupData) {
+        for (let data of curTabGroupData) {
           const selCount = filterSelectedSubData(key, data?.alias, selectedData)
           ugLog('selCount = ', selCount, key, data?.alias)
           if (selCount <= 0) {
@@ -206,7 +206,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       case CqsscCode.EZDW:  //二字定位
       case CqsscCode.SZDW:  //三字定位
       {
-        for (let data of currentPlayGroupData) {
+        for (let data of curTabGroupData) {
           const selCount = filterSelectedSubData(key, data?.exPlays[0]?.alias, selectedData)
           ugLog('selCount = ', selCount, key, data?.exPlays[0]?.alias)
           if (selCount <= 0) {
@@ -226,7 +226,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       }
         break
       case LhcCode.LMA:  //连码
-        for (let data of currentPlayGroupData) {
+        for (let data of curTabGroupData) {
           const selCount = filterSelectedSubData(key, data?.alias, selectedData)
           ugLog('selCount = ', selCount, key, data?.alias)
           if (selCount <= 0) {

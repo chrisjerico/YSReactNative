@@ -37,7 +37,7 @@ export interface IGlobalState {
 
   //下注
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
-  lotteryTabIndex?: number //当前的彩种处于哪一页
+  lotteryTabIndex?: number //当前的彩种处于TAB哪一页
   gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构

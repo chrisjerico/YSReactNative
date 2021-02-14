@@ -19,7 +19,7 @@ import { doubleDigit } from '../../../../public/tools/StringUtil'
 import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUtil'
 import { randomItem } from '../../util/ArithUtil'
 import { Play } from '../../../../public/network/Model/PlayOddDataModel'
-import { currentPlayOddData } from '../../util/select/ParseSelectedUtil'
+import { currentPlayOddData, currentTabGroupData } from '../../util/select/ParseSelectedUtil'
 import { prepareSelectedBetData } from '../../board/tools/BetUtil'
 
 /**
@@ -185,11 +185,14 @@ const UseLotteryHelper = () => {
 
   /**
    * 机选下注
-   * @param currentPageData 当前这一页的数据
    */
   const randomSelectBalls = () => {
+    //如果不是当前页，就不作处理
+    if(playOddData !== currentPlayOddData()) return
+
     //当前页的数据
-    const currentPageData: Array<PlayGroupData> = currentPlayOddData()?.pageData?.groupTri[tabIndex]
+    const currentPageData = currentTabGroupData()
+
     const firstGroupData = currentPageData[0]//一组数据，有的彩票只有一组数据
     const firstAvailablePlayBalls = (firstGroupData?.exPlays ?? firstGroupData?.plays) //自定义的球使用exPlays
       ?.filter((ball) => ball?.enable != '0')

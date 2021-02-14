@@ -33,7 +33,7 @@ const combineOddsName = (plays?: Array<PlayData>): string => {
  * 退出的时候清除彩票数据
  */
 const clearLotteryData = () => {
-  ugLog('clearLotteryData')
+  ugLog('退出的时候清除彩票数据')
   UGStore.dispatch({
     type: 'reset',
     lotteryId: '0',
