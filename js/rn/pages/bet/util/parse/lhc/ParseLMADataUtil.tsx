@@ -1,12 +1,10 @@
 import {
-  PagePlayOddData,
+  PagePlayOddData, PlayData,
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
 } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
-import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
-import { ugLog } from '../../../../../public/tools/UgLog'
 import { doubleDigit } from '../../../../../public/tools/StringUtil'
 
 interface ITMData {
@@ -37,8 +35,8 @@ const parseLMAData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
  * 创建数数据
  * @param data
  */
-const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
-  let arr: Array<ILotteryEBallItem>
+const createBalls = (data?: PlayGroupData): Array<PlayData> => {
+  let arr: Array<PlayData>
 
   const play0 = data?.plays[0]
   //多个赔率的生成47个球，否则49个球
@@ -51,7 +49,7 @@ const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
         id: `${play0?.id},${ballIndex}`,
         name: ballIndex,
         odds: `${play0?.odds}\n${data?.plays[1]?.odds}`,
-      } as ILotteryEBallItem)
+      } as PlayData)
     })
   } else {
     arr = new Array(
@@ -62,7 +60,7 @@ const createBalls = (data?: PlayGroupData): Array<ILotteryEBallItem> => {
         id: play0?.id + ballIndex,
         name: ballIndex,
         odds: play0?.odds,
-      } as ILotteryEBallItem)
+      } as PlayData)
     })
   }
 

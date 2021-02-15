@@ -4,16 +4,14 @@ import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import { isSelectedBallOnId } from '../const/ISelBall'
-import { BallStyles } from '../const/LotteryConst'
+import { isSelectedBallOnId } from './it/ISelBall'
 import { BallType, ILotteryBall } from '../../../public/components/view/LotteryBall'
-import { Play } from '../../../public/network/Model/PlayOddDataModel'
-import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 
 interface ILotteryEBall {
-  item?: ILotteryEBallItem // 要绘制的数据
+  item?: PlayData // 要绘制的数据
   ballProps?: IEBall //球的属性
-  selectedBalls?: Array<string> // 已选中的数据
+  selectedBalls?: Array<PlayData | ZodiacNum> // 已选中的数据
   containerStyle?: StyleProp<ViewStyle> //球的容器风格
   ballStyle?: StyleProp<ViewStyle> //球的风格
   ballType?: ILotteryBall //球风格
@@ -34,7 +32,7 @@ const renderContent = ({
                          oddsStyle,
                          callback,
                        }: ILotteryEBall) => {
-  let isSel = isSelectedBallOnId(selectedBalls, item?.exId ?? item?.id) //优先使用本地生成的唯一识别ID
+  let isSel = isSelectedBallOnId(selectedBalls, item) //优先使用本地生成的唯一识别ID
 
   return (
     <View key={'e ball content' + item?.id}
@@ -91,18 +89,5 @@ const _styles = StyleSheet.create({
   },
 })
 
-/**
- * 球的数据 和 PlayData 结构类似
- */
-interface ILotteryEBallItem extends PlayData {
-  // id?: string; //708501
-  // exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, TM,特码B,708550
-  // name?: string; //01
-  // alias?: string;//特码A"
-  // code?: string;//01
-  // odds?: string;//42.5500
-}
-
 export default LotteryEBall
-export { ILotteryEBallItem }
 

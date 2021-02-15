@@ -2,9 +2,10 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { PlayOddData, ZodiacNum } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
-import UseLotteryHelper from '../hp/UseLotteryHelper'
+import UseLotteryHelper from '../../assist/UseLotteryHelper'
 import { PlayOdd } from '../../../../../public/network/Model/PlayOddDataModel'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { isSelectedBallOnId } from '../../../widget/it/ISelBall'
 
 
 /**
@@ -35,9 +36,9 @@ const UseLhcTM = () => {
     let selArr = []
     playOddData?.pageData?.zodiacNums?.map((zodiac) => {
       let data = currentPageData()
-      const zodiacIds = zodiacBallIds(zodiac, data[0])
+      const zodiacBalls = zodiacBallIds(zodiac, data[0])
 
-      const intersection = selectedBalls?.filter((item) => zodiacIds.includes(item))
+      const intersection = selectedBalls?.filter((item) => isSelectedBallOnId(zodiacBalls, item))
       if (arrayLength(intersection) == arrayLength(zodiac.nums)) {
         selArr = [...selArr, zodiac]
       }
@@ -48,18 +49,18 @@ const UseLhcTM = () => {
 
   /**
    * 添加或移除生肖
-   * @param item
+   * @param zodiac
    */
-  const addOrRemoveZodiac = (item: ZodiacNum) => {
+  const addOrRemoveZodiac = (zodiac: ZodiacNum) => {
     //重组数字
     const data = currentPageData()
-    const zodiacIds = zodiacBallIds(item, data[0])
+    const zodiacBalls = zodiacBallIds(zodiac, data[0])
 
-    if (selectedZodiac.includes(item)) {
-      let newResult = selectedBalls?.filter((item) => !zodiacIds.includes(item))
+    if (isSelectedBallOnId(selectedZodiac, zodiac)) {
+      let newResult = selectedBalls?.filter((item) => !isSelectedBallOnId(zodiacBalls, item))
       setSelectedBalls(newResult)
     } else {
-      setSelectedBalls(Array.from(new Set([...selectedBalls, ...zodiacIds])))
+      setSelectedBalls(Array.from(new Set([...selectedBalls, ...zodiacBalls])))
     }
   }
 

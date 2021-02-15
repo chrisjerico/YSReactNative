@@ -1,6 +1,17 @@
 import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { UGStore } from '../../../../redux/store/UGStore'
+import { PlayGroupData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+
+//当前选中的彩种数据 特码 两面 等
+const currentPlayOddData = (): PlayOddData => UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex]
+
+//某一个TAB页界面界面
+const tabGroupData = (tabIndex?: number): Array<PlayGroupData> => currentPlayOddData()?.pageData?.groupTri[tabIndex]
+
+//当前TAB页界面界面
+const currentTabGroupData = (): Array<PlayGroupData> => tabGroupData(UGStore.globalProps?.lotteryTabIndex)
 
 /**
  * 展开选中的数据为一维数据
@@ -120,6 +131,9 @@ const calculateLimitCount = (code?: string, tabAlias?: string): number => {
 export {
   calculateLimitCount,
   expandSelectedData,
+  currentPlayOddData,
+  currentTabGroupData,
+  tabGroupData,
 }
 
 

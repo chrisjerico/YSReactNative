@@ -21,6 +21,7 @@ import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
 import { GameTab } from '../../pages/bet/const/LotteryConst'
 import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 import { ShareChatRoomModel } from '../../public/network/Model/chat/ShareChatRoomModel'
+import { ugLog } from '../../public/tools/UgLog'
 
 // 整个State的树结构
 
@@ -36,19 +37,21 @@ export interface IGlobalState {
 
   //下注
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
-  lotteryTabIndex?: number //当前的彩种处于哪一页
+  lotteryTabIndex?: number //当前的彩种处于TAB哪一页
   gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
+  selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
+  inputMoney?: number //输入的游戏金额
+
+  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
+
   chatRoomIndex?: number //当前聊天室索引
   chatRoomData?: ChatRoomData //聊天数据
   chatArray?: Array<IMiddleMenuItem> //聊天室列表
-  shareChatModel?: ShareChatRoomModel //分享数据
-
-  selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
-  inputMoney?: number //输入的游戏金额
+  shareChatModel?: ShareChatRoomModel //聊天室待分享数据
 
   // lotteryColumnIndex?: number //彩种索引
 
@@ -86,6 +89,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.shareChatModel && (state.shareChatModel = act.shareChatModel)
 
     act.selectedData && (state.selectedData = act.selectedData)
+    act.betChaseMap && (state.betChaseMap = act.betChaseMap)
     act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
 
   } else if (act.type == 'merge') {
@@ -99,6 +103,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
     state.chatRoomData = { ...state.chatRoomData, ...act.chatRoomData }
+    state.betChaseMap = { ...state.betChaseMap, ...act.betChaseMap }
 
     state.selectedData = mergeObject(state.selectedData, act.selectedData)
 
@@ -134,13 +139,15 @@ export interface UGAction<P = {}> extends Action {
   betShareModel?: BetShareModel //下注数据结构
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
+  selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
+  inputMoney?: number //输入的游戏金额
+
+  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
+
   chatRoomIndex?: number //当前聊天室索引
   chatRoomData?: ChatRoomData //聊天数据
   chatArray?: Array<IMiddleMenuItem> //聊天室列表
-  shareChatModel?: ShareChatRoomModel //聊天室列表
-
-  selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
-  inputMoney?: number //输入的游戏金额
+  shareChatModel?: ShareChatRoomModel //聊天室待分享数据
 
   // lotteryColumnIndex?: number //彩种索引
 
@@ -191,16 +198,18 @@ export class UGStore {
   }
 
   // 存储到本地
-  static async save(key = AsyncStorageKey.IGlobalState, value: any = this.globalProps) {
+  static async save(key: AsyncStorageKey | string = AsyncStorageKey.IGlobalState, value: any = this.globalProps) {
+    ugLog('save key = ', key)
     if (Platform.OS == 'ios') {
       await OCHelper.call('NSUserDefaults.standardUserDefaults[setObject:forKey:]', [JSON.stringify(value), key])
     } else {
-      await AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(value))
+      await AsyncStorage.setItem(key, JSON.stringify(value))
     }
   }
 
   // 获取本地缓存
-  static async load(key: AsyncStorageKey): Promise<string> {
+  static async load(key: AsyncStorageKey | string): Promise<string> {
+    ugLog('load key = ', key)
     if (Platform.OS == 'ios') {
       return OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', [key])
     } else {

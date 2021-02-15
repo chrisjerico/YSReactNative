@@ -1,4 +1,4 @@
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { CqsscCode, LhcCode } from '../../const/LotteryConst'
 import * as React from 'react'
 import { ugError, ugLog } from '../../../../public/tools/UgLog'
@@ -7,7 +7,12 @@ import { zodiacPlayX } from './hx/BetHXUtil'
 import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { filterSelectedData, filterSelectedSubData, playDataUniqueId } from '../../util/LotteryUtil'
-import { PlayData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import {
+  PlayData,
+  PlayGroupData,
+  PlayOddData,
+  ZodiacNum,
+} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { combination, combineArr } from '../../util/ArithUtil'
 import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
 import { combineArrayName } from './ezdw/BetEZDWUtil'
@@ -15,6 +20,9 @@ import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/B
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import moment from 'moment'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
+import { currentPlayOddData, currentTabGroupData } from '../../util/select/ParseSelectedUtil'
+import { parseLMASelectedData } from '../../util/select/lhc/ParseLMASelectedUtil'
+import { parseHXSelectedData } from '../../util/select/lhc/ParseHXSelectedUtil'
 
 /**
  * 过滤出某个选中的数量
@@ -26,7 +34,7 @@ const filterShareItem = (betShareModel?: BetShareModel, exFlag?: string): BetSha
     ...betShareModel,
     playNameArray: betShareModel?.playNameArray.filter((item) => item?.exFlag != exFlag),
     betBean: betShareModel?.betBean?.filter((item) => item?.exFlag != exFlag),
-  }  as  BetShareModel
+  } as BetShareModel
 
   ugLog('filterShareItem betShareModel = ', exFlag, JSON.stringify(betShareModel))
   ugLog('filterShareItem newResult = ', exFlag, JSON.stringify(newResult))
@@ -36,19 +44,76 @@ const filterShareItem = (betShareModel?: BetShareModel, exFlag?: string): BetSha
 }
 
 /**
+ * 准备下注数据, 生成选中的数据，为下注作准备
+ * @param playOddData
+ * @param selectedBalls
+ */
+const prepareSelectedBetData = (playOddData?: PlayOddData, selectedBalls?: Array<PlayData | ZodiacNum>) => {
+  //生成选中的数据，为下注作准备
+  const newSelectedModel = dicNull(UGStore.globalProps?.selectedData) ?
+    new Map<string, Map<string, Map<string, SelectedPlayModel>>>() :
+    JSON.parse(JSON.stringify(UGStore.globalProps?.selectedData))
+
+  switch (playOddData?.code) {
+    case LhcCode.TM:  //特码
+    case LhcCode.LM: //两面
+    case LhcCode.ZM: //正码
+    case LhcCode.ZT:  //正特
+    case LhcCode.ZM1_6: //正码1T6
+    case LhcCode.SB: //色波
+    case LhcCode.ZOX://总肖
+    case LhcCode.WX:  //五行 或 五星
+    case LhcCode.LMA:  //连码
+    case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+    case LhcCode.TX: //特肖
+    case LhcCode.ZX: //正肖
+    case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+    case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+    case LhcCode.LX: //连肖
+    case LhcCode.LW: //连尾
+    case LhcCode.ZXBZ:  //自选不中
+    case CqsscCode.ALL:  //1-5球
+    case CqsscCode.Q1:  //第1球
+    case CqsscCode.Q2:  //第2球
+    case CqsscCode.Q3:  //第3球
+    case CqsscCode.Q4:  //第4球
+    case CqsscCode.Q5:  //第5球
+    case CqsscCode.QZH:  //前中后
+    case CqsscCode.DN:  //斗牛
+    case CqsscCode.SH:  //梭哈
+    case CqsscCode.LHD:  //龙虎斗
+    case CqsscCode.YZDW:  //一字定位
+    case CqsscCode.EZDW:  //二字定位
+    case CqsscCode.SZDW:  //三字定位
+    case CqsscCode.BDW:  //不定位
+    case CqsscCode.DWD:  //定位胆
+      newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
+      break
+
+    case LhcCode.HX://合肖
+      newSelectedModel[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
+      break
+  }
+
+  UGStore.dispatch({ type: 'reset', selectedData: newSelectedModel })
+
+  ugLog('选中的数据 selectedBalls = ', JSON.stringify(selectedBalls))
+  ugLog(`选中的数据 selectedData = ${playOddData?.name} ${playOddData?.code}`, JSON.stringify(UGStore.globalProps?.selectedData))
+}
+
+/**
  * 计算彩票下注时候，选中的条目数量是否符合要求
  *
  * @param showMsg 显示提示语
  */
 const checkBetCount = (showMsg?: boolean): boolean => {
-  const currentPlayOddData = UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex] //当前彩种
-  const currentPlayGroupData = currentPlayOddData?.pageData?.groupTri[UGStore.globalProps?.lotteryTabIndex] //当前界面
+  const curTabGroupData = currentTabGroupData() //当前界面
   const selectedData = UGStore.globalProps?.selectedData //选中的数据
   const keys: Array<string> = selectedData ? Object.keys(selectedData) : null
 
   ugLog('UGStore.globalProps?.lotteryTabIndex = ', UGStore.globalProps?.lotteryTabIndex)
   // ugLog('currentPlayOddData?.pageData?.groupTri = ', JSON.stringify(currentPlayOddData?.pageData?.groupTri))
-  // ugLog('currentPlayGroupData = ', JSON.stringify(currentPlayGroupData))
+  // ugLog('currentTabGroupData = ', JSON.stringify(curTabGroupData))
   ugLog('checkBetCount selectedData', JSON.stringify(keys))
   if (anyEmpty(keys)) {
     Toast('请选择玩法')
@@ -94,8 +159,9 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       }
         break
       case LhcCode.LX: //连肖
+      case LhcCode.LW: //连尾
       {
-        for (let data of currentPlayGroupData) {
+        for (let data of curTabGroupData) {
           const selCount = filterSelectedSubData(key, data?.alias, selectedData)
           ugLog('selCount = ', selCount, key, data?.alias)
           if (selCount <= 0) {
@@ -104,62 +170,27 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           }
           switch (data?.alias) {
             case '二连肖':
-              if (selCount < 2) {
-                Toast(`${data?.alias}需要选择至少2个数据`)
-                return
-              }
-              break
-            case '三连肖':
-              if (selCount < 3) {
-                Toast(`${data?.alias}需要选择至少3个数据`)
-                return
-              }
-              break
-            case '四连肖':
-              if (selCount < 4) {
-                Toast(`${data?.alias}需要选择至少4个数据`)
-                return
-              }
-              break
-            case '五连肖':
-              if (selCount < 5) {
-                Toast(`${data?.alias}需要选择至少5个数据`)
-                return
-              }
-              break
-
-          }
-        }
-      }
-        break
-      case LhcCode.LW: //连尾
-      {
-        for (let data of currentPlayGroupData) {
-          const selCount = filterSelectedSubData(key, data?.alias, selectedData)
-          ugLog('selCount = ', selCount, key, data?.alias)
-          if (selCount <= 0) {
-            Toast(`请选择${data?.alias}数据`)
-            return
-          }
-          switch (data?.alias) {
             case '二连尾':
               if (selCount < 2) {
                 Toast(`${data?.alias}需要选择至少2个数据`)
                 return
               }
               break
+            case '三连肖':
             case '三连尾':
               if (selCount < 3) {
                 Toast(`${data?.alias}需要选择至少3个数据`)
                 return
               }
               break
+            case '四连肖':
             case '四连尾':
               if (selCount < 4) {
                 Toast(`${data?.alias}需要选择至少4个数据`)
                 return
               }
               break
+            case '五连肖':
             case '五连尾':
               if (selCount < 5) {
                 Toast(`${data?.alias}需要选择至少5个数据`)
@@ -175,7 +206,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       case CqsscCode.EZDW:  //二字定位
       case CqsscCode.SZDW:  //三字定位
       {
-        for (let data of currentPlayGroupData) {
+        for (let data of curTabGroupData) {
           const selCount = filterSelectedSubData(key, data?.exPlays[0]?.alias, selectedData)
           ugLog('selCount = ', selCount, key, data?.exPlays[0]?.alias)
           if (selCount <= 0) {
@@ -195,7 +226,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       }
         break
       case LhcCode.LMA:  //连码
-        for (let data of currentPlayGroupData) {
+        for (let data of curTabGroupData) {
           const selCount = filterSelectedSubData(key, data?.alias, selectedData)
           ugLog('selCount = ', selCount, key, data?.alias)
           if (selCount <= 0) {
@@ -626,4 +657,5 @@ export {
   combineSelectedData,
   generateBetArray,
   filterShareItem,
+  prepareSelectedBetData,
 }

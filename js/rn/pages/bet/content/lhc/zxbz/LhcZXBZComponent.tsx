@@ -6,9 +6,9 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import CommStyles from '../../../../base/CommStyles'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseLhcZXBZ from './UseLhcZXBZ'
-import { PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
-import LotteryEBall, { ILotteryEBallItem } from '../../../widget/LotteryEBall'
+import LotteryEBall  from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
@@ -44,12 +44,12 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo 手动生成的数据
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: ILotteryEBallItem) =>
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) =>
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
                   containerStyle={{ width: scale(78) }}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 自选不中
@@ -78,7 +78,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         <View key={key + 'render LMA sub2' + groupData?.id}
               style={_styles.ball_container}>
           {
-            playOddData?.pageData?.groupTri[0][0]?.exPlays?.map((item, index) => renderEBall(groupData, item))
+            currentPageData[0]?.exPlays?.map((item, index) => renderEBall(groupData, item))
           }
         </View>
       </View>

@@ -57,6 +57,9 @@ export interface ZodiacNum {
   name?: string //"鼠" 金
   alias?: string //本地使用别名
   nums?: string[] //["1","13","25","37","49"]
+
+  enable?: string//1 //彩种是否开启，暂时未用
+  exId?: string // 生成本地唯一识别ID, 暂时未用
 }
 
 // export interface FiveElement {

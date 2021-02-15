@@ -1,9 +1,5 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
-import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
-import UseLotteryHelper from '../hp/UseLotteryHelper'
-import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
+import UseLotteryHelper from '../../assist/UseLotteryHelper'
 
 
 /**

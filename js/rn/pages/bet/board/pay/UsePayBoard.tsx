@@ -11,6 +11,8 @@ import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { LotteryResultModel } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 import { BetShareModel } from '../../../../redux/model/game/bet/BetShareModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
+import { AsyncStorageKey } from '../../../../redux/store/IGlobalStateHelper'
+import { mapTotalCount } from '../../util/ArithUtil'
 
 /**
  * 下注面板
@@ -58,12 +60,8 @@ const UsePayBoard = () => {
    * 价格列表变化时重新计算总金额
    */
   useEffect(() => {
-    const money = dicNull(moneyMap) ?
-      0 :
-      Object.values(moneyMap)?.reduce((previousValue, currentValue) => previousValue + currentValue)
-
+    const money = dicNull(moneyMap) ? 0 : mapTotalCount(moneyMap)
     ugLog('moneyMap total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
-
     setTotalMoney(money)
   }, [moneyMap])
 
@@ -92,8 +90,13 @@ const UsePayBoard = () => {
     await syncUserInfo(false)
     hideLoading()
 
-    //异常数据
-    if (data?.code != 0) Toast(data?.msg)
+    if (data?.code == 0) {//下注成功 数据保留 用于 追号
+      const betMap = new Map<string, BetShareModel>()
+      betMap[UGStore.globalProps?.lotteryId] = betShareModel
+      UGStore.dispatch({ type: 'merge', betChaseMap: betMap })
+    } else {//异常数据
+      Toast(data?.msg)
+    }
 
     return { ...data, data: { ...data?.data, betParams: pms, betShareModel: betShareModel } }
 
