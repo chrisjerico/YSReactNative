@@ -745,6 +745,9 @@ export default class PushHelper {
     switch (Platform.OS) {
       case 'ios':
         switch (code) {
+          case UGLinkPositionType.今日输赢:
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGBetRecordViewController.new[setSelectIndex:]', args1: [3] }, true])
+            break
           default:
             OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [7, code])
         }
