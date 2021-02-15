@@ -4,8 +4,14 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { PlayGroupData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 
+/**
+ * 选中的某个玩法
+ * @param columnIndex 左侧栏的索引，比如 特码，二字定位
+ */
+const xPlayOddData = (columnIndex?: number): PlayOddData => UGStore.globalProps?.playOddDetailData.playOdds[columnIndex]
+
 //当前选中的彩种数据 特码 两面 等
-const currentPlayOddData = (): PlayOddData => UGStore.globalProps?.playOddDetailData.playOdds[UGStore.globalProps?.currentColumnIndex]
+const currentPlayOddData = (): PlayOddData => xPlayOddData(UGStore.globalProps?.currentColumnIndex)
 
 //某一个TAB页界面界面
 const tabGroupData = (tabIndex?: number): Array<PlayGroupData> => currentPlayOddData()?.pageData?.groupTri[tabIndex]
@@ -104,6 +110,7 @@ export {
   expandSelectedData,
   currentPlayOddData,
   currentTabGroupData,
+  xPlayOddData,
   tabGroupData,
 }
 

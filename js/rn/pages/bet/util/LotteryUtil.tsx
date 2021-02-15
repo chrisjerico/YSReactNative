@@ -5,10 +5,24 @@ import { ugLog } from '../../../public/tools/UgLog'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { GameTab } from '../const/LotteryConst'
+import { useEffect, useRef } from 'react'
 
 interface INameOrAlias {
   name?: string; //鼠
   alias?: string;//鼠
+}
+
+/**
+ *
+ * 是不理 特殊玩法
+ * @param lotteryId 六合彩，秒秒彩 等等
+ * @param pageData 这个玩法的数据，比如二字定位的数据
+ */
+const specialPlay = (lotteryId?: string, pageData?: Array<Array<any>>): boolean => {
+  //整个六合彩都是特殊玩法, 有多页数据的，比如二字定位有多页多个TAB，也是特殊玩法
+  return lotteryId == 'lhc'
+    || arrayLength(pageData) > 1;
+
 }
 
 /**
@@ -114,6 +128,18 @@ const filterSelectedSubData = (code?: string, alias?: string, selectedData?: Map
   return 0
 }
 
+/**
+ * 记录之前的状态
+ * @param value
+ */
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
 export {
   findZodiacByName,
   filterSelectedData,
@@ -121,4 +147,6 @@ export {
   clearLotteryData,
   combineOddsName,
   playDataUniqueId,
+  specialPlay,
+  usePrevious,
 }
