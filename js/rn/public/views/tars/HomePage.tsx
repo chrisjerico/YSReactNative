@@ -245,7 +245,7 @@ const HomePage = ({
                             switch (couponClickStyle) {
                               // 内页
                               case 'page': {
-                                PushHelper.pushPromoteDetail(item)
+                                PushHelper.pushPromoteDetail({ clsName: 'UGPromoteModel', ...item })
                                 break
                               }
                               // 弹框
