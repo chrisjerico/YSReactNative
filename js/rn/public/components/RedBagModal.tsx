@@ -32,6 +32,7 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
       return
     }
     const response = await APIRouter.request_redbag(redBag.data.id)
+    onPress()
     if (response.data.code == 0) {
       Alert.alert(null, "恭喜您获得了" + response.data.data +"元红包", [
         { text: "确认" },
