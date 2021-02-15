@@ -189,7 +189,6 @@ const JDPromotionInfoCP = () => {
         content={inviteInfoModel?.link_i}
         imgUrl={inviteInfoModel?.link_i}
       />
-      <JDPromotionInfoText2CP content={'如果想赚取丰厚的推荐佣金，请复制推荐链接发给您的好友注册。（推荐网址请用浏览器打开）'} />
       <JDPromotionInfoCopyCP title={'注册推荐地址'}
         content={inviteInfoModel?.link_i}
         imgUrl={inviteInfoModel?.link_i}
@@ -201,8 +200,8 @@ const JDPromotionInfoCP = () => {
         }}
       />
       <JDPromotionInfoText1CP title={'本月推荐收益:'} content={inviteInfoModel?.month_earn} />
-      <JDPromotionInfoText1CP title={'本月推荐会员:'} content={inviteInfoModel?.total_member} textAlign='left' />
-      <JDPromotionInfoText1CP title={'推荐会员总计:'} content={inviteInfoModel?.month_member} textAlign='left' />
+      <JDPromotionInfoText1CP title={'本月推荐会员:'} content={inviteInfoModel?.month_member} textAlign='left' />
+      <JDPromotionInfoText1CP title={'推荐会员总计:'} content={inviteInfoModel?.total_member} textAlign='left' />
       <JDPromotionInfoText2CP content={yjstring()} />
       {<View style={{ backgroundColor: Skin1.textColor4, height: 100 }} />}
     </ScrollView>

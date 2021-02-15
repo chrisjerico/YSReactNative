@@ -462,6 +462,7 @@ class APIRouter {
 
     return httpClient.get<RedBagDetailActivityModel>('c=activity&a=redBagDetail&' + tokenParams)
   }
+
   static activity_turntableList = async () => {
     if (UGStore.globalProps.userInfo?.isTest) {
       return {}
@@ -749,6 +750,29 @@ class APIRouter {
         break
     }
     return httpClient.post<TaskChangeAvatarModel>('c=task&a=changeAvatar', tokenParams)
+  }
+
+  static recommend_recharge = async (uid: string, coin: string): Promise<AxiosResponse<NormalModel>> => {
+    let tokenParams = {}
+    switch (Platform.OS) {
+      case 'ios':
+        let user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = {
+          token: user?.token,
+          uid,
+          coin,
+        }
+        break
+      case 'android':
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = {
+          ...pms,
+          uid,
+          coin,
+        }
+        break
+    }
+    return httpClient.post<NormalModel>('c=team&a=transfer', tokenParams)
   }
 
   static system_homeAds = async () => {

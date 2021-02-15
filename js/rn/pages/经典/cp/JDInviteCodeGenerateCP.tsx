@@ -100,6 +100,8 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
       //通知上个页面刷新
       reloadBlock && reloadBlock()
       v.show = !v.show
+      v.length = ''
+      v.number = ''
       setState({})
     })
   }
