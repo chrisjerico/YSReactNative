@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import APIRouter from '../../network/APIRouter'
+import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
 import { CouponListModel } from '../../network/Model/CouponListModel'
 import { FloatADModel } from '../../network/Model/FloatADModel'
 import { GoldenEggListModel } from '../../network/Model/GoldenEggListModel'
@@ -28,6 +29,7 @@ const localRouters = [
   'activity_goldenEggList',
   'activity_scratchList',
   'system_floatAds',
+  'activity_setting',
 ]
 
 const globalRouters = ['game_homeRecommend', 'system_config', 'system_banners', 'system_mobileRight']
@@ -49,6 +51,7 @@ interface Value {
   lotteryGame?: LotteryGameModel
   turntableList?: TurntableListModel
   redBag?: RedBagDetailActivityModel
+  activitySetting?: ActivitySettingModel
   floatAd?: FloatADModel
   showOnlineNum?: boolean
   goldenEggList?: GoldenEggListModel
@@ -97,6 +100,7 @@ const useHome = (dependency: any[]) => {
         goldenEggList: response[10] ? response[10]?.data : value?.goldenEggList,
         scratchList: response[11] ? response[11]?.data : value?.scratchList,
         floatAd: response[12] ? response[12]?.data : value?.floatAd,
+        activitySetting: response[13] ? response[13]?.data: value?.activitySetting,
       })
     } catch (error) {
       console.log('--------useHome init error--------', error)

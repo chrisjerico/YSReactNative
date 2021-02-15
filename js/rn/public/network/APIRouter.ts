@@ -40,6 +40,7 @@ import { CapitalDetailModel } from './Model/wd/CapitalDetailModel'
 import { DepositRecordModel } from './Model/wd/DepositRecordModel'
 import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
+import { ActivitySettingModel } from './Model/ActivitySettingModel'
 import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
 import { HallGameModel } from './Model/game/HallGameModel'
@@ -764,6 +765,29 @@ class APIRouter {
   }
   static yuebao_stat = async () => {
     return httpClient.get<YueBaoStatModel>('c=yuebao&a=stat')
+  }
+
+  //獲取活動配置
+  static activity_setting = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+
+    return httpClient.get<ActivitySettingModel>('c=activity&a=settings&' + tokenParams)
+  }
+
+  static request_redbag = async (redBagId): Promise<AxiosResponse<NormalModel>> => {
+    return httpClient.post<NormalModel>('c=activity&a=getRedBag', {
+      id: redBagId,
+    })
   }
 
   /**
