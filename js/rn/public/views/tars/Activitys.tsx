@@ -51,13 +51,15 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
   const [redDialog, setRedDialog] = useState(false)
   
+  ugLog("goldenEggs= ", goldenEggs)
+  ugLog("roulette= ", roulette)
   return (
     <>
       <ActivityComponent
         refreshing={refreshing}
         containerStyle={{ top: scale(235), right: 0 }}
         show={redBag?.data}
-        logo={redBagLogo.length>0 ?redBagLogo : Res.pig}
+        logo={redBagLogo?.length>0 ?redBagLogo : Res.pig}
         type={0}
         onPress={() => {
           // 红包
