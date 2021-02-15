@@ -25,7 +25,7 @@ const UseTime = () => {
   const [closeTime, setCloseTime] = useState<number>(-1) //封盘时间倒计时
   const [openTime, setOpenTime] = useState<number>(-1) //开奖时间倒计时
 
-  useEffect(()=>{
+  useEffect(() => {
     requestNextData(lotteryId)
   }, [])
 
@@ -43,7 +43,12 @@ const UseTime = () => {
 
       const timer = setInterval(() => {
         setCloseTime(n => n - SECOND_1)
-        setOpenTime(n => n - SECOND_1)
+        setOpenTime(n => {
+          if (n % 4000 == -3000) {//开奖中每3秒取一次数据直到成功
+            requestNextData(lotteryId)
+          }
+          return n - SECOND_1
+        })
 
       }, 1000)
 
@@ -62,7 +67,7 @@ const UseTime = () => {
     ugLog('requestNextData data res=', JSON.stringify(res?.data))
 
     if (res?.code == 0) {
-      UGStore.dispatch({type: 'merge', nextIssueData: res?.data})
+      UGStore.dispatch({ type: 'merge', nextIssueData: res?.data })
     }
 
     return res?.code
@@ -83,8 +88,6 @@ const UseTime = () => {
       setDisplayCloseTime(`封盘中`)
     }
 
-    let timer
-
     if (openTime >= 0) {
       const openHour = doubleDigit(Math.floor(openTime / HOUR_1))
       const openMinute = doubleDigit(Math.floor((openTime % HOUR_1) / MINUTE_1))
@@ -93,16 +96,8 @@ const UseTime = () => {
       setDisplayOpenTime(`${openHour}:${openMinute}:${openSecond}`)
     } else {
       setDisplayOpenTime(`开奖中`)
-
-      //开奖中每2秒取一次数据直到成功
-      timer = setInterval(()=>{
-        requestNextData(lotteryId).then((code) => {
-          code == 0 && clearInterval(timer)
-        })
-      }, 2000)
     }
 
-    return () => clearInterval(timer)
   }, [closeTime, openTime])
 
   /**

@@ -1,11 +1,15 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { checkBetCount, generateBetArray } from './tools/BetUtil'
 import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
+import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
+import { BetShareModel } from '../../../redux/model/game/bet/BetShareModel'
+import { ugLog } from '../../../public/tools/UgLog'
+import { filterSelectedData } from '../util/LotteryUtil'
 
 
 /**
@@ -18,6 +22,7 @@ const UseBetBoard = () => {
   const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
+
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
 
@@ -26,6 +31,12 @@ const UseBetBoard = () => {
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
   const gameTabIndex = UGStore.globalProps?.gameTabIndex //GameTab 当前TAB是 彩票0 还是 聊天室1
   const betShareModel = UGStore.globalProps.betShareModel //下注数据
+  const reBetShareModel = UGStore.globalProps.betChaseMap && UGStore.globalProps.betChaseMap[UGStore.globalProps?.lotteryId] //追号的下注数据
+
+  //各彩种选中的数量
+  const ballSelected = useMemo(() => {
+    return filterSelectedData(UGStore.globalProps?.selectedData)
+  }, [UGStore.globalProps?.selectedData])
 
   /**
    * 输入金额有变化
@@ -62,6 +73,8 @@ const UseBetBoard = () => {
     showChip,
     setShowChip,
     playOddDetailData,
+    reBetShareModel,
+    ballSelected,
     checkShowBetPayment,
   }
 }

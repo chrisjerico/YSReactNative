@@ -15,6 +15,7 @@ import { BALL_CONTENT_HEIGHT, LEFT_ITEM_HEIGHT } from '../../../const/LotteryCon
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
+import { isSelectedBallOnId } from '../../../widget/it/ISelBall'
 
 /**
  * 六合彩特码
@@ -75,26 +76,26 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   /**
    * 绘制 生肖
-   * @param item
+   * @param zodiac
    * @param index
    */
-  const renderZodiacItem = (item?: ZodiacNum, index?: number) =>
-    <TouchableWithoutFeedback key={key + `${item?.name}_select`}
-                              onPress={() => addOrRemoveZodiac(item)}>
-      <View key={key + `${item?.name}_select`}
+  const renderZodiacItem = (zodiac?: ZodiacNum, index?: number) =>
+    <TouchableWithoutFeedback key={key + `${zodiac?.name}_select`}
+                              onPress={() => addOrRemoveZodiac(zodiac)}>
+      <View key={key + `${zodiac?.name}_select`}
             style={_styles.zodiac_item}>
         {
-          selectedZodiac?.includes(item) ?
-            <Icon key={key + `${item?.name}_select true`}
+          isSelectedBallOnId(selectedZodiac, zodiac) ?
+            <Icon key={key + `${zodiac?.name}_select true`}
                   size={scale(36)}
                   color={Skin1.themeColor}
                   name={'check-circle'}/> :
-            <Icon key={key + `${item?.name}_select false`}
+            <Icon key={key + `${zodiac?.name}_select false`}
                   size={scale(36)}
                   name={'circle-o'}/>
         }
-        <Text key={key + `${item?.name}_select name`}
-              style={_styles.zodiac_item_text}>{item?.name}</Text>
+        <Text key={key + `${zodiac?.name}_select name`}
+              style={_styles.zodiac_item_text}>{zodiac?.name}</Text>
       </View>
     </TouchableWithoutFeedback>
 
@@ -117,24 +118,26 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 方格式
    * @param item
+   * @param ballInfo
    * @param index
    */
   const renderERect = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) =>
     <LotteryERect key={`${key}-LotteryEBall-${ballInfo?.exId}-${ballInfo?.id}`}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  callback={() => addOrRemoveBall(ballInfo?.exId, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 球
    * @param item
+   * @param ballInfo
    * @param index
    */
   const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) =>
     <LotteryEBall key={`${key}-LotteryEBall-${ballInfo?.exId}-${ballInfo?.id}`}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  callback={() => addOrRemoveBall(ballInfo?.exId, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 特码B/A

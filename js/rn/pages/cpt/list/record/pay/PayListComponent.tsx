@@ -18,6 +18,7 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import HTML from 'react-native-render-html'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { clearExHtml } from '../../../../../public/tools/ui/UIUtil'
+import { jsDic } from '../../../../经典/Model/UGChanglongaideModel'
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面

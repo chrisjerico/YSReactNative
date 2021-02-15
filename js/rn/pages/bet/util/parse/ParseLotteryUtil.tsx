@@ -121,7 +121,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
 }
 
 /**
- * 组合玩法每一页的数据和生肖数据
+ * 组合玩法每一页的数据和生肖数据，比如 平特一肖 等，需要根据PlayData找到对应的生肖数据
  *
  * @param zodiacNums 生肖数据
  * @param playOddData  玩法数据

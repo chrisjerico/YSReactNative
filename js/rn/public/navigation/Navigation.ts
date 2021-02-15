@@ -43,6 +43,9 @@ export enum PageName {
   JDLotterySecondPage ='JDLotterySecondPage',
   JDDayDetailPage = 'JDDayDetailPage',
   JDPromoteDetailPage = 'JDPromoteDetailPage',
+  H5WebPage = 'H5WebPage',
+  JSLuzhuPage = 'JSLuzhuPage',
+  
   // ———————————— 模板页面 —————————————
   JDHomePage = 'JDHomePage',
 

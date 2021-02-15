@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
-import UseLotteryHelper from '../hp/UseLotteryHelper'
+import UseLotteryHelper from '../../assist/UseLotteryHelper'
 import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 /**

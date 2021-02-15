@@ -24,6 +24,8 @@ import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
 import { CapitalConst } from '../../pages/cpt/const/CapitalConst'
 import { Skin1 } from '../theme/UGSkinManagers'
+import { IBetLotteryPage } from '../../pages/bet/BetLotteryPage'
+import { H5Router } from '../../pages/base/H5页面/H5WebPage'
 
 
 export enum UGLinkPositionType {
@@ -152,10 +154,10 @@ export default class PushHelper {
         break
       case 'android':
         if (B_DEBUG) {
-          // push(PageName.BetLotteryPage, {lotteryId: game?.gameId})
+          // push(PageName.BetLotteryPage, {lotteryId: game?.gameId} as IBetLotteryPage)
           // return
         }
-        if(this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
+        if (this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
 
         if (game?.seriesId == 7 && game?.subId == GameType.游戏大厅) {  //游戏大厅
           push(PageName.GameLobbyPage, { showBackButton: true })
@@ -165,7 +167,7 @@ export default class PushHelper {
           push(PageName.TwoLevelGames, { game: game, showBackButton: true })
           return
         }
-        if (game?.seriesId && ["2", "3", "4", "5", "6", "8"].includes(game.seriesId+'') && game?.gameId) {  //第三方遊戲
+        if (game?.seriesId && ["2", "3", "4", "5", "6", "8"].includes(game.seriesId + '') && game?.gameId) {  //第三方遊戲
           console.log('第三方遊戲')
           if (!UGUserModel.checkTestorUser()) {
             UGUserModel.checkLogin()
@@ -249,7 +251,7 @@ export default class PushHelper {
       if (!UGStore.globalProps.userInfo.uid) {
         return
       }
-      push(PageName.CapitalPage, {initTabIndex: tabIndex})
+      push(PageName.CapitalPage, { initTabIndex: tabIndex })
       return true
     }
 
@@ -264,7 +266,7 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
         break
       case 'android':
-        if(this.pushDeposit(linkCategory?.toString(), linkPosition?.toString())) return
+        if (this.pushDeposit(linkCategory?.toString(), linkPosition?.toString())) return
 
         if (linkCategory == 7 && linkPosition == MenuType.YHDD) {  //优惠活动
           console.log('优惠活动')
@@ -336,6 +338,11 @@ export default class PushHelper {
   //电脑版
   static openPC() {
     PushHelper.openWebView(AppDefine.host + '/index2.php')
+  }
+
+  // 跳转到H5页面
+  static pushH5WebPage(router: H5Router) {
+    push(PageName.H5WebPage, { router })
   }
 
   // 我的页按钮跳转
@@ -497,6 +504,10 @@ export default class PushHelper {
             OCHelper.call('UGNavigationController.current.pushViewController:animated:', [NSValue.ViewController('UGRegisterViewController'), true])
             break
           }
+          case UGUserCenterType.路珠: {
+            push(PageName.JSLuzhuPage)
+            break
+          }
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
@@ -513,8 +524,8 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             // if (B_DEBUG) {
-            push(PageName.CapitalPage, {initTabIndex: CapitalConst.DEPOSIT})
-              return
+            push(PageName.CapitalPage, { initTabIndex: CapitalConst.DEPOSIT })
+            return
             // }
             // subId = MenuType.CZ
             // break
@@ -525,7 +536,7 @@ export default class PushHelper {
           }
           case UGUserCenterType.取款: {
             // if (B_DEBUG) {
-            push(PageName.CapitalPage, {initTabIndex: CapitalConst.WITHDRAWAL})
+            push(PageName.CapitalPage, { initTabIndex: CapitalConst.WITHDRAWAL })
             return
             // }
             // subId = MenuType.TX
@@ -719,7 +730,7 @@ export default class PushHelper {
           }
         }
 
-        if(!anyEmpty(subId)) {
+        if (!anyEmpty(subId)) {
           ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
             seriesId: '7',
             subCode: code,

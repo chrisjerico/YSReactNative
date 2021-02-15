@@ -1,12 +1,10 @@
 import {
-  PagePlayOddData,
+  PagePlayOddData, PlayData,
   PlayGroupData,
   PlayOddData,
   ZodiacNum,
 } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../../public/tools/Ext'
-import { ILotteryEBallItem } from '../../../widget/LotteryEBall'
-import { CqsscCode } from '../../../const/LotteryConst'
 
 interface ITMData {
   playOddData?: PlayOddData
@@ -49,7 +47,7 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
         id: `${aliasArr[i]},${play0?.id},${ballIndex}`,
         name: ballIndex,
         alias: aliasArr[i],
-      } as ILotteryEBallItem)
+      } as PlayData)
     })
     arrArr.push({...data, exPlays: arr})
   }

@@ -9,7 +9,7 @@ import BetRecordHeaderComponent from './content/counter/lhc/red/BetRecordHeaderC
 import LotteryContentComponent from './content/LotteryContentComponent'
 import { TopAreaComponent } from './content/top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
-import { arrayEmpty, dicNull } from '../../public/tools/Ext'
+import { arrayEmpty, arrayLength, dicNull } from '../../public/tools/Ext'
 import { clearLotteryData } from './util/LotteryUtil'
 import InstantLotteryComponent from './content/counter/mmc/InstantLotteryComponent'
 import WebChatComponent from './chat/WebChatComponent'
@@ -67,7 +67,7 @@ const BetLotteryPage = ({ navigation, route }) => {
    * @param index
    * @param item
    */
-  const clickMenu = (index: number, item: IMiddleMenuItem) => {
+  const clickChatMenu = (index: number, item: IMiddleMenuItem) => {
     ugLog('index = ', index)
     if (shareChatModel?.shareStatus == Share2ChatStatus.READY) {//关闭聊天选项的同时要分享数据
       UGStore.dispatch({
@@ -164,7 +164,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                                                     showCallback={() => setBetResult(null)}/>}
 
         {
-          !arrayEmpty(chatArray) && <MiddleMenu onMenuClick={clickMenu}
+          !arrayEmpty(chatArray) && <MiddleMenu onMenuClick={clickChatMenu}
                                                 menuTitle={'聊天室'}
                                                 curId={currentChatRoomId()}
                                                 showMenu={!arrayEmpty(chatArray)}
@@ -172,6 +172,7 @@ const BetLotteryPage = ({ navigation, route }) => {
                                                 onClose={() => UGStore.dispatch({
                                                   type: 'reset', chatArray: [], shareChatModel: {},
                                                 })}/>
+
 
         }
       </View>
@@ -194,4 +195,4 @@ const _styles = StyleSheet.create({
 })
 
 export default BetLotteryPage
-export { IBetLotteryPage }
+export {IBetLotteryPage}

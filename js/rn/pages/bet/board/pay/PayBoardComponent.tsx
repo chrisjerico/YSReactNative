@@ -50,7 +50,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                       betShareModel?: BetShareModel) => {
     const showName = !anyEmpty(nameArr?.playName1) ?
       `[ ${nameArr?.playName1}- ${nameArr?.playName2 ?? ''} ]` :
-      `[ ${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name} ]`
+      `[ ${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name ?? ''} ]`
     return (<View key={nameArr?.exFlag}
                   style={_styles.item_container}>
       <Text style={_styles.item_title}
@@ -132,7 +132,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             <Text style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
                   onPress={() => {
-                    showLoading()
+                    // showLoading()
                     startBetting().then((data) => {
                       //不是秒秒彩就给出提示语
                       betShareModel?.isInstant != '1' && data?.code == 0 && Toast(data?.msg)

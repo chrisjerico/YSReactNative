@@ -106,7 +106,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryERect key={key + 'renderERect' + ballInfo?.id}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 球
@@ -117,7 +117,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  callback={() => addOrRemoveBall(ballInfo?.id, item?.enable, ballInfo?.enable)}/>
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 正特

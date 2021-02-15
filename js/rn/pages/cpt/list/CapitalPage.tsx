@@ -22,6 +22,7 @@ import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
 import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
 import MineHeader from '../../../public/views/tars/MineHeader'
+import moment from 'moment'
 
 interface IRouteParams {
   initTabIndex?: string, //选中哪个TAB
@@ -64,7 +65,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
             console.log('key ==============', key);
             console.log('v ==============', dic[key]);
             setTabIndex(dic[key])
-            setRefreshCount(refreshCount + 1)
+            setRefreshCount(moment().unix())
           }
         }
       }

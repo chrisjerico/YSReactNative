@@ -20,9 +20,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'txt005': [
     'http://t005f.fhptcdn.com',
   ],
-  't005': [
-    'http://t005f.fhptcdn.com',
-  ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
   ],
@@ -132,11 +129,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test03.6yc.com',
   ],
   'a002': [
-    'https://2021c49.com',
-    'https://c49ln.com',
-    'https://c49nx.com',
-    'https://2022c49.com',
-    'https://2020c49.com',
+    'https://2034c49.com',
+    'https://2033c49.com',
+    'https://2032c49.com',
+    'https://2031c49.com',
+    'https://2030c49.com',
   ],
   'c001': [
     'https://c47c47appapp.com',
@@ -237,7 +234,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c116': [
     'https://58933e.com',
-    'https://58922c.com',
+    'https://58922e.com',
     'https://58933b.com',
     'https://58933c.com',
     'https://58933d.com',
@@ -328,11 +325,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://489494.com',
   ],
   'c193': [
-    'https://49060333.com',
-    'https://49060222.com',
-    'https://4906202.com',
+    'https://4906215.com',
+    'https://4906216.com',
+    'https://4906217.com',
     'https://4906213.com',
-    'https://4906214.com',
+    'https://4906218.com',
   ],
   'c198': [
     'https://2909tycjt.com',
@@ -456,11 +453,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333j.org',
+    'https://70333x.org',
     'https://70333k.org',
-    'https://70333h.org',
+    'https://70333c.org',
     'https://70333l.org',
-    'https://70333g.org',
+    'https://70333z.org',
   ],
   'h003b': [
     'https://betv5.com',

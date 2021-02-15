@@ -77,6 +77,7 @@ export enum UGUserCenterType {
   电子大厅 = 44,
   体育大厅 = 45,
   电竞大厅 = 46,
+  路珠 = 55,
   // 自定义（从100+开始写，前面的都是后台定制的）
   彩票大厅 = 47,
   捕鱼大厅 = 48,
@@ -195,6 +196,7 @@ export default class UGSysConfModel {
   homeTypeSelect?: string // 是否开启前台分类
   chatRoomName?: string // 聊天室名称
   chatMinFollowAmount?: string // 聊天室跟注最小金额*/
+  chaseNumber?: string // 是否开启跟注
   easyRememberDomain?: string // 易记域名*/
   chatLink?: string // 聊天的链接*/
   mBonsSwitch?: boolean // 俸禄开关开启。0 为开启， 1 为 关闭
