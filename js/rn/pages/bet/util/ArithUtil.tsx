@@ -77,6 +77,19 @@ const randomItem = (list?: Array<any>, count: number = 1): Array<any> => {
 }
 
 /**
+ * 计算新的赔率，公式： 新賠率 = 原始賠率 - ( 原始賠率無條件進位至整數位 * 退水)，
+ * 如 退水是 0.4% 就应该是 0.0004，公式就是：48.8 - （49 * 0.0004）= 新赔率
+ *
+ * @param odds 赔率
+ * @param sliderValue
+ */
+const calculateSliderValue = (odds?: string, sliderValue?: number): string => {
+  const oddsNumber = Number(odds)
+  const newOdds = Math.ceil(oddsNumber)
+  return (oddsNumber - (newOdds * sliderValue / 100)).toFixed(4)
+}
+
+/**
  * 计算总共选择的数量
  * @param list
  */
@@ -90,4 +103,5 @@ export {
   combineArr,
   randomItem,
   mapTotalCount,
+  calculateSliderValue,
 }

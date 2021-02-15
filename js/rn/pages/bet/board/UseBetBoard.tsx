@@ -46,6 +46,13 @@ const UseBetBoard = () => {
   }, [inputMoney])
 
   /**
+   * 拉条有变化
+   */
+  useEffect(() => {
+    UGStore.dispatch({ type: 'reset', sliderValue: sliderValue })
+  }, [sliderValue])
+
+  /**
    * 开始下注
    */
   const checkShowBetPayment = () => {
@@ -54,7 +61,7 @@ const UseBetBoard = () => {
       // } else if (count <= 0) {
       //   Toast('请选择玩法')
     } else if (checkBetCount(true)) {
-      const newData = generateBetArray(nextIssueData, inputMoney, inputMoney, selectedData)
+      const newData = generateBetArray(nextIssueData, UGStore.globalProps?.sliderValue?.toString(), inputMoney, selectedData)
       UGStore.dispatch({ type: 'reset', betShareModel: newData })
     }
   }

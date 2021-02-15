@@ -45,6 +45,7 @@ export interface IGlobalState {
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   inputMoney?: number //输入的游戏金额
+  sliderValue?: number //退水拉条数据
 
   betChaseMap?: Map<string, BetShareModel> //追号的存档数据
 
@@ -91,6 +92,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.selectedData && (state.selectedData = act.selectedData)
     act.betChaseMap && (state.betChaseMap = act.betChaseMap)
     act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
+    act.sliderValue >= 0 && (state.sliderValue = act.sliderValue)
 
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
@@ -141,6 +143,7 @@ export interface UGAction<P = {}> extends Action {
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
   inputMoney?: number //输入的游戏金额
+  sliderValue?: number //退水拉条数据
 
   betChaseMap?: Map<string, BetShareModel> //追号的存档数据
 

@@ -15,6 +15,7 @@ import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryPar
 import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/BetShareModel'
 import { filterShareItem } from '../tools/BetUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { calculateSliderValue } from '../../util/ArithUtil'
 
 interface IPayBoardComponent {
   showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
@@ -56,7 +57,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
       <Text style={_styles.item_title}
             numberOfLines={2}>{showName}</Text>
       <Text style={_styles.item_odds}>{
-        `@${betInfo?.odds}`
+        `@${calculateSliderValue(betInfo?.odds, Number(betShareModel?.activeReturnCoinRatio))}`
       }</Text>
       <Text style={_styles.item_x}>{
         'X'
