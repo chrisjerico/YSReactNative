@@ -24,41 +24,13 @@ const expandSelectedData = (selectedData?: Map<string, Map<string, Map<string, S
 }
 
 /**
- * 计算当前彩种至少需要选择多少数据
+ * 彩种计算组合的单位长度，比如<二连尾> limitCount=2 表示2个数据为1组进行组合计算，4个数据就有6种组合: [1,2,3,4] -> [1,2],[1,3],[1,4],[2,3],[2,6],[3,4]
  * @param code 特码 二字定位 等等
  * @param tabAlias TAB的名字，如 连肖里的 二连肖 三连肖
  */
 const calculateLimitCount = (code?: string, tabAlias?: string): number => {
   let limitCount = -1
   switch (code) {
-    case LhcCode.TM:  //特码
-    case LhcCode.LM: //两面
-    case LhcCode.ZM: //正码
-    case LhcCode.ZT:  //正特
-    case LhcCode.ZM1_6: //正码1T6
-    case LhcCode.SB: //色波
-    case LhcCode.ZOX://总肖
-    case LhcCode.WX:  //五行 或 五星
-    case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-    case LhcCode.TX: //特肖
-    case LhcCode.ZX: //正肖
-    case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-    case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-    case CqsscCode.ALL:  //1-5球
-    case CqsscCode.Q1:  //第1球
-    case CqsscCode.Q2:  //第2球
-    case CqsscCode.Q3:  //第3球
-    case CqsscCode.Q4:  //第4球
-    case CqsscCode.Q5:  //第5球
-    case CqsscCode.QZH:  //前中后
-    case CqsscCode.DN:  //斗牛
-    case CqsscCode.SH:  //梭哈
-    case CqsscCode.LHD:  //龙虎斗
-    case CqsscCode.YZDW:  //一字定位
-    case CqsscCode.BDW:  //不定位
-    case CqsscCode.DWD:  //定位胆
-      limitCount = 1
-      break
     case LhcCode.LX: //连肖
       switch (tabAlias) {
         case '二连肖':
@@ -93,11 +65,6 @@ const calculateLimitCount = (code?: string, tabAlias?: string): number => {
       }
       break
 
-    case CqsscCode.EZDW:  //二字定位
-    case CqsscCode.SZDW:  //三字定位
-      limitCount = 1
-      break
-
     case LhcCode.HX://合肖
       limitCount = 2
       break
@@ -121,6 +88,10 @@ const calculateLimitCount = (code?: string, tabAlias?: string): number => {
 
     case LhcCode.ZXBZ:  //自选不中
       limitCount = 5
+      break
+
+    default:
+      limitCount = 1
       break
   }
 

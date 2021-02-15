@@ -3,11 +3,11 @@ import { anyEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
 import { ugLog } from '../../../public/tools/UgLog'
 
 /**
- * 得到组合数量
+ * 彩种计算组合的数量，比如<二连尾> len=2 表示2个数据为1组进行组合计算，4个数据就有6种组合: [1,2,3,4] -> [1,2],[1,3],[1,4],[2,3],[2,6],[3,4]
  * @param arr 数组
  * @param len 组合长度
  */
-const combination = (arr?: Array<any>, len?: number) => {
+const combination = (arr?: Array<any>, len?: number): Array<any> => {
   let resultArr = []
   if (len <= 0 || len > arr.length) {
     return resultArr
@@ -29,13 +29,13 @@ const combination = (arr?: Array<any>, len?: number) => {
 }
 
 /**
- * N个数组 组成 新的组合
+ * N个数组 组成 新的组合，比如 [0,4],[7,8] -> [0,7],[0,8],[4,7],[4,8]
  * @param arg N个数组
  */
 const combineArr = (...arg: Array<any>) => {
   let heads = arg[0]
   for (let i = 1, len = arg.length; i < len; i++) {
-    heads = addNewType(heads, arg[i])
+    heads = addNewResult(heads, arg[i])
   }
   return heads
 }
@@ -45,7 +45,7 @@ const combineArr = (...arg: Array<any>) => {
  * @param heads
  * @param choices
  */
-const addNewType = (heads?: any, choices?: any) => {
+const addNewResult = (heads?: any, choices?: any): Array<any> => {
   let result = []
   for (let i = 0, lenI = heads.length; i < lenI; i++) {
     for (let j = 0, lenJ = choices.length; j < lenJ; j++) {
@@ -84,9 +84,12 @@ const randomItem = (list?: Array<any>, count: number = 1): Array<any> => {
  * @param sliderValue
  */
 const calculateSliderValue = (odds?: string, sliderValue?: number): string => {
+  if(anyEmpty(odds)) return null
+
   const oddsNumber = Number(odds)
   const newOdds = Math.ceil(oddsNumber)
-  return (oddsNumber - (newOdds * sliderValue / 100)).toFixed(4)
+  const value = oddsNumber - (newOdds * sliderValue / 100)
+  return value.toFixed(4)
 }
 
 /**

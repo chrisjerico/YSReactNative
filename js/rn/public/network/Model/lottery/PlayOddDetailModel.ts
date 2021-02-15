@@ -33,7 +33,6 @@ export interface PlayGroupData {
   alias: string //"两面"
   plays: PlayData[]
 
-  exTitle?: string //本地生成的 title
   exHint?: string //本地生成的提醒文字
   exZodiacs?: ZodiacNum[] //本地生成的生肖数据
   exPlays?: PlayData[] //本地生成的彩球数据

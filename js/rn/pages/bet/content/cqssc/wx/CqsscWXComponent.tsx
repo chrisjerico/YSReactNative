@@ -13,6 +13,9 @@ import LotteryEBall from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
+import { calculateSliderValue } from '../../../util/ArithUtil'
+import { ugLog } from '../../../../../public/tools/UgLog'
+import WXTitleComponent from './WXTitleComponent'
 
 
 /**
@@ -99,28 +102,19 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 特殊，绘制 五星玩法单式
    * @param groupData
    */
-  const renderSingle = (groupData?: PlayGroupData) => <View key={key + ' renderSingle container'}
+  const renderSingle = (groupData?: PlayGroupData) => <View key={key + ' renderSingle container = ' + groupData?.id}
                                                             style={CommStyles.flex}>
-    <View key={key + ' sub renderSingle 2 = ' + groupData?.id}
-          style={_styles.sub_big_title_container}>
-      <Text key={key + ' text renderSingle' + groupData?.id}
-            style={[
-              _styles.sub_big_title_text,
-              { color: Skin1.themeColor },
-            ]}>{groupData?.exTitle}</Text>
-    </View>
-    <View key={key + 'renderSingle groupData = ' + groupData?.id}
-          style={_styles.sub_big_hint_container}>
-      <Text key={key + 'text renderSingle = ' + groupData?.id}
-            style={_styles.sub_big_hint_text}>{'玩法提示：手动输入一个5位数号码组成一注'}</Text>
+    <WXTitleComponent title={'赔率'}
+                      odds={groupData?.plays[0]?.odds}/>
+    <View style={_styles.sub_big_hint_container}>
+      <Text style={_styles.sub_big_hint_text}>{'玩法提示：手动输入一个5位数号码组成一注'}</Text>
     </View>
 
     <TextInput style={_styles.single_input}
                editable={groupData?.enable == '1'}
                keyboardType={'numeric'}/>
 
-    <View key={key + 'sub renderSingle 2 = ' + groupData?.id}
-          style={_styles.sub_big_hint_container}>
+    <View style={_styles.sub_big_hint_container}>
       <Text key={key + 'sub text renderSingle = ' + groupData?.id}
             style={_styles.sub_big_hint_text}>{'每一注号码之间请用逗号、空格、换行进行隔开'}</Text>
     </View>
@@ -132,39 +126,28 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderWX = (groupData?: PlayGroupData, index?: number) =>
-    <View key={key + ' renderWX' + groupData?.id + groupData?.exPlays[0]?.alias}
+    <View key={key + ' renderWX' + index + ',' + groupData?.id + groupData?.exPlays[0]?.alias}
           style={CommStyles.flex}>
 
       {//显示赔率标题
-        index == 0 && !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderWX 2 = ' + groupData?.id}
-                                                             style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderWX' + groupData?.id}
-                style={[
-                  _styles.sub_big_title_text,
-                  { color: Skin1.themeColor },
-                ]}>{groupData?.exTitle}</Text>
-        </View>
+        index == 0 && <WXTitleComponent title={'赔率'}
+                                        odds={groupData?.plays[0]?.odds}/>
       }
 
       {//显示赔率提醒文字
-        index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderWX 2 = ' + groupData?.id}
-                                                            style={_styles.sub_big_hint_container}>
-          <Text key={key + ' text renderWX' + groupData?.id}
-                style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
+        index == 0 && !anyEmpty(groupData?.exHint) && <View style={_styles.sub_big_hint_container}>
+          <Text style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
         </View>
       }
 
-      <View key={key + ' sub renderWX 2 =' + groupData?.id}
-            style={_styles.sub_title_container}>
-        <Text key={key + ' text renderWX' + groupData?.id}
-              style={[
-                _styles.sub_title_text,
-                { color: Skin1.themeColor },
-              ]}>{groupData?.exPlays[0]?.alias}</Text>
+      <View style={_styles.sub_title_container}>
+        <Text style={[
+          _styles.sub_title_text,
+          { color: Skin1.themeColor },
+        ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
-      <View key={key + ' ball renderWX' + groupData?.id}
-            style={_styles.ball_container}>
+      <View style={_styles.ball_container}>
         {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
@@ -204,15 +187,6 @@ const _styles = StyleSheet.create({
     borderRadius: scale(8),
     minHeight: scale(128),
     marginHorizontal: scale(6),
-  },
-  sub_big_title_container: {
-    alignItems: 'center',
-    padding: scale(6),
-  },
-  sub_big_title_text: {
-    color: UGColor.TextColor2,
-    fontSize: scale(24),
-    paddingHorizontal: scale(1),
   },
   sub_big_hint_container: {
     alignItems: 'center',

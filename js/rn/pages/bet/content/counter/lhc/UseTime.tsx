@@ -44,7 +44,7 @@ const UseTime = () => {
       const timer = setInterval(() => {
         setCloseTime(n => n - SECOND_1)
         setOpenTime(n => {
-          if (n % 4000 == -3000) {//开奖中每3秒取一次数据直到成功
+          if (n % 3000 == -2000) {//开奖中每2秒取一次数据直到成功
             requestNextData(lotteryId)
           }
           return n - SECOND_1

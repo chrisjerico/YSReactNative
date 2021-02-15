@@ -38,6 +38,7 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
   let circleCount = 1 //循环次数
   let titleArr = [play0?.name] //标题
   let textHint //提醒文字
+  let showOdds = play0?.odds //有的彩种不需要显示赔率
 
   switch (playOddData?.code) {
     case CqsscCode.EZDW:
@@ -54,7 +55,8 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
         titleArr = [`百定位`, `十定位`, `个定位`]
       }
       break
-    case CqsscCode.WX:
+    case CqsscCode.WX://五行 或 五星
+      showOdds = null
       if (play0?.name == '复式') {
         circleCount = 5
         titleArr = [`第一球（万位）`, `第二球（千位）`, `第三球（百位）`, `第四球（十位）`, `第五球（个位）`]
@@ -97,11 +99,10 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
         id: `${titleArr[i]},${play0?.id},${ballIndex}`,
         name: ballIndex,
         alias: titleArr[i],
-        odds: play0?.odds,
+        odds: showOdds,
       } as PlayData)
     })
     arrArr.push({...data,
-      exTitle: `赔率: ${play0?.odds}`,
       exHint: textHint,
       exPlays: arr})
   }
