@@ -1,5 +1,6 @@
 import React, { memo, ReactElement, useCallback } from 'react'
 import { ListRenderItem, Platform, RefreshControl, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { UGStore } from '../../../redux/store/UGStore'
 import AnimatedRankComponent from '../../components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../components/tars/AutoHeightCouponComponent'
 import { ANHelper } from '../../define/ANHelper/ANHelper'
@@ -65,6 +66,7 @@ interface HomePageProps {
   refreshTintColor?: string
   equalFactor?: any
   bannerBadgeStyle?: StyleProp<ViewStyle>// 在线人数
+  popup_type: '0' | '1'//公告  0直接弹窗，1登录后弹出
 }
 
 interface CouponBlockStyles {
@@ -152,6 +154,7 @@ const HomePage = ({
   showBannerBlock = true,
   refreshTintColor = '#000000',
   bannerBadgeStyle,
+  popup_type,
 }: HomePageProps) => {
   const onPressNotice = useCallback(({ content }) => {
     PushHelper.pushNoticePopUp(content)
@@ -172,7 +175,9 @@ const HomePage = ({
   const onRefresh = useCallback(async () => {
     try {
       await refresh()
-      PushHelper.pushAnnouncement(announcements)
+      if (popup_type == '1' && !uid?.length) {} else {
+        PushHelper.pushAnnouncement(announcements)
+      }
     } catch (error) {}
   }, [announcements])
 

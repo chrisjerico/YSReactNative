@@ -128,7 +128,7 @@ export interface Data {
   pass_limit: string;
   popup_announce: string;
   popup_hour: string;
-  popup_type: '0' | '1'
+  popup_type: '0' | '1'//公告  0直接弹窗，1登录后弹出
   rankingListSwitch: number;
   reg_email: string;
   reg_fundpwd: string;
