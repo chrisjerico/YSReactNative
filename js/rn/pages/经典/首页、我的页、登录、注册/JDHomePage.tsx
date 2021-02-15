@@ -84,7 +84,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
 
   const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists, announcements } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists, announcements, popupSwitch } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
@@ -94,7 +94,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const defaultMenus = config.getDefaultMenus()
 
   if (v.willShowAnnouncement && announcements?.length) {
-    if (popup_type == '1' && !uid?.length) {} else {
+    if ((popup_type == '1' && !uid?.length) || popupSwitch == '0') { } else {
       PushHelper.pushAnnouncement(announcements)
     }
     v.willShowAnnouncement = false

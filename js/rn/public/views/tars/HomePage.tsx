@@ -28,6 +28,7 @@ interface HomePageProps {
   refreshing: boolean
   refresh: () => any
   announcements: any[]
+  popupSwitch: '0' | '1' | '2'; // 0不弹窗，1、2都弹窗
   items?: readonly any[]
   renderHeader: () => ReactElement
   renderListHeaderComponent: () => ReactElement
@@ -116,6 +117,7 @@ const HomePage = ({
   pagekey,
   refreshing,
   announcements,
+  popupSwitch,
   refresh,
   items,
   renderItem,
@@ -175,7 +177,7 @@ const HomePage = ({
   const onRefresh = useCallback(async () => {
     try {
       await refresh()
-      if (popup_type == '1' && !uid?.length) {} else {
+      if ((popup_type == '1' && !uid?.length) || popupSwitch == '0') { } else {
         PushHelper.pushAnnouncement(announcements)
       }
     } catch (error) {}

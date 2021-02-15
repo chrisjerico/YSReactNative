@@ -105,6 +105,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notice?.data?.popup?.map((item: any) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     }) ?? []
+  const popupSwitch = notice?.data?.popupSwitch
 
   const homeGameData = useMemo(() => {
     const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
@@ -185,6 +186,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notices,
     midBanners,
     announcements,
+    popupSwitch,
     gameLobby,
     coupons,
     rankLists,
