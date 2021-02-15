@@ -30,7 +30,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test08.6yc.com',
   ],
   'tx09': [
-    'http://test09.6yc.com/',
+    'http://test09.6yc.com',
   ],
   'tx10': [
     'https://test10.6yc.com',
@@ -233,11 +233,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615vv.com',
   ],
   'c116': [
-    'https://58933e.com',
     'https://58922e.com',
-    'https://58933b.com',
+    'https://58933e.com',
+    'https://58922d.com',
     'https://58933c.com',
-    'https://58933d.com',
+    'https://58933b.com',
   ],
   'c117': [
     'https://646482.com',
@@ -368,9 +368,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
+    'https://a450vip.com',
+    'https://5vip450.com',
     'https://2vip450.com',
-    'https://3vip450.com',
-    'https://4vip450.com',
+    'https://b450vip.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',

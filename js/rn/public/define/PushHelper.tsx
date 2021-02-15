@@ -559,8 +559,8 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.推荐收益: {
-            subId = MenuType.SYTJ
-            break
+            push(PageName.JDRecommendedIncomePage)
+            return
           }
           case UGUserCenterType.即时注单: {
             subId = MenuType.JSZD

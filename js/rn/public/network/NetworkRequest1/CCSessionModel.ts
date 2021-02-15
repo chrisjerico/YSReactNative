@@ -109,7 +109,7 @@ export class CCSessionReq {
     sm.url = url;
     sm.params = params;
     sm.promise = encryptParams(params).then((params) => {// 参数加密
-      if (Platform.OS == 'ios' && this.isEncrypt) {
+      if (this.isEncrypt) {
         url += '&checkSign=1';
       }
       // 登录请求去掉token

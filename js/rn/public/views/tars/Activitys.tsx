@@ -3,7 +3,7 @@ import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import { icon_任务弹窗, icon_利息宝, icon_刮刮乐, icon_砸金蛋, icon_大转盘 } from '../../../Res/icon/Res'
+import { icon_任务弹窗, icon_利息宝, icon_刮刮乐, icon_砸金蛋, icon_大转盘, Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
 import { img_images } from '../../../Res/icon'
@@ -11,6 +11,9 @@ import { appConfig } from '../../../../../config'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import { anyEmpty, anyString } from '../../tools/Ext'
 import settings from '../../network/NetworkRequest1/model/activity/settings'
+import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
+import RedBagModal from '../../components/RedBagModal'
+import { ugLog } from '../../tools/UgLog'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -22,6 +25,7 @@ interface ActivitysProps {
   redBag: RedBagDetailActivityModel
   goldenEggs: GoldenEgg[]
   scratchs: unknown
+  activitySetting?: ActivitySettingModel
 }
 
 export interface FloatAd {
@@ -59,16 +63,19 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
     })
   }
 
+  const [redDialog, setRedDialog] = useState(false)
+
   return (
     <>
       <ActivityComponent
         refreshing={refreshing}
         containerStyle={{ top: scale(235), right: 0 }}
         show={redBag?.data}
-        logo={redBagLogo?.length ? redBagLogo : img_images('pig')}
+        logo={redBagLogo.length>0 ?redBagLogo : Res.pig}
+        type={0}
         onPress={() => {
           // 红包
-          PushHelper.pushRedBag(redBag)
+          setRedDialog(!redDialog)
         }}
       />
       <ActivityComponent
@@ -131,6 +138,16 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
           />
         )
       })}
+      { redDialog
+        ? <RedBagModal
+            onPress={() => {
+              setRedDialog(!redDialog)
+            }}
+            redBag={redBag}
+            bagSkin={activitySettings?.redBagSkin}
+            activitySetting={{data: activitySettings} as ActivitySettingModel}
+          />
+        : null }
     </>
   )
 }

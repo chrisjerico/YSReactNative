@@ -21,6 +21,7 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { img_assets, useHtml5Image } from '../../../Res/icon';
 import { appConfig } from '../../../../../config';
+import PromotionRechargeModal from './PromotionRechargeModal';
 
 
 interface JDPromotionTabMemberCP {
@@ -63,6 +64,8 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
     }
   )
   let capitalController //类型选择
+  const [memberItem, setMemberItem] = useState()
+  const [showMemberItem, setShowMemberItem] = useState(false)
 
   v.levelArray = appConfig.isShowOneLevel() ? [{ value: 1, label: '1级下线' },] :
     [{ value: 0, label: '全部下线' },
@@ -308,6 +311,8 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
                           break
                         case 'android':
                           // TODO Android 跳充值弹框
+                          setMemberItem(item)
+                          setShowMemberItem(true)
                           break
                       }
 
@@ -322,7 +327,6 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
             </View>}
           </View>
-
         </View>
       );
     }
@@ -405,6 +409,13 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
           })}
         </View>
       </View>
+      {showMemberItem ?
+        <PromotionRechargeModal
+          closePop={() => setShowMemberItem(false)}
+          item={memberItem}
+          showPopView={showMemberItem}/>
+        : null
+      }
     </View >
   )
 
