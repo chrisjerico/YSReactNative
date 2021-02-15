@@ -5,6 +5,7 @@ import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean'
 import { scale } from '../../tools/Scale'
 import AppDefine from '../../define/AppDefine'
+import { ugLog } from '../../tools/UgLog'
 
 interface NoticeBlockProps {
   logo?: string
@@ -19,12 +20,15 @@ interface NoticeBlockProps {
 }
 
 const NoticeBlock = ({ logo, logoText = '公告', notices, containerStyle, onPressNotice, iconContainerStyle, logoTextStyle, textStyle, bgContainerStyle }: NoticeBlockProps) => {
-  const cleanContents = notices.map((notice, index) => ({
-    label: index.toString(),
-    value: notice?.title,
-    content: notice?.content,
-  }))
-
+  const cleanContents = notices.map((notice, index) => {
+      let _content = (index == (notices.length -1)) ? notice?.content : notice?.content + '<div class="fgx" style="border: 1px dashed #9a9898;margin-bottom: 10px;"></div>'
+      return ({
+        label: index.toString(),
+        value: notice?.title,
+        content: _content,
+      })
+    })
+    
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.iconContainer, iconContainerStyle]}>
