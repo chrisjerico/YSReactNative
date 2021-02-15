@@ -19,7 +19,6 @@ import { filterSelectedData } from '../util/LotteryUtil'
 const UseBetBoard = () => {
 
   const [sliderValue, setSliderValue] = useState<number>(0) //拉条数据
-  const [inputMoney, setInputMoney] = useState<string>(null) //输入的金额
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
 
@@ -39,13 +38,6 @@ const UseBetBoard = () => {
   }, [UGStore.globalProps?.selectedData])
 
   /**
-   * 输入金额有变化
-   */
-  useEffect(() => {
-    UGStore.dispatch({ type: 'reset', inputMoney: Number(inputMoney) })
-  }, [inputMoney])
-
-  /**
    * 拉条有变化
    */
   useEffect(() => {
@@ -56,12 +48,14 @@ const UseBetBoard = () => {
    * 开始下注
    */
   const checkShowBetPayment = () => {
-    if (anyEmpty(inputMoney)) {
+    const inputMoney = UGStore.globalProps?.inputMoney
+
+    if (inputMoney <= 0) {
       Toast('请输入投注金额')
       // } else if (count <= 0) {
       //   Toast('请选择玩法')
     } else if (checkBetCount(true)) {
-      const newData = generateBetArray(nextIssueData, UGStore.globalProps?.sliderValue?.toString(), inputMoney, selectedData)
+      const newData = generateBetArray(nextIssueData, UGStore.globalProps?.sliderValue?.toString(), inputMoney?.toString(), selectedData)
       UGStore.dispatch({ type: 'reset', betShareModel: newData })
     }
   }
@@ -75,8 +69,6 @@ const UseBetBoard = () => {
     setShowSlider,
     sliderValue,
     setSliderValue,
-    inputMoney,
-    setInputMoney,
     showChip,
     setShowChip,
     playOddDetailData,

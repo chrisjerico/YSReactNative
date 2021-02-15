@@ -25,6 +25,7 @@ import { parseLMASelectedData } from '../../util/select/lhc/ParseLMASelectedUtil
 import { parseHXSelectedData } from '../../util/select/lhc/ParseHXSelectedUtil'
 import parseSBData from '../../util/parse/lhc/ParseSBDataUtil'
 import parseYZDWData from '../../util/parse/cqssc/ParseYZDWDataUtil'
+import { parseWXSelectedUtil } from '../../util/select/cqssc/ParseWXSelectedUtil'
 
 /**
  * 过滤出某个选中的数量
@@ -57,43 +58,11 @@ const prepareSelectedBetData = (playOddData?: PlayOddData, selectedBalls?: Array
     JSON.parse(JSON.stringify(UGStore.globalProps?.selectedData))
 
   switch (playOddData?.code) {
-    case LhcCode.TM:  //特码
-    case LhcCode.LM: //两面
-    case LhcCode.ZM: //正码
-    case LhcCode.ZT:  //正特
-    case LhcCode.ZM1_6: //正码1T6
-    case LhcCode.SB: //色波
-    case LhcCode.ZOX://总肖
-    case LhcCode.WX:  //五行 或 五星
-    case LhcCode.LMA:  //连码
-    case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-    case LhcCode.TX: //特肖
-    case LhcCode.ZX: //正肖
-    case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-    case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-    case LhcCode.LX: //连肖
-    case LhcCode.LW: //连尾
-    case LhcCode.ZXBZ:  //自选不中
-    case CqsscCode.ALL:  //1-5球
-    case CqsscCode.Q1:  //第1球
-    case CqsscCode.Q2:  //第2球
-    case CqsscCode.Q3:  //第3球
-    case CqsscCode.Q4:  //第4球
-    case CqsscCode.Q5:  //第5球
-    case CqsscCode.QZH:  //前中后
-    case CqsscCode.DN:  //斗牛
-    case CqsscCode.SH:  //梭哈
-    case CqsscCode.LHD:  //龙虎斗
-    case CqsscCode.YZDW:  //一字定位
-    case CqsscCode.EZDW:  //二字定位
-    case CqsscCode.SZDW:  //三字定位
-    case CqsscCode.BDW:  //不定位
-    case CqsscCode.DWD:  //定位胆
-      newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
-      break
-
     case LhcCode.HX://合肖
       newSelectedModel[playOddData?.code] = parseHXSelectedData(playOddData, selectedBalls)
+      break
+    default:
+      newSelectedModel[playOddData?.code] = parseLMASelectedData(playOddData, selectedBalls)
       break
   }
 
@@ -140,6 +109,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
             const selCount = filterSelectedSubData(key, subAlias, selectedData)
             ugLog('selCount = ', selCount, key)
             switch (data?.alias) {
+              case '单式':
+                if (selCount < 1) {
+                  Toast(`请输入1个以上的数据`)
+                  return false
+                }
+                break
               case '复式':
                 if (selCount != 1) {
                   Toast(`请选择1个${subAlias}数据`)
@@ -412,14 +387,8 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 
       case CqsscCode.EZDW: //二字定位
       case CqsscCode.SZDW: //三字定位
-      case LhcCode.WX: //五行 或 五星
       {
-        if (gameType == LCode.lhc) { //五行
-          return gatherSelectedItems(key, selectedData)
-        }
-
-        //五星 和 其它
-        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
+        const pageData: Array<SelectedPlayModel> = Object.values(value).map((data) => Object.values(data)).flat(Infinity)
         ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
         if (arrayLength(pageData) > 1) { //二字定位有2组数据，三字定位有3组数据
           const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
@@ -457,40 +426,6 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
   combinationData?.map((selModel, index) => {
     ugLog('pay board itemViewArr = ', selModel?.code, index)
     switch (selModel?.code) {
-      case LhcCode.TM:  //特码
-      case LhcCode.LM: //两面
-      case LhcCode.ZM: //正码
-      case LhcCode.ZT:  //正特
-      case LhcCode.ZM1_6: //正码1T6
-      case LhcCode.SB: //色波
-      case LhcCode.ZOX://总肖
-      case LhcCode.WX:  //五行 或 五星
-      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.TX: //特肖
-      case LhcCode.ZX: //正肖
-      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case CqsscCode.ALL:  //1-5球
-      case CqsscCode.Q1:  //第1球
-      case CqsscCode.Q2:  //第2球
-      case CqsscCode.Q3:  //第3球
-      case CqsscCode.Q4:  //第4球
-      case CqsscCode.Q5:  //第5球
-      case CqsscCode.QZH:  //前中后
-      case CqsscCode.DN:  //斗牛
-      case CqsscCode.SH:  //梭哈
-      case CqsscCode.LHD:  //龙虎斗
-      case CqsscCode.YZDW:  //一字定位
-      case CqsscCode.EZDW:  //二字定位
-      case CqsscCode.SZDW:  //三字定位
-        selModel?.plays?.map((playData) => {
-          playNameArray.push({
-            playName1: selModel?.playGroups?.alias,
-            playName2: playData?.name,
-            exFlag: playDataUniqueId(playData),
-          } as PlayNameArray)
-        })
-        break
       case LhcCode.LX: //连肖
       case LhcCode.LW: //连尾
         selModel?.plays?.map((playData) => {
@@ -533,6 +468,15 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
           exFlag: playDataUniqueId(playX),
         } as PlayNameArray)
       }
+        break
+      default:
+        selModel?.plays?.map((playData) => {
+          playNameArray.push({
+            playName1: selModel?.playGroups?.alias,
+            playName2: playData?.name,
+            exFlag: playDataUniqueId(playData),
+          } as PlayNameArray)
+        })
         break
     }
 

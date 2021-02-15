@@ -28,13 +28,11 @@ const UseLotteryContent = () => {
         type: 'reset',
         selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
         currentColumnIndex: leftColumnIndex,
-        inputMoney: 0,
       })
     } else {
       UGStore.dispatch({
         type: 'reset',
         currentColumnIndex: leftColumnIndex,
-        inputMoney: 0,
       })
     }
   }, [leftColumnIndex])

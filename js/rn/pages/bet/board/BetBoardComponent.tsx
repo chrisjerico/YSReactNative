@@ -52,8 +52,6 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     setShowSlider,
     sliderValue,
     setSliderValue,
-    inputMoney,
-    setInputMoney,
     showChip,
     setShowChip,
     playOddDetailData,
@@ -152,7 +150,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           {
             Object.keys(CHIP_OPTION).map((money) =>
               <TouchableWithoutFeedback key={'renderSliderArea chip' + money}
-                                        onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
+                                        onPress={() => UGStore.dispatch({ type: 'reset', inputMoney: money == 'c' ? 0 : Number(money) })}>
                 <FastImage key={'renderSliderArea chip' + money}
                            source={{ uri: CHIP_OPTION[money] }}
                            style={_styles.chip_img}
@@ -229,10 +227,11 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           </TouchableWithoutFeedback>
         </View>
         <TextInput key={'renderInputArea input'}
-                   value={inputMoney}
+                   value={UGStore.globalProps?.inputMoney?.toString()}
                    style={_styles.input_text}
+                   maxLength={11}
                    onChangeText={(s) => {
-                     setInputMoney(s)
+                     UGStore.dispatch({ type: 'reset', inputMoney: Number(s) })
                    }}
                    keyboardType={'numeric'}/>
       </View>

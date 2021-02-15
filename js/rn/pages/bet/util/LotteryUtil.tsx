@@ -67,6 +67,27 @@ const clearLotteryData = () => {
 }
 
 /**
+ * 按照某个字符切割字符串成数组
+ *
+ * @param orgString
+ * @param specialParams 以该数组里的字符来切割
+ * @param len 只提取len长度的字符串
+ */
+const parseInputArray = (orgString?: string, specialParams?: Array<string>, len?: number): Array<string> => {
+  let wxInputArr: Array<string>
+  let newString = orgString?.replace('.', '')
+  for (let value of specialParams) {
+    if (newString?.includes(value)) {
+      wxInputArr = newString?.split(value)
+      break
+    }
+  }
+  wxInputArr = wxInputArr?.filter((item) => item?.length == len) //过滤长度不正确的
+
+  return wxInputArr
+}
+
+/**
  * 根据名字或别名找出生肖
  * @param num
  * @param item
@@ -135,5 +156,6 @@ export {
   combineOddsName,
   playDataUniqueId,
   specialPlay,
+  parseInputArray,
 
 }

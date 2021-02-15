@@ -33,6 +33,8 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setTabIndex,
     selectedBalls,
     setSelectedBalls,
+    wxInputNumber,
+    setWxInputNumber,
     addOrRemoveBall,
   } = UseCqsscWX()
 
@@ -111,7 +113,9 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     </View>
 
     <TextInput style={_styles.single_input}
+               value={wxInputNumber}
                editable={groupData?.enable == '1'}
+               onChangeText={(s) => setWxInputNumber(s)}
                keyboardType={'numeric'}/>
 
     <View style={_styles.sub_big_hint_container}>

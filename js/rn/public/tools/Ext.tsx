@@ -22,17 +22,17 @@ export const arrayEmpty = (value?: Array<any>) => anyNull(value) || value.length
 export const arrayLength = (value?: Array<any>) => arrayEmpty(value) ? 0 : value?.length
 export const anyEmpty = (value?: any) => anyNull(value) || value === '' || value.length <= 0
 export const anyLength = (value?: any) => anyEmpty(value) ? 0 : value.length
-export const dicNull = (value?: any) => anyNull(value) || JSON.stringify(value) == '{}';
+export const dicNull = (value?: any) => anyNull(value) || JSON.stringify(value) == '{}'
 
 const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]'
 const isArray = (arr) => Array.isArray(arr)
+export const equalObject = (obj1, obj2) => !anyNull(obj1) && !anyNull(obj2) && JSON.stringify(obj1) == JSON.stringify(obj2)
 
 /**
  * 数组取第一个元素
  * @param array
  */
-export const firstObj = (array?: any) => array && array.length ? array[0] : undefined;
-
+export const firstObj = (array?: any) => array && array.length ? array[0] : undefined
 
 
 /**

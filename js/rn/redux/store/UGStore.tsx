@@ -14,7 +14,7 @@ import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../r
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import { SelectedPlayModel } from '../model/game/SelectedLotteryModel'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
-import { arrayEmpty, mergeObject } from '../../public/tools/Ext'
+import { anyNull, arrayEmpty, mergeObject } from '../../public/tools/Ext'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
 import { BetShareModel } from '../model/game/bet/BetShareModel'
 import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
@@ -35,7 +35,10 @@ export interface IGlobalState {
   rightMenu?: UGRightMenuModel[] // 又選單 陣列
   banner?: UGBannerModel
 
-  //下注
+  sys?: UGSystemModel
+  // value?: any;
+
+  //下注彩票信息相关数据
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   lotteryTabIndex?: number //当前的彩种处于TAB哪一页
   gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
@@ -44,20 +47,18 @@ export interface IGlobalState {
   nextIssueData?: NextIssueData //下一期的数据数据
   playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
   selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
+
+  //附加数据
+  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
   inputMoney?: number //输入的游戏金额
   sliderValue?: number //退水拉条数据
 
-  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
-
+  //聊天室相关数据
   chatRoomIndex?: number //当前聊天室索引
   chatRoomData?: ChatRoomData //聊天数据
   chatArray?: Array<IMiddleMenuItem> //聊天室列表
   shareChatModel?: ShareChatRoomModel //聊天室待分享数据
 
-  // lotteryColumnIndex?: number //彩种索引
-
-  sys?: UGSystemModel
-  // value?: any;
 }
 
 // 更新Props到全局数据
@@ -123,40 +124,14 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 }
 
 // 声明UGAction
-export interface UGAction<P = {}> extends Action {
+export interface UGAction<P = {}> extends Action, IGlobalState {
   type: 'reset' | 'merge' | BettingReducerActions // reset替换整个对象，merge只改变指定变量
   page?: string // 配合props使用
   props?: P // 配合page使用
-  sysConf?: UGSysConfModel // 修改系统配置
-  userInfo?: UGUserModel // 修改用户信息
-  sign?: UGSignModel // 登入註冊訊息
-  gameLobby?: UGGameLobbyModel[] // 遊戲大廳
-  banner?: UGBannerModel
 
-  //彩票数据
-  lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
-  lotteryTabIndex?: number //当前的彩种处于哪一页
-  gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
-  currentColumnIndex?: number //当前彩种栏目索引
-  betShareModel?: BetShareModel //下注数据结构
-  nextIssueData?: NextIssueData //下一期的数据数据
-  playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
-  selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
-  inputMoney?: number //输入的游戏金额
-  sliderValue?: number //退水拉条数据
+  // 纯数据
+  BettingReducer?: BettingReducerProps
 
-  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
-
-  chatRoomIndex?: number //当前聊天室索引
-  chatRoomData?: ChatRoomData //聊天数据
-  chatArray?: Array<IMiddleMenuItem> //聊天室列表
-  shareChatModel?: ShareChatRoomModel //聊天室待分享数据
-
-  // lotteryColumnIndex?: number //彩种索引
-
-  sys?: UGSystemModel
-  rightMenu?: UGRightMenuModel[]
-  // value?: any;// 其他 example
 }
 
 export class UGStore {
