@@ -23,6 +23,7 @@ export const arrayLength = (value?: Array<any>) => arrayEmpty(value) ? 0 : value
 export const anyEmpty = (value?: any) => anyNull(value) || value === '' || value.length <= 0
 export const anyLength = (value?: any) => anyEmpty(value) ? 0 : value.length
 export const dicNull = (value?: any) => anyNull(value) || JSON.stringify(value) == '{}';
+export const anyString = (value?: string) => value?.length ? value : undefined
 
 const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]'
 const isArray = (arr) => Array.isArray(arr)

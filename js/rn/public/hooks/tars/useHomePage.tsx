@@ -105,6 +105,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notice?.data?.popup?.map((item: any) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     }) ?? []
+  const popupSwitch = notice?.data?.popupSwitch
 
   const homeGameData = useMemo(() => {
     const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
@@ -145,6 +146,10 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     return couponList?.data?.list?.slice(0, 5) ?? []
   }, [couponList])
 
+  const couponClickStyle = useMemo(() => {
+    return couponList?.data?.style
+  }, [couponList])
+
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const midBanners = homeAd?.data ?? []
@@ -181,6 +186,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notices,
     midBanners,
     announcements,
+    popupSwitch,
     gameLobby,
     coupons,
     rankLists,
@@ -190,6 +196,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     floatAds,
     goldenEggs,
     scratchs,
+    couponClickStyle,
     ...homeGameData,
     ...lotteryData,
     ...official_customise_Games,

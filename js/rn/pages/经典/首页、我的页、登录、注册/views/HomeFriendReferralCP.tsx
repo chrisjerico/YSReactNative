@@ -13,6 +13,7 @@ import UGUserModel from "../../../../redux/model/全局/UGUserModel"
 import { UGStore } from "../../../../redux/store/UGStore"
 import { img_assets } from "../../../../Res/icon"
 
+const sc = sc540
 interface HomeFriendReferralProps {
   visible: boolean
   onPress?: () => void
@@ -23,7 +24,7 @@ export const HomeFriendReferralCP = ({ visible, onPress, containerStyle }: HomeF
   if (!visible) return null
 
   return (
-    <TouchableOpacity style={[{ borderRadius: sc540(10), backgroundColor: skin1.homeContentColor, flexDirection: 'row', height: sc540(40), alignItems: 'center' }, containerStyle]} onPress={onPress ?? (() => {
+    <TouchableOpacity style={[{ borderRadius: sc(10), backgroundColor: skin1.homeContentColor, flexDirection: 'row', height: sc(40), alignItems: 'center' }, containerStyle]} onPress={onPress ?? (() => {
       // 去收益推荐，或申请代理页
       if (!UGUserModel.checkLogin()) return
       showLoading()
@@ -37,8 +38,8 @@ export const HomeFriendReferralCP = ({ visible, onPress, containerStyle }: HomeF
         }
       })
     })}>
-      <FastImage source={{ uri: img_assets('icon-icon3-b') }} style={{ marginLeft: sc540(15), height: '65%', aspectRatio: 1 }} />
-      <Text style={{ marginLeft: sc540(5), fontSize: sc540(21) }}>推荐好友赚取丰厚的佣金，好运齐分享哦！</Text>
+      <FastImage source={{ uri: img_assets('icon-icon3-b') }} style={{ marginLeft: sc(15), height: '65%', aspectRatio: 1 }} />
+      <Text style={{ marginLeft: sc(5), fontSize: sc(21) }}>推荐好友赚取丰厚的佣金，好运齐分享哦！</Text>
     </TouchableOpacity >
   )
 }

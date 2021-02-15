@@ -48,7 +48,7 @@ import TouchableImage from "../../public/views/temp/TouchableImage";
 import CommStyles from "../base/CommStyles";
 import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
 import ActivityComponent from "../../public/components/temp/ActivityComponent";
-import {ROULETTE_LOGO} from "../../Res/icon/Res";
+import {icon_大转盘} from "../../Res/icon/Res";
 import { skinColors } from "../../public/theme/const/UGSkinColor"
 import { getActivityPosition } from "../../public/tools/tars"
 import { UGBasePageProps } from "../base/UGPage"
@@ -295,7 +295,7 @@ const HJHomePage = ({navigation, setProps}: UGBasePageProps) => {
         containerStyle={{top: scale(400), right: 0}}
         enableFastImage={false}
         show={uid && turntableList?.data && !isTest}
-        logo={ROULETTE_LOGO}
+        logo={icon_大转盘}
         onPress={() => {
           PushHelper.pushWheel(turntableList?.data)
         }}

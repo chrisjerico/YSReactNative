@@ -20,7 +20,7 @@ interface H5WebVars {
 // H5页面 WebPgae
 export const JSLuzhuPage = ({ setProps }: UGBasePageProps) => {
   const { sessid, token, username } = UGStore?.globalProps?.userInfo
-  const { current: v } = useRef<H5WebVars>({ canGoBack: false, gameId: '70' })
+  const { current: v } = useRef<H5WebVars>({ canGoBack: false, gameId: '' })
   const webview = useRef<WebView>()
 
   useEffect(() => {

@@ -1,7 +1,10 @@
 import React, { memo, ReactElement, useCallback } from 'react'
-import { ListRenderItem, RefreshControl, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { ListRenderItem, Platform, RefreshControl, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { UGStore } from '../../../redux/store/UGStore'
 import AnimatedRankComponent from '../../components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../components/tars/AutoHeightCouponComponent'
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import PushHelper from '../../define/PushHelper'
 import { RankingListType } from '../../models/Enum'
 import { httpClient } from '../../network/httpClient'
@@ -25,6 +28,7 @@ interface HomePageProps {
   refreshing: boolean
   refresh: () => any
   announcements: any[]
+  popupSwitch: '0' | '1' | '2'; // 0不弹窗，1、2都弹窗
   items?: readonly any[]
   renderHeader: () => ReactElement
   renderListHeaderComponent: () => ReactElement
@@ -54,6 +58,7 @@ interface HomePageProps {
   couponBlockStyles?: CouponBlockStyles//底部优惠活动
   animatedRankComponentStyles?: AnimatedRankComponentStyles//底部排行榜
   couponStyles?: CouponStyles//底部优惠活动
+  couponClickStyle?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   bottomLogoStyles?: BottomLogoStyles//底部商标
   containerStyle?: StyleProp<ViewStyle>
   noticeBlockStyles?: NoticeBlockStyles // 跑马灯
@@ -61,7 +66,8 @@ interface HomePageProps {
   showBannerBlock?: boolean
   refreshTintColor?: string
   equalFactor?: any
-  bannerBadgeStyle?:StyleProp<ViewStyle>// 在线人数
+  bannerBadgeStyle?: StyleProp<ViewStyle>// 在线人数
+  popup_type: '0' | '1'//公告  0直接弹窗，1登录后弹出
 }
 
 interface CouponBlockStyles {
@@ -101,12 +107,17 @@ interface NoticeBlockStyles {
   containerStyle?: StyleProp<ViewStyle>
 }
 
+
+let couponSelectedIndex = -1
+const couponRef = { reRenderCoupon: () => { } }
+
 const HomePage = ({
   headerColor,
   loading,
   pagekey,
   refreshing,
   announcements,
+  popupSwitch,
   refresh,
   items,
   renderItem,
@@ -137,6 +148,7 @@ const HomePage = ({
   couponBlockStyles,//底部优惠活动
   animatedRankComponentStyles,//底部排行榜
   couponStyles,//底部优惠活动
+  couponClickStyle,
   bottomLogoStyles,//底部商标
   containerStyle,
   noticeBlockStyles,//跑马灯
@@ -144,6 +156,7 @@ const HomePage = ({
   showBannerBlock = true,
   refreshTintColor = '#000000',
   bannerBadgeStyle,
+  popup_type,
 }: HomePageProps) => {
   const onPressNotice = useCallback(({ content }) => {
     PushHelper.pushNoticePopUp(content)
@@ -164,7 +177,9 @@ const HomePage = ({
   const onRefresh = useCallback(async () => {
     try {
       await refresh()
-      PushHelper.pushAnnouncement(announcements)
+      if ((popup_type == '1' && !uid?.length) || popupSwitch == '0') { } else {
+        PushHelper.pushAnnouncement(announcements)
+      }
     } catch (error) {}
   }, [announcements])
 
@@ -209,6 +224,7 @@ const HomePage = ({
               {renderListFooterTopComponent && renderListFooterTopComponent()}
               <CouponBlock
                 {...couponBlockStyles}
+                c_ref={couponRef}
                 visible={showCoupon}
                 onPressMore={goToPromotionPage}
                 coupons={coupons}
@@ -220,14 +236,49 @@ const HomePage = ({
                       key={index}
                       title={title}
                       pic={pic}
+                      slide={couponClickStyle == 'slide' && couponSelectedIndex == index}
                       content={content}
                       onPress={(setShowPop) => {
                         if (linkUrl) {
                           PushHelper.openWebView(linkUrl)
-                        } else if (!linkCategory && !linkPosition) {
-                          setShowPop(true)
-                        } else {
+                          return
+                        } else if (linkCategory || linkPosition) {
                           PushHelper.pushCategory(linkCategory, linkPosition)
+                          return
+                        }
+
+                        switch (Platform.OS) {
+                          case 'ios':
+                            switch (couponClickStyle) {
+                              // 内页
+                              case 'page': {
+                                PushHelper.pushPromoteDetail({ clsName: 'UGPromoteModel', ...item })
+                                break
+                              }
+                              // 弹框
+                              case 'popup': {
+                                setShowPop(true)
+                                break
+                              }
+                              case 'slide': {
+                                if (index == couponSelectedIndex) {
+                                  couponSelectedIndex = -1
+                                  couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                                } else {
+                                  couponSelectedIndex = index
+                                  couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                                }
+                                break
+                              }
+                            }
+                            break
+                          case 'android':
+                            // 弹框
+                            ANHelper.callAsync(CMD.OPEN_COUPON, {
+                              ...item,
+                              couponClickStyle,
+                            })
+                            break
                         }
                       }}
                     />

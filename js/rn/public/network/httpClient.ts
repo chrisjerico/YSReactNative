@@ -78,7 +78,15 @@ httpClient.interceptors.response.use(
       // api请求信息添加到iOS下拉调试页面
       const data = JSON.parse(JSON.stringify(response?.data))
       data.info = undefined;
-      OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [config?.url], args2: [Object.assign({token:UGUserModel.getToken()}, config?.orParams)], args3: [data] }]);
+      OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [config?.url], args2: [Object.assign({ token: UGUserModel.getToken() }, config?.orParams)], args3: [data] }]);
+    }
+
+    if (response.status == 200 && response?.data?.code == 0) {
+      // 请求成功
+      if (Platform.OS == 'ios' && response.config?.url?.indexOf('c=user&a=info') != -1) {
+        // 更新原生iOS用户信息
+        OCHelper.call('UGUserModel.currentUser.setValuesWithDictionary:', [response.data?.data]);
+      }
     }
 
     //ugLog("http ful filled res 5 = ", JSON.stringify(response))
