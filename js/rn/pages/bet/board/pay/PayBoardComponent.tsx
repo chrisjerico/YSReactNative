@@ -101,7 +101,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             { backgroundColor: Skin1.themeColor },
           ]}>
             <Text
-              style={_styles.dialog_title_text}>{`第${betShareModel?.issue_displayNumber}期 ${betShareModel?.gameName} 下注清单`}</Text>
+              style={_styles.dialog_title_text}>{`第${betShareModel?.issue_displayNumber ?? betShareModel?.turnNum}期 ${betShareModel?.gameName} 下注清单`}</Text>
           </View>
           <View style={_styles.sv_parent}>
             <ScrollView style={_styles.sv_container}
