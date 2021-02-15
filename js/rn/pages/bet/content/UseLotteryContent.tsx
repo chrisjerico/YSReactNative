@@ -2,10 +2,11 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 import { ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { DeviceEventEmitter } from 'react-native'
 import { ugLog } from '../../../public/tools/UgLog'
-import { filterSelectedData, specialPlay, usePrevious } from '../util/LotteryUtil'
+import { filterSelectedData, specialPlay} from '../util/LotteryUtil'
 import { UGStore } from '../../../redux/store/UGStore'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { currentPlayOddData, tabGroupData, xPlayOddData } from '../util/select/ParseSelectedUtil'
+import { usePrevious } from '../util/usePrevious'
 
 /**
  * 彩票内容

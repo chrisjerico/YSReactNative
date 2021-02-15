@@ -5,7 +5,6 @@ import { ugLog } from '../../../public/tools/UgLog'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { GameTab } from '../const/LotteryConst'
-import { useEffect, useRef } from 'react'
 
 interface INameOrAlias {
   name?: string; //鼠
@@ -128,18 +127,6 @@ const filterSelectedSubData = (code?: string, alias?: string, selectedData?: Map
   return 0
 }
 
-/**
- * 记录之前的状态
- * @param value
- */
-function usePrevious(value) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 export {
   findZodiacByName,
   filterSelectedData,
@@ -148,5 +135,5 @@ export {
   combineOddsName,
   playDataUniqueId,
   specialPlay,
-  usePrevious,
+
 }
