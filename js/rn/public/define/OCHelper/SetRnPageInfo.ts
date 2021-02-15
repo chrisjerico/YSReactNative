@@ -1,4 +1,5 @@
 import { UGImageHost } from '../../../Res/icon/index';
+import { H5Router } from './../../../pages/base/H5页面/H5WebPage';
 import { UGStore } from './../../../redux/store/UGStore';
 import { devConfig } from '../../../../../config'
 import { Platform } from 'react-native'
@@ -139,14 +140,6 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    // 申请代理
-    pages.push({
-      vcName: 'UGAgentViewController',
-      rnName: PageName.JDAgentPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    })
     // 在线客服
     pages.push({
       rnName: PageName.OnlineService,
@@ -178,8 +171,8 @@ export async function setRnPageInfo(force = false) {
   }
 
 
-   // 我的提款账户
-   pages.push({
+  // 我的提款账户
+  pages.push({
     vcName: 'WithdrawalAccountListVC',
     rnName: PageName.ManageBankListPage,
     fd_prefersNavigationBarHidden: true,
@@ -250,7 +243,15 @@ export async function setRnPageInfo(force = false) {
     允许游客访问: false,
     允许未登录访问: false,
   })
-
+  //路珠
+  pages.push({
+    rnName: PageName.JSLuzhuPage,
+    linkCategory: 7,//导航链接
+    linkPosition: 55,//导航链接ID
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 申请代理
   pages.push({
     vcName: 'UGAgentViewController',
