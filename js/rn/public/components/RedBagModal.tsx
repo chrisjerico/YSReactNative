@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Image, ImageBackground, Modal, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { Alert, Image, ImageBackground, Modal, Platform, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -67,7 +67,7 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
             source={{ uri: bagSkin?.includes("red_pack_big_niu") ? bagSkin : Res.redBg }}
             resizeMode='contain'
             style={styles.image} >
-            <View style={styles.imageContainer}>
+            <View style={[styles.imageContainer, Platform.OS == 'ios' ? {marginTop:scale(75)} : undefined]}>
               <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>帐号：</Text>
                 <Text style={styles.text}>{redBagData.data.username}</Text>
