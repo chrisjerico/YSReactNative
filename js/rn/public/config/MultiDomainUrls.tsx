@@ -414,6 +414,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c245': [
     'https://4823kcmanucxeanm.com',
+    'https://4823aochjenmalc.com',
+    'https://4823btuenaldfpvm.com',
   ],
   'c246': [
     'https://847758.com',
