@@ -24,7 +24,7 @@ import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryMode
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { dicNull } from '../../../public/tools/Ext'
 import { mapTotalCount } from '../util/ArithUtil'
-import { EmitterLotteryTypes } from '../../../public/define/DeviceEventEmitterTypes'
+import { EmitterTypes } from '../../../public/define/EmitterTypes'
 
 /**
  * 彩票功能区入参
@@ -190,7 +190,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
    * 机选
    */
   const renderRandomSelected = () => {
-    return <TouchableWithoutFeedback onPress={() => DeviceEventEmitter.emit(EmitterLotteryTypes.RANDOM_SELECT_LOTTERY)}>
+    return <TouchableWithoutFeedback onPress={() => DeviceEventEmitter.emit(EmitterTypes.RANDOM_SELECT_LOTTERY)}>
       <Text style={_styles.bet_again}>机选</Text>
     </TouchableWithoutFeedback>
   }
@@ -245,6 +245,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
 
         <TouchableWithoutFeedback onPress={() => {
           ugLog('clear selected')
+          DeviceEventEmitter.emit(EmitterTypes.CLEAR_SELECT_LOTTERY)
           UGStore.dispatch({
             type: 'reset',
             selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),

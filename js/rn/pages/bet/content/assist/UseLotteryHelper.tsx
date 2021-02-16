@@ -22,7 +22,7 @@ import { Play } from '../../../../public/network/Model/PlayOddDataModel'
 import { currentPlayOddData, currentTabGroupData, tabGroupData } from '../../util/select/ParseSelectedUtil'
 import { prepareSelectedBetData } from '../../board/tools/BetUtil'
 import { DeviceEventEmitter } from 'react-native'
-import { EmitterLotteryTypes } from '../../../../public/define/DeviceEventEmitterTypes'
+import { EmitterTypes } from '../../../../public/define/EmitterTypes'
 
 /**
  * 彩票公共处理类
@@ -71,11 +71,19 @@ const UseLotteryHelper = () => {
 
   useEffect(() => {
     //收到消息就机投一注
-    const lis = DeviceEventEmitter.addListener(EmitterLotteryTypes.RANDOM_SELECT_LOTTERY, () => {
+    const lisRandom = DeviceEventEmitter.addListener(EmitterTypes.RANDOM_SELECT_LOTTERY, () => {
       randomSelectBalls()
     })
 
-    return () => lis.remove()
+    //收到消息就清空选项
+    const lisClear = DeviceEventEmitter.addListener(EmitterTypes.CLEAR_SELECT_LOTTERY, () => {
+      setSelectedBalls([])
+    })
+
+    return () => {
+      lisRandom.remove()
+      lisClear.remove()
+    }
   }, [tabIndex])
 
   useEffect(() => {
