@@ -14,6 +14,7 @@ export interface IBetLotteryParams {
   betBean?: Array<BetLotteryData>
 
   isTest?: boolean //是不是试玩账号
+  tag?: string //跟注需要带上
 }
 
 export interface BetLotteryData {
