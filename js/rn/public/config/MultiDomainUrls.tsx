@@ -413,7 +413,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://55979755.vip',
   ],
   'c245': [
-    'https://4823app.com',
+    'https://4823kcmanucxeanm.com',
   ],
   'c246': [
     'https://847758.com',
