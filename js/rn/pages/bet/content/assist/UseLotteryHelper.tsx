@@ -6,7 +6,7 @@ import {
   PlayOddData,
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { arrayLength, dicNull } from '../../../../public/tools/Ext'
+import { arrayEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { isSameBall, isSelectedBallOnId } from '../../widget/it/ISelBall'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { CqsscCode, LCode, LhcCode } from '../../const/LotteryConst'
@@ -37,6 +37,39 @@ const UseLotteryHelper = () => {
   const [tabIndex, setTabIndex] = useState(0) //当前选中第几页
 
   useEffect(() => {
+    if (!dicNull(playOddData) && !dicNull(UGStore.globalProps?.selectedData)) { //等到数据加载完成以后
+      ugLog('恢复选中的数据')
+      const curSelectedData: Map<string, Map<string, SelectedPlayModel>> = UGStore.globalProps?.selectedData[playOddData?.code]
+
+      switch (playOddData?.code) {
+        // case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+        //   break
+        default:
+          // ugLog('恢复选中的数据 curSelectedData 1111= ', JSON.stringify(curSelectedData))
+          // ugLog('恢复选中的数据 groupTri 2222= ', JSON.stringify(playOddData?.pageData?.groupTri))
+          if (curSelectedData && arrayLength(playOddData?.pageData?.groupTri) == 1) {//只有1页数据/非特殊玩法，才恢复选中数据
+            // 第一页第一条数据的 alias是TAB名字，也是TAB的 key
+            const groupDataArr: Map<string, SelectedPlayModel> = curSelectedData[playOddData?.pageData?.groupTri[0][0]?.alias]
+            // ugLog('恢复选中的数据 groupDataArr 3333 = ', JSON.stringify(groupDataArr))
+            if (!dicNull(groupDataArr)) {
+              ((Object.values(groupDataArr) as Array<SelectedPlayModel>))?.map((playModel) => {
+                switch (playOddData?.code) {
+                  case LhcCode.HX://合肖
+                    setSelectedBalls(playModel?.zodiacs)
+                    break
+                  default:
+                    setSelectedBalls(playModel?.plays)
+                    break
+                }
+              })
+            }
+          }
+          break
+      }
+    }
+  }, [playOddData])
+
+  useEffect(() => {
     //收到消息就机投一注
     const lis = DeviceEventEmitter.addListener(EmitterLotteryTypes.RANDOM_SELECT_LOTTERY, () => {
       randomSelectBalls()
@@ -46,68 +79,11 @@ const UseLotteryHelper = () => {
   }, [tabIndex])
 
   useEffect(() => {
-    prepareSelectedBetData(playOddData, selectedBalls)
-
-  }, [selectedBalls])
-
-  useEffect(() => {
-
-    ugLog('恢复选中的数据')
-    const curSelectedData: Map<string, Map<string, SelectedPlayModel>> = UGStore.globalProps?.selectedData[playOddData?.code]
-
-    switch (playOddData?.code) {
-      case LhcCode.TM:  //特码
-      case LhcCode.LM: //两面
-      case LhcCode.ZM: //正码
-      case LhcCode.ZT:  //正特
-      case LhcCode.ZM1_6: //正码1T6
-      case LhcCode.SB: //色波
-      case LhcCode.ZOX://总肖
-      case LhcCode.WX:  //五行 或 五星
-      case LhcCode.LMA:  //连码
-      case LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.TX: //特肖
-      case LhcCode.ZX: //正肖
-      case LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case LhcCode.LX: //连肖
-      case LhcCode.LW: //连尾
-      case LhcCode.ZXBZ:  //自选不中
-      case LhcCode.HX://合肖
-      case CqsscCode.ALL:  //1-5球
-      case CqsscCode.Q1:  //第1球
-      case CqsscCode.Q2:  //第2球
-      case CqsscCode.Q3:  //第3球
-      case CqsscCode.Q4:  //第4球
-      case CqsscCode.Q5:  //第5球
-      case CqsscCode.QZH:  //前中后
-      case CqsscCode.DN:  //斗牛
-      case CqsscCode.SH:  //梭哈
-      case CqsscCode.LHD:  //龙虎斗
-      case CqsscCode.YZDW:  //一字定位
-        // ugLog('恢复选中的数据 curSelectedData 1111= ', JSON.stringify(curSelectedData))
-        // ugLog('恢复选中的数据 groupTri 2222= ', JSON.stringify(playOddData?.pageData?.groupTri))
-        if (curSelectedData && arrayLength(playOddData?.pageData?.groupTri) == 1) {//只有1页数据/非特殊玩法，才恢复选中数据
-          // 第一页第一条数据的 alias是TAB名字，也是TAB的 key
-          const groupDataArr: Map<string, SelectedPlayModel> = curSelectedData[playOddData?.pageData?.groupTri[0][0]?.alias]
-          // ugLog('恢复选中的数据 groupDataArr 3333 = ', JSON.stringify(groupDataArr))
-          if (!dicNull(groupDataArr)) {
-            ((Object.values(groupDataArr) as Array<SelectedPlayModel>))?.map((playModel) => {
-              switch (playOddData?.code) {
-                case LhcCode.HX://合肖
-                  setSelectedBalls(playModel?.zodiacs)
-                  break
-                default:
-                  setSelectedBalls(playModel?.plays)
-                  break
-              }
-            })
-          }
-        }
-        break
+    if (!dicNull(playOddData)) { //等到数据加载完成以后
+      prepareSelectedBetData(playOddData, selectedBalls)
     }
 
-  }, [playOddData])
+  }, [selectedBalls, playOddData])
 
   //当前选中的第几页数据
   const currentPageData = (): Array<PlayGroupData> =>
