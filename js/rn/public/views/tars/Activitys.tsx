@@ -72,7 +72,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         refreshing={refreshing}
         containerStyle={{ top: scale(355), right: 0 }}
         enableFastImage={false}
-        show={roulette[0]?.param?.visitor_show == "0" || (uid && roulette)}
+        show={roulette && (roulette[0]?.param?.visitor_show == "0" || uid)}
         logo={ROULETTE_LOGO}
         onPress={() => {
           // 大转盘
@@ -83,7 +83,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         refreshing={refreshing}
         containerStyle={{ top: scale(465), right: 0 }}
         enableFastImage={false}
-        show={goldenEggs[0]?.param?.visitor_show == "0" || (uid && goldenEggs)}
+        show={goldenEggs && (goldenEggs[0]?.param?.visitor_show == "0" || uid)}
         logo={icon_砸金蛋}
         onPress={goToUserCenterType.砸金蛋}
         />
@@ -91,7 +91,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         refreshing={refreshing}
         containerStyle={{ top: scale(590), right: 0 }}
         enableFastImage={false}
-        show={scratchs?.scratchList[0]?.param?.visitor_show == "0" || (uid && scratchs)}
+        show={scratchs && (scratchs?.scratchList[0]?.param?.visitor_show == "0" || uid)}
         logo={icon_刮刮乐}
         onPress={goToUserCenterType.刮刮乐}
         />
