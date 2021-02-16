@@ -58,11 +58,7 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
 
   const [activitySettings, setActivitySettings] = useState<settings>()
   const { goldenEggLogo, redBagLogo, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
-  if (!activitySettings) {
-    api.activity.settings().useSuccess((res) => {
-      setActivitySettings(res?.data)
-    })
-  }
+ 
 
   const [redDialog, setRedDialog] = useState(false)
   const [redBagData, setRedBagData] = useState ({})
@@ -75,18 +71,30 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
         show={redBag?.data}
         logo={redBagLogo?.length>0 ?redBagLogo : Res.pig}
         type={0}
-        onPress={() => {
-          ugLog('redDialog ===')
+        onPress={async () => {
+          ugLog('activitySettings ===',activitySettings)
           if (!UGUserModel.checkLogin()) return
           //没有登录，弹窗
           // 红包
           //获取红包数据
-          if (!redDialog) {
-            api.activity.redBagDetail().useSuccess(async ({data}) => {
-             setRedBagData(data)
-            });
+
+          if (anyEmpty(goldenEggLogo)) {
+            await api.activity.settings().useSuccess((res) => {
+              setActivitySettings(res?.data)
+              ugLog('activitySettings ==',activitySettings)
+            })
           }
-          setRedDialog(!redDialog)
+
+           await api.activity.redBagDetail().useSuccess(async ({data}) => {
+             setRedBagData(data)
+            })
+            .useCompletion(
+              (res, err, sm) => {
+              setRedDialog(!redDialog)
+              }
+            )
+  
+         
         }}
       />
       <ActivityComponent
