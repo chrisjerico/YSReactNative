@@ -28,13 +28,10 @@ const endString = (str?: string, end?: string): boolean => {
 }
 
 /**
- * 转换2位小数形式
+ * 转换n位小数形式
  */
-const numberToFloatString = (x?: number): string => {
-  if (!x) return '0.00'
-  const i = Math.floor(x)
-  const d = x?.toString()?.split('.')[1] || '00'
-  return i.toLocaleString('en-US') + '.' + d
+const numberToFloatString = (x?: number, len: number = 2): string => {
+  return x ? x.toFixed(len) : Number(0).toFixed(len)
 }
 
 export {

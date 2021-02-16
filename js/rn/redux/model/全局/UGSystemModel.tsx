@@ -135,7 +135,7 @@ export default interface UGSystemModel {
   popup_announce: string
   popup_hour: string
   popup_tab: string[]
-  popup_type: string
+  popup_type: '0' | '1'//公告  0直接弹窗，1登录后弹出
   rankingListSwitch: number
   reg_email: string
   reg_fundpwd: string

@@ -77,6 +77,11 @@ export class OCHelper extends OCEvent {
       UGStore.dispatch({ type: 'merge', userInfo, sysConf: sysConf_net, gameLobby, banner, rightMenu, sys: Object.assign({}, sysConf_net, { appVersion }) })
       UGStore.save()
 
+      // 配置原生游戏大厅数据
+      await OCHelper.call('Global.getInstanse.setLotterydataArray:', [gameLobby?.map((ele) => {
+        return { clsName: 'UGYYPlatformGames', ...ele, }
+      })])
+
       // 配置原生页面
       setRnPageInfo()
     } catch (error) {

@@ -29,9 +29,6 @@ const UsePayBoard = () => {
   const [moneyMap, setMoneyMap] = useState<Map<string, number>>(null) //输入单项价格列表，id -> money
 
   useEffect(() => {
-    // const copyData = JSON.parse(JSON.stringify(UGStore.globalProps?.selectedData))
-    // const betData = generateBetArray(nextIssueData, copyData)
-
     //初始化默认金额
     setAverageMoney(Number(orgBetShareModel?.singleAmount)) //平均价格
 

@@ -7,7 +7,7 @@ export interface NoticeModel {
 export interface Data {
     scroll: Scroll[];
     popup: Scroll[];
-    popupSwitch: string;
+    popupSwitch: '0' | '1' | '2'; // 0不弹窗，1、2都弹窗
     popupInterval: string;
 }
 

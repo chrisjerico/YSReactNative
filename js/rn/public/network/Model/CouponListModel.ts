@@ -6,7 +6,7 @@ export interface CouponListModel {
 
 export interface Data {
     list: List[];
-    style: string;
+    style: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
     showCategory: boolean;
     categories: Categories;
 }

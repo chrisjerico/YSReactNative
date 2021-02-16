@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { Platform, StyleSheet, View, Image, Text, ImageBackground, Animated, Easing } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
@@ -52,9 +52,13 @@ import HomeHeader from './views/HomeHeader'
 import { HomeRightMenuCP } from './views/HomeRightMenuCP'
 import NavBlock from './views/NavBlock'
 
+const sc = sc540
+
 const JDHomePage = ({ setProps }: UGBasePageProps) => {
   const menu = useRef(null)
-  const { current: v } = useRef<{} & TabComponentApi & HomeRightMenuCP>({})
+  const { current: v } = useRef<{ willShowAnnouncement: boolean } & TabComponentApi & HomeRightMenuCP>({
+    willShowAnnouncement: true
+  })
 
   useEffect(() => {
     setProps({ bgGradientColor: skin1.bgColor })
@@ -67,9 +71,6 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
     }, 500);
   })
 
-  const openMenu = () => {
-    menu?.current?.open()
-  }
 
   const closeMenu = () => {
     menu?.current?.close()
@@ -83,19 +84,26 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
 
   const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists, announcements, popupSwitch } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType, switchShowFriendReferral, showNavigationBar } = sysInfo
+  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType, switchShowFriendReferral, showNavigationBar, popup_type } = sysInfo
 
   // @ts-ignore
   const defaultMenus = config.getDefaultMenus()
 
+  if (v.willShowAnnouncement && announcements?.length) {
+    if ((popup_type == '1' && !uid?.length) || popupSwitch == '0') { } else {
+      PushHelper.pushAnnouncement(announcements)
+    }
+    v.willShowAnnouncement = false
+  }
+
   const renderGameSubTypeComponent = (games: any[]) => (
     <GameSubTypeComponent
       uniqueKey={'JDHomePage_GameSubTypeComponent'}
-      containerStyle={{ marginHorizontal: sc540(6.5), paddingVertical: scale(5) }}
+      containerStyle={{ marginHorizontal: sc(6.5), paddingVertical: sc(5) }}
       numColumns={3}
       games={games}
       subTypeContainerStyle={{
@@ -104,11 +112,11 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       renderSubType={({ item, index }) => {
         const { title, name } = item
         return (
-          <TouchableOpacity key={index} style={{ marginHorizontal: sc540(5), marginVertical: sc540(7) }} onPress={() => {
+          <TouchableOpacity key={index} style={{ marginHorizontal: sc(5), marginVertical: sc(7) }} onPress={() => {
             PushHelper.pushHomeGame(item)
           }}>
-            <Image source={{ uri: img_assets('subgame_bg') }} style={{ width: sc540(157), height: sc540(45), marginHorizontal: sc540(5), tintColor: skin1.homeContentSubColor }} resizeMode='contain' />
-            <Text style={{ position: 'absolute', marginLeft: sc540(6), marginTop: sc540(12), width: sc540(153), textAlign: 'center', color: '#ffffff', fontSize: sc540(18.5), fontWeight: '500' }}>{anyEmpty(title) ? name : title}</Text>
+            <Image source={{ uri: img_assets('subgame_bg') }} style={{ width: sc(157), height: sc(45), marginHorizontal: sc(5), tintColor: skin1.homeContentSubColor }} resizeMode='contain' />
+            <Text style={{ position: 'absolute', marginLeft: sc(6), marginTop: sc(12), width: sc(153), textAlign: 'center', color: '#ffffff', fontSize: sc(18.5), fontWeight: '500' }}>{anyEmpty(title) ? name : title}</Text>
           </TouchableOpacity>
         )
       }}
@@ -127,63 +135,41 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                 if (flagType == 4) return img_platform('c116', 'zhongdajiang', 'gif')
                 return undefined
               })()}
-              flagContainer={{ width: sc540(50), height: sc540(50) }}
+              flagContainer={{ width: sc(50), height: sc(50) }}
               showBigCenterFlag={flagType == 4}
-              title={anyEmpty(title) ? name : title}
+              title={name?.length ? name : title}
               showSubTitle={!!subtitle?.length}
               subTitle={subtitle}
-              subTitleStyle={{ fontSize: sc540(18), color: '#777' }}
+              subTitleStyle={{ fontSize: sc(18), color: '#777' }}
               containerStyle={{
                 width: '100%',
                 backgroundColor: skin1.homeContentColor,
                 aspectRatio: 1.04,
-                borderRadius: scale(15),
+                borderRadius: sc(15),
                 justifyContent: 'center',
                 ...getWhiteBorderStyle(),
               }}
-              imageContainerStyle={{ width: sc540(95) }}
+              imageContainerStyle={{ width: sc(95) }}
               titleContainerStyle={{
-                height: sc540(50),
-                aspectRatio:5,
+                height: sc(50),
+                aspectRatio: 5,
               }}
               secondLevelIconProps={{
                 name: 'appstore1',
-                size: sc540(23),
+                size: sc(23),
                 color: '#777',
-                style: { marginTop: sc540(5), marginRight: -sc540(3) },
+                style: { marginTop: sc(5), marginRight: -sc(3) },
               }}
               enableCircle={false}
               onPress={() => {
                 if (subType) {
                   const isShow = showGameSubType(index)
                   const row = Math.ceil(item?.subType?.length / 3)
-                  const subTypeHeight = row * sc540(55)
+                  const subTypeHeight = row * sc(55)
                   v.updateGameSubTypeHeight && v.updateGameSubTypeHeight(isShow ? subTypeHeight : 0)
                 } else {
-                  //ugLog('GameType item=', JSON.stringify(item))
-                  if (gameId == GameType.大厅
-                    && (subId != MenuType.CQK &&
-                      subId != MenuType.CZ &&
-                      subId != MenuType.TX &&
-                      subId != MenuType.ZHGL &&
-                      subId != MenuType.CZJL &&
-                      subId != MenuType.TXJL)) {
-                    if (subId == 47) {//彩票大厅
-                      PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
-                    } else {
-                      push(PageName.SeriesLobbyPage,
-                        {
-                          gameId,
-                          subId,
-                          name,
-                          headerColor: Skin1.themeColor,
-                          homePage: PageName.JDHomePage
-                        })
-                    }
-                  } else {
-                    //@ts-ignore
-                    PushHelper.pushHomeGame(item)
-                  }
+                  //@ts-ignore
+                  PushHelper.pushHomeGame(item)
                 }
               }}
             />
@@ -211,22 +197,22 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       couponBlockStyles={couponBlockStyles}
       couponStyles={{
         containerStyle: {
-          backgroundColor: skin1.homeContentColor, borderRadius: sc540(12), marginVertical: sc540(13), overflow: 'hidden', padding: sc540(12), ...getWhiteBorderStyle()
+          backgroundColor: skin1.homeContentColor, borderRadius: sc(12), marginVertical: sc(13), overflow: 'hidden', padding: sc(12), ...getWhiteBorderStyle()
         },
-        titleStyle: { marginVertical: sc540(3), fontSize: sc540(23), fontWeight: '500' }
+        titleStyle: { marginVertical: sc(3), fontSize: sc(23), fontWeight: '500' }
       }}
-      bannerBadgeStyle={{ paddingHorizontal: sc540(15), top: -sc540(225), height: sc540(40), borderRadius: sc540(20), backgroundColor: 'rgba(27,38,116,0.5)' }}
+      bannerBadgeStyle={{ paddingHorizontal: sc(15), top: -sc(225), height: sc(40), borderRadius: sc(20), backgroundColor: 'rgba(27,38,116,0.5)' }}
       animatedRankComponentStyles={animatedRankComponentStyles()}
       containerStyle={styles.container}
       bottomLogoStyles={{
         containerStyle: {
           marginTop: 0,
-          paddingTop: sc540(40),
-          paddingBottom: sc540(120),
+          paddingTop: sc(40),
+          paddingBottom: sc(120),
           backgroundColor: sysInfo?.rankingListSwitch == 0 ? 'transparent' : skin1.themeColor,
         },
-        titleStyle: { fontSize: sc540(18) },
-        subTitleStyle: { fontSize: sc540(18) },
+        titleStyle: { fontSize: sc(18) },
+        subTitleStyle: { fontSize: sc(18) },
       }}
       renderHeader={() => (
         // 导航条
@@ -246,11 +232,11 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       )}
       renderListHeaderComponent={() => (
         <>
-          <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '1'} containerStyle={{ marginLeft: sc540(10), width: '96%', marginTop: sc540(6) }} />
+          <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '1'} containerStyle={{ marginLeft: sc(10), width: '96%', marginTop: sc(6) }} />
           {/* 导航按钮 */}
           <NavBlock
             visible={navs?.length > 0}
-            containerStyle={{ alignItems: 'center', margin: sc540(10), width: '96%', backgroundColor: skin1.homeContentColor, borderRadius: sc540(15), ...getWhiteBorderStyle() }}
+            containerStyle={{ alignItems: 'center', margin: sc(10), width: '96%', backgroundColor: skin1.homeContentColor, borderRadius: sc(15), ...getWhiteBorderStyle() }}
             navs={navs}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId, onPress, hotIcon, tipFlag } = item
@@ -263,22 +249,22 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                   title={name}
                   showRightTopFlag={tipFlag != 0}
                   flagIcon={hotIcon}
-                  flagContainer={{ width: sc540(40), height: sc540(40) }}
+                  flagContainer={{ width: sc(40), height: sc(40) }}
                   containerStyle={{
                     flex: 1,
                     backgroundColor: 'transparent',
                   }}
                   imageContainerStyle={{
-                    marginTop: -sc540(10),
+                    marginTop: -sc(10),
                     width: '63%',
                   }}
-                  titleContainerStyle={{ marginTop: -22, height: sc540(52) }}
+                  titleContainerStyle={{ marginTop: -22, height: sc(52) }}
                   titleStyle={{
                     color: 'black',
                     fontWeight: '500',
-                    fontSize: scale(18),
+                    fontSize: sc(18),
                   }}
-                  circleContainerStyle={{ width: '85%', height: sc540(92) }}
+                  circleContainerStyle={{ width: '85%', height: sc(92) }}
                   circleColor={'transparent'}
                   onPress={() => {
                     ugLog("TEST onPRess: " + item.gameId)
@@ -308,10 +294,10 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               )
             }}
           />
-          <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '0'} containerStyle={{ marginLeft: sc540(10), width: '96%', marginBottom: sc540(10) }} />
+          <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '0'} containerStyle={{ marginLeft: sc(10), width: '96%', marginBottom: sc(10) }} />
           {/* 腰部广告图 */}
           <BannerBlock
-            containerStyle={{ marginHorizontal: sc540(10), marginTop: scale(0), marginBottom: scale(15), width: '96%', aspectRatio: 540 / 135 }}
+            containerStyle={{ marginHorizontal: sc(10), marginTop: sc(0), marginBottom: sc(15), width: '96%', aspectRatio: 540 / 135 }}
             visible={midBanners?.length > 0}
             autoplayTimeout={midBannerTimer}
             showOnlineNum={false}
@@ -336,21 +322,21 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
             <TabComponent
               c_ref={v}
               tabGames={homeGames}
-              itemHeight={scale(172)}
-              tabWidth={homeGames?.length > 6 ? sc540(85) : sc540(515 / homeGames?.length)}
+              itemHeight={sc(172)}
+              tabWidth={homeGames?.length > 6 ? (homeGames?.[0]?.name?.length > 3 ? sc(120) : sc(85)) : sc(515 / homeGames?.length)}
               numColumns={3}
               tabBarBackgroundColor={skin1.homeContentColor}
               tabBarStyle={{
-                marginHorizontal: scale(5),
-                borderRadius: sc540(15),
-                marginLeft: sc540(10),
+                marginHorizontal: sc(5),
+                borderRadius: sc(15),
+                marginLeft: sc(10),
                 width: '96%',
-                height: sc540(68),
+                height: sc(68),
                 ...getWhiteBorderStyle(),
               }}
               tabTextStyle={{
                 marginTop: 3,
-                fontSize: scale(25),
+                fontSize: sc(25),
               }}
               enableMinWidth={false}
               showIndicator={false}
@@ -382,10 +368,10 @@ const styles = StyleSheet.create({
     width: '33.3%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: scale(5),
+    padding: sc(5),
   },
   subComponent: {
-    marginTop: scale(10),
+    marginTop: sc(10),
     backgroundColor: 'transparent',
   }
 })
@@ -393,21 +379,21 @@ const styles = StyleSheet.create({
 const noticeBlockStyles = () => StyleSheet.create({
   containerStyle: {
     borderRadius: 0,
-    marginBottom: scale(5),
-    height: sc540(62),
+    marginBottom: sc(5),
+    height: sc(62),
     backgroundColor: skin1.homeContentColor,
   },
   iconContainerStyle: {
-    marginHorizontal: scale(10),
+    marginHorizontal: sc(10),
   },
   logoTextStyle: {
     color: 'red',
-    fontSize: scale(16),
-    padding: scale(5),
+    fontSize: sc(16),
+    padding: sc(5),
   },
   textStyle: {
     backgroundColor: 'transparent',
-    fontSize: scale(20),
+    fontSize: sc(20),
   },
   bgContainerStyle: {
     backgroundColor: 'transparent',
@@ -417,27 +403,27 @@ const noticeBlockStyles = () => StyleSheet.create({
 const couponBlockStyles = StyleSheet.create({
   containerStyle: styles.subComponent,
   titleContainerStyle: { backgroundColor: 'transparent' },
-  titleStyle: { fontSize: sc540(22) },
-  listContainerStyle: { marginLeft: sc540(10), width: '96%', backgroundColor: '#ffffff44' },
+  titleStyle: { fontSize: sc(22) },
+  listContainerStyle: { marginLeft: sc(10), width: '96%', backgroundColor: '#ffffff44' },
 })
 // 底部排行榜
 const animatedRankComponentStyles = () => StyleSheet.create({
   containerStyle: {// 最外层
-    marginTop: sc540(18),
+    marginTop: sc(18),
     backgroundColor: skin1.themeColor,
   },
-  iconStyle: { marginLeft: sc540(18) },
-  iconTitleContainerStyle: { paddingVertical: sc540(18) },//标题
-  iconTitleStyle: { paddingLeft: sc540(5), fontSize: sc540(22), },// 标题
+  iconStyle: { marginLeft: sc(18) },
+  iconTitleContainerStyle: { paddingVertical: sc(18) },//标题
+  iconTitleStyle: { paddingLeft: sc(5), fontSize: sc(22), },// 标题
   contentContainerStyle: {// 表格
     marginTop: 0,
-    borderRadius: sc540(5),
+    borderRadius: sc(5),
     backgroundColor: skin1.homeContentColor,
-    borderWidth: 2, borderColor: '#bbb', marginLeft: sc540(15), width: '94%',
+    borderWidth: 2, borderColor: '#bbb', marginLeft: sc(15), width: '94%',
     paddingHorizontal: 0,
   },
-  titleConatinerStyle: { backgroundColor: '#99b7d3', height: sc540(55) },// 表格标题
-  contentTitleStyle: { fontSize: sc540(23), fontWeight: '400' },
+  titleConatinerStyle: { backgroundColor: '#99b7d3', height: sc(55) },// 表格标题
+  contentTitleStyle: { fontSize: sc(23), fontWeight: '400' },
   leftItemTextStyle: { color: 'black' },
 })
 

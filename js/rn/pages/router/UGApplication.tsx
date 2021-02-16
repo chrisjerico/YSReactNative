@@ -161,6 +161,8 @@ import WebPage from '../common/web/WebPage'
 import { Platform } from 'react-native'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
+import { H5WebPage } from '../base/H5页面/H5WebPage'
+import { JSLuzhuPage } from '../base/H5页面/JSLuzhuPage'
 
 
 /**
@@ -226,6 +228,9 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDLotterySecondPage,//2级系列游戏
   JDDayDetailPage,//下注明细明细
   JDPromoteDetailPage,//优惠列表详情
+  H5WebPage,  // H5页面
+  JSLuzhuPage, // 路珠
+
   // ———————————— 模板页面 —————————————
 
   JDHomePage,// 经典-首页

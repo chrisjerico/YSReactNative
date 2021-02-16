@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useContext, useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import List from './List'
@@ -12,9 +12,20 @@ interface CouponBlock {
   listContainerStyle?: StyleProp<ViewStyle>
   titleContainerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
+  c_ref?: {
+    reRenderCoupon: () => void
+  }
 }
 
-const CouponBlock = ({ visible, containerStyle, coupons = [], renderCoupon, onPressMore, listContainerStyle, titleContainerStyle, titleStyle }: CouponBlock) => {
+const CouponBlock = ({ visible, containerStyle, coupons = [], renderCoupon, onPressMore, listContainerStyle, titleContainerStyle, titleStyle, c_ref }: CouponBlock) => {
+
+  const [, setState] = useState({})
+  useEffect(() => {
+    c_ref && (c_ref.reRenderCoupon = () => {
+      setState({})
+    })
+  }, [c_ref])
+  
   if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>

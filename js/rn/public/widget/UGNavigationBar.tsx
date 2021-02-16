@@ -23,6 +23,7 @@ export interface UGNavigationBarProps extends HeaderProps {
   gradientColor?: string[]; // 背景渐变色
   hideUnderline?: boolean; // 隐藏下划线
   leftComponent?: ReactElement<any>;
+  onBackPress?: () => void
   c_ref?: UGNavigationBar
 }
 
@@ -39,7 +40,7 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
   const { current: v } = useRef<UGNavigationBarProps>(defaultProps)
   Object.assign(v, props)
 
-  const { title, c_ref, leftComponent, back = true, hideUnderline, gradientColor, backgroundColor, backIconColor } = props
+  const { title, c_ref, leftComponent, back = true, hideUnderline, gradientColor, backgroundColor, backIconColor, onBackPress } = props
   const [, setState] = useState({})
   const isDoy = skin1?.skitType == 'doyWallet'
 
@@ -62,7 +63,7 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
   // 左侧按钮
   v.leftComponent = (
     <View style={{ flexDirection: 'row' }}>
-      <BackButton style={{ height: back ? 40 : 0 }} backIconColor={backIconColor} />
+      <BackButton style={{ height: back ? 40 : 0 }} backIconColor={backIconColor} onBackPress={onBackPress} />
       {leftComponent}
     </View>
   )
@@ -91,15 +92,16 @@ export const UGNavigationBar = (props: UGNavigationBarProps) => {
 
 
 // 返回按钮
-const BackButton = ({ style, backIconColor }: { style: StyleProp<ViewStyle>, backIconColor: string }) => {
+const BackButton = ({ style, backIconColor, onBackPress }: { style: StyleProp<ViewStyle>, backIconColor: string, onBackPress?: () => void }) => {
   const isDoy = skin1?.skitType == 'doyWallet'
   const icon = isDoy ? { name: 'arrowleft', type: 'antdesign', size: sc375(25) } : { name: 'ios-arrow-back', type: 'ionicon' }
+
   return (
     <Button
       icon={{ ...icon, color: backIconColor ?? 'white' }}
       buttonStyle={Object.assign({ backgroundColor: 'transparent', marginLeft: -8, }, style)}
       onPress={() => {
-        pop();
+        onBackPress ? onBackPress() : pop();
       }}
     />
   )

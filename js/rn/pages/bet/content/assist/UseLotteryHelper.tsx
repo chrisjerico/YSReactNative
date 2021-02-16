@@ -9,7 +9,7 @@ import {
 import { arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { isSameBall, isSelectedBallOnId } from '../../widget/it/ISelBall'
 import { UGStore } from '../../../../redux/store/UGStore'
-import { CqsscCode, LhcCode } from '../../const/LotteryConst'
+import { CqsscCode, LCode, LhcCode } from '../../const/LotteryConst'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
@@ -160,18 +160,90 @@ const UseLotteryHelper = () => {
         forceRemove(ballData)
 
       } else {
+        const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
         //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
+        const selCount = arrayLength(selectedBalls)
         switch (playOddData?.code) {
           case LhcCode.HX:  //合肖 最多只能选中11个
-            if (arrayLength(selectedBalls) > 10) {
-              Toast('合肖请选择2到11个选项')
+            if (selCount > 10) {
               return
             }
             break
           case LhcCode.ZXBZ:  //自选不中 最多只能选中12个
-            if (arrayLength(selectedBalls) > 11) {
-              Toast('自选不中请选择5到12个选项')
+            if (selCount > 11) {
               return
+            }
+            break
+          case LhcCode.WX:  //五行 或 五星
+            if (gameType == LCode.lhc) { //五行
+
+            } else if (gameType == LCode.cqssc) { //五星
+              const subAlias = ballData?.alias
+              const groupData = tabGroupData(tabIndex) //所处的页数据
+
+              switch (groupData[0]?.alias) {
+                case '组选120':
+                  if (selCount >= 5) {
+                    return
+                  }
+                  break
+                case '组选60':
+                  if (subAlias == '二重号') {
+                    if (selCount >= 1) {
+                      return
+                    }
+                  } else if (subAlias == '单号') {
+                    if (selCount >= 3) {
+                      return
+                    }
+                  }
+                  break
+                case '组选30':
+                  if (subAlias == '二重号') {
+                    if (selCount >= 2) {
+                      return
+                    }
+                  } else if (subAlias == '单号') {
+                    if (selCount >= 1) {
+                      return
+                    }
+                  }
+                  break
+                case '组选20':
+                  if (subAlias == '三重号') {
+                    if (selCount >= 1) {
+                      return
+                    }
+                  } else if (subAlias == '单号') {
+                    if (selCount >= 2) {
+                      return
+                    }
+                  }
+                  break
+                case '组选10':
+                  if (subAlias == '三重号') {
+                    if (selCount >= 1) {
+                      return
+                    }
+                  } else if (subAlias == '二重号') {
+                    if (selCount >= 1) {
+                      return
+                    }
+                  }
+                  break
+                case '组选5':
+                  if (subAlias == '四重号') {
+                    if (selCount >= 1) {
+                      return
+                    }
+                  } else if (subAlias == '单号') {
+                    if (selCount >= 1) {
+                      return
+                    }
+                  }
+                  break
+              }
+
             }
             break
         }

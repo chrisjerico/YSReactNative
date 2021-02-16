@@ -77,6 +77,7 @@ export enum UGUserCenterType {
   电子大厅 = 44,
   体育大厅 = 45,
   电竞大厅 = 46,
+  路珠 = 55,
   // 自定义（从100+开始写，前面的都是后台定制的）
   彩票大厅 = 47,
   捕鱼大厅 = 48,
@@ -257,7 +258,7 @@ export default class UGSysConfModel {
 
   switchShowFriendReferral?: '0' | '1' //是否显示首页推荐好友 0不显示，1显示
   showNavigationBar?: '0' | '1'   //首页推荐好友显示在前还是后 1 前 0 后
-
+  popup_type: '0' | '1'//公告  0直接弹窗，1登录后弹出
 
   // 登陸頁
   loginVCode?: boolean // 登录增加了滑动验证码配置  默认开
