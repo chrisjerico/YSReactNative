@@ -3,7 +3,7 @@ import { TextInput, TouchableOpacity, View, Text } from "react-native"
 import FastImage from "react-native-fast-image"
 import LinearGradient from "react-native-linear-gradient"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
-import { setProps, UGBasePageProps } from "../../../../rn/pages/base/UGPage"
+import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
 import { FastImagePlaceholder } from "../../../../rn/pages/经典/tools/ImagePlaceholder"
 import { PageName } from "../../../../rn/public/navigation/Navigation"
 import { push } from "../../../../rn/public/navigation/RootNavigation"
@@ -12,11 +12,12 @@ import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
 import { img_doy } from "../../../../rn/Res/icon"
 import { DoyButton1, DoyText12, DoyText14, DoyText20, DoyText28 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyStarCP } from "../../我的/个人资料/cp/DoyStarCP"
 import { DoyCheckBuyAlertCP } from "./cp/DoyCheckBuyAlertCP"
 
 const sc = sc375
 
-export const DoySellOrderPage = ({ }: UGBasePageProps) => {
+export const DoySellOrderPage = ({ setProps }: UGBasePageProps) => {
   const { current: v } = useRef<DoyCheckBuyAlertCP>({})
   const { themeColor, navBarBgColor } = skin1
 
@@ -35,13 +36,7 @@ export const DoySellOrderPage = ({ }: UGBasePageProps) => {
           <DoyText12 white style={{ marginTop: sc(8), }}>#4afc2d2</DoyText12>
         </View>
         <View style={{ flex: 1 }} />
-        <View style={{ marginTop: sc(-15), flexDirection: 'row' }}>
-          <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
-          <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
-          <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
-          <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
-          <FastImage source={{ uri: img_doy('星星_未激活(深)@3x') }} style={{ width: sc(8), aspectRatio: 1 }} />
-        </View>
+        <DoyStarCP containerStyle={{ marginTop: sc(-15) }} unSelectDarkColor selectedStarCnt={4} />
       </View>
     </LinearGradient>
     <View style={{ marginTop: sc(-44), paddingHorizontal: sc(16), flex: 1 }}>

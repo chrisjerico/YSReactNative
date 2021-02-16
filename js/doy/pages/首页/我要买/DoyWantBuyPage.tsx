@@ -15,6 +15,7 @@ import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
 import { img_doy } from "../../../../rn/Res/icon"
 import { DoyButton1, DoyText12, DoyText13, DoyText14, DoyText16 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyStarCP } from "../../我的/个人资料/cp/DoyStarCP"
 
 const sc = sc375
 const tipsBarColos = ['#FFEDD4', '#FAE4CF']
@@ -87,11 +88,7 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
           <DoyText16 bold2>200</DoyText16>
           <View style={{ flex: 1 }} />
           <FastImage source={{ uri: img_doy('收付款方式/银行卡@3x') }} style={{ width: sc(16), aspectRatio: 1, marginRight: sc(32) }} />
-          <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
-          <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
-          <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
-          <FastImage source={{ uri: img_doy('星星@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(2) }} />
-          <FastImage source={{ uri: img_doy('星星_未激活(浅)@3x') }} style={{ width: sc(8), aspectRatio: 1, marginRight: sc(32) }} />
+          <DoyStarCP selectedStarCnt={4} containerStyle={{ marginRight: sc(32) }} />
           <FastImage source={{ uri: img_doy('更多_小@3x') }} style={{ width: sc(6), aspectRatio: 6 / 10, marginRight: sc(16) }} />
         </TouchableOpacity>
       }} />

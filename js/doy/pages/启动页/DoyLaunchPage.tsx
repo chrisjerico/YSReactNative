@@ -1,9 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { View, Text, Image } from "react-native";
-import { Button } from "react-native-elements";
-import FastImage from "react-native-fast-image";
-import LinearGradient from "react-native-linear-gradient";
-import { setProps, UGBasePageProps } from "../../../rn/pages/base/UGPage";
+import { UGBasePageProps } from "../../../rn/pages/base/UGPage";
 import { PageName } from "../../../rn/public/navigation/Navigation";
 import { push } from "../../../rn/public/navigation/RootNavigation";
 import UGSkinManagers, { skin1 } from "../../../rn/public/theme/UGSkinManagers";
@@ -13,7 +10,7 @@ import { DoyButton1, DoyButton2 } from "../../public/Button之类的基础组件
 
 const sc = sc375
 
-export const DoyLaunchPage = ({ setNavbarProps }: UGBasePageProps) => {
+export const DoyLaunchPage = ({ setProps, setNavbarProps }: UGBasePageProps) => {
   useEffect(() => {
     const sysConf: any = {}
     UGSkinManagers.updateSkin(sysConf).then(() => {
