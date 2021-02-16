@@ -1,4 +1,4 @@
-import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { CqsscCode, LCode, LhcCode } from '../../const/LotteryConst'
 import * as React from 'react'
 import { ugError, ugLog } from '../../../../public/tools/UgLog'
@@ -361,12 +361,14 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 
   return Object.keys(selectedData).map((key) => {
     const value = selectedData[key]
-    switch (key) {
-      case LhcCode.LX://连肖
-      case LhcCode.LW://连尾
+    const pageData: Array<SelectedPlayModel> = Object.values(value).map((data) => Object.values(data)).flat(Infinity)
+    const groupAlias = arrayEmpty(pageData) ? null : pageData[0]?.playGroups?.alias
+
+    switch (true) {
+      case key == LhcCode.LX://连肖
+      case key == LhcCode.LW://连尾
       {
-        const pageData = (Object.values(value).map((data) => Object.values(data)).flat(Infinity) as Array<SelectedPlayModel>)
-        ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
+        ugLog('combineSelectedData pageData 1 = ', key, JSON.stringify(pageData))
         const newArr = pageData?.map((item) => {
           const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
           const newPage: SelectedPlayModel = {
@@ -380,42 +382,54 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
           return newPage
         })
-        ugLog('combineSelectedData newArr = ', key, JSON.stringify(newArr))
+        ugLog('combineSelectedData newArr 1 = ', key, JSON.stringify(newArr))
 
         return newArr
       }
+        break
 
-      case CqsscCode.EZDW: //二字定位
-      case CqsscCode.SZDW: //三字定位
-      case CqsscCode.WX: //五行 或 五星
+      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
       {
-        const pageData: Array<SelectedPlayModel> = Object.values(value).map((data) => Object.values(data)).flat(Infinity)
-
-        if (gameType == LCode.lhc // 五行
-          || (gameType == LCode.cqssc && pageData[0]?.playGroups?.alias == '单式')) { //五星单式
-          return gatherSelectedItems(key, selectedData)
-
-        } else {
-          ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
-          if (arrayLength(pageData) > 1) { //二字定位有2组数据，三字定位有3组数据
-            const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
-            const newPage: SelectedPlayModel = {
-              ...pageData[0],
-              plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
-                ...arr[0],
-                name: arr?.map((item) => item?.name).toString(),
-              } as PlayData)),
-            }
-            // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
-            return newPage
-
+        ugLog('combineSelectedData pageData 11 = ', key, JSON.stringify(pageData))
+        const newArr = pageData?.map((item) => {
+          const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
+          const newPage: SelectedPlayModel = {
+            ...item,
+            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+              ...arr[0],
+              name: arr?.map((item) => item?.name).toString(),
+              exPlayIds: arr?.map((item) => item?.id).toString(),
+            } as PlayData)),
           }
+          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          return newPage
+        })
+        ugLog('combineSelectedData newArr 11 = ', key, JSON.stringify(newArr))
+
+        return newArr
+      }
+        break
+
+      case key == CqsscCode.EZDW: //二字定位
+      case key == CqsscCode.SZDW: //三字定位
+      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '复式': //五星里的复式
+        ugLog('combineSelectedData pageData 2 = ', key, JSON.stringify(pageData))
+        if (arrayLength(pageData) > 1) { //二字定位有2组数据，三字定位有3组数据
+          const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
+          const newPage: SelectedPlayModel = {
+            ...pageData[0],
+            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+              ...arr[0],
+              name: arr?.map((item) => item?.name).toString(),
+            } as PlayData)),
+          }
+          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          return newPage
         }
 
-        ugLog('combineSelectedData newArr = ', key, JSON.stringify([pageData]))
+        ugLog('combineSelectedData newArr 2 = ', key, JSON.stringify([pageData]))
 
         return [pageData]
-      }
 
       default:
         return gatherSelectedItems(key, selectedData)
@@ -430,15 +444,21 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
  */
 const generateBetNameArray = (nextIssueData?: NextIssueData,
                               combinationData?: Array<SelectedPlayModel>): Array<PlayNameArray> => {
+  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
 
   const playNameArray: Array<PlayNameArray> = [] // 下注彩种条目名字 如特码B
   combinationData?.map((selModel, index) => {
     ugLog('pay board itemViewArr = ', selModel?.code, index)
-    switch (selModel?.code) {
-      case LhcCode.LX: //连肖
-      case LhcCode.LW: //连尾
+    const key = selModel?.code
+    const groupAlias = selModel?.playGroups?.alias
+
+    switch (true) {
+      case key == LhcCode.LX: //连肖
+      case key == LhcCode.LW: //连尾
+      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
         selModel?.plays?.map((playData) => {
           playNameArray.push({
+            playName1: groupAlias,
             playName2: playData?.alias,
             exFlag: playDataUniqueId(playData),
           } as PlayNameArray)
@@ -446,19 +466,16 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
 
         break
 
-      case LhcCode.HX://合肖
-      {
+      case key == LhcCode.HX://合肖
         const zodiacX = zodiacPlayX(selModel)
         playNameArray.push({
           playName1: zodiacX?.alias,
           playName2: selModel?.zodiacs?.map((item) => item?.name)?.toString(),
           exFlag: playDataUniqueId(zodiacX),
         } as PlayNameArray)
-      }
         break
 
-      case LhcCode.LMA:  //连码
-      {
+      case key == LhcCode.LMA:  //连码
         const play0 = selModel?.plays[0]
 
         playNameArray.push({
@@ -466,23 +483,20 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
           playName2: combineArrayName(selModel).toString(),
           exFlag: playDataUniqueId(play0),
         } as PlayNameArray)
-      }
         break
 
-      case LhcCode.ZXBZ:  //自选不中
-      {
+      case key == LhcCode.ZXBZ:  //自选不中
         const playX = playDataX(selModel)
         playNameArray.push({
           playName1: playX?.alias,
           playName2: selModel?.zodiacs?.map((item) => item?.name)?.toString(),
           exFlag: playDataUniqueId(playX),
         } as PlayNameArray)
-      }
         break
       default:
         selModel?.plays?.map((playData) => {
           playNameArray.push({
-            playName1: selModel?.playGroups?.alias,
+            playName1: groupAlias,
             playName2: playData?.name,
             exFlag: playDataUniqueId(playData),
           } as PlayNameArray)
@@ -511,9 +525,12 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
 
   const betBeanArray: Array<BetLotteryData> = [] //下注数据
   combinationData?.map((selModel) => {
-    switch (selModel?.code) {
-      case LhcCode.LX: //连肖
-      case LhcCode.LW: //连尾
+    const key = selModel?.code
+    const groupAlias = selModel?.playGroups?.alias
+
+    switch (true) {
+      case key == LhcCode.LX: //连肖
+      case key == LhcCode.LW: //连尾
         selModel?.plays?.map((playData) => {
           betBeanArray.push({
             money: inputMoney,
@@ -526,7 +543,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
         })
         break
 
-      case LhcCode.HX://合肖
+      case key == LhcCode.HX://合肖
       {
         const zodiacX = zodiacPlayX(selModel)
         betBeanArray.push({
@@ -539,7 +556,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       }
         break
 
-      case LhcCode.LMA:  //连码
+      case key == LhcCode.LMA:  //连码
       {
         const groupPlay0 = selModel?.playGroups?.plays[0]
         const play0 = selModel?.plays[0]
@@ -553,7 +570,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       }
         break
 
-      case LhcCode.ZXBZ:  //自选不中
+      case key == LhcCode.ZXBZ:  //自选不中
       {
         const playX = playDataX(selModel)
         betBeanArray.push({
@@ -566,7 +583,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       }
         break
 
-      case CqsscCode.YZDW:  //一字定位
+      case key == CqsscCode.YZDW:  //一字定位
       {
         const play0 = selModel?.playGroups?.plays[0]
         selModel?.plays?.map((playData) => {
@@ -582,8 +599,9 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       }
         break
 
-      case CqsscCode.EZDW:  //二字定位
-      case CqsscCode.SZDW:  //三字定位
+      case key == CqsscCode.EZDW:  //二字定位
+      case key == CqsscCode.SZDW:  //三字定位
+      case key == LhcCode.WX && gameType == LCode.cqssc:  //五星
       {
         const groupPlay0 = selModel?.playGroups?.plays[0]
         const play0 = selModel?.playGroups?.plays[0]
@@ -597,33 +615,6 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
           } as BetLotteryData)
         })
       }
-        break
-      case LhcCode.WX:  //五行 或 五星
-        if (gameType == LCode.lhc) { //五行
-          selModel?.plays?.map((playData) => {
-            betBeanArray.push({
-              money: inputMoney,
-              odds: playData?.odds,
-              playId: playData?.id,
-              playIds: nextIssueData?.id,
-              exFlag: playDataUniqueId(playData),
-            } as BetLotteryData)
-          })
-
-        } else if (gameType == LCode.cqssc) { //五星
-          const groupPlay0 = selModel?.playGroups?.plays[0]
-          const play0 = selModel?.playGroups?.plays[0]
-          selModel?.plays?.map((playData) => {
-            betBeanArray.push({
-              money: inputMoney,
-              playId: groupPlay0?.id,
-              odds: play0?.odds,
-              betInfo: playData?.name,
-              exFlag: playDataUniqueId(playData),
-            } as BetLotteryData)
-          })
-
-        }
         break
       default:
         selModel?.plays?.map((playData) => {
