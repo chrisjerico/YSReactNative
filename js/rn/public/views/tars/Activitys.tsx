@@ -9,6 +9,7 @@ import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
 import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
 import RedBagModal from '../../components/RedBagModal'
 import { ugLog } from '../../tools/UgLog'
+import { Data, ScratchList } from '../../network/Model/ScratchListModel'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -19,7 +20,7 @@ interface ActivitysProps {
   roulette: Roulette[]
   redBag: RedBagDetailActivityModel
   goldenEggs: GoldenEgg[]
-  scratchs: unknown
+  scratchs: Data
   activitySetting?: ActivitySettingModel
 }
 
@@ -53,6 +54,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
   
   ugLog("goldenEggs= ", goldenEggs)
   ugLog("roulette= ", roulette)
+  ugLog("scratchs= ", scratchs?.scratchList[0])
   return (
     <>
       <ActivityComponent
@@ -66,33 +68,36 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
           setRedDialog(!redDialog)
         }}
       />
-      <ActivityComponent
-        refreshing={refreshing}
-        containerStyle={{ top: scale(355), right: 0 }}
-        enableFastImage={false}
-        show={uid && roulette}
-        logo={ROULETTE_LOGO}
-        onPress={() => {
-          // 大转盘
-          PushHelper.pushWheel(roulette)
-        }}
-      />
-      <ActivityComponent
-        refreshing={refreshing}
-        containerStyle={{ top: scale(465), right: 0 }}
-        enableFastImage={false}
-        show={uid && goldenEggs}
-        logo={icon_砸金蛋}
-        onPress={goToUserCenterType.砸金蛋}
-      />
-      <ActivityComponent
-        refreshing={refreshing}
-        containerStyle={{ top: scale(590), right: 0 }}
-        enableFastImage={false}
-        show={uid && scratchs}
-        logo={icon_刮刮乐}
-        onPress={goToUserCenterType.刮刮乐}
-      />
+      {roulette[0]?.param?.visitor_show == "1" ? 
+        <ActivityComponent
+          refreshing={refreshing}
+          containerStyle={{ top: scale(355), right: 0 }}
+          enableFastImage={false}
+          show={uid && roulette}
+          logo={ROULETTE_LOGO}
+          onPress={() => {
+            // 大转盘
+            PushHelper.pushWheel(roulette)
+          }}
+        /> : null}
+      {goldenEggs[0]?.param?.visitor_show == "1" ? 
+        <ActivityComponent
+          refreshing={refreshing}
+          containerStyle={{ top: scale(465), right: 0 }}
+          enableFastImage={false}
+          show={uid && goldenEggs}
+          logo={icon_砸金蛋}
+          onPress={goToUserCenterType.砸金蛋}
+          /> : null}
+      {scratchs?.scratchList[0]?.param?.visitor_show == "1" ? 
+        <ActivityComponent
+          refreshing={refreshing}
+          containerStyle={{ top: scale(590), right: 0 }}
+          enableFastImage={false}
+          show={uid && scratchs}
+          logo={icon_刮刮乐}
+          onPress={goToUserCenterType.刮刮乐}
+          /> : null} 
       <ActivityComponent
         refreshing={refreshing}
         containerStyle={{ top: scale(590), left: 0 }}

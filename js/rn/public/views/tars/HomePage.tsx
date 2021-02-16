@@ -18,6 +18,7 @@ import NoticeBlock from './NoticeBlock'
 import ProgressCircle from './ProgressCircle'
 import SafeAreaHeader from './SafeAreaHeader'
 import TouchableImage from './TouchableImage'
+import { Data, ScratchList } from '../../network/Model/ScratchListModel'
 
 interface HomePageProps {
   headerColor: string
@@ -41,7 +42,7 @@ interface HomePageProps {
   roulette: Roulette[]
   floatAds: FloatAd[]
   goldenEggs: GoldenEgg[]
-  scratchs: unknown
+  scratchs: Data
   showOnlineNum: boolean
   bannersInterval: number
   onlineNum: number
