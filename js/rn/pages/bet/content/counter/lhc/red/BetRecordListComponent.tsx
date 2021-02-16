@@ -87,7 +87,7 @@ const BetRecordListComponent = ({
 
                 [...balls, lastBall]?.map((item) => <LotteryBall key={key + ballStr + item}
                                                                  type={ballStyle}
-                                                                 size={scale(38)}
+                                                                 size={scale(33)}
                                                                  ballNumber={item}/>)
               }
             </View>,
@@ -106,7 +106,7 @@ const BetRecordListComponent = ({
               {
                 [...balls, lastBall]?.map((item) => <LotteryBall key={key + ballStr + item}
                                                                  type={ballStyle}
-                                                                 size={scale(39)}
+                                                                 size={scale(32)}
                                                                  ballNumber={item}/>)
               }
             </View>,
@@ -243,7 +243,7 @@ const _styles = StyleSheet.create({
     flex: 1,
     color: UGColor.TextColor3,
     fontSize: scale(22),
-    textAlign: 'center',
+    textAlign: 'left',
   },
   text_content_plus: {
     color: UGColor.TextColor3,
@@ -272,6 +272,8 @@ const _styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
+    width: scale(360),
+    justifyContent: 'center',
   },
   ball_item: {
     margin: scale(4),

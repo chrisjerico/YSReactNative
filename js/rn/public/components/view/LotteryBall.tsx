@@ -93,7 +93,7 @@ const LotteryBall = ({
       default:
         return <Text key={key + 'text'}
                      style={[_styles.ball_text,
-                       { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
+                       { color: txColor, fontSize: width * 4 / 7 }]}>{ballNumber}</Text>
     }
   }
 
@@ -104,7 +104,7 @@ const LotteryBall = ({
               backgroundColor: bColor,
               borderRadius: round,
               width: width,
-              margin: scale(2),
+              margin: scale(1),
             },
             style]}>
       {

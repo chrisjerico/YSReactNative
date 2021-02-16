@@ -36,6 +36,9 @@ const LotteryZodiacAndBall = ({
     let lastZodiac = zodiacs.pop() //最后一个球
 
     switch (gameType) {
+      case LCode.bjkl8://北京快8
+        return null
+
       case LCode.cqssc://时时彩
         return (
           <View key={'renderZodiac' + zodiacStr}
@@ -52,6 +55,56 @@ const LotteryZodiacAndBall = ({
               lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
                                   style={_styles.zodiac_cqssc_text_container}>
                 <Text style={_styles.zodiac_cqssc_text}>{lastZodiac}</Text>
+              </View>
+            }
+          </View>
+        )
+
+      case LCode.gdkl10://快乐10分系列
+      case LCode.pk10nn://牛牛系列
+      case LCode.xync://幸运农场系列
+      case LCode.dlt://大乐透系列
+      case LCode.pcdd://蛋蛋系列
+      case LCode.jsk3://快三系列
+      case LCode.gd11x5://11选5系列
+        return (
+          <View key={'renderZodiac' + zodiacStr}
+                style={_styles.zodiac_container}>
+            {
+              zodiacs?.map((item, index) => (
+                <View key={'renderZodiac' + zodiacStr + item + index}
+                      style={_styles.zodiac_gdkl10_text_container}>
+                  <Text style={_styles.zodiac_gdkl10_text}>{item}</Text>
+                </View>
+              ))
+            }
+            {
+              lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
+                                  style={_styles.zodiac_gdkl10_text_container}>
+                <Text style={_styles.zodiac_gdkl10_text}>{lastZodiac}</Text>
+              </View>
+            }
+          </View>
+        )
+
+      case LCode.pk10://赛车系列
+      case LCode.xyft://飞艇系列
+      case LCode.fc3d://3D系列
+        return (
+          <View key={'renderZodiac' + zodiacStr}
+                style={_styles.zodiac_container}>
+            {
+              zodiacs?.map((item, index) => (
+                <View key={'renderZodiac' + zodiacStr + item + index}
+                      style={_styles.zodiac_text_container}>
+                  <Text style={_styles.zodiac_text}>{item}</Text>
+                </View>
+              ))
+            }
+            {
+              lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
+                                  style={_styles.zodiac_text_container}>
+                <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
               </View>
             }
           </View>
@@ -110,7 +163,7 @@ const LotteryZodiacAndBall = ({
                 [...balls, lastBall]?.map((item, index) =>
                   <LotteryBall key={key + ballStr + item + index}
                                type={ballStyle}
-                               size={scale(38)}
+                               size={scale(33)}
                                ballNumber={item}/>)
               }
             </View>,
@@ -129,7 +182,7 @@ const LotteryZodiacAndBall = ({
                 [...balls, lastBall]?.map((item, index) =>
                   <LotteryBall key={key + ballStr + item + index}
                                type={ballStyle}
-                               size={scale(39)}
+                               size={scale(32)}
                                ballNumber={item}/>)
               }
             </View>,
@@ -212,6 +265,7 @@ const _styles = StyleSheet.create({
   ball_container: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   zodiac_container: {
     flexDirection: 'row',
@@ -226,11 +280,21 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
     height: scale(36),
   },
+  zodiac_gdkl10_text_container: {
+    borderRadius: scale(8),
+    borderWidth: scale(1),
+    borderColor: UGColor.LineColor4,
+    marginHorizontal: scale(2),
+    paddingHorizontal: scale(4),
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: scale(36),
+  },
   zodiac_text_container: {
     borderRadius: scale(8),
     borderWidth: scale(1),
     borderColor: UGColor.LineColor4,
-    marginHorizontal: scale(4),
+    marginHorizontal: scale(2),
     alignItems: 'center',
     justifyContent: 'center',
     width: scale(36),
@@ -239,6 +303,11 @@ const _styles = StyleSheet.create({
   zodiac_cqssc_text: {
     color: UGColor.TextColor3,
     fontSize: scale(21),
+    textAlign: 'center',
+  },
+  zodiac_gdkl10_text: {
+    color: UGColor.TextColor3,
+    fontSize: scale(24),
     textAlign: 'center',
   },
   zodiac_text: {
@@ -256,6 +325,8 @@ const _styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
+    width: scale(360),
+    justifyContent: 'center',
   },
 })
 
