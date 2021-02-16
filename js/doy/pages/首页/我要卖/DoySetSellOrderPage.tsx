@@ -5,7 +5,7 @@ import FastImage from "react-native-fast-image"
 import { TextInput } from "react-native-gesture-handler"
 import LinearGradient from "react-native-linear-gradient"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
-import { setProps, UGBasePageProps } from "../../../../rn/pages/base/UGPage"
+import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
 import { FastImagePlaceholder } from "../../../../rn/pages/经典/tools/ImagePlaceholder"
 import AppDefine from "../../../../rn/public/define/AppDefine"
 import { PageName } from "../../../../rn/public/navigation/Navigation"
@@ -19,7 +19,7 @@ import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../../public/B
 const sc = sc375
 const tipsBarColos = ['#FFEDD4', '#FAE4CF']
 
-export const DoySetSellOrderPage = ({ }: UGBasePageProps) => {
+export const DoySetSellOrderPage = ({ setProps }: UGBasePageProps) => {
 
   const { textColor1 } = skin1
 
