@@ -396,13 +396,62 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 
       case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选60': //五星里的组选60
         //二重号复制2份，其它号码保留
-        const newPlays = [...pageData[0]?.plays, ...pageData[0]?.plays, ...pageData[1]?.plays]
+        const newPlays120 = [...pageData[0]?.plays, ...pageData[0]?.plays, ...pageData[1]?.plays]
 
         return [{
           ...pageData[0],
           plays: [{//只取第一个，其它的串联成名字就可以了
-            ...newPlays,
-            name: newPlays?.map((item) => item?.name).toString(),
+            ...newPlays120,
+            name: newPlays120?.map((item) => item?.name).toString(),
+          } as PlayData],
+        } as SelectedPlayModel]
+
+      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选30': //五星里的组选30
+        //二重号复制2份，其它号码保留
+        const newPlays60 = [...pageData[0]?.plays?.map((item) => [item, item]).flat(Infinity) as PlayData[], ...pageData[1]?.plays]
+
+        return [{
+          ...pageData[0],
+          plays: [{//只取第一个，其它的串联成名字就可以了
+            ...newPlays60,
+            name: newPlays60?.map((item) => item?.name).toString(),
+          } as PlayData],
+        } as SelectedPlayModel]
+
+      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选20': //五星里的组选20
+        //三重号复制3份，其它号码保留
+        const newPlays20 = [...pageData[0]?.plays?.map((item) => [item, item, item]).flat(Infinity) as PlayData[], ...pageData[1]?.plays]
+
+        return [{
+          ...pageData[0],
+          plays: [{//只取第一个，其它的串联成名字就可以了
+            ...newPlays20,
+            name: newPlays20?.map((item) => item?.name).toString(),
+          } as PlayData],
+        } as SelectedPlayModel]
+
+      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选10': //五星里的组选10
+        //三重号复制3份，二重号复制2份
+        const newPlays10 = [...pageData[0]?.plays?.map((item) => [item, item, item]).flat(Infinity) as PlayData[],
+          ...pageData[1]?.plays?.map((item) => [item, item]).flat(Infinity) as PlayData[]]
+
+        return [{
+          ...pageData[0],
+          plays: [{//只取第一个，其它的串联成名字就可以了
+            ...newPlays10,
+            name: newPlays10?.map((item) => item?.name).toString(),
+          } as PlayData],
+        } as SelectedPlayModel]
+
+      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选5': //五星里的组选5
+        //四重号复制4份，其它号码保留
+        const newPlays5 = [...pageData[0]?.plays?.map((item) => [item, item, item, item]).flat(Infinity) as PlayData[], ...pageData[1]?.plays]
+
+        return [{
+          ...pageData[0],
+          plays: [{//只取第一个，其它的串联成名字就可以了
+            ...newPlays5,
+            name: newPlays5?.map((item) => item?.name).toString(),
           } as PlayData],
         } as SelectedPlayModel]
 
