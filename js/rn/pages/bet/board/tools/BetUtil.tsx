@@ -628,6 +628,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
         break
 
       case key == CqsscCode.YZDW:  //一字定位
+      case key == CqsscCode.DWD:  //定位胆
       {
         const play0 = selModel?.playGroups?.plays[0]
         selModel?.plays?.map((playData) => {
