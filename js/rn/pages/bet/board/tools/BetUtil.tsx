@@ -116,26 +116,26 @@ const checkBetCount = (showMsg?: boolean): boolean => {
                 }
                 break
               case '复式':
-                if (selCount != 1) {
-                  Toast(`请选择1个${subAlias}数据`)
+                if (selCount < 1) {
+                  Toast(`请选择至少1个《${subAlias}》数据`)
                   return false
                 }
                 break
               case '组选120':
                 if (selCount != 5) {
-                  Toast(`请选择5个${subAlias}数据`)
+                  Toast(`请选择5个《${subAlias}》数据`)
                   return false
                 }
                 break
               case '组选60':
                 if (subAlias == '二重号') {
                   if (selCount != 1) {
-                    Toast(`请选择1个${subAlias}数据`)
+                    Toast(`请选择1个《${subAlias}》数据`)
                     return false
                   }
                 } else if (subAlias == '单号') {
                   if (selCount != 3) {
-                    Toast(`请选择3个${subAlias}数据`)
+                    Toast(`请选择3个《${subAlias}》数据`)
                     return false
                   }
                 }
@@ -143,12 +143,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
               case '组选30':
                 if (subAlias == '二重号') {
                   if (selCount != 2) {
-                    Toast(`请选择2个${subAlias}数据`)
+                    Toast(`请选择2个《${subAlias}》数据`)
                     return false
                   }
                 } else if (subAlias == '单号') {
                   if (selCount != 1) {
-                    Toast(`请选择1个${subAlias}数据`)
+                    Toast(`请选择1个《${subAlias}》数据`)
                     return false
                   }
                 }
@@ -156,12 +156,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
               case '组选20':
                 if (subAlias == '三重号') {
                   if (selCount != 1) {
-                    Toast(`请选择1个${subAlias}数据`)
+                    Toast(`请选择1个《${subAlias}》数据`)
                     return false
                   }
                 } else if (subAlias == '单号') {
                   if (selCount != 2) {
-                    Toast(`请选择2个${subAlias}数据`)
+                    Toast(`请选择2个《${subAlias}》数据`)
                     return false
                   }
                 }
@@ -169,12 +169,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
               case '组选10':
                 if (subAlias == '三重号') {
                   if (selCount != 1) {
-                    Toast(`请选择1个${subAlias}数据`)
+                    Toast(`请选择1个《${subAlias}》数据`)
                     return false
                   }
                 } else if (subAlias == '二重号') {
                   if (selCount != 1) {
-                    Toast(`请选择1个${subAlias}数据`)
+                    Toast(`请选择1个《${subAlias}》数据`)
                     return false
                   }
                 }
@@ -182,12 +182,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
               case '组选5':
                 if (subAlias == '四重号') {
                   if (selCount != 1) {
-                    Toast(`请选择1个${subAlias}数据`)
+                    Toast(`请选择1个《${subAlias}》数据`)
                     return false
                   }
                 } else if (subAlias == '单号') {
                   if (selCount != 1) {
-                    Toast(`请选择1个${subAlias}数据`)
+                    Toast(`请选择1个《${subAlias}》数据`)
                     return false
                   }
                 }
@@ -387,22 +387,31 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 
       case CqsscCode.EZDW: //二字定位
       case CqsscCode.SZDW: //三字定位
+      case CqsscCode.WX: //五行 或 五星
       {
         const pageData: Array<SelectedPlayModel> = Object.values(value).map((data) => Object.values(data)).flat(Infinity)
-        ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
-        if (arrayLength(pageData) > 1) { //二字定位有2组数据，三字定位有3组数据
-          const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
-          const newPage: SelectedPlayModel = {
-            ...pageData[0],
-            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
-              ...arr[0],
-              name: arr?.map((item) => item?.name).toString(),
-            } as PlayData)),
-          }
-          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
-          return newPage
 
+        if (gameType == LCode.lhc // 五行
+          || (gameType == LCode.cqssc && pageData[0]?.playGroups?.alias == '单式')) { //五星单式
+          return gatherSelectedItems(key, selectedData)
+
+        } else {
+          ugLog('combineSelectedData pageData = ', key, JSON.stringify(pageData))
+          if (arrayLength(pageData) > 1) { //二字定位有2组数据，三字定位有3组数据
+            const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
+            const newPage: SelectedPlayModel = {
+              ...pageData[0],
+              plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+                ...arr[0],
+                name: arr?.map((item) => item?.name).toString(),
+              } as PlayData)),
+            }
+            // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+            return newPage
+
+          }
         }
+
         ugLog('combineSelectedData newArr = ', key, JSON.stringify([pageData]))
 
         return [pageData]
@@ -434,6 +443,7 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
             exFlag: playDataUniqueId(playData),
           } as PlayNameArray)
         })
+
         break
 
       case LhcCode.HX://合肖

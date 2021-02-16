@@ -41,7 +41,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
       //找出选中的球对应的原始数据, 优先使用 自定义数组 exPlays
       let selBalls: PlayData[]
       if (gameType == LCode.cqssc && playOddData?.code == CqsscCode.WX && groupData?.alias == '单式') {//秒秒彩五行单式特殊处理
-        selBalls = selectedBalls
+        selBalls = selectedBalls?.filter((item) => item?.exId?.startsWith(groupData?.alias))
       } else {
         selBalls = !anyEmpty(groupData?.exPlays) ?
           groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item)) :

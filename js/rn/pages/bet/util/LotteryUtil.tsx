@@ -74,6 +74,8 @@ const clearLotteryData = () => {
  * @param len 只提取len长度的字符串
  */
 const parseInputArray = (orgString?: string, specialParams?: Array<string>, len?: number): Array<string> => {
+  if(anyEmpty(orgString)) return null
+
   let wxInputArr: Array<string>
   let newString = orgString?.replace('.', '')
   for (let value of specialParams) {
