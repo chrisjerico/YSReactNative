@@ -479,7 +479,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<TurntableListModel>('c=activity&a=turntableList&' + tokenParams)
+    return httpClient.get<TurntableListModel>('c=activity&a=turntableList')//&' + tokenParams)
   }
 
   static activity_goldenEggList = async () => {
@@ -497,7 +497,7 @@ class APIRouter {
         tokenParams = 'token=' + pms?.token
         break
     }
-    return httpClient.get<GoldenEggListModel>('c=activity&a=goldenEggList&' + tokenParams)
+    return httpClient.get<GoldenEggListModel>('c=activity&a=goldenEggList')//&' + tokenParams)
   }
 
   static activity_scratchList = async () => {
@@ -515,7 +515,7 @@ class APIRouter {
         tokenParams = 'token=' + pms?.token
         break
     }
-    return httpClient.get<ScratchListModel>('c=activity&a=scratchList&' + tokenParams)
+    return httpClient.get<ScratchListModel>('c=activity&a=scratchList')//&' + tokenParams)
   }
 
   /**
@@ -527,7 +527,7 @@ class APIRouter {
   }
 
   static system_mobileRight = async () => {
-    return httpClient.get<any>('c=system&a=mobileRight')
+    return httpClient.get<any>('c=system&a=mobileRight') 
   }
 
   static system_floatAds = async () => {
