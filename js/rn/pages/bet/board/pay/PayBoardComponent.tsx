@@ -7,7 +7,7 @@ import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import UsePayBoard from './UsePayBoard'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { anyEmpty, arrayLength } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength, mapFilter } from '../../../../public/tools/Ext'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { LotteryResultData } from '../../../../public/network/Model/lottery/result/LotteryResultModel'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
@@ -76,6 +76,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                 showCallback && showCallback()
               } else {
                 setBetShareModel(filterShareItem(betShareModel, nameArr?.exFlag))
+                const newMap = mapFilter(moneyMap, nameArr?.exFlag)
+                setMoneyMap(newMap)
               }
             }}
             style={_styles.item_trash}

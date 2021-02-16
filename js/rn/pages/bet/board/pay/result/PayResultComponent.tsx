@@ -107,8 +107,8 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
    * 绘制 自动下注
    */
   const renderAutoBet = () => {
-    return <TouchableWithoutFeedback onPress={() => setAutoBet(!autoBet)}>
-      <View style={_styles.tz_container}>
+    return <View style={_styles.tz_container}>
+      <TouchableWithoutFeedback onPress={() => setAutoBet(!autoBet)}>
         {
           autoBet ? <FastImage source={{ uri: Res.mmczt }}
                                resizeMode={'contain'}
@@ -117,8 +117,8 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
                        resizeMode={'contain'}
                        style={_styles.tz}/>
         }
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </View>
   }
 
   /**
