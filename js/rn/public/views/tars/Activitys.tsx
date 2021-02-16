@@ -68,36 +68,33 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
           setRedDialog(!redDialog)
         }}
       />
-      {roulette[0]?.param?.visitor_show == "1" ? 
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(355), right: 0 }}
-          enableFastImage={false}
-          show={uid && roulette}
-          logo={ROULETTE_LOGO}
-          onPress={() => {
-            // 大转盘
-            PushHelper.pushWheel(roulette)
-          }}
-        /> : null}
-      {goldenEggs[0]?.param?.visitor_show == "1" ? 
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(465), right: 0 }}
-          enableFastImage={false}
-          show={uid && goldenEggs}
-          logo={icon_砸金蛋}
-          onPress={goToUserCenterType.砸金蛋}
-          /> : null}
-      {scratchs?.scratchList[0]?.param?.visitor_show == "1" ? 
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(590), right: 0 }}
-          enableFastImage={false}
-          show={uid && scratchs}
-          logo={icon_刮刮乐}
-          onPress={goToUserCenterType.刮刮乐}
-          /> : null} 
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(355), right: 0 }}
+        enableFastImage={false}
+        show={roulette[0]?.param?.visitor_show == "1" || (uid && roulette)}
+        logo={ROULETTE_LOGO}
+        onPress={() => {
+          // 大转盘
+          PushHelper.pushWheel(roulette)
+        }}
+      />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(465), right: 0 }}
+        enableFastImage={false}
+        show={goldenEggs[0]?.param?.visitor_show == "1" || (uid && goldenEggs)}
+        logo={icon_砸金蛋}
+        onPress={goToUserCenterType.砸金蛋}
+        />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(590), right: 0 }}
+        enableFastImage={false}
+        show={scratchs?.scratchList[0]?.param?.visitor_show == "1" || (uid && scratchs)}
+        logo={icon_刮刮乐}
+        onPress={goToUserCenterType.刮刮乐}
+        />
       <ActivityComponent
         refreshing={refreshing}
         containerStyle={{ top: scale(590), left: 0 }}
