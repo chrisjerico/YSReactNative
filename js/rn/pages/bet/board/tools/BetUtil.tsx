@@ -388,7 +388,6 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
             plays: [{//只取第一个，其它的串联成名字就可以了
               ...item?.plays[0],
               name: item?.plays?.map((item) => item?.name).toString(),
-              exPlayIds: item?.plays?.map((item) => item?.id).toString(),
             } as PlayData],
           }
           // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
@@ -396,18 +395,16 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
         })
 
       case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选60': //五星里的组选60
-        return pageData?.map((item) => {
-          const newPage: SelectedPlayModel = {
-            ...item,
-            plays: [{//只取第一个，其它的串联成名字就可以了
-              ...item?.plays[0],
-              name: item?.plays?.map((item) => item?.name).toString(),
-              exPlayIds: item?.plays?.map((item) => item?.id).toString(),
-            } as PlayData],
-          }
-          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
-          return newPage
-        })
+        //二重号复制2份，其它号码保留
+        const newPlays = [...pageData[0]?.plays, ...pageData[0]?.plays, ...pageData[1]?.plays]
+
+        return [{
+          ...pageData[0],
+          plays: [{//只取第一个，其它的串联成名字就可以了
+            ...newPlays,
+            name: newPlays?.map((item) => item?.name).toString(),
+          } as PlayData],
+        } as SelectedPlayModel]
 
       case key == CqsscCode.EZDW: //二字定位
       case key == CqsscCode.SZDW: //三字定位
