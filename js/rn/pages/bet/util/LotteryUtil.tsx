@@ -12,6 +12,19 @@ interface INameOrAlias {
 }
 
 /**
+ *
+ * 是不理 特殊玩法
+ * @param lotteryId 六合彩，秒秒彩 等等
+ * @param pageData 这个玩法的数据，比如二字定位的数据
+ */
+const specialPlay = (lotteryId?: string, pageData?: Array<Array<any>>): boolean => {
+  //整个六合彩都是特殊玩法, 有多页数据的，比如二字定位有多页多个TAB，也是特殊玩法
+  return lotteryId == 'lhc'
+    || arrayLength(pageData) > 1;
+
+}
+
+/**
  * 根据数据生成唯一识别ID
  * @param play
  */
@@ -48,8 +61,30 @@ const clearLotteryData = () => {
     chatArray: [],
     shareChatModel: {},
     inputMoney: 0,
+    sliderValue: 0,
     selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
   })
+}
+
+/**
+ * 按照某个字符切割字符串成数组
+ *
+ * @param orgString
+ * @param specialParams 以该数组里的字符来切割
+ * @param len 只提取len长度的字符串
+ */
+const parseInputArray = (orgString?: string, specialParams?: Array<string>, len?: number): Array<string> => {
+  let wxInputArr: Array<string>
+  let newString = orgString?.replace('.', '')
+  for (let value of specialParams) {
+    if (newString?.includes(value)) {
+      wxInputArr = newString?.split(value)
+      break
+    }
+  }
+  wxInputArr = wxInputArr?.filter((item) => item?.length == len) //过滤长度不正确的
+
+  return wxInputArr
 }
 
 /**
@@ -120,4 +155,7 @@ export {
   clearLotteryData,
   combineOddsName,
   playDataUniqueId,
+  specialPlay,
+  parseInputArray,
+
 }

@@ -33,7 +33,6 @@ export interface PlayGroupData {
   alias: string //"两面"
   plays: PlayData[]
 
-  exTitle?: string //本地生成的 title
   exHint?: string //本地生成的提醒文字
   exZodiacs?: ZodiacNum[] //本地生成的生肖数据
   exPlays?: PlayData[] //本地生成的彩球数据
@@ -48,7 +47,7 @@ export interface PlayOddData {
 
 export interface PagePlayOddData { //本地定义本地使用
   zodiacNums: ZodiacNum[] //生肖数据
-  groupTri?: Array<Array<PlayGroupData>> // 重新组合数据 1页2页3页...
+  groupTri?: Array<Array<PlayGroupData>> // 重新组合数据 1页2页3页，比如 二字定位 第1页是 万千，第2页是 万百...
 }
 
 export interface ZodiacNum {

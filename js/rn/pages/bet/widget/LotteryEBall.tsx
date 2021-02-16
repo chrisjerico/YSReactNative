@@ -7,6 +7,8 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { isSelectedBallOnId } from './it/ISelBall'
 import { BallType, ILotteryBall } from '../../../public/components/view/LotteryBall'
 import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import { UGStore } from '../../../redux/store/UGStore'
+import { calculateSliderValue } from '../util/ArithUtil'
 
 interface ILotteryEBall {
   item?: PlayData // 要绘制的数据
@@ -33,6 +35,7 @@ const renderContent = ({
                          callback,
                        }: ILotteryEBall) => {
   let isSel = isSelectedBallOnId(selectedBalls, item) //优先使用本地生成的唯一识别ID
+  const sliderValue = UGStore.globalProps?.sliderValue //退水拉条数据
 
   return (
     <View key={'e ball content' + item?.id}
@@ -51,7 +54,7 @@ const renderContent = ({
                { color: isSel ? UGColor.TextColor6 : UGColor.TextColor7 },
                oddsStyle,
              ]}
-             odds={item?.enable != '0' ? item?.odds : '- -'}
+             odds={item?.enable != '0' ? calculateSliderValue(item?.odds, sliderValue) : '- -'}
              {...ballProps}
              style={ballStyle}/>
     </View>

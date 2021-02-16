@@ -144,7 +144,7 @@ const LotteryContentComponent = () => {
                                   style={isEqual ? CommStyles.flex : { display: 'none' }}/>
 
 
-      case LhcCode.WX:
+      case LhcCode.WX://五行 或 五星
         if (gameType == LCode.lhc) { //五行
           return <LhcSBComponent key={targetLotteryCode}
                                  playOddData={targetPlayOdds}
@@ -244,7 +244,7 @@ const LotteryContentComponent = () => {
                                   playOddData={playOdds}/>
 
 
-      case LhcCode.WX:
+      case LhcCode.WX://五行 或 五星
         if (gameType == LCode.lhc) { //五行
           return <LhcSBComponent key={lotteryCode}
                                  playOddData={playOdds}/>

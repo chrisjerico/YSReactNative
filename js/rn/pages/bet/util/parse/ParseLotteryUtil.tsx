@@ -87,7 +87,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case CqsscCode.BDW:  //不定位
         return parseYZDWData({ playOddData, zodiacNum })
 
-      case LhcCode.WX:
+      case LhcCode.WX://五行 或 五星
         if (gameType == LCode.lhc) { //五行
           return parseSBData({ playOddData, zodiacNum })
         } else if (gameType == LCode.cqssc) { //五星
