@@ -16,7 +16,7 @@ import Button from '../views/temp/Button'
 interface RedBagModalProps {
   show?: any
   onPress?: () => any
-  redBag?: RedBagDetailActivityModel
+  redBag?: any
   activitySetting?: ActivitySettingModel
   bagSkin?: string
 }
@@ -27,11 +27,13 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
   // const [bagSkin, setBagSkin] = useState(activitySetting?.data?.redBagSkin)
 
   const requestBag = async () => {
-    if (!redBag.data.hasLogin) {
-      UGUserModel.checkLogin()
+    if (!redBag.hasLogin) {
+      UGUserModel.checkLogin(false, ()=>{
+        onPress()
+      })
       return
     }
-    const response = await APIRouter.request_redbag(redBag.data.id)
+    const response = await APIRouter.request_redbag(redBag.id)
     onPress()
     if (response.data.code == 0) {
       Alert.alert(null, "恭喜您获得了" + response.data.data +"元红包", [
@@ -52,6 +54,17 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
   useEffect(()=> {
   }, [redBagData])
   
+
+  function butName() {
+
+     if (redBagData.canGet) {
+        return  '立即开抢'
+    } else if (redBagData.attendedTimes) {
+      return  '已参与活动'
+    } else {
+      return  '立即开抢'
+    }
+  }
   return (
     <Modal 
       style={{ zIndex: 2}}
@@ -70,19 +83,19 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
             <View style={[styles.imageContainer, Platform.OS == 'ios' ? {marginTop:scale(75)} : undefined]}>
               <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>帐号：</Text>
-                <Text style={styles.text}>{redBagData.data.username}</Text>
+                <Text style={styles.text}>{redBagData.username}</Text>
               </View>
               <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>红包余额：</Text>
-                <Text style={styles.text}>{redBagData.data.leftAmount}</Text>
+                <Text style={styles.text}>{redBagData.leftAmount}</Text>
               </View>
               <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>可抢红包：</Text>
-                <Text style={styles.text}>{redBagData.data.leftCount}</Text>
+                <Text style={styles.text}>{redBagData.leftCount}</Text>
               </View>
               <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Button
-                  title={redBagData.data.hasLogin? (redBagData.data.canGet == 0 && redBagData.data.attendedTimes > 0 ? '已参与活动' : '立即开抢') : '登录抢红包'}
+                  title={butName()}
                   onPress={requestBag}
                   containerStyle={styles.button}
                   titleStyle={{ color: '#ffffff'}}

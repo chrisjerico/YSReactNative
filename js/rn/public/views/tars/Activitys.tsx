@@ -14,6 +14,7 @@ import settings from '../../network/NetworkRequest1/model/activity/settings'
 import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
 import RedBagModal from '../../components/RedBagModal'
 import { ugLog } from '../../tools/UgLog'
+import UGUserModel from '../../../redux/model/全局/UGUserModel'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -64,6 +65,7 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
   }
 
   const [redDialog, setRedDialog] = useState(false)
+  const [redBagData, setRedBagData] = useState ({})
 
   return (
     <>
@@ -74,7 +76,16 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
         logo={redBagLogo?.length>0 ?redBagLogo : Res.pig}
         type={0}
         onPress={() => {
+          ugLog('redDialog ===')
+          if (!UGUserModel.checkLogin()) return
+          //没有登录，弹窗
           // 红包
+          //获取红包数据
+          if (!redDialog) {
+            api.activity.redBagDetail().useSuccess(async ({data}) => {
+             setRedBagData(data)
+            });
+          }
           setRedDialog(!redDialog)
         }}
       />
@@ -143,7 +154,7 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
             onPress={() => {
               setRedDialog(!redDialog)
             }}
-            redBag={redBag}
+            redBag={redBagData}
             bagSkin={activitySettings?.redBagSkin}
             activitySetting={{data: activitySettings} as ActivitySettingModel}
           />
