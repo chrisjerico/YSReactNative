@@ -367,9 +367,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
     switch (true) {
       case key == LhcCode.LX://连肖
       case key == LhcCode.LW://连尾
-      {
-        ugLog('combineSelectedData pageData 1 = ', key, JSON.stringify(pageData))
-        const newArr = pageData?.map((item) => {
+        return pageData?.map((item) => {
           const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
           const newPage: SelectedPlayModel = {
             ...item,
@@ -382,33 +380,34 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
           return newPage
         })
-        ugLog('combineSelectedData newArr 1 = ', key, JSON.stringify(newArr))
-
-        return newArr
-      }
-        break
 
       case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
-      {
-        ugLog('combineSelectedData pageData 11 = ', key, JSON.stringify(pageData))
-        const newArr = pageData?.map((item) => {
-          const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
+        return pageData?.map((item) => {
           const newPage: SelectedPlayModel = {
             ...item,
-            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
-              ...arr[0],
-              name: arr?.map((item) => item?.name).toString(),
-              exPlayIds: arr?.map((item) => item?.id).toString(),
-            } as PlayData)),
+            plays: [{//只取第一个，其它的串联成名字就可以了
+              ...item?.plays[0],
+              name: item?.plays?.map((item) => item?.name).toString(),
+              exPlayIds: item?.plays?.map((item) => item?.id).toString(),
+            } as PlayData],
           }
           // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
           return newPage
         })
-        ugLog('combineSelectedData newArr 11 = ', key, JSON.stringify(newArr))
 
-        return newArr
-      }
-        break
+      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选60': //五星里的组选60
+        return pageData?.map((item) => {
+          const newPage: SelectedPlayModel = {
+            ...item,
+            plays: [{//只取第一个，其它的串联成名字就可以了
+              ...item?.plays[0],
+              name: item?.plays?.map((item) => item?.name).toString(),
+              exPlayIds: item?.plays?.map((item) => item?.id).toString(),
+            } as PlayData],
+          }
+          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          return newPage
+        })
 
       case key == CqsscCode.EZDW: //二字定位
       case key == CqsscCode.SZDW: //三字定位
@@ -455,7 +454,6 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
     switch (true) {
       case key == LhcCode.LX: //连肖
       case key == LhcCode.LW: //连尾
-      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
         selModel?.plays?.map((playData) => {
           playNameArray.push({
             playName1: groupAlias,

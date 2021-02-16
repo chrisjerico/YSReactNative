@@ -106,6 +106,12 @@ const UseLotteryHelper = () => {
   }, [tabIndex])
 
   /**
+   * 过滤出某个类别选中的数量
+   * @param alias
+   */
+  const subCountOfSelectedBalls = (alias?: string) => arrayLength(selectedBalls?.filter((item) => item?.alias == alias))
+
+  /**
    * 添加或移除选中的球列表
    * @param addBalls 选中球
    * @param removeBalls 取消的球
@@ -146,7 +152,7 @@ const UseLotteryHelper = () => {
       } else {
         const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
         //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
-        const selCount = arrayLength(selectedBalls)
+        const selCount = arrayLength(selectedBalls) //总共选中的数据
         switch (playOddData?.code) {
           case LhcCode.HX:  //合肖 最多只能选中11个
             if (selCount > 10) {
@@ -173,55 +179,55 @@ const UseLotteryHelper = () => {
                   break
                 case '组选60':
                   if (subAlias == '二重号') {
-                    if (selCount >= 1) {
+                    if (subCountOfSelectedBalls('二重号') >= 1) {
                       return
                     }
                   } else if (subAlias == '单号') {
-                    if (selCount >= 3) {
+                    if (subCountOfSelectedBalls('单号') >= 3) {
                       return
                     }
                   }
                   break
                 case '组选30':
                   if (subAlias == '二重号') {
-                    if (selCount >= 2) {
+                    if (subCountOfSelectedBalls('二重号') >= 2) {
                       return
                     }
                   } else if (subAlias == '单号') {
-                    if (selCount >= 1) {
+                    if (subCountOfSelectedBalls('单号') >= 1) {
                       return
                     }
                   }
                   break
                 case '组选20':
                   if (subAlias == '三重号') {
-                    if (selCount >= 1) {
+                    if (subCountOfSelectedBalls('三重号') >= 1) {
                       return
                     }
                   } else if (subAlias == '单号') {
-                    if (selCount >= 2) {
+                    if (subCountOfSelectedBalls('单号') >= 2) {
                       return
                     }
                   }
                   break
                 case '组选10':
                   if (subAlias == '三重号') {
-                    if (selCount >= 1) {
+                    if (subCountOfSelectedBalls('三重号') >= 1) {
                       return
                     }
                   } else if (subAlias == '二重号') {
-                    if (selCount >= 1) {
+                    if (subCountOfSelectedBalls('二重号') >= 1) {
                       return
                     }
                   }
                   break
                 case '组选5':
                   if (subAlias == '四重号') {
-                    if (selCount >= 1) {
+                    if (subCountOfSelectedBalls('四重号') >= 1) {
                       return
                     }
                   } else if (subAlias == '单号') {
-                    if (selCount >= 1) {
+                    if (subCountOfSelectedBalls('单号') >= 1) {
                       return
                     }
                   }
