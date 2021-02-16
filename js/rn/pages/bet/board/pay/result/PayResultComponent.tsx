@@ -1,6 +1,7 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
+import { forwardRef, useEffect } from 'react'
 import { scale } from '../../../../../public/tools/Scale'
 import UsePayResult from './UsePayResult'
 import Icon from 'react-native-vector-icons/Fontisto'
@@ -10,10 +11,9 @@ import { LotteryResultData } from '../../../../../public/network/Model/lottery/r
 import LotteryZodiacAndBall from '../../../widget/LotteryZodiacAndBall'
 import * as Animatable from 'react-native-animatable'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import { forwardRef, useEffect } from 'react'
 import CommStyles from '../../../../base/CommStyles'
-import { ugLog } from '../../../../../public/tools/UgLog'
 import { NextIssueData } from '../../../../../public/network/Model/lottery/NextIssueModel'
+import { AnimZoomInOut, AnimZoomOutIn } from '../../../anim/BetAnim'
 
 interface IPayResultComponent {
   betData?: LotteryResultData //下注结果
@@ -73,7 +73,7 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
     return <View style={_styles.text_container}>
       {
         betResult && <Animatable.Text key={betResult?.result + betResult?.openNum}
-                                      animation={zoomOutIn}
+                                      animation={AnimZoomOutIn}
                                       iterationCount={1}
                                       duration={500}
                                       style={_styles.bet_text}>{
@@ -90,7 +90,7 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
     return <View style={_styles.zj_container}>
       {
         betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
-                                      animation={zoomOutIn}
+                                      animation={AnimZoomOutIn}
                                       iterationCount={1}
                                       duration={500}
                                       iterationDelay={99}
@@ -128,7 +128,7 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
     return <View style={_styles.ball_container}>
       {
         betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
-                                      animation={zoomInOut}
+                                      animation={AnimZoomInOut}
                                       iterationCount={1}
                                       duration={500}
                                       iterationDelay={33}
@@ -273,28 +273,6 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-const zoomOutIn = {
-  0: {
-    opacity: 0,
-    scale: 10,
-  },
-  1: {
-    opacity: 1,
-    scale: 1,
-  },
-}
-
-const zoomInOut = {
-  0: {
-    opacity: 0,
-    scale: 0,
-  },
-  1: {
-    opacity: 1,
-    scale: 1,
-  },
-}
 
 export default forwardRef(PayResultComponent)
 
