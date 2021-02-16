@@ -3,6 +3,9 @@ import * as React from 'react'
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../../../Res/icon/Res'
 import UseInstantLottery from './UseInstantLottery'
+import { AnimZoomInOut } from '../../../anim/BetAnim'
+import LotteryZodiacAndBall from '../../../widget/LotteryZodiacAndBall'
+import * as Animatable from 'react-native-animatable'
 
 interface IRouteParams {
 
@@ -15,12 +18,17 @@ const InstantLotteryComponent = ({}: IRouteParams) => {
 
   const key = 'InstantLotteryComponent'
 
-  const {
-  } = UseInstantLottery()
+  const {} = UseInstantLottery()
 
   return (
-    <FastImage source={{ uri: Res.mmcbg2_2 }}
-               style={_styles.mmc_image}/>
+    <Animatable.View key={Res.mmcbg2_2}
+                     animation={AnimZoomInOut}
+                     iterationCount={1}
+                     duration={333}
+                     style={_styles.mmc_image}>
+      <FastImage source={{ uri: Res.mmcbg2_2 }}
+                 style={_styles.mmc_image}/>
+    </Animatable.View>
   )
 }
 

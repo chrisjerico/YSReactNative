@@ -75,7 +75,7 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
         betResult && <Animatable.Text key={betResult?.result + betResult?.openNum}
                                       animation={AnimZoomOutIn}
                                       iterationCount={1}
-                                      duration={500}
+                                      duration={333}
                                       style={_styles.bet_text}>{
           Number.parseFloat(betResult?.bonus) > 0 ? `+${betResult?.bonus}` : '再接再厉'
         }</Animatable.Text>
@@ -92,8 +92,7 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
         betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
                                       animation={AnimZoomOutIn}
                                       iterationCount={1}
-                                      duration={500}
-                                      iterationDelay={99}
+                                      duration={333}
                                       style={CommStyles.flex}>
           <FastImage source={Number.parseFloat(betResult?.bonus) > 0 ? { uri: Res.mmczjl } : { uri: Res.mmcwzj }}
                      resizeMode={'contain'}
@@ -130,8 +129,7 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
         betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
                                       animation={AnimZoomInOut}
                                       iterationCount={1}
-                                      duration={500}
-                                      iterationDelay={33}
+                                      duration={333}
                                       style={_styles.ball_content}>
           <LotteryZodiacAndBall ballStr={betResult?.openNum}
                                 zodiacStr={nextIssueData?.gameType == 'cqssc' ? null : betResult?.result}

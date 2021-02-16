@@ -26,36 +26,62 @@ const LotteryZodiacAndBall = ({
 
   /**
    * 绘制生肖
+   * @param gameType 游戏种类
    * @param zodiacStr 生肖编号
    */
-  const renderZodiac = (zodiacStr?: string) => {
+  const renderZodiac = (gameType?: string,
+                        zodiacStr?: string) => {
     let zodiacs = anyEmpty(zodiacStr) ? [] : zodiacStr.split(',')
     if (anyEmpty(zodiacs)) return null
     let lastZodiac = zodiacs.pop() //最后一个球
 
-    return (
-      <View key={'renderZodiac' + zodiacStr}
-            style={_styles.zodiac_container}>
-        {
-          zodiacs?.map((item, index) => (
-            <View key={'renderZodiac' + zodiacStr + item + index}
-                  style={_styles.zodiac_text_container}>
-              <Text style={_styles.zodiac_text}>{item}</Text>
-            </View>
-          ))
-        }
-        {
-          lastZodiac && <Text key={'renderZodiac' + zodiacStr + '+'}
-                              style={_styles.text_content_plus}>{'+'}</Text>
-        }
-        {
-          lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
-                              style={_styles.zodiac_text_container}>
-            <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
+    switch (gameType) {
+      case LCode.cqssc://时时彩
+        return (
+          <View key={'renderZodiac' + zodiacStr}
+                style={_styles.zodiac_container}>
+            {
+              zodiacs?.map((item, index) => (
+                <View key={'renderZodiac' + zodiacStr + item + index}
+                      style={_styles.zodiac_cqssc_text_container}>
+                  <Text style={_styles.zodiac_cqssc_text}>{item}</Text>
+                </View>
+              ))
+            }
+            {
+              lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
+                                  style={_styles.zodiac_cqssc_text_container}>
+                <Text style={_styles.zodiac_cqssc_text}>{lastZodiac}</Text>
+              </View>
+            }
           </View>
-        }
-      </View>
-    )
+        )
+
+      default:
+        return (
+          <View key={'renderZodiac' + zodiacStr}
+                style={_styles.zodiac_container}>
+            {
+              zodiacs?.map((item, index) => (
+                <View key={'renderZodiac' + zodiacStr + item + index}
+                      style={_styles.zodiac_text_container}>
+                  <Text style={_styles.zodiac_text}>{item}</Text>
+                </View>
+              ))
+            }
+            {
+              lastZodiac && <Text key={'renderZodiac' + zodiacStr + '+'}
+                                  style={_styles.text_content_plus}>{'+'}</Text>
+            }
+            {
+              lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
+                                  style={_styles.zodiac_text_container}>
+                <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
+              </View>
+            }
+          </View>
+        )
+    }
   }
 
   /**
@@ -176,7 +202,7 @@ const LotteryZodiacAndBall = ({
   return (
     <View key={'LotteryZodiacAndBall = ' + gameType + ballStr}>
       {renderBalls(gameType, ballStr)}
-      {renderZodiac(zodiacStr)}
+      {renderZodiac(gameType, zodiacStr)}
     </View>
   )
 
@@ -191,6 +217,15 @@ const _styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  zodiac_cqssc_text_container: {
+    borderRadius: scale(8),
+    borderWidth: scale(1),
+    borderColor: UGColor.LineColor4,
+    marginHorizontal: scale(1),
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: scale(36),
+  },
   zodiac_text_container: {
     borderRadius: scale(8),
     borderWidth: scale(1),
@@ -200,6 +235,11 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
     width: scale(36),
     aspectRatio: 1,
+  },
+  zodiac_cqssc_text: {
+    color: UGColor.TextColor3,
+    fontSize: scale(21),
+    textAlign: 'center',
   },
   zodiac_text: {
     color: UGColor.TextColor3,
