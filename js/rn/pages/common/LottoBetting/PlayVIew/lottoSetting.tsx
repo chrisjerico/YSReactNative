@@ -67,35 +67,35 @@ export const getColorfulBallPic = (ballName: string) => {
 
 /**
  * 得到骰子
- * @param BallName
+ * @param ballName
  */
 export const getSZBallPic = (ballName: string) => {
-  const color = SzPics[ballName]
-  return !anyEmpty(color) ? color : SzPics['01']
+  const color = SzPics[Number(ballName)]
+  return !anyEmpty(color) ? color : SzPics[0]
 }
 
 /**
  * 得到农场
- * @param BallName
+ * @param ballName
  */
 export const getVegetableBallPic = (ballName: string) => {
-  const color = VegetablePics[ballName]
-  return !anyEmpty(color) ? color : VegetablePics['01']
+  const color = VegetablePics[Number(ballName)]
+  return !anyEmpty(color) ? color : VegetablePics[0]
 }
 
 /**
  * 得到方格颜色
- * @param BallName
+ * @param ballName
  */
 export const getSQBallColor = (ballName: string) => {
-  const color = SquareColors[ballName]
-  return !anyEmpty(color) ? color : SquareColors['01']
+  const color = SquareColors[Number(ballName)]
+  return !anyEmpty(color) ? color : SquareColors[0]
 }
 
 export function factorial(m, n) {
-  var num = 1;
-  var count = 0;
-  for (var i = m; i > 0; i--) {
+  let num = 1;
+  let count = 0;
+  for (let i = m; i > 0; i--) {
     if (count == n) {
       break;
     }
@@ -113,52 +113,52 @@ export function combination(m, n) {
  * 方格颜色
  */
 const SquareColors = {
-  '01': '#E1D463',
-  '02': '#008BF9',
-  '03': '#4C4D51',
-  '04': '#F47A00',
-  '05': '#63D2D2',
-  '06': '#420AFF',
-  '07': '#AEA6A6',
-  '08': '#FF0400',
-  '09': '#770100',
-  '10': '#2BC610',
+  1: '#E1D463',
+  2: '#008BF9',
+  3: '#4C4D51',
+  4: '#F47A00',
+  5: '#63D2D2',
+  6: '#420AFF',
+  7: '#AEA6A6',
+  8: '#FF0400',
+  9: '#770100',
+  10: '#2BC610',
 }
 
 /**
  * 骰子图片
  */
 const SzPics = {
-  '01': Res.sz1,
-  '02': Res.sz2,
-  '03': Res.sz3,
-  '04': Res.sz4,
-  '05': Res.sz5,
-  '06': Res.sz6,
+  1: Res.sz1,
+  2: Res.sz2,
+  3: Res.sz3,
+  4: Res.sz4,
+  5: Res.sz5,
+  6: Res.sz6,
 }
 
 /**
  * 农场图片
  */
 const VegetablePics = {
-  '01': Res.xync_num_01,
-  '02': Res.xync_num_02,
-  '03': Res.xync_num_03,
-  '04': Res.xync_num_04,
-  '05': Res.xync_num_05,
-  '06': Res.xync_num_06,
-  '07': Res.xync_num_07,
-  '08': Res.xync_num_08,
-  '09': Res.xync_num_09,
-  '10': Res.xync_num_10,
-  '11': Res.xync_num_11,
-  '12': Res.xync_num_12,
-  '13': Res.xync_num_13,
-  '14': Res.xync_num_14,
-  '15': Res.xync_num_15,
-  '16': Res.xync_num_16,
-  '17': Res.xync_num_17,
-  '18': Res.xync_num_18,
-  '19': Res.xync_num_19,
-  '20': Res.xync_num_20,
+  1: Res.xync_num_01,
+  2: Res.xync_num_02,
+  3: Res.xync_num_03,
+  4: Res.xync_num_04,
+  5: Res.xync_num_05,
+  6: Res.xync_num_06,
+  7: Res.xync_num_07,
+  8: Res.xync_num_08,
+  9: Res.xync_num_09,
+  10: Res.xync_num_10,
+  11: Res.xync_num_11,
+  12: Res.xync_num_12,
+  13: Res.xync_num_13,
+  14: Res.xync_num_14,
+  15: Res.xync_num_15,
+  16: Res.xync_num_16,
+  17: Res.xync_num_17,
+  18: Res.xync_num_18,
+  19: Res.xync_num_19,
+  20: Res.xync_num_20,
 }

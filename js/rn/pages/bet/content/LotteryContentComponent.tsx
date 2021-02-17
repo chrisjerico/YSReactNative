@@ -6,7 +6,7 @@ import UseLotteryContent from './UseLotteryContent'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
-import { BALL_CONTENT_HEIGHT, CqsscCode, LCode, LEFT_ITEM_HEIGHT, LhcCode } from '../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, CqsscCode, LCode, LEFT_ITEM_HEIGHT, LhcCode, Pk10Code } from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -111,13 +111,18 @@ const LotteryContentComponent = () => {
                                playOddData={playOdds}/>
 
       case CqsscCode.ALL:  //1-5球
-      case CqsscCode.Q1:  //第1球
-      case CqsscCode.Q2:  //第2球
-      case CqsscCode.Q3:  //第3球
-      case CqsscCode.Q4:  //第4球
-      case CqsscCode.Q5:  //第5球
-      case CqsscCode.Q6:  //第6球
-      case CqsscCode.Q7:  //第7球
+      case CqsscCode.Q1:  //第1球/名
+      case CqsscCode.Q2:  //第2球/名
+      case CqsscCode.Q3:  //第3球/名
+      case CqsscCode.Q4:  //第4球/名
+      case CqsscCode.Q5:  //第5球/名
+      case CqsscCode.Q6:  //第6球/名
+      case CqsscCode.Q7:  //第7球/名
+      case CqsscCode.Q8:  //第8球/名
+      case CqsscCode.Q9:  //第8球/名
+      case CqsscCode.Q10:  //第10球/名
+      case Pk10Code.p1_5:  //1-5名
+      case Pk10Code.p6_10:  //6-10名
         return <Cqssc1T5Component key={lotteryCode}
                                   playOddData={playOdds}/>
 

@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import { CqsscCode, LCode, LhcCode } from '../../const/LotteryConst'
+import { CqsscCode, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
 import parseTMData from './lhc/ParseTMDataUtil'
 import parseHXData from './lhc/ParseHXDataUtil'
 import parseZTData from './lhc/ParseZTDataUtil'
@@ -70,13 +70,18 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case LhcCode.SB: //色波
       case LhcCode.ZOX://总肖
       case CqsscCode.ALL:  //1-5球
-      case CqsscCode.Q1:  //第1球
-      case CqsscCode.Q2:  //第2球
-      case CqsscCode.Q3:  //第3球
-      case CqsscCode.Q4:  //第4球
-      case CqsscCode.Q5:  //第5球
-      case CqsscCode.Q6:  //第6球
-      case CqsscCode.Q7:  //第7球
+      case CqsscCode.Q1:  //第1球/名
+      case CqsscCode.Q2:  //第2球/名
+      case CqsscCode.Q3:  //第3球/名
+      case CqsscCode.Q4:  //第4球/名
+      case CqsscCode.Q5:  //第5球/名
+      case CqsscCode.Q6:  //第6球/名
+      case CqsscCode.Q7:  //第7球/名
+      case CqsscCode.Q8:  //第8球/名
+      case CqsscCode.Q9:  //第8球/名
+      case CqsscCode.Q10:  //第10球/名
+      case Pk10Code.p1_5:  //1-5名
+      case Pk10Code.p6_10:  //6-10名
       case CqsscCode.QZH:  //前中后
       case CqsscCode.DN:  //斗牛
       case CqsscCode.SH:  //梭哈

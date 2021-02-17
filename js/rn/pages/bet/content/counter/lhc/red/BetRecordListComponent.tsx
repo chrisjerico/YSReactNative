@@ -8,7 +8,7 @@ import { UGColor } from '../../../../../../public/theme/UGThemeColor'
 import LotteryBall from '../../../../../../public/components/view/LotteryBall'
 import { LotteryHistoryData, PlayData } from '../../../../../../public/network/Model/lottery/LotteryHistoryModel'
 import UseBetRecordList from './UseBetRecordList'
-import { BallStyles, LCode } from '../../../../const/LotteryConst'
+import { BallStyles, LCode, lotteryBallStyle } from '../../../../const/LotteryConst'
 import { doubleDigit } from '../../../../../../public/tools/StringUtil'
 
 interface IHallGameList {
@@ -72,8 +72,7 @@ const BetRecordListComponent = ({
                        ballStr?: string) => {
     let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => doubleDigit(item)) //球的数组
     let lastBall = balls.pop() //最后一个球
-    let ballStyle = BallStyles[gameType] //球的样式
-    ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle
+    let ballStyle = lotteryBallStyle(gameType) //球的样式
 
     let ballView
     const key = 'header red renderBalls' + gameType

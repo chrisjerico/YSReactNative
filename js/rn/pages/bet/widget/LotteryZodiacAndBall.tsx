@@ -4,7 +4,7 @@ import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
-import { BallStyles, LCode } from '../const/LotteryConst'
+import { BallStyles, LCode, lotteryBallStyle } from '../const/LotteryConst'
 import LotteryBall from '../../../public/components/view/LotteryBall'
 import { doubleDigit } from '../../../public/tools/StringUtil'
 
@@ -141,8 +141,7 @@ const LotteryZodiacAndBall = ({
     let balls = anyEmpty(ballStr) ? [] :
       ballStr.split(',').map((item) => doubleDigit(item)) //球的数组
     let lastBall = balls.pop() //最后一个球
-    let ballStyle = BallStyles[gameType] //球的样式
-    ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle
+    let ballStyle = lotteryBallStyle(gameType) //球的样式
 
     let ballView
     const key = 'header renderBalls' + gameType

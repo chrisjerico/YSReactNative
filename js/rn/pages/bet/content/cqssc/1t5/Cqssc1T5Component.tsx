@@ -8,11 +8,12 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseCqssc1T5 from './UseCqssc1T5'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, CqsscCode, LCode } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import LotteryEBall from '../../../widget/LotteryEBall'
 import { arrayLength } from '../../../../../public/tools/Ext'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { UGStore } from '../../../../../redux/store/UGStore'
 
 /**
  * 1-5球
@@ -76,9 +77,25 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
 
     let ball1 = groupData?.plays
     let ball2: Array<PlayData>
-    if (arrayLength(ball1) >= 14) {//分2组显示
-      ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
-      ball2 = groupData?.plays.slice(-4)
+
+    if (UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType == LCode.pk10) {//赛车的数字和汉字是反的
+      if (arrayLength(ball1) > 10) {//分2组显示
+        if (playOddData?.code == CqsscCode.Q3
+          || playOddData?.code == CqsscCode.Q4
+          || playOddData?.code == CqsscCode.Q5) { //第 3 4 5 名只取6个
+          ball1 = groupData?.plays.slice(6, arrayLength(groupData?.plays))
+          ball2 = groupData?.plays.slice(0, 6)
+        } else {
+          ball1 = groupData?.plays.slice(4, arrayLength(groupData?.plays))
+          ball2 = groupData?.plays.slice(0, 4)
+        }
+      }
+
+    } else {
+      if (arrayLength(ball1) > 10) {//分2组显示
+        ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
+        ball2 = groupData?.plays.slice(-4)
+      }
     }
 
     return <View key={key + 'renderAllBall' + groupData?.id + index}
