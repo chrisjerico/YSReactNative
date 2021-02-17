@@ -7,13 +7,11 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../../base/CommStyles'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UsePK10GFWF from './UsePK10GFWF'
-import { PlayData, PlayGroupData, ZodiacNum } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 import LotteryEBall from '../../../widget/LotteryEBall'
-import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, SingleOption } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
-import { UGStore } from '../../../../../redux/store/UGStore'
-import { isSelectedBallOnId } from '../../../widget/it/ISelBall'
 
 
 /**
@@ -54,7 +52,10 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number, tabLen?: number) =>
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
+                              onPress={() => {
+                                // setOptionIndex(SingleOption.SINGLE)
+                                setTabIndex(index)
+                              }}>
       <View key={key + item[0]?.alias}
             style={[
               _styles.tab_item,

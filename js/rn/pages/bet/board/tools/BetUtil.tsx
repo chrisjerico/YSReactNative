@@ -243,15 +243,15 @@ const checkBetCount = (showMsg?: boolean): boolean => {
   const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
   const singleTabIndex = UGStore.globalProps?.singleTabIndex //当前的彩种处于TAB的单式还是复式
   const curTabGroupData = currentTabGroupData() //当前界面
-  const key = currentPlayOddData()?.code//只判断当前界面是否选中彩种即可
+  const ltCode = currentPlayOddData()?.code//只判断当前界面是否选中彩种即可
   const selectedData = UGStore.globalProps?.selectedData //选中的数据
 
   switch (true) {
-    case key == LhcCode.WX && gameType == LCode.cqssc:  //五行 或 五星
+    case ltCode == LhcCode.WX && gameType == LCode.cqssc:  //五行 或 五星
       for (let data of curTabGroupData) {
         const subAlias = data?.exPlays[0]?.alias
-        const selCount = filterSelectedSubData(key, subAlias, selectedData)
-        ugLog('selCount = ', selCount, key)
+        const selCount = filterSelectedSubData(ltCode, subAlias, selectedData)
+        ugLog('selCount = ', selCount, ltCode)
         switch (data?.alias) {
           case '单式':
             if (selCount < 1) {
@@ -341,12 +341,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 
       break
 
-    case key == Pk10Code.GFWF:  //官方玩法
-      for (let [index, data] of curTabGroupData?.entries()) {
-        const subAlias = data?.exPlays[0]?.alias
-        const selCount = filterSelectedSubData(key, subAlias, selectedData)
-        ugLog('selCount = ', selCount, key)
-        switch (data?.alias) {
+    case ltCode == Pk10Code.GFWF:  //官方玩法
+      for (let [key, value] of curTabGroupData?.entries()) {
+        const subAlias = value?.exPlays[0]?.alias
+        const selCount = filterSelectedSubData(ltCode, subAlias, selectedData)
+        ugLog('selCount = ', selCount, ltCode)
+        switch (value?.alias) {
           case '猜冠军':
             if (selCount < 1) {
               Toast(`请选择1个《${subAlias}》数据`)
@@ -355,16 +355,16 @@ const checkBetCount = (showMsg?: boolean): boolean => {
             break
           case '猜前二':
           case '猜前三':
-            if (singleTabIndex == SingleOption.SINGLE && index == 0) {//单式只考虑第1组数据，23为 冠亚季军
+            if (singleTabIndex == SingleOption.SINGLE && key == 0) {//单式只考虑第1组数据，23为 冠亚季军
               if (selCount < 2) {
                 Toast(`请选择2个《${subAlias}》数据`)
                 return false
               } else {
 
               }
-            } else if (singleTabIndex == SingleOption.COMPLEX && index > 1) {//复式不考虑第1组数据，234为 冠亚季军
+            } else if (singleTabIndex == SingleOption.COMPLEX && key > 0) {//复式不考虑第1组数据，234为 冠亚季军
               if (selCount < 1) {
-                Toast(`请选择1个《${subAlias}》数据`)
+                Toast(`请选择至少1个《${subAlias}》数据`)
                 return false
               } else {
 
@@ -377,12 +377,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       break
 
 
-    case key == LhcCode.LX: //连肖
-    case key == LhcCode.LW: //连尾
+    case ltCode == LhcCode.LX: //连肖
+    case ltCode == LhcCode.LW: //连尾
     {
       for (let data of curTabGroupData) {
-        const selCount = filterSelectedSubData(key, data?.alias, selectedData)
-        ugLog('selCount = ', selCount, key, data?.alias)
+        const selCount = filterSelectedSubData(ltCode, data?.alias, selectedData)
+        ugLog('selCount = ', selCount, ltCode, data?.alias)
         if (selCount <= 0) {
           Toast(`请选择${data?.alias}数据`)
           return false
@@ -422,12 +422,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     }
       break
 
-    case key == CqsscCode.EZDW:  //二字定位
-    case key == CqsscCode.SZDW:  //三字定位
+    case ltCode == CqsscCode.EZDW:  //二字定位
+    case ltCode == CqsscCode.SZDW:  //三字定位
     {
       for (let data of curTabGroupData) {
-        const selCount = filterSelectedSubData(key, data?.exPlays[0]?.alias, selectedData)
-        ugLog('selCount = ', selCount, key, data?.exPlays[0]?.alias)
+        const selCount = filterSelectedSubData(ltCode, data?.exPlays[0]?.alias, selectedData)
+        ugLog('selCount = ', selCount, ltCode, data?.exPlays[0]?.alias)
         if (selCount <= 0) {
           Toast(`请选择${data?.exPlays[0]?.alias}数据`)
           return false
@@ -436,19 +436,19 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     }
       break
 
-    case key == LhcCode.HX://合肖
+    case ltCode == LhcCode.HX://合肖
     {
       const selCountMap = filterSelectedData(selectedData)
-      if (selCountMap[key] <= 1) {
+      if (selCountMap[ltCode] <= 1) {
         showMsg && Toast('合肖请选择2个以上的数据')
         return false
       }
     }
       break
-    case key == LhcCode.LMA:  //连码
+    case ltCode == LhcCode.LMA:  //连码
       for (let data of curTabGroupData) {
-        const selCount = filterSelectedSubData(key, data?.alias, selectedData)
-        ugLog('selCount = ', selCount, key, data?.alias)
+        const selCount = filterSelectedSubData(ltCode, data?.alias, selectedData)
+        ugLog('selCount = ', selCount, ltCode, data?.alias)
         if (selCount <= 0) {
           Toast(`请选择${data?.alias}数据`)
           return false
@@ -480,10 +480,10 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       }
       break
 
-    case key == LhcCode.ZXBZ:  //自选不中
+    case ltCode == LhcCode.ZXBZ:  //自选不中
     {
       const selCountMap = filterSelectedData(selectedData)
-      if (selCountMap[key] < 5) {
+      if (selCountMap[ltCode] < 5) {
         showMsg && Toast('自选不中请选择5到12个选项')
         return false
       }
@@ -491,7 +491,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       break
     default: {
       const selCountMap = filterSelectedData(selectedData)
-      if (selCountMap[key] <= 0) {
+      if (selCountMap[ltCode] <= 0) {
         showMsg && Toast('请选择玩法')
         return false
       }
@@ -537,14 +537,14 @@ const calculateActualItemCount = (selectedCombineData?: Array<SelectedPlayModel>
 const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
   const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
 
-  return Object.keys(selectedData).map((key) => {
-    const value = selectedData[key]
+  return Object.keys(selectedData).map((ltCode) => {
+    const value = selectedData[ltCode]
     const pageData: Array<SelectedPlayModel> = Object.values(value).map((data) => Object.values(data)).flat(Infinity)
     const groupAlias = arrayEmpty(pageData) ? null : pageData[0]?.playGroups?.alias
 
     switch (true) {
-      case key == LhcCode.LX://连肖
-      case key == LhcCode.LW://连尾
+      case ltCode == LhcCode.LX://连肖
+      case ltCode == LhcCode.LW://连尾
         return pageData?.map((item) => {
           const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
           const newPage: SelectedPlayModel = {
@@ -555,11 +555,11 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
               exPlayIds: arr?.map((item) => item?.id).toString(),
             } as PlayData)),
           }
-          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          // ugLog('combineSelectedData newPage = ', ltCode, JSON.stringify(newPage))
           return newPage
         })
 
-      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
+      case ltCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
         return pageData?.map((item) => {
           const newPage: SelectedPlayModel = {
             ...item,
@@ -568,11 +568,11 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
               name: item?.plays?.map((item) => item?.name).toString(),
             } as PlayData],
           }
-          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          // ugLog('combineSelectedData newPage = ', ltCode, JSON.stringify(newPage))
           return newPage
         })
 
-      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选60': //五星里的组选60
+      case ltCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选60': //五星里的组选60
         //二重号复制2份，其它号码保留
         const newPlays120 = [...pageData[0]?.plays, ...pageData[0]?.plays, ...pageData[1]?.plays]
 
@@ -584,7 +584,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           } as PlayData],
         } as SelectedPlayModel]
 
-      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选30': //五星里的组选30
+      case ltCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选30': //五星里的组选30
         //二重号复制2份，其它号码保留
         const newPlays60 = [...pageData[0]?.plays?.map((item) => [item, item]).flat(Infinity) as PlayData[], ...pageData[1]?.plays]
 
@@ -596,7 +596,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           } as PlayData],
         } as SelectedPlayModel]
 
-      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选20': //五星里的组选20
+      case ltCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选20': //五星里的组选20
         //三重号复制3份，其它号码保留
         const newPlays20 = [...pageData[0]?.plays?.map((item) => [item, item, item]).flat(Infinity) as PlayData[], ...pageData[1]?.plays]
 
@@ -608,7 +608,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           } as PlayData],
         } as SelectedPlayModel]
 
-      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选10': //五星里的组选10
+      case ltCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选10': //五星里的组选10
         //三重号复制3份，二重号复制2份
         const newPlays10 = [...pageData[0]?.plays?.map((item) => [item, item, item]).flat(Infinity) as PlayData[],
           ...pageData[1]?.plays?.map((item) => [item, item]).flat(Infinity) as PlayData[]]
@@ -621,7 +621,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           } as PlayData],
         } as SelectedPlayModel]
 
-      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选5': //五星里的组选5
+      case ltCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选5': //五星里的组选5
         //四重号复制4份，其它号码保留
         const newPlays5 = [...pageData[0]?.plays?.map((item) => [item, item, item, item]).flat(Infinity) as PlayData[], ...pageData[1]?.plays]
 
@@ -633,10 +633,10 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           } as PlayData],
         } as SelectedPlayModel]
 
-      case key == CqsscCode.EZDW: //二字定位
-      case key == CqsscCode.SZDW: //三字定位
-      case key == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '复式': //五星里的复式
-        ugLog('combineSelectedData pageData 2 = ', key, JSON.stringify(pageData))
+      case ltCode == CqsscCode.EZDW: //二字定位
+      case ltCode == CqsscCode.SZDW: //三字定位
+      case ltCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '复式': //五星里的复式
+        ugLog('combineSelectedData pageData 2 = ', ltCode, JSON.stringify(pageData))
         if (arrayLength(pageData) > 1) { //二字定位有2组数据，三字定位有3组数据
           const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
           const newPage: SelectedPlayModel = {
@@ -646,16 +646,16 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
               name: arr?.map((item) => item?.name).toString(),
             } as PlayData)),
           }
-          // ugLog('combineSelectedData newPage = ', key, JSON.stringify(newPage))
+          // ugLog('combineSelectedData newPage = ', ltCode, JSON.stringify(newPage))
           return newPage
         }
 
-        ugLog('combineSelectedData newArr 2 = ', key, JSON.stringify([pageData]))
+        ugLog('combineSelectedData newArr 2 = ', ltCode, JSON.stringify([pageData]))
 
         return [pageData]
 
       default:
-        return gatherSelectedItems(key, selectedData)
+        return gatherSelectedItems(ltCode, selectedData)
     }
   }).flat(Infinity) as Array<SelectedPlayModel>
 }
@@ -672,12 +672,12 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
   const playNameArray: Array<PlayNameArray> = [] // 下注彩种条目名字 如特码B
   combinationData?.map((selModel, index) => {
     ugLog('pay board itemViewArr = ', selModel?.code, index)
-    const key = selModel?.code
+    const ltCode = selModel?.code
     const groupAlias = selModel?.playGroups?.alias
 
     switch (true) {
-      case key == LhcCode.LX: //连肖
-      case key == LhcCode.LW: //连尾
+      case ltCode == LhcCode.LX: //连肖
+      case ltCode == LhcCode.LW: //连尾
         selModel?.plays?.map((playData) => {
           playNameArray.push({
             playName1: groupAlias,
@@ -688,7 +688,7 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
 
         break
 
-      case key == LhcCode.HX://合肖
+      case ltCode == LhcCode.HX://合肖
         const zodiacX = zodiacPlayX(selModel)
         playNameArray.push({
           playName1: zodiacX?.alias,
@@ -697,7 +697,7 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
         } as PlayNameArray)
         break
 
-      case key == LhcCode.LMA:  //连码
+      case ltCode == LhcCode.LMA:  //连码
         const play0 = selModel?.plays[0]
 
         playNameArray.push({
@@ -707,7 +707,7 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
         } as PlayNameArray)
         break
 
-      case key == LhcCode.ZXBZ:  //自选不中
+      case ltCode == LhcCode.ZXBZ:  //自选不中
         const playX = playDataX(selModel)
         playNameArray.push({
           playName1: playX?.alias,
@@ -747,12 +747,12 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
 
   const betBeanArray: Array<BetLotteryData> = [] //下注数据
   combinationData?.map((selModel) => {
-    const key = selModel?.code
+    const ltCode = selModel?.code
     const groupAlias = selModel?.playGroups?.alias
 
     switch (true) {
-      case key == LhcCode.LX: //连肖
-      case key == LhcCode.LW: //连尾
+      case ltCode == LhcCode.LX: //连肖
+      case ltCode == LhcCode.LW: //连尾
         selModel?.plays?.map((playData) => {
           betBeanArray.push({
             money: inputMoney,
@@ -765,7 +765,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
         })
         break
 
-      case key == LhcCode.HX://合肖
+      case ltCode == LhcCode.HX://合肖
       {
         const zodiacX = zodiacPlayX(selModel)
         betBeanArray.push({
@@ -778,7 +778,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       }
         break
 
-      case key == LhcCode.LMA:  //连码
+      case ltCode == LhcCode.LMA:  //连码
       {
         const groupPlay0 = selModel?.playGroups?.plays[0]
         const play0 = selModel?.plays[0]
@@ -793,7 +793,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       }
         break
 
-      case key == LhcCode.ZXBZ:  //自选不中
+      case ltCode == LhcCode.ZXBZ:  //自选不中
       {
         const playX = playDataX(selModel)
         betBeanArray.push({
@@ -806,8 +806,8 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       }
         break
 
-      case key == CqsscCode.YZDW:  //一字定位
-      case key == CqsscCode.DWD:  //定位胆
+      case ltCode == CqsscCode.YZDW:  //一字定位
+      case ltCode == CqsscCode.DWD:  //定位胆
       {
         const play0 = selModel?.playGroups?.plays[0]
         selModel?.plays?.map((playData) => {
@@ -823,9 +823,9 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       }
         break
 
-      case key == CqsscCode.EZDW:  //二字定位
-      case key == CqsscCode.SZDW:  //三字定位
-      case key == LhcCode.WX && gameType == LCode.cqssc:  //五星
+      case ltCode == CqsscCode.EZDW:  //二字定位
+      case ltCode == CqsscCode.SZDW:  //三字定位
+      case ltCode == LhcCode.WX && gameType == LCode.cqssc:  //五星
       {
         const groupPlay0 = selModel?.playGroups?.plays[0]
         const play0 = selModel?.playGroups?.plays[0]
