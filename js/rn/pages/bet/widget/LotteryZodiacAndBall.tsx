@@ -60,28 +60,26 @@ const LotteryZodiacAndBall = ({
           </View>
         )
 
-      case LCode.gdkl10://快乐10分系列
-      case LCode.pk10nn://牛牛系列
-      case LCode.xync://幸运农场系列
-      case LCode.dlt://大乐透系列
-      case LCode.pcdd://蛋蛋系列
-      case LCode.jsk3://快三系列
-      case LCode.gd11x5://11选5系列
+      case LCode.lhc://六合彩
         return (
           <View key={'renderZodiac' + zodiacStr}
                 style={_styles.zodiac_container}>
             {
               zodiacs?.map((item, index) => (
                 <View key={'renderZodiac' + zodiacStr + item + index}
-                      style={_styles.zodiac_gdkl10_text_container}>
-                  <Text style={_styles.zodiac_gdkl10_text}>{item}</Text>
+                      style={_styles.zodiac_text_container}>
+                  <Text style={_styles.zodiac_text}>{item}</Text>
                 </View>
               ))
             }
             {
+              lastZodiac && <Text key={'renderZodiac' + zodiacStr + '+'}
+                                  style={_styles.text_content_plus}>{'+'}</Text>
+            }
+            {
               lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
-                                  style={_styles.zodiac_gdkl10_text_container}>
-                <Text style={_styles.zodiac_gdkl10_text}>{lastZodiac}</Text>
+                                  style={_styles.zodiac_text_container}>
+                <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
               </View>
             }
           </View>
@@ -117,19 +115,15 @@ const LotteryZodiacAndBall = ({
             {
               zodiacs?.map((item, index) => (
                 <View key={'renderZodiac' + zodiacStr + item + index}
-                      style={_styles.zodiac_text_container}>
-                  <Text style={_styles.zodiac_text}>{item}</Text>
+                      style={_styles.zodiac_gdkl10_text_container}>
+                  <Text style={_styles.zodiac_gdkl10_text}>{item}</Text>
                 </View>
               ))
             }
             {
-              lastZodiac && <Text key={'renderZodiac' + zodiacStr + '+'}
-                                  style={_styles.text_content_plus}>{'+'}</Text>
-            }
-            {
               lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
-                                  style={_styles.zodiac_text_container}>
-                <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
+                                  style={_styles.zodiac_gdkl10_text_container}>
+                <Text style={_styles.zodiac_gdkl10_text}>{lastZodiac}</Text>
               </View>
             }
           </View>

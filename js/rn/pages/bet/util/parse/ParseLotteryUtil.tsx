@@ -75,6 +75,8 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case CqsscCode.Q3:  //第3球
       case CqsscCode.Q4:  //第4球
       case CqsscCode.Q5:  //第5球
+      case CqsscCode.Q6:  //第6球
+      case CqsscCode.Q7:  //第7球
       case CqsscCode.QZH:  //前中后
       case CqsscCode.DN:  //斗牛
       case CqsscCode.SH:  //梭哈

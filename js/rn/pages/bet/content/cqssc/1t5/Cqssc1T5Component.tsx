@@ -76,9 +76,9 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
 
     let ball1 = groupData?.plays
     let ball2: Array<PlayData>
-    if (arrayLength(ball1) == 14) {//分2组显示
-      ball1 = groupData?.plays.slice(0, 10)
-      ball2 = groupData?.plays.slice(10, 14)
+    if (arrayLength(ball1) >= 14) {//分2组显示
+      ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
+      ball2 = groupData?.plays.slice(-4)
     }
 
     return <View key={key + 'renderAllBall' + groupData?.id + index}
@@ -149,7 +149,8 @@ const _styles = StyleSheet.create({
   },
   ball_container: {
     width: scale(189),
-    paddingHorizontal: scale(28),
+    paddingHorizontal: scale(16),
+    alignItems: 'center',
   },
   ball_odds: {
     fontSize: scale(20),
