@@ -100,6 +100,7 @@ interface DoyTextProps extends TextProps {
 
   textAlignCenter?: boolean
 
+  size10?: boolean
   size12?: boolean
   size13?: boolean
   size14?: boolean
@@ -119,7 +120,7 @@ const DoyText = (p: DoyTextProps) => {
   const { gray1, gray2, white } = p
   const { bold1, bold2, bold3 } = p
   const { textAlignCenter } = p
-  const { size12, size13, size14, size15, size16, size18, size20, size28, size30, size35, size40 } = p
+  const { size10, size12, size13, size14, size15, size16, size18, size20, size28, size30, size35, size40 } = p
   const { textColor1 = '#19202C', textColor2 = '#585A5E', textColor3 = '#8E929A' } = skin1
 
   let fontWeight = undefined
@@ -133,6 +134,7 @@ const DoyText = (p: DoyTextProps) => {
   gray1 && (color = textColor2)
 
   let fontSize = sc(14)
+  size10 && (fontSize = sc(10))
   size12 && (fontSize = sc(12))
   size13 && (fontSize = sc(13))
   size14 && (fontSize = sc(14))
@@ -151,6 +153,7 @@ const DoyText = (p: DoyTextProps) => {
   return <Text {...p} style={[{ fontSize, fontWeight, color, textAlign }, p?.style]} />
 }
 
+export const DoyText10 = (p: DoyTextProps) => <DoyText {...p} size10 />
 export const DoyText12 = (p: DoyTextProps) => <DoyText {...p} size12 />
 export const DoyText13 = (p: DoyTextProps) => <DoyText {...p} size13 />
 export const DoyText14 = (p: DoyTextProps) => <DoyText {...p} size14 />

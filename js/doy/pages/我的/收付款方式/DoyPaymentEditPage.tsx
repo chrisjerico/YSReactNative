@@ -3,7 +3,7 @@ import { View } from "react-native"
 import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 
-export const DoyPaymentEditPage = ({ }: UGBasePageProps) => {
+export const DoyPaymentEditPage = ({ setProps }: UGBasePageProps) => {
   useEffect(() => {
 
   }, [])

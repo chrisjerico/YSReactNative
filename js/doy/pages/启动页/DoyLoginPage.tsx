@@ -22,7 +22,7 @@ interface DoyLoginVars {
   pwd?: string
 }
 
-export const DoyLoginPage = ({ }: UGBasePageProps) => {
+export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
   const [isPwd, setIsPwd] = useState(false)
 
   const { current: v } = useRef<DoyLoginVars>({})

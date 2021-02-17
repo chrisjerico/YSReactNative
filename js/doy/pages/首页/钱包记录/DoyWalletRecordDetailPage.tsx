@@ -31,7 +31,7 @@ export const DoyWalletRecordDetailPage = ({ setProps }: UGBasePageProps) => {
     <DoyText14 bold3 gray2 style={{ marginTop: sc(4) }}>(150 RMB)</DoyText14>
     <View style={{ marginTop: sc(10), width: '100%', padding: sc(16), backgroundColor: 'white', justifyContent: 'space-between', flexDirection: 'row', flexWrap: 'wrap', borderRadius: sc(4) }}>
       <DoyText14 gray2 style={{ width: '30%' }}>时间</DoyText14>
-      <DoyText14 style={{ width: '70%', textAlign: 'right', marginBottom: sc(9) }}>2021/01/22 16:27</DoyText14>
+      <DoyText14 style={{ width: '70%', textAlign: 'right', marginBottom: sc(16) }}>2021/01/22 16:27</DoyText14>
       <DoyText14 gray2 style={{ width: '30%' }}>来源钱包</DoyText14>
       <DoyText14 style={{ width: '70%', textAlign: 'right' }}>0x3d1bdf4834b123a81a5333d3a4980faebb8930c5</DoyText14>
     </View>
