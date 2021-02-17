@@ -255,7 +255,7 @@ const HomePage = ({
                 onPressMore={goToPromotionPage}
                 coupons={coupons}
                 renderCoupon={({ item, index }) => {
-                  const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
+                  const { pic, linkCategory, linkPosition, title, content, linkUrl ,} = item
                   return (
                     <AutoHeightCouponComponent
                       {...couponStyles}
@@ -264,48 +264,41 @@ const HomePage = ({
                       pic={pic}
                       slide={couponClickStyle == 'slide' && couponSelectedIndex == index}
                       content={content}
-                      onPress={(setShowPop) => {
-                        if (linkUrl) {
-                          PushHelper.openWebView(linkUrl)
-                          return
-                        } else if (linkCategory || linkPosition) {
-                          PushHelper.pushCategory(linkCategory, linkPosition)
-                          return
-                        }
-
+                      onPress={async (setShowPop) => {
+                        //slide=折叠式,popup=弹窗式 page = 内页*/
                         switch (Platform.OS) {
                           case 'ios':
-                            switch (couponClickStyle) {
-                              // 内页
-                              case 'page': {
-                                PushHelper.pushPromoteDetail({ clsName: 'UGPromoteModel', ...item })
-                                break
-                              }
-                              // 弹框
-                              case 'popup': {
-                                setShowPop(true)
-                                break
-                              }
-                              case 'slide': {
-                                if (index == couponSelectedIndex) {
-                                  couponSelectedIndex = -1
-                                  couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
-                                } else {
-                                  couponSelectedIndex = index
-                                  couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                            {
+                              let  ret = await  OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
+                              if (!ret) {
+                                if (couponClickStyle === 'slide') {
+                                  if (index == couponSelectedIndex) {
+                                    couponSelectedIndex = -1
+                                    couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                                  } else {
+                                    couponSelectedIndex = index
+                                    couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                                  }
+                                } 
+                                else if(couponClickStyle === 'popup') {
+                                  setShowPop(true)
                                 }
-                                break
+                                else if(couponClickStyle === 'page') {
+                                  PushHelper.pushPromoteDetail({ clsName: 'UGPromoteModel', ...item })
+                                }
                               }
                             }
                             break
                           case 'android':
-                            // 弹框
-                            ANHelper.callAsync(CMD.OPEN_COUPON, {
-                              ...item,
-                              couponClickStyle,
-                            })
+                              // 弹框
+                              ANHelper.callAsync(CMD.OPEN_COUPON, {
+                                ...item,
+                                couponClickStyle,
+                              })
                             break
                         }
+
+                       
                       }}
                     />
                   )
