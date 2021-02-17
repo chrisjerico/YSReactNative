@@ -511,7 +511,7 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
         const play0 = selModel?.plays[0]
 
         playNameArray.push({
-          playName1: play0?.alias,
+          playName1: groupAlias,
           playName2: combineArrayName(selModel).toString(),
           exFlag: playDataUniqueId(play0),
         } as PlayNameArray)
@@ -595,6 +595,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
         betBeanArray.push({
           money: inputMoney,
           playId: groupPlay0?.id,
+          odds: '',//连码不需要传
           playIds: nextIssueData?.id,
           betInfo: combineArrayName(selModel).toString(),
           exFlag: playDataUniqueId(play0),
