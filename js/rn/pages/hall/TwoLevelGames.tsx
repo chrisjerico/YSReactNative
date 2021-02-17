@@ -82,7 +82,8 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
    */
   function gameDataId(){
 
-    let gotoId = anyEmpty(game.id)?game.gameId:game.id
+    // let gotoId = anyEmpty(game.id)?game.gameId:game.id
+    let gotoId = anyEmpty(game.gameId)?game.id:game.gameId
     return gotoId
   }
 
