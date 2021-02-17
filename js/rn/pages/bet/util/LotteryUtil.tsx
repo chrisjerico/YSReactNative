@@ -123,6 +123,13 @@ const filterSelectedData = (selectedData?: Map<string, Map<string, Map<string, S
 }
 
 /**
+ * 过滤出某个类别选中的数量
+ * @param subAlias 需要计算的彩种子类别，比如五星玩法 -> 二重号
+ * @param selectedBalls 已经选中的球
+ */
+const subCountOfSelectedBalls = (subAlias?: string, selectedBalls?: Array<PlayData | ZodiacNum>) => arrayLength(selectedBalls?.filter((item) => item?.alias == subAlias))
+
+/**
  * 各彩种选中的数量，比如 二字定位 下面的 子类 选中了多少条，结构
  * {
  *   万千 -> 5条
@@ -159,5 +166,6 @@ export {
   playDataUniqueId,
   specialPlay,
   parseInputArray,
+  subCountOfSelectedBalls,
 
 }

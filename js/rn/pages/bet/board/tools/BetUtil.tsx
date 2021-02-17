@@ -6,7 +6,12 @@ import { UGStore } from '../../../../redux/store/UGStore'
 import { zodiacPlayX } from './hx/BetHXUtil'
 import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
-import { filterSelectedData, filterSelectedSubData, playDataUniqueId } from '../../util/LotteryUtil'
+import {
+  filterSelectedData,
+  filterSelectedSubData,
+  playDataUniqueId,
+  subCountOfSelectedBalls,
+} from '../../util/LotteryUtil'
 import {
   PlayData,
   PlayGroupData,
@@ -20,7 +25,7 @@ import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/B
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import moment from 'moment'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
-import { currentPlayOddData, currentTabGroupData } from '../../util/select/ParseSelectedUtil'
+import { currentPlayOddData, currentTabGroupData, tabGroupData } from '../../util/select/ParseSelectedUtil'
 import { parseLMASelectedData } from '../../util/select/lhc/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/select/lhc/ParseHXSelectedUtil'
 import parseSBData from '../../util/parse/lhc/ParseSBDataUtil'
@@ -75,9 +80,111 @@ const prepareSelectedBetData = (playOddData?: PlayOddData, selectedBalls?: Array
 }
 
 /**
+ * 计算点击选择时候，选中的条目数量是否符合要求
+ *
+ * @param ballData 这次点击的球
+ * @param playOddData 当前彩种
+ * @param selectedBalls 当前彩种选中的球
+ *
+ * return true 可以选择, false 不能再选择了
+ */
+const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddData, selectedBalls?: Array<PlayData | ZodiacNum>): boolean => {
+  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const selCount = arrayLength(selectedBalls) //总共选中的数据
+  switch (playOddData?.code) {
+    case LhcCode.HX:  //合肖 最多只能选中11个
+      if (selCount > 10) {
+        return
+      }
+      break
+    case LhcCode.ZXBZ:  //自选不中 最多只能选中12个
+      if (selCount > 11) {
+        return
+      }
+      break
+    case LhcCode.WX:  //五行 或 五星
+      if (gameType == LCode.lhc) { //五行
+
+      } else if (gameType == LCode.cqssc) { //五星
+        const subAlias = ballData?.alias
+        const groupData = currentTabGroupData() //当前的页数据
+
+        switch (groupData[0]?.alias) {
+          case '组选120':
+            if (selCount >= 5) {
+              return
+            }
+            break
+          case '组选60':
+            if (subAlias == '二重号') {
+              if (subCountOfSelectedBalls('二重号', selectedBalls) >= 1) {
+                return
+              }
+            } else if (subAlias == '单号') {
+              if (subCountOfSelectedBalls('单号', selectedBalls) >= 3) {
+                return
+              }
+            }
+            break
+          case '组选30':
+            if (subAlias == '二重号') {
+              if (subCountOfSelectedBalls('二重号', selectedBalls) >= 2) {
+                return
+              }
+            } else if (subAlias == '单号') {
+              if (subCountOfSelectedBalls('单号', selectedBalls) >= 1) {
+                return
+              }
+            }
+            break
+          case '组选20':
+            if (subAlias == '三重号') {
+              if (subCountOfSelectedBalls('三重号', selectedBalls) >= 1) {
+                return
+              }
+            } else if (subAlias == '单号') {
+              if (subCountOfSelectedBalls('单号', selectedBalls) >= 2) {
+                return
+              }
+            }
+            break
+          case '组选10':
+            if (subAlias == '三重号') {
+              if (subCountOfSelectedBalls('三重号', selectedBalls) >= 1) {
+                return
+              }
+            } else if (subAlias == '二重号') {
+              if (subCountOfSelectedBalls('二重号', selectedBalls) >= 1) {
+                return
+              }
+            }
+            break
+          case '组选5':
+            if (subAlias == '四重号') {
+              if (subCountOfSelectedBalls('四重号', selectedBalls) >= 1) {
+                return
+              }
+            } else if (subAlias == '单号') {
+              if (subCountOfSelectedBalls('单号', selectedBalls) >= 1) {
+                return
+              }
+            }
+            break
+        }
+
+      }
+      break
+  }
+
+  return true
+}
+
+
+/**
  * 计算彩票下注时候，选中的条目数量是否符合要求
  *
  * @param showMsg 显示提示语
+ * return true 可以下注，false 不能再下注了
  */
 const checkBetCount = (showMsg?: boolean): boolean => {
   const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
@@ -709,6 +816,7 @@ const generateBetArray = (nextIssueData?: NextIssueData,
 export {
   gatherSelectedItems,
   calculateActualItemCount,
+  checkClickCount,
   checkBetCount,
   combineSelectedData,
   generateBetArray,

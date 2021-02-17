@@ -20,7 +20,7 @@ import { filterSelectedData, filterSelectedSubData } from '../../util/LotteryUti
 import { randomItem } from '../../util/ArithUtil'
 import { Play } from '../../../../public/network/Model/PlayOddDataModel'
 import { currentPlayOddData, currentTabGroupData, tabGroupData } from '../../util/select/ParseSelectedUtil'
-import { prepareSelectedBetData } from '../../board/tools/BetUtil'
+import { checkClickCount, prepareSelectedBetData } from '../../board/tools/BetUtil'
 import { DeviceEventEmitter } from 'react-native'
 import { EmitterTypes } from '../../../../public/define/EmitterTypes'
 
@@ -106,12 +106,6 @@ const UseLotteryHelper = () => {
   }, [tabIndex])
 
   /**
-   * 过滤出某个类别选中的数量
-   * @param alias
-   */
-  const subCountOfSelectedBalls = (alias?: string) => arrayLength(selectedBalls?.filter((item) => item?.alias == alias))
-
-  /**
    * 添加或移除选中的球列表
    * @param addBalls 选中球
    * @param removeBalls 取消的球
@@ -150,95 +144,10 @@ const UseLotteryHelper = () => {
         forceRemove(ballData)
 
       } else {
-        const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
-        //ugLog('arrayLength(selectedBalls) = ', arrayLength(selectedBalls))
-        const selCount = arrayLength(selectedBalls) //总共选中的数据
-        switch (playOddData?.code) {
-          case LhcCode.HX:  //合肖 最多只能选中11个
-            if (selCount > 10) {
-              return
-            }
-            break
-          case LhcCode.ZXBZ:  //自选不中 最多只能选中12个
-            if (selCount > 11) {
-              return
-            }
-            break
-          case LhcCode.WX:  //五行 或 五星
-            if (gameType == LCode.lhc) { //五行
-
-            } else if (gameType == LCode.cqssc) { //五星
-              const subAlias = ballData?.alias
-              const groupData = tabGroupData(tabIndex) //所处的页数据
-
-              switch (groupData[0]?.alias) {
-                case '组选120':
-                  if (selCount >= 5) {
-                    return
-                  }
-                  break
-                case '组选60':
-                  if (subAlias == '二重号') {
-                    if (subCountOfSelectedBalls('二重号') >= 1) {
-                      return
-                    }
-                  } else if (subAlias == '单号') {
-                    if (subCountOfSelectedBalls('单号') >= 3) {
-                      return
-                    }
-                  }
-                  break
-                case '组选30':
-                  if (subAlias == '二重号') {
-                    if (subCountOfSelectedBalls('二重号') >= 2) {
-                      return
-                    }
-                  } else if (subAlias == '单号') {
-                    if (subCountOfSelectedBalls('单号') >= 1) {
-                      return
-                    }
-                  }
-                  break
-                case '组选20':
-                  if (subAlias == '三重号') {
-                    if (subCountOfSelectedBalls('三重号') >= 1) {
-                      return
-                    }
-                  } else if (subAlias == '单号') {
-                    if (subCountOfSelectedBalls('单号') >= 2) {
-                      return
-                    }
-                  }
-                  break
-                case '组选10':
-                  if (subAlias == '三重号') {
-                    if (subCountOfSelectedBalls('三重号') >= 1) {
-                      return
-                    }
-                  } else if (subAlias == '二重号') {
-                    if (subCountOfSelectedBalls('二重号') >= 1) {
-                      return
-                    }
-                  }
-                  break
-                case '组选5':
-                  if (subAlias == '四重号') {
-                    if (subCountOfSelectedBalls('四重号') >= 1) {
-                      return
-                    }
-                  } else if (subAlias == '单号') {
-                    if (subCountOfSelectedBalls('单号') >= 1) {
-                      return
-                    }
-                  }
-                  break
-              }
-
-            }
-            break
+        if (checkClickCount(ballData, playOddData, selectedBalls)) {
+          forceAdd(ballData)
         }
 
-        forceAdd(ballData)
       }
     }
   }
