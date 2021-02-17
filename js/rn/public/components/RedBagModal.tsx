@@ -52,12 +52,6 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
         },
       ])
     }
-    // await APIRouter.activity_redBagDetail().then((value) => {
-    //   if (value.data.code == 0) {
-    //     setRedBagData(value.data)
-    //   }
-    // })
-   
   }
 
   useEffect(() => {

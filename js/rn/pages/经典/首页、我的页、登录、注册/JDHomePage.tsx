@@ -25,7 +25,7 @@ import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { skin1, Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, anyLength, arrayEmpty } from '../../../public/tools/Ext'
 import { deepMergeProps } from '../../../public/tools/FUtils'
 import { sc540, scale } from '../../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../../public/tools/tars'
@@ -100,6 +100,19 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
     v.willShowAnnouncement = false
   }
 
+  //显示hot 热图
+  function showHOT(item:any) {
+   
+    let isShow :boolean = false;
+    if ( anyEmpty(item.category)) {
+    isShow = item.isHot ==='1' ? true : false;
+    } else {
+      const flagType = parseInt(item.tipFlag)
+      flagType > 0 && flagType < 4 ? true :false;
+    }
+    return isShow;
+  }
+
   const renderGameSubTypeComponent = (games: any[]) => (
     <GameSubTypeComponent
       uniqueKey={'JDHomePage_GameSubTypeComponent'}
@@ -121,17 +134,18 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
         )
       }}
       renderGame={({ item, index, showGameSubType }) => {
-        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId, subtitle } = item
+        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId, subtitle,category } = item
         const flagType = parseInt(tipFlag)
+       
         return (
           <View style={styles.gameContainer}>
             <GameButton
               logo={icon || logo}
-              showSecondLevelIcon={subType ? true : false}
-              showRightTopFlag={flagType > 0 && flagType < 4}
+              showSecondLevelIcon={ arrayEmpty(subType) ? false : true}
+              showRightTopFlag={showHOT(item)}
               flagIcon={(() => {
                 if (hotIcon) return hotIcon
-                if (flagType > 0 && flagType < 4) return img_images('hot2x')
+                if (showHOT(item)) return img_images('hot2x')
                 if (flagType == 4) return img_platform('c116', 'zhongdajiang', 'gif')
                 return undefined
               })()}
@@ -162,7 +176,8 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               }}
               enableCircle={false}
               onPress={() => {
-                if (subType) {
+                anyLength
+                if (!arrayEmpty(subType)) {
                   const isShow = showGameSubType(index)
                   const row = Math.ceil(item?.subType?.length / 3)
                   const subTypeHeight = row * sc(55)
