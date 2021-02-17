@@ -70,8 +70,8 @@ export const getColorfulBallPic = (ballName: string) => {
  * @param ballName
  */
 export const getSZBallPic = (ballName: string) => {
-  const color = SzPics[Number(ballName)]
-  return !anyEmpty(color) ? color : SzPics[0]
+  const color = SzPics[Number(ballName)%7]
+  return !anyEmpty(color) ? color : SzPics[1]
 }
 
 /**
@@ -79,8 +79,8 @@ export const getSZBallPic = (ballName: string) => {
  * @param ballName
  */
 export const getVegetableBallPic = (ballName: string) => {
-  const color = VegetablePics[Number(ballName)]
-  return !anyEmpty(color) ? color : VegetablePics[0]
+  const color = VegetablePics[Number(ballName)%21]
+  return !anyEmpty(color) ? color : VegetablePics[1]
 }
 
 /**
@@ -88,8 +88,8 @@ export const getVegetableBallPic = (ballName: string) => {
  * @param ballName
  */
 export const getSQBallColor = (ballName: string) => {
-  const color = SquareColors[Number(ballName)]
-  return !anyEmpty(color) ? color : SquareColors[0]
+  const color = SquareColors[Number(ballName)%11]
+  return !anyEmpty(color) ? color : SquareColors[1]
 }
 
 export function factorial(m, n) {

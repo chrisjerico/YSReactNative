@@ -121,8 +121,9 @@ const LotteryContentComponent = () => {
       case CqsscCode.Q8:  //第8球/名
       case CqsscCode.Q9:  //第8球/名
       case CqsscCode.Q10:  //第10球/名
-      case Pk10Code.p1_5:  //1-5名
-      case Pk10Code.p6_10:  //6-10名
+      case Pk10Code.HE:  //冠亚和
+      case Pk10Code.P1_5:  //1-5名
+      case Pk10Code.P6_10:  //6-10名
         return <Cqssc1T5Component key={lotteryCode}
                                   playOddData={playOdds}/>
 

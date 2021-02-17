@@ -118,13 +118,13 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
           style={CommStyles.flex}>
 
       {//显示赔率标题
-        index == 0 && !anyEmpty(groupData?.exTitle) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
+        index == 0 && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
                                                              style={_styles.sub_big_title_container}>
           <Text key={key + ' text renderYZDW' + groupData?.id}
                 style={[
                   _styles.sub_big_title_text,
                   { color: Skin1.themeColor },
-                ]}>{groupData?.exTitle}</Text>
+                ]}>{`赔率: ${groupData?.exPlays[0]?.odds}`}</Text>
         </View>
       }
 
@@ -161,6 +161,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderAllBall()}

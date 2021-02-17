@@ -1,4 +1,3 @@
-
 import { anyEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
 import { ugLog } from '../../../public/tools/UgLog'
 
@@ -84,7 +83,7 @@ const randomItem = (list?: Array<any>, count: number = 1): Array<any> => {
  * @param sliderValue
  */
 const calculateSliderValue = (odds?: string, sliderValue?: number): string => {
-  if(anyEmpty(odds)) return null
+  if (anyEmpty(odds)) return null
 
   const oddsNumber = Number(odds)
   const newOdds = Math.ceil(oddsNumber)
@@ -97,7 +96,8 @@ const calculateSliderValue = (odds?: string, sliderValue?: number): string => {
  * @param list
  */
 const mapTotalCount = (list?: Map<any, number>): number => {
-  return dicNull(list) ? 0 :
+  return dicNull(list)
+    ? 0 :
     Object.values(list)?.reduce((previousValue, currentValue) => previousValue + currentValue)
 }
 

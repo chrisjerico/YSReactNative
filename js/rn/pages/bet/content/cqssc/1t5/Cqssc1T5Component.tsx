@@ -8,7 +8,7 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseCqssc1T5 from './UseCqssc1T5'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, CqsscCode, LCode } from '../../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, CqsscCode, LCode, Pk10Code } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import LotteryEBall from '../../../widget/LotteryEBall'
 import { arrayLength } from '../../../../../public/tools/Ext'
@@ -78,7 +78,8 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     let ball1 = groupData?.plays
     let ball2: Array<PlayData>
 
-    if (UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType == LCode.pk10) {//赛车的数字和汉字是反的
+    const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType
+    if (gameType == LCode.pk10) {//赛车的数字和汉字是反的
       if (arrayLength(ball1) > 10) {//分2组显示
         if (playOddData?.code == CqsscCode.Q3
           || playOddData?.code == CqsscCode.Q4
@@ -109,13 +110,22 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
                 { color: Skin1.themeColor },
               ]}>{groupData?.alias}</Text>
       </View>
+      {
+        gameType == LCode.pk10 && playOddData?.code == Pk10Code.HE
+          ?
+          <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
+                style={_styles.rect_container}>
+            {ball2?.map((item) => renderERect(groupData, item))}
+            {ball1?.map((item) => renderEBall(groupData, item))}
+          </View>
+          :
+          <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
+                style={_styles.rect_container}>
+            {ball1?.map((item) => renderEBall(groupData, item))}
+            {ball2?.map((item) => renderERect(groupData, item))}
+          </View>
 
-      <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
-            style={_styles.rect_container}>
-        {ball1?.map((item) => renderEBall(groupData, item))}
-        {ball2?.map((item) => renderERect(groupData, item))}
-      </View>
-
+      }
     </View>
   }
 
@@ -130,6 +140,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderAllBall()}
     </ScrollView>

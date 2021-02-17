@@ -9,7 +9,7 @@ import UseLhcHX from './UseLhcHX'
 import { PlayGroupData, ZodiacNum } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength, dicNull } from '../../../../../public/tools/Ext'
 import LotteryLineEBall from '../../../widget/LotteryLineEBall'
-import { BALL_CONTENT_HEIGHT} from '../../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { findZodiacByName } from '../../../util/LotteryUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { array } from 'prop-types'
@@ -46,21 +46,22 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param zodiac
    * @param index
    */
-  const renderEBall = (item?: PlayGroupData, zodiac?: ZodiacNum, index?: number) => <LotteryLineEBall key={key + 'renderEBall' + zodiac?.id}
-                                                                              item={{
-                                                                                id: zodiac?.id,
-                                                                                name: zodiac?.name,
-                                                                                zodiacItem: zodiac,
-                                                                              }}
-                                                                              selectedBalls={selectedBalls}
-                                                                              callback={() => addOrRemoveBall(zodiac, item?.enable)}/>
+  const renderEBall = (item?: PlayGroupData, zodiac?: ZodiacNum, index?: number) => <LotteryLineEBall
+    key={key + 'renderEBall' + zodiac?.id}
+    item={{
+      id: zodiac?.id,
+      name: zodiac?.name,
+      zodiacItem: zodiac,
+    }}
+    selectedBalls={selectedBalls}
+    callback={() => addOrRemoveBall(zodiac, item?.enable)}/>
   /**
    * 绘制 一行球
    * @param groupData
    */
   const renderLineBall = (groupData?: PlayGroupData) =>
     !dicNull(groupData) && <View key={key + groupData?.id}
-                                  style={CommStyles.flex}>
+                                 style={CommStyles.flex}>
 
       <View key={key + 'renderLineBall' + groupData?.id}
             style={_styles.sub_title_container}>
@@ -69,15 +70,16 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
               ]}>{
-          groupData?.alias + (arrayLength(selectedBalls) > 1 ?
-            `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 2]?.odds}）` :
-            '')
+          groupData?.alias + (
+            arrayLength(selectedBalls) <= 1 ? '' :
+              `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 2]?.odds}）`
+          )
         }</Text>
       </View>
 
       <View key={key + 'renderLineBall sub' + groupData?.id}
             style={_styles.ball_container}>
-        { playOddData?.pageData?.zodiacNums?.map((item, index) => renderEBall(groupData, item, index)) }
+        {playOddData?.pageData?.zodiacNums?.map((item, index) => renderEBall(groupData, item, index))}
       </View>
     </View>
 
@@ -92,6 +94,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderAllBall()}
     </ScrollView>

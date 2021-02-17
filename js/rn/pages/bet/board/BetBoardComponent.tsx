@@ -87,7 +87,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                                        style={_styles.extra_container}
                                        pointerEvents={'box-none'}>
     {
-      showSlider ?
+      showSlider
+        ?
         <View key={'renderSliderArea slider'}
               style={_styles.slider_container}>
 
@@ -128,7 +129,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 onPress={increaseSlider}
                 style={_styles.slider_minus}
                 name={'plus-circle'}/>
-        </View> :
+        </View>
+        :
         <View key={'renderSliderArea slider arrow up'}
               style={_styles.slider_button_container}>
           <Icon key={'renderSliderArea slider icon up'}
@@ -150,7 +152,10 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           {
             Object.keys(CHIP_OPTION).map((money) =>
               <TouchableWithoutFeedback key={'renderSliderArea chip' + money}
-                                        onPress={() => UGStore.dispatch({ type: 'reset', inputMoney: money == 'c' ? 0 : Number(money) })}>
+                                        onPress={() => UGStore.dispatch({
+                                          type: 'reset',
+                                          inputMoney: money == 'c' ? 0 : Number(money),
+                                        })}>
                 <FastImage key={'renderSliderArea chip' + money}
                            source={{ uri: CHIP_OPTION[money] }}
                            style={_styles.chip_img}
@@ -171,12 +176,14 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     ugLog('systemInfo?.chaseNumber', systemInfo?.chaseNumber)
     ugLog('systemInfo?.reBetShareModel', reBetShareModel)
 
-    return !dicNull(reBetShareModel) ?
+    return !dicNull(reBetShareModel)
+      ?
       <TouchableWithoutFeedback onPress={() => {
         UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
       }}>
         <Text style={_styles.bet_again}>追号</Text>
-      </TouchableWithoutFeedback> :
+      </TouchableWithoutFeedback>
+      :
       <Text style={[
         _styles.bet_again,
         {

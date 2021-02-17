@@ -43,8 +43,10 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
       if (gameType == LCode.cqssc && playOddData?.code == CqsscCode.WX && groupData?.alias == '单式') {//秒秒彩五行单式特殊处理
         selBalls = selectedBalls?.filter((item) => item?.exId?.startsWith(groupData?.alias))
       } else {
-        selBalls = !anyEmpty(groupData?.exPlays) ?
-          groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item)) :
+        selBalls = !anyEmpty(groupData?.exPlays)
+          ?
+          groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
+          :
           groupData?.plays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
       }
 

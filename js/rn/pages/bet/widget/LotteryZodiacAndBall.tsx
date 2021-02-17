@@ -138,7 +138,8 @@ const LotteryZodiacAndBall = ({
    */
   const renderBalls = (gameType?: string,
                        ballStr?: string) => {
-    let balls = anyEmpty(ballStr) ? [] :
+    let balls = anyEmpty(ballStr)
+      ? [] :
       ballStr.split(',').map((item) => doubleDigit(item)) //球的数组
     let lastBall = balls.pop() //最后一个球
     let ballStyle = lotteryBallStyle(gameType) //球的样式
@@ -192,9 +193,7 @@ const LotteryZodiacAndBall = ({
                 [...balls, lastBall]?.map((item, index) =>
                   <LotteryBall key={key + ballStr + item + index}
                                type={ballStyle}
-                               ballColor={index < balls.length - 1 ?
-                                 UGColor.RedColor5 :
-                                 UGColor.BlueColor6}
+                               ballColor={index < balls.length - 1 ? UGColor.RedColor5 : UGColor.BlueColor6}
                                ballNumber={item}/>)
               }
             </View>,

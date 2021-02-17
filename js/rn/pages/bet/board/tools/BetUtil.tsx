@@ -53,8 +53,10 @@ const filterShareItem = (betShareModel?: BetShareModel, exFlag?: string): BetSha
  */
 const prepareSelectedBetData = (playOddData?: PlayOddData, selectedBalls?: Array<PlayData | ZodiacNum>) => {
   //生成选中的数据，为下注作准备
-  const newSelectedModel = dicNull(UGStore.globalProps?.selectedData) ?
-    new Map<string, Map<string, Map<string, SelectedPlayModel>>>() :
+  const newSelectedModel = dicNull(UGStore.globalProps?.selectedData)
+    ?
+    new Map<string, Map<string, Map<string, SelectedPlayModel>>>()
+    :
     JSON.parse(JSON.stringify(UGStore.globalProps?.selectedData))
 
   switch (playOddData?.code) {

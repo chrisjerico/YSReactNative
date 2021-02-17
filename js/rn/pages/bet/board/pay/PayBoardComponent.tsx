@@ -49,8 +49,10 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
   const renderItem = (nameArr?: PlayNameArray,
                       betInfo?: BetLotteryData,
                       betShareModel?: BetShareModel) => {
-    const showName = !anyEmpty(nameArr?.playName1) ?
-      `[ ${nameArr?.playName1}- ${nameArr?.playName2 ?? ''} ]` :
+    const showName = !anyEmpty(nameArr?.playName1)
+      ?
+      `[ ${nameArr?.playName1}- ${nameArr?.playName2 ?? ''} ]`
+      :
       `[ ${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name ?? ''} ]`
     return (<View key={nameArr?.exFlag}
                   style={_styles.item_container}>

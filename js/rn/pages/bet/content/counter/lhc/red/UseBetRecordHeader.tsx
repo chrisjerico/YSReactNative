@@ -24,7 +24,7 @@ const UseBetRecordHeader = () => {
   /**
    * 下一期的数据有变化就请求历史记录
    */
-  useEffect(()=>{
+  useEffect(() => {
     showHistory && requestHistory()
   }, [nextIssueData])
 
@@ -47,10 +47,12 @@ const UseBetRecordHeader = () => {
     const lotteryId = nextIssueData?.id
     if (anyEmpty(lotteryId)) return null
 
-    const pms = nextIssueData?.lowFreq == '1' ?
+    const pms = nextIssueData?.lowFreq == '1'
+      ?
       {
         id: lotteryId,
-      } :
+      }
+      :
       {
         id: lotteryId,
         date: moment().format('YYYY-MM-DD'),

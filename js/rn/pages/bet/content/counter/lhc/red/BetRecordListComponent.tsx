@@ -120,12 +120,11 @@ const BetRecordListComponent = ({
             <View key={key + ballStr + 'ct'}
                   style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item, index) => <LotteryBall key={key + ballStr + item}
-                                                                        type={ballStyle}
-                                                                        ballColor={index < balls.length - 1 ?
-                                                                          UGColor.RedColor5 :
-                                                                          UGColor.BlueColor6}
-                                                                        ballNumber={item}/>)
+                [...balls, lastBall]?.map((item, index) =>
+                  <LotteryBall key={key + ballStr + item}
+                               type={ballStyle}
+                               ballColor={index < balls.length - 1 ? UGColor.RedColor5 : UGColor.BlueColor6}
+                               ballNumber={item}/>)
               }
             </View>,
           ]
@@ -184,7 +183,8 @@ const BetRecordListComponent = ({
       <View key={'red renderItemContent'}
             style={_styles.ball_item_container}>
         {
-          anyEmpty(item?.displayNumber) ? null :
+          anyEmpty(item?.displayNumber)
+            ? null :
             <Text key={'red renderItemContent' + item.displayNumber}
                   style={_styles.text_content_issue}
                   numberOfLines={2}>{item.displayNumber + '期'}</Text>
@@ -202,8 +202,10 @@ const BetRecordListComponent = ({
    */
   const renderDataList = () => {
     return (
-      arrayLength(historyData?.list) == 1 ?
-        renderItemContent(historyData?.list[0]) :
+      arrayLength(historyData?.list) == 1
+        ?
+        renderItemContent(historyData?.list[0])
+        :
         <FlatList key={'renderDataList' + historyData?.list}
                   showsVerticalScrollIndicator={false}
                   nestedScrollEnabled={true}
@@ -221,9 +223,11 @@ const BetRecordListComponent = ({
     <View key={'bet record list'}>
       {
         anyEmpty(historyData?.list)
-          ? <EmptyView key={'bet content empty'}
-                       style={{ paddingBottom: 0, paddingTop: scale(64) }}/>
-          : renderDataList()
+          ?
+          <EmptyView key={'bet content empty'}
+                     style={{ paddingBottom: 0, paddingTop: scale(64) }}/>
+          :
+          renderDataList()
       }
     </View>
   )
