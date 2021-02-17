@@ -348,7 +348,7 @@ export async function setRnPageInfo(force = false) {
   }
 
   if (skitType.indexOf('经典') != -1) {
-    // pages = pages.concat(JDPages.filter((ele) => ele.rnName == PageName.JDHomePage))
+     pages = pages.concat(JDPages.filter((ele) => ele.rnName == PageName.JDHomePage))
   }
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
