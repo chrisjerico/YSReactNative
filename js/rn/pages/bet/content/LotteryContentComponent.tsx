@@ -134,6 +134,10 @@ const LotteryContentComponent = () => {
         return <CqsscYZDWComponent key={lotteryCode}
                                    playOddData={playOdds}/>
 
+      case Pk10Code.GFWF:  //官方玩法
+        return <CqsscYZDWComponent key={lotteryCode}
+                                   playOddData={playOdds}/>
+
       case CqsscCode.DWD:  //定位胆
         // ugLog('playOdds = ', JSON.stringify(playOdds))
         return <CqsscDWDComponent key={lotteryCode}

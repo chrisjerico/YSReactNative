@@ -93,6 +93,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case CqsscCode.EZDW:  //二字定位
       case CqsscCode.SZDW:  //三字定位
       case CqsscCode.BDW:  //不定位
+      case Pk10Code.GFWF:  //官方玩法
         return parseYZDWData({ playOddData, zodiacNum })
 
       case LhcCode.WX://五行 或 五星
