@@ -101,14 +101,14 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
   }
 
   //显示hot 热图
-  function showHOT(item:any) {
-   
-    let isShow :boolean = false;
-    if ( anyEmpty(item.category)) {
-    isShow = item.isHot ==='1' ? true : false;
+  function showHOT(item: any) {
+
+    let isShow: boolean = false;
+    if (anyEmpty(item.category)) {
+      isShow = item.isHot === '1' ? true : false;
     } else {
       const flagType = parseInt(item.tipFlag)
-      flagType > 0 && flagType < 4 ? true :false;
+      flagType > 0 && flagType < 4 ? true : false;
     }
     return isShow;
   }
@@ -134,14 +134,14 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
         )
       }}
       renderGame={({ item, index, showGameSubType }) => {
-        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId, subtitle,category } = item
+        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId, subtitle, category } = item
         const flagType = parseInt(tipFlag)
-       
+
         return (
           <View style={styles.gameContainer}>
             <GameButton
               logo={icon || logo}
-              showSecondLevelIcon={ arrayEmpty(subType) ? false : true}
+              showSecondLevelIcon={arrayEmpty(subType) ? false : true}
               showRightTopFlag={showHOT(item)}
               flagIcon={(() => {
                 if (hotIcon) return hotIcon
@@ -247,6 +247,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       )}
       renderListHeaderComponent={() => (
         <>
+          {/* 好友推荐分享 */}
           <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '1'} containerStyle={{ marginLeft: sc(10), width: '96%', marginTop: sc(6) }} />
           {/* 导航按钮 */}
           <NavBlock
@@ -309,6 +310,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               )
             }}
           />
+          {/* 好友推荐分享 */}
           <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '0'} containerStyle={{ marginLeft: sc(10), width: '96%', marginBottom: sc(10) }} />
           {/* 腰部广告图 */}
           <BannerBlock
