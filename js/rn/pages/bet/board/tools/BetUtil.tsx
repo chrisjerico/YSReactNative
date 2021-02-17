@@ -1,5 +1,5 @@
 import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
-import { CqsscCode, LCode, LhcCode } from '../../const/LotteryConst'
+import { CqsscCode, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
 import * as React from 'react'
 import { ugError, ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
@@ -103,9 +103,7 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
       }
       break
     case LhcCode.WX:  //五行 或 五星
-      if (gameType == LCode.lhc) { //五行
-
-      } else if (gameType == LCode.cqssc) { //五星
+      if (gameType == LCode.cqssc) { //五星
         const subAlias = ballData?.alias
         const groupData = currentTabGroupData() //当前的页数据
 
@@ -174,6 +172,61 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
 
       }
       break
+    case Pk10Code.GFWF:  //官方玩法
+      const subAlias = ballData?.alias
+      const groupData = currentTabGroupData() //当前的页数据
+
+      switch (groupData[0]?.alias) {
+        case '猜冠军':
+          if (selCount >= 1) {
+            return
+          }
+          break
+        case '猜前二':
+        case '猜前三':
+          if (subAlias == '单式') {
+            if (subCountOfSelectedBalls('单式', selectedBalls) >= 2) {
+              return
+            }
+          } else {
+            const selFS1 = selectedBalls?.filter((item) => item?.alias == '冠军') //复式冠军选择了哪些
+            const selFS2 = selectedBalls?.filter((item) => item?.alias == '亚军') //复式亚军选择了哪些
+            const selFS3 = selectedBalls?.filter((item) => item?.alias == '季军') //复式季军选择了哪些
+            if (subAlias?.startsWith('冠军')) {
+              if (selFS2?.find((item) => item?.name == ballData?.name)
+                || selFS3?.find((item) => item?.name == ballData?.name)) {//不能选择重复的号
+                Toast('不能选择相同的号码')
+                return
+              }
+            } else if (subAlias?.startsWith('亚军')) {
+              if (selFS1?.find((item) => item?.name == ballData?.name)
+                || selFS3?.find((item) => item?.name == ballData?.name)) {//不能选择重复的号
+                Toast('不能选择相同的号码')
+                return
+              }
+            } else if (subAlias?.startsWith('季军')) {
+              if (selFS1?.find((item) => item?.name == ballData?.name)
+                || selFS2?.find((item) => item?.name == ballData?.name)) {//不能选择重复的号
+                Toast('不能选择相同的号码')
+                return
+              }
+            }
+          }
+          break
+        case '猜前四':
+          if (selCount >= 4) {
+            return
+          }
+          break
+        case '猜前五':
+          if (selCount >= 5) {
+            return
+          }
+          break
+      }
+
+      break
+
   }
 
   return true

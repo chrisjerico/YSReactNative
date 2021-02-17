@@ -57,9 +57,12 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
       }
       break
     case Pk10Code.GFWF:
-      if (play0Name == '猜前二' || play0Name == '猜前三') {
-        circleCount = 2
-        titleArr = [`单式`, `复式`]
+      if (play0Name == '猜前二') {
+        circleCount = 3
+        titleArr = [`单式`, `冠军`, `亚军`]
+      } else if (play0Name == '猜前三') {
+        circleCount = 4
+        titleArr = [`单式`, `冠军`, `亚军`, `季军`]
       } else {
         titleArr = [play0Name]
         circleCount = 1
