@@ -2,14 +2,16 @@ import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import {
   getColorfulBallPic,
   getHKballColor,
-  getSQBallColor, getSZBallPic, getVegetableBallPic,
+  getSQBallColor,
+  getSZBallPic,
+  getVegetableBallPic,
 } from '../../../pages/common/LottoBetting/PlayVIew/lottoSetting'
 import { anyEmpty } from '../../tools/Ext'
 import { scale } from '../../tools/Scale'
 import { UGColor } from '../../theme/UGThemeColor'
 import FastImage from 'react-native-fast-image'
 import React from 'react'
-import { ugLog } from '../../tools/UgLog'
+import {BallType} from '../../../pages/bet/const/LotteryConst'
 
 interface ILotteryBall {
   type?: string, //球的种类 BallType
@@ -135,17 +137,5 @@ const _styles = StyleSheet.create({
 
 })
 
-/**
- * 球的种类
- */
-const BallType = {
-  'round': '圆球', //彩色
-  'square': '方球', //彩色
-  'colorful': '花球', //多种图片
-  'pure': '纯色球', //纯色
-  'vegetable': '蔬菜', //蔬菜
-  'sz': '骰子', //骰子
-}
-
 export default LotteryBall
-export { BallType, ILotteryBall }
+export { ILotteryBall }

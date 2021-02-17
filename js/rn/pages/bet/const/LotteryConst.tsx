@@ -1,5 +1,4 @@
 import { scale } from '../../../public/tools/Scale'
-import { BallType } from '../../../public/components/view/LotteryBall'
 import { anyEmpty } from '../../../public/tools/Ext'
 
 const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
@@ -13,6 +12,17 @@ enum SingleOption {
   COMPLEX, //复式
 }
 
+/**
+ * 球的种类
+ */
+const BallType = {
+  'round': '圆球', //彩色
+  'square': '方球', //彩色
+  'colorful': '花球', //多种图片
+  'pure': '纯色球', //纯色
+  'vegetable': '蔬菜', //蔬菜
+  'sz': '骰子', //骰子
+}
 /**
  * 球的样式
  */
@@ -140,6 +150,7 @@ export {
   BALL_CONTENT_HEIGHT,
   SingleOption,
   BallStyles,
+  BallType,
   lotteryBallStyle,
   LCode,
   LhcCode,

@@ -5,11 +5,11 @@ import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { isSelectedBallOnId } from './it/ISelBall'
-import { BallType, ILotteryBall } from '../../../public/components/view/LotteryBall'
+import { ILotteryBall } from '../../../public/components/view/LotteryBall'
 import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { calculateSliderValue } from '../util/ArithUtil'
-import { lotteryBallStyle } from '../const/LotteryConst'
+import { BallType, lotteryBallStyle } from '../const/LotteryConst'
 
 interface ILotteryEBall {
   item?: PlayData // 要绘制的数据
