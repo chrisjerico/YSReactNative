@@ -8,7 +8,7 @@ import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOdd
  * X字定位
  * @constructor
  */
-const UseCqsscYZDW = () => {
+const UsePK10GFWF = () => {
 
   const {
     tabIndex,
@@ -34,5 +34,5 @@ const UseCqsscYZDW = () => {
   }
 }
 
-export default UseCqsscYZDW
+export default UsePK10GFWF
 

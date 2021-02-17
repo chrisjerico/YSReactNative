@@ -57,7 +57,6 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
       }
       break
     case Pk10Code.GFWF:
-      circleCount = 3
       if (play0Name == '猜前二' || play0Name == '猜前三') {
         circleCount = 2
         titleArr = [`单式`, `复式`]

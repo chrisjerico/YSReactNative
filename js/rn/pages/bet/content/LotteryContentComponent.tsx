@@ -27,6 +27,7 @@ import Cqssc1T5Component from './cqssc/1t5/Cqssc1T5Component'
 import CqsscWXComponent from './cqssc/wx/CqsscWXComponent'
 import CommStyles from '../../base/CommStyles'
 import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import PK10GFWFComponent from './pk10/gfwf/PK10GFWFComponent'
 
 const LotteryContentComponent = () => {
 
@@ -135,7 +136,7 @@ const LotteryContentComponent = () => {
                                    playOddData={playOdds}/>
 
       case Pk10Code.GFWF:  //官方玩法
-        return <CqsscYZDWComponent key={lotteryCode}
+        return <PK10GFWFComponent key={lotteryCode}
                                    playOddData={playOdds}/>
 
       case CqsscCode.DWD:  //定位胆

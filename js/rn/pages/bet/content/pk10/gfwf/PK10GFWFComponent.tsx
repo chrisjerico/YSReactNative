@@ -6,7 +6,7 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../../base/CommStyles'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import UseCqsscYZDW from './UseCqsscYZDW'
+import UsePK10GFWF from './UsePK10GFWF'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 import LotteryEBall  from '../../../widget/LotteryEBall'
@@ -21,7 +21,7 @@ import { UGStore } from '../../../../../redux/store/UGStore'
  * @param navigation
  * @constructor
  */
-const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
@@ -31,7 +31,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseCqsscYZDW()
+  } = UsePK10GFWF()
 
   //当前这一页的数据
   const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
@@ -259,4 +259,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default CqsscYZDWComponent
+export default PK10GFWFComponent
