@@ -1,5 +1,5 @@
 import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
-import { CqsscCode, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
+import { CqsscCode, LCode, LhcCode, Pk10Code, SingleOption } from '../../const/LotteryConst'
 import * as React from 'react'
 import { ugError, ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
@@ -241,114 +241,144 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
  */
 const checkBetCount = (showMsg?: boolean): boolean => {
   const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const singleTabIndex = UGStore.globalProps?.singleTabIndex //当前的彩种处于TAB的单式还是复式
   const curTabGroupData = currentTabGroupData() //当前界面
   const key = currentPlayOddData()?.code//只判断当前界面是否选中彩种即可
   const selectedData = UGStore.globalProps?.selectedData //选中的数据
 
-  switch (key) {
-    case LhcCode.WX:  //五行 或 五星
-      if (gameType == LCode.lhc) { //五行
-        const selCountMap = filterSelectedData(selectedData)
-        if (selCountMap[key] <= 0) {
-          showMsg && Toast('请选择玩法')
-          return false
-        }
-      } else if (gameType == LCode.cqssc) { //五星
-        for (let data of curTabGroupData) {
-          const subAlias = data?.exPlays[0]?.alias
-          const selCount = filterSelectedSubData(key, subAlias, selectedData)
-          ugLog('selCount = ', selCount, key)
-          switch (data?.alias) {
-            case '单式':
-              if (selCount < 1) {
-                Toast(`请输入1个以上的数据`)
+  switch (true) {
+    case key == LhcCode.WX && gameType == LCode.cqssc:  //五行 或 五星
+      for (let data of curTabGroupData) {
+        const subAlias = data?.exPlays[0]?.alias
+        const selCount = filterSelectedSubData(key, subAlias, selectedData)
+        ugLog('selCount = ', selCount, key)
+        switch (data?.alias) {
+          case '单式':
+            if (selCount < 1) {
+              Toast(`请输入1个以上的数据`)
+              return false
+            }
+            break
+          case '复式':
+            if (selCount < 1) {
+              Toast(`请选择至少1个《${subAlias}》数据`)
+              return false
+            }
+            break
+          case '组选120':
+            if (selCount != 5) {
+              Toast(`请选择5个《${subAlias}》数据`)
+              return false
+            }
+            break
+          case '组选60':
+            if (subAlias == '二重号') {
+              if (selCount != 1) {
+                Toast(`请选择1个《${subAlias}》数据`)
                 return false
               }
-              break
-            case '复式':
-              if (selCount < 1) {
-                Toast(`请选择至少1个《${subAlias}》数据`)
+            } else if (subAlias == '单号') {
+              if (selCount != 3) {
+                Toast(`请选择3个《${subAlias}》数据`)
                 return false
               }
-              break
-            case '组选120':
-              if (selCount != 5) {
-                Toast(`请选择5个《${subAlias}》数据`)
+            }
+            break
+          case '组选30':
+            if (subAlias == '二重号') {
+              if (selCount != 2) {
+                Toast(`请选择2个《${subAlias}》数据`)
                 return false
               }
-              break
-            case '组选60':
-              if (subAlias == '二重号') {
-                if (selCount != 1) {
-                  Toast(`请选择1个《${subAlias}》数据`)
-                  return false
-                }
-              } else if (subAlias == '单号') {
-                if (selCount != 3) {
-                  Toast(`请选择3个《${subAlias}》数据`)
-                  return false
-                }
+            } else if (subAlias == '单号') {
+              if (selCount != 1) {
+                Toast(`请选择1个《${subAlias}》数据`)
+                return false
               }
-              break
-            case '组选30':
-              if (subAlias == '二重号') {
-                if (selCount != 2) {
-                  Toast(`请选择2个《${subAlias}》数据`)
-                  return false
-                }
-              } else if (subAlias == '单号') {
-                if (selCount != 1) {
-                  Toast(`请选择1个《${subAlias}》数据`)
-                  return false
-                }
+            }
+            break
+          case '组选20':
+            if (subAlias == '三重号') {
+              if (selCount != 1) {
+                Toast(`请选择1个《${subAlias}》数据`)
+                return false
               }
-              break
-            case '组选20':
-              if (subAlias == '三重号') {
-                if (selCount != 1) {
-                  Toast(`请选择1个《${subAlias}》数据`)
-                  return false
-                }
-              } else if (subAlias == '单号') {
-                if (selCount != 2) {
-                  Toast(`请选择2个《${subAlias}》数据`)
-                  return false
-                }
+            } else if (subAlias == '单号') {
+              if (selCount != 2) {
+                Toast(`请选择2个《${subAlias}》数据`)
+                return false
               }
-              break
-            case '组选10':
-              if (subAlias == '三重号') {
-                if (selCount != 1) {
-                  Toast(`请选择1个《${subAlias}》数据`)
-                  return false
-                }
-              } else if (subAlias == '二重号') {
-                if (selCount != 1) {
-                  Toast(`请选择1个《${subAlias}》数据`)
-                  return false
-                }
+            }
+            break
+          case '组选10':
+            if (subAlias == '三重号') {
+              if (selCount != 1) {
+                Toast(`请选择1个《${subAlias}》数据`)
+                return false
               }
-              break
-            case '组选5':
-              if (subAlias == '四重号') {
-                if (selCount != 1) {
-                  Toast(`请选择1个《${subAlias}》数据`)
-                  return false
-                }
-              } else if (subAlias == '单号') {
-                if (selCount != 1) {
-                  Toast(`请选择1个《${subAlias}》数据`)
-                  return false
-                }
+            } else if (subAlias == '二重号') {
+              if (selCount != 1) {
+                Toast(`请选择1个《${subAlias}》数据`)
+                return false
               }
-              break
-          }
+            }
+            break
+          case '组选5':
+            if (subAlias == '四重号') {
+              if (selCount != 1) {
+                Toast(`请选择1个《${subAlias}》数据`)
+                return false
+              }
+            } else if (subAlias == '单号') {
+              if (selCount != 1) {
+                Toast(`请选择1个《${subAlias}》数据`)
+                return false
+              }
+            }
+            break
         }
       }
+
       break
 
-    case LhcCode.LX: //连肖
-    case LhcCode.LW: //连尾
+    case key == Pk10Code.GFWF:  //官方玩法
+      for (let [index, data] of curTabGroupData?.entries()) {
+        const subAlias = data?.exPlays[0]?.alias
+        const selCount = filterSelectedSubData(key, subAlias, selectedData)
+        ugLog('selCount = ', selCount, key)
+        switch (data?.alias) {
+          case '猜冠军':
+            if (selCount < 1) {
+              Toast(`请选择1个《${subAlias}》数据`)
+              return false
+            }
+            break
+          case '猜前二':
+          case '猜前三':
+            if (singleTabIndex == SingleOption.SINGLE && index == 0) {//单式只考虑第1组数据，23为 冠亚季军
+              if (selCount < 2) {
+                Toast(`请选择2个《${subAlias}》数据`)
+                return false
+              } else {
+
+              }
+            } else if (singleTabIndex == SingleOption.COMPLEX && index > 1) {//复式不考虑第1组数据，234为 冠亚季军
+              if (selCount < 1) {
+                Toast(`请选择1个《${subAlias}》数据`)
+                return false
+              } else {
+
+              }
+            }
+            break
+        }
+      }
+
+      break
+
+
+    case key == LhcCode.LX: //连肖
+    case key == LhcCode.LW: //连尾
     {
       for (let data of curTabGroupData) {
         const selCount = filterSelectedSubData(key, data?.alias, selectedData)
@@ -392,8 +422,8 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     }
       break
 
-    case CqsscCode.EZDW:  //二字定位
-    case CqsscCode.SZDW:  //三字定位
+    case key == CqsscCode.EZDW:  //二字定位
+    case key == CqsscCode.SZDW:  //三字定位
     {
       for (let data of curTabGroupData) {
         const selCount = filterSelectedSubData(key, data?.exPlays[0]?.alias, selectedData)
@@ -406,7 +436,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     }
       break
 
-    case LhcCode.HX://合肖
+    case key == LhcCode.HX://合肖
     {
       const selCountMap = filterSelectedData(selectedData)
       if (selCountMap[key] <= 1) {
@@ -415,7 +445,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       }
     }
       break
-    case LhcCode.LMA:  //连码
+    case key == LhcCode.LMA:  //连码
       for (let data of curTabGroupData) {
         const selCount = filterSelectedSubData(key, data?.alias, selectedData)
         ugLog('selCount = ', selCount, key, data?.alias)
@@ -450,7 +480,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
       }
       break
 
-    case LhcCode.ZXBZ:  //自选不中
+    case key == LhcCode.ZXBZ:  //自选不中
     {
       const selCountMap = filterSelectedData(selectedData)
       if (selCountMap[key] < 5) {

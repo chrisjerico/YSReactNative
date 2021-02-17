@@ -6,6 +6,14 @@ const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
 const BALL_CONTENT_HEIGHT = scale(720) //投注区域球的总体高度
 
 /**
+ * 单式复式玩法
+ */
+enum SingleOption {
+  SINGLE, //单式
+  COMPLEX, //复式
+}
+
+/**
  * 球的样式
  */
 const BallStyles = {
@@ -130,6 +138,7 @@ enum GameTab {
 export {
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
+  SingleOption,
   BallStyles,
   lotteryBallStyle,
   LCode,

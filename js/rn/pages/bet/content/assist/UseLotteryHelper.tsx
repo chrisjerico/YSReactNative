@@ -80,6 +80,10 @@ const UseLotteryHelper = () => {
       setSelectedBalls([])
     })
 
+    //Tab有变化就清除选择的数据
+    UGStore.dispatch({ type: 'reset', lotteryTabIndex: tabIndex })
+    setSelectedBalls([])
+
     return () => {
       lisRandom.remove()
       lisClear.remove()
@@ -96,14 +100,6 @@ const UseLotteryHelper = () => {
   //当前选中的第几页数据
   const currentPageData = (): Array<PlayGroupData> =>
     tabIndex < arrayLength(playOddData?.pageData?.groupTri) ? playOddData?.pageData?.groupTri[tabIndex] : []
-
-  /**
-   * Tab有变化就清除选择的数据
-   */
-  useEffect(() => {
-    UGStore.dispatch({ type: 'reset', lotteryTabIndex: tabIndex })
-    setSelectedBalls([])
-  }, [tabIndex])
 
   /**
    * 添加或移除选中的球列表

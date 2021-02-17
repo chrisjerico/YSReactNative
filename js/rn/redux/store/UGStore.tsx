@@ -41,6 +41,7 @@ export interface IGlobalState {
   //下注彩票信息相关数据
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   lotteryTabIndex?: number //当前的彩种处于TAB哪一页
+  singleTabIndex?: number //当前的彩种处于TAB的单式还是复式
   gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构
@@ -80,6 +81,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     //彩票数据
     act.lotteryId && (state.lotteryId = act.lotteryId)
     act.lotteryTabIndex >= 0 && (state.lotteryTabIndex = act.lotteryTabIndex)
+    act.singleTabIndex >= 0 && (state.singleTabIndex = act.singleTabIndex)
     act.gameTabIndex >= 0 && (state.gameTabIndex = act.gameTabIndex)
     act.currentColumnIndex >= 0 && (state.currentColumnIndex = act.currentColumnIndex)
     act.betShareModel && (state.betShareModel = act.betShareModel)
