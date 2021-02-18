@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import { CqsscCode, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
+import { CqsscCode, K3Code, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
 import parseTMData from './lhc/ParseTMDataUtil'
 import parseHXData from './lhc/ParseHXDataUtil'
 import parseZTData from './lhc/ParseZTDataUtil'
@@ -61,6 +61,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case gameCode == LhcCode.ZM: //正码
       case gameCode == LhcCode.ZT:  //正特
       case gameCode == LhcCode.TM && gameType == LCode.pcdd:  //蛋蛋特码
+      case gameCode == K3Code.SJ && gameType == LCode.jsk3:  //快三系列
         return parseZTData({ playOddData, zodiacNum })
 
       case gameCode == LhcCode.LMA:  //连码

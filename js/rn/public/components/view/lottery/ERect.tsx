@@ -47,6 +47,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(24),
     color: UGColor.TextColor7,
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   odds_text: {
     color: UGColor.TextColor7,

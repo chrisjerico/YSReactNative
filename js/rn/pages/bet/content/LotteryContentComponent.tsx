@@ -6,7 +6,15 @@ import UseLotteryContent from './UseLotteryContent'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
-import { BALL_CONTENT_HEIGHT, CqsscCode, LCode, LEFT_ITEM_HEIGHT, LhcCode, Pk10Code } from '../const/LotteryConst'
+import {
+  BALL_CONTENT_HEIGHT,
+  CqsscCode,
+  K3Code,
+  LCode,
+  LEFT_ITEM_HEIGHT,
+  LhcCode,
+  Pk10Code,
+} from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -94,6 +102,7 @@ const LotteryContentComponent = () => {
       case gameCode == LhcCode.ZM: //正码
       case gameCode == LhcCode.ZT:  //正特
       case gameCode == LhcCode.TM && gameType == LCode.pcdd:  //蛋蛋特码
+      case gameCode == K3Code.SJ && gameType == LCode.jsk3:  //快三系列
         return <LhcZTComponent key={gameCode}
                                playOddData={playOdds}/>
 

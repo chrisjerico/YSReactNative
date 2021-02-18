@@ -138,6 +138,16 @@ const Pk10Code = {
 }
 
 /**
+ * 快三
+ */
+const K3Code = {
+  SJ: 'SJ', //三军
+  HE: 'HE', //"冠亚和"
+  P1_5: '1-5', //"1-5名"
+  P6_10: '6-10', //"6-10"
+}
+
+/**
  * 当前TAB是 彩票0 还是 聊天室1
  */
 enum GameTab {
@@ -156,5 +166,6 @@ export {
   LhcCode,
   CqsscCode,
   Pk10Code,
+  K3Code,
   GameTab,
 }
