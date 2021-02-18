@@ -115,6 +115,7 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
         name: ballIndex,
         alias: titleArr[i],
         odds: showOdds,
+        enable: play0?.enable
       } as PlayData)
     })
     arrArr.push({...data,
