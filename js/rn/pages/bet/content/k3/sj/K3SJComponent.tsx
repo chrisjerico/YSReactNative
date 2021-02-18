@@ -1,29 +1,17 @@
-import {
-  ScrollView,
-  StyleProp,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../../public/tools/Scale'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../../base/CommStyles'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseK3SJ from './UseK3SJ'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { arrayLength } from '../../../../../public/tools/Ext'
-import LotteryEBall from '../../../widget/LotteryEBall'
 import LotteryERect from '../../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, K3Code } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
-import { UGStore } from '../../../../../redux/store/UGStore'
-import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
+import K3LineEBall from '../../../widget/K3LineEBall'
 
 /**
  * 快三 等等
@@ -68,13 +56,15 @@ const K3SJComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param item
    * @param ballInfo
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) =>
-    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
-                  item={ballInfo}
-                  selectedBalls={selectedBalls}
-                  containerStyle={_styles.ball_container}
-                  oddsStyle={_styles.ball_odds}
-                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) => {
+
+    return <K3LineEBall key={key + 'renderEBall' + ballInfo?.id}
+                        item={ballInfo}
+                        selectedBalls={selectedBalls}
+                        containerStyle={playOddData?.code == K3Code.SJ ? { flexDirection: 'row' } : null}
+                        callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
+  }
+
 
   /**
    * 绘制 三军
@@ -206,11 +196,6 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor3,
     fontSize: scale(22),
     paddingLeft: scale(6),
-  },
-  ball_container: {
-    width: scale(189),
-    alignItems: 'center',
-    paddingHorizontal: scale(16),
   },
   ball_odds: {
     fontSize: scale(20),

@@ -198,7 +198,7 @@ const _styles = StyleSheet.create({
     flex: 1,
   },
   ball_container: {
-    width: scale(189),
+    width: scale(195),
     alignItems: 'center',
     paddingHorizontal: scale(16),
   },

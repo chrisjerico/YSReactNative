@@ -52,15 +52,15 @@ const LotteryERect = ({
 
 const _styles = StyleSheet.create({
   ball_item_lm: {
-    width: scale(196),
+    width: scale(195),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: scale(16),
     // borderBottomRightRadius: scale(32),
     // borderTopLeftRadius: scale(32),
-    // borderTopRightRadius: scale(16),
-    // borderBottomLeftRadius: scale(16),
+    // borderTopRightRadius: scale(24),
+    // borderBottomLeftRadius: scale(24),
     borderRadius: scale(16),
     borderColor: UGColor.LineColor4,
     borderWidth: scale(0.5),

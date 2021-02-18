@@ -81,16 +81,17 @@ const LotteryEBall = (iBall: ILotteryEBall) => {
 
 const _styles = StyleSheet.create({
   ball_item_tm: {
-    width: scale(126),
+    width: scale(130),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: scale(8),
     marginVertical: scale(2),
-    borderBottomRightRadius: scale(32),
-    borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(24),
-    borderBottomLeftRadius: scale(24),
+    // borderBottomRightRadius: scale(32),
+    // borderTopLeftRadius: scale(32),
+    // borderTopRightRadius: scale(24),
+    // borderBottomLeftRadius: scale(24),
+    borderRadius: scale(16),
   },
 })
 

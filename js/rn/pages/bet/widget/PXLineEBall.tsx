@@ -10,8 +10,8 @@ import LotteryEBall from './LotteryEBall'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
 
-interface ILotteryEBall {
-  item?: ILotteryLineEBallItem // 要绘制的数据
+interface IPXEBall {
+  item?: IPXLineEBallItem // 要绘制的数据
   ballProps?: IEBall //球的属性
   selectedBalls?: Array<PlayData | ZodiacNum> // 已选中的数据
   ballStyle?: StyleProp<ViewStyle>
@@ -21,13 +21,14 @@ interface ILotteryEBall {
 /**
  * 和 PlayData 结构类似
  */
-interface ILotteryLineEBallItem {
+interface IPXLineEBallItem {
   id?: string; //708501
   name?: string; //01
   alias?: string;//特码A"
   code?: string;//01
   odds?: string;//42.5500
-  zodiacItem: ZodiacNum
+  enable?: string//1 //彩种是否开启
+  zodiacItem: ZodiacNum,
 }
 
 /**
@@ -45,7 +46,7 @@ const PXLineEBall = ({
                             selectedBalls,
                             ballStyle,
                             callback,
-                          }: ILotteryEBall) => {
+                          }: IPXEBall) => {
 
   let isSel = isSelectedBallOnId(selectedBalls, item)
 
@@ -82,6 +83,7 @@ const PXLineEBall = ({
                           item={{
                             id: item?.id + zodiacNumber,
                             name: zodiacNumber,
+                            enable: item?.enable,
                           }}/>)
         }
       </View>
@@ -96,10 +98,11 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: scale(2),
-    borderBottomRightRadius: scale(32),
-    borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(16),
-    borderBottomLeftRadius: scale(16),
+    // borderBottomRightRadius: scale(32),
+    // borderTopLeftRadius: scale(32),
+    // borderTopRightRadius: scale(24),
+    // borderBottomLeftRadius: scale(24),
+    borderRadius: scale(16),
     borderBottomWidth: scale(1),
     borderBottomColor: UGColor.LineColor4,
   },
@@ -115,5 +118,5 @@ const _styles = StyleSheet.create({
 })
 
 export default PXLineEBall
-export { ILotteryLineEBallItem }
+export { IPXLineEBallItem }
 
