@@ -227,7 +227,7 @@ const HomePage = ({
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={refreshTintColor} />}
           ListHeaderComponent={() => (
             <>
-              {/* 顶部横幅 */}
+              {/* 顶部横幅 +在线人数 */}
               {showBannerBlock && (
                 <BannerBlock
                   showOnlineNum={showOnlineNum}
@@ -304,7 +304,7 @@ const HomePage = ({
                   )
                 }}
               />
-              {/* 排行榜 */}
+              {/**<   排行榜 */}
               <AnimatedRankComponent {...animatedRankComponentStyles} type={rankingListType} rankLists={rankLists} />
               {/* 底部商标 */}
               <BottomLogo

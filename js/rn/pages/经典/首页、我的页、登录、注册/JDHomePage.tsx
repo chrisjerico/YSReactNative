@@ -108,7 +108,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       isShow = item.isHot === '1' ? true : false;
     } else {
       const flagType = parseInt(item.tipFlag)
-      flagType > 0 && flagType < 4 ? true : false;
+      isShow = flagType > 0 && flagType < 4 ? true : false;
     }
     return isShow;
   }
@@ -200,24 +200,24 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
-      goToPromotionPage={() => push(PageName.JDPromotionListPage)}
-      rankingListType={rankingListType}
+      goToPromotionPage={() => push(PageName.JDPromotionListPage)}/**<   去优惠活动列表页 */
+      rankingListType={rankingListType} /**<   是否显示中奖/投注排行榜 */
       loading={loading}
-      refreshing={refreshing}
-      refresh={refresh}
+      refreshing={refreshing}/**<   是否刷新数据 */
+      refresh={refresh}/**<   控制refreshing */
       pagekey={'JDHomePage'}
-      headerColor={skin1.themeColor}
-      noticeBlockStyles={noticeBlockStyles()}
-      noticeLogo={img_assets('notice')}
-      couponBlockStyles={couponBlockStyles}
-      couponStyles={{
+      headerColor={skin1.themeColor}/**<   nav头部颜色 */
+      noticeBlockStyles={noticeBlockStyles()}/**<   跑马灯样式 */
+      noticeLogo={img_assets('notice')}/**<   跑马灯图片 */
+      couponBlockStyles={couponBlockStyles}/**<   底部优惠活动样式 */
+      couponStyles={{ /**<   底部优惠活动cell样式 */
         containerStyle: {
           backgroundColor: skin1.homeContentColor, borderRadius: sc(12), marginVertical: sc(13), overflow: 'hidden', padding: sc(12), ...getWhiteBorderStyle()
         },
         titleStyle: { marginVertical: sc(3), fontSize: sc(23), fontWeight: '500' }
       }}
-      bannerBadgeStyle={{ paddingHorizontal: sc(15), top: -sc(225), height: sc(40), borderRadius: sc(20), backgroundColor: 'rgba(27,38,116,0.5)' }}
-      animatedRankComponentStyles={animatedRankComponentStyles()}
+      bannerBadgeStyle={{ paddingHorizontal: sc(15), top: -sc(225), height: sc(40), borderRadius: sc(20), backgroundColor: 'rgba(27,38,116,0.5)' }}/**<   在线人数样式 */
+      animatedRankComponentStyles={animatedRankComponentStyles()}/**<   底部排行榜样式 */
       containerStyle={styles.container}
       bottomLogoStyles={{
         containerStyle: {
@@ -228,9 +228,9 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
         },
         titleStyle: { fontSize: sc(18) },
         subTitleStyle: { fontSize: sc(18) },
-      }}
+      }}/**<   底部商标 */
       renderHeader={() => (
-        // 导航条
+        /**<   头部导航 */
         <HomeHeader
           uid={uid}
           name={usr}
@@ -245,7 +245,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
           onPressUser={goToUserCenterType.我的页}
         />
       )}
-      renderListHeaderComponent={() => (
+      renderListHeaderComponent={() => (/**<   跑马灯《=中间内容=》 */
         <>
           {/* 好友推荐分享 */}
           <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '1'} containerStyle={{ marginLeft: sc(10), width: '96%', marginTop: sc(6) }} />
@@ -334,7 +334,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               )
             }}
           />
-          {/* 游戏列表 */}
+          {/* 游戏列表  mobileHomeGameTypeSwitch 系统设置-内容管理-手机游戏图标，关闭开关时，只需隐藏前台分类tab，后台游戏图标内容不变 */}
           {mobileHomeGameTypeSwitch ? (
             <TabComponent
               c_ref={v}
