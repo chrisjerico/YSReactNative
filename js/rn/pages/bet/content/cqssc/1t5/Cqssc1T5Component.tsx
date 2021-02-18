@@ -135,17 +135,27 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
         gameType == LCode.pk10 && gameCode == Pk10Code.HE //北京赛车 冠亚和
         || gameType == LCode.xyft && gameCode == Pk10Code.HE //幸好飞艇 冠亚和
           ?
-          <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
-                style={_styles.rect_container}>
-            {ball2?.map((item) => renderERect(groupData, item))}
-            {ball1?.map((item) => renderEBall(groupData, item))}
-          </View>
+          [
+            <View key={key + ' sub2 renderAllBall 1' + groupData?.id + index}
+                  style={_styles.rect_container}>
+              {ball2?.map((item) => renderERect(groupData, item))}
+            </View>,
+            <View key={key + ' sub2 renderAllBall 2' + groupData?.id + index}
+                  style={_styles.rect_container}>
+              {ball1?.map((item) => renderEBall(groupData, item))}
+            </View>,
+          ]
           :
-          <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
-                style={_styles.rect_container}>
-            {ball1?.map((item) => renderEBall(groupData, item))}
-            {ball2?.map((item) => renderERect(groupData, item))}
-          </View>
+          [
+            <View key={key + ' sub2 renderAllBall 1' + groupData?.id + index}
+                  style={_styles.rect_container}>
+              {ball1?.map((item) => renderEBall(groupData, item))}
+            </View>,
+            <View key={key + ' sub2 renderAllBall 2' + groupData?.id + index}
+                  style={_styles.rect_container}>
+              {ball2?.map((item) => renderERect(groupData, item))}
+            </View>,
+          ]
 
       }
     </View>
