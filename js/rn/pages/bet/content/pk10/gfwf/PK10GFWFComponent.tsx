@@ -119,7 +119,8 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderOption = (item?: string, index?: number) =>
-    <TouchableWithoutFeedback onPress={() => setOptionIndex(index)}>
+    <TouchableWithoutFeedback key={item}
+                              onPress={() => setOptionIndex(index)}>
       <View style={_styles.option_item}>
         {
           optionIndex == index

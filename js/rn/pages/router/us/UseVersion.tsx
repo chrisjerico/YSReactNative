@@ -77,10 +77,12 @@ const UseVersion = ({
         break
       case 'android':
         siteId = await ANHelper.callAsync(CMD.APP_SITE)
+        //测试渠道不检查
+        siteId == 'txtTest' && callback && callback(true)
         break
     }
 
-    //ugLog('site = siteId', siteId)
+    ugLog('site = siteId', siteId)
     let domains = MultiDomainUrls[siteId]
     //ugLog('site = domains 7 ', domains)
 
