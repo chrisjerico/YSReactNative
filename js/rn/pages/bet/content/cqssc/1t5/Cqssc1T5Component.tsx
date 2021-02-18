@@ -109,6 +109,12 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
         }
       }
 
+    } else if (gameType == LCode.gdkl10) {//有的彩种 取前20个
+      if (arrayLength(ball1) > 10) {//分2组显示
+        ball1 = groupData?.plays.slice(0, 20)
+        ball2 = groupData?.plays.slice(20)
+      }
+
     } else {
       if (arrayLength(ball1) > 10) {//分2组显示
         ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
