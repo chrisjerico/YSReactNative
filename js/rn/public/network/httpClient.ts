@@ -89,7 +89,7 @@ httpClient.interceptors.response.use(
       }
     }
 
-    ugLog("http ful filled res 5 = ", JSON.stringify(response))
+    // ugLog("http ful filled res 5 = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {
     //   if (config?.expiredTime < 1000000000000000) {
