@@ -79,47 +79,45 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     let ball2: Array<PlayData>
 
     const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType
-    if (gameType == LCode.pk10) {//有的彩种 数字和汉字是反的
-      if (arrayLength(ball1) > 10) {//分2组显示
-        if (playOddData?.code == CqsscCode.Q1
-          || playOddData?.code == CqsscCode.Q2
-          || playOddData?.code == CqsscCode.Q3
-          || playOddData?.code == CqsscCode.Q4
-          || playOddData?.code == CqsscCode.Q5) { //前5名只取6个
+    const gameCode = playOddData?.code
+
+    if (arrayLength(ball1) > 10) {//分2组显示
+      if (gameType == LCode.pk10) {//有的彩种 数字和汉字是反的
+        if (gameCode == CqsscCode.Q1
+          || gameCode == CqsscCode.Q2
+          || gameCode == CqsscCode.Q3
+          || gameCode == CqsscCode.Q4
+          || gameCode == CqsscCode.Q5) { //前5名只取6个
           ball1 = groupData?.plays.slice(6, arrayLength(groupData?.plays))
           ball2 = groupData?.plays.slice(0, 6)
         } else {
           ball1 = groupData?.plays.slice(4, arrayLength(groupData?.plays))
           ball2 = groupData?.plays.slice(0, 4)
         }
-      }
 
-    } else if (gameType == LCode.xyft) {//有的彩种 数字和汉字是反的
-      if (arrayLength(ball1) > 10) {//分2组显示
-        if (playOddData?.code == CqsscCode.Q1
-          || playOddData?.code == CqsscCode.Q2
-          || playOddData?.code == CqsscCode.Q3
-          || playOddData?.code == CqsscCode.Q4
-          || playOddData?.code == CqsscCode.Q5) { //前5名只取6个
-          ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 6)
-          ball2 = groupData?.plays.slice(-6)
-        } else {
-          ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
-          ball2 = groupData?.plays.slice(-4)
-        }
-      }
+      } else if (gameType == LCode.xyft
+        && (gameCode == CqsscCode.Q1
+          || gameCode == CqsscCode.Q2
+          || gameCode == CqsscCode.Q3
+          || gameCode == CqsscCode.Q4
+          || gameCode == CqsscCode.Q5)) {//前5名只取6个
+        ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 6)
+        ball2 = groupData?.plays.slice(-6)
 
-    } else if (gameType == LCode.gdkl10) {//有的彩种 取前20个
-      if (arrayLength(ball1) > 10) {//分2组显示
+      } else if (gameType == LCode.gdkl10) {//有的彩种 取前20个
         ball1 = groupData?.plays.slice(0, 20)
         ball2 = groupData?.plays.slice(20)
-      }
 
-    } else {
-      if (arrayLength(ball1) > 10) {//分2组显示
+      } else if (gameType == LCode.qxc && gameCode == CqsscCode.Q7) {//有的彩种 取前中间的4个
+        ball1 = [...groupData?.plays.slice(0, 10), ...groupData?.plays.slice(14)]
+        ball2 = groupData?.plays.slice(10, 14)
+
+      } else {
         ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
         ball2 = groupData?.plays.slice(-4)
+
       }
+
     }
 
     return <View key={key + 'renderAllBall' + groupData?.id + index}
@@ -134,8 +132,8 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
               ]}>{groupData?.alias}</Text>
       </View>
       {
-        gameType == LCode.pk10 && playOddData?.code == Pk10Code.HE //北京赛车 冠亚和
-        || gameType == LCode.xyft && playOddData?.code == Pk10Code.HE //幸好飞艇 冠亚和
+        gameType == LCode.pk10 && gameCode == Pk10Code.HE //北京赛车 冠亚和
+        || gameType == LCode.xyft && gameCode == Pk10Code.HE //幸好飞艇 冠亚和
           ?
           <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
                 style={_styles.rect_container}>
