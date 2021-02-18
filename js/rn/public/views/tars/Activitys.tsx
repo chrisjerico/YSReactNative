@@ -53,12 +53,11 @@ export interface GoldenEgg {
   type: string
 }
 
-const Activitys = ({ refreshing, uid, redBag, roulette, redBagLogo, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
+const Activitys = ({ refreshing, uid, redBag, roulette, redBagLogo:redBagLogo1, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
 
   const [activitySettings, setActivitySettings] = useState<settings>()
   const { goldenEggLogo, redBagLogo:redBagLogo2, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
- 
 
   const [redDialog, setRedDialog] = useState(false)
   const [redBagData, setRedBagData] = useState ({})
@@ -69,7 +68,7 @@ const Activitys = ({ refreshing, uid, redBag, roulette, redBagLogo, floatAds, go
         refreshing={refreshing}
         containerStyle={{ top: scale(235), right: 0 }}
         show={redBag?.data}
-        logo={redBagLogo?.length>0 ?redBagLogo : (redBagLogo2?.length ? redBagLogo2 :Res.pig) }
+        logo={redBagLogo1?.length>0 ?redBagLogo1 : (redBagLogo2?.length ? redBagLogo2 :Res.pig) }
         type={0}
         onPress={async () => {
           ugLog('activitySettings ===',activitySettings)
