@@ -14,6 +14,7 @@ import settings from '../../network/NetworkRequest1/model/activity/settings'
 import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
 import RedBagModal from '../../components/RedBagModal'
 import { ugLog } from '../../tools/UgLog'
+import { Data, ScratchList } from '../../network/Model/ScratchListModel'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -24,7 +25,7 @@ interface ActivitysProps {
   roulette: Roulette[]
   redBag: RedBagDetailActivityModel
   goldenEggs: GoldenEgg[]
-  scratchs: unknown
+  scratchs: Data
   activitySetting?: ActivitySettingModel
 }
 
@@ -52,11 +53,11 @@ export interface GoldenEgg {
   type: string
 }
 
-const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
+const Activitys = ({ refreshing, redBagLogo, uid, isTest, redBag, roulette, floatAds, goldenEggs, scratchs, activitySetting }: ActivitysProps) => {
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
 
   const [activitySettings, setActivitySettings] = useState<settings>()
-  const { goldenEggLogo, redBagLogo, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
+  const { goldenEggLogo, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
   if (!activitySettings) {
     api.activity.settings().useSuccess((res) => {
       setActivitySettings(res?.data)
@@ -64,7 +65,6 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
   }
 
   const [redDialog, setRedDialog] = useState(false)
-
   return (
     <>
       <ActivityComponent
@@ -82,7 +82,7 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
         refreshing={refreshing}
         containerStyle={{ top: scale(355), right: 0 }}
         enableFastImage={false}
-        show={uid && roulette}
+        show={roulette && (roulette[0]?.param?.visitor_show == "0" || (uid && !isTest))}
         logo={anyString(turntableLogo) ?? icon_大转盘}
         onPress={() => {
           // 大转盘
@@ -95,16 +95,18 @@ const Activitys = ({ refreshing, uid, redBag, roulette, floatAds, goldenEggs, sc
         enableFastImage={false}
         show={uid && goldenEggs}
         logo={anyString(goldenEggLogo) ?? icon_砸金蛋}
+        show={goldenEggs && (goldenEggs[0]?.param?.visitor_show == "0" || (uid && !isTest))}
+        logo={icon_砸金蛋}
         onPress={goToUserCenterType.砸金蛋}
-      />
+        />
       <ActivityComponent
         refreshing={refreshing}
         containerStyle={{ top: scale(590), right: 0 }}
         enableFastImage={false}
-        show={uid && scratchs}
+        show={scratchs && (scratchs?.scratchList[0]?.param?.visitor_show == "0" || (uid && !isTest))}
         logo={anyString(scratchOffLogo) ?? icon_刮刮乐}
         onPress={goToUserCenterType.刮刮乐}
-      />
+        />
       <ActivityComponent
         refreshing={refreshing}
         containerStyle={{ top: scale(590), left: 0 }}
