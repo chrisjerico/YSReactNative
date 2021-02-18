@@ -54,20 +54,6 @@ export interface GoldenEgg {
   type: string
 }
 
-// <<<<<<< HEAD
-// const Activitys = ({ refreshing, redBagLogo, uid, isTest, redBag, roulette, floatAds, goldenEggs, scratchs, activitySetting }: ActivitysProps) => {
-//   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
-//
-//   const [activitySettings, setActivitySettings] = useState<settings>()
-//   const { goldenEggLogo, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
-//   if (!activitySettings) {
-//     api.activity.settings().useSuccess((res) => {
-//       setActivitySettings(res?.data)
-//     })
-//   }
-//
-//   const [redDialog, setRedDialog] = useState(false)
-// =======
 const Activitys = ({ refreshing, uid, isTest, redBag, roulette, redBagLogo:redBagLogo1, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
 
@@ -77,7 +63,6 @@ const Activitys = ({ refreshing, uid, isTest, redBag, roulette, redBagLogo:redBa
   const [redDialog, setRedDialog] = useState(false)
   const [redBagData, setRedBagData] = useState ({})
 
-// >>>>>>> android/arc/deposit
   return (
     <>
       <ActivityComponent
