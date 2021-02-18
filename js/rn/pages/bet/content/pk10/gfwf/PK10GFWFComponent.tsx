@@ -15,7 +15,7 @@ import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 
 
 /**
- * X字定位
+ * 官方玩法
  *
  * @param navigation
  * @constructor
@@ -119,7 +119,8 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderOption = (item?: string, index?: number) =>
-    <TouchableWithoutFeedback onPress={() => setOptionIndex(index)}>
+    <TouchableWithoutFeedback key={item}
+                              onPress={() => setOptionIndex(index)}>
       <View style={_styles.option_item}>
         {
           optionIndex == index
@@ -138,7 +139,7 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     </TouchableWithoutFeedback>
 
   /**
-   * 绘制 X字定位
+   * 绘制 官方玩法
    * @param groupData
    * @param index
    */
@@ -175,7 +176,7 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View key={key + ' ball renderGFWF' + groupData?.id}
-            style={_styles.ball_container}>
+            style={_styles.ball_parent_container}>
         {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
@@ -254,7 +255,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',

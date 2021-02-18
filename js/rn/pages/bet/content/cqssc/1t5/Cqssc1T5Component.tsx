@@ -52,7 +52,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
                   item={ballInfo}
                   selectedBalls={selectedBalls}
                   containerStyle={_styles.ball_container}
-                  ballType={{ size: scale(50) }}
+                  ballType={{ size: scale(46) }}
                   oddsStyle={_styles.ball_odds}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
@@ -78,25 +78,46 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     let ball1 = groupData?.plays
     let ball2: Array<PlayData>
 
-    const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType
-    if (gameType == LCode.pk10) {//赛车的数字和汉字是反的
-      if (arrayLength(ball1) > 10) {//分2组显示
-        if (playOddData?.code == CqsscCode.Q3
-          || playOddData?.code == CqsscCode.Q4
-          || playOddData?.code == CqsscCode.Q5) { //第 3 4 5 名只取6个
+    const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType
+    const gameCode = playOddData?.code
+
+    if (arrayLength(ball1) > 10) {//分2组显示
+      if (gameType == LCode.pk10) {//有的彩种 数字和汉字是反的
+        if (gameCode == CqsscCode.Q1
+          || gameCode == CqsscCode.Q2
+          || gameCode == CqsscCode.Q3
+          || gameCode == CqsscCode.Q4
+          || gameCode == CqsscCode.Q5) { //前5名只取6个
           ball1 = groupData?.plays.slice(6, arrayLength(groupData?.plays))
           ball2 = groupData?.plays.slice(0, 6)
         } else {
           ball1 = groupData?.plays.slice(4, arrayLength(groupData?.plays))
           ball2 = groupData?.plays.slice(0, 4)
         }
-      }
 
-    } else {
-      if (arrayLength(ball1) > 10) {//分2组显示
+      } else if (gameType == LCode.xyft
+        && (gameCode == CqsscCode.Q1
+          || gameCode == CqsscCode.Q2
+          || gameCode == CqsscCode.Q3
+          || gameCode == CqsscCode.Q4
+          || gameCode == CqsscCode.Q5)) {//前5名只取6个
+        ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 6)
+        ball2 = groupData?.plays.slice(-6)
+
+      } else if (gameType == LCode.gdkl10 || gameType == LCode.xync) {//有的彩种 取前20个
+        ball1 = groupData?.plays.slice(0, 20)
+        ball2 = groupData?.plays.slice(20)
+
+      } else if (gameType == LCode.qxc && gameCode == CqsscCode.Q7) {//有的彩种 取前中间的4个
+        ball1 = [...groupData?.plays.slice(0, 10), ...groupData?.plays.slice(14)]
+        ball2 = groupData?.plays.slice(10, 14)
+
+      } else {
         ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
         ball2 = groupData?.plays.slice(-4)
+
       }
+
     }
 
     return <View key={key + 'renderAllBall' + groupData?.id + index}
@@ -111,19 +132,30 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
               ]}>{groupData?.alias}</Text>
       </View>
       {
-        gameType == LCode.pk10 && playOddData?.code == Pk10Code.HE
+        gameType == LCode.pk10 && gameCode == Pk10Code.HE //北京赛车 冠亚和
+        || gameType == LCode.xyft && gameCode == Pk10Code.HE //幸好飞艇 冠亚和
           ?
-          <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
-                style={_styles.rect_container}>
-            {ball2?.map((item) => renderERect(groupData, item))}
-            {ball1?.map((item) => renderEBall(groupData, item))}
-          </View>
+          [
+            <View key={key + ' sub2 renderAllBall 1' + groupData?.id + index}
+                  style={_styles.rect_container}>
+              {ball2?.map((item) => renderERect(groupData, item))}
+            </View>,
+            <View key={key + ' sub2 renderAllBall 2' + groupData?.id + index}
+                  style={_styles.rect_container}>
+              {ball1?.map((item) => renderEBall(groupData, item))}
+            </View>,
+          ]
           :
-          <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
-                style={_styles.rect_container}>
-            {ball1?.map((item) => renderEBall(groupData, item))}
-            {ball2?.map((item) => renderERect(groupData, item))}
-          </View>
+          [
+            <View key={key + ' sub2 renderAllBall 1' + groupData?.id + index}
+                  style={_styles.rect_container}>
+              {ball1?.map((item) => renderEBall(groupData, item))}
+            </View>,
+            <View key={key + ' sub2 renderAllBall 2' + groupData?.id + index}
+                  style={_styles.rect_container}>
+              {ball2?.map((item) => renderERect(groupData, item))}
+            </View>,
+          ]
 
       }
     </View>
@@ -176,9 +208,9 @@ const _styles = StyleSheet.create({
     flex: 1,
   },
   ball_container: {
-    width: scale(189),
-    paddingHorizontal: scale(16),
+    width: scale(195),
     alignItems: 'center',
+    paddingHorizontal: scale(16),
   },
   ball_odds: {
     fontSize: scale(20),

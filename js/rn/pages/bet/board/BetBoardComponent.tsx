@@ -25,13 +25,14 @@ import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { dicNull } from '../../../public/tools/Ext'
 import { mapTotalCount } from '../util/ArithUtil'
 import { EmitterTypes } from '../../../public/define/EmitterTypes'
+import { useEffect } from 'react'
+import { IEmitterMessage } from './it/IEmitterMessage'
 
 /**
  * 彩票功能区入参
  */
 interface IBetBoardParams {
-  locked?: boolean // 是否封盘中
-  lockStr?: string // 封盘文字提醒
+  lockedItem?: IEmitterMessage // 是否封盘中
   style?: StyleProp<ViewStyle>
 }
 
@@ -41,9 +42,11 @@ interface IBetBoardParams {
  * @param navigation
  * @constructor
  */
-const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
+const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
 
   const {
+    lockBoard,
+    setLockBoard,
     gameTabIndex,
     betShareModel,
     userInfo,
@@ -59,6 +62,10 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
     ballSelected,
     checkShowBetPayment,
   } = UseBetBoard()
+
+  useEffect(() => {
+    setLockBoard(lockedItem)
+  }, [])
 
   /**
    * 加大拉条
@@ -294,7 +301,7 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
       <View style={_styles.bet_container}>
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
-        {locked ? renderLock(lockStr) : null}
+        {lockBoard?.locked ? renderLock(lockBoard?.hintText ?? '封盘中...') : null}
       </View>
     </View>
   )

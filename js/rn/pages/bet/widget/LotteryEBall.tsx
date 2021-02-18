@@ -37,7 +37,7 @@ const renderContent = ({
                        }: ILotteryEBall) => {
   let isSel = isSelectedBallOnId(selectedBalls, item) //优先使用本地生成的唯一识别ID
   const sliderValue = UGStore.globalProps?.sliderValue //退水拉条数据
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   return (
     <View key={'e ball content' + item?.id}
@@ -81,16 +81,17 @@ const LotteryEBall = (iBall: ILotteryEBall) => {
 
 const _styles = StyleSheet.create({
   ball_item_tm: {
-    width: scale(126),
+    width: scale(130),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: scale(8),
-    marginVertical: scale(2),
-    borderBottomRightRadius: scale(32),
-    borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(24),
-    borderBottomLeftRadius: scale(24),
+    marginVertical: scale(0.4),
+    // borderBottomRightRadius: scale(32),
+    // borderTopLeftRadius: scale(32),
+    // borderTopRightRadius: scale(24),
+    // borderBottomLeftRadius: scale(24),
+    borderRadius: scale(4),
   },
 })
 

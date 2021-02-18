@@ -42,6 +42,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     setBetResult,
     setLotteryId,
     playOddDetailData,
+    nextIssueData,
     loadedLottery,
     setLoadedLottery,
     chatArray,
@@ -144,21 +145,23 @@ const BetLotteryPage = ({ navigation, route }) => {
           <WebChatComponent/>
         </View>
 
-        <BetBoardComponent key={'lottery board'}
-                           locked={false}
-                           lockStr={'封盘中...'}/>
-        {!dicNull(betShareModel) && <PayBoardComponent key={'BetBoardComponent'}
-                                                       showCallback={(data) => {
-                                                         UGStore.dispatch({ type: 'reset', betShareModel: {} })
+        <BetBoardComponent key={'lottery board'}/>
 
-                                                         if (data?.betParams?.isInstant == '1') {//秒秒彩
-                                                           setBetResult(data)
-                                                         } else {
-                                                           setBetResult(null)
-                                                           showShareRoom(data)
-                                                         }
+        {!dicNull(betShareModel) && !dicNull(nextIssueData) && <PayBoardComponent key={'BetBoardComponent'}
+                                                                                  showCallback={(data) => {
+                                                                                    UGStore.dispatch({
+                                                                                      type: 'reset',
+                                                                                      betShareModel: {},
+                                                                                    })
 
-                                                       }}/>}
+                                                                                    if (data?.betParams?.isInstant == '1') {//秒秒彩
+                                                                                      setBetResult(data)
+                                                                                    } else {
+                                                                                      setBetResult(null)
+                                                                                      showShareRoom(data)
+                                                                                    }
+
+                                                                                  }}/>}
         {!dicNull(betResult) && <PayResultComponent key={'PayResultComponent'}
                                                     betData={betResult}
                                                     nextIssueData={UGStore.globalProps?.nextIssueData}
@@ -196,4 +199,4 @@ const _styles = StyleSheet.create({
 })
 
 export default BetLotteryPage
-export {IBetLotteryPage}
+export { IBetLotteryPage }

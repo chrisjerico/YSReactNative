@@ -158,7 +158,8 @@ const GameHallPage = ({ navigation, route, setProps }: UGBasePageProps) => {
    * @param item
    */
   const renderDataList = (item: HallGameData) =>
-    <HallGameListComponent tabLabel={item?.gameTypeName}
+    <HallGameListComponent key={item?.gameTypeName}
+                           tabLabel={item?.gameTypeName}
                            refreshing={refreshing}
                            gameData={item}
                            requestGameData={requestGameData}/>

@@ -6,7 +6,15 @@ import UseLotteryContent from './UseLotteryContent'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
-import { BALL_CONTENT_HEIGHT, CqsscCode, LCode, LEFT_ITEM_HEIGHT, LhcCode, Pk10Code } from '../const/LotteryConst'
+import {
+  BALL_CONTENT_HEIGHT,
+  CqsscCode,
+  K3Code,
+  LCode,
+  LEFT_ITEM_HEIGHT,
+  LhcCode,
+  Pk10Code,
+} from '../const/LotteryConst'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -28,6 +36,7 @@ import CqsscWXComponent from './cqssc/wx/CqsscWXComponent'
 import CommStyles from '../../base/CommStyles'
 import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import PK10GFWFComponent from './pk10/gfwf/PK10GFWFComponent'
+import K3SJComponent from './k3/sj/K3SJComponent'
 
 const LotteryContentComponent = () => {
 
@@ -82,100 +91,88 @@ const LotteryContentComponent = () => {
   const renderRightContent = () => {
 
     const playOdds = playOddDetailData?.playOdds[leftColumnIndex]
-    let gameType = playOddDetailData?.lotteryLimit?.gameType // 六合彩 秒秒秒彩 等等
-    let lotteryCode = playOdds?.code // 特码 连码 等等
-    ugLog('------------------lotteryCode---------------------------------', lotteryCode)
+    let gameType = playOddDetailData?.game?.gameType // 六合彩 秒秒秒彩 等等
+    let gameCode = playOdds?.code // 特码 连码 等等
+    ugLog('------------------gameCode---------------------------------', gameCode)
 
-    switch (lotteryCode) {
-      case LhcCode.TM:  //特码
-        return <LhcTMComponent key={lotteryCode}
+    switch (true) {
+      case gameCode == LhcCode.TM && gameType == LCode.lhc:  //六合彩特码
+        return <LhcTMComponent key={gameCode}
                                playOddData={playOdds}/>
 
-      case LhcCode.ZM: //正码
-      case LhcCode.ZT:  //正特
-        return <LhcZTComponent key={lotteryCode}
+      case gameCode == LhcCode.ZM: //正码
+      case gameCode == LhcCode.ZT:  //正特
+      case gameCode == LhcCode.TM && gameType == LCode.pcdd:  //蛋蛋特码
+        return <LhcZTComponent key={gameCode}
                                playOddData={playOdds}/>
 
-      case LhcCode.LMA:  //连码
-        return <LhcLMAComponent key={lotteryCode}
+      case gameCode != K3Code.DS && gameType == LCode.jsk3:  //快三系列
+        return <K3SJComponent key={gameCode}
+                               playOddData={playOdds}/>
+
+      case gameCode == LhcCode.LMA:  //连码
+        return <LhcLMAComponent key={gameCode}
                                 playOddData={playOdds}/>
 
-      case LhcCode.LM: //两面
-      case LhcCode.ZM1_6: //正码1T6
-      case LhcCode.SB: //色波
-      case LhcCode.ZOX://总肖
-      case CqsscCode.QZH:  //前中后
-      case CqsscCode.DN:  //斗牛
-      case CqsscCode.SH:  //梭哈
-      case CqsscCode.LHD:  //龙虎斗
-        return <LhcSBComponent key={lotteryCode}
-                               playOddData={playOdds}/>
+      case gameCode == LhcCode.WX && gameType == LCode.cqssc:// 五星
+        return <CqsscWXComponent key={gameCode}
+                                 playOddData={playOdds}/>
 
-      case CqsscCode.ALL:  //1-5球
-      case CqsscCode.Q1:  //第1球/名
-      case CqsscCode.Q2:  //第2球/名
-      case CqsscCode.Q3:  //第3球/名
-      case CqsscCode.Q4:  //第4球/名
-      case CqsscCode.Q5:  //第5球/名
-      case CqsscCode.Q6:  //第6球/名
-      case CqsscCode.Q7:  //第7球/名
-      case CqsscCode.Q8:  //第8球/名
-      case CqsscCode.Q9:  //第8球/名
-      case CqsscCode.Q10:  //第10球/名
-      case Pk10Code.HE:  //冠亚和
-      case Pk10Code.P1_5:  //1-5名
-      case Pk10Code.P6_10:  //6-10名
-        return <Cqssc1T5Component key={lotteryCode}
+      case gameCode == CqsscCode.ALL:  //1-5球
+      case gameCode == CqsscCode.Q1:  //第1球/名
+      case gameCode == CqsscCode.Q2:  //第2球/名
+      case gameCode == CqsscCode.Q3:  //第3球/名
+      case gameCode == CqsscCode.Q4:  //第4球/名
+      case gameCode == CqsscCode.Q5:  //第5球/名
+      case gameCode == CqsscCode.Q6:  //第6球/名
+      case gameCode == CqsscCode.Q7:  //第7球/名
+      case gameCode == CqsscCode.Q8:  //第8球/名
+      case gameCode == CqsscCode.Q9:  //第8球/名
+      case gameCode == CqsscCode.Q10:  //第10球/名
+      case gameCode == Pk10Code.HE:  //冠亚和
+      case gameCode == Pk10Code.P1_5:  //1-5名
+      case gameCode == Pk10Code.P6_10:  //6-10名
+        return <Cqssc1T5Component key={gameCode}
                                   playOddData={playOdds}/>
 
-      case CqsscCode.YZDW:  //一字定位
-      case CqsscCode.EZDW:  //二字定位
-      case CqsscCode.SZDW:  //三字定位
-      case CqsscCode.BDW:  //不定位
-        return <CqsscYZDWComponent key={lotteryCode}
+      case gameCode == CqsscCode.YZDW:  //一字定位
+      case gameCode == CqsscCode.EZDW:  //二字定位
+      case gameCode == CqsscCode.SZDW:  //三字定位
+      case gameCode == CqsscCode.BDW:  //不定位
+        return <CqsscYZDWComponent key={gameCode}
                                    playOddData={playOdds}/>
 
-      case Pk10Code.GFWF:  //官方玩法
-        return <PK10GFWFComponent key={lotteryCode}
-                                   playOddData={playOdds}/>
-
-      case CqsscCode.DWD:  //定位胆
-        // ugLog('playOdds = ', JSON.stringify(playOdds))
-        return <CqsscDWDComponent key={lotteryCode}
+      case gameCode == Pk10Code.GFWF:  //官方玩法
+        return <PK10GFWFComponent key={gameCode}
                                   playOddData={playOdds}/>
 
+      case gameCode == CqsscCode.DWD:  //定位胆
+        return <CqsscDWDComponent key={gameCode}
+                                  playOddData={playOdds}/>
 
-      case LhcCode.WX://五行 或 五星
-        if (gameType == LCode.lhc) { //五行
-          return <LhcSBComponent key={lotteryCode}
-                                 playOddData={playOdds}/>
-        } else if (gameType == LCode.cqssc) { //五星
-          return <CqsscWXComponent key={lotteryCode}
-                                   playOddData={playOdds}/>
-        }
-        break
-
-      case LhcCode.YX: //平特一肖
-      case LhcCode.WS: //平特尾数
-      case LhcCode.TWS: //头尾数
-      case LhcCode.TX: //特肖
-      case LhcCode.LX: //连肖
-      case LhcCode.LW: //连尾
-      case LhcCode.ZX:  //正肖
-        return <LhcPTYXComponent key={lotteryCode}
+      case gameCode == LhcCode.YX: //平特一肖
+      case gameCode == LhcCode.WS: //平特尾数
+      case gameCode == LhcCode.TWS: //头尾数
+      case gameCode == LhcCode.TX: //特肖
+      case gameCode == LhcCode.LX: //连肖
+      case gameCode == LhcCode.LW: //连尾
+      case gameCode == LhcCode.ZX:  //正肖
+        return <LhcPTYXComponent key={gameCode}
                                  playOddData={playOdds}/>
 
-      case LhcCode.HX:  //合肖
-        return <LhcHXComponent key={lotteryCode}
+      case gameCode == LhcCode.HX:  //合肖
+        return <LhcHXComponent key={gameCode}
                                playOddData={playOdds}/>
 
-      case LhcCode.ZXBZ:  //自选不中
-        return <LhcZXBZComponent key={lotteryCode}
+      case gameCode == LhcCode.ZXBZ:  //自选不中
+        return <LhcZXBZComponent key={gameCode}
                                  playOddData={playOdds}/>
+
+      default:
+        return <LhcSBComponent key={gameCode}
+                               playOddData={playOdds}/>
 
     }
-
-    return null
   }
 
   return (

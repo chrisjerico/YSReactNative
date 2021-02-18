@@ -35,7 +35,7 @@ const expandSelectedData = (selectedData?: Map<string, Map<string, Map<string, S
  * @param tabAlias TAB的名字，如 连肖里的 二连肖 三连肖
  */
 const calculateLimitCount = (code?: string, tabAlias?: string): number => {
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   let limitCount = -1
   switch (true) {

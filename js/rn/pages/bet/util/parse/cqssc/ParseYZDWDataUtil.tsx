@@ -40,6 +40,7 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
   let titleArr = [play0Name] //标题
   let textHint //提醒文字
   let showOdds = play0?.odds //有的彩种不需要显示赔率
+  let startIndex = 0 //起始编号，有的从 0 开始，有的从 1 开始
 
   switch (playOddData?.code) {
     case CqsscCode.EZDW:
@@ -57,6 +58,7 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
       }
       break
     case Pk10Code.GFWF:
+      startIndex = 1
       if (play0Name == '猜前二') {
         circleCount = 3
         titleArr = [`单式`, `冠军`, `亚军`]
@@ -107,12 +109,13 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
     let arr = new Array(
       10,
     ).fill(0).map((item, index) => {
-      let ballIndex = index.toString()
+      let ballIndex = (index + startIndex).toString()
       return ({
         id: `${titleArr[i]},${play0?.id},${ballIndex}`,
         name: ballIndex,
         alias: titleArr[i],
         odds: showOdds,
+        enable: play0?.enable
       } as PlayData)
     })
     arrArr.push({...data,

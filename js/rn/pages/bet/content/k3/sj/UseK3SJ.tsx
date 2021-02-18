@@ -1,14 +1,15 @@
 import * as React from 'react'
-import { useEffect } from 'react'
-import { anyEmpty } from '../../../../../public/tools/Ext'
+import { useEffect, useState } from 'react'
+import { PlayGroupData, PlayOddData, ZodiacNum } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 import UseLotteryHelper from '../../assist/UseLotteryHelper'
-import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+
 
 /**
- * 色波, 两面, 正码1-6, 总肖, 五行
+ * 快三 等等
  * @constructor
  */
-const UseLhcSB = () => {
+const UseK3SJ = () => {
 
   const {
     tabIndex,
@@ -20,14 +21,18 @@ const UseLhcSB = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    zodiacBallIds,
     currentPageData,
   } = UseLotteryHelper()
 
+  const [selectedZodiac, setSelectedZodiac] = useState<Array<ZodiacNum>>([]) //选中了哪些生肖
+
   return {
     setPlayOddData,
-    playOddDetailData,
     tabIndex,
     setTabIndex,
+    selectedZodiac,
+    setSelectedZodiac,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
@@ -35,5 +40,5 @@ const UseLhcSB = () => {
   }
 }
 
-export default UseLhcSB
+export default UseK3SJ
 

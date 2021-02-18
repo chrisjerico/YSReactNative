@@ -23,7 +23,7 @@ import { UGStore } from '../../../../../redux/store/UGStore'
  * @param selectedBalls
  */
 const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<PlayData | ZodiacNum>): Map<string, Map<string, SelectedPlayModel>> => {
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
   //选中了哪些球, 3层结构
   const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
 

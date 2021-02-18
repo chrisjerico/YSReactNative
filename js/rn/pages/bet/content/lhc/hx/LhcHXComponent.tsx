@@ -8,7 +8,7 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseLhcHX from './UseLhcHX'
 import { PlayGroupData, ZodiacNum } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength, dicNull } from '../../../../../public/tools/Ext'
-import LotteryLineEBall from '../../../widget/LotteryLineEBall'
+import PXLineEBall from '../../../widget/PXLineEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { findZodiacByName } from '../../../util/LotteryUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
@@ -46,7 +46,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param zodiac
    * @param index
    */
-  const renderEBall = (item?: PlayGroupData, zodiac?: ZodiacNum, index?: number) => <LotteryLineEBall
+  const renderEBall = (item?: PlayGroupData, zodiac?: ZodiacNum, index?: number) => <PXLineEBall
     key={key + 'renderEBall' + zodiac?.id}
     item={{
       id: zodiac?.id,
@@ -78,7 +78,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View key={key + 'renderLineBall sub' + groupData?.id}
-            style={_styles.ball_container}>
+            style={_styles.ball_parent_container}>
         {playOddData?.pageData?.zodiacNums?.map((item, index) => renderEBall(groupData, item, index))}
       </View>
     </View>
@@ -122,7 +122,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     padding: scale(4),
   },
   rect_container: {

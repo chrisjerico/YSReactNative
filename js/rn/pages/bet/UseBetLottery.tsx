@@ -24,6 +24,7 @@ const UseBetLottery = () => {
 
   const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
+  const nextIssueData = UGStore.globalProps?.nextIssueData//下期彩票数据
   const [loadedLottery, setLoadedLottery] = useState<Array<string>>([])//需要加载进来的彩票列表
   const [betResult, setBetResult] = useState<LotteryResultData>(null) //下注结果
 
@@ -75,6 +76,7 @@ const UseBetLottery = () => {
     setBetResult,
     setLotteryId,
     playOddDetailData,
+    nextIssueData,
     loadedLottery,
     setLoadedLottery,
     chatArray,

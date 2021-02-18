@@ -18,23 +18,30 @@ interface ITMData {
  * @param zodiacNum
  */
 const parseZTData = ({ playOddData, zodiacNum }: ITMData): PlayOddData => {
-  if (arrayLength(playOddData?.playGroups) % 2 == 0) {//长度是偶数
-    let newData = new Array<Array<PlayGroupData>>()
-    playOddData?.playGroups?.map((item, index) => {
-      if (index % 2 == 0) {
+  let newData = new Array<Array<PlayGroupData>>()
+  playOddData?.playGroups?.map((item, index) => {
+    if (index % 2 == 0) {
+      const page2Index = index + 1
+      if (page2Index < arrayLength(playOddData?.playGroups)) {//有的一页有2组数据
         newData.push([
           playOddData?.playGroups[index],
           playOddData?.playGroups[index + 1],
         ])
-      }
-    })
 
-    return {
-      ...playOddData,
-      pageData: {
-        groupTri: newData,
-      } as PagePlayOddData,
+      } else {
+        newData.push([
+          playOddData?.playGroups[index],
+        ])
+
+      }
     }
+  })
+
+  return {
+    ...playOddData,
+    pageData: {
+      groupTri: newData,
+    } as PagePlayOddData,
   }
 
   return playOddData

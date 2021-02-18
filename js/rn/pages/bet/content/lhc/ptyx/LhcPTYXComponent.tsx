@@ -10,7 +10,7 @@ import UseLhcPTYX from './UseLhcPTYX'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength, dicNull } from '../../../../../public/tools/Ext'
 import LotteryERect from '../../../widget/LotteryERect'
-import LotteryLineEBall from '../../../widget/LotteryLineEBall'
+import PXLineEBall from '../../../widget/PXLineEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { findZodiacByName } from '../../../util/LotteryUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
@@ -93,13 +93,13 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) => ballInfo?.exZodiac &&
-    <LotteryLineEBall key={key + 'renderEBall' + ballInfo?.id}
-                      item={{
+    <PXLineEBall key={key + 'renderEBall' + ballInfo?.id}
+                 item={{
                         ...ballInfo,
                         zodiacItem: ballInfo?.exZodiac,
                       }}
-                      selectedBalls={selectedBalls}
-                      callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
+                 selectedBalls={selectedBalls}
+                 callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 方格式
@@ -157,7 +157,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View key={key + 'renderLineBall sub' + groupData?.id}
-            style={_styles.ball_container}>
+            style={_styles.ball_parent_container}>
         {
           groupData?.plays?.map((item) => renderEBall(groupData, item))
         }
@@ -222,7 +222,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     padding: scale(4),
   },
   rect_container: {
