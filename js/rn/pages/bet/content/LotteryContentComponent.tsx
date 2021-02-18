@@ -106,14 +106,13 @@ const LotteryContentComponent = () => {
         return <LhcZTComponent key={gameCode}
                                playOddData={playOdds}/>
 
-      case gameType == LCode.jsk3:  //快三系列
+      case gameCode != K3Code.DS && gameType == LCode.jsk3:  //快三系列
         return <K3SJComponent key={gameCode}
                                playOddData={playOdds}/>
 
       case gameCode == LhcCode.LMA:  //连码
         return <LhcLMAComponent key={gameCode}
                                 playOddData={playOdds}/>
-
 
       case gameCode == LhcCode.WX && gameType == LCode.cqssc:// 五星
         return <CqsscWXComponent key={gameCode}

@@ -53,51 +53,6 @@ const K3SJComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const key = 'lottery page' + playOddData?.code
 
   /**
-   * 绘制 单个Tab
-   * @param item
-   * @param index
-   */
-  const renderTabItem = (item: Array<PlayGroupData>, index: number) =>
-    <TouchableWithoutFeedback key={key + item[0]?.alias}
-                              onPress={() => {
-                                UGStore.dispatch({ type: 'reset', selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>() })
-                                setSelectedBalls([])
-                                setTabIndex(index)
-                              }}>
-      <View key={key + item[0]?.id}
-            style={[
-              _styles.tab_item,
-              index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-            ]}>
-        <Text key={key + item[0]?.id}
-              style={[
-                _styles.tab_title_item_text,
-                index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-
-  /**
-   * 绘制tab，只有1个数据不绘制Tab
-   */
-  const renderTab = () => arrayLength(playOddData?.pageData?.groupTri) > 1 && <View key={key + 'tab'}
-                                                                                    style={_styles.tab_title_container}>
-    <ScrollView key={key + 'sv'}
-                style={_styles.sv_tab_container}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}>
-      <View key={key + 'content'}
-            style={_styles.tab_title_content}>
-        {playOddData?.pageData?.groupTri?.map(renderTabItem)}
-      </View>
-    </ScrollView>
-    <Icon key={key + 'tab Icon'}
-          size={scale(36)}
-          color={Skin1.themeColor}
-          name={'angle-double-left'}/>
-  </View>
-
-  /**
    * 绘制 方格式
    * @param item
    * @param ballInfo
@@ -122,7 +77,7 @@ const K3SJComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
-   * 绘制 正特
+   * 绘制 三军
    * @param groupData
    */
   const renderSJ1 = (groupData?: PlayGroupData) => <View key={key + 'renderSJ1' + groupData?.id}
@@ -145,7 +100,7 @@ const K3SJComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   /**
-   * 绘制 正特
+   * 绘制 三军
    * @param groupData
    */
   const renderSJ2 = (groupData?: PlayGroupData) => <View key={key + 'renderSJ2' + groupData?.id}
@@ -180,7 +135,6 @@ const K3SJComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 showsVerticalScrollIndicator={false}
                 nestedScrollEnabled={true}
                 style={[_styles.sv_container, style]}>
-      {renderTab()}
       {renderAllBall()}
     </ScrollView>
   )
