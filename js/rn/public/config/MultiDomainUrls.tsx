@@ -182,7 +182,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t111f.fhptcdn.com',
   ],
   'c084': [
-    'https://papghawshugposwaughwsoohu.com',
+    'https://x2appxz.com',
+    'https://ffx2888appxz.com',
+    'https://x2cpapp.com',
   ],
   'c085': [
     'https://www.jmhnnn1.cc',
