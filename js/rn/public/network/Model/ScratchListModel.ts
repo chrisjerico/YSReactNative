@@ -17,6 +17,7 @@ export interface ScratchList {
   showType: number
   start: string
   type: string
+  visitor_show: string
 }
 
 export interface ScratchPrizeArr {
@@ -29,6 +30,7 @@ export interface ScratchPrizeArr {
   scratchPrizeName: string
   scratchTimes: string
   sendTimes: string
+  visitor_show: string
 }
 
 export interface Param {
@@ -49,4 +51,5 @@ export interface Param {
   scrath_send_type: string
   time_between_end: string
   time_between_start: string
+  visitor_show: string
 }

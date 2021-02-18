@@ -21,6 +21,7 @@ import NoticeBlock from './NoticeBlock'
 import ProgressCircle from './ProgressCircle'
 import SafeAreaHeader from './SafeAreaHeader'
 import TouchableImage from './TouchableImage'
+import { Data, ScratchList } from '../../network/Model/ScratchListModel'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 
 interface HomePageProps {
@@ -46,7 +47,7 @@ interface HomePageProps {
   roulette: Roulette[]
   floatAds: FloatAd[]
   goldenEggs: GoldenEgg[]
-  scratchs: unknown
+  scratchs: Data
   showOnlineNum: boolean
   bannersInterval: number
   onlineNum: number
@@ -279,7 +280,7 @@ const HomePage = ({
                                     couponSelectedIndex = index
                                     couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
                                   }
-                                } 
+                                }
                                 else if(couponClickStyle === 'popup') {
                                   setShowPop(true)
                                 }
@@ -298,7 +299,7 @@ const HomePage = ({
                             break
                         }
 
-                       
+
                       }}
                     />
                   )
