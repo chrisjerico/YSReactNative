@@ -371,9 +371,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://2vip1000.com',
-    'https://11vip500.com',
-    'https://vip500000.com',
+    'https://22vip500.com',
+    'https://vip200000.com',
+    'https://4vip1000.com',
+    'https://33vip500.com',
+    'https://vip400000.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
