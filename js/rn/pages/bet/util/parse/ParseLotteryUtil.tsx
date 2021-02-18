@@ -48,73 +48,73 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
     if (anyEmpty(playOddData?.playGroups)) return playOddData
 
     const gameType = playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
-    const ltCode = playOddData?.code //彩种ID，特码 两面 等等
+    const gameCode = playOddData?.code //彩种ID，特码 两面 等等
 
     //注意有些彩种的 CODE 完全一样
     switch (true) {
-      case ltCode == LhcCode.TM:  //特码
+      case gameCode == LhcCode.TM:  //特码
         return parseTMData({ playOddData, zodiacNum })
 
-      case ltCode == LhcCode.HX://合肖
+      case gameCode == LhcCode.HX://合肖
         return parseHXData({ playOddData, zodiacNum })
 
-      case ltCode == LhcCode.ZM: //正码
-      case ltCode == LhcCode.ZT:  //正特
+      case gameCode == LhcCode.ZM: //正码
+      case gameCode == LhcCode.ZT:  //正特
         return parseZTData({ playOddData, zodiacNum })
 
-      case ltCode == LhcCode.LMA:  //连码
+      case gameCode == LhcCode.LMA:  //连码
         return parseLMAData({ playOddData, zodiacNum })
 
-      case ltCode == LhcCode.LM: //两面
-      case ltCode == LhcCode.ZM1_6: //正码1T6
-      case ltCode == LhcCode.SB: //色波
-      case ltCode == LhcCode.ZOX://总肖
-      case ltCode == CqsscCode.ALL:  //1-5球
-      case ltCode == CqsscCode.Q1:  //第1球/名
-      case ltCode == CqsscCode.Q2:  //第2球/名
-      case ltCode == CqsscCode.Q3:  //第3球/名
-      case ltCode == CqsscCode.Q4:  //第4球/名
-      case ltCode == CqsscCode.Q5:  //第5球/名
-      case ltCode == CqsscCode.Q6:  //第6球/名
-      case ltCode == CqsscCode.Q7:  //第7球/名
-      case ltCode == CqsscCode.Q8:  //第8球/名
-      case ltCode == CqsscCode.Q9:  //第8球/名
-      case ltCode == CqsscCode.Q10:  //第10球/名
-      case ltCode == Pk10Code.HE:  //冠亚和
-      case ltCode == Pk10Code.P1_5:  //1-5名
-      case ltCode == Pk10Code.P6_10:  //6-10名
-      case ltCode == CqsscCode.QZH:  //前中后
-      case ltCode == CqsscCode.DN:  //斗牛
-      case ltCode == CqsscCode.SH:  //梭哈
-      case ltCode == CqsscCode.LHD:  //龙虎斗
-      case ltCode == LhcCode.WX && gameType == LCode.lhc://五行
-        return parseSBData({ playOddData, zodiacNum })
-
-      case ltCode == CqsscCode.YZDW:  //一字定位
-      case ltCode == CqsscCode.EZDW:  //二字定位
-      case ltCode == CqsscCode.SZDW:  //三字定位
-      case ltCode == CqsscCode.BDW:  //不定位
-      case ltCode == Pk10Code.GFWF:  //官方玩法
-      case ltCode == LhcCode.WX && gameType == LCode.cqssc://五星
+      case gameCode == CqsscCode.YZDW:  //一字定位
+      case gameCode == CqsscCode.EZDW:  //二字定位
+      case gameCode == CqsscCode.SZDW:  //三字定位
+      case gameCode == CqsscCode.BDW:  //不定位
+      case gameCode == Pk10Code.GFWF:  //官方玩法
+      case gameCode == LhcCode.WX && gameType == LCode.cqssc://五星
         return parseYZDWData({ playOddData, zodiacNum })
 
-      case ltCode == CqsscCode.DWD:  //定位胆
+      case gameCode == LhcCode.LM: //两面
+      case gameCode == LhcCode.ZM1_6: //正码1T6
+      case gameCode == LhcCode.SB: //色波
+      case gameCode == LhcCode.ZOX://总肖
+      case gameCode == CqsscCode.ALL:  //1-5球
+      case gameCode == CqsscCode.Q1:  //第1球/名
+      case gameCode == CqsscCode.Q2:  //第2球/名
+      case gameCode == CqsscCode.Q3:  //第3球/名
+      case gameCode == CqsscCode.Q4:  //第4球/名
+      case gameCode == CqsscCode.Q5:  //第5球/名
+      case gameCode == CqsscCode.Q6:  //第6球/名
+      case gameCode == CqsscCode.Q7:  //第7球/名
+      case gameCode == CqsscCode.Q8:  //第8球/名
+      case gameCode == CqsscCode.Q9:  //第8球/名
+      case gameCode == CqsscCode.Q10:  //第10球/名
+      case gameCode == Pk10Code.HE:  //冠亚和
+      case gameCode == Pk10Code.P1_5:  //1-5名
+      case gameCode == Pk10Code.P6_10:  //6-10名
+      case gameCode == CqsscCode.QZH:  //前中后
+      case gameCode == CqsscCode.DN:  //斗牛
+      case gameCode == CqsscCode.SH:  //梭哈
+      case gameCode == CqsscCode.LHD:  //龙虎斗
+      case gameCode == LhcCode.WX://五行
+        return parseSBData({ playOddData, zodiacNum })
+
+      case gameCode == CqsscCode.DWD:  //定位胆
         return parseDWDData({ playOddData, zodiacNum })
 
-      case ltCode == LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case ltCode == LhcCode.TX: //特肖
-      case ltCode == LhcCode.ZX: //正肖
-      case ltCode == LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
-      case ltCode == LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case gameCode == LhcCode.YX: //平特一肖 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case gameCode == LhcCode.TX: //特肖
+      case gameCode == LhcCode.ZX: //正肖
+      case gameCode == LhcCode.WS://平特尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
+      case gameCode == LhcCode.TWS://头尾数 平特一肖 和 平特尾数 只有1个数组，头尾数有2个
         return parsePTYXData({ playOddData, zodiacNum })
 
-      case ltCode == LhcCode.LX: //连肖
+      case gameCode == LhcCode.LX: //连肖
         return parseLXData({ playOddData, zodiacNum })
 
-      case ltCode == LhcCode.LW: //连尾
+      case gameCode == LhcCode.LW: //连尾
         return parseLWData({ playOddData, zodiacNum })
 
-      case ltCode == LhcCode.ZXBZ:  //自选不中
+      case gameCode == LhcCode.ZXBZ:  //自选不中
         return parseZXBZData({ playOddData, zodiacNum })
     }
 
@@ -158,15 +158,15 @@ const combinePlayAndZodiac = ({ zodiacNums, playOddData }: IPageZodiac): PlayGro
  * @param groupData
  */
 const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): ZodiacNum[] => {
-  const ltCode = playOddData?.code
+  const gameCode = playOddData?.code
   switch (true) {
-    case ltCode == LhcCode.YX: //平特一肖
-    case ltCode == LhcCode.TX: //特肖
-    case ltCode == LhcCode.ZX: //正肖
+    case gameCode == LhcCode.YX: //平特一肖
+    case gameCode == LhcCode.TX: //特肖
+    case gameCode == LhcCode.ZX: //正肖
       return groupData?.plays.map((item, index) =>
         zodiacNums?.find((zodiac) =>
           zodiac?.name == item?.name))
-    case ltCode == LhcCode.LX: //连肖
+    case gameCode == LhcCode.LX: //连肖
       return groupData?.plays.map((item, index) => {
         let zodiacNum = zodiacNums?.find((zodiac) =>
           zodiac?.name == item?.alias)
@@ -175,7 +175,7 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
           alias: item?.alias,
         }
       })
-    case ltCode == LhcCode.WS://平特尾数
+    case gameCode == LhcCode.WS://平特尾数
       return groupData?.plays.map((item, index) => {
         return {
           id: item?.id,
@@ -184,7 +184,7 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
           nums: LotteryData.WS[index],
         } as ZodiacNum
       })
-    case ltCode == LhcCode.TWS://头尾数
+    case gameCode == LhcCode.TWS://头尾数
       return groupData?.plays.map((item, index) => {
         return {
           id: item?.id,
@@ -193,7 +193,7 @@ const parsePageZodiac = ({ zodiacNums, playOddData, groupData }: IPageZodiac): Z
           nums: LotteryData.WS[index],
         } as ZodiacNum
       })
-    case ltCode == LhcCode.LW://连尾
+    case gameCode == LhcCode.LW://连尾
       return groupData?.plays.map((item, index) => {
         return {
           id: item?.id,
