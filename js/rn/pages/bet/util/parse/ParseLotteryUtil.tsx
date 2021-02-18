@@ -60,6 +60,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
 
       case gameCode == LhcCode.ZM: //正码
       case gameCode == LhcCode.ZT:  //正特
+      case gameCode == LhcCode.TM && gameType == LCode.pcdd:  //蛋蛋特码
         return parseZTData({ playOddData, zodiacNum })
 
       case gameCode == LhcCode.LMA:  //连码

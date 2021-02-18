@@ -93,6 +93,7 @@ const LotteryContentComponent = () => {
 
       case gameCode == LhcCode.ZM: //正码
       case gameCode == LhcCode.ZT:  //正特
+      case gameCode == LhcCode.TM && gameType == LCode.pcdd:  //蛋蛋特码
         return <LhcZTComponent key={gameCode}
                                playOddData={playOdds}/>
 
