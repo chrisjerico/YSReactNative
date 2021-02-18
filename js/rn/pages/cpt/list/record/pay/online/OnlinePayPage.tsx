@@ -28,6 +28,7 @@ import { ugLog } from '../../../../../../public/tools/UgLog'
 import UGDropDownPicker from '../../../../../bank/add/view/UGDropdownPicker'
 import { useEffect, useState } from 'react'
 import { getBankIcon } from '../../../../../bank/list/UseManageBankList'
+import { clearAllHtml } from '../../../../../../public/tools/ui/UIUtil'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据
@@ -107,7 +108,7 @@ const OnlinePayPage = ({ navigation, route }) => {
     }
 
     return <View>
-      <Text style={_styles.choose_channel_title}>{showTitle}</Text>
+      <Text style={_styles.choose_channel_title}>{clearAllHtml(showTitle)}</Text>
       <Text style={_styles.choose_channel_hint}>{payBigData?.transferPrompt}</Text>
     </View>
   }

@@ -6,4 +6,15 @@ const clearExHtml = (text?: string): string => {
   return text?.replace(/font/g, 'span').replace(/color="#/g, 'style=\"color:#')
 }
 
-export {clearExHtml}
+/**
+ * 清除所有的HTML标签
+ * @param text
+ */
+const clearAllHtml = (text?: string): string => {
+  return text?.replace(/<[^>]+>/g, '')
+}
+
+export {
+  clearExHtml,
+  clearAllHtml,
+}
