@@ -31,7 +31,7 @@ interface ILotteryLineEBallItem {
 }
 
 /**
- * 一行彩票球+点击回调
+ * 平肖一行彩票球+点击回调
  * @param item 条目数据
  * @param ballProps 球的类型
  * @param selectedBalls 选中的球列表
@@ -39,7 +39,7 @@ interface ILotteryLineEBallItem {
  * @param callback 点击回调
  * @constructor
  */
-const LotteryLineEBall = ({
+const PXLineEBall = ({
                             item,
                             ballProps,
                             selectedBalls,
@@ -114,6 +114,6 @@ const _styles = StyleSheet.create({
   },
 })
 
-export default LotteryLineEBall
+export default PXLineEBall
 export { ILotteryLineEBallItem }
 
