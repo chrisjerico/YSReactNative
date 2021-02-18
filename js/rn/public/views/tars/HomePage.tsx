@@ -322,7 +322,7 @@ const HomePage = ({
             </>
           )}
         />
-        {/* 浮动按钮 */}
+        {/**<   浮动按钮 *//*  */}
         <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} activitySetting={activitySetting} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
         {renderRestComponent && renderRestComponent()}
       </>

@@ -335,7 +335,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
             }}
           />
           {/* 游戏列表  mobileHomeGameTypeSwitch 系统设置-内容管理-手机游戏图标，关闭开关时，只需隐藏前台分类tab，后台游戏图标内容不变 */}
-          {mobileHomeGameTypeSwitch ? (
+          {mobileHomeGameTypeSwitch ? (/**<  tab+ 游戏列表 */
             <TabComponent
               c_ref={v}
               tabGames={homeGames}
@@ -360,7 +360,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               focusTabColor={UGColor.RedColor5}
               renderScene={({ item }) => renderGameSubTypeComponent(item)}
             />
-          ) : (
+          ) : (/**<   游戏列表 */
               renderGameSubTypeComponent(homeGamesConcat)
             )}
         </>
