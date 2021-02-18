@@ -104,7 +104,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
         ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 6)
         ball2 = groupData?.plays.slice(-6)
 
-      } else if (gameType == LCode.gdkl10) {//有的彩种 取前20个
+      } else if (gameType == LCode.gdkl10 || gameType == LCode.xync) {//有的彩种 取前20个
         ball1 = groupData?.plays.slice(0, 20)
         ball2 = groupData?.plays.slice(20)
 
