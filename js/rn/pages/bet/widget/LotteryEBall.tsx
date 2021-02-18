@@ -86,12 +86,12 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: scale(8),
-    marginVertical: scale(2),
+    marginVertical: scale(0.4),
     // borderBottomRightRadius: scale(32),
     // borderTopLeftRadius: scale(32),
     // borderTopRightRadius: scale(24),
     // borderBottomLeftRadius: scale(24),
-    borderRadius: scale(16),
+    borderRadius: scale(4),
   },
 })
 

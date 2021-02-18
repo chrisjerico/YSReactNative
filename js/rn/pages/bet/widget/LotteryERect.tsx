@@ -61,7 +61,7 @@ const _styles = StyleSheet.create({
     // borderTopLeftRadius: scale(32),
     // borderTopRightRadius: scale(24),
     // borderBottomLeftRadius: scale(24),
-    borderRadius: scale(16),
+    borderRadius: scale(4),
     borderColor: UGColor.LineColor4,
     borderWidth: scale(0.5),
   },

@@ -267,10 +267,10 @@ const _styles = StyleSheet.create({
   start_game_button: {
     width: scale(180),
     height: scale(40),
-    borderTopLeftRadius: scale(38),
-    borderTopRightRadius: scale(16),
-    borderBottomRightRadius: scale(38),
-    borderBottomLeftRadius: scale(16),
+    borderTopLeftRadius: scale(32),
+    borderTopRightRadius: scale(24),
+    borderBottomRightRadius: scale(32),
+    borderBottomLeftRadius: scale(24),
     borderWidth: scale(1),
   },
   start_game_text: {
