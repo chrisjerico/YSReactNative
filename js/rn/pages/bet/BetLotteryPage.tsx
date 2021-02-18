@@ -145,9 +145,8 @@ const BetLotteryPage = ({ navigation, route }) => {
           <WebChatComponent/>
         </View>
 
-        <BetBoardComponent key={'lottery board'}
-                           locked={false}
-                           lockStr={'封盘中...'}/>
+        <BetBoardComponent key={'lottery board'}/>
+
         {!dicNull(betShareModel) && !dicNull(nextIssueData) && <PayBoardComponent key={'BetBoardComponent'}
                                                                                   showCallback={(data) => {
                                                                                     UGStore.dispatch({

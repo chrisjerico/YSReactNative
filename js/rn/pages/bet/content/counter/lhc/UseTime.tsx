@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import { NextIssueData } from '../../../../../public/network/Model/lottery/NextIssueModel'
+import { useEffect, useState } from 'react'
 import moment from 'moment'
 import PushHelper from '../../../../../public/define/PushHelper'
 import AppDefine from '../../../../../public/define/AppDefine'
@@ -9,6 +8,9 @@ import APIRouter from '../../../../../public/network/APIRouter'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { doubleDigit } from '../../../../../public/tools/StringUtil'
+import { DeviceEventEmitter } from 'react-native'
+import { EmitterTypes } from '../../../../../public/define/EmitterTypes'
+import { IEmitterMessage } from '../../../board/it/IEmitterMessage'
 
 /**
  * 开奖时间显示
@@ -68,6 +70,7 @@ const UseTime = () => {
 
     if (res?.code == 0) {
       UGStore.dispatch({ type: 'merge', nextIssueData: res?.data })
+      DeviceEventEmitter.emit(EmitterTypes.LOCK_BOARD, null)
     }
 
     return res?.code
@@ -85,6 +88,7 @@ const UseTime = () => {
       setDisplayCloseTime(`${closeHour}:${closeMinute}:${closeSecond}`)
 
     } else {
+      DeviceEventEmitter.emit(EmitterTypes.LOCK_BOARD, { locked: true, hintText: '封盘中...' } as IEmitterMessage)
       setDisplayCloseTime(`封盘中`)
     }
 
@@ -95,6 +99,7 @@ const UseTime = () => {
 
       setDisplayOpenTime(`${openHour}:${openMinute}:${openSecond}`)
     } else {
+      DeviceEventEmitter.emit(EmitterTypes.LOCK_BOARD, { locked: true, hintText: '开奖中...' } as IEmitterMessage)
       setDisplayOpenTime(`开奖中`)
     }
 
