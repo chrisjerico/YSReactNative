@@ -60,6 +60,7 @@ const createBalls = (data?: PlayGroupData): Array<PlayData> => {
         id: play0?.id + ballIndex,
         name: ballIndex,
         odds: play0?.odds,
+        enable: play0?.enable
       } as PlayData)
     })
   }
