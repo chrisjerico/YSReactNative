@@ -45,7 +45,6 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderERect = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) => {
-    // let gameType = playOddDetailData?.lotteryLimit?.gameType // 六合彩 秒秒秒彩 等等
     let gameType = playOddDetailData?.game?.gameType // 六合彩 秒秒秒彩 等等
 
     return <LotteryERect key={key + 'renderERect' + ballInfo?.id + index}

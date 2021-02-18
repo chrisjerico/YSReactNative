@@ -91,7 +91,7 @@ const LotteryContentComponent = () => {
   const renderRightContent = () => {
 
     const playOdds = playOddDetailData?.playOdds[leftColumnIndex]
-    let gameType = playOddDetailData?.lotteryLimit?.gameType // 六合彩 秒秒秒彩 等等
+    let gameType = playOddDetailData?.game?.gameType // 六合彩 秒秒秒彩 等等
     let gameCode = playOdds?.code // 特码 连码 等等
     ugLog('------------------gameCode---------------------------------', gameCode)
 

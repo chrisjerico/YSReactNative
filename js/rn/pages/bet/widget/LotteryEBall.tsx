@@ -37,7 +37,7 @@ const renderContent = ({
                        }: ILotteryEBall) => {
   let isSel = isSelectedBallOnId(selectedBalls, item) //优先使用本地生成的唯一识别ID
   const sliderValue = UGStore.globalProps?.sliderValue //退水拉条数据
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   return (
     <View key={'e ball content' + item?.id}

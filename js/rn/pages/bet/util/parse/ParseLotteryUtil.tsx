@@ -47,7 +47,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
   return playOddDetailData?.playOdds?.map((playOddData) => {
     if (anyEmpty(playOddData?.playGroups)) return playOddData
 
-    const gameType = playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+    const gameType = playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
     const gameCode = playOddData?.code //彩种ID，特码 两面 等等
 
     //注意有些彩种的 CODE 完全一样

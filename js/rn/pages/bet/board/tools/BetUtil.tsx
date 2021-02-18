@@ -89,7 +89,7 @@ const prepareSelectedBetData = (playOddData?: PlayOddData, selectedBalls?: Array
  * return true 可以选择, false 不能再选择了
  */
 const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddData, selectedBalls?: Array<PlayData | ZodiacNum>): boolean => {
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
   const selCount = arrayLength(selectedBalls) //总共选中的数据
   const gameCode = playOddData?.code
   const subAlias = ballData?.alias
@@ -242,7 +242,7 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
  * return true 可以下注，false 不能再下注了
  */
 const checkBetCount = (showMsg?: boolean): boolean => {
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
   const singleTabIndex = UGStore.globalProps?.singleTabIndex //当前的彩种处于TAB的单式还是复式
   const curTabGroupData = currentTabGroupData() //当前界面
   const gameCode = currentPlayOddData()?.code//只判断当前界面是否选中彩种即可
@@ -540,7 +540,7 @@ const calculateActualItemCount = (selectedCombineData?: Array<SelectedPlayModel>
  * @param selectedData 选中的数据
  */
 const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Array<SelectedPlayModel> => {
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
   const singleTabIndex = UGStore.globalProps?.singleTabIndex //当前的彩种处于TAB的单式还是复式
 
   return Object.keys(selectedData).map((gameCode) => {
@@ -683,7 +683,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
  */
 const generateBetNameArray = (nextIssueData?: NextIssueData,
                               combinationData?: Array<SelectedPlayModel>): Array<PlayNameArray> => {
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   const playNameArray: Array<PlayNameArray> = [] // 下注彩种条目名字 如特码B
   combinationData?.map((selModel, index) => {
@@ -759,7 +759,7 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
 const generateBetInfoArray = (nextIssueData?: NextIssueData,
                               inputMoney?: string,
                               combinationData?: Array<SelectedPlayModel>): Array<BetLotteryData> => {
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   const betBeanArray: Array<BetLotteryData> = [] //下注数据
   combinationData?.map((selModel) => {

@@ -78,7 +78,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     let ball1 = groupData?.plays
     let ball2: Array<PlayData>
 
-    const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType
+    const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType
     const gameCode = playOddData?.code
 
     if (arrayLength(ball1) > 10) {//分2组显示
