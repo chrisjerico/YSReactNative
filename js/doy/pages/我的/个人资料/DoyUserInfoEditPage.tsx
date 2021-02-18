@@ -63,7 +63,7 @@ export const DoyUserInfoEditPage = ({ setProps }: UGBasePageProps) => {
     }, {
       title: '手机号码',
       content: '+86 15512345678',
-      onPress: () => { push(PageName.DoyPhoneNumberPage) }
+      onPress: () => { push(PageName.DoyPhoneNumberPage1) }
     }, {
       title: '个人签名',
       onPress: () => { push(PageName.DoySelfIntroductionPage) }

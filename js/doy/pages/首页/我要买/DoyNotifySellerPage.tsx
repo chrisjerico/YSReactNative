@@ -8,8 +8,9 @@ import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_platform, img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText14, DoyText15, DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText14, DoyText15 } from "../../../public/Button之类的基础组件/DoyButton"
 import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../../public/Button之类的基础组件/DoyDropDownPicker"
+import { DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 const dateList = ['2021/01/26 15:30', '2021/01/26 14:00', '2021/01/26 14:30', '2021/01/26 15:00', '2021/01/26 15:30']

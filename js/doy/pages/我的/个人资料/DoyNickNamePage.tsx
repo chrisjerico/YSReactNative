@@ -7,7 +7,8 @@ import { pop, push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { hideLoading, showLoading } from "../../../../rn/public/widget/UGLoadingCP"
-import { DoyText14, DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyText14 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 

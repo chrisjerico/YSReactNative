@@ -44,7 +44,7 @@ export const DoyDropDownPicker1 = (p: DoyDropDownPickerProps) => {
       containerStyle={[{ marginTop: sc(12), }, containerStyle]}
       dropDownStyle={[{
         borderColor: 'transparent', marginTop: sc(15), paddingVertical: sc(10),
-        shadowColor: '#ddd', shadowRadius: sc(3), shadowOffset: { width: 0, height: 3 }, shadowOpacity: 1,
+        shadowColor: '#555', shadowRadius: sc(3), shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2,
         backgroundColor: backgroundColor
       }, dropDownStyle]}
       labelStyle={[{ fontSize: sc(14), fontWeight: '700', color: textColor1, marginTop: sc(2) }, labelStyle]}
@@ -55,7 +55,7 @@ export const DoyDropDownPicker1 = (p: DoyDropDownPickerProps) => {
     />
     {showUpArrow && <AntDesign name='caretup' color={backgroundColor} style={{
       height: sc(7), marginBottom: sc(-7), aspectRatio: 2, left: sc(8), top: sc(7),
-      shadowColor: '#ccc', shadowRadius: sc(2), shadowOffset: { width: 0, height: 1 }, shadowOpacity: 1,
+      shadowColor: '#555', shadowRadius: sc(2), shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.2,
     }} />}
   </View>
 }

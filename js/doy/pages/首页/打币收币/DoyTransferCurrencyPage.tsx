@@ -12,13 +12,12 @@ import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText14, DoyText16, DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText14, DoyText16, } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyTextInput"
 import { DoyEnterPasswordAlertCP } from "./cp/DoyEnterPasswordAlertCP"
 
 
 const sc = sc375
-
-
 
 export const DoyTransferCurrencyPage = ({ setProps, setNavbarProps }: UGBasePageProps) => {
   const { themeColor, navBarBgColor } = skin1

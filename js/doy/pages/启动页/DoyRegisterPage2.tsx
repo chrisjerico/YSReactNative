@@ -12,6 +12,7 @@ import { sc375 } from "../../../rn/public/tools/Scale"
 import UGTextField from "../../../rn/public/widget/UGTextField"
 import { img_doy } from "../../../rn/Res/icon"
 import { DoyButton1, DoyText14, DoyText20 } from "../../public/Button之类的基础组件/DoyButton"
+import { DoyTextInput1, DoyTextInputPwd, DoyTextInputSms } from "../../public/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 interface DoyRegisterVars {
@@ -25,35 +26,19 @@ export const DoyRegisterPage2 = ({ setProps }: UGBasePageProps) => {
 
   const { current: v } = useRef<DoyRegisterVars>({})
 
-  return <View style={{ flex: 1, paddingHorizontal: sc(24) }}>
-    <DoyText20 bold1 style={{ marginTop: sc(15) }}>验证码已发送至号码</DoyText20>
+  return <View style={{ flex: 1, paddingHorizontal: sc(24), paddingVertical: sc(10) }}>
+    <DoyText20 bold1 style={{ marginTop: sc(10) }}>验证码已发送至号码</DoyText20>
     <DoyText20 bold2 style={{ marginTop: sc(7) }}>+86 15512345678</DoyText20>
     <DoyText14 style={{ marginTop: sc(35) }}>短信验证码</DoyText14>
-    <UGTextField
-      type='doy验证码'
-      defaultValue={v.pwd}
-      onChangeText={(text) => {
-        v.pwd = text;
-      }}
-    />
+    <DoyTextInputSms smsButtonProps={{
+      onSmsButtonClick: (startCountdown) => {
+        startCountdown()
+      }
+    }} />
     <DoyText14 style={{ marginTop: sc(20) }}>设置登录密码</DoyText14>
-    <UGTextField
-      type='doy密码'
-      placeholder='八位数以上英文数字混合'
-      defaultValue={v.pwd}
-      onChangeText={(text) => {
-        v.pwd = text;
-      }}
-    />
+    <DoyTextInputPwd placeholder='八位数以上英文数字混合' />
     <DoyText14 style={{ marginTop: sc(20) }}>设置昵称</DoyText14>
-    <UGTextField
-      type='doy密码'
-      placeholder='显示钱包内的昵称'
-      defaultValue={v.pwd}
-      onChangeText={(text) => {
-        v.pwd = text;
-      }}
-    />
+    <DoyTextInput1 placeholder='显示钱包内的昵称' />
 
     <DoyButton1 title='完成' containerStyle={{ marginTop: sc(32) }} onPress={() => {
       push(PageName.DoyHomePage)

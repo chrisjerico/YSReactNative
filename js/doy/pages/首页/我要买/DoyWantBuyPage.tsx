@@ -80,16 +80,16 @@ export const DoyWantBuyPage = ({ setProps }: UGBasePageProps) => {
       </LinearGradient>
       {/* 搜索结果 */}
       <List data={v.searchReults} uniqueKey='我要买-订单列表' style={{ padding: sc(16), flex: 1 }} renderItem={(ele) => {
-        return <TouchableOpacity style={{ height: sc(48), marginBottom: sc(8), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', alignItems: 'center' }} onPress={() => {
+        return <TouchableOpacity style={{ height: sc(48), marginBottom: sc(8), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', alignItems: 'center', paddingHorizontal: sc(16) }} onPress={() => {
           push(PageName.DoySellOrderPage)
         }}>
-          <DoyText14 style={{ marginLeft: sc(24), }}>售</DoyText14>
+          <DoyText14 style={{ marginLeft: sc(8), }}>售</DoyText14>
           <FastImage source={{ uri: img_doy('DOY币@3x') }} style={{ width: sc(14), aspectRatio: 1, marginHorizontal: sc(8) }} />
           <DoyText16 bold2>200</DoyText16>
           <View style={{ flex: 1 }} />
           <FastImage source={{ uri: img_doy('收付款方式/银行卡@3x') }} style={{ width: sc(16), aspectRatio: 1, marginRight: sc(32) }} />
           <DoyStarCP selectedStarCnt={4} containerStyle={{ marginRight: sc(32) }} />
-          <FastImage source={{ uri: img_doy('更多_小@3x') }} style={{ width: sc(6), aspectRatio: 6 / 10, marginRight: sc(16) }} />
+          <FastImage source={{ uri: img_doy('更多_小@3x') }} style={{ width: sc(6), aspectRatio: 6 / 10, }} />
         </TouchableOpacity>
       }} />
       {/* 搜索无结果 */}

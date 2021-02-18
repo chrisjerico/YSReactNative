@@ -121,7 +121,8 @@ import { DoyLoginPage } from '../../../doy/pages/启动页/DoyLoginPage'
 import { DoyRegisterPage1 } from '../../../doy/pages/启动页/DoyRegisterPage1'
 import { DoyMinePage } from '../../../doy/pages/我的/DoyMinePage'
 import { DoyNickNamePage } from '../../../doy/pages/我的/个人资料/DoyNickNamePage'
-import { DoyPhoneNumberPage } from '../../../doy/pages/我的/个人资料/DoyPhoneNumberPage'
+import { DoyPhoneNumberPage1 } from '../../../doy/pages/我的/个人资料/DoyPhoneNumberPage1'
+import { DoyPhoneNumberPage2 } from '../../../doy/pages/我的/个人资料/DoyPhoneNumberPage2'
 import { DoySelfIntroductionPage } from '../../../doy/pages/我的/个人资料/DoySelfIntroductionPage'
 import { DoyUserInfoEditPage } from '../../../doy/pages/我的/个人资料/DoyUserInfoEditPage'
 import { DoyUserInfoPage } from '../../../doy/pages/我的/个人资料/DoyUserInfoPage'
@@ -303,7 +304,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   DoyRegisterPage1,//doy注册步骤1
   DoyRegisterPage2,//doy注册步骤2
   DoyNickNamePage,//doy修改昵称
-  DoyPhoneNumberPage,//doy修改手机号
+  DoyPhoneNumberPage1,//doy修改手机号1
+  DoyPhoneNumberPage2,//doy修改手机号2
   DoySelfIntroductionPage,//doy
   DoyUserInfoEditPage,//doy编辑个人资料
   DoyUserInfoPage,//doy个人资料

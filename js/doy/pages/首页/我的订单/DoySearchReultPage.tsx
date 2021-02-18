@@ -35,10 +35,10 @@ export const DoySearchReultPage = ({ setProps, setNavbarProps }: UGBasePageProps
   return <View style={{ flex: 1 }}>
     {/* 订单列表 */}
     <List data={v.list} uniqueKey='我要买-订单列表' style={{ padding: sc(16), flex: 1 }} renderItem={(ele) => {
-      return <TouchableOpacity style={{ height: sc(60), marginBottom: sc(8), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', alignItems: 'center' }} onPress={() => {
+      return <TouchableOpacity style={{ height: sc(60), marginBottom: sc(8), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', alignItems: 'center', paddingHorizontal: sc(16) }} onPress={() => {
         push(PageName.DoySellOrderPage)
       }}>
-        <FastImage source={{ uri: img_doy('卖出@3x') }} style={{ marginLeft: sc(16), width: sc(26), aspectRatio: 1, }} />
+        <FastImage source={{ uri: img_doy('卖出@3x') }} style={{ width: sc(26), aspectRatio: 1, }} />
         <View style={{ flex: 1, marginLeft: sc(16), }} >
           <View style={{ flexDirection: 'row' }}>
             <DoyText12 gray2>买入</DoyText12>
@@ -49,7 +49,7 @@ export const DoySearchReultPage = ({ setProps, setNavbarProps }: UGBasePageProps
           <DoyText14 gray2 style={{ marginTop: sc(4) }}>艾许莉#1qasw2</DoyText14>
         </View>
         <DoyText12 gray2 style={{ marginRight: sc(8) }}>{'交易关闭'}</DoyText12>
-        <FastImage source={{ uri: img_doy('更多_小@3x') }} style={{ width: sc(6), aspectRatio: 6 / 10, marginRight: sc(16) }} />
+        <FastImage source={{ uri: img_doy('更多_小@3x') }} style={{ width: sc(6), aspectRatio: 6 / 10, }} />
       </TouchableOpacity>
     }} ListFooterComponent={<DoyText12 gray2 style={{ marginTop: sc(14), textAlign: 'center', lineHeight: sc(18) }}>{`系统将自动清除超过三个月的交易记录
 确保亲的资料安全`}</DoyText12>} />
