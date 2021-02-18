@@ -157,7 +157,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View key={key + 'renderLineBall sub' + groupData?.id}
-            style={_styles.ball_container}>
+            style={_styles.ball_parent_container}>
         {
           groupData?.plays?.map((item) => renderEBall(groupData, item))
         }
@@ -222,7 +222,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     padding: scale(4),
   },
   rect_container: {

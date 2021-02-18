@@ -52,7 +52,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
                   item={ballInfo}
                   selectedBalls={selectedBalls}
                   containerStyle={_styles.ball_container}
-                  ballType={{ size: scale(50) }}
+                  ballType={{ size: scale(46) }}
                   oddsStyle={_styles.ball_odds}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
@@ -199,8 +199,8 @@ const _styles = StyleSheet.create({
   },
   ball_container: {
     width: scale(189),
-    paddingHorizontal: scale(16),
     alignItems: 'center',
+    paddingHorizontal: scale(16),
   },
   ball_odds: {
     fontSize: scale(20),

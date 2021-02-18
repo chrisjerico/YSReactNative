@@ -151,7 +151,7 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
-      <View style={_styles.ball_container}>
+      <View style={_styles.ball_parent_container}>
         {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
@@ -214,7 +214,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',

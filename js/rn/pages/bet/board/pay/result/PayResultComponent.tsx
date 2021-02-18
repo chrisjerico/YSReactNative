@@ -127,7 +127,7 @@ const PayResultComponent = ({ betData, nextIssueData, showCallback }: IPayResult
    * 绘制 中奖结果
    */
   const renderResult = () => {
-    return <View style={_styles.ball_container}>
+    return <View style={_styles.result_container}>
       {
         betResult && <Animatable.View key={betResult?.result + betResult?.openNum}
                                       animation={AnimZoomInOut}
@@ -232,7 +232,7 @@ const _styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  ball_container: {
+  result_container: {
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'flex-end',

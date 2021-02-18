@@ -15,7 +15,7 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../../base/CommStyles'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import UseLhcZT from './UseLhcZT'
+import UseK3SJ from './UseK3SJ'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { arrayLength } from '../../../../../public/tools/Ext'
 import LotteryEBall from '../../../widget/LotteryEBall'
@@ -26,12 +26,12 @@ import { UGStore } from '../../../../../redux/store/UGStore'
 import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
 
 /**
- * 六合彩 正特 正码 等等
+ * 快三 等等
  *
  * @param navigation
  * @constructor
  */
-const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const K3SJComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
     setPlayOddData,
@@ -42,7 +42,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseLhcZT()
+  } = UseK3SJ()
 
   //当前这一页的数据
   const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
@@ -117,25 +117,27 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
+                  containerStyle={_styles.ball_container}
+                  oddsStyle={_styles.ball_odds}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 绘制 正特
    * @param groupData
    */
-  const renderZT1 = (groupData?: PlayGroupData) => <View key={key + 'renderZT1' + groupData?.id}
+  const renderSJ1 = (groupData?: PlayGroupData) => <View key={key + 'renderSJ1' + groupData?.id}
                                                          style={CommStyles.flex}>
 
-    <View key={key + ' sub renderZT1' + groupData?.id}
+    <View key={key + ' sub renderSJ1' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderZT1 text' + groupData?.id}
+      <Text key={key + ' sub renderSJ1 text' + groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
             ]}>{groupData?.alias}</Text>
     </View>
 
-    <View key={key + ' sub2 renderZT1' + groupData?.id}
+    <View key={key + ' sub2 renderSJ1' + groupData?.id}
           style={_styles.ball_parent_container}>
       {groupData?.plays?.map((item) => renderEBall(groupData, item))}
     </View>
@@ -146,19 +148,19 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制 正特
    * @param groupData
    */
-  const renderZT2 = (groupData?: PlayGroupData) => <View key={key + 'renderZT2' + groupData?.id}
+  const renderSJ2 = (groupData?: PlayGroupData) => <View key={key + 'renderSJ2' + groupData?.id}
                                                          style={CommStyles.flex}>
 
-    <View key={key + ' sub renderZT2' + groupData?.id}
+    <View key={key + ' sub renderSJ2' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderZT2' + +groupData?.id}
+      <Text key={key + ' sub renderSJ2' + +groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
             ]}>{groupData?.alias}</Text>
     </View>
 
-    <View key={key + ' sub2 renderZT2' + groupData?.id}
+    <View key={key + ' sub2 renderSJ2' + groupData?.id}
           style={_styles.ball_parent_container}>
       {groupData?.plays?.map((item) => renderERect(groupData, item))}
     </View>
@@ -169,8 +171,8 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderAllBall = () => <View key={key + 'renderAllBall'}
                                     style={_styles.content_container}>
-    {arrayLength(currentPageData) > 0 && renderZT1(currentPageData[0])}
-    {arrayLength(currentPageData) > 1 && renderZT2(currentPageData[1])}
+    {arrayLength(currentPageData) > 0 && renderSJ1(currentPageData[0])}
+    {arrayLength(currentPageData) > 1 && renderSJ2(currentPageData[1])}
   </View>
 
   return (
@@ -213,12 +215,6 @@ const _styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: scale(4),
   },
-  ball_odds: {
-    width: scale(76),
-    color: UGColor.TextColor7,
-    fontSize: scale(18),
-    paddingHorizontal: scale(1),
-  },
   tab_title_tb: {
     width: '100%',
     alignItems: 'center',
@@ -257,8 +253,16 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingLeft: scale(6),
   },
+  ball_container: {
+    width: scale(189),
+    alignItems: 'center',
+    paddingHorizontal: scale(16),
+  },
+  ball_odds: {
+    fontSize: scale(20),
+  },
 
 
 })
 
-export default LhcZTComponent
+export default K3SJComponent

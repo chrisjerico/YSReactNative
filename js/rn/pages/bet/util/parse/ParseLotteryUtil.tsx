@@ -58,10 +58,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case gameCode == LhcCode.HX://合肖
         return parseHXData({ playOddData, zodiacNum })
 
-      case gameCode == LhcCode.ZM: //正码
       case gameCode == LhcCode.ZT:  //正特
-      case gameCode == LhcCode.TM && gameType == LCode.pcdd:  //蛋蛋特码
-      case gameCode == K3Code.SJ && gameType == LCode.jsk3:  //快三系列
         return parseZTData({ playOddData, zodiacNum })
 
       case gameCode == LhcCode.LMA:  //连码

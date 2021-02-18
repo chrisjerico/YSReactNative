@@ -7,7 +7,7 @@ import { UGStore } from '../../../../../redux/store/UGStore'
 import { SingleOption } from '../../../const/LotteryConst'
 
 /**
- * X字定位
+ * 官方玩法
  * @constructor
  */
 const UsePK10GFWF = () => {

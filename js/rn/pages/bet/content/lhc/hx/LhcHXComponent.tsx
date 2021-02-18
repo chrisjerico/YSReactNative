@@ -78,7 +78,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View key={key + 'renderLineBall sub' + groupData?.id}
-            style={_styles.ball_container}>
+            style={_styles.ball_parent_container}>
         {playOddData?.pageData?.zodiacNums?.map((item, index) => renderEBall(groupData, item, index))}
       </View>
     </View>
@@ -122,7 +122,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     padding: scale(4),
   },
   rect_container: {

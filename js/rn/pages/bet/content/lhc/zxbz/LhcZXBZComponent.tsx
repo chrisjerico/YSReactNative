@@ -77,7 +77,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         </View>
 
         <View key={key + 'render LMA sub2' + groupData?.id}
-              style={_styles.ball_container}>
+              style={_styles.ball_parent_container}>
           {
             currentPageData[0]?.exPlays?.map((item, index) => renderEBall(groupData, item))
           }
@@ -125,7 +125,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',

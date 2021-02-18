@@ -102,7 +102,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       {renderRowBar(groupData?.exPlays)}
 
       <View key={key + ' ball renderDWD 3=' + groupData?.id + groupData?.alias}
-            style={_styles.ball_container}>
+            style={_styles.ball_parent_container}>
         {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
@@ -155,7 +155,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',

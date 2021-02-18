@@ -36,6 +36,7 @@ import CqsscWXComponent from './cqssc/wx/CqsscWXComponent'
 import CommStyles from '../../base/CommStyles'
 import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import PK10GFWFComponent from './pk10/gfwf/PK10GFWFComponent'
+import K3SJComponent from './k3/sj/K3SJComponent'
 
 const LotteryContentComponent = () => {
 
@@ -102,8 +103,11 @@ const LotteryContentComponent = () => {
       case gameCode == LhcCode.ZM: //正码
       case gameCode == LhcCode.ZT:  //正特
       case gameCode == LhcCode.TM && gameType == LCode.pcdd:  //蛋蛋特码
-      case gameCode == K3Code.SJ && gameType == LCode.jsk3:  //快三系列
         return <LhcZTComponent key={gameCode}
+                               playOddData={playOdds}/>
+
+      case gameType == LCode.jsk3:  //快三系列
+        return <K3SJComponent key={gameCode}
                                playOddData={playOdds}/>
 
       case gameCode == LhcCode.LMA:  //连码
