@@ -52,7 +52,7 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
 
     //注意有些彩种的 CODE 完全一样
     switch (true) {
-      case gameCode == LhcCode.TM:  //特码
+      case gameCode == LhcCode.TM && gameType == LCode.lhc:  //六合彩特码
         return parseTMData({ playOddData, zodiacNum })
 
       case gameCode == LhcCode.HX://合肖
@@ -73,31 +73,6 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case gameCode == LhcCode.WX && gameType == LCode.cqssc://五星
         return parseYZDWData({ playOddData, zodiacNum })
 
-      case gameCode == LhcCode.LM: //两面
-      case gameCode == LhcCode.ZM1_6: //正码1T6
-      case gameCode == LhcCode.SB: //色波
-      case gameCode == LhcCode.ZOX://总肖
-      case gameCode == CqsscCode.ALL:  //1-5球
-      case gameCode == CqsscCode.Q1:  //第1球/名
-      case gameCode == CqsscCode.Q2:  //第2球/名
-      case gameCode == CqsscCode.Q3:  //第3球/名
-      case gameCode == CqsscCode.Q4:  //第4球/名
-      case gameCode == CqsscCode.Q5:  //第5球/名
-      case gameCode == CqsscCode.Q6:  //第6球/名
-      case gameCode == CqsscCode.Q7:  //第7球/名
-      case gameCode == CqsscCode.Q8:  //第8球/名
-      case gameCode == CqsscCode.Q9:  //第8球/名
-      case gameCode == CqsscCode.Q10:  //第10球/名
-      case gameCode == Pk10Code.HE:  //冠亚和
-      case gameCode == Pk10Code.P1_5:  //1-5名
-      case gameCode == Pk10Code.P6_10:  //6-10名
-      case gameCode == CqsscCode.QZH:  //前中后
-      case gameCode == CqsscCode.DN:  //斗牛
-      case gameCode == CqsscCode.SH:  //梭哈
-      case gameCode == CqsscCode.LHD:  //龙虎斗
-      case gameCode == LhcCode.WX://五行
-        return parseSBData({ playOddData, zodiacNum })
-
       case gameCode == CqsscCode.DWD:  //定位胆
         return parseDWDData({ playOddData, zodiacNum })
 
@@ -116,9 +91,10 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
 
       case gameCode == LhcCode.ZXBZ:  //自选不中
         return parseZXBZData({ playOddData, zodiacNum })
-    }
 
-    return playOddData
+      default:
+        return parseSBData({ playOddData, zodiacNum })
+    }
   })
 
 }

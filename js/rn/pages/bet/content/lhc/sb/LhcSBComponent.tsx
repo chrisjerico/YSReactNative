@@ -8,7 +8,7 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseLhcSB from './UseLhcSB'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, LCode } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 
 /**
@@ -21,6 +21,7 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
     setPlayOddData,
+    playOddDetailData,
     tabIndex,
     setTabIndex,
     selectedBalls,
@@ -43,11 +44,17 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param ballInfo
    * @param index
    */
-  const renderERect = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) =>
-    <LotteryERect key={key + 'renderERect' + ballInfo?.id + index}
-                  item={ballInfo}
-                  selectedBalls={selectedBalls}
-                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
+  const renderERect = (item?: PlayGroupData, ballInfo?: PlayData, index?: number) => {
+    // let gameType = playOddDetailData?.lotteryLimit?.gameType // 六合彩 秒秒秒彩 等等
+    let gameType = playOddDetailData?.game?.gameType // 六合彩 秒秒秒彩 等等
+
+    return <LotteryERect key={key + 'renderERect' + ballInfo?.id + index}
+                         item={ballInfo}
+                         containerStyle={gameType == LCode.dlt ? _styles.dlt_rect : null}
+                         selectedBalls={selectedBalls}
+                         callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
+  }
+
 
   /**
    * 绘制 一组格子
@@ -122,6 +129,10 @@ const _styles = StyleSheet.create({
     padding: scale(4),
     flex: 1,
   },
+  dlt_rect: {
+    flexDirection: 'column',
+  },
+
 
 })
 

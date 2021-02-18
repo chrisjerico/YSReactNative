@@ -25,6 +25,7 @@ const UseLhcSB = () => {
 
   return {
     setPlayOddData,
+    playOddDetailData,
     tabIndex,
     setTabIndex,
     selectedBalls,

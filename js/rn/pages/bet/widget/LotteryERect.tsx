@@ -1,5 +1,5 @@
 import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
@@ -10,6 +10,7 @@ import { isSelectedBallOnId } from './it/ISelBall'
 interface ILotteryERect {
   item?: PlayData // 要绘制的数据
   selectedBalls?: Array<PlayData | ZodiacNum> // 已选中的数据
+  containerStyle?: StyleProp<ViewStyle> //容器风格
   callback?: () => void // 按压回调
 }
 
@@ -24,6 +25,7 @@ interface ILotteryERect {
 const LotteryERect = ({
                         item,
                         selectedBalls,
+                        containerStyle,
                         callback,
                       }: ILotteryERect) => {
 
@@ -39,6 +41,7 @@ const LotteryERect = ({
             ]}>
         <ERect key={key + item?.id}
                title={item?.name}
+               containerStyle={containerStyle}
                titleStyle={{ color: isSel ? UGColor.TextColor6 : UGColor.TextColor7 }}
                odds={item?.enable != '0' ? item?.odds : '- -'}
                oddsStyle={{ color: isSel ? UGColor.TextColor6 : UGColor.TextColor7 }}/>

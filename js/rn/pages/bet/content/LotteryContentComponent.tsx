@@ -87,7 +87,7 @@ const LotteryContentComponent = () => {
     ugLog('------------------gameCode---------------------------------', gameCode)
 
     switch (true) {
-      case gameCode == LhcCode.TM:  //特码
+      case gameCode == LhcCode.TM && gameType == LCode.lhc:  //六合彩特码
         return <LhcTMComponent key={gameCode}
                                playOddData={playOdds}/>
 
@@ -104,18 +104,6 @@ const LotteryContentComponent = () => {
       case gameCode == LhcCode.WX && gameType == LCode.cqssc:// 五星
         return <CqsscWXComponent key={gameCode}
                                  playOddData={playOdds}/>
-
-      case gameCode == LhcCode.LM: //两面
-      case gameCode == LhcCode.ZM1_6: //正码1T6
-      case gameCode == LhcCode.SB: //色波
-      case gameCode == LhcCode.ZOX://总肖
-      case gameCode == CqsscCode.QZH:  //前中后
-      case gameCode == CqsscCode.DN:  //斗牛
-      case gameCode == CqsscCode.SH:  //梭哈
-      case gameCode == CqsscCode.LHD:  //龙虎斗
-      case gameCode == LhcCode.WX:// 五行
-        return <LhcSBComponent key={gameCode}
-                               playOddData={playOdds}/>
 
       case gameCode == CqsscCode.ALL:  //1-5球
       case gameCode == CqsscCode.Q1:  //第1球/名
@@ -167,9 +155,11 @@ const LotteryContentComponent = () => {
         return <LhcZXBZComponent key={gameCode}
                                  playOddData={playOdds}/>
 
-    }
+      default:
+        return <LhcSBComponent key={gameCode}
+                               playOddData={playOdds}/>
 
-    return null
+    }
   }
 
   return (

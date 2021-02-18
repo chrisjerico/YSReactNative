@@ -8,6 +8,7 @@ interface IERect {
   titleStyle?: StyleProp<TextStyle> //文字风格
   odds?: string, //赔率
   oddsStyle?: StyleProp<TextStyle> //赔率风格
+  containerStyle?: StyleProp<ViewStyle> //容器风格
 }
 
 /**
@@ -19,12 +20,16 @@ const ERect = ({
                  titleStyle,
                  odds,
                  oddsStyle,
+                 containerStyle,
                }: IERect) => {
   const key = 'ERect = 元素方格子' + title
 
   return (
     <View key={key}
-          style={_styles.container}>
+          style={[
+            _styles.container,
+            containerStyle
+          ]}>
       <Text key={key + 'title'}
             style={[_styles.title_text, titleStyle]}>{title}</Text>
       <Text key={key + 'odds'}
