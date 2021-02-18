@@ -48,13 +48,14 @@ export interface GoldenEgg {
   type: string
 }
 
-const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs, activitySetting }: ActivitysProps) => {
+const Activitys = ({ refreshing, redBagLogo, uid, isTest, redBag, roulette, floatAds, goldenEggs, scratchs, activitySetting }: ActivitysProps) => {
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
   const [redDialog, setRedDialog] = useState(false)
   
   ugLog("goldenEggs= ", goldenEggs)
   ugLog("roulette= ", roulette)
   ugLog("scratchs= ", scratchs?.scratchList[0])
+  ugLog("isTest= ", isTest)
   return (
     <>
       <ActivityComponent
@@ -72,7 +73,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         refreshing={refreshing}
         containerStyle={{ top: scale(355), right: 0 }}
         enableFastImage={false}
-        show={roulette && (roulette[0]?.param?.visitor_show == "0" || uid)}
+        show={roulette && (roulette[0]?.param?.visitor_show == "0" || (uid && !isTest))}
         logo={ROULETTE_LOGO}
         onPress={() => {
           // 大转盘
@@ -83,7 +84,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         refreshing={refreshing}
         containerStyle={{ top: scale(465), right: 0 }}
         enableFastImage={false}
-        show={goldenEggs && (goldenEggs[0]?.param?.visitor_show == "0" || uid)}
+        show={goldenEggs && (goldenEggs[0]?.param?.visitor_show == "0" || (uid && !isTest))}
         logo={icon_砸金蛋}
         onPress={goToUserCenterType.砸金蛋}
         />
@@ -91,7 +92,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         refreshing={refreshing}
         containerStyle={{ top: scale(590), right: 0 }}
         enableFastImage={false}
-        show={scratchs && (scratchs?.scratchList[0]?.param?.visitor_show == "0" || uid)}
+        show={scratchs && (scratchs?.scratchList[0]?.param?.visitor_show == "0" || (uid && !isTest))}
         logo={icon_刮刮乐}
         onPress={goToUserCenterType.刮刮乐}
         />
