@@ -464,9 +464,6 @@ class APIRouter {
   }
 
   static activity_turntableList = async () => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      return {}
-    }
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -483,9 +480,6 @@ class APIRouter {
   }
 
   static activity_goldenEggList = async () => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      return {}
-    }
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -501,9 +495,6 @@ class APIRouter {
   }
 
   static activity_scratchList = async () => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      return {}
-    }
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
