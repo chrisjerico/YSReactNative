@@ -85,11 +85,13 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View key={key + `${zodiac?.name}_select`}
             style={_styles.zodiac_item}>
         {
-          isSelectedBallOnId(selectedZodiac, zodiac) ?
+          isSelectedBallOnId(selectedZodiac, zodiac)
+            ?
             <Icon key={key + `${zodiac?.name}_select true`}
                   size={scale(36)}
                   color={Skin1.themeColor}
-                  name={'check-circle'}/> :
+                  name={'check-circle'}/>
+            :
             <Icon key={key + `${zodiac?.name}_select false`}
                   size={scale(36)}
                   name={'circle-o'}/>

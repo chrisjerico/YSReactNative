@@ -7,12 +7,12 @@ import { anyEmpty } from '../../../../public/tools/Ext'
 import EmptyView from '../../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
+import LotteryBall from '../../../../public/components/view/LotteryBall'
 import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
 import UseHallGameList from './UseHallGameList'
-import { BallStyles, LCode } from '../../../bet/const/LotteryConst'
+import { BallStyles, BallType, LCode, lotteryBallStyle } from '../../../bet/const/LotteryConst'
 import { doubleDigit } from '../../../../public/tools/StringUtil'
 
 interface IHallGameList {
@@ -51,8 +51,7 @@ const HallGameListComponent = ({
                        ballStr?: string) => {
     let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => doubleDigit(item)) //球的数组
     let lastBall = balls.pop() //最后一个球
-    let ballStyle = BallStyles[gameType] //球的样式
-    ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle
+    let ballStyle = lotteryBallStyle(gameType) //球的样式
 
     let ballView
     switch (gameType) {

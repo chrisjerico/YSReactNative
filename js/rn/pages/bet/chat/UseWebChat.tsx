@@ -105,10 +105,12 @@ const UseWebChat = () => {
           roomId: currentChatRoomId(),
           playNameArray: betShareModel?.playNameArray?.map((nameArr, index) => {
             const betInfo = betShareModel?.betBean[index]
-            const showName = !anyEmpty(nameArr?.playName1) ?
-              `${nameArr?.playName1}- ${nameArr?.playName2 ?? ''}` :
+            const showName = !anyEmpty(nameArr?.playName1)
+              ?
+              `${nameArr?.playName1}- ${nameArr?.playName2 ?? ''}`
+              :
               `${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name}`
-            return {...nameArr, playName1: showName} as PlayNameArray
+            return { ...nameArr, playName1: showName } as PlayNameArray
           }),
           betParams: shareBet,
         } as ReadyShareModel

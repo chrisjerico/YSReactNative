@@ -132,6 +132,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderAllBall()}

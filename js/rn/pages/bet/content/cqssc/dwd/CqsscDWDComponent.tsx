@@ -117,6 +117,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderAllBall()}
     </ScrollView>

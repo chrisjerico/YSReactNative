@@ -35,6 +35,31 @@ export const equalObject = (obj1, obj2) => !anyNull(obj1) && !anyNull(obj2) && J
  */
 export const firstObj = (array?: any) => array && array.length ? array[0] : undefined
 
+/**
+ * 过滤MAP里面的某个值
+ * @param map
+ * @param anyKey 需要过滤的值
+ */
+export const mapFilter = <T,>(map?: Map<string, T>, anyKey?: string) =>
+  Object.keys(map)
+    .filter((key) => anyKey != key)
+    .reduce((obj, key) => {
+      obj[key] = map[key]
+      return obj
+    }, new Map<string, T>())
+
+/**
+ * 过滤MAP里面的某些值
+ * @param map
+ * @param keyArr 需要过滤的值集合
+ */
+export const mapFilterPlus = <T,>(map?: Map<string, T>, keyArr?: [string]) =>
+  Object.keys(map)
+    .filter((key) => !keyArr?.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = map[key]
+      return obj
+    }, new Map<string, T>())
 
 /**
  * 合并对象
@@ -50,9 +75,9 @@ export const mergeObject = (src?: any, des?: any): any => {
     || anyNull(src)) {
     return des // 如果其中一个不是对象 就返回 des
   }
-  ugLog('mergeObject 1 = ', JSON.stringify(src))
-  ugLog('mergeObject 2 = ', JSON.stringify(des))
-  ugLog('mergeObject 3 = ', dicNull(des))
+  // ugLog('mergeObject 1 = ', JSON.stringify(src))
+  // ugLog('mergeObject 2 = ', JSON.stringify(des))
+  // ugLog('mergeObject 3 = ', dicNull(des))
   let obj = JSON.parse(JSON.stringify(src))
   if (!dicNull(des)) {
     for (let key in des) {

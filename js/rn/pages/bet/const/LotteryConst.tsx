@@ -1,9 +1,28 @@
 import { scale } from '../../../public/tools/Scale'
-import { BallType } from '../../../public/components/view/LotteryBall'
+import { anyEmpty } from '../../../public/tools/Ext'
 
 const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
 const BALL_CONTENT_HEIGHT = scale(720) //投注区域球的总体高度
 
+/**
+ * 单式复式玩法
+ */
+enum SingleOption {
+  SINGLE, //单式
+  COMPLEX, //复式
+}
+
+/**
+ * 球的种类
+ */
+const BallType = {
+  'round': '圆球', //彩色
+  'square': '方球', //彩色
+  'colorful': '花球', //多种图片
+  'pure': '纯色球', //纯色
+  'vegetable': '蔬菜', //蔬菜
+  'sz': '骰子', //骰子
+}
 /**
  * 球的样式
  */
@@ -23,6 +42,16 @@ const BallStyles = {
   'pcdd': BallType.pure, //"蛋蛋系列"
   'jsk3': BallType.sz, //"快三系列"
   'gd11x5': BallType.pure, //"11选5系列"
+}
+
+/**
+ * 根据彩种返回球风格
+ * @param gameType
+ */
+const lotteryBallStyle = (gameType?: string): string => {
+  let ballStyle = BallStyles[gameType] //球的样式
+  ballStyle = anyEmpty(ballStyle) ? BallStyles[LCode.lhc] : ballStyle
+  return ballStyle
 }
 
 /**
@@ -76,11 +105,16 @@ const LhcCode = {
 const CqsscCode = {
   LM: 'LM', //两面
   ALL: 'ALL', //1-5球
-  Q1: 'Q1', //第1球
-  Q2: 'Q2', //第2球
-  Q3: 'Q3', //第3球
-  Q4: 'Q4', //第4球
-  Q5: 'Q5', //第5球
+  Q1: 'Q1', //第1球/名
+  Q2: 'Q2', //第2球/名
+  Q3: 'Q3', //第3球/名
+  Q4: 'Q4', //第4球/名
+  Q5: 'Q5', //第5球/名
+  Q6: 'Q6', //第6球/名
+  Q7: 'Q7', //第7球/名
+  Q8: 'Q8', //第8球/名
+  Q9: 'Q9', //第9球/名
+  Q10: 'Q10', //第10球/名
   QZH: 'QZH', //前中后
   DN: 'DN', //斗牛
   SH: 'SH', //梭哈
@@ -94,6 +128,16 @@ const CqsscCode = {
 }
 
 /**
+ * 赛车
+ */
+const Pk10Code = {
+  GFWF: 'GFWF', //官方玩法
+  HE: 'HE', //"冠亚和"
+  P1_5: '1-5', //"1-5名"
+  P6_10: '6-10', //"6-10"
+}
+
+/**
  * 当前TAB是 彩票0 还是 聊天室1
  */
 enum GameTab {
@@ -104,9 +148,13 @@ enum GameTab {
 export {
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
+  SingleOption,
   BallStyles,
+  BallType,
+  lotteryBallStyle,
   LCode,
   LhcCode,
   CqsscCode,
+  Pk10Code,
   GameTab,
 }

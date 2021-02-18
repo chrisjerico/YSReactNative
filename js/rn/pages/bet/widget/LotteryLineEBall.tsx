@@ -58,10 +58,7 @@ const LotteryLineEBall = ({
             style={[
               _styles.ball_item_tm,
               {
-                backgroundColor:
-                  isSel ?
-                    `${Skin1.themeColor}dd` :
-                    null,
+                backgroundColor: isSel ? `${Skin1.themeColor}dd` : null,
               },
             ]}>
         <Text key={showName}

@@ -8,7 +8,7 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseLhcZXBZ from './UseLhcZXBZ'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
-import LotteryEBall  from '../../../widget/LotteryEBall'
+import LotteryEBall from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
@@ -68,9 +68,10 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   _styles.sub_title_text,
                   { color: Skin1.themeColor },
                 ]}>{
-            groupData?.alias + (arrayLength(selectedBalls) > 4 ?
-              `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 5]?.odds}）` :
-              '')
+            groupData?.alias + (
+              arrayLength(selectedBalls) <= 4 ? '' :
+                `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 5]?.odds}）`
+            )
 
           }</Text>
         </View>
@@ -96,6 +97,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderAllBall()}
     </ScrollView>

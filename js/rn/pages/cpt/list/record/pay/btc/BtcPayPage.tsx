@@ -36,6 +36,7 @@ import AppDefine from '../../../../../../public/define/AppDefine'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { CapitalConst } from '../../../../const/CapitalConst'
 import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
+import { clearAllHtml } from '../../../../../../public/tools/ui/UIUtil'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据
@@ -238,7 +239,7 @@ const BtcPayPage = ({ navigation, route }) => {
         }
 
         <Text style={_styles.select_channel_hint}>
-          {payData?.prompt}
+          {clearAllHtml(payData?.prompt)}
         </Text>
 
         {

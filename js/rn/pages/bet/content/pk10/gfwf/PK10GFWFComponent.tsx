@@ -6,13 +6,12 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../../base/CommStyles'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import UseCqsscYZDW from './UseCqsscYZDW'
+import UsePK10GFWF from './UsePK10GFWF'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
-import LotteryEBall  from '../../../widget/LotteryEBall'
-import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
+import LotteryEBall from '../../../widget/LotteryEBall'
+import { BALL_CONTENT_HEIGHT, SingleOption } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
-import { UGStore } from '../../../../../redux/store/UGStore'
 
 
 /**
@@ -21,17 +20,20 @@ import { UGStore } from '../../../../../redux/store/UGStore'
  * @param navigation
  * @constructor
  */
-const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
     setPlayOddData,
+    optionArray,
+    optionIndex,
+    setOptionIndex,
     tabIndex,
     setTabIndex,
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseCqsscYZDW()
+  } = UsePK10GFWF()
 
   //当前这一页的数据
   const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
@@ -50,12 +52,15 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderTabItem = (item?: Array<PlayGroupData>, index?: number, tabLen?: number) =>
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               style={CommStyles.flex}
-                              onPress={() => setTabIndex(index)}>
+                              onPress={() => {
+                                // setOptionIndex(SingleOption.SINGLE)
+                                setTabIndex(index)
+                              }}>
       <View key={key + item[0]?.alias}
             style={[
               _styles.tab_item,
               index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
-              tabLen > 3 ? null: { width: scale(400/tabLen) },//tab 少于4个 就平均分配空间
+              tabLen > 3 ? null : { width: scale(400 / tabLen) },//tab 少于4个 就平均分配空间
             ]}>
         <Text key={key + item[0]?.alias}
               style={[
@@ -109,18 +114,42 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
+   * 绘制 单式 复式 选项
+   * @param item
+   * @param index
+   */
+  const renderOption = (item?: string, index?: number) =>
+    <TouchableWithoutFeedback onPress={() => setOptionIndex(index)}>
+      <View style={_styles.option_item}>
+        {
+          optionIndex == index
+            ?
+            <Icon key={key + `${index}_select true`}
+                  size={scale(36)}
+                  color={Skin1.themeColor}
+                  name={'check-circle'}/>
+            :
+            <Icon key={key + `${index}_select false`}
+                  size={scale(36)}
+                  name={'circle-o'}/>
+        }
+        <Text style={_styles.option_item_text}>{optionArray[index]}</Text>
+      </View>
+    </TouchableWithoutFeedback>
+
+  /**
    * 绘制 X字定位
    * @param groupData
    * @param index
    */
-  const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
-    <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
+  const renderGFWF = (groupData?: PlayGroupData, index?: number) =>
+    <View key={key + ' renderGFWF' + groupData?.id + groupData?.exPlays[0]?.alias}
           style={CommStyles.flex}>
 
       {//显示赔率标题
-        index == 0 && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                                             style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
+        index == 0 && <View key={key + ' sub renderGFWF 2 = ' + groupData?.id}
+                            style={_styles.sub_big_title_container}>
+          <Text key={key + ' text renderGFWF' + groupData?.id}
                 style={[
                   _styles.sub_big_title_text,
                   { color: Skin1.themeColor },
@@ -129,23 +158,23 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       }
 
       {//显示赔率提醒文字
-        index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
+        index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderGFWF 2 = ' + groupData?.id}
                                                             style={_styles.sub_big_hint_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
+          <Text key={key + ' text renderGFWF' + groupData?.id}
                 style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
         </View>
       }
 
-      <View key={key + ' sub renderYZDW 2 =' + groupData?.id}
+      <View key={key + ' sub renderGFWF 2 =' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderYZDW' + groupData?.id}
+        <Text key={key + ' text renderGFWF' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
               ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
-      <View key={key + ' ball renderYZDW' + groupData?.id}
+      <View key={key + ' ball renderGFWF' + groupData?.id}
             style={_styles.ball_container}>
         {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
@@ -154,9 +183,20 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <View style={_styles.content_container}>
-    {currentPageData?.map(renderYZDW)}
-  </View>
+  const renderAllBall = () => {
+    let pageData = currentPageData
+    if (tabIndex == 1 || tabIndex == 2) {//猜前二 猜前三 有选项
+      if (optionIndex == 0) {//单式
+        pageData = currentPageData?.slice(0, 1)
+      } else {//复式
+        pageData = currentPageData?.slice(1)
+      }
+    }
+
+    return <View style={_styles.content_container}>
+      {pageData?.map(renderGFWF)}
+    </View>
+  }
 
   return (
     <ScrollView key={key}
@@ -164,6 +204,11 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderTab()}
+      {//猜前二 猜前三 有选项
+        (tabIndex == 1 || tabIndex == 2) && <View style={_styles.option}>
+          {optionArray?.map(renderOption)}
+        </View>
+      }
       {renderAllBall()}
     </ScrollView>
 
@@ -255,8 +300,26 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingLeft: scale(6),
   },
+  option_item: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingVertical: scale(16),
+    paddingHorizontal: scale(12),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  option_item_text: {
+    color: UGColor.TextColor3,
+    fontSize: scale(22),
+    paddingLeft: scale(6),
+  },
+  option: {
+    flexDirection: 'row',
+    borderBottomWidth: scale(1),
+    borderBottomColor: UGColor.LineColor4,
+  },
 
 
 })
 
-export default CqsscYZDWComponent
+export default PK10GFWFComponent

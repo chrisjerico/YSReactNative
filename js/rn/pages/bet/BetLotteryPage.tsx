@@ -132,6 +132,7 @@ const BetLotteryPage = ({ navigation, route }) => {
         <View style={_styles.sv_container}>
           {
             !dicNull(playOddDetailData) && <ScrollView key={'lottery middle content'}
+                                                       showsVerticalScrollIndicator={false}
                                                        style={_styles.sv_container}>
               {
                 //秒秒彩不显示历史记录和倒计时

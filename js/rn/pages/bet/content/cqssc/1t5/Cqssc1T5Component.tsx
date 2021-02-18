@@ -8,11 +8,12 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseCqssc1T5 from './UseCqssc1T5'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, CqsscCode, LCode, Pk10Code } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import LotteryEBall from '../../../widget/LotteryEBall'
 import { arrayLength } from '../../../../../public/tools/Ext'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { UGStore } from '../../../../../redux/store/UGStore'
 
 /**
  * 1-5球
@@ -76,9 +77,26 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
 
     let ball1 = groupData?.plays
     let ball2: Array<PlayData>
-    if (arrayLength(ball1) == 14) {//分2组显示
-      ball1 = groupData?.plays.slice(0, 10)
-      ball2 = groupData?.plays.slice(10, 14)
+
+    const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType
+    if (gameType == LCode.pk10) {//赛车的数字和汉字是反的
+      if (arrayLength(ball1) > 10) {//分2组显示
+        if (playOddData?.code == CqsscCode.Q3
+          || playOddData?.code == CqsscCode.Q4
+          || playOddData?.code == CqsscCode.Q5) { //第 3 4 5 名只取6个
+          ball1 = groupData?.plays.slice(6, arrayLength(groupData?.plays))
+          ball2 = groupData?.plays.slice(0, 6)
+        } else {
+          ball1 = groupData?.plays.slice(4, arrayLength(groupData?.plays))
+          ball2 = groupData?.plays.slice(0, 4)
+        }
+      }
+
+    } else {
+      if (arrayLength(ball1) > 10) {//分2组显示
+        ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
+        ball2 = groupData?.plays.slice(-4)
+      }
     }
 
     return <View key={key + 'renderAllBall' + groupData?.id + index}
@@ -92,13 +110,22 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
                 { color: Skin1.themeColor },
               ]}>{groupData?.alias}</Text>
       </View>
+      {
+        gameType == LCode.pk10 && playOddData?.code == Pk10Code.HE
+          ?
+          <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
+                style={_styles.rect_container}>
+            {ball2?.map((item) => renderERect(groupData, item))}
+            {ball1?.map((item) => renderEBall(groupData, item))}
+          </View>
+          :
+          <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
+                style={_styles.rect_container}>
+            {ball1?.map((item) => renderEBall(groupData, item))}
+            {ball2?.map((item) => renderERect(groupData, item))}
+          </View>
 
-      <View key={key + ' sub2 renderAllBall' + groupData?.id + index}
-            style={_styles.rect_container}>
-        {ball1?.map((item) => renderEBall(groupData, item))}
-        {ball2?.map((item) => renderERect(groupData, item))}
-      </View>
-
+      }
     </View>
   }
 
@@ -113,6 +140,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderAllBall()}
     </ScrollView>
@@ -149,7 +177,8 @@ const _styles = StyleSheet.create({
   },
   ball_container: {
     width: scale(189),
-    paddingHorizontal: scale(28),
+    paddingHorizontal: scale(16),
+    alignItems: 'center',
   },
   ball_odds: {
     fontSize: scale(20),
