@@ -1,4 +1,4 @@
-import { CqsscCode, LhcCode } from '../../const/LotteryConst'
+import { CqsscCode, LCode, LhcCode } from '../../const/LotteryConst'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
@@ -35,9 +35,11 @@ const expandSelectedData = (selectedData?: Map<string, Map<string, Map<string, S
  * @param tabAlias TAB的名字，如 连肖里的 二连肖 三连肖
  */
 const calculateLimitCount = (code?: string, tabAlias?: string): number => {
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
+
   let limitCount = -1
-  switch (code) {
-    case LhcCode.LX: //连肖
+  switch (true) {
+    case code == LhcCode.LX: //连肖
       switch (tabAlias) {
         case '二连肖':
           limitCount = 2
@@ -53,7 +55,7 @@ const calculateLimitCount = (code?: string, tabAlias?: string): number => {
           break
       }
       break
-    case LhcCode.LW: //连尾
+    case code == LhcCode.LW: //连尾
       switch (tabAlias) {
         case '二连尾':
           limitCount = 2
@@ -71,10 +73,10 @@ const calculateLimitCount = (code?: string, tabAlias?: string): number => {
       }
       break
 
-    case LhcCode.HX://合肖
+    case code == LhcCode.HX://合肖
       limitCount = 2
       break
-    case LhcCode.LMA:  //连码
+    case code == LhcCode.LMA:  //连码
       switch (tabAlias) {
         case '二全中':
         case '二中特':
@@ -92,7 +94,8 @@ const calculateLimitCount = (code?: string, tabAlias?: string): number => {
       }
       break
 
-    case LhcCode.ZXBZ:  //自选不中
+    case code == LhcCode.ZXBZ:  //自选不中
+    case code == LhcCode.WX && gameType == LCode.cqssc && tabAlias == '组选120':  //五星里的组选120
       limitCount = 5
       break
 

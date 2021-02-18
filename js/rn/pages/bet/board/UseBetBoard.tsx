@@ -10,6 +10,9 @@ import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { BetShareModel } from '../../../redux/model/game/bet/BetShareModel'
 import { ugLog } from '../../../public/tools/UgLog'
 import { filterSelectedData } from '../util/LotteryUtil'
+import { DeviceEventEmitter } from 'react-native'
+import { EmitterTypes } from '../../../public/define/EmitterTypes'
+import { IEmitterMessage } from './it/IEmitterMessage'
 
 
 /**
@@ -21,6 +24,7 @@ const UseBetBoard = () => {
   const [sliderValue, setSliderValue] = useState<number>(0) //拉条数据
   const [showSlider, setShowSlider] = useState<boolean>(false) //是否显示拉条
   const [showChip, setShowChip] = useState<boolean>(false) //是否显示筹码
+  const [lockBoard, setLockBoard] = useState<IEmitterMessage>(null) //是否封盘
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
@@ -31,6 +35,17 @@ const UseBetBoard = () => {
   const gameTabIndex = UGStore.globalProps?.gameTabIndex //GameTab 当前TAB是 彩票0 还是 聊天室1
   const betShareModel = UGStore.globalProps.betShareModel //下注数据
   const reBetShareModel = UGStore.globalProps.betChaseMap && UGStore.globalProps.betChaseMap[UGStore.globalProps?.lotteryId] //追号的下注数据
+
+  useEffect(() => {
+    //收到消息封盘或解封
+    const lisRandom = DeviceEventEmitter.addListener(EmitterTypes.LOCK_BOARD, (item?: IEmitterMessage) => {
+      setLockBoard(item)
+    })
+
+    return () => {
+      lisRandom.remove()
+    }
+  }, [])
 
   //各彩种选中的数量
   const ballSelected = useMemo(() => {
@@ -61,6 +76,8 @@ const UseBetBoard = () => {
   }
 
   return {
+    lockBoard,
+    setLockBoard,
     gameTabIndex,
     betShareModel,
     userInfo,

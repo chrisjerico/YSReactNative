@@ -81,6 +81,7 @@ const UsePayBoard = () => {
       totalNum: arrayLength(betShareModel?.betBean)?.toString(),
       totalMoney: numberToFloatString(totalMoney),
       isInstant: betShareModel?.isInstant,
+      tag: betShareModel?.tag
     }
 
     const { data } = await api.user.userGameBetWithParams(pms).promise

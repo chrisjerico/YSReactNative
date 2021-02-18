@@ -4,11 +4,13 @@ import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
 import { NA_DATA } from "../../../public/define/ANHelper/hp/DataDefine";
 import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
 import PushHelper from "../../../public/define/PushHelper";
+import { push } from "../../../public/navigation/RootNavigation";
 import { Data } from "../../../public/network/Model/LoginModel";
 import { AvatarModel } from "../../../public/network/Model/SystemAvatarListModel";
 import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
 import { goToUserCenterType } from "../../../public/tools/tars";
 import { UGStore } from "../../store/UGStore";
+import { UGUserCenterType } from "./UGSysConfModel";
 
 export class UGLoginModel {
   'API-SID'?: string; // sessid
@@ -68,19 +70,29 @@ export default class UGUserModel extends UGLoginModel {
     if (isTest || uid?.length) return true;
   }
 
-  static checkLogin(canTest = false) {  // 是否允许试玩账号
+  static checkLogin(canTest = false, action?: () => void) {  // 是否允许试玩账号
     const { isTest, uid } = UGStore.globalProps.userInfo
     if (!isTest && uid?.length) return true;
 
     if (!uid?.length) {
       Alert.alert("温馨提示", "您还未登录", [
         { text: "取消", onPress: () => { }, style: "cancel" },
-        { text: "马上登录", onPress: goToUserCenterType.登录页 },
+        {
+          text: "马上登录", onPress: () => {
+            action && action()
+            PushHelper.pushUserCenterType(UGUserCenterType.登录页)
+          }
+        },
       ])
     } else if (!canTest && isTest) {
       Alert.alert("温馨提示", "请登录正式账号", [
         { text: "取消", onPress: () => { }, style: "cancel" },
-        { text: "马上登录", onPress: goToUserCenterType.登录页 },
+        {
+          text: "马上登录", onPress: () => {
+            action && action()
+            PushHelper.pushUserCenterType(UGUserCenterType.登录页)
+          }
+        },
       ])
     }
     return false;

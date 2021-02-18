@@ -6,7 +6,7 @@ import { anyEmpty } from '../../../../public/tools/Ext'
 import EmptyView from '../../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
+import LotteryBall from '../../../../public/components/view/LotteryBall'
 import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { SeriesId } from '../../../../public/models/Enum'
@@ -21,6 +21,7 @@ import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
 import { ImagePlaceholder } from '../../../经典/tools/ImagePlaceholder'
+import { BallType } from '../../../bet/const/LotteryConst'
 
 interface ITwoLevelGameList {
   refreshing?: boolean //刷新
@@ -81,11 +82,11 @@ const TwoLevelListComponent = ({ refreshing,
           break;
       }
 
-        
+
       }}>
       <View style={_styles.game_item_container}>
-        <ImagePlaceholder 
-          style={{ height: scale(160), width: scale(160)}} 
+        <ImagePlaceholder
+          style={{ height: scale(160), width: scale(160)}}
           source={{ uri: item.pic }}/>
 
           <Text
@@ -98,7 +99,7 @@ const TwoLevelListComponent = ({ refreshing,
 
     /**
    * Foot页面
-   * 
+   *
    */
   const _renderListFootComp = () => {
     return (
@@ -127,7 +128,7 @@ const TwoLevelListComponent = ({ refreshing,
                   )
                 }}
                 ListFooterComponent={ ()=>  _renderListFootComp() }
-            
+
                 />,
         ]
       }
@@ -142,10 +143,10 @@ const _styles = StyleSheet.create({
     borderRadius: scale(5),
     margin: scale(10),
   },
-  name: { 
+  name: {
     width: '100%',
     color: "white",
-    fontSize: scale(22), 
+    fontSize: scale(22),
     fontWeight: "bold",
     textAlign: "center",
     backgroundColor: "#000000a0",

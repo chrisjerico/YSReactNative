@@ -115,7 +115,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View key={key + ' ball renderLMA' + groupData?.id}
-            style={_styles.ball_container}>
+            style={_styles.ball_parent_container}>
         {
           groupData?.exPlays.map((item, index) => renderEBall(groupData, item))
         }
@@ -132,6 +132,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   return (
     <ScrollView key={key}
                 nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
                 style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderAllBall()}
@@ -160,7 +161,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',

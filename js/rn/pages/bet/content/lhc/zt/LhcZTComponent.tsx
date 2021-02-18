@@ -136,7 +136,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     </View>
 
     <View key={key + ' sub2 renderZT1' + groupData?.id}
-          style={_styles.ball_container}>
+          style={_styles.ball_parent_container}>
       {groupData?.plays?.map((item) => renderEBall(groupData, item))}
     </View>
   </View>
@@ -159,7 +159,7 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     </View>
 
     <View key={key + ' sub2 renderZT2' + groupData?.id}
-          style={_styles.ball_container}>
+          style={_styles.ball_parent_container}>
       {groupData?.plays?.map((item) => renderERect(groupData, item))}
     </View>
   </View>
@@ -207,7 +207,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     paddingHorizontal: scale(1),
   },
-  ball_container: {
+  ball_parent_container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',

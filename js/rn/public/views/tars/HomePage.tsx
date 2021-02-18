@@ -22,6 +22,7 @@ import ProgressCircle from './ProgressCircle'
 import SafeAreaHeader from './SafeAreaHeader'
 import TouchableImage from './TouchableImage'
 import { Data, ScratchList } from '../../network/Model/ScratchListModel'
+import { OCHelper } from '../../define/OCHelper/OCHelper'
 
 interface HomePageProps {
   headerColor: string
@@ -168,12 +169,32 @@ const HomePage = ({
 
   const renderBanner = useCallback((item, index) => {
     const { linkCategory, linkPosition, pic, url } = item
-    const pushCategory = useCallback(() => {
-      if (url?.length) {
-        PushHelper.openWebView(url)
-      } else {
-        PushHelper.pushCategory(linkCategory, linkPosition)
+    const pushCategory = useCallback(async () => {
+
+      switch (Platform.OS) {
+        case 'ios':
+          {
+            let  ret = await  OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
+            if (!ret) {
+              if (url.indexOf("mobile") != -1  ) {
+                return;
+              } else {
+                if (url?.length) {
+                  PushHelper.openWebView(url)
+                }
+              }
+            }
+          }
+          break
+        case 'android':
+          if (url?.length) {
+            PushHelper.openWebView(url)
+          } else {
+            PushHelper.pushCategory(linkCategory, linkPosition)
+          }
+          break
       }
+
     }, [])
     return <TouchableImage key={index} pic={pic} resizeMode={'stretch'} onPress={pushCategory} />
   }, [])
@@ -184,7 +205,7 @@ const HomePage = ({
       if ((popup_type == '1' && !uid?.length) || popupSwitch == '0') { } else {
         PushHelper.pushAnnouncement(announcements)
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [announcements])
 
   if (loading) {
@@ -207,11 +228,12 @@ const HomePage = ({
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={refreshTintColor} />}
           ListHeaderComponent={() => (
             <>
+              {/* 顶部横幅 +在线人数 */}
               {showBannerBlock && (
                 <BannerBlock
                   showOnlineNum={showOnlineNum}
                   containerStyle={styles.bannerContainer}
-                  badgeStyle={{...styles.bannerBadge, ...bannerBadgeStyle}}
+                  badgeStyle={{ ...styles.bannerBadge, ...bannerBadgeStyle }}
                   autoplayTimeout={bannersInterval}
                   onlineNum={onlineNum}
                   banners={banners}
@@ -226,6 +248,7 @@ const HomePage = ({
           ListFooterComponent={() => (
             <>
               {renderListFooterTopComponent && renderListFooterTopComponent()}
+              {/* 优惠活动 */}
               <CouponBlock
                 {...couponBlockStyles}
                 c_ref={couponRef}
@@ -233,7 +256,7 @@ const HomePage = ({
                 onPressMore={goToPromotionPage}
                 coupons={coupons}
                 renderCoupon={({ item, index }) => {
-                  const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
+                  const { pic, linkCategory, linkPosition, title, content, linkUrl ,} = item
                   return (
                     <AutoHeightCouponComponent
                       {...couponStyles}
@@ -242,54 +265,49 @@ const HomePage = ({
                       pic={pic}
                       slide={couponClickStyle == 'slide' && couponSelectedIndex == index}
                       content={content}
-                      onPress={(setShowPop) => {
-                        if (linkUrl) {
-                          PushHelper.openWebView(linkUrl)
-                          return
-                        } else if (linkCategory || linkPosition) {
-                          PushHelper.pushCategory(linkCategory, linkPosition)
-                          return
-                        }
-
+                      onPress={async (setShowPop) => {
+                        //slide=折叠式,popup=弹窗式 page = 内页*/
                         switch (Platform.OS) {
                           case 'ios':
-                            switch (couponClickStyle) {
-                              // 内页
-                              case 'page': {
-                                PushHelper.pushPromoteDetail({ clsName: 'UGPromoteModel', ...item })
-                                break
-                              }
-                              // 弹框
-                              case 'popup': {
-                                setShowPop(true)
-                                break
-                              }
-                              case 'slide': {
-                                if (index == couponSelectedIndex) {
-                                  couponSelectedIndex = -1
-                                  couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
-                                } else {
-                                  couponSelectedIndex = index
-                                  couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                            {
+                              let  ret = await  OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
+                              if (!ret) {
+                                if (couponClickStyle === 'slide') {
+                                  if (index == couponSelectedIndex) {
+                                    couponSelectedIndex = -1
+                                    couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                                  } else {
+                                    couponSelectedIndex = index
+                                    couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                                  }
                                 }
-                                break
+                                else if(couponClickStyle === 'popup') {
+                                  setShowPop(true)
+                                }
+                                else if(couponClickStyle === 'page') {
+                                  PushHelper.pushPromoteDetail({ clsName: 'UGPromoteModel', ...item })
+                                }
                               }
                             }
                             break
                           case 'android':
-                            // 弹框
-                            ANHelper.callAsync(CMD.OPEN_COUPON, {
-                              ...item,
-                              couponClickStyle,
-                            })
+                              // 弹框
+                              ANHelper.callAsync(CMD.OPEN_COUPON, {
+                                ...item,
+                                couponClickStyle,
+                              })
                             break
                         }
+
+
                       }}
                     />
                   )
                 }}
               />
+              {/**<   排行榜 */}
               <AnimatedRankComponent {...animatedRankComponentStyles} type={rankingListType} rankLists={rankLists} />
+              {/* 底部商标 */}
               <BottomLogo
                 {...bottomLogoStyles}
                 webName={webName}
@@ -305,6 +323,7 @@ const HomePage = ({
             </>
           )}
         />
+        {/**<   浮动按钮 *//*  */}
         <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} activitySetting={activitySetting} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
         {renderRestComponent && renderRestComponent()}
       </>

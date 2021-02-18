@@ -153,4 +153,5 @@ export interface Data {
   znxNotify: string;
   zxkfUrl: string;
   zxkfUrl2: string;
+  frontend_agent_add_member?: '0' | '1' // 推荐收益页添加会员功能  0关闭，1开启
 }

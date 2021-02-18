@@ -25,7 +25,7 @@ import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { skin1, Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, anyLength, arrayEmpty } from '../../../public/tools/Ext'
 import { deepMergeProps } from '../../../public/tools/FUtils'
 import { sc540, scale } from '../../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../../public/tools/tars'
@@ -100,6 +100,19 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
     v.willShowAnnouncement = false
   }
 
+  //显示hot 热图
+  function showHOT(item: any) {
+
+    let isShow: boolean = false;
+    if (anyEmpty(item.category)) {
+      isShow = item.isHot === '1' ? true : false;
+    } else {
+      const flagType = parseInt(item.tipFlag)
+      isShow = flagType > 0 && flagType < 4 ? true : false;
+    }
+    return isShow;
+  }
+
   const renderGameSubTypeComponent = (games: any[]) => (
     <GameSubTypeComponent
       uniqueKey={'JDHomePage_GameSubTypeComponent'}
@@ -121,17 +134,18 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
         )
       }}
       renderGame={({ item, index, showGameSubType }) => {
-        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId, subtitle } = item
+        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId, subtitle, category } = item
         const flagType = parseInt(tipFlag)
+
         return (
           <View style={styles.gameContainer}>
             <GameButton
               logo={icon || logo}
-              showSecondLevelIcon={subType ? true : false}
-              showRightTopFlag={flagType > 0 && flagType < 4}
+              showSecondLevelIcon={arrayEmpty(subType) ? false : true}
+              showRightTopFlag={showHOT(item)}
               flagIcon={(() => {
                 if (hotIcon) return hotIcon
-                if (flagType > 0 && flagType < 4) return img_images('hot2x')
+                if (showHOT(item)) return img_images('hot2x')
                 if (flagType == 4) return img_platform('c116', 'zhongdajiang', 'gif')
                 return undefined
               })()}
@@ -162,7 +176,8 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               }}
               enableCircle={false}
               onPress={() => {
-                if (subType) {
+                anyLength
+                if (!arrayEmpty(subType)) {
                   const isShow = showGameSubType(index)
                   const row = Math.ceil(item?.subType?.length / 3)
                   const subTypeHeight = row * sc(55)
@@ -185,24 +200,24 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
-      goToPromotionPage={() => push(PageName.JDPromotionListPage)}
-      rankingListType={rankingListType}
+      goToPromotionPage={() => push(PageName.JDPromotionListPage)}/**<   去优惠活动列表页 */
+      rankingListType={rankingListType} /**<   是否显示中奖/投注排行榜 */
       loading={loading}
-      refreshing={refreshing}
-      refresh={refresh}
+      refreshing={refreshing}/**<   是否刷新数据 */
+      refresh={refresh}/**<   控制refreshing */
       pagekey={'JDHomePage'}
-      headerColor={skin1.themeColor}
-      noticeBlockStyles={noticeBlockStyles()}
-      noticeLogo={img_assets('notice')}
-      couponBlockStyles={couponBlockStyles}
-      couponStyles={{
+      headerColor={skin1.themeColor}/**<   nav头部颜色 */
+      noticeBlockStyles={noticeBlockStyles()}/**<   跑马灯样式 */
+      noticeLogo={img_assets('notice')}/**<   跑马灯图片 */
+      couponBlockStyles={couponBlockStyles}/**<   底部优惠活动样式 */
+      couponStyles={{ /**<   底部优惠活动cell样式 */
         containerStyle: {
           backgroundColor: skin1.homeContentColor, borderRadius: sc(12), marginVertical: sc(13), overflow: 'hidden', padding: sc(12), ...getWhiteBorderStyle()
         },
         titleStyle: { marginVertical: sc(3), fontSize: sc(23), fontWeight: '500' }
       }}
-      bannerBadgeStyle={{ paddingHorizontal: sc(15), top: -sc(225), height: sc(40), borderRadius: sc(20), backgroundColor: 'rgba(27,38,116,0.5)' }}
-      animatedRankComponentStyles={animatedRankComponentStyles()}
+      bannerBadgeStyle={{ paddingHorizontal: sc(15), top: -sc(225), height: sc(40), borderRadius: sc(20), backgroundColor: 'rgba(27,38,116,0.5)' }}/**<   在线人数样式 */
+      animatedRankComponentStyles={animatedRankComponentStyles()}/**<   底部排行榜样式 */
       containerStyle={styles.container}
       bottomLogoStyles={{
         containerStyle: {
@@ -213,9 +228,9 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
         },
         titleStyle: { fontSize: sc(18) },
         subTitleStyle: { fontSize: sc(18) },
-      }}
+      }}/**<   底部商标 */
       renderHeader={() => (
-        // 导航条
+        /**<   头部导航 */
         <HomeHeader
           uid={uid}
           name={usr}
@@ -230,8 +245,9 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
           onPressUser={goToUserCenterType.我的页}
         />
       )}
-      renderListHeaderComponent={() => (
+      renderListHeaderComponent={() => (/**<   跑马灯《=中间内容=》 */
         <>
+          {/* 好友推荐分享 */}
           <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '1'} containerStyle={{ marginLeft: sc(10), width: '96%', marginTop: sc(6) }} />
           {/* 导航按钮 */}
           <NavBlock
@@ -294,6 +310,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               )
             }}
           />
+          {/* 好友推荐分享 */}
           <HomeFriendReferralCP visible={switchShowFriendReferral == '1' && showNavigationBar == '0'} containerStyle={{ marginLeft: sc(10), width: '96%', marginBottom: sc(10) }} />
           {/* 腰部广告图 */}
           <BannerBlock
@@ -317,8 +334,8 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               )
             }}
           />
-          {/* 游戏列表 */}
-          {mobileHomeGameTypeSwitch ? (
+          {/* 游戏列表  mobileHomeGameTypeSwitch 系统设置-内容管理-手机游戏图标，关闭开关时，只需隐藏前台分类tab，后台游戏图标内容不变 */}
+          {mobileHomeGameTypeSwitch ? (/**<  tab+ 游戏列表 */
             <TabComponent
               c_ref={v}
               tabGames={homeGames}
@@ -343,7 +360,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               focusTabColor={UGColor.RedColor5}
               renderScene={({ item }) => renderGameSubTypeComponent(item)}
             />
-          ) : (
+          ) : (/**<   游戏列表 */
               renderGameSubTypeComponent(homeGamesConcat)
             )}
         </>

@@ -1,4 +1,3 @@
-
 import { anyEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
 import { ugLog } from '../../../public/tools/UgLog'
 
@@ -84,7 +83,27 @@ const randomItem = (list?: Array<any>, count: number = 1): Array<any> => {
  * @param sliderValue
  */
 const calculateSliderValue = (odds?: string, sliderValue?: number): string => {
-  if(anyEmpty(odds)) return null
+  if (anyEmpty(odds)) return ''
+
+  if (odds?.includes('\n')) {//有的赔率有2个
+    const oddsArr = odds?.split('\n')
+    if (arrayLength(oddsArr) == 2) {
+      return `${calculateSliderValueInside(oddsArr[0], sliderValue)}\n${calculateSliderValueInside(oddsArr[1], sliderValue)}`
+    }
+  }
+
+  return calculateSliderValueInside(odds, sliderValue)
+}
+
+/**
+ * 计算新的赔率，公式： 新賠率 = 原始賠率 - ( 原始賠率無條件進位至整數位 * 退水)，
+ * 如 退水是 0.4% 就应该是 0.0004，公式就是：48.8 - （49 * 0.0004）= 新赔率
+ *
+ * @param odds 赔率
+ * @param sliderValue
+ */
+const calculateSliderValueInside = (odds?: string, sliderValue?: number): string => {
+  if (anyEmpty(odds)) return null
 
   const oddsNumber = Number(odds)
   const newOdds = Math.ceil(oddsNumber)
@@ -97,7 +116,8 @@ const calculateSliderValue = (odds?: string, sliderValue?: number): string => {
  * @param list
  */
 const mapTotalCount = (list?: Map<any, number>): number => {
-  return dicNull(list) ? 0 :
+  return dicNull(list)
+    ? 0 :
     Object.values(list)?.reduce((previousValue, currentValue) => previousValue + currentValue)
 }
 

@@ -44,7 +44,8 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
         <View key={'renderItemContent issue_container'}
               style={_styles.issue_container}>
           {
-            anyEmpty(item?.preDisplayNumber) ? null :
+            anyEmpty(item?.preDisplayNumber)
+              ? null :
               <Text key={'renderItemContent issue_container' + item.preDisplayNumber}
                     style={_styles.text_content_issue}
                     numberOfLines={1}>{item.preDisplayNumber + '期'}</Text>
@@ -68,13 +69,13 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
           style={_styles.container}>
       {renderItemContent(nextIssueData)}
       {
-        showHistory ?
+        !showHistory
+          ? null :
           <View key={'BetRecordListComponent container'}
                 style={_styles.history_list_container}>
             <BetRecordListComponent key={'BetRecordListComponent container' + historyData}
                                     historyData={historyData}/>
-          </View> :
-          null
+          </View>
       }
       <TimeComponent/>
     </View>

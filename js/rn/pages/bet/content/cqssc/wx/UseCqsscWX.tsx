@@ -6,6 +6,7 @@ import { PlayData, PlayOddData } from '../../../../../public/network/Model/lotte
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { parseInputArray } from '../../../util/LotteryUtil'
 import { usePrevious } from '../../../util/usePrevious'
+import { currentPlayOddData } from '../../../util/select/ParseSelectedUtil'
 
 /**
  * 五星
@@ -36,19 +37,26 @@ const UseCqsscWX = () => {
     const wxInputArr = parseInputArray(wxInputNumber, [' ', ',', '，', '\n'], 5)
 
     if (arrayLength(wxInputArr) > 0) {
+      const tabName = currentPageData()[0]?.alias
       addAndRemoveBallList(wxInputArr?.map((item, index) => {
         const name = item.split('').toString()
         return {
-          exId: item + ',' + index,
+          exId: tabName + ',' + item + ',' + index,
           alias: name,
           name: name,
         } as PlayData
       }), selectedBalls)
     } else {
-      addAndRemoveBallList(null, selectedBalls)
+      setSelectedBalls([])
     }
 
   }, [wxInputNumber])
+
+  useEffect(() => {
+    if (tabIndex > 0) {//tab 不是第一个单式，就清除单式输入的内容
+      setWxInputNumber(null)
+    }
+  }, [tabIndex])
 
   return {
     setPlayOddData,

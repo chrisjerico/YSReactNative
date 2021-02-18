@@ -15,6 +15,7 @@ import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
 import RedBagModal from '../../components/RedBagModal'
 import { ugLog } from '../../tools/UgLog'
 import { Data, ScratchList } from '../../network/Model/ScratchListModel'
+import UGUserModel from '../../../redux/model/全局/UGUserModel'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -53,29 +54,62 @@ export interface GoldenEgg {
   type: string
 }
 
-const Activitys = ({ refreshing, redBagLogo, uid, isTest, redBag, roulette, floatAds, goldenEggs, scratchs, activitySetting }: ActivitysProps) => {
+// <<<<<<< HEAD
+// const Activitys = ({ refreshing, redBagLogo, uid, isTest, redBag, roulette, floatAds, goldenEggs, scratchs, activitySetting }: ActivitysProps) => {
+//   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
+//
+//   const [activitySettings, setActivitySettings] = useState<settings>()
+//   const { goldenEggLogo, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
+//   if (!activitySettings) {
+//     api.activity.settings().useSuccess((res) => {
+//       setActivitySettings(res?.data)
+//     })
+//   }
+//
+//   const [redDialog, setRedDialog] = useState(false)
+// =======
+const Activitys = ({ refreshing, uid, isTest, redBag, roulette, redBagLogo:redBagLogo1, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
   const { missionPopUpSwitch } = UGStore.globalProps.sysConf
 
   const [activitySettings, setActivitySettings] = useState<settings>()
-  const { goldenEggLogo, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
-  if (!activitySettings) {
-    api.activity.settings().useSuccess((res) => {
-      setActivitySettings(res?.data)
-    })
-  }
+  const { goldenEggLogo, redBagLogo:redBagLogo2, redBagSkin, scratchOffLogo, turntableLogo } = activitySettings ?? {}
 
   const [redDialog, setRedDialog] = useState(false)
+  const [redBagData, setRedBagData] = useState ({})
+
+// >>>>>>> android/arc/deposit
   return (
     <>
       <ActivityComponent
         refreshing={refreshing}
         containerStyle={{ top: scale(235), right: 0 }}
         show={redBag?.data}
-        logo={redBagLogo?.length>0 ?redBagLogo : Res.pig}
+        logo={redBagLogo1?.length>0 ?redBagLogo1 : (redBagLogo2?.length ? redBagLogo2 :Res.pig) }
         type={0}
-        onPress={() => {
+        onPress={async () => {
+          ugLog('activitySettings ===',activitySettings)
+          if (!UGUserModel.checkLogin()) return
+          //没有登录，弹窗
           // 红包
-          setRedDialog(!redDialog)
+          //获取红包数据
+
+          if (anyEmpty(goldenEggLogo)) {
+            await api.activity.settings().useSuccess((res) => {
+              setActivitySettings(res?.data)
+              ugLog('activitySettings ==',activitySettings)
+            })
+          }
+
+           await api.activity.redBagDetail().useSuccess(async ({data}) => {
+             setRedBagData(data)
+            })
+            .useCompletion(
+              (res, err, sm) => {
+              setRedDialog(!redDialog)
+              }
+            )
+
+
         }}
       />
       <ActivityComponent
@@ -145,7 +179,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, isTest, redBag, roulette, floa
             onPress={() => {
               setRedDialog(!redDialog)
             }}
-            redBag={redBag}
+            redBag={redBagData}
             bagSkin={activitySettings?.redBagSkin}
             activitySetting={{data: activitySettings} as ActivitySettingModel}
           />

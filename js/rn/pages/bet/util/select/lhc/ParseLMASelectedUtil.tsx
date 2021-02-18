@@ -23,7 +23,7 @@ import { UGStore } from '../../../../../redux/store/UGStore'
  * @param selectedBalls
  */
 const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<PlayData | ZodiacNum>): Map<string, Map<string, SelectedPlayModel>> => {
-  const gameType = UGStore.globalProps?.playOddDetailData?.lotteryLimit?.gameType //彩种类别，六合彩 秒秒彩
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
   //选中了哪些球, 3层结构
   const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
 
@@ -41,10 +41,12 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
       //找出选中的球对应的原始数据, 优先使用 自定义数组 exPlays
       let selBalls: PlayData[]
       if (gameType == LCode.cqssc && playOddData?.code == CqsscCode.WX && groupData?.alias == '单式') {//秒秒彩五行单式特殊处理
-        selBalls = selectedBalls
+        selBalls = selectedBalls?.filter((item) => item?.exId?.startsWith(groupData?.alias))
       } else {
-        selBalls = !anyEmpty(groupData?.exPlays) ?
-          groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item)) :
+        selBalls = !anyEmpty(groupData?.exPlays)
+          ?
+          groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
+          :
           groupData?.plays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
       }
 

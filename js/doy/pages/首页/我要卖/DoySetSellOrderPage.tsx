@@ -5,7 +5,7 @@ import FastImage from "react-native-fast-image"
 import { TextInput } from "react-native-gesture-handler"
 import LinearGradient from "react-native-linear-gradient"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
-import { setProps, UGBasePageProps } from "../../../../rn/pages/base/UGPage"
+import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
 import { FastImagePlaceholder } from "../../../../rn/pages/经典/tools/ImagePlaceholder"
 import AppDefine from "../../../../rn/public/define/AppDefine"
 import { PageName } from "../../../../rn/public/navigation/Navigation"
@@ -13,13 +13,14 @@ import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText13, DoyText14, DoyText16, DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText13, DoyText14, DoyText16, } from "../../../public/Button之类的基础组件/DoyButton"
 import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../../public/Button之类的基础组件/DoyDropDownPicker"
+import { DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 const tipsBarColos = ['#FFEDD4', '#FAE4CF']
 
-export const DoySetSellOrderPage = ({ }: UGBasePageProps) => {
+export const DoySetSellOrderPage = ({ setProps }: UGBasePageProps) => {
 
   const { textColor1 } = skin1
 

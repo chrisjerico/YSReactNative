@@ -22,8 +22,8 @@ const UseLotteryContent = () => {
     const playOddsData = xPlayOddData(leftColumnIndex) //当前的玩法
     const prePlayOddsData = xPlayOddData(preLeftColumnIndex) //前一次选中的玩法
     //特殊玩法不能和普通玩法混合选择
-    if (specialPlay(playOddDetailData?.lotteryLimit?.gameType, playOddsData?.pageData?.groupTri)
-      || specialPlay(playOddDetailData?.lotteryLimit?.gameType, prePlayOddsData?.pageData?.groupTri)) {
+    if (specialPlay(playOddDetailData?.game?.gameType, playOddsData?.pageData?.groupTri)
+      || specialPlay(playOddDetailData?.game?.gameType, prePlayOddsData?.pageData?.groupTri)) {
       UGStore.dispatch({
         type: 'reset',
         selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),

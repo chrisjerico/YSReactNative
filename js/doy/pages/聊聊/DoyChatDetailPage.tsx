@@ -3,12 +3,10 @@ import { View } from "react-native"
 import { UGBasePageProps } from "../../../rn/pages/base/UGPage"
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 
-export const DoyChatDetailPage = ({ }: UGBasePageProps) => {
+export const DoyChatDetailPage = ({ setProps }: UGBasePageProps) => {
   useEffect(() => {
-
+    setProps({ navbarOpstions: { title: '玛瑞亚#3b8dcd' } })
   }, [])
-
-  const { themeColor, navBarBgColor } = skin1
 
   return <View style={{ flex: 1 }}>
   </View>

@@ -53,9 +53,10 @@ interface UGAnimationMoveProps {
   show?: boolean;
   direction?: 'left' | 'right' | 'top' | 'bottom';
   backgroundColor?: string;
+  style?: StyleProp<ViewStyle>
 }
 export const AnimationMoveView = (props: UGAnimationMoveProps) => {
-  const { show, direction = 'bottom', backgroundColor } = props;
+  const { show, direction = 'bottom', backgroundColor, style } = props;
   let startValue: number;
   switch (direction) {
     case 'left':
@@ -90,13 +91,14 @@ export const AnimationMoveView = (props: UGAnimationMoveProps) => {
   }, [show]);
 
   return (
-    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: '100%', height: '100%', alignItems: 'center', backgroundColor: backgroundColor }, { opacity: v.opacity }]}>
+    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: '100%', height: '100%', backgroundColor: backgroundColor }, { opacity: v.opacity }]}>
       <Animated.View style={[{
         transform: [{
           translateX: direction == 'left' || direction == 'right' ? v.offset : 0,
           translateY: direction == 'top' || direction == 'bottom' ? v.offset : 0,
         }]
-      }
+      }, { width: '100%', height: '100%', alignItems: 'center', },
+        style,
       ]}>
         {props?.children}
       </Animated.View>

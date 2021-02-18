@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Image, ImageBackground, Modal, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { Alert, Image, ImageBackground, Modal, Platform, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -16,7 +16,7 @@ import Button from '../views/temp/Button'
 interface RedBagModalProps {
   show?: any
   onPress?: () => any
-  redBag?: RedBagDetailActivityModel
+  redBag?: any
   activitySetting?: ActivitySettingModel
   bagSkin?: string
 }
@@ -27,34 +27,50 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
   // const [bagSkin, setBagSkin] = useState(activitySetting?.data?.redBagSkin)
 
   const requestBag = async () => {
-    if (!redBag.data.hasLogin) {
-      UGUserModel.checkLogin()
-      return
-    }
-    const response = await APIRouter.request_redbag(redBag.data.id)
-    onPress()
+    if (!UGUserModel.checkLogin()) return
+
+    const response = await APIRouter.request_redbag(redBag.id)
+
+    ugLog('response ===', response)
     if (response.data.code == 0) {
-      Alert.alert(null, "恭喜您获得了" + response.data.data +"元红包", [
-        { text: "确认" },
+      Alert.alert(null, "恭喜您获得了" + response.data.data + "元红包", [
+        {
+          text: "确认",
+          onPress: () => {
+            onPress()
+          },
+        },
+
       ])
     } else {
       Alert.alert(null, response.data.msg, [
-        { text: "确认" },
+        {
+          text: "确认",
+          onPress: () => {
+            onPress()
+          },
+        },
       ])
     }
-    await APIRouter.activity_redBagDetail().then((value) => {
-      if (value.data.code == 0) {
-        setRedBagData(value.data)
-      }
-    })
   }
 
-  useEffect(()=> {
+  useEffect(() => {
   }, [redBagData])
-  
+
+
+  function butName() {
+
+    if (redBagData.canGet) {
+      return '立即开抢'
+    } else if (redBagData.attendedTimes) {
+      return '已参与活动'
+    } else {
+      return '立即开抢'
+    }
+  }
   return (
-    <Modal 
-      style={{ zIndex: 2}}
+    <Modal
+      style={{ zIndex: 2 }}
       animationType="fade"
       transparent={true}
       onRequestClose={() => {
@@ -63,36 +79,36 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
       <View style={styles.container}>
         <View style={styles.bg_container} />
         <View style={styles.redBagImage}>
-          <ImageBackground 
+          <ImageBackground
             source={{ uri: bagSkin?.includes("red_pack_big_niu") ? bagSkin : Res.redBg }}
             resizeMode='contain'
             style={styles.image} >
-            <View style={styles.imageContainer}>
-              <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
+            <View style={[styles.imageContainer, Platform.OS == 'ios' ? { marginTop: scale(75) } : undefined]}>
+              <View style={bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>帐号：</Text>
-                <Text style={styles.text}>{redBagData.data.username}</Text>
+                <Text style={styles.text}>{redBagData.username}</Text>
               </View>
-              <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
+              <View style={bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>红包余额：</Text>
-                <Text style={styles.text}>{redBagData.data.leftAmount}</Text>
+                <Text style={styles.text}>{redBagData.leftAmount}</Text>
               </View>
-              <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
+              <View style={bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Text style={styles.title}>可抢红包：</Text>
-                <Text style={styles.text}>{redBagData.data.leftCount}</Text>
+                <Text style={styles.text}>{redBagData.leftCount}</Text>
               </View>
-              <View style={ bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
+              <View style={bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Button
-                  title={redBagData.data.hasLogin? (redBagData.data.canGet == 0 && redBagData.data.attendedTimes > 0 ? '已参与活动' : '立即开抢') : '登录抢红包'}
+                  title={butName()}
                   onPress={requestBag}
                   containerStyle={styles.button}
-                  titleStyle={{ color: '#ffffff'}}
+                  titleStyle={{ color: '#ffffff' }}
                 />
               </View>
-              {bagSkin?.includes("red_pack_big_niu") ? null : 
+              {bagSkin?.includes("red_pack_big_niu") ? null :
                 <View style={styles.row}>
-                  <Text style={[styles.title, {color: '#FFC950', alignSelf: 'center'}]}>活动介绍</Text>
+                  <Text style={[styles.title, { color: '#FFC950', alignSelf: 'center' }]}>活动介绍</Text>
                   <ScrollView style={styles.redBagIntro}>
-                    <Text style={[styles.title, {color: '#ffffff'}]}>{activitySetting?.data?.redBagIntro}</Text>
+                    <Text style={[styles.title, { color: '#ffffff' }]}>{activitySetting?.data?.redBagIntro}</Text>
                   </ScrollView>
                 </View>
               }
@@ -103,9 +119,9 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
       <View style={styles.closeDialog}>
         <TouchableWithoutFeedback
           onPress={onPress}>
-          <Image 
+          <Image
             style={styles.image}
-            source={{ uri: Res.closeDialog }}/>
+            source={{ uri: Res.closeDialog }} />
         </TouchableWithoutFeedback>
       </View>
     </Modal>
@@ -129,23 +145,23 @@ const styles = StyleSheet.create({
   },
   image: {
     height: '100%',
-    width: '100%', 
+    width: '100%',
     flex: 1,
     flexDirection: 'column',
   },
-  redBagImage: { 
+  redBagImage: {
     height: '60%',
     width: '100%',
-    marginTop: '30%', 
+    marginTop: '30%',
   },
-  closeDialog: { 
+  closeDialog: {
     position: 'absolute',
-    width: scale(35), 
+    width: scale(35),
     height: scale(35),
     marginTop: scale(220),
     marginLeft: scale(450),
   },
-  col: { 
+  col: {
     flexDirection: 'row',
     height: scale(60),
     width: scale(200),
@@ -158,14 +174,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: scale(-10),
   },
-  row: { 
+  row: {
     flexDirection: 'column',
     width: scale(270),
   },
-  title: { 
+  title: {
     color: '#ef6c74'
   },
-  text: { 
+  text: {
     color: 'black'
   },
   imageContainer: {

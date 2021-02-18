@@ -43,8 +43,10 @@ const RightMenu = ({ menu, onMenuClick }: IRightMenu, ref?: any) => {
           <View style={_styles.item_container}>
             {
               menu?.map((item, index) =>
-                <TouchableWithoutFeedback onPress={() => onMenuClick && onMenuClick(index)}>
-                  <View style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
+                <TouchableWithoutFeedback key={item.toString() + index}
+                                          onPress={() => onMenuClick && onMenuClick(index)}>
+                  <View key={item.toString() + index}
+                        style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
                     {
                       arrayLength(item) == 2 ?
                         <View style={_styles.item_sub_content}>

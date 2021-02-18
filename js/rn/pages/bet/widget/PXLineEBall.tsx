@@ -10,8 +10,8 @@ import LotteryEBall from './LotteryEBall'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
 
-interface ILotteryEBall {
-  item?: ILotteryLineEBallItem // 要绘制的数据
+interface IPXEBall {
+  item?: IPXLineEBallItem // 要绘制的数据
   ballProps?: IEBall //球的属性
   selectedBalls?: Array<PlayData | ZodiacNum> // 已选中的数据
   ballStyle?: StyleProp<ViewStyle>
@@ -21,17 +21,18 @@ interface ILotteryEBall {
 /**
  * 和 PlayData 结构类似
  */
-interface ILotteryLineEBallItem {
+interface IPXLineEBallItem {
   id?: string; //708501
   name?: string; //01
   alias?: string;//特码A"
   code?: string;//01
   odds?: string;//42.5500
-  zodiacItem: ZodiacNum
+  enable?: string//1 //彩种是否开启
+  zodiacItem: ZodiacNum,
 }
 
 /**
- * 一行彩票球+点击回调
+ * 平肖一行彩票球+点击回调
  * @param item 条目数据
  * @param ballProps 球的类型
  * @param selectedBalls 选中的球列表
@@ -39,13 +40,13 @@ interface ILotteryLineEBallItem {
  * @param callback 点击回调
  * @constructor
  */
-const LotteryLineEBall = ({
+const PXLineEBall = ({
                             item,
                             ballProps,
                             selectedBalls,
                             ballStyle,
                             callback,
-                          }: ILotteryEBall) => {
+                          }: IPXEBall) => {
 
   let isSel = isSelectedBallOnId(selectedBalls, item)
 
@@ -58,10 +59,7 @@ const LotteryLineEBall = ({
             style={[
               _styles.ball_item_tm,
               {
-                backgroundColor:
-                  isSel ?
-                    `${Skin1.themeColor}dd` :
-                    null,
+                backgroundColor: isSel ? `${Skin1.themeColor}dd` : null,
               },
             ]}>
         <Text key={showName}
@@ -85,6 +83,7 @@ const LotteryLineEBall = ({
                           item={{
                             id: item?.id + zodiacNumber,
                             name: zodiacNumber,
+                            enable: item?.enable,
                           }}/>)
         }
       </View>
@@ -99,10 +98,11 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: scale(2),
-    borderBottomRightRadius: scale(32),
-    borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(16),
-    borderBottomLeftRadius: scale(16),
+    // borderBottomRightRadius: scale(32),
+    // borderTopLeftRadius: scale(32),
+    // borderTopRightRadius: scale(24),
+    // borderBottomLeftRadius: scale(24),
+    borderRadius: scale(4),
     borderBottomWidth: scale(1),
     borderBottomColor: UGColor.LineColor4,
   },
@@ -117,6 +117,6 @@ const _styles = StyleSheet.create({
   },
 })
 
-export default LotteryLineEBall
-export { ILotteryLineEBallItem }
+export default PXLineEBall
+export { IPXLineEBallItem }
 

@@ -4,7 +4,7 @@ import * as React from 'react'
 import { ugLog } from '../../../public/tools/UgLog'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
-import { GameTab } from '../const/LotteryConst'
+import { GameTab, SingleOption } from '../const/LotteryConst'
 
 interface INameOrAlias {
   name?: string; //鼠
@@ -51,6 +51,7 @@ const clearLotteryData = () => {
     type: 'reset',
     lotteryId: '0',
     lotteryTabIndex: 0,
+    singleTabIndex: SingleOption.SINGLE,
     gameTabIndex: GameTab.LOTTERY,
     currentColumnIndex: 0,
     betShareModel: {},
@@ -74,6 +75,8 @@ const clearLotteryData = () => {
  * @param len 只提取len长度的字符串
  */
 const parseInputArray = (orgString?: string, specialParams?: Array<string>, len?: number): Array<string> => {
+  if(anyEmpty(orgString)) return null
+
   let wxInputArr: Array<string>
   let newString = orgString?.replace('.', '')
   for (let value of specialParams) {
@@ -121,6 +124,13 @@ const filterSelectedData = (selectedData?: Map<string, Map<string, Map<string, S
 }
 
 /**
+ * 过滤出某个类别选中的数量
+ * @param subAlias 需要计算的彩种子类别，比如五星玩法 -> 二重号
+ * @param selectedBalls 已经选中的球
+ */
+const subCountOfSelectedBalls = (subAlias?: string, selectedBalls?: Array<PlayData | ZodiacNum>) => arrayLength(selectedBalls?.filter((item) => item?.alias == subAlias))
+
+/**
  * 各彩种选中的数量，比如 二字定位 下面的 子类 选中了多少条，结构
  * {
  *   万千 -> 5条
@@ -157,5 +167,6 @@ export {
   playDataUniqueId,
   specialPlay,
   parseInputArray,
+  subCountOfSelectedBalls,
 
 }

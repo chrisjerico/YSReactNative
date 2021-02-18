@@ -166,4 +166,5 @@ export default interface UGSystemModel {
   appVersion: string
   mobileHomeGameTypeSwitch: boolean
   userCenterCategoryList: [{ id: number, name: string }]//个人中心页分类列表
+  frontend_agent_add_member?: '0' | '1' // 推荐收益页添加会员功能  0关闭，1开启
 }

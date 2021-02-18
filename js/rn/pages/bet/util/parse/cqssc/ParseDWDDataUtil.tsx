@@ -47,6 +47,7 @@ const createBalls = (playOddData?: PlayOddData, data?: PlayGroupData): Array<Pla
         id: `${aliasArr[i]},${play0?.id},${ballIndex}`,
         name: ballIndex,
         alias: aliasArr[i],
+        enable: play0?.enable
       } as PlayData)
     })
     arrArr.push({...data, exPlays: arr})

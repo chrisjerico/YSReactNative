@@ -30,13 +30,13 @@ export async function setRnPageInfo(force = false) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
     // 优惠列表详情
-    pages.push({
-      vcName: 'UGPromotionIncomeController',
-      rnName: PageName.JDSegmentPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
+    // pages.push({
+    //   vcName: 'UGPromotionIncomeController',
+    //   rnName: PageName.JDSegmentPage,
+    //   fd_prefersNavigationBarHidden: true,
+    //   允许游客访问: false,
+    //   允许未登录访问: false,
+    // })
 
 
   }
@@ -348,7 +348,7 @@ export async function setRnPageInfo(force = false) {
   }
 
   if (skitType.indexOf('经典') != -1) {
-    pages = pages.concat(JDPages.filter((ele) => ele.rnName == PageName.JDHomePage))
+     pages = pages.concat(JDPages.filter((ele) => ele.rnName == PageName.JDHomePage))
   }
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
