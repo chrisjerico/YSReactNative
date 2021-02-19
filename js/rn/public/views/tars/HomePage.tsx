@@ -64,7 +64,7 @@ interface HomePageProps {
   couponBlockStyles?: CouponBlockStyles//底部优惠活动
   animatedRankComponentStyles?: AnimatedRankComponentStyles//底部排行榜
   couponStyles?: CouponStyles//底部优惠活动
-  couponClickStyle?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
+  // couponClickStyle?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   bottomLogoStyles?: BottomLogoStyles//底部商标
   containerStyle?: StyleProp<ViewStyle>
   noticeBlockStyles?: NoticeBlockStyles // 跑马灯

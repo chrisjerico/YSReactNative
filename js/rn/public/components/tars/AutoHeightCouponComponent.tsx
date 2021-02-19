@@ -48,6 +48,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
         break
       }
       case 'slide': {
+        ugLog("item=", item)
         setShowSlide(!showSlide)
         break
       }
@@ -75,28 +76,53 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
         // }}
       />
       {(onPress ? slide : showSlide) && (
-        <AutoHeightWebView
-          style={{ width: '100%' }}
-          scalesPageToFit={true}
-          // onSizeUpdated={size => setHeight(size?.height)}
-          viewportContent={'width=device-width, user-scalable=no'}
-          source={{
-            html:
-              `<head>
-              <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-              <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
-              <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
-              <style>table{width:auto !important;}</style>
-              <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
-              </head>` +
-              `<script>
-              window.onload = function () {
-                window.location.hash = 1;
-                document.title = document.body.scrollHeight;
-              }
-              </script>` + content,
-          }}
-        />
+        <View style={{ flex:1}}>
+          <AutoHeightWebView
+            style={{ width: '100%' }}
+            scalesPageToFit={true}
+            // onSizeUpdated={size => setHeight(size?.height)}
+            viewportContent={'width=device-width, user-scalable=no'}
+            source={{
+              html:
+                `<head>
+                <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
+                <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+                <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
+                <style>table{width:auto !important;}</style>
+                <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
+                </head>` +
+                `<script>
+                window.onload = function () {
+                  window.location.hash = 1;
+                  document.title = document.body.scrollHeight;
+                }
+                </script>` + content,
+            }}
+            />
+            {showUrl ? 
+              (<Button
+                  containerStyle={{ flex: 1, width: '100%', height: scale(90), alignItems: 'center'}}
+                  showLogo={true}
+                  logoStyle={{ flex: 1, width: '100%', alignItems: 'center'}}
+                  logo={Res.promotion_more}
+                  onPress={() => {
+                    // ugLog("onPress promotion url: " + item?.linkUrl)
+                    if (item?.linkUrl) {
+                      push(PageName.Game3rdView, {url: item?.linkUrl})
+                      setShowPop(false)
+                      return
+                    }
+                    let game: PushHomeGame = {
+                      seriesId: item?.linkCategory,
+                      gameId: item?.linkPosition,
+                      subId: item?.linkPosition,
+                    }
+                    PushHelper.pushHomeGame(game)
+                    setShowPop(false)
+                  }}
+                />
+            ) : null}
+          </View>
       )}
       <Modal 
         visible={showPop} 
@@ -185,7 +211,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
                           logoStyle={{ flex: 1, width: '100%', alignItems: 'center'}}
                           logo={Res.promotion_more}
                           onPress={() => {
-                            ugLog("onPress promotion url: " + item?.linkUrl)
+                            // ugLog("onPress promotion url: " + item?.linkUrl)
                             if (item?.linkUrl) {
                               push(PageName.Game3rdView, {url: item?.linkUrl})
                               setShowPop(false)

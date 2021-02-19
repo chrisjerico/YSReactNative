@@ -1,5 +1,6 @@
 import React, { memo, useContext, useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
+import { img_assets } from '../../../Res/icon'
 import { scale } from '../../tools/Scale'
 import List from './List'
 
@@ -31,7 +32,7 @@ const CouponBlock = ({ visible, containerStyle, coupons = [], renderCoupon, onPr
       <View style={[styles.container, containerStyle]}>
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image style={{ width: scale(25), height: scale(25), tintColor: '#000000', marginRight: scale(5), marginBottom: scale(5) }} source={{ uri: '礼品-(1)' }} />
+            <Image style={{ width: scale(25), height: scale(25), tintColor: '#000000', marginRight: scale(5), marginBottom: scale(5) }} source={{ uri: img_assets('礼品-(1)') }} />
             <Text style={[{ fontSize: scale(25) }, titleStyle]}>{'优惠活动'}</Text>
           </View>
           <TouchableWithoutFeedback onPress={onPressMore}>
