@@ -152,6 +152,8 @@ export default interface UGSystemModel {
   showNavigationBar: string
   smsVerify: string
   switchAgentRecharge: boolean
+  //推荐收益-会员管理-充值
+  nameAgentRecharge: string
   switchAutoTransfer: boolean
   switchCoinPwd: string
   switchShowActivityCategory: boolean

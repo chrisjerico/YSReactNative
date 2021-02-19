@@ -33,7 +33,6 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
   const [showUrl, setShowUrl] = useState((linkUrl?.length>0) || (linkCategory>0))
   // const [show, setShow] = useState(true)
   // if (show) {
-    ugLog("linkUrl: " + linkUrl + ", linkCategory：" + linkCategory + ", linkPosition: " + linkPosition + ", showUrl: " + showUrl)
   return (
     <View style={[{ width: '100%' }, containerStyle]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
