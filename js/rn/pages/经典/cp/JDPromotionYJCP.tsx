@@ -88,10 +88,10 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
       <View style={{ flexDirection: 'column',width: '100%', }} >
         {list?.map((obj, idx) => {
           return (
-            <View style={{marginHorizontal:10, alignItems: 'center', justifyContent: 'center', borderBottomWidth: scale(1), borderColor: Skin1.textColor3,  }}>
+            <View style={{marginHorizontal:10,  justifyContent: 'center', borderBottomWidth: scale(1), borderColor: Skin1.textColor3, }}>
             
-              <Text style={{marginVertical:10, textAlign: 'left', fontSize: scale(20), color:  Skin1.textColor1, }}>
-                {obj?.content}
+              <Text style={{marginLeft:20,marginVertical:10, textAlign: 'left', fontSize: scale(20), color:  Skin1.textColor1,  }}>
+                {obj?.title+':'+obj?.content}
               </Text>
 
             </View>
