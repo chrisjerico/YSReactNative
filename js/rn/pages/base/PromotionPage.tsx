@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { cond } from 'react-native-reanimated'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
@@ -8,7 +9,7 @@ import PushHelper from '../../public/define/PushHelper'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
 import { ugLog } from '../../public/tools/UgLog'
@@ -22,6 +23,7 @@ const PromotionPage = (props: any) => {
   const { showBackBtn } = props?.route?.params ?? {}
   const [loading, setLoading] = useState(true)
   const [showCategory, setShowCategory] = useState(false)
+  const [showCategoryKey, setShowCategoryKey] = useState([])
   const [style, setStyle] = useState<'slide' | 'popup' | 'page'>('popup')
   const [list, setList] = useState([])
   const [categories, setCategories] = useState({})
@@ -35,22 +37,36 @@ const PromotionPage = (props: any) => {
     APIRouter.system_promotions().then((response) => {
       const value = response?.data?.data
       const { showCategory, style, list, categories } = value
+      const newCategories = value.newCategories
       totalList.current = list?.map((item) => Object.assign({}, item, { clsName: 'UGPromoteModel' }))
-      let filterCategory = {}
+      let filterCategory = []
       list?.forEach((ele) => (filterCategory[ele?.category] = categories[ele?.category]))
+      let newFilterCategory = {}
+      let keys = [0]
+      newCategories.forEach((ele, index) => {
+        if (filterCategory.includes(ele.name)) {
+          newFilterCategory[ele.id] = ele.name
+          keys.push(ele.id)
+        }
+      })
+      newFilterCategory["0"] = '全部'
+      
       setLoading(false)
       // @ts-ignore
       setStyle(style)
       setList(totalList.current)
       setShowCategory(showCategory)
-      setCategories(Object.assign({}, filterCategory, { '0': '全部' }))
+      
+      setCategories(newFilterCategory)
+      setShowCategoryKey(keys)
     })
   }, [])
 
-  const categoriesKey = Object.keys(categories)
+  useEffect(() => {
+  },[categories])
 
   const handleOnPress = ({ setShowPop, item, index }) => {
-    ugLog("handleOnPress")
+    // ugLog("handleOnPress = " + style)
     switch (Platform.OS) {
       case 'ios':
         switch (style) {
@@ -75,11 +91,31 @@ const PromotionPage = (props: any) => {
         }
         break
       case 'android':
+        switch (style) {
+          // 内页
+          case 'page': {
+            PushHelper.pushPromoteDetail(item)
+            break
+          }
           // 弹框
-          ANHelper.callAsync(CMD.OPEN_COUPON, {
-            ...item,
-            style,
-          })
+          case 'popup': {
+            // 弹框
+            // ANHelper.callAsync(CMD.OPEN_COUPON, {
+            //   ...item,
+            //   style,
+            // })
+            setShowPop(true)
+            break
+          }
+          case 'slide': {
+            if (index == selectedItemIndex) {
+              setSelectedItemIndex(-1)
+            } else {
+              setSelectedItemIndex(index)
+            }
+            break
+          }
+        } 
         break
     }
   }
@@ -92,7 +128,7 @@ const PromotionPage = (props: any) => {
         <ProgressCircle />
       </>
     )
-  } else {
+  } else { 
     return (
       <>
         <SafeAreaHeader headerColor={Skin1?.themeColor}>
@@ -105,7 +141,7 @@ const PromotionPage = (props: any) => {
               style={{ flexGrow: 0 }}
               horizontal={true}
               scrollEnabled={true}
-              data={categoriesKey}
+              data={showCategoryKey}
               renderItem={({ item }) => {
                 return (
                   <TouchableWithoutFeedback
@@ -118,9 +154,11 @@ const PromotionPage = (props: any) => {
                     <View
                       style={
                         selectedTabIndex == item 
-                          ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType] } 
-                          : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType] }
-                      }>
+                          ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType],
+                              borderBottomWidth: scale(2),
+                              borderColor: skin1.themeColor } 
+                          : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType],
+                              borderBottomWidth: scale(0)}}>
                       <Text
                         style={
                           selectedTabIndex == item
@@ -154,10 +192,8 @@ const PromotionPage = (props: any) => {
                     onPress={onPress}
                     slide={style == 'slide' && selectedItemIndex == index}
                     containerStyle={containerStyle}
-                    titleStyle={{ color: skinColors.promotion.couponTitleColor[Skin1.skitType], ...titleStyle }}
-                    linkUrl={linkUrl}
-                    linkCategory={linkCategory}
-                    linkPosition={linkPosition}
+                    titleStyle={{ ...titleStyle }}
+                    item={item}
                   />
                 )
               }}
@@ -184,9 +220,7 @@ const PromotionPage = (props: any) => {
                   slide={style == 'slide' && selectedItemIndex == index}
                   containerStyle={containerStyle}
                   titleStyle={{ color: Skin1?.promotion?.couponTitleColor, ...titleStyle }}
-                  linkUrl={linkUrl}
-                  linkCategory={linkCategory}
-                  linkPosition={linkPosition}
+                  item={item}
                 />
               )
             }}

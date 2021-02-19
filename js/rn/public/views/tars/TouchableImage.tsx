@@ -5,7 +5,7 @@ import { FastImagePlaceholder, ImagePlaceholder } from '../../../pages/经典/to
 
 interface TouchableImageProps {
   pic: string
-  onPress: () => any
+  onPress?: () => any
   containerStyle?: StyleProp<ViewStyle>
   resizeMode?: 'cover' | 'contain' | 'stretch'
   enableFastImage?: boolean
