@@ -5,7 +5,7 @@ import { BaseScreen } from '../../乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar, TabBarProps } from 'react-native-scrollable-tab-view'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import UseCapital from './UseCapital'
@@ -44,7 +44,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
   const [refreshCount, setRefreshCount] = useState(0) //更新界面
 
   // let tabController //tab选择器
-
+  const tabRef = useRef<TabBarProps>(null)
   const {
     systemInfo,
     userInfo,
@@ -64,8 +64,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
           if (key == 'selectIndex') {
             console.log('key ==============', key);
             console.log('v ==============', dic[key]);
-            setTabIndex(dic[key])
-            setRefreshCount(moment().unix())
+            tabRef?.current?.goToPage(dic[key])
           }
         }
       }
@@ -157,7 +156,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
                 key={'ScrollableTabView' + refreshCount}
                 initialPage={tabIndex}
                 onChangeTab={value => { }}
-
+                ref={tabRef}
                 // ref={instance => tabController = instance}
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,
                 { backgroundColor: Skin1.themeColor }]}

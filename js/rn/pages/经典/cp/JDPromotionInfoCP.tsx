@@ -24,13 +24,17 @@ import { JDPromotionInfoCopyCP } from './JDPromotionInfoCopyCP';
 import { JDPromotionInfoText1CP } from './JDPromotionInfoText1CP';
 import { JDPromotionInfoText2CP } from './JDPromotionInfoText2CP';
 import { JDPromotionYJCP } from './JDPromotionYJCP';
+import { JDPromotionInfoText3CP } from './JDPromotionInfoText3CP';
+import { ugLog } from '../../../public/tools/UgLog';
 
 interface JDPromotionInfoCP {
   inviteInfoModel?: UGinviteInfoModel;//网络数据（全部）
   list?: Array<UGinviteInfoModel>,//佣金比例 数据
   selItemContent?:string,//佣金比例选中的数据 默认第1个
+  onRealPress?: () => void,//真人事件
+  onEarnPress?: () => void,//彩票事件
 }
-const JDPromotionInfoCP = () => {
+const JDPromotionInfoCP = (props: JDPromotionInfoCP) => {
 
   const [inviteInfoModel, setInviteInfoModel] = useState<UGinviteInfoModel>()
   const { myreco_img } = UGStore.globalProps.sysConf//系统设置数据
@@ -199,7 +203,18 @@ const JDPromotionInfoCP = () => {
 
         }}
       />
-      <JDPromotionInfoText1CP title={'本月推荐收益:'} content={inviteInfoModel?.month_earn} />
+      <JDPromotionInfoText3CP title={'本月推荐收益:'} content={inviteInfoModel?.all_earn} month_real_earn={inviteInfoModel?.month_real_earn} month_earn={inviteInfoModel?.month_earn}
+      
+      onRealPress={() => {
+        // ugLog('真人事件')
+        props?.onRealPress && props?.onRealPress()
+      }}
+
+      onEarnPress={() => {
+        // ugLog('彩票事件')
+        props?.onEarnPress && props?.onEarnPress()
+      }}
+      />
       <JDPromotionInfoText1CP title={'本月推荐会员:'} content={inviteInfoModel?.month_member} textAlign='left' />
       <JDPromotionInfoText1CP title={'推荐会员总计:'} content={inviteInfoModel?.total_member} textAlign='left' />
       <JDPromotionInfoText2CP content={yjstring()} />
