@@ -33,20 +33,23 @@ export const JDPromotionInfoText3CP = (props: JDPromotionInfoText3CP) => {
 
   function name(params: string) {
     let number = parseFloat(params)
-    if (number > 0) {
-      return '¥ ' + number;
-    } else {
+    if (number == 0) {
       return '¥ ' + 0;
+    }
+    else {
+      return '¥ ' + number;
     }
   }
 
   function nameColor(params: string) {
     let number = parseFloat(params)
-    if (number > 0) {
-      return Skin1.textColor1
-    } else {
+    if (number == 0) {
       return Skin1.textColor3
     }
+    else {
+      return Skin1.textColor1
+    }
+   
   }
 
 
@@ -80,10 +83,11 @@ export const JDPromotionInfoText3CP = (props: JDPromotionInfoText3CP) => {
     {swicthValue && <View style={{ height: 60, alignItems: 'center', flexDirection: "row", justifyContent: 'space-between', width: '100%', }}>
       <TouchableOpacity onPress={() => {
         let number = parseFloat(props.month_earn)
-        if (number > 0) {
-          props?.onEarnPress && props?.onEarnPress()
-        } else {
+        if (number == 0) {
           ugLog('不能跳彩票')
+        }
+        else {
+          props?.onEarnPress && props?.onEarnPress()
         }
       }} style={{ borderRadius: scale(5), alignItems: "center", marginHorizontal: scale(20), height: 40, paddingHorizontal: scale(20), flexDirection: "row", backgroundColor: skin1.CLBgColor }}>
         <Text style={{ fontSize: scale(24), color: nameColor(props.month_earn), textAlign: 'left', }} >{'彩票收益: '}</Text>
@@ -92,10 +96,11 @@ export const JDPromotionInfoText3CP = (props: JDPromotionInfoText3CP) => {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
         let number = parseFloat(props.month_real_earn)
-        if (number > 0) {
-          props?.onRealPress && props?.onRealPress()
-        } else {
+        if (number == 0) {
           ugLog('不能跳真人')
+        }
+        else {
+          props?.onRealPress && props?.onRealPress()
         }
       }} style={{ borderRadius: scale(5), alignItems: "center", marginHorizontal: scale(20), height: 40, paddingHorizontal: scale(20), flexDirection: "row", backgroundColor: skin1.CLBgColor }}>
         <Text style={{ fontSize: scale(24), color: nameColor(props.month_real_earn), textAlign: 'left', }} >{'真人收益: '}</Text>
