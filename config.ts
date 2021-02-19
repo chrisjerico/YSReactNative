@@ -31,4 +31,5 @@ export const appConfig = {
   isHomeShowLXB: () => AppDefine.inSites('c035'),// 首页是否显示利息宝图标
   isShowOneLevel: () => AppDefine.inSites('c085'), //推荐收益只显示一级，
   isHideButtion: () => AppDefine.inSites('c085,c084'), //推荐收益隐藏邀请码，
+  isTJXXStyle2: () => AppDefine.inSites('c085'), //推荐信息第2种展示样式（全展示）
 }

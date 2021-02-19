@@ -6,6 +6,7 @@ import { scale } from "../../../public/tools/Scale";
 import AppDefine from "../../../public/define/AppDefine";
 import UGinviteInfoModel from "../../../redux/model/全局/UGinviteInfoModel";
 import { anyEmpty } from "../../../public/tools/Ext";
+import { appConfig } from "../../../../../config";
 
 interface JDPromotionYJCP {
   list?: Array<UGinviteInfoModel>,//tab界面名称数据
@@ -84,7 +85,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
       </View>
     </View>}
     {/* 样式2  */}
-    {AppDefine.siteId =='c085' && <View style={{ alignItems: 'center', }} >
+    {appConfig.isTJXXStyle2() && <View style={{ alignItems: 'center', }} >
       <View style={{ flexDirection: 'column',width: '100%', }} >
         {list?.map((obj, idx) => {
           return (
