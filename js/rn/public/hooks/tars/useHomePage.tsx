@@ -199,7 +199,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     floatAds,
     goldenEggs,
     scratchs,
-    couponClickStyle,
     ...homeGameData,
     ...lotteryData,
     ...official_customise_Games,

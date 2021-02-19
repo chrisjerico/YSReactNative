@@ -156,7 +156,6 @@ const HomePage = ({
   couponBlockStyles,//底部优惠活动
   animatedRankComponentStyles,//底部排行榜
   couponStyles,//底部优惠活动
-  couponClickStyle,
   bottomLogoStyles,//底部商标
   containerStyle,
   noticeBlockStyles,//跑马灯
@@ -266,7 +265,6 @@ const HomePage = ({
                       key={index}
                       title={title}
                       pic={pic}
-                      slide={couponClickStyle == 'slide' && couponSelectedIndex == index}
                       content={content}
                       slide={false}
                       couponStyle={couponStyle}

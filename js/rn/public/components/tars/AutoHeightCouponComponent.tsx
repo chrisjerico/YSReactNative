@@ -89,7 +89,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
               <style>table{width:auto !important;}</style>
               <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
               </head>` +
-                          `<script>
+              `<script>
               window.onload = function () {
                 window.location.hash = 1;
                 document.title = document.body.scrollHeight;
