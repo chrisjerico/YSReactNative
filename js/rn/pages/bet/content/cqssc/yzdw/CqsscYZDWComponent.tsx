@@ -13,6 +13,7 @@ import LotteryEBall  from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
+import { calculateSliderValue } from '../../../util/ArithUtil'
 
 
 /**
@@ -25,6 +26,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
+    sliderValue,
     setPlayOddData,
     tabIndex,
     setTabIndex,
@@ -124,7 +126,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 style={[
                   _styles.sub_big_title_text,
                   { color: Skin1.themeColor },
-                ]}>{`赔率: ${groupData?.exPlays[0]?.odds}`}</Text>
+                ]}>{`赔率: ${calculateSliderValue(groupData?.exPlays[0]?.odds, sliderValue)}`}</Text>
         </View>
       }
 

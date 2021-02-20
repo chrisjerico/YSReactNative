@@ -85,10 +85,10 @@ const randomItem = (list?: Array<any>, count: number = 1): Array<any> => {
 const calculateSliderValue = (odds?: string, sliderValue?: number): string => {
   if (anyEmpty(odds)) return ''
 
-  if (odds?.includes('\n')) {//有的赔率有2个
-    const oddsArr = odds?.split('\n')
+  if (odds?.includes('/')) {//有的赔率有2个
+    const oddsArr = odds?.split('/')
     if (arrayLength(oddsArr) == 2) {
-      return `${calculateSliderValueInside(oddsArr[0], sliderValue)}\n${calculateSliderValueInside(oddsArr[1], sliderValue)}`
+      return `${calculateSliderValueInside(oddsArr[0], sliderValue)}/${calculateSliderValueInside(oddsArr[1], sliderValue)}`
     }
   }
 

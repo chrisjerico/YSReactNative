@@ -48,7 +48,8 @@ const createBalls = (data?: PlayGroupData): Array<PlayData> => {
       return ({
         id: `${play0?.id},${ballIndex}`,
         name: ballIndex,
-        odds: `${play0?.odds}\n${data?.plays[1]?.odds}`,
+        // odds: `${play0?.odds}\n${data?.plays[1]?.odds}`,
+        odds: play0?.odds,
       } as PlayData)
     })
   } else {

@@ -9,10 +9,11 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseLhcLMA from './UseLhcLMA'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
-import LotteryEBall  from '../../../widget/LotteryEBall'
+import LotteryEBall from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
+import { calculateSliderValue } from '../../../util/ArithUtil'
 
 
 /**
@@ -25,6 +26,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
+    sliderValue,
     setPlayOddData,
     tabIndex,
     setTabIndex,
@@ -92,6 +94,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   item={{
                     ...item?.plays[0],
                     ...ballInfo,
+                    odds: null,
                   }}
                   selectedBalls={selectedBalls}
                   ballStyle={{ flexDirection: 'column' }}
@@ -100,10 +103,31 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   /**
    * 绘制 连码
    * @param groupData
+   * @param index
    */
-  const renderLMA = (groupData?: PlayGroupData) =>
-    <View key={key + ' renderLMA' + groupData?.id}
-          style={CommStyles.flex}>
+  const renderLMA = (groupData?: PlayGroupData, index?: number) => {
+
+    const odds = arrayLength(groupData?.plays) > 1
+      ?
+      `${groupData?.plays[0]?.odds}/${groupData?.plays[1]?.odds}`
+      :
+      `${groupData?.plays[0]?.odds}`
+
+    return <View key={key + ' renderLMA' + groupData?.id}
+                 style={CommStyles.flex}>
+
+      {//显示赔率标题
+        <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
+              style={_styles.sub_big_title_container}>
+          <Text key={key + ' text renderYZDW' + groupData?.id}
+                style={[
+                  _styles.sub_big_title_text,
+                  { color: Skin1.themeColor },
+                ]}>{
+            `赔率: ${calculateSliderValue(odds, sliderValue)}`
+          }</Text>
+        </View>
+      }
 
       <View key={key + ' sub renderLMA' + groupData?.id}
             style={_styles.sub_title_container}>
@@ -121,6 +145,8 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
         }
       </View>
     </View>
+  }
+
   /**
    * 绘制全部的球
    */
@@ -205,6 +231,15 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor3,
     fontSize: scale(22),
     paddingLeft: scale(6),
+  },
+  sub_big_title_container: {
+    alignItems: 'center',
+    padding: scale(6),
+  },
+  sub_big_title_text: {
+    color: UGColor.TextColor2,
+    fontSize: scale(24),
+    paddingHorizontal: scale(1),
   },
 
 

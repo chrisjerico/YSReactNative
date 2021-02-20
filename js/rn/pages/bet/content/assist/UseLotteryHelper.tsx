@@ -31,6 +31,7 @@ import { EmitterTypes } from '../../../../public/define/EmitterTypes'
 const UseLotteryHelper = () => {
 
   const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
+  const sliderValue = UGStore.globalProps?.sliderValue
 
   const [selectedBalls, setSelectedBalls] = useState<Array<PlayData | ZodiacNum>>([]) //选中了哪些球或者生肖
   const [playOddData, setPlayOddData] = useState<PlayOddData>(null) //此页显示的彩种数据
@@ -277,6 +278,7 @@ const UseLotteryHelper = () => {
   }
 
   return {
+    sliderValue,
     tabIndex,
     setTabIndex,
     playOddData,
