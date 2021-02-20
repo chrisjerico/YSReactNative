@@ -1,5 +1,5 @@
 import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
-import { CqsscCode, LCode, LhcCode, Pk10Code, SingleOption } from '../../const/LotteryConst'
+import { CqsscCode, FC3d, LCode, LhcCode, Pk10Code, SingleOption } from '../../const/LotteryConst'
 import * as React from 'react'
 import { ugError, ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
@@ -271,6 +271,7 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
 
       break
     case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
+    {
       const selFS1 = selectedBalls?.filter((item) => item?.alias == '第一球') //复式第一球选择了哪些
       const selFS2 = selectedBalls?.filter((item) => item?.alias == '第二球') //复式第二球选择了哪些
       const selFS3 = selectedBalls?.filter((item) => item?.alias == '第三球') //复式第三球选择了哪些
@@ -293,6 +294,39 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
           return
         }
       }
+    }
+
+      break
+    case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3d 定位胆
+    {
+      if (groupData[0]?.alias == '组选3') {
+        const selFS1 = selectedBalls?.filter((item) => item?.alias == '二重号') //二重号选择了哪些
+        const selFS2 = selectedBalls?.filter((item) => item?.alias == '单号') //单号选择了哪些
+        if (subAlias?.startsWith('二重号')) {
+          if (selFS2?.find((item) => item?.name == ballData?.name)) {//不能选择重复的号
+            Toast('不能选择相同的号码')
+            return
+          }
+
+          if (subCountOfSelectedBalls('二重号', selectedBalls) >= 1) {
+            return
+          }
+        } else if (subAlias?.startsWith('单号')) {
+          if (selFS1?.find((item) => item?.name == ballData?.name)) {//不能选择重复的号
+            Toast('不能选择相同的号码')
+            return
+          }
+
+          if (subCountOfSelectedBalls('单号', selectedBalls) >= 1) {
+            return
+          }
+        }
+      } else if (groupData[0]?.alias == '组选6') {
+        if (selCount >= 3) {
+          return
+        }
+      }
+    }
 
       break
 
@@ -496,6 +530,8 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 
     case gameCode == CqsscCode.EZDW:  //二字定位
     case gameCode == CqsscCode.SZDW:  //三字定位
+    case gameCode == FC3d.EZ:  //二字
+    case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D里面的定位胆
     case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
     {
       for (let data of curTabGroupData) {
@@ -746,6 +782,8 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
       /** ------ */
       case gameCode == CqsscCode.EZDW: //二字定位
       case gameCode == CqsscCode.SZDW: //三字定位
+      case gameCode == FC3d.EZ:  //二字
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D 定位胆
       case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '复式': //五星里的复式
       case gameCode == Pk10Code.GFWF && gameType == LCode.pk10 && singleTabIndex == SingleOption.COMPLEX: //官方玩法 复式
@@ -925,6 +963,8 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       case gameCode == Pk10Code.GFWF:  //官方玩法
       case gameCode == CqsscCode.EZDW:  //二字定位
       case gameCode == CqsscCode.SZDW:  //三字定位
+      case gameCode == FC3d.EZ:  //二字
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D 定位胆
       case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == LhcCode.WX && gameType == LCode.cqssc:  //五星
       {

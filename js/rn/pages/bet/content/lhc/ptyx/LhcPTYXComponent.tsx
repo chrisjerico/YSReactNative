@@ -61,7 +61,7 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
+              ]}>{item[0]?.alias}</Text>
       </View>
     </TouchableWithoutFeedback>
 

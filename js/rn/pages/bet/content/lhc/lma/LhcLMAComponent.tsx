@@ -61,7 +61,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
             style={[
               _styles.tab_title_item_text,
               index == tabIndex ? { color: `white` } : null,
-            ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
+            ]}>{item[0]?.alias}</Text>
     </View>
   </TouchableWithoutFeedback>
 
@@ -117,7 +117,7 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                  style={CommStyles.flex}>
 
       {//显示赔率标题
-        <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
+        <View key={key + ' sub renderLMA2 = ' + groupData?.id}
               style={_styles.sub_big_title_container}>
           <Text key={key + ' text renderYZDW' + groupData?.id}
                 style={[

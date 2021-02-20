@@ -164,6 +164,8 @@ const FC3d = {
   QIU1: 'QIU1', //第1球/名
   QIU2: 'QIU2', //第2球/名
   QIU3: 'QIU3', //第3球/名
+  EZ: 'EZ', //二字
+  DWD: 'DWD', //定位胆
 }
 
 /**

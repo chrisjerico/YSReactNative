@@ -146,6 +146,8 @@ const LotteryContentComponent = () => {
       case gameCode == CqsscCode.YZDW:  //一字定位
       case gameCode == CqsscCode.EZDW:  //二字定位
       case gameCode == CqsscCode.SZDW:  //三字定位
+      case gameCode == FC3d.EZ:  //二字
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D里面的定位胆
       case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == CqsscCode.BDW:  //不定位
         return <CqsscYZDWComponent key={gameCode}

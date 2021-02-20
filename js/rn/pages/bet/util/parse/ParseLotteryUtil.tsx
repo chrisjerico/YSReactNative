@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import { CqsscCode, K3Code, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
+import { CqsscCode, FC3d, K3Code, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
 import parseTMData from './lhc/ParseTMDataUtil'
 import parseHXData from './lhc/ParseHXDataUtil'
 import parseZTData from './lhc/ParseZTDataUtil'
@@ -67,6 +67,8 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
       case gameCode == CqsscCode.YZDW:  //一字定位
       case gameCode == CqsscCode.EZDW:  //二字定位
       case gameCode == CqsscCode.SZDW:  //三字定位
+      case gameCode == FC3d.EZ:  //二字
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D里面的定位胆
       case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == CqsscCode.BDW:  //不定位
       case gameCode == Pk10Code.GFWF:  //官方玩法
