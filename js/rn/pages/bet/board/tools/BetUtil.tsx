@@ -715,6 +715,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 
       /** ------ */
       case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选60': //五星里的组选60
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d && groupAlias == '组选3': //福彩3D 定位胆
         //二重号复制2份，其它号码保留
         const newPlays60 = [...pageData[0]?.plays, ...pageData[0]?.plays, ...pageData[1]?.plays]
 
