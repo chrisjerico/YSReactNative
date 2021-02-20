@@ -74,48 +74,6 @@ const calculateLimitCount = (code?: string, tabAlias?: string): number => {
       }
       break
 
-    case code == LhcCode.HX://合肖
-      limitCount = 2
-      break
-    case code == LhcCode.LMA:  //连码
-      switch (tabAlias) {
-        case '二中二':
-        case '二全中':
-        case '二中特':
-        case '特串':
-          limitCount = 2
-          break
-        case '三中三':
-        case '三全中':
-        case '三中二':
-          limitCount = 3
-          break
-        case '四中四':
-        case '四全中':
-          limitCount = 4
-          break
-        case '五中五':
-        case '前二组选':
-        case '前三组选':
-          limitCount = 5
-          break
-        case '六中五':
-          limitCount = 6
-          break
-        case '七中五':
-          limitCount = 7
-          break
-        case '八中五':
-          limitCount = 8
-          break
-      }
-      break
-
-    case code == LhcCode.ZXBZ:  //自选不中
-    case code == LhcCode.WX && gameType == LCode.cqssc && tabAlias == '组选120':  //五星里的组选120
-      limitCount = 5
-      break
-
     default:
       limitCount = 1
       break

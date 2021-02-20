@@ -945,12 +945,27 @@ const generateBetArray = (nextIssueData?: NextIssueData,
                           activeReturnCoinRatio?: string,
                           inputMoney?: string,
                           selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): BetShareModel => {
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   const combinationData = combineSelectedData(selectedData)
   const playNameArray = generateBetNameArray(nextIssueData, combinationData)
   const betBeanArray = generateBetInfoArray(nextIssueData, inputMoney, combinationData)
 
   arrayLength(playNameArray) != arrayLength(betBeanArray) && ugError('警告错误数据 playNameArray与betBeanArray 长度应一致')
+
+  //有的彩种 显示数量和实际数量不一致，需要计算，比如广东11选5里面的前二组选
+  let totalNum: string
+  switch (true) {
+    case gameType != LCode.lhc &&
+    arrayLength(combinationData) > 0 &&
+    combinationData[0]?.code == LhcCode.LMA://连码，除开 六合彩
+      if (combinationData[0]?.playGroups.alias == '前二组选') {
+        totalNum = arrayLength(combination(combinationData[0]?.plays, 2)).toString()
+      } else if (combinationData[0]?.playGroups.alias == '前三组选') {
+        totalNum = arrayLength(combination(combinationData[0]?.plays, 3)).toString()
+      }
+      break
+  }
 
   const newData = {
     ftime: (moment(nextIssueData?.curCloseTime).toDate().getTime() / 1000).toString(),
@@ -963,6 +978,7 @@ const generateBetArray = (nextIssueData?: NextIssueData,
     gameId: nextIssueData?.id,
     playNameArray: playNameArray,
     betBean: betBeanArray,
+    totalNums: totalNum,
   } as BetShareModel
 
   ugLog('下注数据 newData =', JSON.stringify(newData))
