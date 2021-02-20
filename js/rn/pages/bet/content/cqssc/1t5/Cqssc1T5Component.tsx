@@ -8,7 +8,7 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import UseCqssc1T5 from './UseCqssc1T5'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import LotteryERect from '../../../widget/LotteryERect'
-import { BALL_CONTENT_HEIGHT, CqsscCode, LCode, Pk10Code } from '../../../const/LotteryConst'
+import { BALL_CONTENT_HEIGHT, CqsscCode, GD11x5, LCode, Pk10Code } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import LotteryEBall from '../../../widget/LotteryEBall'
 import { arrayLength } from '../../../../../public/tools/Ext'
@@ -81,7 +81,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType
     const gameCode = playOddData?.code
 
-    if (arrayLength(ball1) > 11) {//分2组显示
+    if (arrayLength(ball1) > 10) {//分2组显示
       if (gameType == LCode.pk10) {//有的彩种 数字和汉字是反的
         if (gameCode == CqsscCode.Q1
           || gameCode == CqsscCode.Q2
@@ -107,6 +107,26 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
       } else if (gameType == LCode.gdkl10 || gameType == LCode.xync) {//有的彩种 取前20个
         ball1 = groupData?.plays.slice(0, 20)
         ball2 = groupData?.plays.slice(20)
+
+      } else if (gameType == LCode.qxc && gameCode == CqsscCode.Q7) {//有的彩种 取前中间的4个
+        ball1 = [...groupData?.plays.slice(0, 10), ...groupData?.plays.slice(14)]
+        ball2 = groupData?.plays.slice(10, 14)
+
+      } else if (gameType == LCode.fc3d) {
+        if (gameCode == GD11x5.KD
+          || gameCode == GD11x5.DD
+          || gameCode == GD11x5.HS) {
+
+        } else {
+          ball1 = groupData?.plays.slice(0, arrayLength(groupData?.plays) - 4)
+          ball2 = groupData?.plays.slice(-4)
+        }
+
+      } else if (gameType == LCode.gdkl10 || gameType == LCode.xync) {//有的彩种 取前20个
+        ball1 = groupData?.plays.slice(0, 20)
+        ball2 = groupData?.plays.slice(20)
+
+      } else if (gameType == LCode.gd11x5 && gameCode == GD11x5.G1Z1) {
 
       } else if (gameType == LCode.qxc && gameCode == CqsscCode.Q7) {//有的彩种 取前中间的4个
         ball1 = [...groupData?.plays.slice(0, 10), ...groupData?.plays.slice(14)]

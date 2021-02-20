@@ -151,6 +151,19 @@ const K3Code = {
 const GD11x5 = {
   ZX: 'ZX', //直选
   G1Z1: '1Z1', //1中1
+  KD: 'KD', //跨度
+  DD: 'DD', //独胆
+  HS: 'HS', //和数
+  HSWS: 'HSWS', //和数尾数
+}
+
+/**
+ * 福彩3D
+ */
+const FC3d = {
+  QIU1: 'QIU1', //第1球/名
+  QIU2: 'QIU2', //第2球/名
+  QIU3: 'QIU3', //第3球/名
 }
 
 /**
@@ -174,5 +187,6 @@ export {
   Pk10Code,
   K3Code,
   GD11x5,
+  FC3d,
   GameTab,
 }

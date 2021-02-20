@@ -146,6 +146,8 @@ const UseLotteryHelper = () => {
         }
 
       }
+    } else {
+      Toast('当前玩法组已关闭')
     }
   }
 
