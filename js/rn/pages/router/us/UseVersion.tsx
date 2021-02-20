@@ -76,9 +76,13 @@ const UseVersion = ({
         OCHelper.ocTest && callback && callback(true)
         break
       case 'android':
-        siteId = await ANHelper.callAsync(CMD.APP_SITE)
+        siteId = await ANHelper.callAsync(CMD.APP_REAL_SITE)
         //测试渠道不检查
-        siteId == 'txtTest' && callback && callback(true)
+        if (siteId == 'txtTest') {
+          callback && callback(true)
+          notifyDomainChanged(null)
+          return
+        }
         break
     }
 

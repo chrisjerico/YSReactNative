@@ -30,6 +30,7 @@ interface IPayBoardComponent {
 const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
 
   const {
+    betCount,
     totalMoney,
     averageMoney,
     setAverageMoney,
@@ -126,7 +127,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
           <View style={_styles.last_info_container}>
             <Text style={_styles.bet_result}>{'合计注数：'}</Text>
             <Text style={[_styles.bet_result,
-              { color: Skin1.themeColor }]}>{arrayLength(betShareModel?.betBean)}</Text>
+              { color: Skin1.themeColor }]}>{betCount}</Text>
             <Text style={_styles.bet_result2}>{'总金额：'}</Text>
             <Text style={[_styles.bet_result_total_money,
               { color: Skin1.themeColor }]}>{totalMoney}</Text>

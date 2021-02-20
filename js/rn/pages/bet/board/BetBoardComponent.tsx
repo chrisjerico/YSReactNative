@@ -301,7 +301,7 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
       <View style={_styles.bet_container}>
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
-        {lockBoard?.locked ? renderLock(lockBoard?.hintText ?? '封盘中...') : null}
+        {lockBoard?.locked ? renderLock(lockBoard?.hintText) : null}
       </View>
     </View>
   )

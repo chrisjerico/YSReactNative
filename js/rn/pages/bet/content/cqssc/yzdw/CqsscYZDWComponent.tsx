@@ -13,6 +13,7 @@ import LotteryEBall  from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
+import { calculateSliderValue } from '../../../util/ArithUtil'
 
 
 /**
@@ -25,6 +26,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
+    sliderValue,
     setPlayOddData,
     tabIndex,
     setTabIndex,
@@ -61,7 +63,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.enable == '1' ? item[0]?.alias : '- -'}</Text>
+              ]}>{item[0]?.alias}</Text>
       </View>
     </TouchableWithoutFeedback>
 
@@ -114,39 +116,32 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param index
    */
   const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
-    <View key={key + ' renderYZDW' + groupData?.id + groupData?.exPlays[0]?.alias}
+    <View key={key + ' renderYZDW' + groupData?.id + ', index=' + index}
           style={CommStyles.flex}>
 
       {//显示赔率标题
-        index == 0 && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                                             style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
-                style={[
+        index == 0 && <View style={_styles.sub_big_title_container}>
+          <Text style={[
                   _styles.sub_big_title_text,
                   { color: Skin1.themeColor },
-                ]}>{`赔率: ${groupData?.exPlays[0]?.odds}`}</Text>
+                ]}>{`赔率: ${calculateSliderValue(groupData?.exPlays[0]?.odds, sliderValue)}`}</Text>
         </View>
       }
 
       {//显示赔率提醒文字
-        index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderYZDW 2 = ' + groupData?.id}
-                                                            style={_styles.sub_big_hint_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
-                style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
+        index == 0 && !anyEmpty(groupData?.exHint) && <View style={_styles.sub_big_hint_container}>
+          <Text style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
         </View>
       }
 
-      <View key={key + ' sub renderYZDW 2 =' + groupData?.id}
-            style={_styles.sub_title_container}>
-        <Text key={key + ' text renderYZDW' + groupData?.id}
-              style={[
+      <View style={_styles.sub_title_container}>
+        <Text style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
               ]}>{groupData?.exPlays[0]?.alias}</Text>
       </View>
 
-      <View key={key + ' ball renderYZDW' + groupData?.id}
-            style={_styles.ball_parent_container}>
+      <View style={_styles.ball_parent_container}>
         {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>

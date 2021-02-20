@@ -154,8 +154,8 @@ export default class PushHelper {
         break
       case 'android':
         if (B_DEBUG) {
-          // push(PageName.BetLotteryPage, {lotteryId: game?.gameId} as IBetLotteryPage)
-          // return
+          push(PageName.BetLotteryPage, {lotteryId: game?.gameId} as IBetLotteryPage)
+          return
         }
         if (this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
 
@@ -636,6 +636,10 @@ export default class PushHelper {
           }
           case UGUserCenterType.活动彩金: {
             subId = MenuType.SQCJ
+            break
+          }
+          case UGUserCenterType.开奖结果: {
+            subId = MenuType.KJJG
             break
           }
           case UGUserCenterType.长龙助手: {

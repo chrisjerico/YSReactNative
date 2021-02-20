@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { ugLog } from '../../../../public/tools/UgLog'
@@ -27,6 +27,19 @@ const UsePayBoard = () => {
   const [averageMoney, setAverageMoney] = useState(1) //输入平均价格
   // const [itemCount, setItemCount] = useState(0) //选中的条目数据
   const [moneyMap, setMoneyMap] = useState<Map<string, number>>(null) //输入单项价格列表，id -> money
+
+  /**
+   * 计算下注的数量
+   */
+  const betCount = useMemo(() => {
+    let count = 0
+    if (!dicNull(betShareModel?.totalNums)) { //有的彩种计算数量特别，比如 广东11选5 的 前2组选
+      count = Number(betShareModel?.totalNums)
+    } else {
+      count = arrayLength(betShareModel?.betBean)
+    }
+    return count
+  }, [betShareModel?.betBean])
 
   useEffect(() => {
     //初始化默认金额
@@ -57,9 +70,16 @@ const UsePayBoard = () => {
    * 价格列表变化时重新计算总金额
    */
   useEffect(() => {
-    const money = dicNull(moneyMap) ? 0 : mapTotalCount(moneyMap)
-    ugLog('moneyMap total money = ', moneyMap && JSON.stringify(Object.values(moneyMap)))
-    setTotalMoney(money)
+    if (!dicNull(betShareModel?.totalNums)) { //有的彩种计算数量特别，比如 广东11选5 的 前2组选
+      const money = averageMoney * Number(betShareModel?.totalNums)
+      setTotalMoney(money)
+      ugLog('moneyMap total money = ', money)
+    } else {
+      //遍历每一个条目金额，累加起来
+      const money = dicNull(moneyMap) ? 0 : mapTotalCount(moneyMap)
+      ugLog('moneyMap total money = ', money, moneyMap && JSON.stringify(Object.values(moneyMap)))
+      setTotalMoney(money)
+    }
   }, [moneyMap])
 
   /**
@@ -73,12 +93,13 @@ const UsePayBoard = () => {
         return {
           ...item,
           money: numberToFloatString(Number(item?.money)),
+          exFlag: null,
         } as BetLotteryData
       }),
       betIssue: betShareModel?.turnNum,
       endTime: betShareModel?.ftime,
       gameId: betShareModel?.gameId,
-      totalNum: arrayLength(betShareModel?.betBean)?.toString(),
+      totalNum: betCount.toString(),
       totalMoney: numberToFloatString(totalMoney),
       isInstant: betShareModel?.isInstant,
       tag: betShareModel?.tag
@@ -101,6 +122,7 @@ const UsePayBoard = () => {
   }
 
   return {
+    betCount,
     totalMoney,
     averageMoney,
     setAverageMoney,

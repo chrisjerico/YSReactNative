@@ -8,7 +8,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import {
   BALL_CONTENT_HEIGHT,
-  CqsscCode,
+  CqsscCode, FC3d, GD11x5,
   K3Code,
   LCode,
   LEFT_ITEM_HEIGHT,
@@ -129,15 +129,26 @@ const LotteryContentComponent = () => {
       case gameCode == CqsscCode.Q8:  //第8球/名
       case gameCode == CqsscCode.Q9:  //第8球/名
       case gameCode == CqsscCode.Q10:  //第10球/名
+      case gameCode == FC3d.QIU1:  //第1球/名
+      case gameCode == FC3d.QIU2:  //第2球/名
+      case gameCode == FC3d.QIU3:  //第3球/名
       case gameCode == Pk10Code.HE:  //冠亚和
       case gameCode == Pk10Code.P1_5:  //1-5名
       case gameCode == Pk10Code.P6_10:  //6-10名
+      case gameCode == GD11x5.G1Z1:  //1中1
+      case gameCode == GD11x5.KD:  //跨度
+      case gameCode == GD11x5.DD:  //独胆
+      case gameCode == GD11x5.HS:  //和数
+      case gameCode == GD11x5.HSWS:  //和数尾数
         return <Cqssc1T5Component key={gameCode}
                                   playOddData={playOdds}/>
 
       case gameCode == CqsscCode.YZDW:  //一字定位
       case gameCode == CqsscCode.EZDW:  //二字定位
       case gameCode == CqsscCode.SZDW:  //三字定位
+      case gameCode == FC3d.EZ:  //二字
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D里面的定位胆
+      case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == CqsscCode.BDW:  //不定位
         return <CqsscYZDWComponent key={gameCode}
                                    playOddData={playOdds}/>

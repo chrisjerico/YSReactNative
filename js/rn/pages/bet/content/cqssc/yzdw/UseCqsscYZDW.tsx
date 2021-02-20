@@ -11,6 +11,7 @@ import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOdd
 const UseCqsscYZDW = () => {
 
   const {
+    sliderValue,
     tabIndex,
     setTabIndex,
     playOddData,
@@ -24,6 +25,7 @@ const UseCqsscYZDW = () => {
   } = UseLotteryHelper()
 
   return {
+    sliderValue,
     setPlayOddData,
     tabIndex,
     setTabIndex,

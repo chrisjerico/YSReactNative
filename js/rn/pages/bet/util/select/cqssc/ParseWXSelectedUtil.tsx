@@ -8,7 +8,6 @@ import { anyEmpty } from '../../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { calculateLimitCount } from '../ParseSelectedUtil'
-import { isSelectedBallOnId } from '../../../widget/it/ISelBall'
 
 /**
  * 五星，将选中的球转换为固定格式存储下来
@@ -31,8 +30,11 @@ const parseWXSelectedUtil = (playOddData: PlayOddData,
 
     ugLog('tabMap code index = ', pageData[0].alias, index)
 
+
     //遍历TAB的每一组数据，如特码B里面有 特码数据，两面数据，色波数据
     pageData?.map((groupData) => {
+
+      let limitCount = calculateLimitCount(playOddData?.code, groupData?.alias)
 
       //再用原始数组和彩种数据组合成 新的选中数据
       !anyEmpty(selectedBalls) && (
@@ -40,7 +42,7 @@ const parseWXSelectedUtil = (playOddData: PlayOddData,
           playGroups: groupData,
           code: playOddData?.code,
           plays: selectedBalls,
-          limitCount: 1
+          limitCount: limitCount
         } as SelectedPlayModel //key=取第一组数据的ID作为Tab标识, value=每一组数据，如 特码B里面的 两面, 色波
       )
 

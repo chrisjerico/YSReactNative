@@ -9,6 +9,7 @@ import UseLotteryHelper from '../../assist/UseLotteryHelper'
 const UseLhcLMA = () => {
 
   const {
+    sliderValue,
     tabIndex,
     setTabIndex,
     playOddData,
@@ -22,6 +23,7 @@ const UseLhcLMA = () => {
   } = UseLotteryHelper()
 
   return {
+    sliderValue,
     setPlayOddData,
     tabIndex,
     setTabIndex,
