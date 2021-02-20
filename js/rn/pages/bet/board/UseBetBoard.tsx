@@ -65,7 +65,7 @@ const UseBetBoard = () => {
   const checkShowBetPayment = () => {
     const inputMoney = UGStore.globalProps?.inputMoney
 
-    if (inputMoney <= 0) {
+    if (!inputMoney || inputMoney <= 0) {
       Toast('请输入投注金额')
       // } else if (count <= 0) {
       //   Toast('请选择玩法')

@@ -62,15 +62,16 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
         return parseZTData({ playOddData, zodiacNum })
 
       case gameCode == LhcCode.LMA:  //连码
-        return parseLMAData({ playOddData, zodiacNum })
+        return parseLMAData({ gameType, playOddData, zodiacNum })
 
       case gameCode == CqsscCode.YZDW:  //一字定位
       case gameCode == CqsscCode.EZDW:  //二字定位
       case gameCode == CqsscCode.SZDW:  //三字定位
+      case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == CqsscCode.BDW:  //不定位
       case gameCode == Pk10Code.GFWF:  //官方玩法
       case gameCode == LhcCode.WX && gameType == LCode.cqssc://五星
-        return parseYZDWData({ playOddData, zodiacNum })
+        return parseYZDWData({ gameType, playOddData, zodiacNum })
 
       case gameCode == CqsscCode.DWD:  //定位胆
         return parseDWDData({ playOddData, zodiacNum })

@@ -146,6 +146,13 @@ const K3Code = {
 }
 
 /**
+ * 广东 11选5
+ */
+const GD11x5 = {
+  ZX: 'ZX', //直选
+}
+
+/**
  * 当前TAB是 彩票0 还是 聊天室1
  */
 enum GameTab {
@@ -165,5 +172,6 @@ export {
   CqsscCode,
   Pk10Code,
   K3Code,
+  GD11x5,
   GameTab,
 }

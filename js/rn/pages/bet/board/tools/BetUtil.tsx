@@ -270,6 +270,31 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
       }
 
       break
+    case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
+      const selFS1 = selectedBalls?.filter((item) => item?.alias == '第一球') //复式第一球选择了哪些
+      const selFS2 = selectedBalls?.filter((item) => item?.alias == '第二球') //复式第二球选择了哪些
+      const selFS3 = selectedBalls?.filter((item) => item?.alias == '第三球') //复式第三球选择了哪些
+      if (subAlias?.startsWith('第一球')) {
+        if (selFS2?.find((item) => item?.name == ballData?.name)
+          || selFS3?.find((item) => item?.name == ballData?.name)) {//不能选择重复的号
+          Toast('不能选择相同的号码')
+          return
+        }
+      } else if (subAlias?.startsWith('第二球')) {
+        if (selFS1?.find((item) => item?.name == ballData?.name)
+          || selFS3?.find((item) => item?.name == ballData?.name)) {//不能选择重复的号
+          Toast('不能选择相同的号码')
+          return
+        }
+      } else if (subAlias?.startsWith('第三球')) {
+        if (selFS1?.find((item) => item?.name == ballData?.name)
+          || selFS2?.find((item) => item?.name == ballData?.name)) {//不能选择重复的号
+          Toast('不能选择相同的号码')
+          return
+        }
+      }
+
+      break
 
   }
 
@@ -471,6 +496,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 
     case gameCode == CqsscCode.EZDW:  //二字定位
     case gameCode == CqsscCode.SZDW:  //三字定位
+    case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
     {
       for (let data of curTabGroupData) {
         const selCount = filterSelectedSubData(gameCode, data?.exPlays[0]?.alias, selectedData)
@@ -720,6 +746,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
       /** ------ */
       case gameCode == CqsscCode.EZDW: //二字定位
       case gameCode == CqsscCode.SZDW: //三字定位
+      case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '复式': //五星里的复式
       case gameCode == Pk10Code.GFWF && gameType == LCode.pk10 && singleTabIndex == SingleOption.COMPLEX: //官方玩法 复式
         ugLog('combineSelectedData pageData 2 = ', gameCode, JSON.stringify(pageData))
@@ -898,6 +925,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
       case gameCode == Pk10Code.GFWF:  //官方玩法
       case gameCode == CqsscCode.EZDW:  //二字定位
       case gameCode == CqsscCode.SZDW:  //三字定位
+      case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == LhcCode.WX && gameType == LCode.cqssc:  //五星
       {
         const play0 = selModel?.playGroups?.plays[0]
