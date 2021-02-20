@@ -22,6 +22,7 @@ import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { img_assets, useHtml5Image } from '../../../Res/icon';
 import { appConfig } from '../../../../../config';
 import PromotionRechargeModal from './PromotionRechargeModal';
+import { UGStore } from '../../../redux/store/UGStore';
 
 
 interface JDPromotionTabMemberCP {
@@ -66,6 +67,20 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   let capitalController //类型选择
   const [memberItem, setMemberItem] = useState()
   const [showMemberItem, setShowMemberItem] = useState(false)
+
+  const sysConf = UGStore.globalProps.sysConf
+  const userInfo = UGStore.globalProps.userInfo
+  const checkWhiteListAgentRecharge = () => {
+    if (!sysConf.switchAgentRecharge) return false
+    //空的話則不用判斷名字  每個使用者都看的到
+    if (!sysConf.nameAgentRecharge?.includes(',') && sysConf.nameAgentRecharge?.length < 6) return true
+    let whiteArray = sysConf.nameAgentRecharge?.split(',')
+    if (whiteArray.length <= 0) return true
+    whiteArray.forEach((item) => {
+      if (userInfo?.usr == item) return true
+    })
+    return false
+  }
 
   v.levelArray = appConfig.isShowOneLevel() ? [{ value: 1, label: '1级下线' },] :
     [{ value: 0, label: '全部下线' },
@@ -293,7 +308,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
             </Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
-            {item.is_setting == '1' && <View style={{ flexDirection: 'row', marginTop: 9 }}>
+            {checkWhiteListAgentRecharge() && item.is_setting == '1' && <View style={{ flexDirection: 'row', marginTop: 9 }}>
               <Button title={'充值'} containerStyle={{ width: 55, height: 30, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
                 onPress={() => {
 

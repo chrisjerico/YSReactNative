@@ -234,7 +234,9 @@ export default class UGSysConfModel {
   yuebaoName?: string // 利息宝名字
   chatFollowSwitch?: boolean // 是否允许聊天室跟注
   switchBindVerify?: number // 新增提款账号時，校验取款密码
+  //推荐收益-会员管理-充值
   switchAgentRecharge?: boolean // 给下级会员充值开关
+  nameAgentRecharge?: string
 
   lhcdocMiCard?: boolean // 六合彩开奖咪牌(默认状态)开关
   lhcdocLotteryStr?: string // 六合彩预备开奖文字
@@ -268,9 +270,7 @@ export default class UGSysConfModel {
   // 我的頁
   userCenterItems?: Array<userCenterItems>
   userCenterCategoryList: [{ id: number, name: string }]//个人中心页分类列表
-
   frontend_agent_add_member?: '0' | '1' // 推荐收益页添加会员功能  0关闭，1开启
-
 }
 
 interface userCenterItems {
