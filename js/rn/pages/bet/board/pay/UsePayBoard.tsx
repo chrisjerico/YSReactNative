@@ -73,6 +73,7 @@ const UsePayBoard = () => {
         return {
           ...item,
           money: numberToFloatString(Number(item?.money)),
+          exFlag: null,
         } as BetLotteryData
       }),
       betIssue: betShareModel?.turnNum,

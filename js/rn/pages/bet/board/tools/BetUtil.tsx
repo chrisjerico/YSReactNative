@@ -106,6 +106,48 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
         return
       }
       break
+    case gameCode == LhcCode.LMA && gameType != LCode.lhc:  //连码，不包含 六合彩
+      switch (groupData[0]?.alias) {
+        case '二中二':
+          if (selCount >= 2) {
+            return
+          }
+          break
+        case '三中三':
+          if (selCount >= 3) {
+            return
+          }
+          break
+        case '四中四':
+          if (selCount >= 4) {
+            return
+          }
+          break
+        case '五中五':
+        case '前二组选':
+        case '前三组选':
+          if (selCount >= 5) {
+            return
+          }
+          break
+        case '六中五':
+          if (selCount >= 6) {
+            return
+          }
+          break
+        case '七中五':
+          if (selCount >= 7) {
+            return
+          }
+          break
+        case '八中五':
+          if (selCount >= 8) {
+            return
+          }
+          break
+      }
+
+      break
     case gameCode == LhcCode.WX && gameType == LCode.cqssc:  // 五星
       switch (groupData[0]?.alias) {
         case '组选120':
@@ -459,6 +501,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           return false
         }
         switch (data?.alias) {
+          case '二中二':
           case '二全中':
           case '二中特':
           case '特串':
@@ -467,6 +510,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
               return false
             }
             break
+          case '三中三':
           case '三全中':
           case '三中二':
             if (selCount < 3) {
@@ -474,9 +518,36 @@ const checkBetCount = (showMsg?: boolean): boolean => {
               return false
             }
             break
+          case '四中四':
           case '四全中':
             if (selCount < 4) {
               Toast(`${data?.alias}需要选择至少4个数据`)
+              return false
+            }
+            break
+          case '五中五':
+          case '前二组选':
+          case '前三组选':
+            if (selCount < 5) {
+              Toast(`${data?.alias}需要选择至少5个数据`)
+              return false
+            }
+            break
+          case '六中五':
+            if (selCount < 6) {
+              Toast(`${data?.alias}需要选择至少6个数据`)
+              return false
+            }
+            break
+          case '七中五':
+            if (selCount < 7) {
+              Toast(`${data?.alias}需要选择至少7个数据`)
+              return false
+            }
+            break
+          case '八中五':
+            if (selCount < 8) {
+              Toast(`${data?.alias}需要选择至少8个数据`)
               return false
             }
             break

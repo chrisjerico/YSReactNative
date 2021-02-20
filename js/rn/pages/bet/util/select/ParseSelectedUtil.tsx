@@ -3,6 +3,7 @@ import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryM
 import { ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { PlayGroupData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { Toast } from '../../../../public/tools/ToastUtils'
 
 /**
  * 选中的某个玩法
@@ -30,14 +31,14 @@ const expandSelectedData = (selectedData?: Map<string, Map<string, Map<string, S
 }
 
 /**
- * 彩种计算组合的单位长度，比如<二连尾> limitCount=2 表示2个数据为1组进行组合计算，4个数据就有6种组合: [1,2,3,4] -> [1,2],[1,3],[1,4],[2,3],[2,6],[3,4]
+ * 彩种计算组合的单位长度，部分彩种需要，比如<二连尾> limitCount=2 表示2个数据为1组进行组合计算，4个数据就有6种组合: [1,2,3,4] -> [1,2],[1,3],[1,4],[2,3],[2,6],[3,4]
  * @param code 特码 二字定位 等等
  * @param tabAlias TAB的名字，如 连肖里的 二连肖 三连肖
  */
 const calculateLimitCount = (code?: string, tabAlias?: string): number => {
   const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
-  let limitCount = -1
+  let limitCount = -1 //当前彩种的数量限制，如 三连肖 要求选择3个数据为一组
   switch (true) {
     case code == LhcCode.LX: //连肖
       switch (tabAlias) {
@@ -78,19 +79,35 @@ const calculateLimitCount = (code?: string, tabAlias?: string): number => {
       break
     case code == LhcCode.LMA:  //连码
       switch (tabAlias) {
+        case '二中二':
         case '二全中':
         case '二中特':
         case '特串':
           limitCount = 2
           break
+        case '三中三':
         case '三全中':
         case '三中二':
           limitCount = 3
           break
+        case '四中四':
         case '四全中':
           limitCount = 4
           break
-
+        case '五中五':
+        case '前二组选':
+        case '前三组选':
+          limitCount = 5
+          break
+        case '六中五':
+          limitCount = 6
+          break
+        case '七中五':
+          limitCount = 7
+          break
+        case '八中五':
+          limitCount = 8
+          break
       }
       break
 
