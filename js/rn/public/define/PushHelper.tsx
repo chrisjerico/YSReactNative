@@ -638,6 +638,10 @@ export default class PushHelper {
             subId = MenuType.SQCJ
             break
           }
+          case UGUserCenterType.开奖结果: {
+            subId = MenuType.KJJG
+            break
+          }
           case UGUserCenterType.长龙助手: {
             subId = MenuType.CLZS
             break
