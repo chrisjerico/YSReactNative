@@ -81,7 +81,7 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
     const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType
     const gameCode = playOddData?.code
 
-    if (arrayLength(ball1) > 10) {//分2组显示
+    if (arrayLength(ball1) > 11) {//分2组显示
       if (gameType == LCode.pk10) {//有的彩种 数字和汉字是反的
         if (gameCode == CqsscCode.Q1
           || gameCode == CqsscCode.Q2

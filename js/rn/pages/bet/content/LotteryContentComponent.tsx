@@ -8,7 +8,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import {
   BALL_CONTENT_HEIGHT,
-  CqsscCode,
+  CqsscCode, GD11x5,
   K3Code,
   LCode,
   LEFT_ITEM_HEIGHT,
@@ -132,6 +132,7 @@ const LotteryContentComponent = () => {
       case gameCode == Pk10Code.HE:  //冠亚和
       case gameCode == Pk10Code.P1_5:  //1-5名
       case gameCode == Pk10Code.P6_10:  //6-10名
+      case gameCode == GD11x5.G1Z1:  //1中1
         return <Cqssc1T5Component key={gameCode}
                                   playOddData={playOdds}/>
 

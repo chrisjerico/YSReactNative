@@ -150,6 +150,7 @@ const K3Code = {
  */
 const GD11x5 = {
   ZX: 'ZX', //直选
+  G1Z1: '1Z1', //1中1
 }
 
 /**
