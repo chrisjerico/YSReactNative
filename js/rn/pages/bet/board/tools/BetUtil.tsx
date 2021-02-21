@@ -96,7 +96,7 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
     case gameCode == LhcCode.ZXBZ:  //自选不中 最多只能选中12个
       if (selCount > 11) return
       break
-    case gameCode == LhcCode.LMA && gameType != LCode.lhc:  //连码，不包含 六合彩
+    case gameCode == LhcCode.LMA:  //连码
       switch (groupAlias) {
         case '二中二':
           if (selCount >= 2) return
@@ -107,6 +107,8 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
         case '四中四':
           if (selCount >= 4) return
           break
+        case '任选四':
+        case '任选五':
         case '五中五':
         case '前二组选':
         case '前三组选':
@@ -115,6 +117,10 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
         case '六中五':
           if (selCount >= 6) return
           break
+        case '任选二':
+        case '选二连组':
+        case '任选三':
+        case '选三前组':
         case '七中五':
           if (selCount >= 7) return
           break
@@ -567,6 +573,8 @@ const checkBetCount = (): boolean => {
           return false
         }
         switch (subAlias) {
+          case '任选二':
+          case '选二连组':
           case '二中二':
           case '二全中':
           case '二中特':
@@ -576,6 +584,8 @@ const checkBetCount = (): boolean => {
               return false
             }
             break
+          case '任选三':
+          case '选三前组':
           case '三中三':
           case '三全中':
           case '三中二':
@@ -584,6 +594,7 @@ const checkBetCount = (): boolean => {
               return false
             }
             break
+          case '任选四':
           case '四中四':
           case '四全中':
             if (selCount < 4) {
@@ -591,6 +602,7 @@ const checkBetCount = (): boolean => {
               return false
             }
             break
+          case '任选五':
           case '五中五':
           case '前二组选':
           case '前三组选':
@@ -1034,9 +1046,15 @@ const generateBetArray = (nextIssueData?: NextIssueData,
   //有的彩种 显示数量和实际数量不一致，需要计算，比如广东11选5里面的前二组选
   let totalNum: string
   switch (true) {
-    case gameCode == LhcCode.LMA://连码，除开 六合彩
-      if (playModel0?.playGroups.alias == '前二组选') {
+    case gameCode == LhcCode.LMA://连码
+      if (groupAlias == '前二组选' || groupAlias == '任选二' || groupAlias == '选二连组') {
         totalNum = arrayLength(combineArray(playModel0?.plays, 2)).toString()
+      } else if (groupAlias == '任选三' || groupAlias == '选三前组') {
+        totalNum = arrayLength(combineArray(playModel0?.plays, 3)).toString()
+      } else if (groupAlias == '任选四') {
+        totalNum = arrayLength(combineArray(playModel0?.plays, 4)).toString()
+      } else if (groupAlias == '任选五') {
+        totalNum = arrayLength(combineArray(playModel0?.plays, 5)).toString()
       } else {
         totalNum = arrayLength(combineArray(playModel0?.plays, 3)).toString()
       }

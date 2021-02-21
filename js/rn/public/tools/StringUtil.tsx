@@ -42,7 +42,7 @@ const numberToFloatString = (x?: number, len: number = 2): string => {
  * @param alias
  */
 const showHintToast = (count?: number, alias?: string) => {
-  !count ? Toast(`请选择数据`) : Toast(`请选择至少${count}个《${alias}》数据`)
+  !count ? Toast(`请选择数据`) : Toast(`请选择${count}个《${alias}》数据`)
 }
 
 export {
