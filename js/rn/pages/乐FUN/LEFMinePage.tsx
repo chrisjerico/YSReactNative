@@ -99,7 +99,7 @@ const LEFMinePage = () => {
           renderFeature={(item, index) => {
             const {logo, name, code} = item
 
-            //ugLog('features item=',item)
+            // ugLog('features item=',item)
             return (
               <GameButton
                 key={index}
@@ -131,6 +131,8 @@ const LEFMinePage = () => {
         {
           listUserCenterItems?.map((item, index) => {
             const {code, name, logo} = item
+            ugLog('name=',name)
+            ugLog('logo=',logo)
             return (
               <UserCenterItem
                 key={index}

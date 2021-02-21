@@ -23,6 +23,7 @@ import { navigationRef, pop } from "../../public/navigation/RootNavigation"
 import { UGBasePageProps } from "../base/UGPage"
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {Toast} from "../../public/tools/ToastUtils";
+import { ugLog } from "../../public/tools/UgLog"
 
 const ZLMinePage = (props: UGBasePageProps) => {
     const { setProps } = props;
@@ -36,38 +37,13 @@ const ZLMinePage = (props: UGBasePageProps) => {
         try {
 
             showLoading('正在刷新金额...');
-
-            // switch (Platform.OS) {
-            //   case 'ios':
-            //       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
-            //     break;
-            //   case 'android':
-            //       //TODO
-            //     break;
-            // }
-
             const { data, status } = await APIRouter.user_balance_token()
             UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
 
-            // switch (Platform.OS) {
-            //     case 'ios':
-            //         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
-            //         break;
-            //     case 'android':
-            //         //TODO
-            //         break;
-            // }
             Toast('刷新成功！')
         } catch (error) {
             Toast('刷新失败请稍后再试！')
-            // switch (Platform.OS) {
-            //   case 'ios':
-            //       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
-            //     break;
-            //   case 'android':
-            //     //TODO
-            //     break;
-            // }
+
             console.log(error)
         }
 
@@ -235,12 +211,16 @@ const ZLMinePage = (props: UGBasePageProps) => {
 
             </LinearGradient>
             <FlatList columnWrapperStyle={{ paddingVertical: 10 }} numColumns={3} style={{ backgroundColor: '#34343b', borderRadius: 8, paddingVertical: 10 }} renderItem={({ item }) => {
+
+                ugLog('name==',item.name)
+                ugLog('code',item.code)
+                ugLog('code',item.logo)
                 return (
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
                         <Image
-                            resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: item.isDefaultLogo ? 'white' : undefined, overflow: "visible" }}
+                            resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1,  overflow: "visible" }}//tintColor: item.isDefaultLogo ? 'white' : undefined, 图片线条变白
                             source={{ uri: item.logo }} />
                         {item.code == 9 && unreadMsg > 0 && (
                             <View style={{

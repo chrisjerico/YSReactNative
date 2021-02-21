@@ -19,6 +19,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { ugLog } from '../../public/tools/UgLog'
 
 const LCMinePage = () => {
   const { info } = useMinePage({
@@ -62,6 +63,8 @@ const LCMinePage = () => {
             keyExtractor={(item, index) => `mine-${index}`}
             data={userCenterItems?.slice(4, userCenterItems?.length) || []}
             renderItem={({ item }) => {
+              ugLog('name==',item.name)
+              ugLog('logo==',item.logo)
               return (
                 <TouchableWithoutFeedback style={{ flexDirection: 'row', flex: 1 }} onPress={() => {
                   PushHelper.pushUserCenterType(item.code)

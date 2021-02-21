@@ -23,6 +23,21 @@ const config = {
     18: getHtml5Image(21, 'center/kj_trend'), // 开奖走势
     19: img_assets('BZH/qq'), // QQ客服
     20: img_assets('BZH/award'), // 開獎網
+    22: getHtml5Image(23, 'center/electronic'), // 电子注单
+    23: getHtml5Image(23, 'center/live'), // 真人注单
+    24: getHtml5Image(23, 'center/chess'), // 棋牌注单
+    25: getHtml5Image(25, 'by'), // 捕鱼注单
+    26: getHtml5Image(23, 'center/vr'), // 电竞注单
+    27: getHtml5Image(23, 'center/sport'), // 体育注单
+    30: getHtml5Image(23, 'center/recharge_record'), // 存款纪录
+    31: getHtml5Image(23, 'center/withdraw-order'), // 取款纪录
+    32: getHtml5Image(23, 'center/account_bill'), // 资金明细
+    33: getHtml5Image(23, 'center/activity_hall'), // 优惠活动
+    34: getHtml5Image(23, 'center/my_chat'), // 聊天室
+    35: img_assets('invi@2x'), // UCI_我的关注
+    36: img_assets('friend'), // UCI_我的动态
+    37: img_assets('fans'), // UCI_我的粉丝
+  
   },
 }
 
