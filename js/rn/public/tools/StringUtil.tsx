@@ -1,6 +1,8 @@
 /**
  * 转成2位数
  */
+import { Toast } from './ToastUtils'
+
 const doubleDigit = (value?: string | number) => ('0' + value).slice(-2)
 
 /**
@@ -34,9 +36,19 @@ const numberToFloatString = (x?: number, len: number = 2): string => {
   return x ? x.toFixed(len) : Number(0).toFixed(len)
 }
 
+/**
+ * 选择提示
+ * @param count
+ * @param alias
+ */
+const showHintToast = (count?: number, alias?: string) => {
+  !count ? Toast(`请选择数据`) : Toast(`请选择至少${count}个《${alias}》数据`)
+}
+
 export {
   deleteHtml,
   endString,
   numberToFloatString,
   doubleDigit,
+  showHintToast,
 }

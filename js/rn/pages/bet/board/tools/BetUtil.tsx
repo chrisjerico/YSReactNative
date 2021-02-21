@@ -23,6 +23,7 @@ import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryM
 import { currentPlayOddData, currentTabGroupData } from '../../util/select/ParseSelectedUtil'
 import { parseLMASelectedData } from '../../util/select/lhc/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/select/lhc/ParseHXSelectedUtil'
+import { showHintToast } from '../../../../public/tools/StringUtil'
 
 /**
  * 过滤出某个选中的数量
@@ -331,10 +332,9 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
 /**
  * 计算彩票下注时候，选中的条目数量是否符合要求
  *
- * @param showMsg 显示提示语
  * return true 可以下注，false 不能再下注了
  */
-const checkBetCount = (showMsg?: boolean): boolean => {
+const checkBetCount = (): boolean => {
   const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
   const singleTabIndex = UGStore.globalProps?.singleTabIndex //当前的彩种处于TAB的单式还是复式
   const curTabGroupData = currentTabGroupData() //当前界面
@@ -345,36 +345,38 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     case gameCode == LhcCode.WX && gameType == LCode.cqssc:  //五星
       for (let data of curTabGroupData) {
         const subAlias = data?.exPlays[0]?.alias
+        const groupAlias = data?.alias
         const selCount = filterSelectedSubData(gameCode, subAlias, selectedData)
         ugLog('selCount = ', selCount, gameCode)
-        switch (data?.alias) {
+
+        switch (groupAlias) {
           case '单式':
             if (selCount < 1) {
-              Toast(`请输入1个以上的数据`)
+              showHintToast(1, groupAlias)
               return false
             }
             break
           case '复式':
             if (selCount < 1) {
-              Toast(`请选择至少1个《${subAlias}》数据`)
+              showHintToast(1, subAlias)
               return false
             }
             break
           case '组选120':
             if (selCount != 5) {
-              Toast(`请选择5个《${subAlias}》数据`)
+              showHintToast(5, subAlias)
               return false
             }
             break
           case '组选60':
             if (subAlias == '二重号') {
               if (selCount != 1) {
-                Toast(`请选择1个《${subAlias}》数据`)
+                showHintToast(1, subAlias)
                 return false
               }
             } else if (subAlias == '单号') {
               if (selCount != 3) {
-                Toast(`请选择3个《${subAlias}》数据`)
+                showHintToast(3, subAlias)
                 return false
               }
             }
@@ -382,12 +384,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           case '组选30':
             if (subAlias == '二重号') {
               if (selCount != 2) {
-                Toast(`请选择2个《${subAlias}》数据`)
+                showHintToast(2, subAlias)
                 return false
               }
             } else if (subAlias == '单号') {
               if (selCount != 1) {
-                Toast(`请选择1个《${subAlias}》数据`)
+                showHintToast(1, subAlias)
                 return false
               }
             }
@@ -395,12 +397,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           case '组选20':
             if (subAlias == '三重号') {
               if (selCount != 1) {
-                Toast(`请选择1个《${subAlias}》数据`)
+                showHintToast(1, subAlias)
                 return false
               }
             } else if (subAlias == '单号') {
               if (selCount != 2) {
-                Toast(`请选择2个《${subAlias}》数据`)
+                showHintToast(2, subAlias)
                 return false
               }
             }
@@ -408,12 +410,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           case '组选10':
             if (subAlias == '三重号') {
               if (selCount != 1) {
-                Toast(`请选择1个《${subAlias}》数据`)
+                showHintToast(1, subAlias)
                 return false
               }
             } else if (subAlias == '二重号') {
               if (selCount != 1) {
-                Toast(`请选择1个《${subAlias}》数据`)
+                showHintToast(1, subAlias)
                 return false
               }
             }
@@ -421,12 +423,12 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           case '组选5':
             if (subAlias == '四重号') {
               if (selCount != 1) {
-                Toast(`请选择1个《${subAlias}》数据`)
+                showHintToast(1, subAlias)
                 return false
               }
             } else if (subAlias == '单号') {
               if (selCount != 1) {
-                Toast(`请选择1个《${subAlias}》数据`)
+                showHintToast(1, subAlias)
                 return false
               }
             }
@@ -446,7 +448,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
         switch (tabAlias) {
           case '猜冠军':
             if (selCount < 1) {
-              Toast(`请选择1个《${subAlias}》数据`)
+              showHintToast(1, subAlias)
               return false
             }
             break
@@ -454,15 +456,15 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           case '猜前三':
             if (singleTabIndex == SingleOption.SINGLE && key == 0) {//单式只考虑第1组数据，23为 冠亚季军
               if (tabAlias == '猜前二' && selCount < 2) {
-                Toast(`请选择2个《${subAlias}》数据`)
+                showHintToast(2, subAlias)
                 return false
               } else if (tabAlias == '猜前三' && selCount < 3) {
-                Toast(`请选择3个《${subAlias}》数据`)
+                showHintToast(3, subAlias)
                 return false
               }
             } else if (singleTabIndex == SingleOption.COMPLEX && key > 0) {//复式不考虑第1组数据，234为 冠亚季军
               if (selCount < 1) {
-                Toast(`请选择至少1个《${subAlias}》数据`)
+                showHintToast(1, subAlias)
                 return false
               } else {
 
@@ -479,38 +481,39 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     case gameCode == LhcCode.LW: //连尾
     {
       for (let data of curTabGroupData) {
-        const selCount = filterSelectedSubData(gameCode, data?.alias, selectedData)
-        ugLog('selCount = ', selCount, gameCode, data?.alias)
+        const subAlias = data?.alias
+        const selCount = filterSelectedSubData(gameCode, subAlias, selectedData)
+        ugLog('selCount = ', selCount, gameCode, subAlias)
         if (selCount <= 0) {
-          Toast(`请选择${data?.alias}数据`)
+          showHintToast()
           return false
         }
-        switch (data?.alias) {
+        switch (subAlias) {
           case '二连肖':
           case '二连尾':
             if (selCount < 2) {
-              Toast(`${data?.alias}需要选择至少2个数据`)
+              showHintToast(2, subAlias)
               return false
             }
             break
           case '三连肖':
           case '三连尾':
             if (selCount < 3) {
-              Toast(`${data?.alias}需要选择至少3个数据`)
+              showHintToast(3, subAlias)
               return false
             }
             break
           case '四连肖':
           case '四连尾':
             if (selCount < 4) {
-              Toast(`${data?.alias}需要选择至少4个数据`)
+              showHintToast(4, subAlias)
               return false
             }
             break
           case '五连肖':
           case '五连尾':
             if (selCount < 5) {
-              Toast(`${data?.alias}需要选择至少5个数据`)
+              showHintToast(5, subAlias)
               return false
             }
             break
@@ -529,7 +532,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
         const selCount = filterSelectedSubData(gameCode, data?.exPlays[0]?.alias, selectedData)
         ugLog('selCount = ', selCount, gameCode, data?.exPlays[0]?.alias)
         if (selCount <= 0) {
-          Toast(`请选择${data?.exPlays[0]?.alias}数据`)
+          showHintToast()
           return false
         }
       }
@@ -538,19 +541,30 @@ const checkBetCount = (showMsg?: boolean): boolean => {
 
     case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D里面的定位胆
       for (let data of curTabGroupData) {
+        const subAlias = data?.alias
         const selCount = filterSelectedSubData(gameCode, data?.exPlays[0]?.alias, selectedData)
         ugLog('selCount = ', selCount, gameCode, data?.exPlays[0]?.alias)
         if (selCount <= 0) {
-          Toast(`请选择${data?.exPlays[0]?.alias}数据`)
+          showHintToast()
           return false
         }
 
-        switch (data?.alias) {
-          case '组选6':
+        switch (subAlias) {
           case '组选3复式':
+            if (selCount < 2) {
+              showHintToast(2, subAlias)
+              return false
+            }
+            break
+          case '组选6':
+            if (selCount < 3) {
+              showHintToast(3, subAlias)
+              return false
+            }
+            break
           case '组选6复式':
             if (selCount < 3) {
-              Toast(`${data?.alias}需要选择至少3个数据`)
+              showHintToast(3, subAlias)
               return false
             }
             break
@@ -563,26 +577,27 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     {
       const selCountMap = filterSelectedData(selectedData)
       if (selCountMap[gameCode] <= 1) {
-        showMsg && Toast('合肖请选择2个以上的数据')
+        showHintToast(2, '合肖')
         return false
       }
     }
       break
     case gameCode == LhcCode.LMA:  //连码
       for (let data of curTabGroupData) {
-        const selCount = filterSelectedSubData(gameCode, data?.alias, selectedData)
-        ugLog('selCount = ', selCount, gameCode, data?.alias)
+        const subAlias = data?.alias
+        const selCount = filterSelectedSubData(gameCode, subAlias, selectedData)
+        ugLog('selCount = ', selCount, gameCode, subAlias)
         if (selCount <= 0) {
-          Toast(`请选择${data?.alias}数据`)
+          showHintToast()
           return false
         }
-        switch (data?.alias) {
+        switch (subAlias) {
           case '二中二':
           case '二全中':
           case '二中特':
           case '特串':
             if (selCount < 2) {
-              Toast(`${data?.alias}需要选择至少2个数据`)
+              showHintToast(2, subAlias)
               return false
             }
             break
@@ -590,14 +605,14 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           case '三全中':
           case '三中二':
             if (selCount < 3) {
-              Toast(`${data?.alias}需要选择至少3个数据`)
+              showHintToast(3, subAlias)
               return false
             }
             break
           case '四中四':
           case '四全中':
             if (selCount < 4) {
-              Toast(`${data?.alias}需要选择至少4个数据`)
+              showHintToast(4, subAlias)
               return false
             }
             break
@@ -605,31 +620,31 @@ const checkBetCount = (showMsg?: boolean): boolean => {
           case '前二组选':
           case '前三组选':
             if (selCount < 5) {
-              Toast(`${data?.alias}需要选择至少5个数据`)
+              showHintToast(5, subAlias)
               return false
             }
             break
           case '六中五':
             if (selCount < 6) {
-              Toast(`${data?.alias}需要选择至少6个数据`)
+              showHintToast(6, subAlias)
               return false
             }
             break
           case '七中五':
             if (selCount < 7) {
-              Toast(`${data?.alias}需要选择至少7个数据`)
+              showHintToast(7, subAlias)
               return false
             }
             break
           case '八中五':
             if (selCount < 8) {
-              Toast(`${data?.alias}需要选择至少8个数据`)
+              showHintToast(8, subAlias)
               return false
             }
             break
           default:
             if (selCount < 3) {
-              Toast(`${data?.alias}需要选择至少3个数据`)
+              showHintToast(3, subAlias)
               return false
             }
             break
@@ -642,7 +657,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     {
       const selCountMap = filterSelectedData(selectedData)
       if (selCountMap[gameCode] < 5) {
-        showMsg && Toast('自选不中请选择5到12个选项')
+        Toast('自选不中请选择5到12个选项')
         return false
       }
     }
@@ -650,7 +665,7 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     default: {
       const selCountMap = filterSelectedData(selectedData)
       if (selCountMap[gameCode] <= 0) {
-        showMsg && Toast('请选择玩法')
+        showHintToast()
         return false
       }
     }
@@ -1052,7 +1067,9 @@ const generateBetArray = (nextIssueData?: NextIssueData,
       }
       break
     case gameCode == FC3d.DWD && gameType == LCode.fc3d: //福彩3D
-      if (groupAlias == '组选3复式' || groupAlias == '组选6复式') {
+      if (groupAlias == '组选3复式') {
+        totalNum = arrayLength(combineArray(playModel0?.plays, 2, true)).toString()
+      } else if (groupAlias == '组选6复式') {
         totalNum = arrayLength(combineArray(playModel0?.plays, 3)).toString()
       }
       break

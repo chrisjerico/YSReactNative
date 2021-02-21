@@ -69,7 +69,7 @@ const UseBetBoard = () => {
       Toast('请输入投注金额')
       // } else if (count <= 0) {
       //   Toast('请选择玩法')
-    } else if (checkBetCount(true)) {
+    } else if (checkBetCount()) {
       const newData = generateBetArray(nextIssueData, UGStore.globalProps?.sliderValue?.toString(), inputMoney?.toString(), selectedData)
       UGStore.dispatch({ type: 'reset', betShareModel: newData })
     }
