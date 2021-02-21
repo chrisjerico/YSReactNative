@@ -37,7 +37,7 @@ import CommStyles from '../../base/CommStyles'
 import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import PK10GFWFComponent from './pk10/gfwf/PK10GFWFComponent'
 import K3SJComponent from './k3/sj/K3SJComponent'
-import HoChiMinBLComponent from './cqssc/bl/HoChiMinBLComponent'
+import HoChiMinBLComponent from './hcm/bl/HoChiMinBLComponent'
 
 const LotteryContentComponent = () => {
 
