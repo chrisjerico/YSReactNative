@@ -20,6 +20,7 @@ import { Share2ChatStatus } from '../../../public/network/Model/chat/ShareChatRo
 import { ReadyShareModel } from '../../../redux/model/game/bet/ReadyShareModel'
 import { array } from 'prop-types'
 import { numberToFloatString } from '../../../public/tools/StringUtil'
+import PushHelper from '../../../public/define/PushHelper'
 
 /**
  * 彩票下注 功能面板
@@ -57,6 +58,8 @@ const UseWebChat = () => {
         ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: {} }).then((res) => {
           const newUrl = `${AppDefine.host}${systemInfo?.chatLink}?from=app&back=hide&hideHead=true&roomId=${currentChatRoomId()}&color=${Skin1.themeColor}&endColor=&logintoken=${res?.apiToken}&loginsessid=${res?.apiSid}`
           ugLog('chatUrl = ', newUrl != chatUrl, newUrl)
+
+          // PushHelper.openWebView(newUrl)
           newUrl != chatUrl && setChatUrl(newUrl)
         })
         break
