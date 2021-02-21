@@ -6,7 +6,7 @@ export const MinePageImgConfig = {
     1: getHtml5Image(23, 'chongzhi'), // 存款
     2: getHtml5Image(23, 'tixian'), // 取款
     3: getHtml5Image(3, 'center/bank'), // 银行卡管理
-    4: getHtml5Image(3, 'center/syb3'), // 利息宝
+    4: getHtml5Image(21, 'center/syb3'), // 利息宝
     5: getHtml5Image(3, 'center/menu-myreco'), // 推荐收益
     6: getHtml5Image(3, 'center/menu-rule-1'), // 彩票注单记录
     7: getHtml5Image(3, 'center/menu-account'), // 其他注单记录
