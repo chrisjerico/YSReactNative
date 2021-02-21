@@ -633,7 +633,6 @@ const checkBetCount = (showMsg?: boolean): boolean => {
               return false
             }
             break
-            break
 
         }
       }
@@ -714,21 +713,6 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
               alias: arr?.map((item) => item?.alias).toString(),
               exPlayIds: arr?.map((item) => item?.id).toString(),
             } as PlayData)),
-          }
-          // ugLog('combineSelectedData newPage = ', gameCode, JSON.stringify(newPage))
-          return newPage
-        })
-
-      /** ------ */
-      case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
-      case gameCode == Pk10Code.GFWF && gameType == LCode.pk10 && singleTabIndex == SingleOption.SINGLE: //官方玩法 单式
-        return pageData?.map((item) => {
-          const newPage: SelectedPlayModel = {
-            ...item,
-            plays: [{//只取第一个，其它的串联成名字就可以了
-              ...item?.plays[0],
-              name: item?.plays?.map((item) => item?.name).toString(),
-            } as PlayData],
           }
           // ugLog('combineSelectedData newPage = ', gameCode, JSON.stringify(newPage))
           return newPage
@@ -842,6 +826,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 const generateBetNameArray = (nextIssueData?: NextIssueData,
                               combinationData?: Array<SelectedPlayModel>): Array<PlayNameArray> => {
   const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
+  const singleTabIndex = UGStore.globalProps?.singleTabIndex //当前的彩种处于TAB的单式还是复式
 
   const playNameArray: Array<PlayNameArray> = [] // 下注彩种条目名字 如特码B
   combinationData?.map((selModel, index) => {
@@ -872,6 +857,8 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
         break
 
       case gameCode == LhcCode.LMA:  //连码
+      case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
+      case gameCode == Pk10Code.GFWF && gameType == LCode.pk10 && singleTabIndex == SingleOption.SINGLE: //官方玩法 单式
       case gameCode == FC3d.DWD && gameType == LCode.fc3d && (groupAlias == '组选3复式' || groupAlias == '组选6' || groupAlias == '组选6复式'): //福彩3D 组选3 组选6 组选6复式
         const play0 = selModel?.plays[0]
 
@@ -919,6 +906,7 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
                               inputMoney?: string,
                               combinationData?: Array<SelectedPlayModel>): Array<BetLotteryData> => {
   const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
+  const singleTabIndex = UGStore.globalProps?.singleTabIndex //当前的彩种处于TAB的单式还是复式
 
   const betBeanArray: Array<BetLotteryData> = [] //下注数据
   combinationData?.map((selModel) => {
@@ -954,6 +942,8 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
         break
 
       case gameCode == LhcCode.LMA:  //连码
+      case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
+      case gameCode == Pk10Code.GFWF && gameType == LCode.pk10 && singleTabIndex == SingleOption.SINGLE: //官方玩法 单式
       case gameCode == FC3d.DWD && gameType == LCode.fc3d && (groupAlias == '组选3复式' || groupAlias == '组选6' || groupAlias == '组选6复式'): //福彩3D 组选3 组选6 组选6复式
       {
         const groupPlay0 = selModel?.playGroups?.plays[0]
@@ -998,8 +988,8 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
             money: inputMoney,
             playId: play0?.id,
             odds: play0?.odds,
-            betInfo: playData?.name,
             playIds: nextIssueData?.id,
+            betInfo: playData?.name,
             exFlag: playDataUniqueId(playData),
           } as BetLotteryData)
         })
