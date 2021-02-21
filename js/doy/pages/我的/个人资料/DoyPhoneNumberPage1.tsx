@@ -5,8 +5,8 @@ import { PageName } from "../../../../rn/public/navigation/Navigation"
 import { pop, push } from "../../../../rn/public/navigation/RootNavigation"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { hideLoading, showError, showLoading, showSuccess } from "../../../../rn/public/widget/UGLoadingCP"
-import { DoyButton1, DoyText14, DoyText20 } from "../../../public/Button之类的基础组件/DoyButton"
-import { DoyTextInputSms } from "../../../public/Button之类的基础组件/DoyTextInput"
+import { DoyButton1, DoyText14, DoyText20 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
+import { DoyTextInputSms } from "../../../publicComponent/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 

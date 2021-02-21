@@ -11,7 +11,7 @@ import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText14, DoyText20, DoyText28 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText14, DoyText20, DoyText28 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 import { DoyStarCP } from "../../我的/个人资料/cp/DoyStarCP"
 import { DoyCheckBuyAlertCP } from "./cp/DoyCheckBuyAlertCP"
 

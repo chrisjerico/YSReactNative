@@ -9,7 +9,7 @@ import { PageName } from "../../../../rn/public/navigation/Navigation"
 import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyText12, DoyText13, DoyText14, DoyText15 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyText12, DoyText13, DoyText14, DoyText15 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 const tipsBarColos = ['#FFEDD4', '#FAE4CF']

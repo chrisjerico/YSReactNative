@@ -9,8 +9,8 @@ import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
 import List from "../../../rn/public/views/tars/List"
 import { img_doy } from "../../../rn/Res/icon"
-import { DoyText20, DoyText12, DoyText14, DoyText28, DoyButton1, DoyText16, DoyText15 } from "../../public/Button之类的基础组件/DoyButton"
-import { DoyTextInput1 } from "../../public/Button之类的基础组件/DoyTextInput"
+import { DoyText20, DoyText12, DoyText14, DoyText28, DoyButton1, DoyText16, DoyText15 } from "../../publicComponent/Button之类的基础组件/DoyButton"
+import { DoyTextInput1 } from "../../publicComponent/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 

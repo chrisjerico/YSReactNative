@@ -5,7 +5,7 @@ import { UGBasePageProps } from "../../../../rn/pages/base/UGPage"
 import { popToRoot } from "../../../../rn/public/navigation/RootNavigation"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText14, DoyText28, DoyText30, DoyText35 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText14, DoyText28, DoyText30, DoyText35 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 

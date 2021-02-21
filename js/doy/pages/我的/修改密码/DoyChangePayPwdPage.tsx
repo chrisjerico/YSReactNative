@@ -5,8 +5,8 @@ import { pop } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { showLoading, showSuccess } from "../../../../rn/public/widget/UGLoadingCP"
-import { DoyText14, DoyButton1, DoyButton2 } from "../../../public/Button之类的基础组件/DoyButton"
-import { DoyTextInputPwd } from "../../../public/Button之类的基础组件/DoyTextInput"
+import { DoyText14, DoyButton1, DoyButton2 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
+import { DoyTextInputPwd } from "../../../publicComponent/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 

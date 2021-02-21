@@ -9,7 +9,7 @@ import { PageName } from "../../../rn/public/navigation/Navigation"
 import { push } from "../../../rn/public/navigation/RootNavigation"
 import { sc375 } from "../../../rn/public/tools/Scale"
 import { img_assets, img_doy } from "../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText14, DoyText30 } from "../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText14, DoyText30 } from "../../publicComponent/Button之类的基础组件/DoyButton"
 import { DoyEnterPasswordAlertCP } from "../首页/打币收币/cp/DoyEnterPasswordAlertCP"
 
 const sc = sc375

@@ -7,7 +7,7 @@ import { PageName } from '../../../../rn/public/navigation/Navigation'
 import { push } from '../../../../rn/public/navigation/RootNavigation'
 import { AnimationFadeView, AnimationMoveView } from '../../../../rn/public/tools/animation/AnimationViews'
 import { sc375 } from '../../../../rn/public/tools/Scale'
-import { DoyText20, DoyText12, DoyButton1, DoyButton2 } from '../../../public/Button之类的基础组件/DoyButton'
+import { DoyText20, DoyText12, DoyButton1, DoyButton2 } from '../../../publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc375
 

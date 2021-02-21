@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { TextInput, Text, TouchableOpacity, View } from "react-native"
 import { Button } from "react-native-elements"
 import FastImage from "react-native-fast-image"
@@ -15,7 +15,8 @@ import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText14, DoyText16 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText14, DoyText16 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
+import { doyApi } from "../../../publicClass/network/DoyApi"
 import { DoyInRestModeCP } from "./cp/DoyInRestModeCP"
 
 const sc = sc375
@@ -45,6 +46,12 @@ export const DoyWantSellPage = ({ setProps, setNavbarProps }: UGBasePageProps) =
       },
     })
   }, [])
+
+  useEffect(() => {
+    doyApi.order.sellList().useSuccess(() => {
+      
+    })
+  })
 
   return [<View style={{ flex: 1 }}>
     {/* 卖单类型 */}

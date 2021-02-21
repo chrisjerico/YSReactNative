@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { Alert, TextInput, View, Text } from "react-native"
 import { Button } from "react-native-elements"
 import FastImage from "react-native-fast-image"
@@ -11,13 +11,17 @@ import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
 import UGTextField from "../../../rn/public/widget/UGTextField"
 import { img_doy } from "../../../rn/Res/icon"
-import { DoyButton1, DoyText14, DoyText20 } from "../../public/Button之类的基础组件/DoyButton"
-import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../public/Button之类的基础组件/DoyDropDownPicker"
-import { DoyTextInput1 } from "../../public/Button之类的基础组件/DoyTextInput"
+import { DoyButton1, DoyText14, DoyText20 } from "../../publicComponent/Button之类的基础组件/DoyButton"
+import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../publicComponent/Button之类的基础组件/DoyDropDownPicker"
+import { DoyTextInput1 } from "../../publicComponent/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 
 export const DoyRegisterPage1 = ({ setProps, setNavbarProps }: UGBasePageProps) => {
+  const { current: v } = useRef({
+    phone: ''
+  })
+
   useEffect(() => {
     setProps({ navbarOpstions: { backgroundColor: 'tansparent', backIconColor: 'black' } })
   }, [])
@@ -34,8 +38,10 @@ export const DoyRegisterPage1 = ({ setProps, setNavbarProps }: UGBasePageProps) 
         outerViewStyle={{ width: sc(100), marginLeft: sc(5), }}
         containerStyle={{ marginTop: 0 }}
       />
-      <DoyTextInput1 placeholder='请输入手机号' onlyInteger maxLength={11} style={{ flex: 1, marginTop: 0, paddingLeft: sc(7) }} />
+      <DoyTextInput1 placeholder='请输入手机号' onlyInteger maxLength={11} style={{ flex: 1, marginTop: 0, paddingLeft: sc(7) }} onChangeText={(text) => {
+        v.phone = text;
+      }} />
     </View>
-    <DoyButton1 title='下一步' containerStyle={{ marginTop: sc(32) }} onPress={() => { push(PageName.DoyRegisterPage2) }} />
+    <DoyButton1 title='下一步' containerStyle={{ marginTop: sc(32) }} onPress={() => { push(PageName.DoyRegisterPage2, { phone: v.phone }) }} />
   </View>
 }

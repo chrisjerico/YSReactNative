@@ -18,8 +18,8 @@ import BannerBlock from "../../../../rn/public/views/tars/BannerBlock"
 import TouchableImage from "../../../../rn/public/views/tars/TouchableImage"
 import { showError, showMessage } from "../../../../rn/public/widget/UGLoadingCP"
 import { img_assets, img_doy, img_root } from "../../../../rn/Res/icon"
-import { DoyText14, DoyText18, DoyText35 } from "../../../public/Button之类的基础组件/DoyButton"
-import { DoyTabbar } from "../../../public/Tabbar/DoyTabbar"
+import { DoyText14, DoyText18, DoyText35 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
+import { DoyTabbar } from "../../../publicComponent/Tabbar/DoyTabbar"
 import { DoyAboutTotalAmountCP } from "./cp/DoyAboutTotalAmountCP"
 
 const sc = sc375

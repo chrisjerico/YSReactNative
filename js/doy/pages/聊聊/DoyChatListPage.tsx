@@ -10,8 +10,8 @@ import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
 import List from "../../../rn/public/views/tars/List"
 import { img_doy } from "../../../rn/Res/icon"
-import { DoyText12, DoyText14 } from "../../public/Button之类的基础组件/DoyButton"
-import { DoyTabbar } from "../../public/Tabbar/DoyTabbar"
+import { DoyText12, DoyText14 } from "../../publicComponent/Button之类的基础组件/DoyButton"
+import { DoyTabbar } from "../../publicComponent/Tabbar/DoyTabbar"
 import { DoyChatFilterAlertCP } from "./cp/DoyChatFilterAlertCP"
 
 const sc = sc375

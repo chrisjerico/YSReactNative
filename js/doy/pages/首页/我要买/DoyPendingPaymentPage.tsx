@@ -8,7 +8,7 @@ import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_doy, img_platform } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText40 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyText12, DoyText40 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 

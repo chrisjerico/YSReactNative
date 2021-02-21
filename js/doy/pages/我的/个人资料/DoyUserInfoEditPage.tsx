@@ -14,7 +14,7 @@ import { sc375 } from "../../../../rn/public/tools/Scale"
 import { showLoading, showSuccess } from "../../../../rn/public/widget/UGLoadingCP"
 import { UGStore } from "../../../../rn/redux/store/UGStore"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyText12, DoyText14 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyText12, DoyText14 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 

@@ -7,19 +7,22 @@ import { PageName } from "../../../rn/public/navigation/Navigation"
 import { push } from "../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
+import { hideLoading, showLoading, showSuccess } from "../../../rn/public/widget/UGLoadingCP"
 import { img_doy } from "../../../rn/Res/icon"
-import { DoyButton1, DoyText14 } from "../../public/Button之类的基础组件/DoyButton"
-import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../public/Button之类的基础组件/DoyDropDownPicker"
-import { DoyTextInput1, DoyTextInputPwd, DoyTextInputSms, DoyTextInputVerificationCode1 } from "../../public/Button之类的基础组件/DoyTextInput"
+import { DoyButton1, DoyText14 } from "../../publicComponent/Button之类的基础组件/DoyButton"
+import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../publicComponent/Button之类的基础组件/DoyDropDownPicker"
+import { DoyTextInput1, DoyTextInputPwd, DoyTextInputSms, DoyTextInputVerificationCode1 } from "../../publicComponent/Button之类的基础组件/DoyTextInput"
+import { doyApi } from "../../publicClass/network/DoyApi"
 
 const sc = sc375
-interface DoyLoginVars {
-  pwd?: string
-}
 
 export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
   const [isPwd, setIsPwd] = useState(false)
-  const { current: v } = useRef<DoyLoginVars>({})
+  const { current: v } = useRef({
+    phone: '',
+    pwd: '',
+    code: '', // 验证码
+  })
 
   const { themeColor, navBarBgColor } = skin1
 
@@ -32,11 +35,12 @@ export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
         outerViewStyle={{ width: sc(100), marginLeft: sc(5), }}
         containerStyle={{ marginTop: 0 }}
       />
-      <DoyTextInput1 placeholder='请输入手机号' onlyInteger maxLength={11} style={{ flex: 1, marginTop: 0, paddingLeft: sc(7) }} />
+      <DoyTextInput1 placeholder='请输入手机号' onlyInteger maxLength={11} style={{ flex: 1, marginTop: 0, paddingLeft: sc(7) }} onChangeText={(text) => {
+        v.phone = text;
+      }} />
     </View>
 
     {isPwd && <DoyTextInputPwd
-      onlyInteger
       defaultValue={v.pwd}
       onChangeText={(text) => {
         v.pwd = text;
@@ -50,12 +54,16 @@ export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
       }}
       defaultValue={v.pwd}
       onChangeText={(text) => {
-        v.pwd = text;
+        v.code = text
       }}
     />}
     <Button title={isPwd ? '用短信验证码登录' : '用密码登录'} buttonStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start', paddingHorizontal: 0, paddingVertical: sc(16) }} titleStyle={{ color: themeColor, fontSize: sc(14), fontWeight: '600' }} onPress={() => { setIsPwd(!isPwd) }} />
     <DoyButton1 title='登录' onPress={() => {
-      push(PageName.DoyHomePage)
+      showLoading()
+      doyApi.user.login(v.phone, v.pwd).useSuccess(() => {
+        showSuccess('登录成功！')
+        push(PageName.DoyHomePage)
+      })
     }} />
     <View style={{ flex: 1 }} />
     <View style={{ flexDirection: 'row', marginBottom: sc(10), justifyContent: 'center' }}>

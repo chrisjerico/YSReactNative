@@ -4,7 +4,7 @@ import { TextInput } from "react-native-gesture-handler"
 import { UGBasePageProps } from "../../../rn/pages/base/UGPage"
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
-import { DoyButton1, DoyTextInput1 } from "../../public/Button之类的基础组件/DoyButton"
+import { DoyButton1, DoyTextInput1 } from "../../publicComponent/Button之类的基础组件/DoyButton"
 import { DoyStarCP } from "../我的/个人资料/cp/DoyStarCP"
 
 const sc = sc375

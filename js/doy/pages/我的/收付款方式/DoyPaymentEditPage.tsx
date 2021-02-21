@@ -12,9 +12,9 @@ import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { showLoading, showSuccess } from "../../../../rn/public/widget/UGLoadingCP"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText14 } from "../../../public/Button之类的基础组件/DoyButton"
-import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../../public/Button之类的基础组件/DoyDropDownPicker"
-import { DoyTextInput1 } from "../../../public/Button之类的基础组件/DoyTextInput"
+import { DoyButton1, DoyText12, DoyText14 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
+import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../../publicComponent/Button之类的基础组件/DoyDropDownPicker"
+import { DoyTextInput1 } from "../../../publicComponent/Button之类的基础组件/DoyTextInput"
 
 const sc = sc375
 

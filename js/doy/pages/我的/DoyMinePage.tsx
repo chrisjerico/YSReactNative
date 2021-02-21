@@ -7,15 +7,17 @@ import LinearGradient from "react-native-linear-gradient"
 import { UGBasePageProps } from "../../../rn/pages/base/UGPage"
 import { FastImagePlaceholder } from "../../../rn/pages/经典/tools/ImagePlaceholder"
 import { PageName } from "../../../rn/public/navigation/Navigation"
-import { push } from "../../../rn/public/navigation/RootNavigation"
+import { jumpTo, push } from "../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
 import List from "../../../rn/public/views/tars/List"
+import { showLoading, showReload, showSuccess } from "../../../rn/public/widget/UGLoadingCP"
 import { img_doy } from "../../../rn/Res/icon"
-import { DoyText14, DoyText28, DoyText12, DoyButton1, DoyText20, DoyButton2 } from "../../public/Button之类的基础组件/DoyButton"
-import { DoyTabbar } from "../../public/Tabbar/DoyTabbar"
+import { DoyText14, DoyText28, DoyText12, DoyButton1, DoyText20, DoyButton2 } from "../../publicComponent/Button之类的基础组件/DoyButton"
+import { doyApi } from "../../publicClass/network/DoyApi"
 import { DoyCheckBuyAlertCP } from "../首页/我要买/cp/DoyCheckBuyAlertCP"
 import { DoyStarCP } from "./个人资料/cp/DoyStarCP"
+import { DoyTabbar } from "../../publicComponent/Tabbar/DoyTabbar"
 
 const sc = sc375
 
@@ -79,7 +81,11 @@ export const DoyMinePage = ({ setProps }: UGBasePageProps) => {
       <Button title='退出登录' containerStyle={{ marginTop: sc(8) }} buttonStyle={{ height: sc(46), backgroundColor: 'white', }} titleStyle={{ fontSize: sc(14), fontWeight: '500', color: '#E36666' }} onPress={() => {
         Alert.alert('是否要退出登录？', undefined, [{ text: '取消', style: 'cancel' }, {
           text: '确定', onPress: () => {
-
+            showLoading()
+            doyApi.user.logout().useCompletion(() => {
+              showSuccess('退出成功！')
+              jumpTo(PageName.DoyLoginPage)
+            })
           }
         }])
       }} />

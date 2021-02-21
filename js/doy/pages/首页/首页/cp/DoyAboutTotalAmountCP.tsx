@@ -6,7 +6,7 @@ import AppDefine from '../../../../../rn/public/define/AppDefine'
 import { Skin1 } from '../../../../../rn/public/theme/UGSkinManagers'
 import { AnimationFadeView } from '../../../../../rn/public/tools/animation/AnimationViews'
 import { showLoading, hideLoading, showSuccess } from '../../../../../rn/public/widget/UGLoadingCP'
-import { DoyButton1, DoyText12, DoyText20 } from '../../../../public/Button之类的基础组件/DoyButton'
+import { DoyButton1, DoyText12, DoyText20 } from '../../../../publicComponent/Button之类的基础组件/DoyButton'
 import { sc375 } from '../../../../../rn/public/tools/Scale'
 
 const sc = sc375

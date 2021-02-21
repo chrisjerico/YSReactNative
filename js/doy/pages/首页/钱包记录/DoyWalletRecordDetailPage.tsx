@@ -8,7 +8,7 @@ import { PageName } from "../../../../rn/public/navigation/Navigation"
 import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyText14, DoyText30 } from "../../../public/Button之类的基础组件/DoyButton"
+import { DoyText14, DoyText30 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 
