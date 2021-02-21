@@ -180,8 +180,8 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
   const renderChaseNumber = () => {
     if (systemInfo?.chaseNumber != '1') return null
 
-    ugLog('systemInfo?.chaseNumber', systemInfo?.chaseNumber)
-    ugLog('systemInfo?.reBetShareModel', reBetShareModel)
+    // ugLog('systemInfo?.chaseNumber', systemInfo?.chaseNumber)
+    // ugLog('systemInfo?.reBetShareModel', reBetShareModel)
 
     return !dicNull(reBetShareModel)
       ?
