@@ -340,7 +340,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               c_ref={v}
               tabGames={homeGames}
               itemHeight={sc(172)}
-              tabWidth={homeGames?.length > 6 ? (homeGames?.[0]?.name?.length > 3 ? sc(120) : sc(85)) : sc(515 / homeGames?.length)}
+              // tabWidth={homeGames?.length > 6 ? (homeGames?.[0]?.name?.length > 3 ? sc(120) : sc(85)) : sc(515 / homeGames?.length)}
               numColumns={3}
               tabBarBackgroundColor={skin1.homeContentColor}
               tabBarStyle={{
@@ -353,7 +353,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               }}
               tabTextStyle={{
                 marginTop: 3,
-                fontSize: sc(25),
+         
               }}
               enableMinWidth={false}
               showIndicator={false}
