@@ -12,25 +12,17 @@ import {
   playDataUniqueId,
   subCountOfSelectedBalls,
 } from '../../util/LotteryUtil'
-import {
-  PlayData,
-  PlayGroupData,
-  PlayOddData,
-  ZodiacNum,
-} from '../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { combination, combineArr } from '../../util/ArithUtil'
+import { PlayData, PlayOddData, ZodiacNum } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { combineArr, combineArray } from '../../util/ArithUtil'
 import { BetLotteryData } from '../../../../public/network/it/bet/IBetLotteryParams'
 import { combineArrayName } from './ezdw/BetEZDWUtil'
 import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/BetShareModel'
 import { NextIssueData } from '../../../../public/network/Model/lottery/NextIssueModel'
 import moment from 'moment'
 import { SelectedPlayModel } from '../../../../redux/model/game/SelectedLotteryModel'
-import { currentPlayOddData, currentTabGroupData, tabGroupData } from '../../util/select/ParseSelectedUtil'
+import { currentPlayOddData, currentTabGroupData } from '../../util/select/ParseSelectedUtil'
 import { parseLMASelectedData } from '../../util/select/lhc/ParseLMASelectedUtil'
 import { parseHXSelectedData } from '../../util/select/lhc/ParseHXSelectedUtil'
-import parseSBData from '../../util/parse/lhc/ParseSBDataUtil'
-import parseYZDWData from '../../util/parse/cqssc/ParseYZDWDataUtil'
-import { parseWXSelectedUtil } from '../../util/select/cqssc/ParseWXSelectedUtil'
 
 /**
  * 过滤出某个选中的数量
@@ -685,7 +677,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
       case gameCode == LhcCode.LX://连肖
       case gameCode == LhcCode.LW://连尾
         return pageData?.map((item) => {
-          const newPlays: Array<Array<PlayData>> = combination(item?.plays, item?.limitCount)
+          const newPlays: Array<Array<PlayData>> = combineArray(item?.plays, item?.limitCount)
           const newPage: SelectedPlayModel = {
             ...item,
             plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
@@ -700,6 +692,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 
       /** ------ */
       case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d && (groupAlias == '组选3复式' || groupAlias == '组选6' || groupAlias == '组选6复式'): //福彩3D 组选3 组选6 组选6复式
       case gameCode == Pk10Code.GFWF && gameType == LCode.pk10 && singleTabIndex == SingleOption.SINGLE: //官方玩法 单式
         return pageData?.map((item) => {
           const newPage: SelectedPlayModel = {
@@ -1029,9 +1022,9 @@ const generateBetArray = (nextIssueData?: NextIssueData,
     arrayLength(combinationData) > 0 &&
     combinationData[0]?.code == LhcCode.LMA://连码，除开 六合彩
       if (combinationData[0]?.playGroups.alias == '前二组选') {
-        totalNum = arrayLength(combination(combinationData[0]?.plays, 2)).toString()
+        totalNum = arrayLength(combineArray(combinationData[0]?.plays, 2)).toString()
       } else if (combinationData[0]?.playGroups.alias == '前三组选') {
-        totalNum = arrayLength(combination(combinationData[0]?.plays, 3)).toString()
+        totalNum = arrayLength(combineArray(combinationData[0]?.plays, 3)).toString()
       }
       break
   }
