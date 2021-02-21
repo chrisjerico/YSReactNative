@@ -240,7 +240,7 @@ const ZLMinePage = (props: UGBasePageProps) => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
                         <Image
-                            resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: item.isDefaultLogo ? 'white' : undefined, overflow: "visible" }}
+                            resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1,  overflow: "visible" }}//tintColor: item.isDefaultLogo ? 'white' : undefined,
                             source={{ uri: item.logo }} />
                         {item.code == 9 && unreadMsg > 0 && (
                             <View style={{

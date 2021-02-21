@@ -28,6 +28,22 @@ interface DefaultUserCenterLogos {
   17: string // 全民竞猜
   18: string // 开奖走势
   19: string // QQ客服
+  20: string // 開獎網
+  22: string // 电子注单
+  23: string // 真人注单
+  24: string // 棋牌注单
+  25: string // 捕鱼注单
+  26: string // 电竞注单
+  27: string // // 体育注单
+  30: string // 存款纪录
+  31: string // 取款纪录
+  32: string // 资金明细
+  33: string // 优惠活动
+  34: string // 聊天室
+  35: string // UCI_我的关注
+  36: string // UCI_我的动态
+  37: string // UCI_我的粉丝
+
 }
 interface UseMinePage {
   homePage?: PageName

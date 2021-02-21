@@ -1,4 +1,4 @@
-import { UGImageHost, useHtml5Image } from '../../Res/icon'
+import { img_assets, UGImageHost, useHtml5Image } from '../../Res/icon'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.test10)
 export const MinePageImgConfig = {
@@ -23,6 +23,24 @@ export const MinePageImgConfig = {
     18: 'http://test61d.fhptcdn.com/images/kj_trend.png', // 开奖走势
     19: getHtml5Image(3, 'center/menu-feedback'), // QQ客服
     20: getHtml5Image(3, 'center/menu-feedback'), // 開獎網
+    21: img_assets('zdgl@2x'), // UCI_未结注单
+    22: img_assets('zdgl@2x'), // UCI_电子注单
+    23: img_assets('zdgl@2x'), // UCI_真人注单
+    24: img_assets('zdgl@2x'), // UCI_棋牌注单 
+    25: img_assets('zdgl@2x'), // UCI_捕鱼注单
+    26: img_assets('zdgl@2x'), // UCI_电竞注单
+    27: img_assets('zdgl@2x'), // UCI_体育注单
+    28: img_assets('zdgl@2x'), // UCI_UG注单
+    29: img_assets('zdgl@2x'), // UCI_已结注单
+    30: img_assets('chongzhi@2x'), // UCI_充值纪录
+    31: img_assets('chongzhi@2x'), // UCI_提现纪录
+    32: img_assets('chongzhi@2x'), // UCI_资金明细
+    33: img_assets('zdgl@2x'), // UCI_活动大厅
+    34: img_assets('weChat_icon'), // 聊天室
+    35: img_assets('invi@2x'), // UCI_我的关注
+    36: img_assets('friend'), // UCI_我的动态
+    37: img_assets('fans'), // UCI_我的粉丝
+
   },
 }
 
