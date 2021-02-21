@@ -523,7 +523,6 @@ const checkBetCount = (showMsg?: boolean): boolean => {
     case gameCode == CqsscCode.EZDW:  //二字定位
     case gameCode == CqsscCode.SZDW:  //三字定位
     case gameCode == FC3d.EZ:  //二字
-    case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D里面的定位胆
     case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
     {
       for (let data of curTabGroupData) {
@@ -535,6 +534,29 @@ const checkBetCount = (showMsg?: boolean): boolean => {
         }
       }
     }
+      break
+
+    case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D里面的定位胆
+      for (let data of curTabGroupData) {
+        const selCount = filterSelectedSubData(gameCode, data?.exPlays[0]?.alias, selectedData)
+        ugLog('selCount = ', selCount, gameCode, data?.exPlays[0]?.alias)
+        if (selCount <= 0) {
+          Toast(`请选择${data?.exPlays[0]?.alias}数据`)
+          return false
+        }
+
+        switch (data?.alias) {
+          case '组选6':
+          case '组选3复式':
+          case '组选6复式':
+            if (selCount < 3) {
+              Toast(`${data?.alias}需要选择至少3个数据`)
+              return false
+            }
+            break
+        }
+      }
+
       break
 
     case gameCode == LhcCode.HX://合肖
@@ -604,6 +626,13 @@ const checkBetCount = (showMsg?: boolean): boolean => {
               Toast(`${data?.alias}需要选择至少8个数据`)
               return false
             }
+            break
+          default:
+            if (selCount < 3) {
+              Toast(`${data?.alias}需要选择至少3个数据`)
+              return false
+            }
+            break
             break
 
         }
@@ -692,7 +721,6 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 
       /** ------ */
       case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '组选120': //五星里的组选120
-      case gameCode == FC3d.DWD && gameType == LCode.fc3d && (groupAlias == '组选3复式' || groupAlias == '组选6' || groupAlias == '组选6复式'): //福彩3D 组选3 组选6 组选6复式
       case gameCode == Pk10Code.GFWF && gameType == LCode.pk10 && singleTabIndex == SingleOption.SINGLE: //官方玩法 单式
         return pageData?.map((item) => {
           const newPage: SelectedPlayModel = {
@@ -777,11 +805,11 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
       case gameCode == CqsscCode.EZDW: //二字定位
       case gameCode == CqsscCode.SZDW: //三字定位
       case gameCode == FC3d.EZ:  //二字
-      case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D 定位胆
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d && groupAlias == '复式': //福彩3D 定位胆
       case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
       case gameCode == CqsscCode.WX && gameType == LCode.cqssc && groupAlias == '复式': //五星里的复式
       case gameCode == Pk10Code.GFWF && gameType == LCode.pk10 && singleTabIndex == SingleOption.COMPLEX: //官方玩法 复式
-        ugLog('combineSelectedData pageData 2 = ', gameCode, JSON.stringify(pageData))
+        //ugLog('combineSelectedData pageData 2 = ', gameCode, JSON.stringify(pageData))
         if (arrayLength(pageData) > 1) { //至少2组数据，二字定位有2组数据，三字定位有3组数据
           const newPlays: Array<Array<PlayData>> = combineArr(...pageData?.map((item) => item?.plays))
           const newPage: SelectedPlayModel = {
@@ -795,7 +823,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           return newPage
         }
 
-        ugLog('combineSelectedData newArr 2 = ', gameCode, JSON.stringify([pageData]))
+        //ugLog('combineSelectedData newArr 2 = ', gameCode, JSON.stringify([pageData]))
 
         return [pageData]
 
@@ -844,6 +872,7 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
         break
 
       case gameCode == LhcCode.LMA:  //连码
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d && (groupAlias == '组选3复式' || groupAlias == '组选6' || groupAlias == '组选6复式'): //福彩3D 组选3 组选6 组选6复式
         const play0 = selModel?.plays[0]
 
         playNameArray.push({
@@ -925,13 +954,14 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
         break
 
       case gameCode == LhcCode.LMA:  //连码
+      case gameCode == FC3d.DWD && gameType == LCode.fc3d && (groupAlias == '组选3复式' || groupAlias == '组选6' || groupAlias == '组选6复式'): //福彩3D 组选3 组选6 组选6复式
       {
         const groupPlay0 = selModel?.playGroups?.plays[0]
         const play0 = selModel?.plays[0]
         betBeanArray.push({
           money: inputMoney,
           playId: groupPlay0?.id,
-          odds: '',//连码不需要传
+          odds: play0?.odds,//连码可以不传
           playIds: nextIssueData?.id,
           betInfo: combineArrayName(selModel).toString(),
           exFlag: playDataUniqueId(play0),
@@ -1010,21 +1040,30 @@ const generateBetArray = (nextIssueData?: NextIssueData,
   const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   const combinationData = combineSelectedData(selectedData)
+
+  if(arrayLength(combinationData) <= 0) return
+
   const playNameArray = generateBetNameArray(nextIssueData, combinationData)
   const betBeanArray = generateBetInfoArray(nextIssueData, inputMoney, combinationData)
 
   arrayLength(playNameArray) != arrayLength(betBeanArray) && ugError('警告错误数据 playNameArray与betBeanArray 长度应一致')
 
+  const playModel0 = combinationData[0]
+  const groupAlias = playModel0?.playGroups?.alias
+  const gameCode = playModel0?.code
   //有的彩种 显示数量和实际数量不一致，需要计算，比如广东11选5里面的前二组选
   let totalNum: string
   switch (true) {
-    case gameType != LCode.lhc &&
-    arrayLength(combinationData) > 0 &&
-    combinationData[0]?.code == LhcCode.LMA://连码，除开 六合彩
-      if (combinationData[0]?.playGroups.alias == '前二组选') {
-        totalNum = arrayLength(combineArray(combinationData[0]?.plays, 2)).toString()
-      } else if (combinationData[0]?.playGroups.alias == '前三组选') {
-        totalNum = arrayLength(combineArray(combinationData[0]?.plays, 3)).toString()
+    case gameCode == LhcCode.LMA://连码，除开 六合彩
+      if (playModel0?.playGroups.alias == '前二组选') {
+        totalNum = arrayLength(combineArray(playModel0?.plays, 2)).toString()
+      } else {
+        totalNum = arrayLength(combineArray(playModel0?.plays, 3)).toString()
+      }
+      break
+    case gameCode == FC3d.DWD && gameType == LCode.fc3d: //福彩3D
+      if (groupAlias == '组选3复式' || groupAlias == '组选6复式') {
+        totalNum = arrayLength(combineArray(playModel0?.plays, 3)).toString()
       }
       break
   }

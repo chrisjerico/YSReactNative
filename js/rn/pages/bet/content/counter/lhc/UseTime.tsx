@@ -89,6 +89,7 @@ const UseTime = () => {
       setDisplayCloseTime(`${closeHour}:${closeMinute}:${closeSecond}`)
 
     } else {
+      !dicNull(UGStore.globalProps?.betShareModel) && UGStore.dispatch({ type: 'reset', betShareModel: {} })
       DeviceEventEmitter.emit(EmitterTypes.LOCK_BOARD, { locked: true, hintText: '封盘中...' } as IEmitterMessage)
       setDisplayCloseTime(`封盘中`)
     }
