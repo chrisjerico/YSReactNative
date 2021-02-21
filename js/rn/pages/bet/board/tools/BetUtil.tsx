@@ -87,66 +87,47 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
   const gameCode = playOddData?.code
   const subAlias = ballData?.alias
   const groupData = currentTabGroupData() //当前的页数据
+  const groupAlias = groupData[0]?.alias
 
   switch (true) {
     case gameCode == LhcCode.HX:  //合肖 最多只能选中11个
-      if (selCount > 10) {
-        return
-      }
+      if (selCount > 10) return
       break
     case gameCode == LhcCode.ZXBZ:  //自选不中 最多只能选中12个
-      if (selCount > 11) {
-        return
-      }
+      if (selCount > 11) return
       break
     case gameCode == LhcCode.LMA && gameType != LCode.lhc:  //连码，不包含 六合彩
-      switch (groupData[0]?.alias) {
+      switch (groupAlias) {
         case '二中二':
-          if (selCount >= 2) {
-            return
-          }
+          if (selCount >= 2) return
           break
         case '三中三':
-          if (selCount >= 3) {
-            return
-          }
+          if (selCount >= 3) return
           break
         case '四中四':
-          if (selCount >= 4) {
-            return
-          }
+          if (selCount >= 4) return
           break
         case '五中五':
         case '前二组选':
         case '前三组选':
-          if (selCount >= 5) {
-            return
-          }
+          if (selCount >= 5) return
           break
         case '六中五':
-          if (selCount >= 6) {
-            return
-          }
+          if (selCount >= 6) return
           break
         case '七中五':
-          if (selCount >= 7) {
-            return
-          }
+          if (selCount >= 7) return
           break
         case '八中五':
-          if (selCount >= 8) {
-            return
-          }
+          if (selCount >= 8) return
           break
       }
 
       break
     case gameCode == LhcCode.WX && gameType == LCode.cqssc:  // 五星
-      switch (groupData[0]?.alias) {
+      switch (groupAlias) {
         case '组选120':
-          if (selCount >= 5) {
-            return
-          }
+          if (selCount >= 5) return
           break
         case '组选60':
           if (subAlias == '二重号') {
@@ -208,13 +189,11 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
 
       break
     case gameCode == Pk10Code.GFWF:  //官方玩法
-      const tabAlias = groupData[0]?.alias //当前tab的名字
+      const tabAlias = groupAlias //当前tab的名字
 
       switch (tabAlias) {
         case '猜冠军':
-          if (selCount >= 1) {
-            return
-          }
+          if (selCount >= 1)  return
           break
         case '猜前二':
         case '猜前三':
@@ -251,14 +230,10 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
           }
           break
         case '猜前四':
-          if (selCount >= 4) {
-            return
-          }
+          if (selCount >= 4) return
           break
         case '猜前五':
-          if (selCount >= 5) {
-            return
-          }
+          if (selCount >= 5) return
           break
       }
 
@@ -292,7 +267,7 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
       break
     case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3d 定位胆
     {
-      if (groupData[0]?.alias == '组选3') {
+      if (groupAlias == '组选3') {
         const selFS1 = selectedBalls?.filter((item) => item?.alias == '二重号') //二重号选择了哪些
         const selFS2 = selectedBalls?.filter((item) => item?.alias == '单号') //单号选择了哪些
         if (subAlias?.startsWith('二重号')) {
@@ -314,7 +289,7 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
             return
           }
         }
-      } else if (groupData[0]?.alias == '组选6') {
+      } else if (groupAlias == '组选6') {
         if (selCount >= 3) {
           return
         }
