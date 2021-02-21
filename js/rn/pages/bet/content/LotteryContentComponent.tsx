@@ -8,7 +8,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import {
   BALL_CONTENT_HEIGHT,
-  CqsscCode, FC3d, GD11x5,
+  CqsscCode, FC3d, GD11x5, HoChiMin,
   K3Code,
   LCode,
   LEFT_ITEM_HEIGHT,
@@ -37,6 +37,7 @@ import CommStyles from '../../base/CommStyles'
 import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import PK10GFWFComponent from './pk10/gfwf/PK10GFWFComponent'
 import K3SJComponent from './k3/sj/K3SJComponent'
+import HoChiMinBLComponent from './cqssc/bl/HoChiMinBLComponent'
 
 const LotteryContentComponent = () => {
 
@@ -96,6 +97,10 @@ const LotteryContentComponent = () => {
     ugLog('------------------gameCode---------------------------------', gameCode)
 
     switch (true) {
+      case gameCode == HoChiMin.BL:  //宝路
+        return <HoChiMinBLComponent key={gameCode}
+                               playOddData={playOdds}/>
+
       case gameCode == LhcCode.TM && gameType == LCode.lhc:  //六合彩特码
         return <LhcTMComponent key={gameCode}
                                playOddData={playOdds}/>

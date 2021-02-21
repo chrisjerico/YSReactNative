@@ -6,7 +6,7 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CommStyles from '../../../../base/CommStyles'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import UseCqsscYZDW from './UseCqsscYZDW'
+import UseHoChiMinBL from './UseHoChiMinBL'
 import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 import LotteryEBall  from '../../../widget/LotteryEBall'
@@ -22,7 +22,7 @@ import { calculateSliderValue } from '../../../util/ArithUtil'
  * @param navigation
  * @constructor
  */
-const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
+const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
@@ -33,7 +33,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
-  } = UseCqsscYZDW()
+  } = UseHoChiMinBL()
 
   //当前这一页的数据
   const currentPageData = playOddData?.pageData?.groupTri[tabIndex]
@@ -63,7 +63,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.plays[0]?.name}</Text>
       </View>
     </TouchableWithoutFeedback>
 
@@ -115,8 +115,8 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param groupData
    * @param index
    */
-  const renderYZDW = (groupData?: PlayGroupData, index?: number) =>
-    <View key={key + ' renderYZDW' + groupData?.id + ', index=' + index}
+  const renderBL = (groupData?: PlayGroupData, index?: number) =>
+    <View key={key + ' renderBL' + groupData?.id + ', index=' + index}
           style={CommStyles.flex}>
 
       {//显示赔率标题
@@ -150,7 +150,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制全部的球
    */
   const renderAllBall = () => <View style={_styles.content_container}>
-    {currentPageData?.map(renderYZDW)}
+    {currentPageData?.map(renderBL)}
   </View>
 
   return (
@@ -254,4 +254,4 @@ const _styles = StyleSheet.create({
 
 })
 
-export default CqsscYZDWComponent
+export default HoChiMinBLComponent

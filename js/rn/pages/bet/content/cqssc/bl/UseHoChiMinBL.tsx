@@ -8,7 +8,7 @@ import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOdd
  * X字定位
  * @constructor
  */
-const UseCqsscYZDW = () => {
+const UseHoChiMinBL = () => {
 
   const {
     sliderValue,
@@ -36,5 +36,5 @@ const UseCqsscYZDW = () => {
   }
 }
 
-export default UseCqsscYZDW
+export default UseHoChiMinBL
 

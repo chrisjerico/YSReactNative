@@ -36,7 +36,7 @@ const parseHCMData = ({ gameType, playOddData }: ITMData): PlayOddData => {
  * @param gameType
  * @param playOddData
  * @param groupData
- * @param playData
+ * @param play0
  */
 const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: PlayGroupData, play0?: PlayData): Array<PlayGroupData> => {
   const play0Name = play0?.name
@@ -87,6 +87,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
     })
     arrArr.push({
       ...groupData,
+      plays: [play0],
       exPlays: arr,
     })
   }
