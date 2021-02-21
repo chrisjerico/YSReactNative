@@ -100,11 +100,30 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
                 })
                 break;
               case 'android':
-                ANHelper.callAsync(CMD.OPEN_COUPON,
-                  {
-                    ...pm,
-                    style: this.style2,
-                  })
+                switch (this.style2) {
+                  // 内页
+                  case 'page': {
+                    ANHelper.callAsync(CMD.OPEN_COUPON,
+                      {
+                        ...pm,
+                        style: this.style2,
+                      })
+                    break;
+                  }
+                  // 弹框
+                  case 'popup': {
+                    OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
+                    break;
+                  }
+                  // 折叠
+                  case 'slide': {
+                    this.setState({
+                      selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
+                    });
+                    break;
+                  }
+                }
+
                 break;
             }
 
