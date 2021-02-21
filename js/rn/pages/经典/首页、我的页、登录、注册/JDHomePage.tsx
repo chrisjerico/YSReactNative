@@ -180,7 +180,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
                 if (!arrayEmpty(subType)) {
                   const isShow = showGameSubType(index)
                   const row = Math.ceil(item?.subType?.length / 3)
-                  const subTypeHeight = row * sc(55)
+                  const subTypeHeight = row * sc(58)
                   v.updateGameSubTypeHeight && v.updateGameSubTypeHeight(isShow ? subTypeHeight : 0)
                 } else {
                   //@ts-ignore
