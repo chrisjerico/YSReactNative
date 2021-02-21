@@ -148,7 +148,7 @@ const testCodePush = async (callback: (ret?: string) => void, force = true) => {
     'https://push.cloudtenccent.com',//aws
     'https://push.ujcloud.cc',//aws（建议）
     'http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000',//源地址
-    'https://push.qijun2099.com',//阿里云
+    'https://push.lestuffs.com',//阿里云
   ];
 
   console.log('查找热更新域名');

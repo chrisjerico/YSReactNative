@@ -7,7 +7,6 @@ export enum UGImageHost {
   t132f = 'http://t132f.fhptcdn.com',
 
   //   https://appstatic.guolongling.com
-  // https://appstatic.qijun2099.com
   // git仓库的图片
   git = 'https://appstatic.guolongling.com',
 }
