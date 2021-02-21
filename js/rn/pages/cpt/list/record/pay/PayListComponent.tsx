@@ -64,6 +64,7 @@ const PayListComponent = ({ navigation, route }) => {
           case 'aliyin_transfer'://"支付宝-银联"
           case 'bank_online'://"网银在线支付"
           case 'yinlian_online'://银联钱包在线支付
+          case 'quick_online'://快捷支付
           case 'huobi_online'://"火币钱包"
           case 'xnb_online'://"虚拟币
             push(PageName.OnlinePayPage, {
