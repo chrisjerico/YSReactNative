@@ -5,6 +5,7 @@ import AppDefine from '../../define/AppDefine'
 import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
 import { deleteHtml } from '../../tools/StringUtil'
+import { ugLog } from '../../tools/UgLog'
 
 interface TabComponentProps {
   tabGames: TabGame[]
@@ -64,7 +65,7 @@ export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
 
 const minTabWidth = scale(100)
 const defaultTabHeight = scale(60)
-
+const TABFont = scale(25);
 
 export interface TabComponentApi {
   updateGameSubTypeHeight: (subTypeHeight: number) => void
@@ -117,10 +118,40 @@ const TabComponent = ({
     subTypeHeights: {},
     currentIndex: 0,
   })
+ 
+  function getTitleStr() {
+    let titles = '';
+    for (let index = 0; index < tabGames.length; index++) {
+      const item = tabGames[index];
+      titles += deleteHtml(item?.name ?? item?.categoryName ?? '');
+
+    }
+    ugLog('titles ==', titles)
+    return  titles;
+  }
 
   const getTabCount = () => {
     return tabGames?.length ?? 0
   }
+
+  //计算实际间隔
+  const getintervalWidth = () => {
+    const titleStr =  getTitleStr()
+    const tabCount = tabGames?.length ?? 0;
+
+    ugLog('实际间隔==',(AppDefine.width - titleStr.length * TABFont)/(tabCount *2))
+    return (AppDefine.width - titleStr.length * TABFont)/(tabCount *2);
+  }
+  //实际的tabbar的宽度  2个以上：计算结果  2个以下下：等分
+  const getSJTabWidth = (title :string) => {
+    const tabCount = tabGames?.length ?? 0;
+    if (tabCount < 3) {
+      return  getTabWidth();
+    } else {
+      return  getTabWidth()+30  -(getTabWidth() - (TABFont * title.length)- getintervalWidth() )//实际间隔计算有误差，补充30
+    }
+  }
+
 
   const getTabWidth = () => {
     if (tabWidth) {
@@ -128,9 +159,9 @@ const TabComponent = ({
     }
     const tabCount = getTabCount()
     let width = 0
-    if(tabCount<5){
+    if (tabCount < 5) {
       width = tabCount ? AppDefine.width / tabCount : 0
-    }else{
+    } else {
       width = tabCount ? AppDefine.width / 5 : 0
     }
     if (enableMinWidth && width < minTabWidth) {
@@ -193,61 +224,63 @@ const TabComponent = ({
         return renderTabBar ? (
           renderTabBar({ activeTab, goToPage })
         ) : (
-          <View style={[{ height: defaultTabHeight }, tabBarStyle, ]}>
-            <ScrollView
-              scrollEnabled={tabBarScrollEnabled}
-              ref={scroll}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
-              scrollEventThrottle={5000}>
-              {tabGames?.map((item, index) => {
-                const title = deleteHtml(item?.name ?? item?.categoryName ?? '')
-                return (
-                  <TouchableWithoutFeedback
-                    key={index}
-                    onPress={() => {
-                      goToPage(index)
-                    }}>
-                    <View
-                      style={[
-                        styles.tabContainer,
-                        tabStyle,
-                        {
-                          width: getTabWidth(),
-                        },
-                      ]}>
-                      <Text
-                        numberOfLines={1}
-                        adjustsFontSizeToFit={true}
+            <View style={[{ height: defaultTabHeight }, tabBarStyle,]}>
+              <ScrollView
+                scrollEnabled={tabBarScrollEnabled}
+                ref={scroll}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
+                scrollEventThrottle={5000}>
+                {tabGames?.map((item, index) => {
+                  const title = deleteHtml(item?.name ?? item?.categoryName ?? '')
+                  return (
+                    <TouchableWithoutFeedback
+                      key={index}
+                      onPress={() => {
+                        goToPage(index)
+                      }}>
+                      <View
                         style={[
-                          styles.tabText,
-                          tabTextStyle,
+                          styles.tabContainer,
+                          tabStyle,
                           {
-                            color: activeTab == index ? focusTabColor : tabTextColor,
+                            width:   getSJTabWidth(title) ,
                           },
                         ]}>
-                        {title}
-                      </Text>
-                      {showIndicator && (
-                        <View
+                        <Text
+                          numberOfLines={1}
+                          // adjustsFontSizeToFit={true}
                           style={[
-                            styles.focusBar,
+                            styles.tabText,
+                            tabTextStyle,
                             {
-                              width: '50%',
-                              backgroundColor: activeTab == index ? focusTabColor : 'transparent',
+                              color: activeTab == index ? focusTabColor : tabTextColor,
+                              width: scale(28) * title.length,
+                              textAlign: 'center',
                             },
-                          ]}
-                        />
-                      )}
-                    </View>
-                  </TouchableWithoutFeedback>
-                )
-              })}
-            </ScrollView>
-          </View>
-        )
+                          ]}>
+                          {title}
+                        </Text>
+                        {showIndicator && (
+                          <View
+                            style={[
+                              styles.focusBar,
+                              {
+                                width: '50%',
+                                backgroundColor: activeTab == index ? focusTabColor : 'transparent',
+                              },
+                            ]}
+                          />
+                        )}
+                      </View>
+                    </TouchableWithoutFeedback>
+                  )
+                })}
+              </ScrollView>
+            </View>
+          )
       }}>
       {tabGames?.map((ele: TabGame, index) => {
         const tab = ele?.name ?? ele?.categoryName ?? ''
@@ -288,7 +321,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     alignSelf: 'auto',
-    fontSize: scale(25),
+    fontSize: TABFont,
     marginBottom: scale(5),
   },
   tabContainer: {
