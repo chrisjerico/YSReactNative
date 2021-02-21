@@ -21,7 +21,6 @@ import MenuButton from './views/MenuButton'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 import { goToUserCenterType } from '../../public/tools/tars'
-import { ugLog } from '../../public/tools/UgLog'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.test5)
 
@@ -181,8 +180,6 @@ const WNZMinePage = () => {
               tools={tools}
               renderTool={(item, index) => {
                 const { code, name, logo } = item
-                ugLog('name=',name)
-                ugLog('logo',logo)
                 return (
                   <GameButton
                     key={index}

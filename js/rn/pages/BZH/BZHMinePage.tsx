@@ -19,7 +19,6 @@ import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
-import { ugLog } from '../../public/tools/UgLog'
 
 const BZHMinePage = () => {
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, info, sign } = useMinePage({
@@ -37,7 +36,7 @@ const BZHMinePage = () => {
   // data handle
   const profileUserCenterItems = userCenterItems?.slice(0, 4) ?? []
   const listUserCenterItems = userCenterItems?.slice(4, userCenterItems?.length) ?? []
- 
+
   return (
     <>
       <SafeAreaHeader headerColor={skinColors.themeColor.宝石红}>
@@ -80,8 +79,6 @@ const BZHMinePage = () => {
           }}
         />
         {listUserCenterItems?.map((item, index) => {
-          ugLog('item.name',item.name)
-          ugLog('url',item.logo)
           const { code, name, logo } = item
           return (
             <UserCenterItem

@@ -22,7 +22,6 @@ import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP';
 import { AvatarModel } from '../../public/network/Model/SystemAvatarListModel';
 import { img_assets } from '../../Res/icon';
-import { ugLog } from '../../public/tools/UgLog';
 
 // 定义Props
 export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {}
@@ -44,9 +43,6 @@ export const XBJMinePage = (props: XBJMineProps) => {
 
   let cells = dataArray?.map(item => {
     if (!item) return;
-
-    ugLog('item.code',item.code)
-    ugLog('item.name',item.name)
     return [
       <TouchableOpacity
         key={item.code}

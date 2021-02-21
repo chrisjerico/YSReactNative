@@ -1,4 +1,3 @@
-import { ugLog } from "../../public/tools/UgLog"
 
 type ImageType = 'png' | 'jpg' | 'gif' | 'svg'
 
@@ -25,8 +24,6 @@ function getImage(host: string, pType: string, p1: string, p2?: string, suffix: 
   } else {
     path = pType.replace(/\{p1\}.*/, p1)
   }
-
-  ugLog('getImage ====',host + '/' + path + '.' + suffix);
   return host + '/' + path + '.' + suffix
 }
 
