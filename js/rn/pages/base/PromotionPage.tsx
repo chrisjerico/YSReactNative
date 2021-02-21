@@ -75,11 +75,30 @@ const PromotionPage = (props: any) => {
         }
         break
       case 'android':
+        switch (style) {
+          // 内页
+          case 'page': {
+            // 弹框
+            ANHelper.callAsync(CMD.OPEN_COUPON, {
+              ...item,
+              style,
+            })
+            break
+          }
           // 弹框
-          ANHelper.callAsync(CMD.OPEN_COUPON, {
-            ...item,
-            style,
-          })
+          case 'popup': {
+            setShowPop(true)
+            break
+          }
+          case 'slide': {
+            if (index == selectedItemIndex) {
+              setSelectedItemIndex(-1)
+            } else {
+              setSelectedItemIndex(index)
+            }
+            break
+          }
+        }
         break
     }
   }
@@ -117,8 +136,8 @@ const PromotionPage = (props: any) => {
                     }}>
                     <View
                       style={
-                        selectedTabIndex == item 
-                          ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType] } 
+                        selectedTabIndex == item
+                          ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType] }
                           : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType] }
                       }>
                       <Text
