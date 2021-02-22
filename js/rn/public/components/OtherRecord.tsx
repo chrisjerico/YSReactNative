@@ -85,18 +85,10 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
   ]
 
 
-  const [currentType, setCurrentType] = useState<IMiddleMenuItem>(
-    {
-      title: '真人注单', //菜单名字
-      subTitle: null, // 次级名字
-      icon: null, //图标地址
-      id: '23', //识别标识
-      type: 'real'
-    }
-  )  //選擇注單類形
+  const [currentType, setCurrentType] = useState<IMiddleMenuItem>()  //選擇注單類形
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [page] = useState(1)
-  const [data, setData] = useState<Array<GameHistorylistBean>>([])
+  const [history, setHistory] = useState<Array<GameHistorylistBean>>([])
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
   const [betTotal, setBetTotal] = useState(0) //是否存取過數據
   const [validbetTotal, setValidBetTotal] = useState('0') //是否存取過數據
@@ -107,6 +99,10 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
   // ugLog('startDate ==  ',startDate)
 
   useEffect(() => {
+    typeArray.forEach((item) => {
+      if (item.id == type)
+        setCurrentType(item)
+    })
     setProps({
       didFocus: (params) => {
         ugLog('--------------------------params==', params)
@@ -140,13 +136,15 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
 
 
   useEffect(() => {
-    ugLog("startDate: " + startDate)
-    ugLog("currentType: " + currentType?.type)
-    requestGameData()
+    if (currentType?.type)  requestGameData()
   }, [currentType, startDate])
 
   useEffect(() => {
   }, [selectStartDate])
+
+  useEffect(() => {
+    ugLog("history= ", history)
+  }, [history])
 
 
 
@@ -157,8 +155,6 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     refMenu?.current?.toggleMenu()
     setCurrentType(item)
-
-
   }
 
   //刷新控件
@@ -171,12 +167,13 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
    * 请求游戏数据
    */
   const requestGameData = async () => {
+    console.log("requestGameData")
     setRefreshing(true)
 
     // 刷新UI
     function refreshUI(data: GameHistoryModel) {
       setRefreshing(false)
-      setData(data.data.list)
+      setHistory(data.data.list)
       let vBetTotal = data.data.totalValidBetAmount
 
       if (!anyEmpty(vBetTotal)) {
@@ -197,7 +194,7 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
     }
 
     // ugLog('page==',page)
-    // ugLog('currentType?.type==',currentType?.type)
+    ugLog('currentType?.type==',currentType?.type)
     // ugLog('startDate==',startDate)
     // 获取注單數據
     APIRouter.ticket_history_args(
@@ -205,6 +202,7 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
     ).then(({ data: res }) => {
       // ugLog('获取注單數據=======', res)
       if (res?.code == 0) {
+        console.log("refreshUI = ", res)
         setIsSetData(true)
         refreshUI(res)
       } else {
@@ -220,7 +218,6 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
    * @param item
    */
   const renderDataList = (item: Array<GameHistorylistBean>) => {
-    // ugLog('item=', item)
     return (
       <>
         <View style={{ flex: 1 }}>
@@ -284,13 +281,13 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
     return (
       isSetData
         ?
-        anyEmpty(data)
+        anyEmpty(history)
           ? <EmptyView style={{ flex: 1 }} />
           :
           <View>
             <ScrollView style={{ height: AppDefine.height - 44 - AppDefine.safeArea.top - 0 - 60 - 50, }}>
               {
-                renderDataList(data)
+                renderDataList(history)
               }
               <View style={{ height: 20, }}>
               </View>
@@ -370,9 +367,8 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
           rightButton={rightButton}
           showRightTitle={true}
           onPressBackBtn={() => {
-            // ugLog('999999')
             //情况网络数据
-            setData([]);
+            setHistory([]);
             pop()
           }
           }
@@ -386,7 +382,7 @@ const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
       </SafeAreaHeader>
       <MiddleMenu
         styles={{ width: scale(200) }}
-        curId={currentType.id}
+        curId={currentType?.id}
         key={currentType?.id}
         ref={refMenu}
         onMenuClick={clickMenu}

@@ -117,6 +117,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
     }
   }
 
+  ugLog("blance=", !anyEmpty(userInfo?.balance) && `${Number(userInfo?.balance).toFixed(1)}`)
   /**
    * 绘制个人信息
    */
@@ -128,14 +129,15 @@ const CapitalPage = ({ navigation, route, setProps }) => {
     <View>
       <Text style={[_styles.mine_info_name,{color:'white',}]}>{userInfo?.usr}</Text>
       <View style={{ flexDirection: 'row', marginTop: 8 }}>
-        <Text style={[_styles.mine_info_balance, { color:  'white', }]}>{!anyEmpty(userInfo?.balance) && `用户余额:`}</Text>
-        <Text style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${userInfo?.balance}`}</Text>
+        <Text style={[_styles.mine_info_balance, { color:  'white', }]}>{!anyEmpty(userInfo?.balance) && `用户余额:  `}</Text>
+        <Text style={[_styles.mine_info_balance, { color: 'red', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${Number(userInfo?.balance).toFixed(1)}`}</Text>
+        <Text style={[_styles.mine_info_balance, { color:  'white', }]}> RMB</Text>
       </View>
 
-      <View style={{ flexDirection: 'row', marginTop: 8 }}>
+      {/* <View style={{ flexDirection: 'row', marginTop: 8 }}>
         <Text style={[_styles.mine_info_balance, { color: 'white', }]}>{!anyEmpty(yueBaoData) && yueBaoData?.yuebaoName + '余额: ' }</Text>
         <Text style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${yueBaoData?.balance}`}</Text>
-      </View>
+      </View> */}
     </View>
   </View>
 
@@ -191,6 +193,7 @@ const _styles = StyleSheet.create({
   mine_info_container: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: scale(60),
     padding: scale(16),
     height: scale(160)
   },
