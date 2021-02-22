@@ -194,11 +194,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.jmfgvn5.cc',
   ],
   'c085ahy': [
-    'https://www.ya1237888.cc',
-    'https://www.ya2238888.cc',
-    'https://www.ya3388888.cc',
-    'https://www.ya442778111.cc',
-    'https://www.ya557887.cc',
+    'https://www.jmhnnn1.cc',
+    'https://www.jmsfds2.cc',
+    'https://www.jmsddv3.cc',
+    'https://www.jmnhhn4.cc',
+    'https://www.jmfgvn5.cc',
   ],
   'c085yw': [
     'https://x558.cc',
@@ -305,8 +305,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.dfjt1.com',
   ],
   'c175': [
-    'https://7053bbb.com',
-    'https://7053fff.vip',
+    'https://7053ccc.cc',
+    'https://7053bbb.cc',
     'https://7053eee.vip',
     'https://7053ccc.vip',
   ],
@@ -371,11 +371,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://44vip500.com',
-    'https://3vip1000.com',
-    'https://5vip1000.com',
-    'https://55vip500.com',
-    'https://vip100000.com',
+    'https://00998800b.com',
+    'https://0980gg.com',
+    'https://098545a.com',
+    'https://098hg.net',
+    'https://123kkdd.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -418,7 +418,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c245': [
     'https://4823kcmanucxeanm.com',
-    'https://4823aochjenmalc.com',
     'https://4823btuenaldfpvm.com',
   ],
   'c246': [
@@ -460,11 +459,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333x.org',
+    'https://70333b.org',
     'https://70333k.org',
     'https://70333c.org',
     'https://70333v.org',
-    'https://70333z.org',
+    'https://70333n.org',
   ],
   'h003b': [
     'https://betv5.com',
