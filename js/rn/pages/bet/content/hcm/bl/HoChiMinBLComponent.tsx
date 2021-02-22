@@ -24,6 +24,7 @@ import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { calculateSliderValue } from '../../../util/ArithUtil'
 import WXTitleComponent from '../../cqssc/wx/WXTitleComponent'
+import { ILotteryBall } from '../../../../../public/components/view/LotteryBall'
 
 
 /**
@@ -73,7 +74,11 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   }}
                   selectedBalls={selectedBalls}
                   containerStyle={_styles.ball_container}
-                  ballType={{ size: scale(46) }}
+                  ballType={{
+                    size: scale(46),
+                    type: BallType.rectangle,
+                    ballColor: `${Skin1.themeColor}99`,
+                  } as ILotteryBall}
                   ballStyle={{ flexDirection: 'column' }}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 

@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import UseLotteryHelper from '../../assist/UseLotteryHelper'
 import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
+import { DeviceEventEmitter } from 'react-native'
+import { EmitterTypes } from '../../../../../public/define/EmitterTypes'
+import { UGStore } from '../../../../../redux/store/UGStore'
 
 /**
  * X胡志明
@@ -26,6 +29,16 @@ const UseHoChiMinBL = () => {
     addOrRemoveBall,
     currentPageData,
   } = UseLotteryHelper()
+
+
+
+  useEffect(() => {
+
+    //Tab有变化就清除选择的数据
+    UGStore.dispatch({ type: 'reset', lotteryTabIndex: tabIndex })
+    setSelectedBalls([])
+
+  }, [tabGameIndex])
 
   return {
     GAME_TYPE_ARRAY,

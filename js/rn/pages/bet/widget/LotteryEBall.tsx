@@ -43,7 +43,7 @@ const renderContent = ({
     <View key={'e ball content' + item?.id}
           style={[
             _styles.ball_item_tm,
-            { backgroundColor: isSel ? `${Skin1.themeColor}dd` : null },
+            { backgroundColor: isSel ? `${Skin1.themeColor}ee` : null },
             containerStyle,
           ]}>
       <EBall key={'e ball content e' + item?.id}

@@ -19,6 +19,7 @@ const BallType = {
   'round': '圆球', //彩色
   'black_white': '黑白', //黑白
   'square': '方球', //彩色
+  'rectangle': '长方球', //纯色
   'colorful': '花球', //多种图片
   'pure': '纯色球', //纯色
   'vegetable': '蔬菜', //蔬菜
