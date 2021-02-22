@@ -65,7 +65,11 @@ const CapitalPage = ({ navigation, route, setProps }) => {
           if (key == 'selectIndex' ||key == 'initTabIndex') {
             console.log('key ==============', key);
             console.log('v ==============', dic[key]);
-            tabRef?.current?.goToPage(2)
+            // tabRef?.current?.goToPage(2)
+            setTabIndex(dic[key])
+            setRefreshCount(dic[key] + 1)
+            //  setRefreshCount(moment().unix())
+
           }
         }
       }
