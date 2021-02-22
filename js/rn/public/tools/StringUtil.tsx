@@ -10,6 +10,12 @@ import { Toast } from './ToastUtils'
 const doubleDigit = (value?: string | number) => ('0' + value).slice(-2)
 
 /**
+ * 转换数据为3位数
+ * @param value
+ */
+const threeDigit = (value?: string | number) => ('00' + value).slice(-3)
+
+/**
  * 删除HTML标签
  * @param s
  */
@@ -54,5 +60,6 @@ export {
   endString,
   numberToFloatString,
   doubleDigit,
+  threeDigit,
   showHintToast,
 }

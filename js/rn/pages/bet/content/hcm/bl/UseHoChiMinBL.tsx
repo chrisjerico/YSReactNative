@@ -13,7 +13,7 @@ import { UGStore } from '../../../../../redux/store/UGStore'
  */
 const UseHoChiMinBL = () => {
 
-  const [tabGameIndex, setTabGameIndex] = useState(GameTabIndex.SEL_NUMBER) //当前选中第几个玩法
+  const [tabHcmIndex, setTabHcmIndex] = useState<HcmTabIndex>(HcmTabIndex.SEL_NUMBER) //当前选中第几个玩法
   const [blInputNumber, setBlInputNumber] = useState<string>(null) //输入的号码
 
   const {
@@ -30,23 +30,20 @@ const UseHoChiMinBL = () => {
     currentPageData,
   } = UseLotteryHelper()
 
-
-
   useEffect(() => {
-
     //Tab有变化就清除选择的数据
     UGStore.dispatch({ type: 'reset', lotteryTabIndex: tabIndex })
     setSelectedBalls([])
 
-  }, [tabGameIndex])
+  }, [tabHcmIndex])
 
   return {
     GAME_TYPE_ARRAY,
-    GameTabIndex,
+    HcmTabIndex,
     blInputNumber,
     setBlInputNumber,
-    tabGameIndex,
-    setTabGameIndex,
+    tabHcmIndex,
+    setTabHcmIndex,
     sliderValue,
     setPlayOddData,
     tabIndex,
@@ -59,7 +56,7 @@ const UseHoChiMinBL = () => {
 }
 
 const GAME_TYPE_ARRAY = ['选择号码', '输入号码', '快速选择'] //玩法种类
-enum GameTabIndex {
+enum HcmTabIndex {
   SEL_NUMBER, //选择号码
   INPUT_NUMBER, //输入号码
   SEL_FAST, //快速选择

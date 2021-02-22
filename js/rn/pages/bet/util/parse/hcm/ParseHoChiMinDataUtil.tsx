@@ -8,7 +8,7 @@ import { anyEmpty } from '../../../../../public/tools/Ext'
 import { CqsscCode, FC3d, HoChiMin, HoChiMinSub, LCode, LhcCode, Pk10Code } from '../../../const/LotteryConst'
 import { combineArrayName } from '../../../board/tools/ezdw/BetEZDWUtil'
 import { combineArr, combineArray } from '../../ArithUtil'
-import { doubleDigit } from '../../../../../public/tools/StringUtil'
+import { doubleDigit, threeDigit } from '../../../../../public/tools/StringUtil'
 
 interface ITMData {
   gameType?: string // 六合彩 秒秒彩
@@ -47,6 +47,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
   let titleArr = [play0Name] //标题
   let showOdds = play0?.odds //有的彩种不需要显示赔率
   let startIndex = 0 //起始编号，有的从 0 开始，有的从 1 开始
+  let arrAll: PlayData[] //所有组合的情况
 
   const playCode = play0?.code
   const gameCode = playOddData?.code
@@ -61,11 +62,23 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
     case playCode == HoChiMinSub.DIDUAN2:  //地段2 1K
       circleCount = 2
       titleArr = [`十`, `个`]
+      arrAll = new Array(100).fill(0).map((item, index) => ({
+        id: `${play0?.id},${index}`,
+        name: doubleDigit(index),
+        odds: showOdds,
+        enable: play0?.enable,
+      } as PlayData))
       break
     case gameCode == HoChiMin.H_3GD: //3更多
     case playCode == HoChiMinSub.PIHAO3:  //批号3
       circleCount = 3
       titleArr = ['百', `十`, `个`]
+      arrAll = new Array(100).fill(0).map((item, index) => ({
+        id: `${play0?.id},${index}`,
+        name: threeDigit(index),
+        odds: showOdds,
+        enable: play0?.enable,
+      } as PlayData))
       break
     case gameCode == HoChiMin.H_4GD: //4更多
     case playCode == HoChiMinSub.PIHAO4:  //批号4
@@ -89,20 +102,12 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
       } as PlayData)
     })
 
-    //生成所有数字的数组，用于计算所有组合的情况
-    const arr10 = new Array(100).fill(0).map((item, index) => ({
-      id: `${titleArr[i]},${play0?.id},${index}`,
-      name: doubleDigit(index),
-      odds: showOdds,
-      enable: play0?.enable,
-    } as PlayData))
-
     arrArr.push({
       ...groupData,
       plays: [play0],
       exPlays: arr,
       exHint: '00-99',
-      allHcPlays: arr10
+      allHcPlays: arrAll
     })
   }
 

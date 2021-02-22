@@ -53,7 +53,6 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               style={CommStyles.flex}
                               onPress={() => {
-                                // setOptionIndex(SingleOption.SINGLE)
                                 setTabIndex(index)
                               }}>
       <View key={key + item[0]?.alias}
@@ -254,6 +253,7 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor2,
     fontSize: scale(22),
     paddingHorizontal: scale(1),
+    fontWeight: 'bold',
   },
   ball_parent_container: {
     flexDirection: 'row',
