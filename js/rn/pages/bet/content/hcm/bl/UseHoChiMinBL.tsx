@@ -5,13 +5,13 @@ import UseLotteryHelper from '../../assist/UseLotteryHelper'
 import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 
 /**
- * X字定位
+ * X胡志明
  * @constructor
  */
 const UseHoChiMinBL = () => {
 
-  const GAME_TYPE_ARRAY = ['选择号码', '输入号码', '快速选择'] //玩法种类
-  const [tabGameIndex, setTabGameIndex] = useState(0) //当前选中第几个玩法
+  const [tabGameIndex, setTabGameIndex] = useState(GameTabIndex.SEL_NUMBER) //当前选中第几个玩法
+  const [blInputNumber, setBlInputNumber] = useState<string>(null) //输入的号码
 
   const {
     sliderValue,
@@ -29,6 +29,9 @@ const UseHoChiMinBL = () => {
 
   return {
     GAME_TYPE_ARRAY,
+    GameTabIndex,
+    blInputNumber,
+    setBlInputNumber,
     tabGameIndex,
     setTabGameIndex,
     sliderValue,
@@ -40,6 +43,13 @@ const UseHoChiMinBL = () => {
     addOrRemoveBall,
     currentPageData,
   }
+}
+
+const GAME_TYPE_ARRAY = ['选择号码', '输入号码', '快速选择'] //玩法种类
+enum GameTabIndex {
+  SEL_NUMBER, //选择号码
+  INPUT_NUMBER, //输入号码
+  SEL_FAST, //快速选择
 }
 
 export default UseHoChiMinBL

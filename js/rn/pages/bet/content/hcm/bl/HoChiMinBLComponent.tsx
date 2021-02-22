@@ -1,4 +1,13 @@
-import { Alert, AlertButton, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import {
+  Alert,
+  AlertButton,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { scale } from '../../../../../public/tools/Scale'
@@ -14,10 +23,11 @@ import { BALL_CONTENT_HEIGHT, BallType } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { calculateSliderValue } from '../../../util/ArithUtil'
+import WXTitleComponent from '../../cqssc/wx/WXTitleComponent'
 
 
 /**
- * X字定位
+ * X胡志明
  *
  * @param navigation
  * @constructor
@@ -27,6 +37,9 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   const {
     GAME_TYPE_ARRAY,
+    GameTabIndex,
+    blInputNumber,
+    setBlInputNumber,
     tabGameIndex,
     setTabGameIndex,
     sliderValue,
@@ -45,6 +58,24 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setPlayOddData(playOddData)
   }, [])
   const key = 'lottery page' + playOddData?.code
+
+
+  /**
+   * 绘制 球
+   * @param item
+   * @param ballInfo 手动生成的数据
+   */
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) =>
+    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
+                  item={{
+                    ...ballInfo,
+                    odds: null,
+                  }}
+                  selectedBalls={selectedBalls}
+                  containerStyle={_styles.ball_container}
+                  ballType={{ size: scale(46) }}
+                  ballStyle={{ flexDirection: 'column' }}
+                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
   /**
    * 单个TAB
@@ -148,24 +179,23 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   }
 
   /**
-   * 绘制 球
-   * @param item
-   * @param ballInfo 手动生成的数据
+   * 特殊，绘制 五星玩法单式
+   * @param groupData
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) =>
-    <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
-                  item={{
-                    ...ballInfo,
-                    odds: null,
-                  }}
-                  selectedBalls={selectedBalls}
-                  containerStyle={_styles.ball_container}
-                  ballType={{ size: scale(46) }}
-                  ballStyle={{ flexDirection: 'column' }}
-                  callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
+  const renderSingle = (groupData?: PlayGroupData) => <View key={key + ' renderSingle container = ' + groupData?.id}
+                                                            style={CommStyles.flex}>
+
+    <TextInput style={_styles.single_input}
+               value={blInputNumber}
+               editable={groupData?.enable == '1'}
+               placeholder={groupData?.enable == '1' ? '怎么玩\n在每个下注号码之间用分号“;”或逗号“,”或空格分隔。\n例如：15;12,10 19' : '当前玩法已关闭'}
+               onChangeText={(s) => setBlInputNumber(s)}
+               keyboardType={'numeric'}/>
+
+  </View>
 
   /**
-   * 绘制 X字定位
+   * 绘制 X胡志明选择球
    * @param groupData
    * @param index
    */
@@ -196,16 +226,53 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View style={_styles.ball_parent_container}>
-        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
+        {
+          groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))
+        }
+      </View>
+    </View>
+
+  /**
+   * 绘制 X胡志明 所有彩种情况
+   * @param groupData
+   * @param index
+   */
+  const renderAllCombinations = (groupData?: PlayGroupData) =>
+    <View key={key + ' renderAllCombinations' + groupData?.id}
+          style={CommStyles.flex}>
+      <View style={_styles.sub_title_container}>
+        <Text style={[
+          _styles.sub_title_text,
+          { color: Skin1.themeColor },
+        ]}>{groupData?.exHint}</Text>
+      </View>
+
+      <View style={_styles.ball_parent_container}>
+        {
+          groupData?.allHcPlays?.map((item, index) => renderEBall(groupData, item))
+        }
       </View>
     </View>
 
   /**
    * 绘制全部的球
    */
-  const renderAllBall = () => <View style={_styles.content_container}>
-    {currentPageData?.map(renderBL)}
-  </View>
+  const renderAllBall = () => {
+
+    switch (tabGameIndex) {
+      case GameTabIndex.SEL_NUMBER:
+        return currentPageData?.map(renderBL)
+
+      case GameTabIndex.INPUT_NUMBER:
+        return renderSingle(currentPageData[0])
+
+      case GameTabIndex.SEL_FAST:
+        return renderAllCombinations(currentPageData[0])
+
+    }
+
+    return null
+  }
 
   return (
     <ScrollView key={key}
@@ -214,7 +281,9 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 style={[_styles.sv_container, style]}>
       {renderTab()}
       {renderGameType()}
-      {renderAllBall()}
+      <View style={_styles.content_container}>
+        {renderAllBall()}
+      </View>
     </ScrollView>
 
   )
@@ -338,6 +407,17 @@ const _styles = StyleSheet.create({
     color: 'white',
     fontSize: scale(20),
     paddingLeft: scale(6),
+  },
+  single_input: {
+    color: UGColor.TextColor3,
+    fontSize: scale(22),
+    borderWidth: scale(1),
+    borderColor: UGColor.LineColor4,
+    borderRadius: scale(8),
+    minHeight: scale(320),
+    marginHorizontal: scale(6),
+    marginVertical: scale(16),
+    textAlignVertical: 'top',
   },
 
 

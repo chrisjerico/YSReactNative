@@ -37,6 +37,7 @@ export interface PlayGroupData {
   exHint?: string //本地生成的提醒文字
   exZodiacs?: ZodiacNum[] //本地生成的生肖数据
   exPlays?: PlayData[] //本地生成的彩球数据
+  allHcPlays?: PlayData[] //所有数组的组合情况，比如 胡志明 快速选择
 }
 
 export interface PlayOddData {

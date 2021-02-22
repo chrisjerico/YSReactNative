@@ -6,6 +6,9 @@ import {
 } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { CqsscCode, FC3d, HoChiMin, HoChiMinSub, LCode, LhcCode, Pk10Code } from '../../../const/LotteryConst'
+import { combineArrayName } from '../../../board/tools/ezdw/BetEZDWUtil'
+import { combineArr, combineArray } from '../../ArithUtil'
+import { doubleDigit } from '../../../../../public/tools/StringUtil'
 
 interface ITMData {
   gameType?: string // 六合彩 秒秒彩
@@ -85,10 +88,21 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
         enable: play0?.enable,
       } as PlayData)
     })
+
+    //生成所有数字的数组，用于计算所有组合的情况
+    const arr10 = new Array(100).fill(0).map((item, index) => ({
+      id: `${titleArr[i]},${play0?.id},${index}`,
+      name: doubleDigit(index),
+      odds: showOdds,
+      enable: play0?.enable,
+    } as PlayData))
+
     arrArr.push({
       ...groupData,
       plays: [play0],
       exPlays: arr,
+      exHint: '00-99',
+      allHcPlays: arr10
     })
   }
 

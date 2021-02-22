@@ -177,7 +177,7 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + ' ball renderGFWF' + groupData?.id}
             style={_styles.ball_parent_container}>
-        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
+        {groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 

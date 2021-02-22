@@ -3,6 +3,10 @@
  */
 import { Toast } from './ToastUtils'
 
+/**
+ * 转换数据为2位数
+ * @param value
+ */
 const doubleDigit = (value?: string | number) => ('0' + value).slice(-2)
 
 /**

@@ -115,6 +115,7 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <TextInput style={_styles.single_input}
                value={wxInputNumber}
                editable={groupData?.enable == '1'}
+               placeholder={groupData?.enable == '1' ? '' : '当前玩法已关闭'}
                onChangeText={(s) => setWxInputNumber(s)}
                keyboardType={'numeric'}/>
 
@@ -152,7 +153,7 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View style={_styles.ball_parent_container}>
-        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
+        {groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 
