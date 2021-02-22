@@ -13,7 +13,8 @@ import { UGStore } from '../../../../../redux/store/UGStore'
  */
 const UseHoChiMinBL = () => {
 
-  const [tabHcmIndex, setTabHcmIndex] = useState<HcmTabIndex>(HcmTabIndex.SEL_NUMBER) //当前选中第几个玩法
+  const [tabHcmIndex, setTabHcmIndex] = useState<HcmTabIndex>(HcmTabIndex.SEL_NUMBER) //当前选中第几个玩法 选择号码，输入号码，快速选择
+  const [ballTypeIndex, setBallTypeIndex] = useState(0) //当前单个球从 0 ~ 999 的类别，比如 批号3
   const [blInputNumber, setBlInputNumber] = useState<string>(null) //输入的号码
 
   const {
@@ -39,6 +40,8 @@ const UseHoChiMinBL = () => {
 
   return {
     GAME_TYPE_ARRAY,
+    ballTypeIndex,
+    setBallTypeIndex,
     HcmTabIndex,
     blInputNumber,
     setBlInputNumber,

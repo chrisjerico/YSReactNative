@@ -47,7 +47,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
   let titleArr = [play0Name] //标题
   let showOdds = play0?.odds //有的彩种不需要显示赔率
   let startIndex = 0 //起始编号，有的从 0 开始，有的从 1 开始
-  let arrAll: PlayData[] //所有组合的情况
+  let arrAll: PlayData[][] //所有组合的情况
 
   const playCode = play0?.code
   const gameCode = playOddData?.code
@@ -56,35 +56,48 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
       circleCount = 1
       titleArr = [`十`]
       break
+
     case gameCode == HoChiMin.LBXC: //来宾线程
     case playCode == HoChiMinSub.PIHAO2:  //批号2
     case playCode == HoChiMinSub.LOT2FIRST:  //Lot2第一个号码"
     case playCode == HoChiMinSub.DIDUAN2:  //地段2 1K
       circleCount = 2
       titleArr = [`十`, `个`]
-      arrAll = new Array(100).fill(0).map((item, index) => ({
-        id: `${play0?.id},${index}`,
-        name: doubleDigit(index),
-        odds: showOdds,
-        enable: play0?.enable,
-      } as PlayData))
+      arrAll = [
+        new Array(100).fill(0).map((item, index) => ({
+          id: `${play0?.id},${index}`,
+          name: doubleDigit(index),
+          alias: '00-99',
+          odds: showOdds,
+          enable: play0?.enable,
+        } as PlayData)),
+      ]
       break
+
     case gameCode == HoChiMin.H_3GD: //3更多
     case playCode == HoChiMinSub.PIHAO3:  //批号3
       circleCount = 3
       titleArr = ['百', `十`, `个`]
-      arrAll = new Array(100).fill(0).map((item, index) => ({
-        id: `${play0?.id},${index}`,
-        name: threeDigit(index),
-        odds: showOdds,
-        enable: play0?.enable,
-      } as PlayData))
+      arrAll = new Array(10).fill(0).map((item, groupIndex) => {
+        return new Array(100).fill(0).map((item, index) => {
+          const stIndex = groupIndex * 100
+          return {
+            id: `${play0?.id},${stIndex + index}`,
+            name: threeDigit(stIndex + index),
+            alias: `${threeDigit(stIndex)}-${threeDigit(stIndex + 99)}`,
+            odds: showOdds,
+            enable: play0?.enable,
+          } as PlayData
+        })
+      })
       break
+
     case gameCode == HoChiMin.H_4GD: //4更多
     case playCode == HoChiMinSub.PIHAO4:  //批号4
       circleCount = 4
       titleArr = ['千', '百', `十`, `个`]
       break
+
   }
 
   let arrArr = new Array<PlayGroupData>()
@@ -106,7 +119,6 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
       ...groupData,
       plays: [play0],
       exPlays: arr,
-      exHint: '00-99',
       allHcPlays: arrAll
     })
   }
