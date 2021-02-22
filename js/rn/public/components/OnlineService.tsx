@@ -64,8 +64,7 @@ export const OnlineService = () => {
         ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
       }
     }
-
-    ugLog('zzURl 链接==', zzURl);
+    // ugLog('zzURl 链接==', zzURl);
     return zzURl;
   }
   const webUrl = name()
