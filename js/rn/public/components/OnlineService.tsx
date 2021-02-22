@@ -47,8 +47,6 @@ export const OnlineService = () => {
   function pjUrl(url: string) {
     let pjStr = url + '?' + 'from=app' + '&hideHeader=1' + '&token=' + UGUserModel.getToken();
     return pjStr;
-
-
   }
 
   //返回最后的url
@@ -61,7 +59,7 @@ export const OnlineService = () => {
         zzURl = pjUrl(zxkfUrl2)
       } else {
         ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
-        ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
+        ugLog('zxkfUrl1 链接有问题==', zxkfUrl)
       }
     }
     ugLog('zzURl 链接==', zzURl);
@@ -77,9 +75,9 @@ export const OnlineService = () => {
     { value: 3, label: '游戏大厅' }];
 
   return (
-    <View style={{ flex: 1 ,backgroundColor:'yellow'}}>
+    <View style={{ flex: 1 ,}}>
       {/* 下拉控件 */}
-      <View style={{ zIndex: 1, height: scale(66), marginTop: 55, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 }}>
+      <View style={{ zIndex: 1, height: scale(66), marginTop: AppDefine.safeArea.top+8, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 }}>
         <DropDownPicker
           items={
             levelArray
@@ -94,26 +92,22 @@ export const OnlineService = () => {
           }}
           dropDownStyle={{ backgroundColor: '#fafafa' }}
           onChangeItem={item => {
-            ugLog('item==', item);
             switch (item.value) {
               case 0:
                 //首页
-                ugLog('item.value',item.value)
                 PushHelper.pushLinkPositionType(30)
+                // popToRoot()
                 break;
               case 1:
                 //存款
-                ugLog('item.value',item.value)
-                push(PageName.CapitalPage, { initTabIndex: 0 })
+                PushHelper.pushLinkPositionType(21)
                 break;
               case 2:
                 //取款
-                ugLog('item.value',item.value)
-                push(PageName.CapitalPage, { initTabIndex: 1 })
+                PushHelper.pushLinkPositionType(22)
                 break;
               case 3:
                 //游戏大厅
-                ugLog('item.value',item.value)
                 PushHelper.pushLinkPositionType(19)
                 break;
              
@@ -158,13 +152,13 @@ export const OnlineService = () => {
           </View>
         </SafeAreaView>
       </LinearGradient>
-      <View forceInset={{ bottom: 'never', vertical: 'never' }} style={{ flex: 1, zIndex: 0 ,backgroundColor:'blue'}}>
+      <View forceInset={{ bottom: 'never', vertical: 'never' }} style={{ flex: 1, zIndex: 0 ,}}>
         <WebView
           injectedJavaScript={script}
           onMessage={(event) => {
             setTitle(event.nativeEvent.title)
           }}
-          style={{ flex: 1,backgroundColor:'red' }} containerStyle={{ flex: 1 ,backgroundColor:'yellow'}} source={{ uri: webUrl }} />
+          style={{ flex: 1, }} containerStyle={{ flex: 1 ,}} source={{ uri: webUrl }} />
       </View>
 
 
