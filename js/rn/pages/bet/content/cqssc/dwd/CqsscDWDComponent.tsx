@@ -46,7 +46,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  ballType={{ size: scale(50) }}
+                  ballType={{ size: scale(46) }}
                   ballStyle={{ flexDirection: 'column' }}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
@@ -104,7 +104,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + ' ball renderDWD 3=' + groupData?.id + groupData?.alias}
             style={_styles.ball_parent_container}>
-        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
+        {groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 

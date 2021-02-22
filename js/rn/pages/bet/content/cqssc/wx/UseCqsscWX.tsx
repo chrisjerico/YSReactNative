@@ -34,7 +34,7 @@ const UseCqsscWX = () => {
    * 输入的单式五星玩法有变化
    */
   useEffect(() => {
-    const wxInputArr = parseInputArray(wxInputNumber, [' ', ',', '，', '\n'], 5)
+    const wxInputArr = parseInputArray(wxInputNumber, 5)
 
     if (arrayLength(wxInputArr) > 0) {
       const tabName = currentPageData()[0]?.alias

@@ -13,7 +13,7 @@ import { SingleOption } from '../../../const/LotteryConst'
 const UsePK10GFWF = () => {
 
   const optionArray = ['单式', '复式'] //选项
-  const [optionIndex, setOptionIndex] = useState(SingleOption.SINGLE) //当前选项是 单式 还是 复式
+  const [optionIndex, setOptionIndex] = useState<SingleOption>(SingleOption.SINGLE) //当前选项是 单式 还是 复式
 
   useEffect(() => {
     //Tab有变化就清除选择的数据

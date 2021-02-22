@@ -1,6 +1,7 @@
 import { number } from "prop-types";
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { Res } from '../../../../Res/icon/Res'
+import { doubleDigit } from '../../../../public/tools/StringUtil'
 
 export type ShengXiaoType = "鼠" | "牛" | "虎" | "兔" | "龙" | "蛇" | "马" | "羊" | "猴" | "鸡" | "狗" | "猪"
 export interface ShengXiaoValueProps {
@@ -41,10 +42,12 @@ export const getShengXiaoString = (num: number): ShengXiaoType => {
 const redSet = ["01", "02", "07", "08", "12", "13", "18", "19", "23", "24", "30", "34", "35", "40", "45", "46"]
 const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36", "37", "41", "42", "47", "48"]
 const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
-export const getHKballColor = (BallName: string) => {
-  if (redSet.includes(BallName)) {
+export const getHKballColor = (ballName: string) => {
+  const remainder = Number(ballName)%6
+
+  if (remainder == 1 || remainder == 2) {
     return '#e23'
-  } else if (blueSet.includes(BallName)) {
+  } else if (remainder == 3 || remainder == 4) {
     return '#4bf'
   } else {
     return '#3b6'
@@ -56,9 +59,11 @@ export const getHKballColor = (BallName: string) => {
  * @param BallName
  */
 export const getColorfulBallPic = (ballName: string) => {
-  if (redSet.includes(ballName)) {
+  const remainder = Number(ballName)%6
+
+  if (remainder == 1 || remainder == 2) {
     return Res.red_ball
-  } else if (blueSet.includes(ballName)) {
+  } else if (remainder == 3 || remainder == 4) {
     return Res.blue_ball
   } else {
     return Res.green_ball

@@ -7,7 +7,7 @@ import {
   ZodiacNum,
 } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import { CqsscCode, FC3d, K3Code, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
+import { CqsscCode, FC3d, HoChiMin, K3Code, LCode, LhcCode, Pk10Code } from '../../const/LotteryConst'
 import parseTMData from './lhc/ParseTMDataUtil'
 import parseHXData from './lhc/ParseHXDataUtil'
 import parseZTData from './lhc/ParseZTDataUtil'
@@ -19,6 +19,7 @@ import parseLWData from './lhc/ParseLWDataUtil'
 import parseZXBZData from './lhc/ParseZXBZDataUtil'
 import parseYZDWData from './cqssc/ParseYZDWDataUtil'
 import parseDWDData from './cqssc/ParseDWDDataUtil'
+import parseHCMData from './hcm/ParseHoChiMinDataUtil'
 
 interface IPageZodiac {
   zodiacNums?: ZodiacNum[] //彩票数据
@@ -52,6 +53,10 @@ const parseLotteryDetailData = (playOddDetailData?: PlayOddDetailData): PlayOddD
 
     //注意有些彩种的 CODE 完全一样
     switch (true) {
+      case gameType == LCode.ofclvn_hochiminhvip:  //胡志明
+      case gameType == LCode.ofclvn_haboivip:  //河内
+        return parseHCMData({ playOddData })
+
       case gameCode == LhcCode.TM && gameType == LCode.lhc:  //六合彩特码
         return parseTMData({ playOddData, zodiacNum })
 

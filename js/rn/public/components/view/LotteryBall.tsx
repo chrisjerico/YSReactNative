@@ -11,8 +11,8 @@ import { scale } from '../../tools/Scale'
 import { UGColor } from '../../theme/UGThemeColor'
 import FastImage from 'react-native-fast-image'
 import React from 'react'
-import {BallType} from '../../../pages/bet/const/LotteryConst'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { BallType } from '../../../pages/bet/const/LotteryConst'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ILotteryBall {
   type?: string, //球的种类 BallType
@@ -60,6 +60,14 @@ const LotteryBall = ({
   } else if (type == BallType.vegetable) {
     ballUrl = getVegetableBallPic(ballNumber)
     round = 0
+  } else if (type == BallType.black_white) {
+    txColor = UGColor.TextColor1
+    bColor = anyEmpty(ballColor) ? '#eee' : ballColor
+    round = 999
+  } else if (type == BallType.rectangle) {
+    txColor = 'white'
+    bColor = anyEmpty(ballColor) ? UGColor.linkColor1 : ballColor
+    round = scale(4)
   } else {
     bColor = anyEmpty(ballColor) ? getHKballColor(ballNumber) : ballColor
     round = 999
@@ -109,6 +117,7 @@ const LotteryBall = ({
               width: width,
               margin: scale(1),
             },
+            type == BallType.rectangle ? { aspectRatio: 1.4, width: null, height: width } : null,
             style]}>
       {
         renderBalls(type)
@@ -130,6 +139,7 @@ const _styles = StyleSheet.create({
   ball_text: {
     fontSize: scale(18),
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   ball_colorful_text: {
     fontSize: scale(18),

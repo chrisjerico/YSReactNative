@@ -67,25 +67,20 @@ const clearLotteryData = () => {
   })
 }
 
+
 /**
  * 按照某个字符切割字符串成数组
  *
  * @param orgString
- * @param specialParams 以该数组里的字符来切割
  * @param len 只提取len长度的字符串
  */
-const parseInputArray = (orgString?: string, specialParams?: Array<string>, len?: number): Array<string> => {
+const parseInputArray = (orgString?: string, len?: number): Array<string> => {
   if(anyEmpty(orgString)) return null
+  let wxInputArr = orgString?.split(/[,，;；_ \n]/)
 
-  let wxInputArr: Array<string>
-  let newString = orgString?.replace('.', '')
-  for (let value of specialParams) {
-    if (newString?.includes(value)) {
-      wxInputArr = newString?.split(value)
-      break
-    }
+  if (len > 0) {
+    wxInputArr = wxInputArr?.filter((item) => item?.length == len) //过滤长度不正确的
   }
-  wxInputArr = wxInputArr?.filter((item) => item?.length == len) //过滤长度不正确的
 
   return wxInputArr
 }

@@ -54,7 +54,6 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <TouchableWithoutFeedback key={key + item[0]?.alias}
                               style={CommStyles.flex}
                               onPress={() => {
-                                // setOptionIndex(SingleOption.SINGLE)
                                 setTabIndex(index)
                               }}>
       <View key={key + item[0]?.alias}
@@ -110,7 +109,7 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                     odds: null,
                   }}
                   selectedBalls={selectedBalls}
-                  ballType={{ size: scale(50) }}
+                  ballType={{ size: scale(46) }}
                   ballStyle={{ flexDirection: 'column' }}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
@@ -178,7 +177,7 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + ' ball renderGFWF' + groupData?.id}
             style={_styles.ball_parent_container}>
-        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
+        {groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 
@@ -255,6 +254,7 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor2,
     fontSize: scale(22),
     paddingHorizontal: scale(1),
+    fontWeight: 'bold',
   },
   ball_parent_container: {
     flexDirection: 'row',

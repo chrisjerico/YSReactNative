@@ -1,7 +1,19 @@
 /**
  * 转成2位数
  */
+import { Toast } from './ToastUtils'
+
+/**
+ * 转换数据为2位数
+ * @param value
+ */
 const doubleDigit = (value?: string | number) => ('0' + value).slice(-2)
+
+/**
+ * 转换数据为3位数
+ * @param value
+ */
+const threeDigit = (value?: string | number) => ('00' + value).slice(-3)
 
 /**
  * 删除HTML标签
@@ -50,6 +62,15 @@ const numberToFloatString = (x?: number, len: number = 2): string => {
   return x ? x.toFixed(len) : Number(0).toFixed(len)
 }
 
+/**
+ * 选择提示
+ * @param count
+ * @param alias
+ */
+const showHintToast = (count?: number, alias?: string) => {
+  !count ? Toast(`请选择数据`) : Toast(`请选择${count}个《${alias}》数据`)
+}
+
 export {
   clearExHtml,
   clearAllHtml,
@@ -57,4 +78,6 @@ export {
   endString,
   numberToFloatString,
   doubleDigit,
+  threeDigit,
+  showHintToast,
 }

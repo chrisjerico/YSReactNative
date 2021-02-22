@@ -107,7 +107,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                     odds: null,
                   }}
                   selectedBalls={selectedBalls}
-                  ballType={{ size: scale(50) }}
+                  ballType={{ size: scale(46) }}
                   ballStyle={{ flexDirection: 'column' }}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
@@ -143,7 +143,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </View>
 
       <View style={_styles.ball_parent_container}>
-        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
+        {groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 
