@@ -7,6 +7,7 @@ import { scale } from '../../tools/Scale'
 import { ToastSuccess, ToastError } from '../../tools/tars'
 import Button from '../../views/tars/Button'
 import { hideLoading, showLoading } from '../../widget/UGLoadingCP'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export interface FormComponentProps {
   onChangeText?: any
@@ -190,7 +191,7 @@ const FormComponent = ({
           onFocus={onFocus}
           onBlur={onBlur}
         />
-        {showLabel ? <Text style={[styles.labelText, labelTextStyle]}>{label}</Text> : null}
+        {showLabel ? <UGText style={[styles.labelText, labelTextStyle]}>{label}</UGText> : null}
       </View>
     )
   } else {

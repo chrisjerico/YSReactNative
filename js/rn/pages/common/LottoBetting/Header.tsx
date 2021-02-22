@@ -6,6 +6,7 @@ import React from 'react'
 import { useLottoContext } from '../LottoBetting/LottoContext';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { pop } from '../../../public/navigation/RootNavigation';
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 const Header = () => {
   const { width } = useDimensions().screen
   const { top } = useSafeArea()
@@ -29,7 +30,7 @@ const Header = () => {
           <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => {
             setShowModal(true)
           }}>
-            <Text style={{ fontSize: 18, color: 'white', marginLeft: 20 }}>{lottoData?.title}</Text>
+            <UGText style={{ fontSize: 18, color: 'white', marginLeft: 20 }}>{lottoData?.title}</UGText>
             <Image style={{ width: 20, height: 20, tintColor: 'white' }} source={{ uri: "arrow_down" }} />
           </TouchableOpacity>
         </View>
@@ -37,7 +38,7 @@ const Header = () => {
         {/* <TouchableWithoutFeedback onPress={() => {
           value.setShowModal(false)
         }}>
-          <Text style={{ color: 'white', fontSize: 16 }}>取消</Text>
+          <UGText style={{ color: 'white', fontSize: 16 }}>取消</UGText>
         </TouchableWithoutFeedback> */}
       </View>
     </LinearGradient>

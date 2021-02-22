@@ -12,6 +12,7 @@ import LotteryEBall from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 
 /**
@@ -63,7 +64,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
         <View key={key + 'render LMA sub' + groupData?.id}
               style={_styles.sub_title_container}>
-          <Text key={key + 'render LMA text' + groupData?.id}
+          <UGText key={key + 'render LMA text' + groupData?.id}
                 style={[
                   _styles.sub_title_text,
                   { color: Skin1.themeColor },
@@ -73,7 +74,7 @@ const LhcZXBZComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                 `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 5]?.odds}）`
             )
 
-          }</Text>
+          }</UGText>
         </View>
 
         <View key={key + 'render LMA sub2' + groupData?.id}

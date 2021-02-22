@@ -23,6 +23,7 @@ import { push } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
 import { combination, combineArr } from '../bet/util/ArithUtil'
 import { IWebPage } from '../common/web/WebPage'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -336,7 +337,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   return (
     <View style={_styles.container}>
       <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="transparent" color="#00000055" height={height} width={AppDefine.width} />
-      <Text style={_styles.title}>{textProgress}</Text>
+      <UGText style={_styles.title}>{textProgress}</UGText>
       <View style={_styles.container_timer}>
         <Progress.Circle
           progress={circleProgress / MAX_TIME}
@@ -358,7 +359,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             }
           }}>
           <View style={_styles.counter_container}>
-            <Text style={_styles.title_counter}>{circleProgress + '秒'}</Text>
+            <UGText style={_styles.title_counter}>{circleProgress + '秒'}</UGText>
           </View>
         </TouchableWithoutFeedback>
       </View>

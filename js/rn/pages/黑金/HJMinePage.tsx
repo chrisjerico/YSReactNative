@@ -21,6 +21,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import CommStyles from "../base/CommStyles";
 import {pop} from "../../public/navigation/RootNavigation";
 import { skinColors } from "../../public/theme/const/UGSkinColor"
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 个人中心
@@ -218,7 +219,7 @@ const ZLHeader = () => {
         </View>
       </TouchableWithoutFeedback>
       <View style={CommStyles.flex}/>
-      <Text style={_styles.title}>个人中心</Text>
+      <UGText style={_styles.title}>个人中心</UGText>
       <View style={CommStyles.flex}/>
       <TouchableOpacity onPress={() => {
         PushHelper.pushUserCenterType(UGUserCenterType.站内信)
@@ -227,7 +228,7 @@ const ZLHeader = () => {
                    source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png"}}/>
         {
           unreadMsg > 0 ? <View style={_styles.read_flag}>
-              <Text style={{color: 'white', fontSize: scale(16)}}>{unreadMsg}</Text>
+              <UGText style={{color: 'white', fontSize: scale(16)}}>{unreadMsg}</UGText>
             </View>
             : null
         }

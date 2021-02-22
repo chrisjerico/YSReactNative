@@ -8,6 +8,7 @@ import AppDefine from '../define/AppDefine'
 import { pop } from '../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { scale } from '../tools/Scale'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const OnlineService = () => {
   const [title, setTitle] = useState<string>()
@@ -33,7 +34,7 @@ export const OnlineService = () => {
             <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
               <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
             </TouchableOpacity>
-            <Text style={{
+            <UGText style={{
               alignSelf: 'center',
               paddingTop: 15,
               paddingBottom: 15,
@@ -41,7 +42,7 @@ export const OnlineService = () => {
               fontSize: 20,
               color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
             }}
-            numberOfLines={1}>{title?.length > 10 ? '在线客服' : title}</Text>
+            numberOfLines={1}>{title?.length > 10 ? '在线客服' : title}</UGText>
           </View>
         </SafeAreaView>
       </LinearGradient>

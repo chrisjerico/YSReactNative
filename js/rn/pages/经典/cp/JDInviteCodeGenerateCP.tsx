@@ -14,6 +14,7 @@ import SegmentedControl from "rn-segmented-control";
 import { getCurrentPage } from "../../../public/navigation/RootNavigation";
 import { PageName } from "../../../public/navigation/Navigation";
 import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 
 export interface JDInviteCodeGenerateCP {
@@ -25,7 +26,7 @@ interface JDInviteCodeGenerateProps {
   reloadBlock?: () => void,
 }
 
-// 
+//
 interface JDSignInHistoryVars {
   show?: boolean,//是否显示
   length?: string,//邀请码长度
@@ -75,7 +76,7 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
 
   /**
  * 确定==》生成邀请码
- * 
+ *
  */
   function confirmAction() {
     var err: string;
@@ -108,7 +109,7 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
 
   /**
 * 自动生成==》生成邀请码
-* 
+*
 */
   function radomGenerateAction() {
 
@@ -133,11 +134,11 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
     <AnimationFadeView show={v.show} backgroundColor='#33333388'>
       <View style={{ width: AppDefine.width - 55, height: inviteCode.noticeSwitch == '1' ? 370 : 270, borderRadius: 10, overflow: 'hidden', backgroundColor: Skin1.textColor4 }}>
         <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: 50, justifyContent: 'center' }}>
-          <Text style={{ textAlign: 'center', color: 'white', fontSize: 17 }}>{inviteCode.displayWord}</Text>
+          <UGText style={{ textAlign: 'center', color: 'white', fontSize: 17 }}>{inviteCode.displayWord}</UGText>
         </LinearGradient>
         <View style={{ flexDirection: 'row', height: 50, marginTop: 15 }}>
           <View style={{ width:95, justifyContent: 'center', }}>
-            <Text style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord + '类型'}</Text>
+            <UGText style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord + '类型'}</UGText>
           </View>
           <View style={{ marginLeft: 20, flex: 1 }}>
             <SegmentedControl
@@ -160,7 +161,7 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
 
         <View style={{ flexDirection: 'row', height: 50 }}>
           <View style={{ width:95, justifyContent: 'center', }}>
-            <Text style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord}</Text>
+            <UGText style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord}</UGText>
           </View>
           <View style={{ marginLeft: 20, flex: 1, justifyContent: 'center' }}>
             <TextInput style={{ height: 30, backgroundColor: Skin1.textColor4, marginRight: 20, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
@@ -175,7 +176,7 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
 
         <View style={{ flexDirection: 'row', height: 50 }}>
           <View style={{ width:95, justifyContent: 'center', }}>
-            <Text style={{ textAlign: 'right', color: Skin1.textColor1 }}>{'生成数量'}</Text>
+            <UGText style={{ textAlign: 'right', color: Skin1.textColor1 }}>{'生成数量'}</UGText>
           </View>
           <View style={{ marginLeft: 20, flex: 1, justifyContent: 'center' }}>
             <TextInput style={{ height: 30, backgroundColor: Skin1.textColor4, marginRight: 20, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
@@ -190,10 +191,10 @@ export const JDInviteCodeGenerateCP = (props: JDInviteCodeGenerateProps) => {
 
         {noticeSwitch() && <View style={{ flexDirection: 'row', height: 70, marginTop: 20 }}>
           <View style={{ width:95, marginTop: 0 }}>
-            <Text style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord + '说明'}</Text>
+            <UGText style={{ textAlign: 'right', color: Skin1.textColor1 }}>{inviteCode.displayWord + '说明'}</UGText>
           </View>
           <View style={{ marginLeft: 20, flex: 1, marginTop: 0 }}>
-            <Text style={{ textAlign: 'left', color: Skin1.textColor1, height: 80, marginRight: 20, }} >{inviteCode.noticeText}</Text>
+            <UGText style={{ textAlign: 'left', color: Skin1.textColor1, height: 80, marginRight: 20, }} >{inviteCode.noticeText}</UGText>
           </View >
         </View>}
 

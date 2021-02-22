@@ -13,6 +13,7 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import JDBetRecordDetailPage from '../长龙助手/JDBetRecordDetailPage';
 import { PageName } from '../../../public/navigation/Navigation';
 import { push } from '../../../public/navigation/RootNavigation';
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface JDChanglongBetRecordCP {
 
@@ -20,13 +21,13 @@ interface JDChanglongBetRecordCP {
 
 const JDChanglongBetRecordCP = () => {
 
-  let [isRefreshing, setIsRefreshing] = useState<boolean>(true)//下拉刷新开始结束 
+  let [isRefreshing, setIsRefreshing] = useState<boolean>(true)//下拉刷新开始结束
   let [items, setItems] = useState<Array<any>>([])//界面数据
 
 
   /**
 * 钱是否隐藏
-* 
+*
 */
   function isHide(item: any) {
     if (item.isWin) {
@@ -38,7 +39,7 @@ const JDChanglongBetRecordCP = () => {
 
   /**
 * 状态文字
-* 
+*
 */
   const stateStr = (item: any) => {
     if (item.isWin) {
@@ -50,7 +51,7 @@ const JDChanglongBetRecordCP = () => {
 
   /**
 * 状态颜色
-* 
+*
 */
 
   function stateColor(item: any) {
@@ -66,7 +67,7 @@ const JDChanglongBetRecordCP = () => {
   }
   /**
    * 根据数据是数组还是字典返回数据
-   * 
+   *
    */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -78,7 +79,7 @@ const JDChanglongBetRecordCP = () => {
 
   /**
  * 下拉刷新
- * 
+ *
  */
   const onHeaderRefresh = () => {
     setIsRefreshing(true)
@@ -109,20 +110,20 @@ const JDChanglongBetRecordCP = () => {
       setItems([])
       setItems(JSON.parse(JSON.stringify(arrayData)))
 
-        
+
 
     });
   }
 
   /**
 * cell 按钮点击
-* 
+*
 */
   async function betItemSelect(item?: any) {
     item = JSON.parse(JSON.stringify(item))
     console.log('0000000000===========================================================');
     console.log('item ===',item);
-    
+
     item.clsName = 'UGChanglongBetRecordModel'
     item.pic = await OCHelper.call('UGNextIssueModel.modelWithGameId:model:.pic', [item.gameId])
     // await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
@@ -134,13 +135,13 @@ const JDChanglongBetRecordCP = () => {
     //   true,
     // ])
     push(PageName.JDBetRecordDetailPage, { item: item, showBackButton: true })
-    
+
   }
 
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ item }) => {
     {
@@ -151,27 +152,27 @@ const JDChanglongBetRecordCP = () => {
           }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 12, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 12, }}>
               {item.title}
-            </Text>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#1E90FF', marginLeft: 10, marginTop: 10, }}>
+            </UGText>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#1E90FF', marginLeft: 10, marginTop: 10, }}>
               {'¥' + item.money}
-            </Text>
+            </UGText>
             <View style={{ flex: 1 }}>
             </View>
-            {isHide(item) && <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#FFD700', marginTop: 12, }}>
+            {isHide(item) && <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#FFD700', marginTop: 12, }}>
               {'+' + item.bonus + '元'}
-            </Text>}
+            </UGText>}
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#FF4500', marginTop: 8, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: '#FF4500', marginTop: 8, }}>
               {anyEmpty(item.displayNumber) ? item.issue + '期' : item.displayNumber + '期'}
-            </Text>
+            </UGText>
             <View style={{ flex: 1 }}>
             </View>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: stateColor(item), marginTop: 8, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: stateColor(item), marginTop: 8, }}>
               {stateStr(item)}
-            </Text>
+            </UGText>
           </View>
 
         </TouchableOpacity>
@@ -181,7 +182,7 @@ const JDChanglongBetRecordCP = () => {
 
   /**
 * 渲染列表项分割
-* 
+*
 */
   const _renderItemSeparator = ({ }) => {
     {
@@ -195,7 +196,7 @@ const JDChanglongBetRecordCP = () => {
 
   /**
 * 按钮加载布局
-* 
+*
 */
   const renderFooter = () => {
 
@@ -226,7 +227,7 @@ const JDChanglongBetRecordCP = () => {
   const _renderListEmptyComp = () => {
     return (
         <View >
-           
+
         </View>
     );
 }

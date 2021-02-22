@@ -19,6 +19,7 @@ import HomeHeader from './views/HomeHeader'
 import MoreGameButton from './views/MoreGameButton'
 import ProfileBlock from './views/ProfileBlock'
 import { goToUserCenterType } from '../../public/tools/tars'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const buttonHeight = scale(82)
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
@@ -166,8 +167,8 @@ const KSHomePage = () => {
                 <ImageBackground source={{ uri: 'https://a06frontweb.cathayfund.com/cdn/A06FM/img/pmd.57681c5.gif' }} style={{ width: '100%', height: '100%' }} resizeMode={'stretch'}>
                   <View style={{ flex: 1, flexDirection: 'row' }}>
                     <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ fontSize: scale(15), color: '#ffffff', marginBottom: scale(5) }}>{'电子娱乐'}</Text>
-                      <Text style={{ fontSize: scale(15), color: '#ffffff', marginTop: scale(5) }}>{'总奖金池'}</Text>
+                      <UGText style={{ fontSize: scale(15), color: '#ffffff', marginBottom: scale(5) }}>{'电子娱乐'}</UGText>
+                      <UGText style={{ fontSize: scale(15), color: '#ffffff', marginTop: scale(5) }}>{'总奖金池'}</UGText>
                     </View>
                     <View style={{ flex: 7, justifyContent: 'center', alignItems: 'flex-start' }}>
                       <RandomTextComponent style={{ color: '#ffb029', fontSize: scale(30) }} />
@@ -206,7 +207,7 @@ const KSHomePage = () => {
           </View>
           <View style={[styles.toolBlock, { backgroundColor: '#3a3a41', marginHorizontal: '1%', borderRadius: scale(5), flexDirection: 'column', width: null, height: null, alignItems: 'center' }]}>
             <View style={{ width: '90%' }}>
-              <Text style={{ color: '#ffffff', fontSize: scale(22), marginVertical: scale(20), fontWeight: '500' }}>{'更多游戏'}</Text>
+              <UGText style={{ color: '#ffffff', fontSize: scale(22), marginVertical: scale(20), fontWeight: '500' }}>{'更多游戏'}</UGText>
             </View>
             <List
               uniqueKey={'KSHomePage_MoreGames'}

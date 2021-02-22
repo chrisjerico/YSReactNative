@@ -13,6 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {scale} from '../../tools/Scale'
 import APIRouter from '../../network/APIRouter'
 import {UGStore} from '../../../redux/store/UGStore'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface ReLoadComponentProps {
   color?: string;
@@ -66,11 +67,11 @@ const ReLoadBalanceComponent = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <Text style={[styles.title, titleStyle]}>{title}</Text>
-      <Text style={[styles.balance, balanceStyle]} numberOfLines={1}>
+      <UGText style={[styles.title, titleStyle]}>{title}</UGText>
+      <UGText style={[styles.balance, balanceStyle]} numberOfLines={1}>
         {money}
-      </Text>
-      <Text style={[styles.titleHint, titleHintStyle]}>{titleHint}</Text>
+      </UGText>
+      <UGText style={[styles.titleHint, titleHintStyle]}>{titleHint}</UGText>
       <TouchableWithoutFeedback
         onPress={() => {
           if (!reload.current) {

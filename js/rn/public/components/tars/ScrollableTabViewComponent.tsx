@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import { Animated, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, ScrollView } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface ScrollableTabViewComponentProps {
   children?: any
@@ -137,7 +138,7 @@ const ScrollableTabViewComponent = ({
                               width: tabWidth,
                             },
                           ]}>
-                          <Text style={styles.tabText}>{item}</Text>
+                          <UGText style={styles.tabText}>{item}</UGText>
                         </View>
                       </TouchableWithoutFeedback>
                     )

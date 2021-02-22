@@ -6,6 +6,7 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import * as React from 'react'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import { BET_ITEM_HEIGHT, BET_ITEM_WIDTH } from '../PayBoardComponent'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IBetHXComponentParams {
   lotteryCode?: string
@@ -37,10 +38,10 @@ const BetHXComponent = ({
   const exZodiacsStr = groupData?.exZodiacs?.map((item) => item?.name)?.toString()
   return (<View key={play0?.id + play0?.name}
                 style={_styles.item_container}>
-    <Text style={_styles.item_title}
+    <UGText style={_styles.item_title}
           numberOfLines={2}>{
       `[ ${groupData?.alias} - ${exZodiacsStr} ]`
-    }</Text>
+    }</UGText>
     <TextInput defaultValue={averageMoney?.toString()}
                onChangeText={(text => onChangeText(text, play0))}
                keyboardType={'numeric'}

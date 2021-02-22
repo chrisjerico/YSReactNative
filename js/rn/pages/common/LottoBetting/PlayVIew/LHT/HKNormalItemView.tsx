@@ -5,6 +5,7 @@ import {useDimensions} from "@react-native-community/hooks"
 import LMItem from "./balls/LMItem"
 import {UGStore} from "../../../../../redux/store/UGStore";
 import {BettingReducerActions} from "../../../../../redux/reducer/BettingReducer";
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const itemSize = 40
 const HKNormalItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) => {
@@ -12,13 +13,13 @@ const HKNormalItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) 
     const {bettingResult} = UGStore.globalProps.BettingReducer;
     return (
         <View style={{flex: 1,}}>
-            <Text style={{
+            <UGText style={{
                 textAlign: 'center',
                 width: "100%",
                 color: "#c8222f",
                 backgroundColor: "#eee",
                 paddingVertical: 8
-            }}>{data.alias}</Text>
+            }}>{data.alias}</UGText>
             <FlatList
                 style={{borderTopColor: "#e0e0e0", borderTopWidth: 1}}
                 data={data.plays} numColumns={2}

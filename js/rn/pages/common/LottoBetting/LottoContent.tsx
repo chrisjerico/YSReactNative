@@ -21,6 +21,7 @@ import EZDWContainer from "./PlayVIew/SSC/EZDW";
 import SZDWContainer from "./PlayVIew/SSC/SZDW";
 import BDWContainer from "./PlayVIew/SSC/BDW";
 import DWDContainer from "./PlayVIew/SSC/DWD";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const LottoContent = ({ setProps }) => {
   const value = useLottoContext()
@@ -99,12 +100,12 @@ const LottoContent = ({ setProps }) => {
               position: "absolute",
               left: 5,
             }}/>
-            <Text style={{
+            <UGText style={{
               fontSize: 15,
               fontWeight: currentPlayOdd?.name == item.name ? "bold" : "normal",
               textAlign: "left", color: currentPlayOdd?.name == item.name ? "red" : "#403e3e",
               marginLeft: 5,
-            }}>{item.name}</Text>
+            }}>{item.name}</UGText>
           </View>
         </TouchableWithoutFeedback>
       }}/>

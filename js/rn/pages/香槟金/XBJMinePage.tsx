@@ -22,6 +22,7 @@ import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP';
 import { AvatarModel } from '../../public/network/Model/SystemAvatarListModel';
 import { img_assets } from '../../Res/icon';
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 // 定义Props
 export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {}
@@ -52,9 +53,9 @@ export const XBJMinePage = (props: XBJMineProps) => {
         }}>
         <FastImage source={{ uri: item.logo }} style={{ margin: 10, marginLeft: 13, width: 26, height: 26 }} />
         {item.code == UGUserCenterType.站内信 && unreadMsg != 0 && (
-          <Text style={{ marginLeft: -20, marginRight: 6, marginTop: 7, paddingHorizontal: 2.5, minWidth: 14, height: 14, textAlign: 'center', borderRadius: 7, overflow: 'hidden', backgroundColor: 'red', color: '#fff', fontSize: 10 }}>{unreadMsg}</Text>
+          <UGText style={{ marginLeft: -20, marginRight: 6, marginTop: 7, paddingHorizontal: 2.5, minWidth: 14, height: 14, textAlign: 'center', borderRadius: 7, overflow: 'hidden', backgroundColor: 'red', color: '#fff', fontSize: 10 }}>{unreadMsg}</UGText>
         )}
-        <Text style={{ marginTop: 14, marginLeft: 6, color: style.textColor }}>{item.name}</Text>
+        <UGText style={{ marginTop: 14, marginLeft: 6, color: style.textColor }}>{item.name}</UGText>
       </TouchableOpacity>,
       <View style={{ marginLeft: 55, height: 0.5, backgroundColor: style.lineColor }} />,
     ];
@@ -96,14 +97,14 @@ export const XBJMinePage = (props: XBJMineProps) => {
             </TouchableOpacity>
             <View style={{ marginLeft: 16 }}>
               <View style={{ marginTop: 4, flexDirection: 'row' }}>
-                <Text style={{ fontWeight: '500', fontSize: 16, color: style.textColor }}>{usr?.length > 10 ? usr?.substr(0, 10) + "..." : usr}</Text>
+                <UGText style={{ fontWeight: '500', fontSize: 16, color: style.textColor }}>{usr?.length > 10 ? usr?.substr(0, 10) + "..." : usr}</UGText>
                 <LinearGradient colors={['#FFEAC3', '#FFE09A']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ marginLeft: 8, marginTop: 1, borderRadius: 3, width: 42, height: 17 }}>
-                  <Text style={{ marginTop: 0.5, textAlign: 'center', color: '#8F6832', fontStyle: 'italic', fontWeight: '600', fontSize: 13 }}>{curLevelGrade}</Text>
+                  <UGText style={{ marginTop: 0.5, textAlign: 'center', color: '#8F6832', fontStyle: 'italic', fontWeight: '600', fontSize: 13 }}>{curLevelGrade}</UGText>
                 </LinearGradient>
               </View>
               <View style={{ marginTop: 10, flexDirection: 'row' }}>
-                <Text style={{ fontSize: 12, color: style.textColor }}>头衔：</Text>
-                <Text style={{ fontSize: 12, color: UGColor.YellowColor1 }}>{curLevelTitle}</Text>
+                <UGText style={{ fontSize: 12, color: style.textColor }}>头衔：</UGText>
+                <UGText style={{ fontSize: 12, color: UGColor.YellowColor1 }}>{curLevelTitle}</UGText>
               </View>
             </View>
             <View style={{ flex: 1 }}></View>
@@ -112,21 +113,21 @@ export const XBJMinePage = (props: XBJMineProps) => {
                 PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
               }}>
                 <FastImage source={{ uri: img_assets('missionhall@2x') }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row' }} >
-                  <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff', marginRight: 18 }}>任务中心</Text>
+                  <UGText style={{ textAlign: 'right', fontSize: 9, color: '#fff', marginRight: 18 }}>任务中心</UGText>
                 </FastImage>
               </TouchableOpacity>}
               {checkinSwitch != '0' && <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
               }}>
                 <FastImage source={{ uri: img_assets('dailysign@2x') }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }}>
-                  <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>每日签到</Text>
+                  <UGText style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>每日签到</UGText>
                 </FastImage>
               </TouchableOpacity>}
               {(mBonsSwitch == false) && <TouchableOpacity onPress={() => {
                 v?.showSalaryAlert && v?.showSalaryAlert();
               }}>
                 <FastImage source={{ uri: img_assets('usercenter03') }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }} >
-                  <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>领取俸禄</Text>
+                  <UGText style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>领取俸禄</UGText>
                 </FastImage>
               </TouchableOpacity>}
             </View>
@@ -139,7 +140,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款);
               }}>
               <Image source={{ uri: img_assets('icon_wallet_deposit_u') }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
-              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>存款</Text>
+              <UGText style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>存款</UGText>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ alignItems: 'center' }}
@@ -147,7 +148,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
                 PushHelper.pushUserCenterType(UGUserCenterType.额度转换);
               }}>
               <Image source={{ uri: img_assets('icon_wallet_transfer_u') }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
-              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>额度转换</Text>
+              <UGText style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>额度转换</UGText>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ alignItems: 'center' }}
@@ -155,7 +156,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
                 PushHelper.pushUserCenterType(UGUserCenterType.取款);
               }}>
               <Image source={{ uri: img_assets('icon_wallet_withdraw_u') }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
-              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>取款</Text>
+              <UGText style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>取款</UGText>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ alignItems: 'center' }}
@@ -163,13 +164,13 @@ export const XBJMinePage = (props: XBJMineProps) => {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款);
               }}>
               <Image source={{ uri: img_assets('icon_mine_vip_u') }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
-              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>资金管理</Text>
+              <UGText style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>资金管理</UGText>
             </TouchableOpacity>
             <TouchableOpacity style={{ alignItems: 'center', borderRadius: 100 }} onPress={() => {
               UGUserModel.updateFromNetwork();
             }}>
-              <Text style={{ marginTop: 4, fontWeight: '700', color: UGColor.RedColor2 }}>{'¥' + (balance ?? '0.00')}</Text>
-              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>中心钱包</Text>
+              <UGText style={{ marginTop: 4, fontWeight: '700', color: UGColor.RedColor2 }}>{'¥' + (balance ?? '0.00')}</UGText>
+              <UGText style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>中心钱包</UGText>
             </TouchableOpacity>
           </View>
         </View>
@@ -179,8 +180,8 @@ export const XBJMinePage = (props: XBJMineProps) => {
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.推荐收益);
             }}>
-            <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>推荐收益</Text>
-            <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>现金奖励等你拿</Text>
+            <UGText style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>推荐收益</UGText>
+            <UGText style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>现金奖励等你拿</UGText>
             <FastImage source={{ uri: img_assets('quanyuanfuli@3x') }} style={{ marginTop: 9, marginBottom: -1, width: 80, height: 53 }} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -188,8 +189,8 @@ export const XBJMinePage = (props: XBJMineProps) => {
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.活动彩金);
             }}>
-            <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>彩金申请</Text>
-            <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>新手有好礼</Text>
+            <UGText style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>彩金申请</UGText>
+            <UGText style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>新手有好礼</UGText>
             <FastImage source={{ uri: img_assets('quanyuanfuli@3x') }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -197,8 +198,8 @@ export const XBJMinePage = (props: XBJMineProps) => {
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.任务中心);
             }}>
-            <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>任务中心</Text>
-            <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>领取丰富大奖</Text>
+            <UGText style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>任务中心</UGText>
+            <UGText style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>领取丰富大奖</UGText>
             <FastImage source={{ uri: img_assets('quanyuanfuli@3x') }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
           </TouchableOpacity>
         </View>)}

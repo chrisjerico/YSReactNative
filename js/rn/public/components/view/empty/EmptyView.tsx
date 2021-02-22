@@ -8,6 +8,7 @@ import { Res } from '../../../../Res/icon/Res'
 import { anyEmpty } from '../../../tools/Ext'
 import Button from '../../../views/tars/Button'
 import { CapitalConst } from '../../../../pages/cpt/const/CapitalConst'
+import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface EmptyViewProps {
   text?: string, //提示文字
@@ -37,9 +38,9 @@ const EmptyView = ({
       <FastImage source={{ uri: anyEmpty(imgUrl) ? Res.empty : imgUrl }}
                  resizeMode={'contain'}
                  style={_styles.empty_text_icon}/>
-      <Text style={_styles.empty_text_name}>{textContent}</Text>
+      <UGText style={_styles.empty_text_name}>{textContent}</UGText>
       {
-        !anyEmpty(subText) && <Text style={_styles.empty_sub_text_name}>{subText}</Text>
+        !anyEmpty(subText) && <UGText style={_styles.empty_sub_text_name}>{subText}</UGText>
       }
       {
         !anyEmpty(buttonText) && <Button title={buttonText ? buttonText : '确定'}

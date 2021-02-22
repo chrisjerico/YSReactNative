@@ -595,6 +595,7 @@ export const skinColors: UGSkinColor<st<string>, st<string[]>> = {
     香槟金1黑: '#FEFEFE',
     尊龙: '#FEFEFE',
     经典21黑: '#FEFEFE',
+    威尼斯: '#333333',
     doyWallet: '#19202C',
   },
 

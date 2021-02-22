@@ -7,6 +7,7 @@ import { pop } from '../../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import moment from 'moment'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const AlipayProfitView = () => {
   const [data, setData] = useState()
@@ -32,7 +33,7 @@ export const AlipayProfitView = () => {
         stickyHeaderIndices={[0]}
         ListEmptyComponent={() => (
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <Text style={{ color: Skin1.textColor2, paddingTop: 32 }}>暂无数据</Text>
+            <UGText style={{ color: Skin1.textColor2, paddingTop: 32 }}>暂无数据</UGText>
           </View>
         )}
         ListHeaderComponent={() => (
@@ -44,7 +45,7 @@ export const AlipayProfitView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111"}}>结算时间</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111"}}>结算时间</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -53,7 +54,7 @@ export const AlipayProfitView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>收益</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>收益</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -62,7 +63,7 @@ export const AlipayProfitView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>余额</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>余额</UGText>
             </View>
           </View>
         )}
@@ -76,7 +77,7 @@ export const AlipayProfitView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.settleTime}</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.settleTime}</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -86,7 +87,7 @@ export const AlipayProfitView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.profitAmount}</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.profitAmount}</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -96,7 +97,7 @@ export const AlipayProfitView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.balance}</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.balance}</UGText>
             </View>
           </View>
         )}
@@ -124,7 +125,7 @@ const Header = () => {
                             }}>
             <Icon size={28} name={'angle-left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
           </TouchableOpacity>
-          <Text style={{
+          <UGText style={{
             alignSelf: 'center',
             paddingTop: 15,
             paddingBottom: 15,
@@ -132,7 +133,7 @@ const Header = () => {
             fontSize: 20,
             flex: 1,
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-          }}>收益报表</Text>
+          }}>收益报表</UGText>
         </View>
       </SafeAreaView>
     </LinearGradient>

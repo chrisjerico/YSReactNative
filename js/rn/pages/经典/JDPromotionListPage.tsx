@@ -12,6 +12,7 @@ import { UGBasePageProps } from '../base/UGPage';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { getStackLength } from '../../public/navigation/RootNavigation';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 
 type TopTabStyle = '背景透明' | '背景不透明' | '没有选中背景色'
@@ -75,7 +76,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
           } else {
             dataArray.push({ category: k, title: title, list: temp[k] });
           }
-          
+
 
           if (AppDefine.siteId == 'c217') {
             for (let index = 0; index < dataArray.length; index++) {
@@ -83,14 +84,14 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
               if (element.title == '视讯电子') {
                 element.title = '真人电子'
               }
-              
+
             }
           }
-        
+
 
 
           console.log('dataArray ==',dataArray);
-          
+
         }
         setProps({ style: data.style, dataArray: dataArray, showTopBar: dataArray.length > 1 });
       } else {
@@ -151,7 +152,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
         {titles.map((title, idx) => {
           return (
             <View key={idx}>
-              <Text
+              <UGText
                 onPress={() => {
                   props.goToPage(idx);
                 }}
@@ -166,7 +167,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
                   borderRadius: 3,
                 }}>
                 {title}
-              </Text>
+              </UGText>
               <View style={{ marginTop: 7, height: idx == props.activeTab ? 1.5 : 0, backgroundColor: '#DD0000' }} />
             </View>
           );
@@ -180,7 +181,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
     <View style={{ marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45 }} key='a111'>
       {titles.map((title, idx) => {
         return (
-          <Text
+          <UGText
             key={idx}
             onPress={() => {
               props.goToPage(idx);
@@ -204,7 +205,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
             } : {}
             ]}>
             {title}
-          </Text>
+          </UGText>
         );
       })}
     </View>,

@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { img_platform } from '../../../Res/icon'
 import { IconProps } from 'react-native-vector-icons/Icon'
 import { FastImagePlaceholder } from '../../../pages/经典/tools/ImagePlaceholder'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface GameButtonProps {
   logo?: string
@@ -49,7 +50,7 @@ const DefaultFlag = ({ center, flagContainer }: DefaultFlag) => {
     return (
       <View style={styles.centerFlagContainer}>
         <View style={styles.flag}>
-          <Text style={styles.flagText}>{'热门'}</Text>
+          <UGText style={styles.flagText}>{'热门'}</UGText>
         </View>
       </View>
     )
@@ -65,7 +66,7 @@ const DefaultFlag = ({ center, flagContainer }: DefaultFlag) => {
           },
           flagContainer,
         ]}>
-        <Text style={styles.flagText}>{'热门'}</Text>
+        <UGText style={styles.flagText}>{'热门'}</UGText>
       </View>
     )
   }
@@ -128,22 +129,22 @@ const GameButton = (props: GameButtonProps) => {
 
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
-            <Text style={titleStyle} numberOfLines={1}>
+            <UGText style={titleStyle} numberOfLines={1}>
               {title}
-            </Text>
+            </UGText>
           </View>
           {showSubTitle && (
             <View style={styles.textContainer}>
-              <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
+              <UGText style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
                 {subTitle}
-              </Text>
+              </UGText>
             </View>
           )}
         </View>
         {showBigCenterFlag && <FastImage source={{ uri: flagIcon ? flagIcon : img_platform('c116', 'zhongdajiang', 'gif') }} style={[styles.image, { position: 'absolute' }]} />}
         {showUnReadMsg && (
           <View style={styles.unReadMsgContainer}>
-            <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
+            <UGText style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</UGText>
           </View>
         )}
         {showRightTopFlag &&

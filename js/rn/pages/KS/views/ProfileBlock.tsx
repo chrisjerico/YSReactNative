@@ -10,6 +10,7 @@ import { scale } from '../../../public/tools/Scale'
 import { UGImageHost, useHtml5Image } from '../../../Res/icon'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 import TouchableImage from '../../../public/views/tars/TouchableImage'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
@@ -39,7 +40,7 @@ const ProfileBlock = ({ usr, curLevelTitle, balance, currency, balanceDecimal, u
             <FastImage source={{ uri: getHtml5Image(22, 'touxiang') }} style={{ height: '50%', aspectRatio: 1 }} />
             <View style={{ marginLeft: scale(20), height: '100%' }}>
               <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', marginBottom: scale(1) }}>
-                <Text style={{ color: '#ffffff', fontWeight: '600' }}>{usr}</Text>
+                <UGText style={{ color: '#ffffff', fontWeight: '600' }}>{usr}</UGText>
                 <LinearBadge
                   title={curLevelTitle}
                   colors={['#ffffff', '#ffffff']}
@@ -76,7 +77,7 @@ const ProfileBlock = ({ usr, curLevelTitle, balance, currency, balanceDecimal, u
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Text style={{ fontSize: scale(20), color: '#fe3333' }}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
+              <UGText style={{ fontSize: scale(20), color: '#fe3333' }}>{unreadMsg > 99 ? 99 : unreadMsg}</UGText>
             </View>
           </View>
         </LinearGradient>

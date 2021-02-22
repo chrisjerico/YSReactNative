@@ -37,6 +37,7 @@ import CommStyles from '../../base/CommStyles'
 import { PlayOddData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import PK10GFWFComponent from './pk10/gfwf/PK10GFWFComponent'
 import K3SJComponent from './k3/sj/K3SJComponent'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const LotteryContentComponent = () => {
 
@@ -74,9 +75,9 @@ const LotteryContentComponent = () => {
                   ballSelected[item?.code] ? { backgroundColor: UGColor.WarnningColor1 } : null,
                 ]}>
                 </View>
-                <Text key={'renderLeftColumn' + item?.code}
+                <UGText key={'renderLeftColumn' + item?.code}
                       numberOfLines={1}
-                      style={_styles.left_column_text}>{item.name}</Text>
+                      style={_styles.left_column_text}>{item.name}</UGText>
               </View>
             </TouchableWithoutFeedback>
           })

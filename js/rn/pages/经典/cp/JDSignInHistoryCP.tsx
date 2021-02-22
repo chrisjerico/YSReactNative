@@ -9,6 +9,7 @@ import { UGSignInHistoryModel } from "../../../redux/model/other/UGSignInHistory
 import { Button } from 'react-native-elements';
 import { hideLoading, showLoading } from "../../../public/widget/UGLoadingCP";
 import { FlatList } from 'react-native-gesture-handler'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export interface JDSignInHistoryCP {
   showSalaryAlert?: () => void
@@ -60,13 +61,13 @@ export const JDSignInHistoryCP = ({ c_ref,c_name,c_money }: { c_ref: JDSignInHis
     <AnimationFadeView show = {v.show}>
  <LinearGradient colors={Skin1.bgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width - 55, height: AppDefine.height - 260, borderRadius: 10, overflow: 'hidden' }}>
         <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: 50, justifyContent: 'center' }}>
-          <Text style={{ textAlign: 'center', color: Skin1.textColor1, fontSize: 17 }}>{'已经连续签到'+v.name+'天'}</Text>
-          <Text style={{ textAlign: 'center', color: Skin1.textColor2, fontSize: 16 }}>{'累计积分'+v.checkinMoney+'分'}</Text>
+          <UGText style={{ textAlign: 'center', color: Skin1.textColor1, fontSize: 17 }}>{'已经连续签到'+v.name+'天'}</UGText>
+          <UGText style={{ textAlign: 'center', color: Skin1.textColor2, fontSize: 16 }}>{'累计积分'+v.checkinMoney+'分'}</UGText>
         </LinearGradient>
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', height: 45 }}>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>签到日期</Text>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>奖励</Text>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>说明</Text>
+          <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>签到日期</UGText>
+          <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>奖励</UGText>
+          <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>说明</UGText>
         </View>
         <View style={{ height: 0.5,}} />
         <FlatList showsVerticalScrollIndicator={false} data={v.list} renderItem={SalaryCell} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
@@ -88,9 +89,9 @@ const SalaryCell = ({ item }: ListRenderItemInfo<UGSignInHistoryModel>) => {
   return (
     <View>
       <View style={{ flexDirection: 'row', height: 45 }}>
-        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.checkinDate}</Text>
-        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.integral}</Text>
-        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.remark}</Text>
+        <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.checkinDate}</UGText>
+        <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.integral}</UGText>
+        <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.remark}</UGText>
       </View>
       <View style={{ height: 0.5, backgroundColor: Skin1.homeContentColor }} />
     </View>

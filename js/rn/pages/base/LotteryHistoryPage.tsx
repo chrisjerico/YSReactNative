@@ -7,6 +7,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers'
 import List from '../../public/views/tars/List'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MineHeader from '../../public/views/temp/MineHeader'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const TotalHistory = ({ tabLabel }) => {
   return (
@@ -16,11 +17,11 @@ const TotalHistory = ({ tabLabel }) => {
       renderItem={() => null}
       ListHeaderComponent={({}) => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderBottomColor: '#d9d9d9', borderBottomWidth: 1 }}>
-          <Text>{'时间'}</Text>
-          <Text>{'笔数'}</Text>
-          <Text>{'中奖笔数'}</Text>
-          <Text>{'中奖金额'}</Text>
-          <Text>{'输赢'}</Text>
+          <UGText>{'时间'}</UGText>
+          <UGText>{'笔数'}</UGText>
+          <UGText>{'中奖笔数'}</UGText>
+          <UGText>{'中奖金额'}</UGText>
+          <UGText>{'输赢'}</UGText>
         </View>
       )}
     />
@@ -63,22 +64,22 @@ const LotteryHistoryPage = () => {
             <View style={styles.menuContainer}>
               <TouchableWithoutFeedback>
                 <View style={styles.menu}>
-                  <Text>{'今日'}</Text>
+                  <UGText>{'今日'}</UGText>
                 </View>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback>
                 <View style={styles.menu}>
-                  <Text>{'最近三天'}</Text>
+                  <UGText>{'最近三天'}</UGText>
                 </View>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback>
                 <View style={styles.menu}>
-                  <Text>{'最近一周'}</Text>
+                  <UGText>{'最近一周'}</UGText>
                 </View>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback>
                 <View style={styles.menu}>
-                  <Text>{'最近一月'}</Text>
+                  <UGText>{'最近一月'}</UGText>
                 </View>
               </TouchableWithoutFeedback>
             </View>

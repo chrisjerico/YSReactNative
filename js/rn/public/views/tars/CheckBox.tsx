@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, TextStyle } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export interface CheckBoxProps {
   onPress: (check: boolean) => any
@@ -22,7 +23,7 @@ const CheckBox = ({ onPress, label, containerStyle, labelTextStyle, defaultValue
       }}>
       <View style={[styles.container, containerStyle]}>
         {check ? <Feather name={'check'} color={'#ffffff'} style={styles.iconStyle} size={scale(25)} /> : <View style={[styles.nonCheckContainer, nonCheckContainerStyle]} />}
-        <Text style={[styles.label, labelTextStyle]}>{label}</Text>
+        <UGText style={[styles.label, labelTextStyle]}>{label}</UGText>
       </View>
     </TouchableWithoutFeedback>
   )

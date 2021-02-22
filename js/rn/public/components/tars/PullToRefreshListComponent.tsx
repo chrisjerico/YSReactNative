@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { ActivityIndicator, Animated, Easing, FlatListProps, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import List from '../../views/tars/List'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const PullToRefreshListComponent = (props: Readonly<FlatListProps<any>> & { uniqueKey: string; onReleaseToRefresh?: () => Promise<any> }) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
@@ -30,8 +31,8 @@ const PullToRefreshListComponent = (props: Readonly<FlatListProps<any>> & { uniq
             </Animated.View>
           )}
           <View style={{ width: '40%', alignItems: 'center', justifyContent: 'space-around', height: '100%', marginLeft: 10 }}>
-            <Text style={{ fontWeight: '500' }}>{isRefresh ? 'Loading...' : 'Release to refresh'}</Text>
-            <Text style={{ fontWeight: '500' }}>{'Last update : Today 14:31'}</Text>
+            <UGText style={{ fontWeight: '500' }}>{isRefresh ? 'Loading...' : 'Release to refresh'}</UGText>
+            <UGText style={{ fontWeight: '500' }}>{'Last update : Today 14:31'}</UGText>
           </View>
         </View>
       )}

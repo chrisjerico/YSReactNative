@@ -3,6 +3,7 @@ import { Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface DowloadApp {
   onPressDowload: () => any
@@ -34,7 +35,7 @@ const DowloadApp = ({ onPressDowload }: DowloadApp) => {
               setShow(false)
             }}
           />
-          <Text style={{ color: '#ffffff', fontSize: scale(23), marginLeft: scale(5) }}>{'下载App，体验更多购彩乐趣'}</Text>
+          <UGText style={{ color: '#ffffff', fontSize: scale(23), marginLeft: scale(5) }}>{'下载App，体验更多购彩乐趣'}</UGText>
         </View>
         <Button title={'下載APP'} buttonStyle={{ backgroundColor: '#0072E3' }} onPress={onPressDowload} />
       </View>

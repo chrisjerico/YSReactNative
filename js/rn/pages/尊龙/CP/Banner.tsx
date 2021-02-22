@@ -6,6 +6,7 @@ import { View, TouchableWithoutFeedback, Text, Dimensions, ViewStyle } from "rea
 import PushHelper from "../../../public/define/PushHelper"
 import FastImage from "react-native-fast-image"
 import React from 'react'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const Banner = ({ bannerData, onlineNum = 0, onlineSwitch, size = {
   width: 0, height: 0,
@@ -60,7 +61,7 @@ const Banner = ({ bannerData, onlineNum = 0, onlineSwitch, size = {
           })}
         </Carousel>
         {onlineSwitch == 1 ? <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-          <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
+          <UGText style={{ color: 'white' }}>当前在线:{onlineNum}</UGText>
         </View> : null}
 
       </View>

@@ -14,6 +14,7 @@ import LotteryEBall from '../../../widget/LotteryEBall'
 import { arrayLength } from '../../../../../public/tools/Ext'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { UGStore } from '../../../../../redux/store/UGStore'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 1-5球
@@ -145,11 +146,11 @@ const Cqssc1T5Component = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + 'renderAllBall sub' + groupData?.id + index}
             style={_styles.sub_title_container}>
-        <Text key={key + 'renderAllBall text' + groupData?.id + index}
+        <UGText key={key + 'renderAllBall text' + groupData?.id + index}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.alias}</Text>
+              ]}>{groupData?.alias}</UGText>
       </View>
       {
         gameType == LCode.pk10 && gameCode == Pk10Code.HE //北京赛车 冠亚和

@@ -4,6 +4,7 @@ import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import Icon from 'react-native-vector-icons/Foundation'
 import Modal from 'react-native-modal'
 import { useState } from 'react'
+import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const width = Dimensions.get('screen').width
 
@@ -45,13 +46,13 @@ export const MarqueeView = ({ textArr }: MarqueeViewProps) => {
             borderTopRightRadius: 8,
             borderTopLeftRadius: 8,
           }}>
-            <Text style={{ color: 'black', fontSize: 16 }}>公告</Text>
+            <UGText style={{ color: 'black', fontSize: 16 }}>公告</UGText>
           </View>
           <View style={{
             backgroundColor: 'white', alignItems: 'center', borderBottomRightRadius: 8,
             borderBottomLeftRadius: 8,
           }}>
-            <Text style={{ paddingVertical: 16, fontSize: 16 }}>{clickedItem?.data || ''}</Text>
+            <UGText style={{ paddingVertical: 16, fontSize: 16 }}>{clickedItem?.data || ''}</UGText>
             <View style={{ flexDirection: 'row', paddingVertical: 8 }}>
               <TouchableOpacity
                 onPress={() => {
@@ -67,7 +68,7 @@ export const MarqueeView = ({ textArr }: MarqueeViewProps) => {
                   alignItems: 'center',
                   marginHorizontal: 8,
                 }}>
-                <Text>取消</Text>
+                <UGText>取消</UGText>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
@@ -81,7 +82,7 @@ export const MarqueeView = ({ textArr }: MarqueeViewProps) => {
                   flex: 1,
                   marginHorizontal: 8,
                 }}>
-                <Text style={{ color: 'white' }}>确定</Text>
+                <UGText style={{ color: 'white' }}>确定</UGText>
               </TouchableOpacity>
             </View>
           </View>

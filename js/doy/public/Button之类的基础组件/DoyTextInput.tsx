@@ -8,6 +8,7 @@ import { FastImagePlaceholder } from "../../../rn/pages/经典/tools/ImagePlaceh
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
 import { img_doy } from "../../../rn/Res/icon"
+import { UGText } from './DoyButton'
 
 const sc = sc375
 
@@ -202,7 +203,7 @@ const VerificationCodeCP = (p: VerificationCodeProps) => {
     code += selectChar[charIndex];
   }
   return (
-    <Text
+    <UGText
       style={[{
         color: 'white', backgroundColor: '#00000055',
         paddingVertical: sc(7), paddingLeft: sc(11), paddingRight: sc(8),
@@ -214,6 +215,6 @@ const VerificationCodeCP = (p: VerificationCodeProps) => {
         onCodePress && onCodePress(code);
       }}>
       {code}
-    </Text>
+    </UGText>
   );
 }

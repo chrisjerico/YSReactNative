@@ -4,6 +4,7 @@ import { List } from "../../../../../public/network/Model/HomeGamesModel"
 import { fillArray } from "../../../utils/fillArray"
 import AppDefine from "../../../../../public/define/AppDefine"
 import PushHelper from "../../../../../public/define/PushHelper"
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const LotteryTabView = ({ list }: { list: List[] }) => {
   return (
@@ -40,12 +41,12 @@ export const LotteryTabView = ({ list }: { list: List[] }) => {
                 width: 63,
                 resizeMode: "stretch",
               }} source={{ uri: item.icon }}/>
-              <Text style={{
+              <UGText style={{
                 fontSize: 12,
                 color: "#333333",
                 fontWeight: "bold",
                 marginTop: 10,
-              }}>{item.title}</Text>
+              }}>{item.title}</UGText>
             </View>
           </TouchableWithoutFeedback>
         ) : <View style={{ width: AppDefine.width / 4 }}/>

@@ -27,6 +27,7 @@ import { mapTotalCount } from '../util/ArithUtil'
 import { EmitterTypes } from '../../../public/define/EmitterTypes'
 import { useEffect } from 'react'
 import { IEmitterMessage } from './it/IEmitterMessage'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 彩票功能区入参
@@ -108,8 +109,8 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
                 color={'white'}
                 name={'chevron-down'}/>
 
-          <Text key={'renderSliderArea slider tx'}
-                style={_styles.sub_title_text}>{`退水: ${sliderValue?.toFixed(2)}%`}</Text>
+          <UGText key={'renderSliderArea slider tx'}
+                style={_styles.sub_title_text}>{`退水: ${sliderValue?.toFixed(2)}%`}</UGText>
 
           <Icon key={'renderSliderArea slider icon2'}
                 size={scale(48)}
@@ -188,16 +189,16 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
       <TouchableWithoutFeedback onPress={() => {
         UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
       }}>
-        <Text style={_styles.bet_again}>追号</Text>
+        <UGText style={_styles.bet_again}>追号</UGText>
       </TouchableWithoutFeedback>
       :
-      <Text style={[
+      <UGText style={[
         _styles.bet_again,
         {
           backgroundColor: UGColor.TextColor7,
           color: UGColor.TextColor4,
         },
-      ]}>追号</Text>
+      ]}>追号</UGText>
   }
 
   /**
@@ -205,7 +206,7 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
    */
   const renderRandomSelected = () => {
     return <TouchableWithoutFeedback onPress={() => DeviceEventEmitter.emit(EmitterTypes.RANDOM_SELECT_LOTTERY)}>
-      <Text style={_styles.bet_again}>机选</Text>
+      <UGText style={_styles.bet_again}>机选</UGText>
     </TouchableWithoutFeedback>
   }
 
@@ -226,18 +227,18 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
             style={_styles.middle_container}>
         <View key={'renderInputArea sub middle'}
               style={_styles.bet_info}>
-          <Text key={'renderInputArea middle 已选中'}
-                style={_styles.lottery_count_hint}>已选中</Text>
-          <Text key={'renderInputArea middle 0'}
-                style={_styles.lottery_count_count}>{mapTotalCount(ballSelected)}</Text>
-          <Text key={'renderInputArea middle 注'}
-                style={_styles.lottery_count_hint}>注</Text>
+          <UGText key={'renderInputArea middle 已选中'}
+                style={_styles.lottery_count_hint}>已选中</UGText>
+          <UGText key={'renderInputArea middle 0'}
+                style={_styles.lottery_count_count}>{mapTotalCount(ballSelected)}</UGText>
+          <UGText key={'renderInputArea middle 注'}
+                style={_styles.lottery_count_hint}>注</UGText>
           <View key={'renderInputArea ct'}
                 style={CommStyles.flex}/>
           <TouchableWithoutFeedback key={'renderInputArea 筹码'}
                                     onPress={() => setShowChip(!showChip)}>
-            <Text key={'renderInputArea 筹码'}
-                  style={_styles.lottery_count_chip}>筹码</Text>
+            <UGText key={'renderInputArea 筹码'}
+                  style={_styles.lottery_count_chip}>筹码</UGText>
           </TouchableWithoutFeedback>
         </View>
         <TextInput key={'renderInputArea input'}
@@ -253,8 +254,8 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
       <View key={'renderInputArea input 下注 重置'}
             style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableWithoutFeedback onPress={checkShowBetPayment}>
-          <Text key={'renderInputArea input 下注'}
-                style={_styles.start_bet}>下注</Text>
+          <UGText key={'renderInputArea input 下注'}
+                style={_styles.start_bet}>下注</UGText>
         </TouchableWithoutFeedback>
 
         <TouchableWithoutFeedback onPress={() => {
@@ -266,8 +267,8 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
           })
         }
         }>
-          <Text key={'renderInputArea input 重置'}
-                style={_styles.start_reset}>重置</Text>
+          <UGText key={'renderInputArea input 重置'}
+                style={_styles.start_reset}>重置</UGText>
         </TouchableWithoutFeedback>
       </View>
 
@@ -282,10 +283,10 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
                  style={_styles.lock_container}>
       <View key={'renderLock sub'}
             style={_styles.lock_content}>
-        <Text key={'renderLock 封盘中'}
+        <UGText key={'renderLock 封盘中'}
               style={_styles.lock_text}>
           {item}
-        </Text>
+        </UGText>
       </View>
     </View>
   }

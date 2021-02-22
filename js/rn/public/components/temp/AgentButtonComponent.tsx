@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import { AgentType } from '../../models/Enum'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface AgentButtonComponentProps {
   onChangeAgent: (toggle: AgentType) => any;
@@ -36,9 +37,9 @@ const AgentButtonComponent = ({
               toggle ? {} : styles.enableTextContainer,
             ]}
           >
-            <Text style={[styles.text, toggle ? {} : styles.enableText]}>
+            <UGText style={[styles.text, toggle ? {} : styles.enableText]}>
               {'普通用戶'}
-            </Text>
+            </UGText>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
@@ -54,9 +55,9 @@ const AgentButtonComponent = ({
               toggle ? styles.enableTextContainer : {},
             ]}
           >
-            <Text style={[styles.text, toggle ? styles.enableText : {}]}>
+            <UGText style={[styles.text, toggle ? styles.enableText : {}]}>
               {'注册代理'}
-            </Text>
+            </UGText>
           </View>
         </TouchableWithoutFeedback>
       </View>

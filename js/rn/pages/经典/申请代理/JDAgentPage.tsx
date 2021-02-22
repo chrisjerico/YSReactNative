@@ -15,6 +15,7 @@ import { showSuccess } from '../../../public/widget/UGLoadingCP';
 import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
 import { UGBasePageProps } from '../../base/UGPage';
 import { JDAgentInput } from '../cp/JDAgentInput';
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface JDAgentPage {
 
@@ -29,7 +30,7 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
   const [remark, setRemark] = useState('')
 
   function show1(item: UGAgentApplyInfo) {
-    // console.log("输出最初的字典元素: ",item); 
+    // console.log("输出最初的字典元素: ",item);
     console.log('1状态=', item?.reviewStatus);
     var returnStr = false;
     if (item?.reviewStatus != 3) {
@@ -71,7 +72,7 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
       navbarOpstions: { hidden: false, title: '申请代理', back: true },
       didFocus: (params) => {
         let dic = params;
-        // console.log("输出最初的字典元素: "+agentApplyInfo); 
+        // console.log("输出最初的字典元素: "+agentApplyInfo);
         for (var key in dic) {
           // console.log("key: " + key + " ,value: " + dic[key]);
           if (key == 'item') {
@@ -91,7 +92,7 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
       {show1(agentApplyInfo) && <View style={{}}>
         <JDAgentInput onChangeText={(text) => setQq(text)} placeholder={"请输入QQ"}
           backgroundColor= {Skin1.CLBgColor}
-          img={img_assets('usrCenter_qq')} 
+          img={img_assets('usrCenter_qq')}
           content='QQ'
           editable={agentApplyInfo?.reviewStatus == 0 ? true : false}
           inputContent={agentApplyInfo?.reviewStatus == 0 ? '' : agentApplyInfo?.qq} />
@@ -151,34 +152,34 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
             });
           }}
         />
-        {showText(agentApplyInfo) && <Text style={{ fontSize: scale(26), paddingVertical: scale(20), textAlign: 'center', color: 'red' }} >{'您已申请代理，请耐心等待工作人员审核'}</Text>}
+        {showText(agentApplyInfo) && <UGText style={{ fontSize: scale(26), paddingVertical: scale(20), textAlign: 'center', color: 'red' }} >{'您已申请代理，请耐心等待工作人员审核'}</UGText>}
       </View>}
       {/* 展示界面 */}
       {show2(agentApplyInfo) && <View style={{}}>
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
-          img={img_assets('user_icon')} 
+          img={img_assets('user_icon')}
           content='用户'
           isInput={false}
           rightContent={agentApplyInfo?.username} />
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
           backgroundColor= {Skin1.CLBgColor}
-          img={img_assets('usrCenter_qq')} 
+          img={img_assets('usrCenter_qq')}
           content='QQ'
           isInput={false}
           rightContent={agentApplyInfo?.qq} />
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
-          img={img_assets('phone_icon')} 
+          img={img_assets('phone_icon')}
           content='联系电话'
           isInput={false}
           rightContent={agentApplyInfo?.mobile} />
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
           backgroundColor= {Skin1.CLBgColor}
-          img={img_assets('status_icon')} 
+          img={img_assets('status_icon')}
           content='申请状态'
           isInput={false}
           rightContent={'代理审核拒绝'} />
         <JDAgentInput onChangeText={(text) => { }} placeholder={""}
-          img={img_assets('refused_y_icon')} 
+          img={img_assets('refused_y_icon')}
           content='拒绝原因'
           isInput={false}
           rightContent={agentApplyInfo?.reviewResult} />

@@ -5,6 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../theme/UGSkinManagers';
 import {anyEmpty} from "../../tools/Ext";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface MineHeaderProps {
   showRightTitle?: boolean
@@ -22,16 +23,16 @@ interface MineHeaderProps {
   onPressTitle?: () => any
 }
 
-const MineHeader = ({ showRightTitle = false, 
-  onPressRightTitle, 
-  title, 
-  renderHeader, 
-  showBackBtn = false, 
-  onPressBackBtn, 
-  rightTitle, 
-  rightButton, 
-  backBtnColor = '#ffffff', 
-  titleStyle, 
+const MineHeader = ({ showRightTitle = false,
+  onPressRightTitle,
+  title,
+  renderHeader,
+  showBackBtn = false,
+  onPressBackBtn,
+  rightTitle,
+  rightButton,
+  backBtnColor = '#ffffff',
+  titleStyle,
   rightTitleStyle,
   titleIcon =null,
   onPressTitle }: MineHeaderProps) => {
@@ -46,8 +47,8 @@ const MineHeader = ({ showRightTitle = false,
       ) : (
           <View style={{ flex: 1 }} />
         )}
-      {renderHeader ? renderHeader() : 
-        <DefaultHeader title={title} rightTitle={rightTitle} rightButton={rightButton} showRightTitle={showRightTitle} titleStyle={titleStyle} rightTitleStyle={rightTitleStyle} 
+      {renderHeader ? renderHeader() :
+        <DefaultHeader title={title} rightTitle={rightTitle} rightButton={rightButton} showRightTitle={showRightTitle} titleStyle={titleStyle} rightTitleStyle={rightTitleStyle}
           onPressRightTitle={onPressRightTitle}
           titleIcon={titleIcon}
           onPressTitle={onPressTitle} />}
@@ -61,9 +62,9 @@ const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, r
       <View style={{ flex: 1, alignItems: 'center' }}>
         <TouchableWithoutFeedback onPress={onPressTitle}>
           <View style={{ flex: 1, alignItems: 'center',  justifyContent: 'center', flexDirection: 'row' }}>
-            <Text style={[styles.headerTitle, titleStyle,]}>{title}</Text>
+            <UGText style={[styles.headerTitle, titleStyle,]}>{title}</UGText>
             {!anyEmpty(titleIcon) &&
-              <Icon  
+              <Icon
                 style={{marginLeft: 1}}
                 size={scale(25)}
                 name={titleIcon}
@@ -75,7 +76,7 @@ const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, r
         <TouchableWithoutFeedback onPress={onPressRightTitle}>
           <View style={{ flex: 1, alignItems: 'flex-end', height: '100%', justifyContent: 'center' }}>
             {
-              rightButton ? rightButton : <Text style={[styles.rightTextStyle, rightTitleStyle]}>{rightTitle ?? '客服'}</Text>
+              rightButton ? rightButton : <UGText style={[styles.rightTextStyle, rightTitleStyle]}>{rightTitle ?? '客服'}</UGText>
             }
           </View>
         </TouchableWithoutFeedback>

@@ -9,6 +9,7 @@ import { httpClient } from '../../network/httpClient'
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import { PageName } from '../../navigation/Navigation'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface Yuebao {
   annualizedRate: string
@@ -48,17 +49,17 @@ export const AlipayView = ({ setProps }) => {
     <View style={{backgroundColor: '#fff'}}>
       <Header setShowMoneyImg={setShowMoneyImg} setProps={setProps} name={yuebao?.yuebaoName} getYuebao={getYuebao} />
       <View style={{ alignItems: 'center', marginTop: 24 }}>
-        <Text style={{ color: Skin1.textColor2 }}>今日收益(元)</Text>
-        <Text style={{ marginTop: 16, fontSize: 30 }}>{yuebao?.todayProfit || 0}</Text>
+        <UGText style={{ color: Skin1.textColor2 }}>今日收益(元)</UGText>
+        <UGText style={{ marginTop: 16, fontSize: 30 }}>{yuebao?.todayProfit || 0}</UGText>
         <View style={{ flexDirection: 'row', marginTop: 12 }}>
-          <Text style={{ color: Skin1.textColor2 }}>{yuebao?.yuebaoName || ''}余额：</Text>
-          <Text style={{ color: '#fb4f48' }}>{`${yuebao?.balance || 0.0000000000}元`}</Text>
-          <Text style={{ color: Skin1.textColor2 }}>,年化率：</Text>
-          <Text style={{ color: '#fb4f48' }}>{`${yuebao ? yuebao?.annualizedRate * 100 : 0} %`}</Text>
+          <UGText style={{ color: Skin1.textColor2 }}>{yuebao?.yuebaoName || ''}余额：</UGText>
+          <UGText style={{ color: '#fb4f48' }}>{`${yuebao?.balance || 0.0000000000}元`}</UGText>
+          <UGText style={{ color: Skin1.textColor2 }}>,年化率：</UGText>
+          <UGText style={{ color: '#fb4f48' }}>{`${yuebao ? yuebao?.annualizedRate * 100 : 0} %`}</UGText>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 12 }}>
-          <Text style={{ color: Skin1.textColor2 }}>体验金：</Text>
-          <Text style={{ color: '#fb4f48' }}>{`${yuebao?.giftBalance || 0.00}元`}</Text>
+          <UGText style={{ color: Skin1.textColor2 }}>体验金：</UGText>
+          <UGText style={{ color: '#fb4f48' }}>{`${yuebao?.giftBalance || 0.00}元`}</UGText>
         </View>
       </View>
       <View style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#eeeeee', marginTop: 20 }}>
@@ -72,11 +73,11 @@ export const AlipayView = ({ setProps }) => {
               paddingVertical: 40,
               height: 147,
             }}>
-            <Text style={{
+            <UGText style={{
               fontSize: 18,
               color: '#111111',
-            }}>{yuebao?.weekProfit ? yuebao?.weekProfit : 0}</Text>
-            <Text style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>本周收益</Text>
+            }}>{yuebao?.weekProfit ? yuebao?.weekProfit : 0}</UGText>
+            <UGText style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>本周收益</UGText>
           </View>
           <View
             style={{
@@ -87,20 +88,20 @@ export const AlipayView = ({ setProps }) => {
               paddingVertical: 40,
               height: 147,
             }}>
-            <Text
+            <UGText
               style={{
                 fontSize: 18,
                 color: '#111111',
-              }}>{yuebao?.monthProfit ? yuebao?.monthProfit : 0}</Text>
-            <Text style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>本月收益</Text>
+              }}>{yuebao?.monthProfit ? yuebao?.monthProfit : 0}</UGText>
+            <UGText style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>本月收益</UGText>
           </View>
           <View style={{ alignItems: 'center', flex: 1, paddingVertical: 40, height: 147 }}>
-            <Text
+            <UGText
               style={{
                 fontSize: 18,
                 color: '#111111',
-              }}>{yuebao?.totalProfit ? yuebao?.totalProfit : 0}</Text>
-            <Text style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>总收益</Text>
+              }}>{yuebao?.totalProfit ? yuebao?.totalProfit : 0}</UGText>
+            <UGText style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>总收益</UGText>
           </View>
         </View>
         <View style={{ flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#eeeeee' }}>
@@ -115,7 +116,7 @@ export const AlipayView = ({ setProps }) => {
               }}>
               <Image style={{ width: 36, height: 36 }}
                      source={{ uri: httpClient.defaults.baseURL + '/images/edzrzc.png' }} />
-              <Text style={{ fontSize: 14, marginTop: 16, color: Skin1.textColor2 }}>额度转入转出</Text>
+              <UGText style={{ fontSize: 14, marginTop: 16, color: Skin1.textColor2 }}>额度转入转出</UGText>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => navigate(PageName.AlipayProfitView)}>
@@ -130,14 +131,14 @@ export const AlipayView = ({ setProps }) => {
               }}>
               <Image style={{ width: 36, height: 36 }}
                      source={{ uri: httpClient.defaults.baseURL + '/images/sybb.png' }} />
-              <Text style={{ fontSize: 14, marginTop: 16, color: Skin1.textColor2 }}>收益报表</Text>
+              <UGText style={{ fontSize: 14, marginTop: 16, color: Skin1.textColor2 }}>收益报表</UGText>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => navigate(PageName.AlipayTransferRecordView)}>
             <View style={{ alignItems: 'center', flex: 1, paddingVertical: 40, height: 114 }}>
               <Image style={{ width: 36, height: 36 }}
                      source={{ uri: httpClient.defaults.baseURL + '/images/zrzcjl.png' }} />
-              <Text style={{ fontSize: 14, marginTop: 16, color: Skin1.textColor2 }}>转入转出记录</Text>
+              <UGText style={{ fontSize: 14, marginTop: 16, color: Skin1.textColor2 }}>转入转出记录</UGText>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -150,9 +151,9 @@ export const AlipayView = ({ setProps }) => {
         alignSelf: 'center',
         marginTop: 28,
       }}>
-        <Text
+        <UGText
           style={{ color: '#f14b47' }}>
-          {yuebao?.intro || '利息宝上线了，欢迎大家试用！ 1、复利结算，利滚利，收益更高。 2、结算快，每分钟结算一次，存入即开始收益。\n' + '3、转入转出无限制，随时随地享收益11。'}</Text>
+          {yuebao?.intro || '利息宝上线了，欢迎大家试用！ 1、复利结算，利滚利，收益更高。 2、结算快，每分钟结算一次，存入即开始收益。\n' + '3、转入转出无限制，随时随地享收益11。'}</UGText>
       </View>
       {showMoneyImg && <Image style={{ width: 400, height: 400, position: 'absolute', top: AppDefine.height / 5 }}
                               source={{ uri: httpClient.defaults.baseURL + '/images/yuebaoMoney.png' }} />}
@@ -187,7 +188,7 @@ const Header = ({ setProps, name, setShowMoneyImg, getYuebao }) => {
           <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20, zIndex: 2 }} onPress={() => pop()}>
             <Icon size={28} name={'home'} color={Skin1.isBlack ? '#fff' : '#111'} />
           </TouchableOpacity>}
-          <Text style={{
+          <UGText style={{
             alignSelf: 'center',
             paddingTop: 15,
             paddingBottom: 15,
@@ -195,7 +196,7 @@ const Header = ({ setProps, name, setShowMoneyImg, getYuebao }) => {
             fontSize: 20,
             flex: 1,
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-          }}>{name || ``}</Text>
+          }}>{name || ``}</UGText>
           <View style={{ position: 'absolute', right: 12 }}>
             <UrgeWithPleasureComponent  setShowMoneyImg={() => {
               getYuebao()
@@ -225,7 +226,7 @@ const UrgeWithPleasureComponent = memo(({ setShowMoneyImg }) => (
     }}
   >
     {({ remainingTime, animatedColor }) => (
-      <Text>{remainingTime}</Text>
+      <UGText>{remainingTime}</UGText>
     )}
   </CountdownCircleTimer>
 ))

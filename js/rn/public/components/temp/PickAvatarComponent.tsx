@@ -18,6 +18,7 @@ import Avatar from '../../views/tars/Avatar'
 import ProgressCircle from '../../views/tars/ProgressCircle'
 import {ugLog} from "../../tools/UgLog";
 import { ToastSuccess, ToastError } from '../../tools/tars'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface PickAvatarComponentProps {
   onSaveAvatarSuccess?: () => any;
@@ -92,7 +93,7 @@ const PickAvatarComponent = ({
       <View style={_styles.pickerBlock}>
         <View style={_styles.avatarContainer}>
           <Avatar uri={avatar} size={200} />
-          <Text style={{ marginTop: scale(10) }}>{'头像预览'}</Text>
+          <UGText style={{ marginTop: scale(10) }}>{'头像预览'}</UGText>
         </View>
         {loading ? (
           <ProgressCircle />

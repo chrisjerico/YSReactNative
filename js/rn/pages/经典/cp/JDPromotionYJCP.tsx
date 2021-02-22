@@ -7,6 +7,7 @@ import AppDefine from "../../../public/define/AppDefine";
 import UGinviteInfoModel from "../../../redux/model/全局/UGinviteInfoModel";
 import { anyEmpty } from "../../../public/tools/Ext";
 import { appConfig } from "../../../../../config";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface JDPromotionYJCP {
   list?: Array<UGinviteInfoModel>,//tab界面名称数据
@@ -29,7 +30,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
 
   /**
 * 点击
-* 
+*
 */
   function onPressItem(item: UGinviteInfoModel) {
     falseItem()
@@ -41,7 +42,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
 
   /**
 * 全部取false
-* 
+*
 */
   function falseItem() {
     {
@@ -56,7 +57,7 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
     borderBottomColor: Skin1.textColor3,
     borderBottomWidth: 1,
   }}>
-    <Text style={{ fontSize: scale(24), paddingVertical: scale(20), marginLeft: scale(20), color: Skin1.textColor1 }} >{'佣金比例'}</Text>
+    <UGText style={{ fontSize: scale(24), paddingVertical: scale(20), marginLeft: scale(20), color: Skin1.textColor1 }} >{'佣金比例'}</UGText>
     {/* 样式1 */}
    {!(AppDefine.siteId =='c085') && <View style={{ alignItems: 'center', }} >
       <View style={{ flexDirection: 'row', paddingTop: 0, borderColor: Skin1.textColor3, borderRadius: 5, overflow: 'hidden', borderWidth: 1, backgroundColor: Skin1.CLBgColor, height: 260, width: AppDefine.width - 30 }} >
@@ -68,9 +69,9 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
                 onPress={() => {
                   onPressItem(obj)
                 }}>
-                <Text style={{ textAlign: 'center', fontSize: scale(20), color: obj?.isPress ? 'red' : Skin1.textColor1, }}>
+                <UGText style={{ textAlign: 'center', fontSize: scale(20), color: obj?.isPress ? 'red' : Skin1.textColor1, }}>
                   {obj?.title}
-                </Text>
+                </UGText>
 
               </TouchableOpacity>
             )
@@ -78,9 +79,9 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
         </View>
 
         <View style={{ flexDirection: 'row', backgroundColor: Skin1.CLBgColor, flex: 1, height: 260 }} >
-          <Text style={{ fontSize: scale(20), paddingVertical: scale(20), marginHorizontal: scale(20), color: Skin1.textColor1, textAlign: 'left' }}>
+          <UGText style={{ fontSize: scale(20), paddingVertical: scale(20), marginHorizontal: scale(20), color: Skin1.textColor1, textAlign: 'left' }}>
             {anyEmpty(selItemContent) ? list[0]?.content : selItemContent}
-          </Text>
+          </UGText>
         </View>
       </View>
     </View>}
@@ -90,10 +91,10 @@ export const JDPromotionYJCP = (props: JDPromotionYJCP) => {
         {list?.map((obj, idx) => {
           return (
             <View style={{marginHorizontal:10,  justifyContent: 'center', borderBottomWidth: scale(1), borderColor: Skin1.textColor3, }}>
-            
-              <Text style={{marginLeft:20,marginVertical:10, textAlign: 'left', fontSize: scale(20), color:  Skin1.textColor1,  }}>
+
+              <UGText style={{marginLeft:20,marginVertical:10, textAlign: 'left', fontSize: scale(20), color:  Skin1.textColor1,  }}>
                 {obj?.title+':'+obj?.content}
-              </Text>
+              </UGText>
 
             </View>
           )

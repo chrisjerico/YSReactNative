@@ -8,6 +8,7 @@ import { httpClient } from '../../public/network/httpClient'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import CheckBox from '../../public/views/tars/CheckBox'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const LLLoginPage = ({ setProps }) => {
   const { onChange, show, slideCodeRef, sign, valid, navigateTo, value } = useSignInPage({
@@ -79,13 +80,13 @@ export const LLLoginPage = ({ setProps }) => {
             </TextInput>
           </View>
           {(password == null || password == '') && <View style={{ flexDirection: 'row' }}>
-            <Text style={{
+            <UGText style={{
               color: 'red',
               fontSize: 12,
               textAlign: 'left',
               flex: 1,
               paddingVertical: 4,
-            }}>{`*请输入密码`}</Text>
+            }}>{`*请输入密码`}</UGText>
           </View>}
           <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 24 }}>
             <CheckBox onPress={onChangeRemember} label={'记住密码'} defaultValue={remember} />
@@ -114,7 +115,7 @@ export const LLLoginPage = ({ setProps }) => {
                 marginTop: 12,
                 borderRadius: 4,
               }}>
-              <Text style={{ color: 'white', fontSize: 16 }}>登 录</Text>
+              <UGText style={{ color: 'white', fontSize: 16 }}>登 录</UGText>
             </TouchableHighlight>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
@@ -127,11 +128,11 @@ export const LLLoginPage = ({ setProps }) => {
                   uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/kf.png',
                 }}
               />
-              <Text style={{ color: '#333333', paddingLeft: 8 }}>在线客服</Text>
+              <UGText style={{ color: '#333333', paddingLeft: 8 }}>在线客服</UGText>
             </TouchableOpacity>
           </View>
           <View style={{ alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, paddingVertical: 24, color: '#3c3c3c' }}>其他</Text>
+            <UGText style={{ fontSize: 16, paddingVertical: 24, color: '#3c3c3c' }}>其他</UGText>
             <View style={{ flexDirection: 'row', marginHorizontal: 12 }}>
               <TouchableOpacity
                 style={{ alignItems: 'center' }}
@@ -144,7 +145,7 @@ export const LLLoginPage = ({ setProps }) => {
                     uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/register.png',
                   }}
                 />
-                <Text style={{ marginTop: 8 }}>马上注册</Text>
+                <UGText style={{ marginTop: 8 }}>马上注册</UGText>
               </TouchableOpacity>
               <View style={{ flex: 1 }} />
               <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => tryPlay()}>
@@ -154,7 +155,7 @@ export const LLLoginPage = ({ setProps }) => {
                     uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/mfsw.png',
                   }}
                 />
-                <Text style={{ marginTop: 8 }}>免费试玩</Text>
+                <UGText style={{ marginTop: 8 }}>免费试玩</UGText>
               </TouchableOpacity>
               <View style={{ flex: 1 }} />
               <TouchableOpacity
@@ -168,7 +169,7 @@ export const LLLoginPage = ({ setProps }) => {
                     uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/dnb.png',
                   }}
                 />
-                <Text style={{ marginTop: 8 }}>电脑版</Text>
+                <UGText style={{ marginTop: 8 }}>电脑版</UGText>
               </TouchableOpacity>
             </View>
           </View>

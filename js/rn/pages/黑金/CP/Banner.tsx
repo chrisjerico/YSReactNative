@@ -6,6 +6,7 @@ import {View, TouchableWithoutFeedback, Text, Dimensions, ViewStyle} from "react
 import PushHelper from "../../../public/define/PushHelper"
 import FastImage from "react-native-fast-image"
 import React from 'react'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const Banner = ({
                   bannerData, onlineNum = 0, onlineSwitch, size = {
@@ -75,7 +76,7 @@ const Banner = ({
               borderRadius: 16,
               padding: 5
             }}>
-              <Text style={{color: 'white'}}>当前在线:{onlineNum}</Text>
+              <UGText style={{color: 'white'}}>当前在线:{onlineNum}</UGText>
             </View>
             : null
         }

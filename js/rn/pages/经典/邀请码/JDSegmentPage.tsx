@@ -14,6 +14,7 @@ import { useHtml5Image, UGImageHost } from '../../../Res/icon';
 import { Res } from '../../../Res/icon/Res';
 import { UGBasePageProps } from '../../base/UGPage';
 import { JDCLInfoText, JDCLText, JDCLView } from '../cp/JDCLInfoText';
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 
@@ -49,8 +50,8 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     // console.log('相差多少年',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'years'))
     // console.log('相差多少月',moment('2016-10-11 18:06:03').diff(moment('2015-10-11 18:06:03'), 'months'))
     // console.log('相差多少小时',moment('2015-10-11 19:07:03').diff(moment('2015-10-11 21:06:03'), 'hours'))
-    // console.log('相差多少分',moment('2016-10-11 18:09:03').diff(moment('2016-10-11 18:06:03'), 'minutes')) 
-    // console.log('相差多少秒',moment('2016-10-11 18:07:03').diff(moment('2016-10-11 18:06:03'), 'seconds')) 
+    // console.log('相差多少分',moment('2016-10-11 18:09:03').diff(moment('2016-10-11 18:06:03'), 'minutes'))
+    // console.log('相差多少秒',moment('2016-10-11 18:07:03').diff(moment('2016-10-11 18:06:03'), 'seconds'))
     // let diff =   moment('2016-10-11 18:07:02') >= moment('2016-10-11 18:07:03')
     // console.log('diff==',diff);
 
@@ -64,8 +65,8 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     // console.log('now',now);
     // console.log('now2',now2);
 
-    // console.log('相差多少秒',moment('2021-01-14 12:51:30').diff(moment(now2), 'seconds')) 
-    // console.log('相差多少秒',moment(now2).diff(moment('2021-01-14 12:51:30'), 'seconds')) 
+    // console.log('相差多少秒',moment('2021-01-14 12:51:30').diff(moment(now2), 'seconds'))
+    // console.log('相差多少秒',moment(now2).diff(moment('2021-01-14 12:51:30'), 'seconds'))
     // var now3 = moment().add(7, 'd');
 
     // console.log('now3',now3);
@@ -88,14 +89,14 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     // })
 
     console.log('diff==',moment().unix());
-    
+
 
     // text.style = { fontSize: 20, color: 'blue', marginLeft: 20}
 
     if (index == 0) {
       // text.setNativeProps({
       //   style:{
-      //     fontSize: 20, 
+      //     fontSize: 20,
       //     color: 'blue',
       //      marginLeft: 20
       //   },
@@ -108,7 +109,7 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     } else {
       // text.setNativeProps({
       //   style:{
-      //     fontSize: 13, 
+      //     fontSize: 13,
       //     color: 'red',
       //      marginLeft: 20
       //   }
@@ -120,7 +121,7 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
     }
 
 
- 
+
 
 
   };
@@ -195,9 +196,9 @@ const JDSegmentPage = ({ route, setProps }: UGBasePageProps) => {
       </View> */}
 
       <View style={{}}>
-        <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }} ref={ (e) => {text = e }} >
+        <UGText style={{ fontSize: 13, color: 'red', marginLeft: 10 }} ref={ (e) => {text = e }} >
           {'2313432413'}
-        </Text>
+        </UGText>
       </View>
     </View >
   )

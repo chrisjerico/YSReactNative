@@ -25,6 +25,7 @@ import { hideLoading, showLoading } from '../../public/widget/UGLoadingCP'
 import { AgentType } from '../../public/models/Enum'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import { ToastSuccess, ToastError } from '../../public/tools/tars'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface RegisterData {
   acc: string
@@ -124,13 +125,13 @@ const LCRegisterPage = ({ navigation, setProps }) => {
             alignItems: 'center',
             height: 53,
           }}>
-            <Text style={{
+            <UGText style={{
               textAlign: 'center',
               fontSize: 17,
               width: '100%',
               alignSelf: 'center',
               color: '#fff',
-            }}>注册</Text>
+            }}>注册</UGText>
             <TouchableOpacity
               style={{ width: 30, position: 'absolute', left: 20, justifyContent: 'center', height: 33 }}
               onPress={() => pop()}>
@@ -147,13 +148,13 @@ const LCRegisterPage = ({ navigation, setProps }) => {
         }}>
           <ScrollView showsVerticalScrollIndicator={false}
                       style={{ marginHorizontal: 12, maxHeight: haveBottomTab ? 500 : 550 }}>
-            <Text style={{ color: 'red', fontSize: 14 }}>为了您的资金安全，请使用真实资料!</Text>
+            <UGText style={{ color: 'red', fontSize: 14 }}>为了您的资金安全，请使用真实资料!</UGText>
             <RegisterItem placeHolder={inviteCodePlaceholder || '邀请码'} iconName={'user-o'} config={showInviteCode}
                           onChangeText={(text) => onChangeInviteCode(text)} />
-            {showInviteCode == 1 && <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>邀请码，如没有可不填写</Text>}
+            {showInviteCode == 1 && <UGText style={{ marginTop: 12, fontSize: 12, color: 'red' }}>邀请码，如没有可不填写</UGText>}
             <RegisterItem placeHolder={recommendGuyPlaceholder || '推荐人'} iconName={'user-o'} config={showRecommendGuy}
                           onChangeText={(text) => onChangeRecommendGuy(text)} />
-            {showRecommendGuy && <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>推荐人ID，如没有可不填写</Text>}
+            {showRecommendGuy && <UGText style={{ marginTop: 12, fontSize: 12, color: 'red' }}>推荐人ID，如没有可不填写</UGText>}
             <View style={{
               flexDirection: 'row',
               paddingVertical: 10,
@@ -169,8 +170,8 @@ const LCRegisterPage = ({ navigation, setProps }) => {
               }} />
             </View>
             {regex.test(data.acc) ?
-              <Text style={{ marginTop: 12, fontSize: 12, color: '#6bab64' }}>*该账号可用</Text> :
-              <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>*请使用6-15位英文或数字的组合</Text>
+              <UGText style={{ marginTop: 12, fontSize: 12, color: '#6bab64' }}>*该账号可用</UGText> :
+              <UGText style={{ marginTop: 12, fontSize: 12, color: 'red' }}>*请使用6-15位英文或数字的组合</UGText>
             }
             <View style={{
               flexDirection: 'row',
@@ -194,7 +195,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                        source={{ uri: showPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
               </TouchableWithoutFeedback>
             </View>
-            <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>*请使用至少6位字符</Text>
+            <UGText style={{ marginTop: 12, fontSize: 12, color: 'red' }}>*请使用至少6位字符</UGText>
             <View style={{
               flexDirection: 'row',
               paddingVertical: 10,
@@ -217,7 +218,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
               </TouchableWithoutFeedback>
             </View>
             {data.pwd != '' && data.pwd != data.confirmPwd &&
-            <Text style={{ marginTop: 12, fontSize: 12, color: '#e00013' }}>*密码不一致</Text>}
+            <UGText style={{ marginTop: 12, fontSize: 12, color: '#e00013' }}>*密码不一致</UGText>}
             <RegisterItem placeHolder={'请输入真实姓名'} iconName={'user-o'} config={showName}
                           onChangeText={(text) => onChaneRealName(text)} />
             {showFundPassword && <View style={{
@@ -277,7 +278,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                       padding: 5,
                       borderRadius: 4,
                     }}>
-                      <Text style={{ color: regType == AgentType.用户注册 ? 'white' : '#919191' }}>普通用户</Text>
+                      <UGText style={{ color: regType == AgentType.用户注册 ? 'white' : '#919191' }}>普通用户</UGText>
                     </View>
                   </View>
                 </TouchableWithoutFeedback>
@@ -299,7 +300,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                       padding: 5,
                       borderRadius: 4,
                     }}>
-                      <Text style={{ color: regType == AgentType.代理注册 ? 'white' : '#919191' }}>注册代理</Text>
+                      <UGText style={{ color: regType == AgentType.代理注册 ? 'white' : '#919191' }}>注册代理</UGText>
                     </View>
                   </View>
                 </TouchableWithoutFeedback>
@@ -317,13 +318,13 @@ const LCRegisterPage = ({ navigation, setProps }) => {
             <TouchableOpacity
               onPress={userSingUp}
               style={{ paddingVertical: 16, marginTop: 12, borderRadius: 8, backgroundColor: '#ff9c06' }}>
-              <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16 }}>注册</Text>
+              <UGText style={{ alignSelf: 'center', color: 'white', fontSize: 16 }}>注册</UGText>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => push(PageName.LCLoginPage)}>
-              <Text style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回登录</Text>
+              <UGText style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回登录</UGText>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => push(PageName.LCHomePage)}>
-              <Text style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回首页</Text>
+              <UGText style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回首页</UGText>
             </TouchableOpacity>
           </ScrollView>
         </View>

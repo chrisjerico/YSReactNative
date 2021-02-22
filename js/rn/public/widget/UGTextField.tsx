@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { skin1 } from '../theme/UGSkinManagers';
 import FUtils, { deepMergeProps } from '../tools/FUtils';
 import { sc375 } from '../tools/Scale';
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton';
 
 interface IPorps extends InputProps {
   // 父类变量
@@ -249,7 +250,7 @@ export default class UGTextField extends Component<IPorps, IState> {
       code += selectChar[charIndex];
     }
     return (
-      <Text
+      <UGText
         style={{
           color: 'white',
           backgroundColor: 'rgba(255, 255, 255, 0.3)',
@@ -268,7 +269,7 @@ export default class UGTextField extends Component<IPorps, IState> {
           props.didClick(code);
         }}>
         {code}
-      </Text>
+      </UGText>
     );
   }
 
