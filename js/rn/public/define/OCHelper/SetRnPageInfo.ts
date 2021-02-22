@@ -29,14 +29,15 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-    // 优惠列表详情
-    // pages.push({
-    //   vcName: 'UGPromotionIncomeController',
-    //   rnName: PageName.JDSegmentPage,
-    //   fd_prefersNavigationBarHidden: true,
-    //   允许游客访问: false,
-    //   允许未登录访问: false,
-    // })
+    // 站内信
+    // 在线客服
+    pages.push({
+      rnName: PageName.OnlineService,
+      userCenterItemCode: 14,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: false,
+      允许未登录访问: false,
+    })
 
 
   }
