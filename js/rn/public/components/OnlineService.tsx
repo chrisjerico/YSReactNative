@@ -7,6 +7,7 @@ import { Skin1 } from '../theme/UGSkinManagers'
 import AppDefine from '../define/AppDefine'
 import { pop } from '../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/AntDesign'
+import { scale } from '../tools/Scale'
 
 export const OnlineService = () => {
   const [title, setTitle] = useState<string>()
@@ -39,7 +40,8 @@ export const OnlineService = () => {
               textAlign: 'center',
               fontSize: 20,
               color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-            }}>{title || '在线客服'}</Text>
+            }}
+            numberOfLines={1}>{title?.length > 10 ? '在线客服' : title}</Text>
           </View>
         </SafeAreaView>
       </LinearGradient>
