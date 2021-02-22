@@ -28,7 +28,7 @@ import { ugLog } from '../../../../../../public/tools/UgLog'
 import UGDropDownPicker from '../../../../../bank/add/view/UGDropdownPicker'
 import { useEffect, useState } from 'react'
 import { getBankIcon } from '../../../../../bank/list/UseManageBankList'
-import { clearAllHtml } from '../../../../../../public/tools/ui/UIUtil'
+import { clearAllHtml } from '../../../../../../public/tools/StringUtil'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据

@@ -36,7 +36,7 @@ import { CapitalConst } from '../../../../const/CapitalConst'
 import CapitalContext from '../../../CapitalContext'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
-import { clearAllHtml } from '../../../../../../public/tools/ui/UIUtil'
+import { clearAllHtml } from '../../../../../../public/tools/StringUtil'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据

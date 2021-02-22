@@ -6,7 +6,7 @@ import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { TouchableHighlight } from 'react-native-gesture-handler'
-import { clearAllHtml } from '../../../public/tools/ui/UIUtil'
+import { clearAllHtml } from '../../../public/tools/StringUtil'
 
 interface BaseScreenProps {
     hideBar?: boolean //隐藏标题栏
