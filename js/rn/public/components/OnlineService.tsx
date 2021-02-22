@@ -5,12 +5,15 @@ import { UGStore } from '../../redux/store/UGStore'
 import LinearGradient from 'react-native-linear-gradient'
 import { Skin1 } from '../theme/UGSkinManagers'
 import AppDefine from '../define/AppDefine'
-import { pop } from '../navigation/RootNavigation'
+import { pop, push } from '../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { anyEmpty } from '../tools/Ext'
 import { ugLog } from '../tools/UgLog'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import DropDownPicker from 'react-native-dropdown-picker';
+import { scale } from '../tools/Scale'
+import PushHelper from '../define/PushHelper'
+import { PageName } from '../navigation/Navigation'
 export const OnlineService = () => {
   const [title, setTitle] = useState<string>()
   const systemConf = UGStore.globalProps.sysConf
@@ -66,16 +69,67 @@ export const OnlineService = () => {
     ugLog('zzURl 链接==', zzURl);
     return zzURl;
   }
-
-
+  // 返回首页/存款/取款/游戏大厅  
+  let capitalController //类型选择
+  let levelArray =
+    [{ value: 0, label: '返回首页' },
+    { value: 1, label: '存款' },
+    { value: 2, label: '取款' },
+    { value: 3, label: '游戏大厅' }];
 
   return (
     <View style={{ flex: 1 }}>
-      <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+      {/* 下拉控件 */}
+      <View style={{ zIndex: 1, height: scale(66), marginTop: 60, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 }}>
+        <DropDownPicker
+          items={
+            levelArray
+
+          }
+          defaultValue={0}
+          containerStyle={{ height: 40, width: AppDefine.width / 3 }}
+          controller={instance => capitalController = instance}
+          style={{ backgroundColor: '#fafafa' }}
+          itemStyle={{
+            justifyContent: 'flex-start'
+          }}
+          dropDownStyle={{ backgroundColor: '#fafafa' }}
+          onChangeItem={item => {
+            ugLog('item==', item);
+            switch (item.value) {
+              case 0:
+                //首页
+                ugLog('item.value',item.value)
+                PushHelper.pushLinkPositionType(30)
+                break;
+              case 1:
+                //存款
+                ugLog('item.value',item.value)
+                push(PageName.CapitalPage, { initTabIndex: 0 })
+                break;
+              case 2:
+                //取款
+                ugLog('item.value',item.value)
+                push(PageName.CapitalPage, { initTabIndex: 1 })
+                break;
+              case 3:
+                //游戏大厅
+                ugLog('item.value',item.value)
+                PushHelper.pushLinkPositionType(19)
+                break;
+             
+
+              default:
+                break;
+            }
+          }}
+        />
+      </View>
+      <LinearGradient style={{ zIndex: 2 }} colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
         <SafeAreaView style={{
           flexDirection: 'row',
         }}>
-          
+
           <View style={{
             width: AppDefine.width,
             flexDirection: 'row',
@@ -93,15 +147,19 @@ export const OnlineService = () => {
               textAlign: 'center',
               fontSize: 20,
               color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-            
+
             }}>{title || '在线客服'}</Text>
-            <TouchableOpacity style={{ width: 30, position: 'absolute', left: AppDefine.width -50 }} onPress={() => pop()}>
+            <TouchableOpacity style={{ width: 30, position: 'absolute', left: AppDefine.width - 50 }} onPress={
+              () => {
+                capitalController?.toggle();
+              }
+            }>
               <Icon size={28} name={'bars'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
             </TouchableOpacity>
           </View>
         </SafeAreaView>
       </LinearGradient>
-      <SafeAreaView forceInset={{ bottom: 'never', vertical: 'never' }} style={{ flex: 1 }}>
+      <SafeAreaView forceInset={{ bottom: 'never', vertical: 'never' }} style={{ flex: 1, zIndex: 0 }}>
         <WebView
           injectedJavaScript={script}
           onMessage={(event) => {
@@ -109,6 +167,9 @@ export const OnlineService = () => {
           }}
           style={{ flex: 1 }} containerStyle={{ flex: 1 }} source={{ uri: name() }} />
       </SafeAreaView>
+
+
+
     </View>
   )
 }

@@ -60,11 +60,12 @@ const CapitalPage = ({ navigation, route, setProps }) => {
       didFocus: (params) => {
         requestYueBao()
         let dic = params;
+        ugLog('dic==',dic)
         for (var key in dic) {
-          if (key == 'selectIndex') {
+          if (key == 'selectIndex' ||key == 'initTabIndex') {
             console.log('key ==============', key);
             console.log('v ==============', dic[key]);
-            tabRef?.current?.goToPage(dic[key])
+            tabRef?.current?.goToPage(2)
           }
         }
       }
