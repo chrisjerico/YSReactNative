@@ -305,8 +305,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.dfjt1.com',
   ],
   'c175': [
-    'https://7053bbb.com',
-    'https://7053fff.vip',
+    'https://7053ccc.cc',
+    'https://7053bbb.cc',
     'https://7053eee.vip',
     'https://7053ccc.vip',
   ],
