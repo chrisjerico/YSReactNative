@@ -1,3 +1,4 @@
+import { doyDefine } from './../define/DoyDefine';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Platform } from 'react-native';
 import { ANHelper } from '../../../rn/public/define/ANHelper/ANHelper';
@@ -16,7 +17,7 @@ export interface ResponseObject<T = {} | [] | string> {
   info: object
 }
 
-export class CCSessionModel<T = {} | [] | string> {
+export class DoySessionModel<T = {} | [] | string> {
   // 只读
   url: string;
   params: { [x: string]: any };
@@ -25,18 +26,18 @@ export class CCSessionModel<T = {} | [] | string> {
   status: number;
   promise: Promise<AxiosResponse<T>>;
 
-  success: (res: ResponseObject<T>, sm: CCSessionModel<T>) => void;
-  failure: (err: Error, sm: CCSessionModel<T>) => void;
-  completion: (res: ResponseObject<T>, err: Error, sm: CCSessionModel<T>) => void
-  useCompletion(completion: (res: ResponseObject<T>, err: Error, sm: CCSessionModel<T>) => void) {
+  success: (res: ResponseObject<T>, sm: DoySessionModel<T>) => void;
+  failure: (err: Error, sm: DoySessionModel<T>) => void;
+  completion: (res: ResponseObject<T>, err: Error, sm: DoySessionModel<T>) => void
+  useCompletion(completion: (res: ResponseObject<T>, err: Error, sm: DoySessionModel<T>) => void) {
     this.completion = completion
     return this
   }
-  useSuccess(success: (res: ResponseObject<T>, sm: CCSessionModel<T>) => void) {
+  useSuccess(success: (res: ResponseObject<T>, sm: DoySessionModel<T>) => void) {
     this.success = success
     return this
   }
-  useFailure(failure: (err: Error, sm: CCSessionModel<T>) => void) {
+  useFailure(failure: (err: Error, sm: DoySessionModel<T>) => void) {
     this.failure = failure
     return this
   }
@@ -72,20 +73,22 @@ export class CCSessionModel<T = {} | [] | string> {
 export class SampleAPI {
   c: string;
   constructor(c) { this.c = c; }
-  get<T>(path: string, params: object = {}) { return CCSessionReq.request<T>(this.c + '/' + path, params, false); }
+  get<T>(path: string, params: object = {}) { return DoySessionReq.request<T>(this.c + '/' + path, params, false); }
   // files 字段传{key:文件路径}
-  post<T>(path: string, params: object = {}, files?: { [x: string]: string }) { return CCSessionReq.request<T>(this.c + '/' + path, params, true, files); }
+  post<T>(path: string, params: object = {}, files?: { [x: string]: string }) { return DoySessionReq.request<T>(this.c + '/' + path, params, true, files); }
 }
 
 // 公共参数
 function publicParams() {
-  return { 'token': '' };
+  return {
+    // 'token': doyDefine.token
+  };
 };
 
 // 字典(map)类型
 type Dictionary = { [x: string]: any; }
 
-export class CCSessionReq {
+export class DoySessionReq {
 
   private static isEncrypt = true; // 参数是否加密
   private static http = axios.create({
@@ -94,14 +97,14 @@ export class CCSessionReq {
     headers: { 'Content-Type': 'multipart/form-data', }
   });
 
-  static request<T>(path: string, params: object = {}, isPost: boolean = false, files?: { [x: string]: string }): CCSessionModel<T> {
+  static request<T>(path: string, params: object = {}, isPost: boolean = false, files?: { [x: string]: string }): DoySessionModel<T> {
     typeof params == 'string' && (params = JSON.parse(params));// 容错
     let url = `http://wallet-api.doypay.com/${path}?`;// 拼接url
 
     // console.log('【未加密参数】', JSON.stringify(params))
     params = Object.assign({}, publicParams(), params); // 添加公共参数
 
-    const sm = new CCSessionModel<T>();
+    const sm = new DoySessionModel<T>();
     sm.url = url;
     sm.params = params;
     //@ts-ignore
@@ -119,9 +122,10 @@ export class CCSessionReq {
       // 若是GET请求则拼接参数到URL
       if (!isPost) {
         for (const key in params) {
-          url += `&${key}=${params[key]}`;
+          const v = params[key]
+          v && (url += `&${key}=${v}`);
         }
-        return this.http.get<ResponseObject<T>>(url);
+        return this.http.get<ResponseObject<T>>(url, { headers: { 'auth-token': doyDefine.token, } });
       } else {
         // 上传文件
         const formData = new FormData();
@@ -138,7 +142,12 @@ export class CCSessionReq {
         for (const k in params) {
           formData.append(k, params[k])
         }
-        return this.http.post<ResponseObject<T>>(url, formData, { headers: { 'Content-Type': 'multipart/form-data', } });
+        return this.http.post<ResponseObject<T>>(url, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'auth-token': doyDefine.token,
+          }
+        });
       }
     }).then((res) => {
       // 接口请求成功

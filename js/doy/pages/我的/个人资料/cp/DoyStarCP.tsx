@@ -10,7 +10,7 @@ const sc = sc375
 
 interface DoyStarCP {
   totalStarCnt?: number// 总共几颗星
-  selectedStarCnt?: number// 选中几颗星
+  selectedStarCnt?: number | string// 选中几颗星
   size?: number//星星大小
   space?: number  // 星星间距
   unSelectDarkColor?: boolean//未选中星星是否深色
@@ -28,10 +28,11 @@ export const DoyStarCP = (p: DoyStarCP) => {
   const unSelectIcon = unSelectDarkColor == true ? img_doy('星星_未激活(深)@3x') : img_doy('星星_未激活(浅)@3x')
   const containerWidth = size * totalStarCnt + space * (totalStarCnt - 1)
   const [star, setStar] = useState(selectedStarCnt)
+  const selectedCnt = onPress ? star : selectedStarCnt
 
   const stars = []
   for (let i = 0; i < totalStarCnt; i++) {
-    const uri = i < star ? img_doy('星星@3x') : unSelectIcon
+    const uri = i < selectedCnt ? img_doy('星星@3x') : unSelectIcon
     stars.push(<FastImagePlaceholder source={{ uri }} style={[{ width: size, aspectRatio: 1, }, starStyle]} {...(onPress && {
       onPress: () => {
         setStar(i + 1)

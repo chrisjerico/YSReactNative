@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { View, Text, Image } from "react-native";
 import { UGBasePageProps } from "../../../rn/pages/base/UGPage";
 import { PageName } from "../../../rn/public/navigation/Navigation";
-import { push } from "../../../rn/public/navigation/RootNavigation";
+import { jumpTo, push } from "../../../rn/public/navigation/RootNavigation";
 import UGSkinManagers, { skin1 } from "../../../rn/public/theme/UGSkinManagers";
 import { sc375 } from "../../../rn/public/tools/Scale";
 import { img_doy } from "../../../rn/Res/icon";
 import { DoyButton1, DoyButton2 } from "../../publicComponent/Button之类的基础组件/DoyButton";
-import { doyApi } from "../../publicClass/network/DoyApi";
+import { doyDefine } from "../../publicClass/define/DoyDefine";
 
 const sc = sc375
 
@@ -17,9 +17,11 @@ export const DoyLaunchPage = ({ setProps, setNavbarProps }: UGBasePageProps) => 
     UGSkinManagers.updateSkin(sysConf).then(() => {
       setProps({ backgroundColor: skin1.backgroundColor })
     })
-  }, [])
 
-  const { themeColor, navBarBgColor } = skin1
+    if (doyDefine.token?.length) {
+      jumpTo(PageName.DoyHomePage)
+    }
+  }, [])
 
   return <View style={{ flex: 1, paddingHorizontal: sc(24) }}>
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

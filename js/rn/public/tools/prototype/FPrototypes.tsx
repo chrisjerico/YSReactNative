@@ -187,5 +187,48 @@ export default class FPrototypes {
     String.prototype.md5 = function (): string {
       return md5(this);
     };
+
+    // 时间戳 => 多久以前
+    String.prototype.timeAgoSinceNow = function (): string {
+      const timespan: number = this
+      const dateTime = new Date(timespan * 1000);
+      const year = dateTime.getFullYear();
+      const month = dateTime.getMonth() + 1;
+      const day = dateTime.getDate();
+      const hour = dateTime.getHours();
+      const minute = dateTime.getMinutes();
+      //@ts-ignore 当前时间
+      const now = Date.parse(new Date()); //typescript转换写法
+      let milliseconds = 0;
+      let timeSpanStr;
+      //计算时间差
+      milliseconds = (now / 1000) - timespan;
+
+      //一分钟以内
+      if (milliseconds <= 60) {
+        timeSpanStr = '刚刚';
+      }
+      //大于一分钟小于一小时
+      else if (60 < milliseconds && milliseconds <= 60 * 60) {
+        timeSpanStr = Math.ceil((milliseconds / (60))) + '分钟前';
+      }
+      //大于一小时小于等于一天
+      else if (60 * 60 < milliseconds && milliseconds <= 60 * 60 * 24) {
+        timeSpanStr = Math.ceil(milliseconds / (60 * 60)) + '小时前';
+      }
+      //大于一天小于等于15天
+      else if (60 * 60 * 24 < milliseconds && milliseconds <= 60 * 60 * 24 * 30) {
+        timeSpanStr = Math.ceil(milliseconds / (60 * 60 * 24)) + '天前';
+      }
+      //大于一个月小于一年
+      else if (60 * 60 * 24 * 30 < milliseconds && milliseconds <= 60 * 60 * 24 * 30 * 12) {
+        timeSpanStr = Math.ceil(milliseconds / (60 * 60 * 24 * 30)) + '个月前';
+      }
+      //超过一年显示
+      else {
+        timeSpanStr = year + '年' + month + '月' + day + '日 ' + hour + ':' + minute;
+      }
+      return timeSpanStr;
+    }
   }
 }

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import { TextInput, Text, TouchableOpacity, View } from "react-native"
 import { Button } from "react-native-elements"
 import FastImage from "react-native-fast-image"
-import { TouchableNativeFeedback } from "react-native-gesture-handler"
+import { FlatList, TouchableNativeFeedback } from "react-native-gesture-handler"
 import LinearGradient from "react-native-linear-gradient"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import SegmentedControl from "rn-segmented-control"
@@ -14,9 +14,11 @@ import { push } from "../../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import List from "../../../../rn/public/views/tars/List"
+import { hideLoading, showLoading } from "../../../../rn/public/widget/UGLoadingCP"
 import { img_doy } from "../../../../rn/Res/icon"
-import { DoyButton1, DoyText12, DoyText14, DoyText16 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 import { doyApi } from "../../../publicClass/network/DoyApi"
+import sellList from "../../../publicClass/network/model/order/sellList"
+import { DoyButton1, DoyText12, DoyText14, DoyText16 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 import { DoyInRestModeCP } from "./cp/DoyInRestModeCP"
 
 const sc = sc375
@@ -24,7 +26,7 @@ const tipsBarColos = ['#FFEDD4', '#FAE4CF']
 
 
 interface DoyWantSellVars {
-  searchReults?: object[]
+  sellList?: sellList
   isResting?: boolean
 }
 
@@ -32,7 +34,9 @@ export const DoyWantSellPage = ({ setProps, setNavbarProps }: UGBasePageProps) =
   const { themeColor, navBarBgColor } = skin1
   const [segmentedIndex, setSegmentedIndex] = useState(0)
   const [isRestMode, setIsRestMode] = useState(false)
-  const { current: v } = useRef<DoyInRestModeCP & DoyWantSellVars>({ searchReults: [{}, {}, {}], isResting: false })
+  const { current: v } = useRef<DoyInRestModeCP & DoyWantSellVars>({
+    isResting: false
+  })
 
   //setNavbarProps({rightComponent})
   useEffect(() => {
@@ -48,10 +52,12 @@ export const DoyWantSellPage = ({ setProps, setNavbarProps }: UGBasePageProps) =
   }, [])
 
   useEffect(() => {
-    doyApi.order.sellList().useSuccess(() => {
-      
+    showLoading()
+    doyApi.order.sellList(segmentedIndex + 1).useSuccess(({ data }) => {
+      hideLoading()
+      v.sellList = data
     })
-  })
+  }, [segmentedIndex])
 
   return [<View style={{ flex: 1 }}>
     {/* 卖单类型 */}
@@ -86,16 +92,17 @@ export const DoyWantSellPage = ({ setProps, setNavbarProps }: UGBasePageProps) =
         </TouchableOpacity>
       </LinearGradient>}
       {/* 我的卖单 */}
-      <List data={v.searchReults} uniqueKey='我要买-订单列表' style={{ padding: sc(16), flex: 1 }} renderItem={(ele) => {
+      <FlatList data={v.sellList?.list} style={{ padding: sc(16), flex: 1 }} renderItem={({ item, index }) => {
+        const { amount, create_time } = item
         return <TouchableOpacity style={{ height: sc(60), marginBottom: sc(8), backgroundColor: 'white', borderRadius: sc(4), flexDirection: 'row', alignItems: 'center', paddingHorizontal: sc(16) }} onPress={() => {
           push(PageName.DoySellOrderPage)
         }}>
           <FastImage source={{ uri: img_doy('卖出@3x') }} style={{ width: sc(26), aspectRatio: 1, }} />
           <DoyText14 style={{ marginLeft: sc(16), }}>出售</DoyText14>
           <FastImage source={{ uri: img_doy('DOY币@3x') }} style={{ width: sc(14), aspectRatio: 1, marginHorizontal: sc(8) }} />
-          <DoyText16 bold2>200</DoyText16>
+          <DoyText16 bold2>{amount}</DoyText16>
           <View style={{ flex: 1 }} />
-          <DoyText12 gray2 style={{ marginRight: sc(8) }}>1分钟前 发布</DoyText12>
+          <DoyText12 gray2 style={{ marginRight: sc(8) }}>{create_time?.timeAgoSinceNow() + ' 发布'}</DoyText12>
           <FastImage source={{ uri: img_doy('更多_小@3x') }} style={{ width: sc(6), aspectRatio: 6 / 10, }} />
         </TouchableOpacity>
       }} />

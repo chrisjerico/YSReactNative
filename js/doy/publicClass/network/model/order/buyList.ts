@@ -37,4 +37,5 @@ interface list {
   type: "1",
   trade_limit: "{\"reg_day\":0,\"success_num\":0,\"comment_score\":0}",
   buyer_username: string
+  creditGrade: string// 卖家信用
 }

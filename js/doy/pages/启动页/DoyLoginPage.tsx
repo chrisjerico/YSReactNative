@@ -7,12 +7,13 @@ import { PageName } from "../../../rn/public/navigation/Navigation"
 import { push } from "../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
-import { hideLoading, showLoading, showSuccess } from "../../../rn/public/widget/UGLoadingCP"
+import { hideLoading, showError, showLoading, showSuccess } from "../../../rn/public/widget/UGLoadingCP"
 import { img_doy } from "../../../rn/Res/icon"
+import { doyDefine } from "../../publicClass/define/DoyDefine"
+import { doyApi } from "../../publicClass/network/DoyApi"
 import { DoyButton1, DoyText14 } from "../../publicComponent/Button之类的基础组件/DoyButton"
 import { DoyDropDownPicker1, getDoyDropDownPickerItems } from "../../publicComponent/Button之类的基础组件/DoyDropDownPicker"
 import { DoyTextInput1, DoyTextInputPwd, DoyTextInputSms, DoyTextInputVerificationCode1 } from "../../publicComponent/Button之类的基础组件/DoyTextInput"
-import { doyApi } from "../../publicClass/network/DoyApi"
 
 const sc = sc375
 
@@ -59,8 +60,22 @@ export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
     />}
     <Button title={isPwd ? '用短信验证码登录' : '用密码登录'} buttonStyle={{ backgroundColor: 'transparent', alignSelf: 'flex-start', paddingHorizontal: 0, paddingVertical: sc(16) }} titleStyle={{ color: themeColor, fontSize: sc(14), fontWeight: '600' }} onPress={() => { setIsPwd(!isPwd) }} />
     <DoyButton1 title='登录' onPress={() => {
+      let err = ''
+      if (!v.phone?.length) {
+        err = '请输入手机号'
+      } else if (isPwd && !v.pwd?.length) {
+        err = '请输入密码'
+      } else if (!isPwd && !v.code?.length) {
+        err = '请输入验证码'
+      }
+      
+      if (err.length) {
+        showError(err)
+        return
+      }
       showLoading()
-      doyApi.user.login(v.phone, v.pwd).useSuccess(() => {
+      doyApi.user.login(v.phone, v.pwd).useSuccess(({ data }) => {
+        doyDefine.token = data["API-SID"]
         showSuccess('登录成功！')
         push(PageName.DoyHomePage)
       })

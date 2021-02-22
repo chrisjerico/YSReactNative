@@ -1,17 +1,20 @@
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import AppDefine from '../../../rn/public/define/AppDefine';
 import { OCHelper } from '../../../rn/public/define/OCHelper/OCHelper';
-import { CCSessionModel } from '../../../rn/public/network/NetworkRequest1/CCSessionModel';
+import { PageName } from '../../../rn/public/navigation/Navigation';
+import { jumpTo, push } from '../../../rn/public/navigation/RootNavigation';
 import { api } from '../../../rn/public/network/NetworkRequest1/NetworkRequest1';
 import { hideLoading } from '../../../rn/public/widget/UGLoadingCP';
 import UGUserModel from '../../../rn/redux/model/全局/UGUserModel';
 import { UGStore } from '../../../rn/redux/store/UGStore';
+import { doyDefine } from '../define/DoyDefine';
 import { api_order } from './api/api_order';
 import { api_user } from './api/api_user';
+import { DoySessionModel } from './DoySessionModel';
 
 
 // 校验错误信息
-export function CheckError(sm: CCSessionModel<any>): Error {
+export function CheckError(sm: DoySessionModel<any>): Error {
 
   if (Platform.OS == 'ios' && OCHelper.ocTest) {
     // api请求信息添加到iOS下拉调试页面
@@ -25,24 +28,22 @@ export function CheckError(sm: CCSessionModel<any>): Error {
     hideLoading();
     sm.noShowErrorHUD = true;
 
-    if (Platform.OS == 'ios') {
-      OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationloginTimeout'])
-    }
+    Alert.alert('温馨提示', '您的账号已经登录超时，请重新登录。', [{
+      text: '确定', onPress: () => {
+        doyDefine.token = undefined
+        jumpTo(PageName.DoyHomePage)
+        push(PageName.DoyLoginPage)
+      }
+    }])
     console.log('您的账号已经登录超时，请重新登录。', sm.url, sm.params);
     err = new Error('您的账号已经登录超时，请重新登录。');
   }
   else if (sm.status == 402) {
     hideLoading();
     sm.noShowErrorHUD = true;
-    // doyApi.user.logout().noShowErrorHUD = true;
+    doyApi.user.logout().noShowErrorHUD = true;
 
-    if (Platform.OS == 'ios') {
-      OCHelper.call('UGUserModel.setCurrentUser:', []).then(() => {
-        OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then(() => {
-          UGStore.dispatch({ type: 'reset', userInfo: {} })
-        })
-      })
-    }
+    doyDefine.token = undefined
     err = new Error('登录已过期。');
   }
   else if (sm?.res?.code != 0) {
@@ -91,7 +92,7 @@ export function CheckError(sm: CCSessionModel<any>): Error {
 export class doyApi {
   // 用户
   static user = api_user
-  
+
   // 买卖
   static order = api_order
 }
