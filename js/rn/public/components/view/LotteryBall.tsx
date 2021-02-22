@@ -59,6 +59,10 @@ const LotteryBall = ({
   } else if (type == BallType.vegetable) {
     ballUrl = getVegetableBallPic(ballNumber)
     round = 0
+  } else if (type == BallType.black_white) {
+    txColor = UGColor.TextColor1
+    bColor = anyEmpty(ballColor) ? '#eee' : ballColor
+    round = 999
   } else {
     bColor = anyEmpty(ballColor) ? getHKballColor(ballNumber) : ballColor
     round = 999
@@ -129,6 +133,7 @@ const _styles = StyleSheet.create({
   ball_text: {
     fontSize: scale(18),
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   ball_colorful_text: {
     fontSize: scale(18),

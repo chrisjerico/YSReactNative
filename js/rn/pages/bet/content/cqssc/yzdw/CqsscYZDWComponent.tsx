@@ -106,7 +106,7 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                     odds: null,
                   }}
                   selectedBalls={selectedBalls}
-                  ballType={{ size: scale(50) }}
+                  ballType={{ size: scale(46) }}
                   ballStyle={{ flexDirection: 'column' }}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
