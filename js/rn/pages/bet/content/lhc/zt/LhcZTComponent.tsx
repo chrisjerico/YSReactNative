@@ -24,6 +24,7 @@ import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 六合彩 正特 正码 等等
@@ -69,11 +70,11 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               _styles.tab_item,
               index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
             ]}>
-        <Text key={key + item[0]?.id}
+        <UGText key={key + item[0]?.id}
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.alias}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -128,11 +129,11 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + ' sub renderZT1' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderZT1 text' + groupData?.id}
+      <UGText key={key + ' sub renderZT1 text' + groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
+            ]}>{groupData?.alias}</UGText>
     </View>
 
     <View key={key + ' sub2 renderZT1' + groupData?.id}
@@ -151,11 +152,11 @@ const LhcZTComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + ' sub renderZT2' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderZT2' + +groupData?.id}
+      <UGText key={key + ' sub renderZT2' + +groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
+            ]}>{groupData?.alias}</UGText>
     </View>
 
     <View key={key + ' sub2 renderZT2' + groupData?.id}

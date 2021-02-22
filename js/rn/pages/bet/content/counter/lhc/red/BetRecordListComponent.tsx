@@ -10,6 +10,7 @@ import { LotteryHistoryData, PlayData } from '../../../../../../public/network/M
 import UseBetRecordList from './UseBetRecordList'
 import { BallStyles, LCode, lotteryBallStyle } from '../../../../const/LotteryConst'
 import { doubleDigit } from '../../../../../../public/tools/StringUtil'
+import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   historyData?: LotteryHistoryData //所有数据
@@ -45,18 +46,18 @@ const BetRecordListComponent = ({
           zodiacs?.map((item) => (
             <View key={'BetRecordListComponent renderZodiac' + zodiacStr + item}
                   style={_styles.zodiac_text_container}>
-              <Text style={_styles.zodiac_text}>{item}</Text>
+              <UGText style={_styles.zodiac_text}>{item}</UGText>
             </View>
           ))
         }
         {
-          lastZodiac && <Text key={'BetRecordListComponent renderZodiac' + zodiacStr + '+'}
-                              style={_styles.text_content_plus}>{'+'}</Text>
+          lastZodiac && <UGText key={'BetRecordListComponent renderZodiac' + zodiacStr + '+'}
+                              style={_styles.text_content_plus}>{'+'}</UGText>
         }
         {
           lastZodiac && <View key={'BetRecordListComponent renderZodiac' + zodiacStr + lastZodiac}
                               style={_styles.zodiac_text_container}>
-            <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
+            <UGText style={_styles.zodiac_text}>{lastZodiac}</UGText>
           </View>
         }
       </View>
@@ -142,8 +143,8 @@ const BetRecordListComponent = ({
                   balls?.map((item) => <LotteryBall key={key + ballStr + item}
                                                     type={ballStyle}
                                                     ballNumber={item}/>),
-                  lastBall && <Text key={key + ballStr + lastBall + '+'}
-                                    style={_styles.text_content_plus}>{'+'}</Text>,
+                  lastBall && <UGText key={key + ballStr + lastBall + '+'}
+                                    style={_styles.text_content_plus}>{'+'}</UGText>,
                   lastBall && <LotteryBall key={key + ballStr + lastBall}
                                            type={ballStyle}
                                            ballNumber={lastBall}/>,
@@ -185,9 +186,9 @@ const BetRecordListComponent = ({
         {
           anyEmpty(item?.displayNumber)
             ? null :
-            <Text key={'red renderItemContent' + item.displayNumber}
+            <UGText key={'red renderItemContent' + item.displayNumber}
                   style={_styles.text_content_issue}
-                  numberOfLines={2}>{item.displayNumber + '期'}</Text>
+                  numberOfLines={2}>{item.displayNumber + '期'}</UGText>
         }
         <View key={'renderItemContent red result'}>
           {renderBalls(item?.gameType, item?.num)}

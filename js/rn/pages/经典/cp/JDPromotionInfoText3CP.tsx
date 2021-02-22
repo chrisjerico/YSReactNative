@@ -13,6 +13,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { img_vueTemplate } from "../../../Res/icon";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { ugLog } from "../../../public/tools/UgLog";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface JDPromotionInfoText3CP {
   title?: string,
@@ -49,7 +50,7 @@ export const JDPromotionInfoText3CP = (props: JDPromotionInfoText3CP) => {
     else {
       return Skin1.textColor1
     }
-   
+
   }
 
 
@@ -69,11 +70,11 @@ export const JDPromotionInfoText3CP = (props: JDPromotionInfoText3CP) => {
       width: '100%',
       height: 50,
     }}>
-      <Text style={{ fontSize: scale(24), paddingVertical: scale(20), marginLeft: scale(20), color: Skin1.textColor1 }} >{props.title}</Text>
+      <UGText style={{ fontSize: scale(24), paddingVertical: scale(20), marginLeft: scale(20), color: Skin1.textColor1 }} >{props.title}</UGText>
       <TouchableOpacity onPress={() => {
         setSwicthValue(!swicthValue)
       }} style={{ alignItems: "center", marginHorizontal: scale(20), flex: 1, flexDirection: "row", }}>
-        <Text style={{ fontSize: scale(24), color: Skin1.textColor1, textAlign: props.textAlign ? props.textAlign : 'right', }} >{name(props.content)}</Text>
+        <UGText style={{ fontSize: scale(24), color: Skin1.textColor1, textAlign: props.textAlign ? props.textAlign : 'right', }} >{name(props.content)}</UGText>
         <AntDesign name={swicthValue ? 'caretup' : 'caretdown'} color={Skin1.textColor1} size={scale(25)} style={{ marginLeft: scale(20) }} />
       </TouchableOpacity>
 
@@ -90,8 +91,8 @@ export const JDPromotionInfoText3CP = (props: JDPromotionInfoText3CP) => {
           props?.onEarnPress && props?.onEarnPress()
         }
       }} style={{ borderRadius: scale(5), alignItems: "center", marginHorizontal: scale(20), height: 40, paddingHorizontal: scale(20), flexDirection: "row", backgroundColor: skin1.CLBgColor }}>
-        <Text style={{ fontSize: scale(24), color: nameColor(props.month_earn), textAlign: 'left', }} >{'彩票收益: '}</Text>
-        <Text style={{ fontSize: scale(24), color: 'green', textAlign: 'left', }} >{name(props.month_earn)}</Text>
+        <UGText style={{ fontSize: scale(24), color: nameColor(props.month_earn), textAlign: 'left', }} >{'彩票收益: '}</UGText>
+        <UGText style={{ fontSize: scale(24), color: 'green', textAlign: 'left', }} >{name(props.month_earn)}</UGText>
         <AntDesign name={'caretright'} color={nameColor(props.month_earn)} size={scale(25)} />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
@@ -103,8 +104,8 @@ export const JDPromotionInfoText3CP = (props: JDPromotionInfoText3CP) => {
           props?.onRealPress && props?.onRealPress()
         }
       }} style={{ borderRadius: scale(5), alignItems: "center", marginHorizontal: scale(20), height: 40, paddingHorizontal: scale(20), flexDirection: "row", backgroundColor: skin1.CLBgColor }}>
-        <Text style={{ fontSize: scale(24), color: nameColor(props.month_real_earn), textAlign: 'left', }} >{'真人收益: '}</Text>
-        <Text style={{ fontSize: scale(24), color: 'green', textAlign: 'left', }} >{name(props.month_real_earn)}</Text>
+        <UGText style={{ fontSize: scale(24), color: nameColor(props.month_real_earn), textAlign: 'left', }} >{'真人收益: '}</UGText>
+        <UGText style={{ fontSize: scale(24), color: 'green', textAlign: 'left', }} >{name(props.month_real_earn)}</UGText>
         <AntDesign name={'caretright'} color={nameColor(props.month_real_earn)} size={scale(25)} />
       </TouchableOpacity>
 

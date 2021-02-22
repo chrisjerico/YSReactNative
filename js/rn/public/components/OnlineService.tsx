@@ -14,6 +14,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { scale } from '../tools/Scale'
 import PushHelper from '../define/PushHelper'
 import { PageName } from '../navigation/Navigation'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+
 export const OnlineService = () => {
   const [title, setTitle] = useState<string>()
   const systemConf = UGStore.globalProps.sysConf
@@ -42,7 +44,7 @@ export const OnlineService = () => {
     }
   }
 
-  
+
   //拼接URl
   function pjUrl(url: string) {
     let pjStr = url + '?' + 'from=app' + '&hideHeader=1' + '&token=' + UGUserModel.getToken();
@@ -68,7 +70,7 @@ export const OnlineService = () => {
     return zzURl;
   }
   const webUrl = name()
-  // 返回首页/存款/取款/游戏大厅  
+  // 返回首页/存款/取款/游戏大厅
   let capitalController //类型选择
   let levelArray =
     [{ value: 0, label: '返回首页' },
@@ -116,7 +118,7 @@ export const OnlineService = () => {
                 ugLog('item.value',item.value)
                 PushHelper.pushLinkPositionType(19)
                 break;
-             
+
 
               default:
                 break;
@@ -139,7 +141,7 @@ export const OnlineService = () => {
             <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
               <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
             </TouchableOpacity>
-            <Text style={{
+            <UGText style={{
               alignSelf: 'center',
               paddingTop: 15,
               paddingBottom: 15,
@@ -147,7 +149,7 @@ export const OnlineService = () => {
               fontSize: 20,
               color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
 
-            }}>{title || '在线客服'}</Text>
+            }}>{title?.length > 10 ? '在线客服' : title}</UGText>
             <TouchableOpacity style={{ width: 30, position: 'absolute', left: AppDefine.width - 50 }} onPress={
               () => {
                 capitalController?.toggle();

@@ -16,6 +16,7 @@ import {BettingReducerActions} from '../../../../../../redux/reducer/BettingRedu
 import HKBallsView from '../HKBallsView';
 import HKSBItemView from '../HKSBItemView';
 import HKNormalItemView from '../HKNormalItemView';
+import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const TMPlayView = ({setProps}) => {
     const {selectedShengXiao, shengXiaoValue, subPlay} = UGStore.globalProps.BettingReducer;
@@ -38,7 +39,7 @@ const TMPlayView = ({setProps}) => {
                         backgroundColor: label == "特码A" ? "#e6e6e6" : "#dbdbdb",
                         height: 40
                     }}>
-                    <Text style={{}}>特码A</Text>
+                    <UGText style={{}}>特码A</UGText>
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -54,7 +55,7 @@ const TMPlayView = ({setProps}) => {
                         backgroundColor: label == "特码B" ? "#e6e6e6" : "#dbdbdb",
                         height: 40
                     }}>
-                    <Text style={{}}>特码B</Text>
+                    <UGText style={{}}>特码B</UGText>
                 </TouchableOpacity>
             </View>
             <FlatList style={{height: 40}} keyExtractor={(item, index) => item + index} horizontal={true}
@@ -73,7 +74,7 @@ const TMPlayView = ({setProps}) => {
                         }}>
                             <Image style={{width: 20, height: 20}}
                                    source={{uri: selectedShengXiao?.[item] == shengXiaoValue[item].length ? "RadioButton-Selected" : "RadioButton-Unselected"}}/>
-                            <Text>{item}</Text>
+                            <UGText>{item}</UGText>
                         </View>
                     </TouchableWithoutFeedback>
                 )

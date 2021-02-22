@@ -2,6 +2,7 @@ import React from 'react'
 import { ImageBackground, StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface ProfileBlockProps {
   curLevelInt: string
@@ -28,13 +29,13 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
       <ImageBackground style={styles.image} source={{ uri: backgroundImage }} resizeMode={'stretch'}>
         <View style={{ flexDirection: 'row', flex: 1 }}>
           <View style={{ flex: 8 }}>
-            <View style={styles.taskRewardTitleContainer}>{/* <Text style={{ fontSize: scale(25), color: '#f8f8d6' }}>
+            <View style={styles.taskRewardTitleContainer}>{/* <UGText style={{ fontSize: scale(25), color: '#f8f8d6' }}>
                 {nextLevelTitle}
-              </Text> */}</View>
+              </UGText> */}</View>
             <View style={{ flex: 2, paddingHorizontal: scale(20) }}>
               <View style={styles.experienceContainer}>
-                <Text style={styles.experience}>{taskRewardTotal_f.toFixed(2)}</Text>
-                <Text style={styles.growText}>{'成长值'}</Text>
+                <UGText style={styles.experience}>{taskRewardTotal_f.toFixed(2)}</UGText>
+                <UGText style={styles.growText}>{'成长值'}</UGText>
               </View>
               <View
                 style={{
@@ -51,8 +52,8 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
                   // width: scale(400),
                   justifyContent: 'space-between',
                 }}>
-                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : '距离下一级还差' + diffLevelInt_f}</Text>
-                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{taskRewardTotal_f.toFixed(2) + '/' + nextLevelInt_f}</Text>
+                <UGText style={{ color: '#fdc990', fontSize: scale(15) }}>{curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : '距离下一级还差' + diffLevelInt_f}</UGText>
+                <UGText style={{ color: '#fdc990', fontSize: scale(15) }}>{taskRewardTotal_f.toFixed(2) + '/' + nextLevelInt_f}</UGText>
               </View>
             </View>
           </View>
@@ -65,7 +66,7 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
             <TouchableWithoutFeedback onPress={onPressSign}>
               <View style={styles.signContainer}>
                 <ImageBackground style={{ width: '100%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center' }} source={{ uri: signImage }}>
-                  <Text style={{ fontSize: scale(23), color: '#f86764' }}>{'签到'}</Text>
+                  <UGText style={{ fontSize: scale(23), color: '#f86764' }}>{'签到'}</UGText>
                 </ImageBackground>
               </View>
             </TouchableWithoutFeedback>

@@ -3,6 +3,7 @@ import { View, Image, TouchableWithoutFeedback, TextInput, Text } from "react-na
 import  Icon from "react-native-vector-icons"
 import { Controller } from "react-hook-form"
 import React from 'react'
+import { UGText } from "../../../../doy/public/Button之类的基础组件/DoyButton"
 
 const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: string, control: any, onPress: () => {}, reg_vcode: 1 | 3 }) => {
   const [hide, setHide] = useState(reg_vcode == 1 ? false : true)
@@ -40,7 +41,7 @@ const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: s
         setHide(false)
         onPress()
       }}>
-          <Text>点击显示验证码</Text>
+          <UGText>点击显示验证码</UGText>
         </TouchableWithoutFeedback>}
 
     </View>

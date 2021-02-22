@@ -17,6 +17,7 @@ import { scale } from '../tools/Scale'
 import { httpClient } from '../network/httpClient'
 import { UGBasePageProps } from '../../pages/base/UGPage'
 import { UGNextIssueModel } from '../network/Model/LottoGamesModel'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
   const [trendData, setTrendData] = useState<TrendData>()
@@ -162,7 +163,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                     onPress={() => {
                       setDefaultNumber(index * 6 + contentIndex)
                     }}>
-                    <Text
+                    <UGText
                       style={{
                         color: defaultNumber == index * 6 + contentIndex ? '#ffffff' : '#999999',
                         fontSize: 15,
@@ -170,7 +171,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                         textAlign: 'center',
                       }}>
                       {text}
-                    </Text>
+                    </UGText>
                   </TouchableOpacity>
                 </View>
               ))}
@@ -186,7 +187,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                 <View style={{ flexDirection: 'row', flex: 1 }}>
                   {trendData?.data[0].map((item, index) => {
                     return index == 0 ? (
-                      <Text
+                      <UGText
                         style={{
                           backgroundColor: '#c2adac',
                           borderWidth: 0.5,
@@ -197,9 +198,9 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           textAlign: 'center',
                         }}>
                         期数
-                      </Text>
+                      </UGText>
                     ) : (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
@@ -211,7 +212,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           paddingVertical: 8,
                         }}>
                         {getHeaderIndex(currentGame.gameType, index)}
-                      </Text>
+                      </UGText>
                     )
                   })}
                 </View>
@@ -221,7 +222,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                   <View style={{ flexDirection: 'row', flex: 1 }}>
                     {item.map((data, i) => {
                       return i == 0 ? (
-                        <Text
+                        <UGText
                           key={`${index}-${i}`}
                           style={{
                             backgroundColor: '#c2adac',
@@ -235,7 +236,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           }}
                         >
                           {data}
-                        </Text>
+                        </UGText>
                       ) : (
                         <View
                           style={{
@@ -254,7 +255,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                                   position: 'absolute',
                                 }}
                               />
-                              <Text
+                              <UGText
                                 style={{
                                   height: GRID_ITEM_HEIGHT,
                                   textAlign: 'center',
@@ -266,10 +267,10 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                                   paddingVertical: 8,
                                 }}>
                                 {data}
-                              </Text>
+                              </UGText>
                             </>
                           ) : (
-                            <Text
+                            <UGText
                               style={{
                                 height: GRID_ITEM_HEIGHT,
                                 textAlign: 'center',
@@ -281,7 +282,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                                 fontSize: 14,
                               }}>
                               {data}
-                            </Text>
+                            </UGText>
                           )}
                         </View>
                       )
@@ -293,7 +294,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                 <View style={{ flexDirection: 'row' }}>
                   {trendData?.totalTimes.map((item, index) => {
                     return index == 0 ? (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           backgroundColor: '#c2adac',
@@ -305,9 +306,9 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           textAlign: 'center',
                         }}>
                         {item}
-                      </Text>
+                      </UGText>
                     ) : (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
@@ -319,14 +320,14 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           paddingVertical: 8,
                         }}>
                         {item}
-                      </Text>
+                      </UGText>
                     )
                   })}
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                   {trendData?.averageOmission.map((item, index) => {
                     return index == 0 ? (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           backgroundColor: '#c2adac',
@@ -338,9 +339,9 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           textAlign: 'center',
                         }}>
                         {item}
-                      </Text>
+                      </UGText>
                     ) : (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
@@ -352,14 +353,14 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           paddingVertical: 8,
                         }}>
                         {item}
-                      </Text>
+                      </UGText>
                     )
                   })}
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                   {trendData?.maximumOmission.map((item, index) => {
                     return index == 0 ? (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           backgroundColor: '#c2adac',
@@ -371,9 +372,9 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           textAlign: 'center',
                         }}>
                         {item}
-                      </Text>
+                      </UGText>
                     ) : (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
@@ -385,14 +386,14 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           paddingVertical: 8,
                         }}>
                         {item}
-                      </Text>
+                      </UGText>
                     )
                   })}
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                   {trendData?.maximumConnection.map((item, index) => {
                     return index == 0 ? (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           backgroundColor: '#c2adac',
@@ -404,9 +405,9 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           textAlign: 'center',
                         }}>
                         {item}
-                      </Text>
+                      </UGText>
                     ) : (
-                      <Text
+                      <UGText
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
@@ -418,7 +419,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
                           paddingVertical: 8,
                         }}>
                         {item}
-                      </Text>
+                      </UGText>
                     )
                   })}
                 </View>
@@ -436,19 +437,19 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
           </ScrollView>
         </ScrollView> :
         <View style={{ flex: 1, backgroundColor: '#f3f3f3', justifyContent: 'center' }}>
-          <Text style={{ alignSelf: 'center', color: '#cccccc', fontSize: 18 }}>此彩种暂无走势资料</Text>
+          <UGText style={{ alignSelf: 'center', color: '#cccccc', fontSize: 18 }}>此彩种暂无走势资料</UGText>
         </View>}
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity style={{ backgroundColor: '#d7213a', height: 44, width: 160, justifyContent: 'center' }}
                           onPress={() => setShowModal(true)}>
-          <Text
+          <UGText
             style={{
               textAlign: 'center',
               color: 'white',
               paddingHorizontal: 16,
             }}>
             {currentGame ? currentGame.title : ''}
-          </Text>
+          </UGText>
         </TouchableOpacity>
         <View style={{ flex: 1, flexDirection: 'row', paddingRight: 8, alignItems: 'center' }}>
           <View style={{ flex: 1 }} />
@@ -476,7 +477,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
               marginLeft: 4,
             }}
             onPress={() => setShowModal(true)}>
-            <Text style={{ color: 'white', paddingHorizontal: 8, paddingVertical: 4, fontSize: 14 }}>选择彩种</Text>
+            <UGText style={{ color: 'white', paddingHorizontal: 8, paddingVertical: 4, fontSize: 14 }}>选择彩种</UGText>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -488,7 +489,7 @@ const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
               marginLeft: 4,
             }}
             onPress={() => PushHelper.pushCategory(1, currentGame.id)}>
-            <Text style={{ color: 'white', paddingHorizontal: 8, paddingVertical: 4, fontSize: 14 }}>去下注</Text>
+            <UGText style={{ color: 'white', paddingHorizontal: 8, paddingVertical: 4, fontSize: 14 }}>去下注</UGText>
           </TouchableOpacity>
         </View>
         <ChooseGameModal

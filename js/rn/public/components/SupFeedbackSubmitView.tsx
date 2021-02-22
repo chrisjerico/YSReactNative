@@ -15,6 +15,7 @@ import { Skin1 } from '../theme/UGSkinManagers'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const SupFeedbackSubmitView = ({ route }) => {
   const [content, setContent] = useState('')
@@ -48,29 +49,29 @@ export const SupFeedbackSubmitView = ({ route }) => {
       <Header />
       <ScrollView style={{ paddingHorizontal: 20, paddingTop: 24, backgroundColor: '#f5f5f9', flex: 1 }}>
         <View style={{ backgroundColor: 'white', minHeight: 80 }}>
-          <Text style={{ color: Skin1.textColor2, fontSize: 12, marginLeft: 8, marginTop: 8 }}>类型：提交建议</Text>
-          <Text
-            style={{ color: '#ad8552', fontSize: 12, marginLeft: 8, marginTop: 8 }}>{route.params.item.content}</Text>
+          <UGText style={{ color: Skin1.textColor2, fontSize: 12, marginLeft: 8, marginTop: 8 }}>类型：提交建议</UGText>
+          <UGText
+            style={{ color: '#ad8552', fontSize: 12, marginLeft: 8, marginTop: 8 }}>{route.params.item.content}</UGText>
           <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end', flex: 1 }}>
-            <Text style={{
+            <UGText style={{
               color: Skin1.textColor2,
               fontSize: 12,
               marginBottom: 8,
               marginRight: 8,
-            }}>{`提交时间：${moment(new Date(route.params.item.createTime * 1000)).format('YYYY-MM-DD HH:MM:ss')}`}</Text>
+            }}>{`提交时间：${moment(new Date(route.params.item.createTime * 1000)).format('YYYY-MM-DD HH:MM:ss')}`}</UGText>
           </View>
         </View>
         {detail.map((item) => (
           <View style={{ backgroundColor: 'white', minHeight: 60, marginTop: 12 }}>
-            <Text
-              style={{ color: '#ad8552', fontSize: 12, marginLeft: 8, marginTop: 8 }}>{item.content}</Text>
+            <UGText
+              style={{ color: '#ad8552', fontSize: 12, marginLeft: 8, marginTop: 8 }}>{item.content}</UGText>
             <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end', flex: 1 }}>
-              <Text style={{
+              <UGText style={{
                 color: Skin1.textColor2,
                 fontSize: 12,
                 marginBottom: 8,
                 marginRight: 8,
-              }}>{`提交时间：${moment(new Date(item.createTime * 1000)).format('YYYY-MM-DD HH:MM:ss')}`}</Text>
+              }}>{`提交时间：${moment(new Date(item.createTime * 1000)).format('YYYY-MM-DD HH:MM:ss')}`}</UGText>
             </View>
           </View>
         ))}
@@ -90,7 +91,7 @@ export const SupFeedbackSubmitView = ({ route }) => {
             borderRadius: 4,
             marginHorizontal: 36,
           }}>
-            <Text style={{ color: '#fff' }}>提交</Text>
+            <UGText style={{ color: '#fff' }}>提交</UGText>
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
@@ -108,7 +109,7 @@ const Header = () => {
         alignItems: 'center',
         alignSelf: 'center',
       }}>
-        <Text style={{
+        <UGText style={{
           paddingTop: 15,
           paddingBottom: 15,
           textAlign: 'center',
@@ -116,7 +117,7 @@ const Header = () => {
           width: '100%',
           alignSelf: 'center',
           color: Skin1.navBarTitleColor,
-        }}>反馈记录</Text>
+        }}>反馈记录</UGText>
         <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
           <Icon size={33} color={Skin1.navBarTitleColor} name={'angle-left'} />
         </TouchableOpacity>

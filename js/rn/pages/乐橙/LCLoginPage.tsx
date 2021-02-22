@@ -10,6 +10,7 @@ import APIRouter from '../../public/network/APIRouter'
 import { httpClient } from '../../public/network/httpClient'
 import NeedNameInputComponent from '../../public/components/tars/NeedNameInputComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const LCLoginPage = () => {
   const { sign, value, onChange, navigateTo, show, valid, reference } = useSignInPage({
@@ -88,7 +89,7 @@ const LCLoginPage = () => {
                   borderColor: '#dddddd',
                 }}
                 onPress={signIn}>
-                <Text style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>登录</Text>
+                <UGText style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>登录</UGText>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -101,7 +102,7 @@ const LCLoginPage = () => {
                   borderColor: '#dddddd',
                 }}
                 onPress={signIn}>
-                <Text style={{ alignSelf: 'center', paddingVertical: 20, color: '#ddd' }}>登录</Text>
+                <UGText style={{ alignSelf: 'center', paddingVertical: 20, color: '#ddd' }}>登录</UGText>
               </TouchableOpacity>
             )}
             <TouchableOpacity
@@ -113,7 +114,7 @@ const LCLoginPage = () => {
                 borderColor: '#dddddd',
               }}
               onPress={navigateToSignUpPage}>
-              <Text style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>马上注册</Text>
+              <UGText style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>马上注册</UGText>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -124,7 +125,7 @@ const LCLoginPage = () => {
                 borderColor: '#dddddd',
               }}
               onPress={tryPlay}>
-              <Text style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>免费试玩</Text>
+              <UGText style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>免费试玩</UGText>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -135,7 +136,7 @@ const LCLoginPage = () => {
                 borderColor: '#dddddd',
               }}
               onPress={() => navigate(PageName.LCHomePage)}>
-              <Text style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>返回首页</Text>
+              <UGText style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>返回首页</UGText>
             </TouchableOpacity>
             <NeedNameInputComponent ref={needNameInputRef} onSubmitFullName={onSubmitFullName} />
           </View>

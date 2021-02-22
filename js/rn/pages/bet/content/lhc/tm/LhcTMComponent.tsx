@@ -16,6 +16,7 @@ import { ugLog } from '../../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { isSelectedBallOnId } from '../../../widget/it/ISelBall'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 六合彩特码
@@ -58,11 +59,11 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               _styles.tab_item,
               index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
             ]}>
-        <Text key={key + item[0]?.alias}
+        <UGText key={key + item[0]?.alias}
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.alias}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -96,8 +97,8 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   size={scale(36)}
                   name={'circle-o'}/>
         }
-        <Text key={key + `${zodiac?.name}_select name`}
-              style={_styles.zodiac_item_text}>{zodiac?.name}</Text>
+        <UGText key={key + `${zodiac?.name}_select name`}
+              style={_styles.zodiac_item_text}>{zodiac?.name}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -149,11 +150,11 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                                                         style={CommStyles.flex}>
     <View key={key + 'renderTM sub' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + 'renderTM sub text' + groupData?.id}
+      <UGText key={key + 'renderTM sub text' + groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
+            ]}>{groupData?.alias}</UGText>
     </View>
 
     <View key={key + 'renderTM sub 2' + groupData?.id}
@@ -173,11 +174,11 @@ const LhcTMComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + 'renderSB sub' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + 'renderSB sub text' + groupData?.id}
+      <UGText key={key + 'renderSB sub text' + groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
+            ]}>{groupData?.alias}</UGText>
     </View>
 
     <View key={key + 'renderSB sub 2' + groupData?.id}

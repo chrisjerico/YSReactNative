@@ -33,6 +33,7 @@ import { UGBasePageProps } from '../base/UGPage'
 import AppDefine from '../../public/define/AppDefine'
 import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
 import { useHtml5Image } from '../../Res/icon'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
   const {
@@ -147,7 +148,7 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
                 </TouchableWithoutFeedback>
                 <View style={{ marginLeft: 12 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: '#ffffff', lineHeight: 20, fontSize: 14 }}>{usr}</Text>
+                    <UGText style={{ color: '#ffffff', lineHeight: 20, fontSize: 14 }}>{usr}</UGText>
                     <LinearGradient colors={['#FFEAC3', '#FFE09A']} start={{ x: 0, y: 1 }}
                                     end={{ x: 1, y: 1 }}
                                     style={{
@@ -157,14 +158,14 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
                                       width: 42,
                                       height: 17,
                                     }}>
-                      <Text style={{
+                      <UGText style={{
                         marginTop: 0.5,
                         textAlign: 'center',
                         color: '#8F6832',
                         fontStyle: 'italic',
                         fontWeight: '600',
                         fontSize: 13,
-                      }}>{curLevelGrade}</Text>
+                      }}>{curLevelGrade}</UGText>
                     </LinearGradient>
                   </View>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -181,7 +182,7 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
                       height: 8,
                       borderRadius: 4,
                     }} />
-                    <Text
+                    <UGText
                       style={{
                         position: 'absolute',
                         left: 91.5,
@@ -190,33 +191,33 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
                         fontSize: 8,
                       }}>{isNaN(parseFloat(taskRewardTotal).toFixed(balanceDecimal || 2) / parseFloat(nextLevelInt).toFixed(balanceDecimal || 2)) ?
                       '0%' :
-                      parseFloat(taskRewardTotal).toFixed(balanceDecimal || 2) / parseFloat(nextLevelInt).toFixed(balanceDecimal || 2) * 100 + '%'}</Text>
-                    <Text
+                      parseFloat(taskRewardTotal).toFixed(balanceDecimal || 2) / parseFloat(nextLevelInt).toFixed(balanceDecimal || 2) * 100 + '%'}</UGText>
+                    <UGText
                       style={{
                         color: '#ffffff',
                         lineHeight: 20,
                         fontSize: 14,
-                      }}>{nextLevelGrade}</Text>
+                      }}>{nextLevelGrade}</UGText>
                   </View>
                   {levelWidth === 193 ?
-                    <Text style={{ color: '#ffffff', fontSize: 14 }}>恭喜您已经是最高等级!</Text> :
-                    <Text style={{
+                    <UGText style={{ color: '#ffffff', fontSize: 14 }}>恭喜您已经是最高等级!</UGText> :
+                    <UGText style={{
                       color: '#ffffff',
                       fontSize: 14,
-                    }}>{`距离下一级还差${isNaN(parseFloat(nextLevelInt) - parseFloat(taskRewardTotal)) ? 0.00 : (parseFloat(nextLevelInt).toFixed(balanceDecimal || 2) - parseFloat(taskRewardTotal).toFixed(balanceDecimal || 2)).toFixed(balanceDecimal || 2)}`}</Text>
+                    }}>{`距离下一级还差${isNaN(parseFloat(nextLevelInt) - parseFloat(taskRewardTotal)) ? 0.00 : (parseFloat(nextLevelInt).toFixed(balanceDecimal || 2) - parseFloat(taskRewardTotal).toFixed(balanceDecimal || 2)).toFixed(balanceDecimal || 2)}`}</UGText>
                   }
                 </View>
               </View>
               <View style={{ marginHorizontal: 16, marginTop: 16 }}>
-                <Text style={{ fontSize: 13, color: '#ffffff' }}>总余额（元）</Text>
+                <UGText style={{ fontSize: 13, color: '#ffffff' }}>总余额（元）</UGText>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                  <Text style={{
+                  <UGText style={{
                     fontSize: 22,
                     fontWeight: 'bold',
                     color: '#ffffff',
                     alignSelf: 'center',
                     textAlign: 'center',
-                  }}>{balance ? isNaN(Number(balance)) ? `¥0.00` : `¥` + parseFloat(balance).toFixed(balanceDecimal || 2) : `¥0.00`}</Text>
+                  }}>{balance ? isNaN(Number(balance)) ? `¥0.00` : `¥` + parseFloat(balance).toFixed(balanceDecimal || 2) : `¥0.00`}</UGText>
                   <View style={{ flex: 1 }} />
                   <Animated.View
                     style={[{ transform: [{ rotateZ: spinDeg }] }]}
@@ -248,7 +249,7 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
               <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
                        source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png' }} />
-                <Text style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>充值</Text>
+                <UGText style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>充值</UGText>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushCategory(7, 22)
@@ -256,21 +257,21 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
               <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
                        source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png' }} />
-                <Text style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>提现</Text>
+                <UGText style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>提现</UGText>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(transferItem.code)}>
               <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
                        source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png' }} />
-                <Text style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>额度转换</Text>
+                <UGText style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>额度转换</UGText>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(missionItem.code)}>
               <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
                        source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png' }} />
-                <Text style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>任务中心</Text>
+                <UGText style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>任务中心</UGText>
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -293,7 +294,7 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
                   <TouchableOpacity style={{ flexDirection: 'row', flex: 1 }} onPress={loginOut}>
                     <Image style={{ height: 29, width: 29, marginRight: 10 }}
                            source={{ uri: httpClient.defaults.baseURL + `/views/mobileTemplate/20/images/Csignout.png` }} />
-                    <Text style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>退出登录</Text>
+                    <UGText style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>退出登录</UGText>
                     <View style={{ marginRight: 20 }}>
                       <Icon size={20} name={'angle-right'} />
                     </View>
@@ -315,8 +316,8 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
                   }}>
                     <Image style={{ height: 29, width: 29, marginRight: 10 }}
                            source={{ uri: item.logo }} />
-                    <Text
-                      style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</Text>
+                    <UGText
+                      style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</UGText>
                     <View style={{ marginRight: 20 }}>
                       <Icon size={20} name={'angle-right'} />
                     </View>
@@ -330,7 +331,7 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
                         width: 20,
                         height: 20,
                       }}>
-                        <Text style={{ alignSelf: 'center', color: 'white' }}>{unreadMsg}</Text>
+                        <UGText style={{ alignSelf: 'center', color: 'white' }}>{unreadMsg}</UGText>
                       </View>)}
                   </TouchableOpacity>
                 </View>

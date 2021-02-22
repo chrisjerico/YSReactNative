@@ -5,6 +5,7 @@ import { useDimensions } from '@react-native-community/hooks'
 import { UGStore } from '../../../../../../redux/store/UGStore'
 import { getHKballColor } from '../../lottoSetting'
 import { BettingReducerActions } from '../../../../../../redux/reducer/BettingReducer'
+import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const itemSize = 40
 const LMAContainer = ({ setProps }) => {
@@ -42,22 +43,22 @@ const LMAContainer = ({ setProps }) => {
                       setProps()
                       setCurrentFilter(item)
                     }}>
-                      <Text style={{
+                      <UGText style={{
                         paddingHorizontal: 12,
                         paddingTop: 20,
                         paddingBottom: 10,
                         fontSize: 14,
                         backgroundColor: currentFilter == item ? '#e6e6e6' : '#dbdbdb',
-                      }}>{item}</Text>
+                      }}>{item}</UGText>
                     </TouchableWithoutFeedback>
                   }} />
       </View>
-      <Text style={{
+      <UGText style={{
         textAlign: 'center',
         paddingVertical: 10,
         color: '#c8222f',
         backgroundColor: '#eee',
-      }}>{currentFilter}</Text>
+      }}>{currentFilter}</UGText>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {Array.from({ length: 49 }).map((res, index) => index + 1).map((res, index) => {
           if (index < 45) {
@@ -90,9 +91,9 @@ const LMAContainer = ({ setProps }) => {
                       alignItems: 'center',
                       marginHorizontal: 5,
                     }}>
-                      <Text style={{color: bettingResult[res] ? "white" : "black"}}>{res < 10 ? '0' + res : res.toString()}</Text>
+                      <UGText style={{color: bettingResult[res] ? "white" : "black"}}>{res < 10 ? '0' + res : res.toString()}</UGText>
                     </View>
-                    <Text>{currentOdd}</Text>
+                    <UGText>{currentOdd}</UGText>
                   </View>
                 </View>
               </TouchableWithoutFeedback>
@@ -126,9 +127,9 @@ const LMAContainer = ({ setProps }) => {
                       alignItems: 'center',
                       marginHorizontal: 5,
                     }}>
-                      <Text>{res < 10 ? '0' + res : res.toString()}</Text>
+                      <UGText>{res < 10 ? '0' + res : res.toString()}</UGText>
                     </View>
-                    <Text>{currentOdd}</Text>
+                    <UGText>{currentOdd}</UGText>
                   </View>
                 </View>
               </TouchableWithoutFeedback>

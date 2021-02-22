@@ -1,6 +1,7 @@
 import * as React from "react";
 import {View, Text, FlatList, TouchableWithoutFeedback, Image} from "react-native";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
+import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const HotLotteryView = ({list, onPress}: {
     list: List[], onPress: (list: List) => void
@@ -8,7 +9,7 @@ export const HotLotteryView = ({list, onPress}: {
   console.log("tetete", list.length)
     return (
         <View style={{padding: 10}}>
-            <Text style={{fontSize: 18, color: '#3c3c3c', fontWeight: "bold"}}>热门彩种</Text>
+            <UGText style={{fontSize: 18, color: '#3c3c3c', fontWeight: "bold"}}>热门彩种</UGText>
             <FlatList
                 scrollEnabled={false}
                 numColumns={3}

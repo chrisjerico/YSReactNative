@@ -18,6 +18,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import { goToUserCenterType } from '../../public/tools/tars'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
@@ -60,8 +61,8 @@ const JXHMinePage = () => {
                 <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', height: '100%' }}>
                   <Avatar uri={isTest || !avatar ? AppDefine.defaultAvatar : avatar} onPress={onPressAvatar} />
                   <View style={{ height: '100%', justifyContent: 'space-between', paddingVertical: '8%', marginLeft: scale(10) }}>
-                    <Text style={{ color: '#a0a0a0', fontSize: scale(20) }}>{usr}</Text>
-                    <Text style={{ color: '#cfa461', fontSize: scale(20) }}>{curLevelGrade}</Text>
+                    <UGText style={{ color: '#a0a0a0', fontSize: scale(20) }}>{usr}</UGText>
+                    <UGText style={{ color: '#cfa461', fontSize: scale(20) }}>{curLevelGrade}</UGText>
                   </View>
                 </View>
                 <TouchableWithoutFeedback onPress={goToUserCenterType.每日签到}>
@@ -72,7 +73,7 @@ const JXHMinePage = () => {
               </View>
               <View style={{ backgroundColor: '#111111', aspectRatio: 3, borderRadius: scale(5) }}>
                 <View style={{ flex: 1, paddingLeft: scale(20), alignItems: 'center', flexDirection: 'row' }}>
-                  <Text style={{ color: '#676767', marginRight: scale(10) }}>{'账户余额'}</Text>
+                  <UGText style={{ color: '#676767', marginRight: scale(10) }}>{'账户余额'}</UGText>
                   <Ionicons
                     name={hideBalance ? 'ios-eye-off' : 'ios-eye'}
                     color={'#676767'}
@@ -83,7 +84,7 @@ const JXHMinePage = () => {
                   />
                 </View>
                 <View style={{ flex: 1.5, paddingLeft: scale(20) }}>
-                  <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{hideBalance ? '*****' : balance}</Text>
+                  <UGText style={{ color: '#cfa461', fontSize: scale(35) }}>{hideBalance ? '*****' : balance}</UGText>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%', flex: 1, backgroundColor: '#2a2a2a' }}>
                   <Button

@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface HomeHeaderProps {
   name: string
@@ -32,12 +33,12 @@ const HomeHeader = ({ uid, name = '', balance = '', onPressSignIn, onPressSignUp
           </View>
           <TouchableWithoutFeedback onPress={onPressUser}>
             <View style={styles.right}>
-              <Text numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>
+              <UGText numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>
                 {name}
-              </Text>
-              <Text numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>
+              </UGText>
+              <UGText numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>
                 {'￥' + balance}
-              </Text>
+              </UGText>
             </View>
           </TouchableWithoutFeedback>
         </View>

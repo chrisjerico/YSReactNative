@@ -5,6 +5,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
 import { stringToFloat } from '../../tools/tars'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface ReLoadComponentProps {
   balance: string
@@ -59,10 +60,10 @@ const ReLoadBalanceComponent = ({
   const moneyNumber = stringToFloat(money)
   return (
     <View style={[styles.container, containerStyle]}>
-      <Text style={[styles.title, titleStyle]}>{title}</Text>
-      <Text style={[styles.balance, balanceStyle]} numberOfLines={1}>
+      <UGText style={[styles.title, titleStyle]}>{title}</UGText>
+      <UGText style={[styles.balance, balanceStyle]} numberOfLines={1}>
         {(showK ? (moneyNumber / 1000).toFixed(balanceDecimal) + 'K' : moneyNumber.toFixed(balanceDecimal)) + currency}
-      </Text>
+      </UGText>
       <TouchableWithoutFeedback
         onPress={() => {
           if (!reload.current) {

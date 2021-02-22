@@ -9,6 +9,7 @@ import {
 import { Icon } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
 import { scale } from '../../tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface LinearBadgeProps {
   title: string;
@@ -43,7 +44,7 @@ const LinearBadge = ({
           containerStyle,
         ]}
       >
-        <Text style={[styles.text, textStyle]}>{title}</Text>
+        <UGText style={[styles.text, textStyle]}>{title}</UGText>
         {showIcon ? (
           <Icon
             style={{ marginLeft: scale(5) }}

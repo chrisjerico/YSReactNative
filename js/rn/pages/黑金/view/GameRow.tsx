@@ -11,6 +11,7 @@ import CommStyles from "../../base/CommStyles";
 import {navigate} from "../../../public/navigation/RootNavigation";
 import {PageName} from "../../../public/navigation/Navigation";
 import { skinColors } from "../../../public/theme/const/UGSkinColor";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface GameRowProps {
   games?: HomeGamesModel,
@@ -51,12 +52,12 @@ const GameRow = ({
         <FastImage
           style={_styles.itemTitleFlag}
           source={{uri: 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/icon_live.png'}}/>
-        <Text style={_styles.itemTitleText}>{item.name}</Text>
+        <UGText style={_styles.itemTitleText}>{item.name}</UGText>
         <View style={CommStyles.flex}/>
-        <Text style={_styles.itemTitleRightText}
+        <UGText style={_styles.itemTitleRightText}
               onPress={() => navigate(PageName.HJGameCategoryPage, {gameItem: item})}>
           {_rightText}
-        </Text>
+        </UGText>
       </View>
       <GameRowItem iconsItem={item} clickItem={clickItem}/>
     </View>
@@ -73,9 +74,9 @@ const GameRow = ({
     //         <FastImage
     //           style={_styles.itemTitleFlag}
     //           source={{uri: 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/icon_live.png'}}/>
-    //         <Text style={_styles.itemTitleText}>{item.name}</Text>
+    //         <UGText style={_styles.itemTitleText}>{item.name}</UGText>
     //         <View style={_styles.flex}/>
-    //         <Text style={_styles.itemTitleRightText}>{_rightText}</Text>
+    //         <UGText style={_styles.itemTitleRightText}>{_rightText}</UGText>
     //       </View>
     //       <GameRowItem iconsItem={item}/>
     //     </View>)

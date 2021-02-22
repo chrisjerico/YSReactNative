@@ -74,14 +74,14 @@ const
 
     /**
        * 跳到弹窗
-       * 
+       *
        */
     function rightClicked() {
       OCHelper.call('UGLotteryRulesView.alloc.initWithFrame:[setTitle:][setContent:].show', [NSValue.CGRectMake(30, 120, AppDefine.width - 60, AppDefine.height - 230)], ['游戏规则'], ['   长龙助手是对快3、时时彩、PK10、六合彩、幸运飞艇、北京赛车等特定玩法的“大小单双” 开奖结果进行跟踪统计，并可进行快捷投注的助手工具；\n    每期出现大、小、单、双的概率为50%，如果连续3期及以上的开奖结果相同，称之为“长龙”，通常会采用倍投的方式进行“砍龙”或“顺龙”。\n\n  1、什么是砍龙？\n  如连续开5期“单”，可以选择“双”进行投注，这种投注方案称之为“砍龙”；\n\n  2、什么是顺龙？\n  如连续开5期“单”，继续选择“单”进行投注，这种投注方案称之为“顺龙”；\n\n  3、什么是倍投？\n  倍投是一种翻倍投注方式，是为了保障能够在“砍龙”或“顺龙”的过程中持续盈利的一种投注方式。']);
     }
     /**
      * 刷新个人金钱数据
-     * 
+     *
      */
     //旋转方法
     function refreshBalance() {
@@ -122,11 +122,11 @@ const
     }
     /**
 * 导航
-* 
+*
 */
     const _renderNavRigth = ({ }) => {
       {
-        //映射 0-1的值 映射 成 0 - 360 度  
+        //映射 0-1的值 映射 成 0 - 360 度
         const spin = spinValue.interpolate({
           inputRange: [0, 1],//输入值
           outputRange: ['0deg', '360deg'] //输出值
@@ -138,9 +138,9 @@ const
             <TouchableOpacity style={{ alignItems: 'center', flexDirection: 'row', }} onPress={() => {
               refreshBalance()
             }}>
-              <Text style={{ color: 'white', fontSize: 14, marginRight: 2 }}>
+              <UGText style={{ color: 'white', fontSize: 14, marginRight: 2 }}>
                 {money}
-              </Text>
+              </UGText>
               <Animated.View style={[{ width: scale(25) }, { transform: [{ rotateZ: spin }] }]}>
                 <FontAwesome name={'refresh'} size={scale(25)} color={'white'} />
               </Animated.View>

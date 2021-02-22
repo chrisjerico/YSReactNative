@@ -4,6 +4,7 @@ import { FlatList, Text, View } from 'react-native'
 import AppDefine from '../../define/AppDefine'
 import LinearGradient from 'react-native-linear-gradient'
 import { Skin1 } from '../../theme/UGSkinManagers'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const TransferLineRecordView = () => {
   const [dataList, setDataList] = useState([])
@@ -53,26 +54,26 @@ export const TransferLineRecordView = () => {
           }}>
             <View
               style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>游戏</Text>
+              <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>游戏</UGText>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>金额</Text>
+              <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>金额</UGText>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>日期</Text>
+              <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>日期</UGText>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16, borderColor: '#d9d9d9' }}>
-              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>模式</Text>
+              <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>模式</UGText>
             </View>
           </View>
         </LinearGradient>
       )}
       ListEmptyComponent={() => (
         <View style={{ backgroundColor: '#f6f6f6', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: Skin1.isBlack ? '#000' : '#c7c7c7', fontSize: 18 }}>暂无更多数据</Text>
+          <UGText style={{ color: Skin1.isBlack ? '#000' : '#c7c7c7', fontSize: 18 }}>暂无更多数据</UGText>
         </View>
       )}
       renderItem={({ item }) => (
@@ -83,20 +84,20 @@ export const TransferLineRecordView = () => {
         }}>
           <View
             style={{ flex: 1, paddingVertical: 16 }}>
-            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>{item.gameName}</Text>
+            <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>{item.gameName}</UGText>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16 }}>
-            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>{`¥ ${item.amount}`}</Text>
+            <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>{`¥ ${item.amount}`}</UGText>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16 }}>
-            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>{item.actionTime}</Text>
+            <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>{item.actionTime}</UGText>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16 }}>
-            <Text
-              style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>{item.isAuto ? '手动' : '自动'}</Text>
+            <UGText
+              style={{ alignSelf: 'center', color: Skin1.isBlack ? '#fff' : '#000' }}>{item.isAuto ? '手动' : '自动'}</UGText>
           </View>
         </View>
       )}

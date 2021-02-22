@@ -10,6 +10,7 @@ import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const JXHSignUpPage = () => {
   const { show, reference, label, onChange, sign, passwordLimit, placeholder, navigateTo, value } = useSignUpPage({
@@ -28,11 +29,11 @@ const JXHSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <Text style={{ color: '#ffffff', fontSize: scale(40), fontWeight: '500' }}>{'欢迎注冊'}</Text>
+          <UGText style={{ color: '#ffffff', fontSize: scale(40), fontWeight: '500' }}>{'欢迎注冊'}</UGText>
           <View style={{ flexDirection: 'row', marginVertical: scale(20) }}>
-            <Text style={{ color: '#ffffff' }}>{'我已有帐号，立即'}</Text>
+            <UGText style={{ color: '#ffffff' }}>{'我已有帐号，立即'}</UGText>
             <TouchableWithoutFeedback onPress={navigateToSignInPage}>
-              <Text style={{ color: '#cfa461' }}>{'登录'}</Text>
+              <UGText style={{ color: '#cfa461' }}>{'登录'}</UGText>
             </TouchableWithoutFeedback>
           </View>
           <SignUpFormList

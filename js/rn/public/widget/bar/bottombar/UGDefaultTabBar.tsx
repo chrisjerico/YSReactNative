@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Animated, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {TabBarProps} from 'react-native-tab-view';
+import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export default class UGDefaultTabBar extends Component {
   constructor(props: TabBarProps) {
@@ -23,7 +24,7 @@ export default class UGDefaultTabBar extends Component {
     return (
       <Button style={{flex: 1}} key={name} accessible={true} accessibilityLabel={name} accessibilityTraits="button" onPress={() => onPressHandler(page)}>
         <View style={styles.tab}>
-          <Text style={[{color: textColor, fontWeight}]}>{name}</Text>
+          <UGText style={[{color: textColor, fontWeight}]}>{name}</UGText>
         </View>
       </Button>
     );

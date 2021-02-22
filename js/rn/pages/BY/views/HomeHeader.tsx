@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const iconSize = scale(35)
 
@@ -16,15 +17,15 @@ const HomeHeader = ({ logo, uid, onPressSignIn, onPressSignUp, onPressTryPlay, o
       ) : (
         <View style={{ flexDirection: 'row' }}>
           <TouchableWithoutFeedback onPress={onPressSignIn}>
-            <Text style={styles.rightTitletext}>{'登录'}</Text>
+            <UGText style={styles.rightTitletext}>{'登录'}</UGText>
           </TouchableWithoutFeedback>
-          <Text style={styles.bar}>{'/'}</Text>
+          <UGText style={styles.bar}>{'/'}</UGText>
           <TouchableWithoutFeedback onPress={onPressSignUp}>
-            <Text style={styles.rightTitletext}>{'注册'}</Text>
+            <UGText style={styles.rightTitletext}>{'注册'}</UGText>
           </TouchableWithoutFeedback>
-          <Text style={styles.bar}>{'/'}</Text>
+          <UGText style={styles.bar}>{'/'}</UGText>
           <TouchableWithoutFeedback onPress={onPressTryPlay}>
-            <Text style={styles.rightTitletext}>{'试玩'}</Text>
+            <UGText style={styles.rightTitletext}>{'试玩'}</UGText>
           </TouchableWithoutFeedback>
         </View>
       )}

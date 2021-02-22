@@ -14,6 +14,7 @@ import { findZodiacByName } from '../../../util/LotteryUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { array } from 'prop-types'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 六合彩 合肖 等等
@@ -65,7 +66,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + 'renderLineBall' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + 'renderLineBall text' + groupData?.id}
+        <UGText key={key + 'renderLineBall text' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
@@ -74,7 +75,7 @@ const LhcHXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
             arrayLength(selectedBalls) <= 1 ? '' :
               `（赔率: ${groupData?.plays[arrayLength(selectedBalls) - 2]?.odds}）`
           )
-        }</Text>
+        }</UGText>
       </View>
 
       <View key={key + 'renderLineBall sub' + groupData?.id}

@@ -9,6 +9,7 @@ import { SalaryModel } from '../../../public/network/Model/SalaryModel'
 import { hideLoading, showLoading, showSuccess } from '../../../public/widget/UGLoadingCP'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { AnimationFadeView } from '../../../public/tools/animation/AnimationViews'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export interface JDSalaryListCP {
   showSalaryAlert?: () => void
@@ -47,13 +48,13 @@ export const JDSalaryListCP = ({ c_ref }: { c_ref: JDSalaryListCP }) => {
     <AnimationFadeView show={v.show}>
       <View style={{ width: AppDefine.width - 55, height: AppDefine.height - 260, backgroundColor: '#fff', borderRadius: 10, overflow: 'hidden' }}>
         <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: 45, justifyContent: 'center' }}>
-          <Text style={{ textAlign: 'center', color: '#fff', fontSize: 17 }}>领取俸禄</Text>
+          <UGText style={{ textAlign: 'center', color: '#fff', fontSize: 17 }}>领取俸禄</UGText>
         </LinearGradient>
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', height: 45 }}>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>等级</Text>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>周俸禄</Text>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>月俸禄</Text>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>领取</Text>
+          <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>等级</UGText>
+          <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>周俸禄</UGText>
+          <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>月俸禄</UGText>
+          <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>领取</UGText>
         </View>
         <View style={{ height: 0.5, backgroundColor: '#aaa' }} />
         <FlatList showsVerticalScrollIndicator={false} data={v.list} renderItem={SalaryCell} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
@@ -75,10 +76,10 @@ const SalaryCell = ({ item }: ListRenderItemInfo<SalaryModel>) => {
   return (
     <View>
       <View style={{ flexDirection: 'row', height: 45 }}>
-        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>{item.levelName}</Text>
-        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>{item.weekBons}</Text>
-        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>{item.MonthBons}</Text>
-        {/* <Text style={{ alignSelf: 'center', flex:1 }}>{item.MonthBons}</Text> */}
+        <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>{item.levelName}</UGText>
+        <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>{item.weekBons}</UGText>
+        <UGText style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>{item.MonthBons}</UGText>
+        {/* <UGText style={{ alignSelf: 'center', flex:1 }}>{item.MonthBons}</UGText> */}
         <View style={{ alignSelf: 'center', flex: 1 }}>
           <Button
             title="点击领取"

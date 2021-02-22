@@ -10,6 +10,7 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import BottomGap from '../../public/views/temp/BottomGap'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const sleep = async (ms = 0) => {
   return new Promise((r) => setTimeout(r, ms))
@@ -87,8 +88,8 @@ const UserMessagePage = () => {
                 ])
               }}>
               <View style={styles.message}>
-                <Text style={isRead ? styles.readTextStyle : {}}>{title}</Text>
-                <Text style={isRead ? styles.readTextStyle : {}}>{updateTime}</Text>
+                <UGText style={isRead ? styles.readTextStyle : {}}>{title}</UGText>
+                <UGText style={isRead ? styles.readTextStyle : {}}>{updateTime}</UGText>
               </View>
             </TouchableWithoutFeedback>
           )
@@ -101,13 +102,13 @@ const UserMessagePage = () => {
               return (
                 <View style={{ justifyContent: 'center', alignItems: 'center', height: 50, flexDirection: 'row' }}>
                   <ActivityIndicator />
-                  <Text style={{ fontWeight: '500', marginLeft: 20 }}>{'Loading...'}</Text>
+                  <UGText style={{ fontWeight: '500', marginLeft: 20 }}>{'Loading...'}</UGText>
                 </View>
               )
             } else {
               return (
                 <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
-                  <Text style={{ fontWeight: '500' }}>{'Tap or pull up to load more'}</Text>
+                  <UGText style={{ fontWeight: '500' }}>{'Tap or pull up to load more'}</UGText>
                 </View>
               )
             }

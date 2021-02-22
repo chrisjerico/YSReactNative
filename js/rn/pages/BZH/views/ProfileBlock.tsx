@@ -5,6 +5,7 @@ import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface ProfileBlockProps {
   balance: string
@@ -29,7 +30,7 @@ const ProfileBlock = ({ avatar, balance, features, renderFeature, containerStyle
           <Avatar uri={avatar} onPress={onPressAvatar} />
           <View style={styles.moneyContainer}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.text}>{name}</Text>
+              <UGText style={styles.text}>{name}</UGText>
               <LinearBadge containerStyle={{ borderRadius: scale(5), width: null }} textStyle={{ paddingHorizontal: scale(10) }} title={level} colors={['#0080FF', '#97CBFF']} showIcon={false} />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scale(10) }}>

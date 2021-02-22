@@ -3,6 +3,7 @@ import { Text, TouchableWithoutFeedback, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface SignHeaderProps {
   onPressLeftTool: () => any
@@ -16,14 +17,14 @@ const SignHeader = ({ onPressLeftTool, onPressMenu, onPressSign }: SignHeaderPro
       <TouchableWithoutFeedback onPress={onPressLeftTool}>
         <View style={{ flexDirection: 'row', alignItems: 'center', height: '100%' }}>
           <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
-          <Text
+          <UGText
             style={{
               color: '#ffffff',
               paddingLeft: scale(10),
               fontSize: scale(20),
             }}>
             {'返回'}
-          </Text>
+          </UGText>
         </View>
       </TouchableWithoutFeedback>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -34,7 +35,7 @@ const SignHeader = ({ onPressLeftTool, onPressMenu, onPressSign }: SignHeaderPro
               height: '100%',
               justifyContent: 'center',
             }}>
-            <Text style={{ color: 'white', fontSize: scale(20) }}>{'登录'}</Text>
+            <UGText style={{ color: 'white', fontSize: scale(20) }}>{'登录'}</UGText>
           </View>
         </TouchableWithoutFeedback>
       </View>

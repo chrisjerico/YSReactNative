@@ -7,6 +7,7 @@ import { Button } from "react-native-elements";
 import { Res } from "../../../Res/icon/Res";
 import AppDefine from "../../../public/define/AppDefine";
 import { ImagePlaceholder } from "../tools/ImagePlaceholder";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface JDCLInfoText {
   title?: string     //左边👉文本内容
@@ -27,8 +28,8 @@ export const JDCLInfoText = (props: JDCLInfoText) => {
     marginHorizontal: scale(20),
   }}>
 
-    <Text style={{ fontSize: scale(22), paddingVertical: scale(16), color: Skin1.textColor1 }} >{props.title}</Text>
-    <Text style={{ fontSize: scale(22), paddingVertical: scale(16), flex: 1, textAlign: 'left', paddingHorizontal: scale(20), color: props.contentColor ? props.contentColor : Skin1.textColor1 }} >{props.content}</Text>
+    <UGText style={{ fontSize: scale(22), paddingVertical: scale(16), color: Skin1.textColor1 }} >{props.title}</UGText>
+    <UGText style={{ fontSize: scale(22), paddingVertical: scale(16), flex: 1, textAlign: 'left', paddingHorizontal: scale(20), color: props.contentColor ? props.contentColor : Skin1.textColor1 }} >{props.content}</UGText>
 
   </View>
 
@@ -70,17 +71,17 @@ export const JDCLText = (props: JDCLText) => {
     {/* 内容 */}
     <View style={[{ flexDirection: 'column', marginLeft: scale(10), }]}>
       {/* 文字1 */}
-      <Text style={{ fontSize: scale(22), paddingVertical: scale(10), color: Skin1.textColor1, marginLeft: scale(18) }}>
+      <UGText style={{ fontSize: scale(22), paddingVertical: scale(10), color: Skin1.textColor1, marginLeft: scale(18) }}>
         {props.title}
-      </Text>
+      </UGText>
       {/* 文字2 */}
-      <Text style={{ fontSize: scale(22), paddingVertical: scale(10), color: Skin1.textColor1, marginLeft: scale(18) }}>
+      <UGText style={{ fontSize: scale(22), paddingVertical: scale(10), color: Skin1.textColor1, marginLeft: scale(18) }}>
         {props.content}
-      </Text>
+      </UGText>
     </View>
     {/* 多余 */}
     <View style={[{ flex: 1 }]}></View>
-    <Text style={{ fontSize: scale(22), paddingVertical: scale(10), color: 'red', }}>{''}</Text>
+    <UGText style={{ fontSize: scale(22), paddingVertical: scale(10), color: 'red', }}>{''}</UGText>
 
 
   </View>
@@ -111,21 +112,21 @@ export const JDCLView = (props: JDCLView) => {
 
       <View style={{ alignItems: 'center', justifyContent: 'center',flexDirection: 'row' ,width:'100%'  }}>
         {/* 文字1 */}
-        <Text style={{ fontSize: scale(26), paddingVertical: scale(10), color: '#FF7F50', marginLeft: scale(10) }}>
+        <UGText style={{ fontSize: scale(26), paddingVertical: scale(10), color: '#FF7F50', marginLeft: scale(10) }}>
           {'我的投注'}
-        </Text>
+        </UGText>
         <View style={[{ flex: 1 }]}></View>
 
         {!props?.btnHide && <Button title={'撤单'} containerStyle={{ width: 70, height: 30, borderRadius: 5, overflow: 'hidden' ,marginRight:20}} titleStyle={{ color: 'white', fontSize: 13 }}
           onPress={props.onPress&&props.onPress} />}
       </View>
       <ImageBackground style={{marginTop:10 ,borderRadius: 5, overflow: 'hidden',width:AppDefine.width - 40,height:(AppDefine.width - 40)/4.8 }} source={{ uri: Res.betDetailBg }}>
-      <Text style={{marginTop:10, fontSize: scale(22), paddingVertical: scale(10), color: Skin1.textColor3, marginLeft: scale(30) }}>
+      <UGText style={{marginTop:10, fontSize: scale(22), paddingVertical: scale(10), color: Skin1.textColor3, marginLeft: scale(30) }}>
           {props?.title}
-        </Text>
-        <Text style={{ fontSize: scale(22), color: Skin1.textColor3, marginLeft: scale(30) }}>
+        </UGText>
+        <UGText style={{ fontSize: scale(22), color: Skin1.textColor3, marginLeft: scale(30) }}>
           {props?.content}
-        </Text>
+        </UGText>
       </ImageBackground>
 
 

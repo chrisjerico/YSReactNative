@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { httpClient } from '../network/httpClient'
 import { goToUserCenterType } from '../tools/tars'
 import { PageName } from '../navigation/Navigation'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const FeedbackView = () => {
   return (
@@ -52,12 +53,12 @@ const FeedBackItem = ({ onPress, title, img, subText }: { onPress: () => void, t
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-            <Text style={{ fontSize: 16, flex: 1, marginBottom: 12 }}>{title}</Text>
+            <UGText style={{ fontSize: 16, flex: 1, marginBottom: 12 }}>{title}</UGText>
             <Icon size={20} color={'#444'} name={'angle-left'}
                   style={{ transform: [{ rotateY: '180deg' }], marginRight: 16, marginBottom: 12 }} />
           </View>
           <View style={{ width: 280, paddingTop: 16 }}>
-            <Text style={{ fontSize: 12, color: Skin1.textColor2 }}>{subText}</Text>
+            <UGText style={{ fontSize: 12, color: Skin1.textColor2 }}>{subText}</UGText>
           </View>
         </View>
       </View>
@@ -75,7 +76,7 @@ const Header = () => {
         alignItems: 'center',
         alignSelf: 'center',
       }}>
-        <Text style={{
+        <UGText style={{
           paddingTop: 15,
           paddingBottom: 15,
           textAlign: 'center',
@@ -83,7 +84,7 @@ const Header = () => {
           width: '100%',
           alignSelf: 'center',
           color: Skin1.navBarTitleColor,
-        }}>意见反馈</Text>
+        }}>意见反馈</UGText>
         <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
           <Icon size={33} color={Skin1.navBarTitleColor} name={'angle-left'} />
         </TouchableOpacity>

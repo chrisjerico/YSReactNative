@@ -51,6 +51,7 @@ import { HomeFriendReferralCP } from './views/HomeFriendReferralCP'
 import HomeHeader from './views/HomeHeader'
 import { HomeRightMenuCP } from './views/HomeRightMenuCP'
 import NavBlock from './views/NavBlock'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const sc = sc540
 
@@ -129,7 +130,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
             PushHelper.pushHomeGame(item)
           }}>
             <Image source={{ uri: img_assets('subgame_bg') }} style={{ width: sc(157), height: sc(45), marginHorizontal: sc(5), tintColor: skin1.homeContentSubColor }} resizeMode='contain' />
-            <Text style={{ position: 'absolute', marginLeft: sc(6), marginTop: sc(12), width: sc(153), textAlign: 'center', color: '#ffffff', fontSize: sc(18.5), fontWeight: '500' }}>{anyEmpty(title) ? name : title}</Text>
+            <UGText style={{ position: 'absolute', marginLeft: sc(6), marginTop: sc(12), width: sc(153), textAlign: 'center', color: '#ffffff', fontSize: sc(18.5), fontWeight: '500' }}>{anyEmpty(title) ? name : title}</UGText>
           </TouchableOpacity>
         )
       }}

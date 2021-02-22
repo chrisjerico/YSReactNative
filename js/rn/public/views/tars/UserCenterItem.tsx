@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import { Image, StyleSheet, Text, View, ViewStyle, TouchableWithoutFeedback, TextStyle, StyleProp } from 'react-native'
 import { scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface UserCenterItemProps {
   logo: string
@@ -20,11 +21,11 @@ const UserCenterItem = ({ logo = '', title, onPress, containerStyle, showUnReadM
       <View style={[styles.container, containerStyle]}>
         <View style={styles.imageContainer}>
           <Image resizeMode={'contain'} style={styles.image} source={{ uri: logo }} />
-          <Text style={[styles.title, titleStyle]}>{title}</Text>
+          <UGText style={[styles.title, titleStyle]}>{title}</UGText>
         </View>
         {showUnReadMsg ? (
           <View style={styles.unReadContainer}>
-            <Text style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
+            <UGText style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</UGText>
           </View>
         ) : (
           <AntDesign name={'right'} color={arrowColor} size={scale(20)} />

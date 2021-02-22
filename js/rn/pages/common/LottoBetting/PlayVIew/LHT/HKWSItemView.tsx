@@ -5,15 +5,16 @@ import {UGStore} from "../../../../../redux/store/UGStore"
 import {getHKballColor} from "../lottoSetting"
 import {BettingReducerActions} from "../../../../../redux/reducer/BettingReducer"
 import AppDefine from "../../../../../public/define/AppDefine";
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const HKWSItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) => {
     const {bettingResult} = UGStore.globalProps.BettingReducer;
     return (
         <View style={{flex: 1}}>
-            <Text style={{
+            <UGText style={{
                 paddingVertical: 8, width: "100%", textAlign: 'center', color: "#c8222f",
                 backgroundColor: "#eee"
-            }}>{data.alias}</Text>
+            }}>{data.alias}</UGText>
             <FlatList
                 data={data.plays}
                 renderItem={({item}) => {
@@ -34,17 +35,17 @@ const HKWSItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) => {
                                 backgroundColor: bettingResult[item.id] ? '#999999' : "#00000000"
                             }}>
                                 <View style={{flexDirection: 'row'}}>
-                                    <Text
+                                    <UGText
                                         style={{
                                             fontWeight: "bold",
                                             marginHorizontal: 10,
                                             fontSize: 16
-                                        }}>{item.name}</Text>
-                                    <Text style={{
+                                        }}>{item.name}</UGText>
+                                    <UGText style={{
                                         fontWeight: "bold",
                                         fontSize: 16,
                                         color: "#a9a9a9"
-                                    }}>{item.odds.replace("00", "")}</Text>
+                                    }}>{item.odds.replace("00", "")}</UGText>
                                 </View>
                                 <View style={{flexDirection: 'row', marginLeft: 50,}}>
                                     {Array.from({length: 49}).map((res, index) => index + 1).filter((res) => (res % 10).toString() == item.name.replace("尾", "")).map((res, index) => {
@@ -59,8 +60,8 @@ const HKWSItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) => {
                                             alignItems: 'center',
                                             backgroundColor: bettingResult[item.id] ? getHKballColor(res < 10 ? "0" + res : res.toString()) : "#ffffff"
                                         }}>
-                                            <Text
-                                                style={{color: bettingResult[item.id] ? "#ffffff" : "#000000"}}>{res < 10 ? "0" + res : res.toString()}</Text>
+                                            <UGText
+                                                style={{color: bettingResult[item.id] ? "#ffffff" : "#000000"}}>{res < 10 ? "0" + res : res.toString()}</UGText>
                                         </View>
                                     })}
                                 </View>

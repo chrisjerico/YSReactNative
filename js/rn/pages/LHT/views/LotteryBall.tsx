@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface LotteryBallProps {
   score?: number | string
@@ -37,7 +38,7 @@ const LotteryBall = ({ score = null, size = 35, color = '#ff0000', text = '', sh
                   backgroundColor: color,
                 },
               ]}>
-              <Text style={{ fontSize: scale(size * 0.6), color: '#ffffff' }}>{score}</Text>
+              <UGText style={{ fontSize: scale(size * 0.6), color: '#ffffff' }}>{score}</UGText>
             </View>
           ) : (
             <View
@@ -59,13 +60,13 @@ const LotteryBall = ({ score = null, size = 35, color = '#ff0000', text = '', sh
                     borderRadius: scale(size),
                   },
                 ]}>
-                <Text style={{ fontSize: scale(size * 0.6) }}>{score}</Text>
+                <UGText style={{ fontSize: scale(size * 0.6) }}>{score}</UGText>
               </View>
             </View>
           )}
         </View>
         <View style={styles.textContainer}>
-          <Text>{text}</Text>
+          <UGText>{text}</UGText>
         </View>
       </View>
     </TouchableWithoutFeedback>

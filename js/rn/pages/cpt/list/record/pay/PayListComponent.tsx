@@ -17,8 +17,10 @@ import CapitalContext from '../../CapitalContext'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import HTML from 'react-native-render-html'
 import { ugLog } from '../../../../../public/tools/UgLog'
-import { clearExHtml } from '../../../../../public/tools/ui/UIUtil'
 import { jsDic } from '../../../../经典/Model/UGChanglongaideModel'
+import { clearExHtml } from '../../../../../public/tools/StringUtil'
+import AppDefine from '../../../../../public/define/AppDefine'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
@@ -126,13 +128,14 @@ const PayListComponent = ({ navigation, route }) => {
           <View style={_styles.text_item_container}>
             <View style={_styles.text_title_container}>
               <HTML
+                baseFontStyle={{color: UGColor.TextColor2}}
                 source={{ html: clearExHtml(item?.name) }}/>
               <View style={CommStyles.flex}/>
               {
                 (item?.id == 'xnb_transfer' || item?.id == 'xnb_online') &&
                 <TouchableOpacity onPress={() => gotoBtcTutorial(item)}>
-                  <Text style={[_styles.text_title_1,
-                    { borderColor: Skin1.themeColor, color: Skin1.themeColor }]}>充值教程</Text>
+                  <UGText style={[_styles.text_title_1,
+                    { borderColor: Skin1.themeColor, color: Skin1.themeColor }]}>充值教程</UGText>
                 </TouchableOpacity>
               }
             </View>

@@ -21,11 +21,12 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface JDLotteryAssistantPage {
   bottomH?: number,//底部的高度
   items?: Array<any>//界面数据
-  isRefreshing?: boolean//下拉刷新开始结束 
+  isRefreshing?: boolean//下拉刷新开始结束
   imgLoading?: string //默认图片
 }
 
@@ -44,7 +45,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * cell 按钮点击
-* 
+*
 */
   function betItemSelect(item: any, index: number) {
     let obj = item.betList[index];
@@ -55,7 +56,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * cell img的显示数据
-* 
+*
 */
   function cellImg(item: any, index: number) {
 
@@ -69,7 +70,7 @@ const JDLotteryAssistantPage = () => {
   }
   /**
 * betView2 的颜色
-* 
+*
 */
   function betView2Color(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -85,7 +86,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 *  betView1 的颜色
-* 
+*
 */
   function betView1Color(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -101,7 +102,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * oddsLabel2 playNameLabel2 的颜色
-* 
+*
 */
   function lastLabelColor(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -120,7 +121,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * oddsLabel1 playNameLabel1 的颜色
-* 
+*
 */
   function fastLabelColor(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -139,7 +140,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * 根据oddsLabel2 的显示数据
-* 
+*
 */
   function oddsLabel2(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -150,7 +151,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * 根据playNameLabel2 的显示数据
-* 
+*
 */
   function playName2(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -162,7 +163,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * 根据oddsLabel1 的显示数据
-* 
+*
 */
   function oddsLabel1(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -172,7 +173,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * 根据playNameLabel1 的显示数据
-* 
+*
 */
   function playName1(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -184,7 +185,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * 根据数据是数组还是字典返回数据
-* 
+*
 */
   function playNameColor(item: any) {
     if (item.playName == '小' || item.playName == '大') {
@@ -200,7 +201,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
  * 根据数据是数组还是字典返回数据
- * 
+ *
  */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -212,7 +213,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * 下拉刷新
-* 
+*
 */
   const onHeaderRefresh = () => {
     v.isRefreshing = true
@@ -268,7 +269,7 @@ const JDLotteryAssistantPage = () => {
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ index, item }) => {
     {
@@ -283,35 +284,35 @@ const JDLotteryAssistantPage = () => {
           <View style={[{ flexDirection: 'column', marginLeft: 10, }]}>
             {/* 文字1 */}
             <View>
-              <Text style={{ fontSize: 15, color: Skin1.textColor1, }}>
+              <UGText style={{ fontSize: 15, color: Skin1.textColor1, }}>
                 {'幸运飞艇'}
-              </Text>
+              </UGText>
             </View>
             {/* 文字2 */}
             <View style={[{ flexDirection: 'row', }]}>
-              <Text style={{ fontSize: 13, color: Skin1.textColor1 }}>
+              <UGText style={{ fontSize: 13, color: Skin1.textColor1 }}>
                 {'20190511009'}
-              </Text>
-              <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+              </UGText>
+              <UGText style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
                 {'00:03:32'}
-              </Text>
+              </UGText>
             </View>
             {/* 图标 */}
             <View style={[{ flexDirection: 'row', }]}>
               <View style={{ backgroundColor: '#A9A9A9', borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
+                <UGText style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.playCateName}
-                </Text>
+                </UGText>
               </View>
               <View style={{ marginLeft: 10, backgroundColor: playNameColor(item), borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
+                <UGText style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.playName}
-                </Text>
+                </UGText>
               </View>
               <View style={{ marginLeft: 10, backgroundColor: '#DC143C', borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
+                <UGText style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.count}
-                </Text>
+                </UGText>
               </View>
 
             </View>
@@ -328,23 +329,23 @@ const JDLotteryAssistantPage = () => {
 
               }}
             >
-              <Text style={{ fontSize: 15, color: fastLabelColor(item), marginTop: 5 }}>
+              <UGText style={{ fontSize: 15, color: fastLabelColor(item), marginTop: 5 }}>
                 {playName1(item)}
-              </Text>
-              <Text style={{ fontSize: 12, color: fastLabelColor(item), marginTop: 4 }}>
+              </UGText>
+              <UGText style={{ fontSize: 12, color: fastLabelColor(item), marginTop: 4 }}>
                 {oddsLabel1(item)}
-              </Text>
+              </UGText>
             </TouchableOpacity>
             <View style={[{
               marginLeft: 15, flexDirection: 'column', alignItems: 'center', width: 46, height: 46, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
               backgroundColor: betView2Color(item)
             }]}>
-              <Text style={{ fontSize: 15, color: lastLabelColor(item), marginTop: 5 }}>
+              <UGText style={{ fontSize: 15, color: lastLabelColor(item), marginTop: 5 }}>
                 {playName2(item)}
-              </Text>
-              <Text style={{ fontSize: 12, color: lastLabelColor(item), marginTop: 4 }}>
+              </UGText>
+              <UGText style={{ fontSize: 12, color: lastLabelColor(item), marginTop: 4 }}>
                 {oddsLabel2(item)}
-              </Text>
+              </UGText>
             </View>
           </View>
         </View>
@@ -417,9 +418,9 @@ const JDLotteryAssistantPage = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-          <Text style={{ fontSize: 14, color: 'black' }}>
+          <UGText style={{ fontSize: 14, color: 'black' }}>
             {'幸运飞艇，第三，小 奖金：199'}
-          </Text>
+          </UGText>
 
         </View>
         {/* 底部 */}
@@ -433,20 +434,20 @@ const JDLotteryAssistantPage = () => {
           height: v.bottomH + AppDefine.safeArea.bottom,
         }}>
           <View style={{ height: v.bottomH, width: 80, alignItems: 'center', justifyContent: 'center', borderRightWidth: 1, borderRightColor: 'white', }}>
-            <Text style={{ fontSize: 18, color: '#FF8C00' }}>
+            <UGText style={{ fontSize: 18, color: '#FF8C00' }}>
               {'清空'}
-            </Text>
+            </UGText>
           </View>
           <View style={{ height: v.bottomH, flex: 1, flexDirection: 'row', alignItems: 'center', }}>
-            <Text style={{ fontSize: 16, color: 'white', marginRight: 2, marginLeft: 10 }}>
+            <UGText style={{ fontSize: 16, color: 'white', marginRight: 2, marginLeft: 10 }}>
               {'共'}
-            </Text>
-            <Text style={{ fontSize: 18, color: '#DC143C' }}>
+            </UGText>
+            <UGText style={{ fontSize: 18, color: '#DC143C' }}>
               {'0'}
-            </Text>
-            <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 2 }}>
+            </UGText>
+            <UGText style={{ fontSize: 16, color: 'white', marginHorizontal: 2 }}>
               {'注'}
-            </Text>
+            </UGText>
             <View style={{ flex: 1 }}></View>
             <TextInput style={{ height: 30, width: 140, backgroundColor: Skin1.textColor4, marginRight: 10, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
               placeholder={'   投注金额'}
@@ -458,9 +459,9 @@ const JDLotteryAssistantPage = () => {
 
           </View>
           <View style={{ height: v.bottomH, width: 100, backgroundColor: '#1E90FF', alignItems: 'center', justifyContent: 'center', }}>
-            <Text style={{ fontSize: 18, color: 'white' }}>
+            <UGText style={{ fontSize: 18, color: 'white' }}>
               {'马上投注'}
-            </Text>
+            </UGText>
           </View>
         </View>
 

@@ -3,6 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Skin1 } from "../../../public/theme/UGSkinManagers";
 import { scale } from "../../../public/tools/Scale";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface JDAgentInput {
   placeholder?: string  //输入框提示文字
@@ -19,13 +20,13 @@ interface JDAgentInput {
 
 
 export const JDAgentInput = ({ onChangeText,backgroundColor=Skin1.textColor4, placeholder, img, content,rightContent,inputContent='', imgVisible = true, contentVisible = true, isInput = true ,editable = true}:
- { onChangeText?: (text) => void, 
+ { onChangeText?: (text) => void,
   backgroundColor?:string,
-  placeholder?: string, 
-  img: string, 
+  placeholder?: string,
+  img: string,
   content?: string,
   rightContent?: string,
-  inputContent?:string, 
+  inputContent?:string,
   imgVisible?: boolean,
    contentVisible?: boolean,
     isInput?: boolean ,
@@ -41,7 +42,7 @@ export const JDAgentInput = ({ onChangeText,backgroundColor=Skin1.textColor4, pl
   }}>
     {imgVisible && <Image style={{ height: scale(30), width: scale(30), marginLeft: scale(20), resizeMode: "stretch" }}
       source={{ uri: img }} />}
-    <Text style={{ fontSize: scale(26), paddingVertical: scale(20), marginLeft: scale(20) ,color:Skin1.textColor1}} >{content}</Text>
+    <UGText style={{ fontSize: scale(26), paddingVertical: scale(20), marginLeft: scale(20) ,color:Skin1.textColor1}} >{content}</UGText>
     {contentVisible && isInput && <TextInput
       onChangeText={onChangeText}
       style={{ fontSize: scale(26), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1}}
@@ -49,7 +50,7 @@ export const JDAgentInput = ({ onChangeText,backgroundColor=Skin1.textColor4, pl
       placeholder={placeholder}
       editable ={editable}
        >{inputContent}</TextInput>}
-    {!isInput && <Text style={{ fontSize: scale(26), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1 }} >{rightContent}</Text>}
+    {!isInput && <UGText style={{ fontSize: scale(26), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1 }} >{rightContent}</UGText>}
 
   </View>
 

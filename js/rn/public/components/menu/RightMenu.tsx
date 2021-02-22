@@ -7,6 +7,7 @@ import { forwardRef, RefObject, useImperativeHandle, useState } from 'react'
 import { ugLog } from '../../tools/UgLog'
 import { arrayLength } from '../../tools/Ext'
 import { Skin1 } from '../../theme/UGSkinManagers'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IRightMenu {
   menu?: Array<Array<string>> //菜单
@@ -50,10 +51,10 @@ const RightMenu = ({ menu, onMenuClick }: IRightMenu, ref?: any) => {
                     {
                       arrayLength(item) == 2 ?
                         <View style={_styles.item_sub_content}>
-                          <Text style={_styles.item_name}>{item[0]}</Text>
-                          <Text style={[_styles.item_name, {color: Skin1.themeColor}]}>{'( ' + item[1] + ' )'}</Text>
+                          <UGText style={_styles.item_name}>{item[0]}</UGText>
+                          <UGText style={[_styles.item_name, {color: Skin1.themeColor}]}>{'( ' + item[1] + ' )'}</UGText>
                         </View> :
-                        <Text style={_styles.item_name}>{item[0]}</Text>
+                        <UGText style={_styles.item_name}>{item[0]}</UGText>
                     }
                   </View>
                 </TouchableWithoutFeedback>)

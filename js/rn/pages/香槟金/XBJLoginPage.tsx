@@ -22,6 +22,7 @@ import { hideLoading, showError, showLoading, showMessage, showSuccess, UGLoadin
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { TextFieldAlertCP } from '../../public/widget/TextFieldAlertCP';
 import { img_assets, useHtml5Image } from '../../Res/icon';
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 // 声明成员变量
 interface XJBLoginVars {
@@ -176,7 +177,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
       <FastImage source={{ uri: mobile_logo }} resizeMode={FastImage.resizeMode.contain} style={{ width: AppDefine.width, height: 45 }} />
       <View style={{ marginLeft: 24, marginTop: 40, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
         <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.3)', padding: 24 }}>
-          <Text style={{ fontSize: 20, fontWeight: '500', color: 'white', textAlign: 'center' }}>登录</Text>
+          <UGText style={{ fontSize: 20, fontWeight: '500', color: 'white', textAlign: 'center' }}>登录</UGText>
           <UGTextField
             type="账号"
             placeholder="请输入账号"
@@ -210,15 +211,15 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
               ) : (
                   <Icon name="radio-button-unchecked" type="materialIcon" color="rgba(0, 0, 0, 0.6)" size={16} />
                 )}
-              <Text style={{ marginLeft: 6, color: 'white' }}>记住密码</Text>
+              <UGText style={{ marginLeft: 6, color: 'white' }}>记住密码</UGText>
             </TouchableOpacity>
-            <Text
+            <UGText
               style={{ marginTop: -10, marginRight: -5, padding: 10, textAlign: 'right', color: 'white' }}
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服);
               }}>
               忘记密码
-              </Text>
+              </UGText>
           </View>
           <Button
             style={{ marginTop: 55 }}
@@ -253,7 +254,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             push<XBJRegisterProps>(PageName.XBJRegisterPage);
           }}>
           <FastImage source={{ uri: img_assets('entry_login_toggle_btn') }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
-          <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>注册新用户</Text>
+          <UGText style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>注册新用户</UGText>
         </TouchableOpacity>
       </View>
     </View>,

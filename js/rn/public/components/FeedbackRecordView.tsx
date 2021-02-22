@@ -28,6 +28,7 @@ import moment from 'moment'
 import AppDefine from '../define/AppDefine'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { PageName } from '../navigation/Navigation'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const typeArr = ['全部状态', '待回复', '已回复']
 const borderColor = '#d9d9d9'
@@ -74,7 +75,7 @@ export const FeedbackRecordView = () => {
     while (newDate.getMonth() == monthIndex) {
       result.push(moment(newDate).subtract(1, 'months').format('YYYY-MM-DD'))
       newDate.setDate(++day)
-      
+
     }
     newDate = new Date(year, month - 1, day = 1)
     while (day <= date) {
@@ -109,10 +110,10 @@ export const FeedbackRecordView = () => {
               borderColor: borderColor,
               alignItems: 'center',
             }}>
-              <Text style={{
+              <UGText style={{
                 color: Skin1.textColor1,
                 fontSize: 18,
-              }}>{'类型'}</Text>
+              }}>{'类型'}</UGText>
             </View>
             <View style={{
               width: 80,
@@ -121,10 +122,10 @@ export const FeedbackRecordView = () => {
               borderColor: borderColor,
               alignItems: 'center',
             }}>
-              <Text style={{
+              <UGText style={{
                 color: Skin1.textColor1,
                 fontSize: 18,
-              }}>{'状态'}</Text>
+              }}>{'状态'}</UGText>
             </View>
             <View style={{
               paddingVertical: 16,
@@ -133,16 +134,16 @@ export const FeedbackRecordView = () => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-              <Text style={{
+              <UGText style={{
                 color: Skin1.textColor1,
                 fontSize: 18,
-              }} numberOfLines={1}>{`内容描述`}</Text>
+              }} numberOfLines={1}>{`内容描述`}</UGText>
             </View>
           </View>
         )}
         ListFooterComponent={() => (
           <View style={{ alignItems: 'center', paddingVertical: 24 }}>
-            <Text style={{ color: "#111" }}>点击可查看反馈详情</Text>
+            <UGText style={{ color: "#111" }}>点击可查看反馈详情</UGText>
           </View>
         )}
         style={{ marginTop: 20, flex: 1 }}
@@ -159,11 +160,11 @@ export const FeedbackRecordView = () => {
                   borderColor: borderColor,
                   alignItems: 'center',
                 }}>
-                  <Text style={{
+                  <UGText style={{
                     color: Skin1.textColor1,
                     fontSize: 18,
 
-                  }}>{item.type == 1 ? '我要投诉' : '提交建议'}</Text>
+                  }}>{item.type == 1 ? '我要投诉' : '提交建议'}</UGText>
                 </View>
                 <View style={{
                   width: 80,
@@ -172,10 +173,10 @@ export const FeedbackRecordView = () => {
                   borderColor: borderColor,
                   alignItems: 'center',
                 }}>
-                  <Text style={{
+                  <UGText style={{
                     color: Skin1.textColor1,
                     fontSize: 18,
-                  }}>{item.status == 1 ? '已回复' : '待回复'}</Text>
+                  }}>{item.status == 1 ? '已回复' : '待回复'}</UGText>
                 </View>
                 <View style={{
                   paddingVertical: 16,
@@ -184,10 +185,10 @@ export const FeedbackRecordView = () => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                  <Text style={{
+                  <UGText style={{
                     color: Skin1.textColor1,
                     fontSize: 18,
-                  }} numberOfLines={1}>{item.content}</Text>
+                  }} numberOfLines={1}>{item.content}</UGText>
                 </View>
               </View>
             </TouchableWithoutFeedback>
@@ -257,8 +258,8 @@ const Picker = ({ data, value, setValue, height = 120 }:
             width: 115,
             backgroundColor: "#fff"
           }}>
-            <Text
-              style={{ color: '#111', marginLeft: 4 }}>{value}</Text>
+            <UGText
+              style={{ color: '#111', marginLeft: 4 }}>{value}</UGText>
             <View style={{ flex: 1 }} />
             <Icon color={"#111"}
                   style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }], marginRight: 4 }}
@@ -293,7 +294,7 @@ const Picker = ({ data, value, setValue, height = 120 }:
                 setValue(item)
               }}>
                 <View style={{ paddingVertical: 12, paddingHorizontal: 12, justifyContent: 'center' }}>
-                  <Text style={{color: "#111"}}>{item ? item || '' : ''}</Text>
+                  <UGText style={{color: "#111"}}>{item ? item || '' : ''}</UGText>
                 </View>
               </TouchableWithoutFeedback>
             )} />}
@@ -320,7 +321,7 @@ const Header = () => {
         alignItems: 'center',
         alignSelf: 'center',
       }}>
-        <Text style={{
+        <UGText style={{
           paddingTop: 15,
           paddingBottom: 15,
           textAlign: 'center',
@@ -328,7 +329,7 @@ const Header = () => {
           width: '100%',
           alignSelf: 'center',
           color: Skin1.navBarTitleColor,
-        }}>反馈记录</Text>
+        }}>反馈记录</UGText>
         <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
           <Icon size={33} color={Skin1.navBarTitleColor} name={'angle-left'} />
         </TouchableOpacity>

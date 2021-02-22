@@ -12,6 +12,7 @@ import LotteryERect from '../../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT, K3Code } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import K3LineEBall from '../../../widget/K3LineEBall'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 快三 等等
@@ -75,11 +76,11 @@ const K3SJComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + ' sub renderSJ1' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderSJ1 text' + groupData?.id}
+      <UGText key={key + ' sub renderSJ1 text' + groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
+            ]}>{groupData?.alias}</UGText>
     </View>
 
     <View key={key + ' sub2 renderSJ1' + groupData?.id}
@@ -98,11 +99,11 @@ const K3SJComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <View key={key + ' sub renderSJ2' + groupData?.id}
           style={_styles.sub_title_container}>
-      <Text key={key + ' sub renderSJ2' + +groupData?.id}
+      <UGText key={key + ' sub renderSJ2' + +groupData?.id}
             style={[
               _styles.sub_title_text,
               { color: Skin1.themeColor },
-            ]}>{groupData?.alias}</Text>
+            ]}>{groupData?.alias}</UGText>
     </View>
 
     <View key={key + ' sub2 renderSJ2' + groupData?.id}

@@ -11,6 +11,7 @@ import {scale} from "../../../../../../public/tools/Scale";
 import {BALL_NUMBERS_0_9} from "../../comm/LotteryElements";
 import {BALL_STYLES, TAG_COLOR} from "../../comm/LotteryStyles";
 import BallItem from "../../comm/widgets/BallItem";
+import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const SZDW_DATA = JSON.parse('{ "code": "SZDW", "name": "三字定位", "playGroups": [ { "id": "45", "name": "三字定位", "code": "SZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "前三", "plays": [ { "id": "145001", "name": "前三", "alias": null, "rebate": "0.0000", "code": "QSDW", "played_groupid": "45", "odds": "700.0000", "offlineOdds": "700.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "45", "name": "三字定位", "code": "SZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "中三", "plays": [ { "id": "145002", "name": "中三", "alias": null, "rebate": "0.0000", "code": "ZSDW", "played_groupid": "45", "odds": "700.0000", "offlineOdds": "700.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "45", "name": "三字定位", "code": "SZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "后三", "plays": [ { "id": "145003", "name": "后三", "alias": null, "rebate": "0.0000", "code": "HSDW", "played_groupid": "45", "odds": "700.0000", "offlineOdds": "700.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] } ] }')
 
@@ -58,17 +59,17 @@ const SZDWContainer = ({setProps}) => {
                       setCurrentFilter(item)
                       setTabIndex(index)
                     }}>
-                      <Text style={[BALL_STYLES.tab, {
+                      <UGText style={[BALL_STYLES.tab, {
                         backgroundColor: TAG_COLOR(currentFilter, item),
-                      }]}>{item}</Text>
+                      }]}>{item}</UGText>
                     </TouchableWithoutFeedback>
                   }}/>
       </View>
-      <Text style={BALL_STYLES.ball_title_odds}>{currentOdd}</Text>
+      <UGText style={BALL_STYLES.ball_title_odds}>{currentOdd}</UGText>
       {
         BALL_TITLE[tabIndex].map(((value, index) => {
           return <View>
-            <Text style={BALL_STYLES.ball_title}>{value}</Text>
+            <UGText style={BALL_STYLES.ball_title}>{value}</UGText>
             <View style={BALL_STYLES.ball_grid}>
               {
                 BALL_NUMBERS_0_9.map((res, index) => {

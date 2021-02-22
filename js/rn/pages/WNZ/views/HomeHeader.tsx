@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export interface HomeHeaderProps {
   name: string
@@ -60,11 +61,11 @@ const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressU
                   alignItems: 'center',
                   justifyContent: 'flex-end',
                 }}>
-                <Text style={styles.nameText} numberOfLines={1}>
+                <UGText style={styles.nameText} numberOfLines={1}>
                   {name}
-                </Text>
+                </UGText>
                 <View style={styles.balanceContainer}>
-                  <Text style={styles.balanceText}>{balance}</Text>
+                  <UGText style={styles.balanceText}>{balance}</UGText>
                   <AntDesign name={'pluscircle'} color={'#ffffff'} style={{ margin: 0, padding: 0, marginLeft: scale(5) }} />
                 </View>
               </View>
@@ -90,7 +91,7 @@ const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressU
                 height: '100%',
               }}>
               <MaterialCommunityIcons name={'settings-outline'} size={scale(20)} style={{ marginRight: scale(5) }} color={'#ffffff'} />
-              <Text style={{ fontSize: scale(20), color: '#ffffff' }}>{'菜单'}</Text>
+              <UGText style={{ fontSize: scale(20), color: '#ffffff' }}>{'菜单'}</UGText>
             </View>
           </TouchableWithoutFeedback>
         </View>

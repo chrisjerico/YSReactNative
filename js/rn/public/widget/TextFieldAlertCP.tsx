@@ -9,6 +9,7 @@ import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { Skin1 } from '../theme/UGSkinManagers'
 import { AnimationFadeView } from '../tools/animation/AnimationViews'
 import { showLoading, hideLoading, showSuccess } from './UGLoadingCP'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 
 export interface TextFieldAlertCP {
@@ -45,7 +46,7 @@ export const TextFieldAlertCP = (props: TextFieldAlertProps) => {
   return (
     <AnimationFadeView show={v.show} backgroundColor='#0004' >
       <View style={{ backgroundColor: '#fff', borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-        <Text style={{ marginTop: 28, textAlign: 'center', fontSize: 17.5, fontWeight: '500' }} >{title ?? '请输入绑定的真实姓名'}</Text>
+        <UGText style={{ marginTop: 28, textAlign: 'center', fontSize: 17.5, fontWeight: '500' }} >{title ?? '请输入绑定的真实姓名'}</UGText>
         <TextInput style={{ marginTop: 18, width: 240, height: 40, borderRadius: 3, borderWidth: 0.5, borderColor: '#ddd', paddingHorizontal: 10, fontSize: 18 }} placeholder={placeholder ?? '请输入真实姓名'} defaultValue={text} onChangeText={(text) => {
           v.text = text;
         }} />

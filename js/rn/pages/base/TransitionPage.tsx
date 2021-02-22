@@ -5,6 +5,7 @@ import { PageName } from '../../public/navigation/Navigation';
 import { jumpTo, push } from '../../public/navigation/RootNavigation';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { UGBasePageProps } from './UGPage';
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 // 声明Props
 export interface TransitionProps extends UGBasePageProps<TransitionProps> {
@@ -39,7 +40,7 @@ export const TransitionPage = (props: TransitionProps) => {
   // 渲染内容
   return (
     <View>
-      <Text style={{ marginTop: 100, textAlign: 'center', fontSize: 15, color: Skin1.textColor1 }}>正在加载中...</Text>
+      <UGText style={{ marginTop: 100, textAlign: 'center', fontSize: 15, color: Skin1.textColor1 }}>正在加载中...</UGText>
     </View>
   );
 }

@@ -12,6 +12,7 @@ import { UGColor } from '../../theme/UGThemeColor'
 import FastImage from 'react-native-fast-image'
 import React from 'react'
 import {BallType} from '../../../pages/bet/const/LotteryConst'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface ILotteryBall {
   type?: string, //球的种类 BallType
@@ -78,11 +79,11 @@ const LotteryBall = ({
                        { width: width }]}
                      resizeMode={'contain'}
                      source={{ uri: ballUrl }}/>,
-          <Text key={key}
+          <UGText key={key}
                 style={[
                   _styles.ball_colorful_text,
                   { color: txColor, fontSize: width * 3 / 7 },
-                ]}>{ballNumber}</Text>,
+                ]}>{ballNumber}</UGText>,
         ]
       case BallType.sz:
       case BallType.vegetable:
@@ -93,9 +94,9 @@ const LotteryBall = ({
                           resizeMode={'contain'}
                           source={{ uri: ballUrl }}/>
       default:
-        return <Text key={key + 'text'}
+        return <UGText key={key + 'text'}
                      style={[_styles.ball_text,
-                       { color: txColor, fontSize: width * 4 / 7 }]}>{ballNumber}</Text>
+                       { color: txColor, fontSize: width * 4 / 7 }]}>{ballNumber}</UGText>
     }
   }
 

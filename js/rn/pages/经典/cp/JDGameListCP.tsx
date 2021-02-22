@@ -11,6 +11,7 @@ import { push } from '../../../public/navigation/RootNavigation'
 import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IXLGameList {
   gameData?: Array<UGYYGames> //所有数据
@@ -50,7 +51,7 @@ const JDGameListCP = ({
                 "sport": 6,
               }
               let linkCategory:number = dict[item?.category];
-              
+
               // ugLog('item.id==',item.id)
               // ugLog('item.gameid==',item.gameId)
               let gotoId = anyEmpty(item.id)?item.gameId:item.id
@@ -75,12 +76,12 @@ const JDGameListCP = ({
             style={{ width: 60, height: 60, marginRight: 10, marginTop: 10, marginLeft: 10, }}
             source={{ uri: item.pic }} />
           <View>
-            <Text
+            <UGText
               style={[_styles.category_name, { color: Skin1.textColor1, width: scale(100), marginTop: 18, },]}
-            >{item.title}</Text>
-            <Text
+            >{item.title}</UGText>
+            <UGText
               style={[_styles.play_now, { position: 'absolute', marginTop: scale(80), },]}
-            >立即游戏</Text>
+            >立即游戏</UGText>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -91,7 +92,7 @@ const JDGameListCP = ({
 
   /**
 * Foot页面
-* 
+*
 */
   const _renderListFootComp = () => {
     return (

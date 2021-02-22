@@ -10,6 +10,7 @@ import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lot
 import LotteryERect from '../../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT, LCode } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行
@@ -66,11 +67,11 @@ const LhcSBComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + 'renderAllBall sub' + groupData?.id + index}
             style={_styles.sub_title_container}>
-        <Text key={key + 'renderAllBall text' + groupData?.id + index}
+        <UGText key={key + 'renderAllBall text' + groupData?.id + index}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.alias}</Text>
+              ]}>{groupData?.alias}</UGText>
       </View>
 
       <View key={key + ' sub2 renderAllBall' + groupData?.id + index}

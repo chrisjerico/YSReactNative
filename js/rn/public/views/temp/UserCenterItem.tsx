@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface UserCenterItemProps {
   logo: string;
@@ -41,11 +42,11 @@ const UserCenterItem = ({
             style={styles.image}
             source={{ uri: logo }}
           />
-          <Text style={[styles.title, titleStyle]}>{title}</Text>
+          <UGText style={[styles.title, titleStyle]}>{title}</UGText>
         </View>
         {showUnreadMsg ? (
           <View style={styles.unReadContainer}>
-            <Text style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
+            <UGText style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</UGText>
           </View>
         ) : (
             <AntDesign
@@ -54,7 +55,7 @@ const UserCenterItem = ({
               size={scale(20)}
             // onPress={onPressLeftTool}
             />
-            // <Text style={[styles.text, arrowTextStyle]}>{'>'}</Text>
+            // <UGText style={[styles.text, arrowTextStyle]}>{'>'}</UGText>
           )}
       </View>
     </TouchableWithoutFeedback>

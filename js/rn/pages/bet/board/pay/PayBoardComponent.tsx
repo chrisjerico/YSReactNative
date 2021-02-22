@@ -16,6 +16,7 @@ import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/B
 import { filterShareItem } from '../tools/BetUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { calculateSliderValue } from '../../util/ArithUtil'
+import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IPayBoardComponent {
   showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调
@@ -57,14 +58,14 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
       `[ ${nameArr?.playName2}- ${betInfo?.betInfo ?? betInfo?.name ?? ''} ]`
     return (<View key={nameArr?.exFlag}
                   style={_styles.item_container}>
-      <Text style={_styles.item_title}
-            numberOfLines={2}>{showName}</Text>
-      <Text style={_styles.item_odds}>{
+      <UGText style={_styles.item_title}
+            numberOfLines={2}>{showName}</UGText>
+      <UGText style={_styles.item_odds}>{
         `@${calculateSliderValue(betInfo?.odds, Number(betShareModel?.activeReturnCoinRatio))}`
-      }</Text>
-      <Text style={_styles.item_x}>{
+      }</UGText>
+      <UGText style={_styles.item_x}>{
         'X'
-      }</Text>
+      }</UGText>
       <TextInput defaultValue={averageMoney?.toString()}
                  onChangeText={text => setMoneyMap(prevState => {
                    const moneyMap = new Map<string, number>()
@@ -106,8 +107,8 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             _styles.dialog_title_container,
             { backgroundColor: Skin1.themeColor },
           ]}>
-            <Text
-              style={_styles.dialog_title_text}>{`第${betShareModel?.issue_displayNumber ?? betShareModel?.turnNum}期 ${betShareModel?.gameName} 下注清单`}</Text>
+            <UGText
+              style={_styles.dialog_title_text}>{`第${betShareModel?.issue_displayNumber ?? betShareModel?.turnNum}期 ${betShareModel?.gameName} 下注清单`}</UGText>
           </View>
           <View style={_styles.sv_parent}>
             <ScrollView style={_styles.sv_container}
@@ -118,24 +119,24 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
             </ScrollView>
           </View>
           <View style={_styles.total_info_container}>
-            <Text style={_styles.total_info_title}>{'投注金额不能为小数：'}</Text>
+            <UGText style={_styles.total_info_title}>{'投注金额不能为小数：'}</UGText>
             <TextInput value={averageMoney?.toString()}
                        keyboardType={'numeric'}
                        onChangeText={(text => setAverageMoney(Number.parseFloat(text)))}
                        style={_styles.total_input_money}/>
           </View>
           <View style={_styles.last_info_container}>
-            <Text style={_styles.bet_result}>{'合计注数：'}</Text>
-            <Text style={[_styles.bet_result,
-              { color: Skin1.themeColor }]}>{betCount}</Text>
-            <Text style={_styles.bet_result2}>{'总金额：'}</Text>
-            <Text style={[_styles.bet_result_total_money,
-              { color: Skin1.themeColor }]}>{totalMoney}</Text>
+            <UGText style={_styles.bet_result}>{'合计注数：'}</UGText>
+            <UGText style={[_styles.bet_result,
+              { color: Skin1.themeColor }]}>{betCount}</UGText>
+            <UGText style={_styles.bet_result2}>{'总金额：'}</UGText>
+            <UGText style={[_styles.bet_result_total_money,
+              { color: Skin1.themeColor }]}>{totalMoney}</UGText>
           </View>
           <View style={_styles.bt_container}>
-            <Text style={_styles.pay_bt}
-                  onPress={() => showCallback && showCallback()}>{'取消'}</Text>
-            <Text style={[_styles.pay_bt,
+            <UGText style={_styles.pay_bt}
+                  onPress={() => showCallback && showCallback()}>{'取消'}</UGText>
+            <UGText style={[_styles.pay_bt,
               { backgroundColor: Skin1.themeColor, color: 'white' }]}
                   onPress={() => {
                     // showLoading()
@@ -144,7 +145,7 @@ const PayBoardComponent = ({ showCallback }: IPayBoardComponent, ref?: any) => {
                       betShareModel?.isInstant != '1' && data?.code == 0 && Toast(data?.msg)
                       showCallback(data?.data)
                     })
-                  }}>{'确定'}</Text>
+                  }}>{'确定'}</UGText>
           </View>
         </View>
       </Modal>

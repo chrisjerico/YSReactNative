@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image'
 import { httpClient } from '../../../../public/network/httpClient'
 import PushHelper from '../../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
+import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const HomeHeaderButtonBar = ({info}) => {
   const { userInfo } = info
@@ -26,7 +27,7 @@ export const HomeHeaderButtonBar = ({info}) => {
             <View style={{ flexDirection: 'row', alignItems: 'center', height: 40 }}>
               <Image style={{ width: 20, height: 20 }}
                      source={{ uri: httpClient.defaults.baseURL + '/views/mobileTemplate/19/images/coin.png' }} />
-              <Text style={{ marginLeft: 10 }}>{balance || '0.000'}</Text>
+              <UGText style={{ marginLeft: 10 }}>{balance || '0.000'}</UGText>
             </View>
           </TouchableWithoutFeedback>
         }

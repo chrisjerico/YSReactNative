@@ -194,11 +194,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.jmfgvn5.cc',
   ],
   'c085ahy': [
-    'https://www.ya1237888.cc',
-    'https://www.ya2238888.cc',
-    'https://www.ya3388888.cc',
-    'https://www.ya442778111.cc',
-    'https://www.ya557887.cc',
+    'https://www.jmhnnn1.cc',
+    'https://www.jmsfds2.cc',
+    'https://www.jmsddv3.cc',
+    'https://www.jmnhhn4.cc',
+    'https://www.jmfgvn5.cc',
   ],
   'c085yw': [
     'https://x558.cc',
@@ -418,7 +418,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c245': [
     'https://4823kcmanucxeanm.com',
-    'https://4823aochjenmalc.com',
     'https://4823btuenaldfpvm.com',
   ],
   'c246': [
@@ -460,11 +459,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333x.org',
+    'https://70333b.org',
     'https://70333k.org',
     'https://70333c.org',
     'https://70333v.org',
-    'https://70333z.org',
+    'https://70333n.org',
   ],
   'h003b': [
     'https://betv5.com',

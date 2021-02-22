@@ -3,6 +3,7 @@ import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp, TextStyle, Easi
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface RankList {
   username: string
@@ -81,18 +82,18 @@ const AnimatedRankComponent = ({
       <View style={containerStyle}>
         <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
           <FontAwesome name={'bar-chart'} size={scale(20)} color={iconColor} style={iconStyle} />
-          <Text style={[styles.iconText, iconTitleStyle]}>{type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}</Text>
+          <UGText style={[styles.iconText, iconTitleStyle]}>{type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}</UGText>
         </View>
         <View style={[styles.contentContainer, contentContainerStyle]}>
           <View style={[styles.titleConatiner, titleConatinerStyle]}>
             <View style={styles.textContainer}>
-              <Text style={[styles.title, contentTitleStyle]}>{'玩家'}</Text>
+              <UGText style={[styles.title, contentTitleStyle]}>{'玩家'}</UGText>
             </View>
             <View style={styles.textContainer}>
-              <Text style={[styles.title, contentTitleStyle]}>{'游戏'}</Text>
+              <UGText style={[styles.title, contentTitleStyle]}>{'游戏'}</UGText>
             </View>
             <View style={styles.textContainer}>
-              <Text style={[styles.title, contentTitleStyle]}>{type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}</Text>
+              <UGText style={[styles.title, contentTitleStyle]}>{type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}</UGText>
             </View>
           </View>
           <View style={[styles.listContainer, { height: listHeight }]}>
@@ -110,19 +111,19 @@ const AnimatedRankComponent = ({
                 return (
                   <View key={index} style={styles.itemContainer}>
                     <View style={styles.itemTextContainer}>
-                      <Text style={[styles.item, leftItemTextStyle]} numberOfLines={1}>
+                      <UGText style={[styles.item, leftItemTextStyle]} numberOfLines={1}>
                         {username}
-                      </Text>
+                      </UGText>
                     </View>
                     <View style={styles.itemTextContainer}>
-                      <Text style={[styles.item, leftItemTextStyle]} numberOfLines={1}>
+                      <UGText style={[styles.item, leftItemTextStyle]} numberOfLines={1}>
                         {type}
-                      </Text>
+                      </UGText>
                     </View>
                     <View style={styles.itemTextContainer}>
-                      <Text style={[styles.item, rightItemTextStyle]} numberOfLines={1}>
+                      <UGText style={[styles.item, rightItemTextStyle]} numberOfLines={1}>
                         {coin}
-                      </Text>
+                      </UGText>
                     </View>
                   </View>
                 )

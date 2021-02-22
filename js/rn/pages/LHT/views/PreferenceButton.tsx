@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
 import { useHtml5Image } from '../../../Res/icon'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image()
 
@@ -22,13 +23,13 @@ const PreferenceButton = ({ title, selected = false, onPress }: PreferenceButton
               backgroundColor: selected ? '#c21632' : '#D0D0D0',
             },
           ]}>
-          <Text
+          <UGText
             style={{
               fontSize: scale(20),
               color: selected ? '#ffffff' : '#7B7B7B',
             }}>
             {title}
-          </Text>
+          </UGText>
         </View>
       </TouchableWithoutFeedback>
       {selected && (

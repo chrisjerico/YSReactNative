@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface RowGameButtomProps {
   logo: string
@@ -19,7 +20,7 @@ const RowGameButtom = ({ logo, name, desc, logoBallText, onPress, showRightBorde
       <View style={styles.container}>
         {showLogoBall && (
           <View style={styles.logoBall}>
-            <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{logoBallText}</Text>
+            <UGText style={{ color: '#ffffff', fontSize: scale(15) }}>{logoBallText}</UGText>
           </View>
         )}
         <View style={styles.logoContainer}>
@@ -36,10 +37,10 @@ const RowGameButtom = ({ logo, name, desc, logoBallText, onPress, showRightBorde
                 marginLeft: scale(5),
                 width: scale(150),
               }}>
-              <Text numberOfLines={1} style={{ fontSize: scale(20), fontWeight: '300' }}>
+              <UGText numberOfLines={1} style={{ fontSize: scale(20), fontWeight: '300' }}>
                 {name}
-              </Text>
-              <Text
+              </UGText>
+              <UGText
                 style={{
                   fontSize: scale(15),
                   color: '#666',
@@ -47,7 +48,7 @@ const RowGameButtom = ({ logo, name, desc, logoBallText, onPress, showRightBorde
                 }}
                 numberOfLines={1}>
                 {desc}
-              </Text>
+              </UGText>
             </View>
           </View>
           {showRightBorder && <View style={{ width: scale(1), backgroundColor: '#d9d9d9', height: scale(50), marginTop: scale(10) }} />}

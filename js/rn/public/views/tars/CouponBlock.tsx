@@ -2,6 +2,7 @@ import React, { memo, useContext, useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import List from './List'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface CouponBlock {
   coupons: any[]
@@ -25,17 +26,17 @@ const CouponBlock = ({ visible, containerStyle, coupons = [], renderCoupon, onPr
       setState({})
     })
   }, [c_ref])
-  
+
   if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image style={{ width: scale(25), height: scale(25), tintColor: '#000000', marginRight: scale(5), marginBottom: scale(5) }} source={{ uri: '礼品-(1)' }} />
-            <Text style={[{ fontSize: scale(25) }, titleStyle]}>{'优惠活动'}</Text>
+            <UGText style={[{ fontSize: scale(25) }, titleStyle]}>{'优惠活动'}</UGText>
           </View>
           <TouchableWithoutFeedback onPress={onPressMore}>
-            <Text style={[{ fontSize: scale(25) }, titleStyle]}>{'查看更多>>'}</Text>
+            <UGText style={[{ fontSize: scale(25) }, titleStyle]}>{'查看更多>>'}</UGText>
           </TouchableWithoutFeedback>
         </View>
         <List uniqueKey={'CouponBlock'} style={[styles.listContainer, listContainerStyle]} data={coupons} renderItem={renderCoupon} removeClippedSubviews={true} />

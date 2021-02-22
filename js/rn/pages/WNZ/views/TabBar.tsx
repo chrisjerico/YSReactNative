@@ -6,6 +6,7 @@ import { appConfig } from '../../../../../config'
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import { UGImageHost, useHtml5Image } from '../../../Res/icon'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
@@ -35,9 +36,9 @@ const Tab = ({ logo, name, focused, onPress, index }) => {
       <View style={styles.tabContainer}>
         <View style={styles.titleContainer}>
           <ImageBackground source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1, justifyContent:'center', alignItems:'center' }} resizeMode={'contain'} >
-            <Text style={{marginTop:1,marginLeft:1, padding:1, color:'white', fontSize:14, backgroundColor:index ? '#C84C4E' : '#80c025'}}>{appConfig.isWNZBottomTabHot() ? (index ? '榜' : '热') : (index ? '信' : '官') }</Text>
+            <UGText style={{marginTop:1,marginLeft:1, padding:1, color:'white', fontSize:14, backgroundColor:index ? '#C84C4E' : '#80c025'}}>{appConfig.isWNZBottomTabHot() ? (index ? '榜' : '热') : (index ? '信' : '官') }</UGText>
           </ImageBackground>
-          <Text style={styles.titleText}>{appConfig.isWNZBottomTabHot() ? c245Names[index] : name}</Text>
+          <UGText style={styles.titleText}>{appConfig.isWNZBottomTabHot() ? c245Names[index] : name}</UGText>
         </View>
         {!index && <View style={styles.grayLineContainer} />}
         <View

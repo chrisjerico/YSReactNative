@@ -16,6 +16,7 @@ import Menu from './views/Menu'
 import SignHeader from './views/SignHeader'
 import MineHeader from "../../public/views/temp/MineHeader";
 import { skinColors } from '../../public/theme/const/UGSkinColor'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const LEFSignUpPage = () => {
   const menu = useRef(null)
@@ -85,7 +86,7 @@ const SignUpForm = (props: FormComponentProps & { leftIconTitle: string }) => (
     inputContainerStyle={styles.inputContainerStyle}
     leftIconContainerStyle={styles.leftIconContainerStyle}
     rightIconContainerStyle={{ marginRight: scale(10) }}
-    renderLeftIcon={() => <Text style={styles.leftIconText}>{props?.leftIconTitle}</Text>}
+    renderLeftIcon={() => <UGText style={styles.leftIconText}>{props?.leftIconTitle}</UGText>}
     labelTextStyle={{ paddingLeft: scale(20) }}
     placeholderTextColor={'#9D9D9D'}
   />

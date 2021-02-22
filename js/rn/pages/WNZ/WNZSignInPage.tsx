@@ -17,6 +17,7 @@ import BottomGap from '../../public/views/temp/BottomGap'
 import config from './config'
 import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const WNZSignInPage = () => {
   const openMenu = () => {
@@ -106,7 +107,7 @@ const SignInForm = (props: SignInRenderFormProps) => {
       containerStyle={{ marginBottom: scale(10) }}
       inputContainerStyle={styles.inputContainerStyle}
       leftIconContainerStyle={styles.leftIconContainerStyle}
-      renderLeftIcon={() => <Text style={styles.leftIconText}>{leftIconTitle}</Text>}
+      renderLeftIcon={() => <UGText style={styles.leftIconText}>{leftIconTitle}</UGText>}
       placeholderTextColor={'#9D9D9D'}
     />
   )

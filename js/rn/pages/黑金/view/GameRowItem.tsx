@@ -6,6 +6,7 @@ import FastImage from "react-native-fast-image";
 import {scale} from "../../../public/tools/Scale";
 import TouchableImage from "../../../public/views/temp/TouchableImage";
 import {ugLog} from "../../../public/tools/UgLog";
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface GameRowProps {
   iconsItem: Icon,
@@ -46,8 +47,8 @@ const GameRowItem = ({
             <FastImage
               style={_styles.item}
               source={{uri: item.icon}}>
-              <Text style={_styles.itemText}
-                    numberOfLines={1} >{item.name}</Text>
+              <UGText style={_styles.itemText}
+                    numberOfLines={1} >{item.name}</UGText>
             </FastImage>
           </TouchableWithoutFeedback>
         )

@@ -11,6 +11,7 @@ import UseFreedomGameList from './UseFreedomGameList'
 import LinearGradient from 'react-native-linear-gradient'
 import { Res } from '../../../../Res/icon/Res'
 import { LCode } from '../../../bet/const/LotteryConst'
+import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   gameData?: HallGameData //所有数据
@@ -50,8 +51,8 @@ const FreedomGameListComponent = ({
               }}>
                 <View style={_styles.tk_item_container}>
                   <View style={_styles.tk_item_content}>
-                    <Text style={_styles.tk_item_name} numberOfLines={1}>{item.title}</Text>
-                    <Text style={_styles.tk_item_play}>{'立即游戏'}</Text>
+                    <UGText style={_styles.tk_item_name} numberOfLines={1}>{item.title}</UGText>
+                    <UGText style={_styles.tk_item_play}>{'立即游戏'}</UGText>
                   </View>
                 </View>
               </TouchableWithoutFeedback>
@@ -77,8 +78,8 @@ const FreedomGameListComponent = ({
                       start={{ x: 0, y: 1 }}
                       end={{ x: 1, y: 1 }}>
         <View style={_styles.tk_left_column}>
-          <Text style={[_styles.tk_left_title,
-            { color: shape?.textColor }]}>{gameData?.gameTypeName}</Text>
+          <UGText style={[_styles.tk_left_title,
+            { color: shape?.textColor }]}>{gameData?.gameTypeName}</UGText>
           <FastImage style={_styles.tk_left_icon}
                      resizeMode={'contain'}
                      source={{ uri: shape.icon }}/>

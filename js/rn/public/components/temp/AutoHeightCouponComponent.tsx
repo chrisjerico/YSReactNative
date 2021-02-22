@@ -5,6 +5,7 @@ import { Button } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface AutoHeightCouponAutoHeightCouponComponentProps {
   title: string;
@@ -29,9 +30,9 @@ const AutoHeightCouponComponent = ({
   if (show) {
     return (
       <View style={[{ width: '100%' }, containerStyle]}>
-        <Text style={[styles.title, titleStyle]}>
+        <UGText style={[styles.title, titleStyle]}>
           {title}
-        </Text>
+        </UGText>
         <TouchableImage
           pic={pic}
           containerStyle={{ width: '100%', aspectRatio }}
@@ -75,7 +76,7 @@ const AutoHeightCouponComponent = ({
                   borderTopLeftRadius: scale(10),
                 }}
               >
-                <Text style={{ fontSize: scale(20) }}>{title}</Text>
+                <UGText style={{ fontSize: scale(20) }}>{title}</UGText>
               </View>
               <View style={{ flex: 8 }}>
                 <ScrollView showsVerticalScrollIndicator={true}>

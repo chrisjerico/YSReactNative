@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {ScrollView, Text, TouchableWithoutFeedback, View,} from 'react-native'
 import AppDefine from "../define/AppDefine";
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 export const CustomTabBar = (props) => {
     // const renderButton = (name, page, isTabActive, onPressHandler) => {
@@ -25,9 +26,9 @@ export const CustomTabBar = (props) => {
     //                     borderBottomWidth: 2,
     //                     borderBottomColor: isTabActive ? "#000000" : "#fff"
     //                 }}>
-    //                     <Text style={[{color: textColor, marginVertical: 8, fontSize: 16}]}>
+    //                     <UGText style={[{color: textColor, marginVertical: 8, fontSize: 16}]}>
     //                         {name}
-    //                     </Text>
+    //                     </UGText>
     //                 </View>
     //             </View>
     //         </TouchableWithoutFeedback>
@@ -60,9 +61,9 @@ export const CustomTabBar = (props) => {
                                 borderBottomWidth: 2,
                                 borderBottomColor: isTabActive ? "#000000" : "#fff"
                             }}>
-                                <Text style={[{color: textColor, marginVertical: 8, fontSize: 16}]}>
+                                <UGText style={[{color: textColor, marginVertical: 8, fontSize: 16}]}>
                                     {name}
-                                </Text>
+                                </UGText>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>

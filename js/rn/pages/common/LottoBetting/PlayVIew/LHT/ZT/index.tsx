@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react'
 import {UGStore} from "../../../../../../redux/store/UGStore"
 import HKBallsView from "../HKBallsView"
 import HKNormalWithSBView from "../HKNormalWithSBView"
+import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 const ZTContainer = ({setProps}) => {
     const {currentPlayOdd,} = UGStore.globalProps.BettingReducer;
@@ -34,12 +35,12 @@ const ZTContainer = ({setProps}) => {
                                       borderRightWidth: 0.5,
                                       borderRightColor: "white",
                                   }}>
-                                      <Text style={{
+                                      <UGText style={{
                                           marginHorizontal: 27,
                                           marginVertical: 16,
                                           fontSize: 14,
                                           color: currentFilter == item ? "blue" : "black"
-                                      }}>{item}</Text>
+                                      }}>{item}</UGText>
                                   </View>
                               </TouchableWithoutFeedback>
                           }}/>

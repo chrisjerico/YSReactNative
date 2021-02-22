@@ -3,15 +3,16 @@ import { StyleProp, TextStyle, Text, StyleSheet } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import useRandomString from '../../hooks/useRandomString'
 import MaskedView from '@react-native-community/masked-view'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface RandomTextComponentProps {
   style?: StyleProp<TextStyle>
 }
 
 const GradientText = (props) => (
-  <MaskedView maskElement={<Text {...props} />}>
+  <MaskedView maskElement={<UGText {...props} />}>
     <LinearGradient colors={['#f00', '#0f0']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-      <Text {...props} style={[props.style, { opacity: 0 }]} />
+      <UGText {...props} style={[props.style, { opacity: 0 }]} />
     </LinearGradient>
   </MaskedView>
 )
@@ -22,7 +23,7 @@ const RandomTextComponent = ({ style }: RandomTextComponentProps) => {
   return <GradientText style={style}>HelloAAAAA</GradientText>
   // return (
   //   <>
-  //     <Text style={style}>{value}</Text>
+  //     <UGText style={style}>{value}</UGText>
   //     <LinearGradient
   //       start={{ x: 0.0, y: 0.0 }}
   //       end={{ x: 0.0, y: 1.0 }}

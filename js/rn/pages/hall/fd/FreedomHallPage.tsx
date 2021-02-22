@@ -31,6 +31,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { pop, push } from '../../../public/navigation/RootNavigation'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { UGBasePageProps } from '../../base/UGPage'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 /**
  * 自由游戏大厅
@@ -187,7 +188,7 @@ const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
                     <FastImage style={_styles.top_item_icon}
                                resizeMode={'contain'}
                                source={{ uri: Res.gameListjrsy }}/>
-                    <Text style={_styles.top_item_text}>{'今日输赢'}</Text>
+                    <UGText style={_styles.top_item_text}>{'今日输赢'}</UGText>
                   </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -197,7 +198,7 @@ const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
                     <FastImage style={_styles.top_item_icon}
                                resizeMode={'contain'}
                                source={{ uri: Res.gameListlskj }}/>
-                    <Text style={_styles.top_item_text}>{'开奖记录'}</Text>
+                    <UGText style={_styles.top_item_text}>{'开奖记录'}</UGText>
                   </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -209,7 +210,7 @@ const FreedomHallPage = ({ navigation, setProps ,route}: UGBasePageProps) => {
                     <FastImage style={_styles.top_item_icon}
                                resizeMode={'contain'}
                                source={{ uri: Res.gameListyhhd }}/>
-                    <Text style={_styles.top_item_text}>{'优惠活动'}</Text>
+                    <UGText style={_styles.top_item_text}>{'优惠活动'}</UGText>
                   </View>
                 </TouchableWithoutFeedback>
               </View>,

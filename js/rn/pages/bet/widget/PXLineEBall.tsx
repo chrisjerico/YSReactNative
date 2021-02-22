@@ -9,6 +9,7 @@ import { isSelectedBallOnId } from './it/ISelBall'
 import LotteryEBall from './LotteryEBall'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IPXEBall {
   item?: IPXLineEBallItem // 要绘制的数据
@@ -62,16 +63,16 @@ const PXLineEBall = ({
                 backgroundColor: isSel ? `${Skin1.themeColor}dd` : null,
               },
             ]}>
-        <Text key={showName}
+        <UGText key={showName}
               style={[
                 _styles.sub_title_text,
                 isSel ? { color: 'white' } : null,
-              ]}>{showName}</Text>
-        <Text key={item?.odds}
+              ]}>{showName}</UGText>
+        <UGText key={item?.odds}
               style={[
                 _styles.sub_title_text_odds,
                 isSel ? { color: 'white' } : null,
-              ]}>{item?.odds}</Text>
+              ]}>{item?.odds}</UGText>
         <View style={CommStyles.flex}/>
         {
           !anyEmpty(item?.zodiacItem) &&

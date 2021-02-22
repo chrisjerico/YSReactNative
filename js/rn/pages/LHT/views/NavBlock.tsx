@@ -5,6 +5,7 @@ import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanc
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface NavBlockProps {
   customerServiceLogo: string
@@ -60,7 +61,7 @@ const NavBlock = ({
     <View style={[styles.container, containerStyle]}>
       <View style={styles.topContainer}>
         <View style={styles.topLeftContainer}>
-          <Text>{'余额'}</Text>
+          <UGText>{'余额'}</UGText>
           <FastImage style={styles.balanceLogo} source={{ uri: balanceLogo }} />
           <ReLoadBalanceComponent iconColor={'#ff861b'} balance={balance} currency={currency} showK={showK} balanceDecimal={balanceDecimal} />
         </View>
@@ -82,12 +83,12 @@ const NavBlock = ({
       <View style={styles.titleContainer}>
         <View style={styles.titleLeftContainer}>
           <FastImage style={styles.lotteryLogo} source={{ uri: lotteryLogo }} />
-          <Text style={{ paddingLeft: scale(5) }}>{'六合彩推荐资讯'}</Text>
+          <UGText style={{ paddingLeft: scale(5) }}>{'六合彩推荐资讯'}</UGText>
         </View>
         <View style={styles.awardsContainer}>
-          <Text style={styles.awardsText}>{'第 '}</Text>
-          <Text style={[styles.awardsText, { color: '#ff861b' }]}>{date}</Text>
-          <Text style={styles.awardsText}>{' 期开奖结果'}</Text>
+          <UGText style={styles.awardsText}>{'第 '}</UGText>
+          <UGText style={[styles.awardsText, { color: '#ff861b' }]}>{date}</UGText>
+          <UGText style={styles.awardsText}>{' 期开奖结果'}</UGText>
         </View>
       </View>
       <View style={styles.lotterysCintainer}>{lotterys.map(renderLottery)}</View>

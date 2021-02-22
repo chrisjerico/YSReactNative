@@ -14,6 +14,7 @@ import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { calculateSliderValue } from '../../../util/ArithUtil'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 
 /**
@@ -59,11 +60,11 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
               tabLen > 3 ? null: { width: scale(400/tabLen) },//tab 少于4个 就平均分配空间
             ]}>
-        <Text key={key + item[0]?.alias}
+        <UGText key={key + item[0]?.alias}
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.alias}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -121,24 +122,24 @@ const CqsscYZDWComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       {//显示赔率标题
         index == 0 && <View style={_styles.sub_big_title_container}>
-          <Text style={[
+          <UGText style={[
                   _styles.sub_big_title_text,
                   { color: Skin1.themeColor },
-                ]}>{`赔率: ${calculateSliderValue(groupData?.exPlays[0]?.odds, sliderValue)}`}</Text>
+                ]}>{`赔率: ${calculateSliderValue(groupData?.exPlays[0]?.odds, sliderValue)}`}</UGText>
         </View>
       }
 
       {//显示赔率提醒文字
         index == 0 && !anyEmpty(groupData?.exHint) && <View style={_styles.sub_big_hint_container}>
-          <Text style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
+          <UGText style={_styles.sub_big_hint_text}>{groupData?.exHint}</UGText>
         </View>
       }
 
       <View style={_styles.sub_title_container}>
-        <Text style={[
+        <UGText style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.exPlays[0]?.alias}</Text>
+              ]}>{groupData?.exPlays[0]?.alias}</UGText>
       </View>
 
       <View style={_styles.ball_parent_container}>

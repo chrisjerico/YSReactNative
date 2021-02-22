@@ -22,6 +22,7 @@ import APIRouter from '../../../../public/network/APIRouter'
 import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
 import { NSValue } from '../../../../public/define/OCHelper/OCBridge/OCCall'
 import { OCEventType } from '../../../../public/define/OCHelper/OCBridge/OCEvent'
+import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   onCallback?: () => any, //设置密码成功
@@ -62,7 +63,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
    */
   const renderIdCard = () => {
     return <View style={_styles.add_img_container}>
-      <Text style={_styles.add_img_text}>{'身份证正反面: '}</Text>
+      <UGText style={_styles.add_img_text}>{'身份证正反面: '}</UGText>
       <View style={_styles.add_img_bt_container}>
         <TouchableOpacity onPress={() => {
 
@@ -209,8 +210,8 @@ const ForgetPasswordPage = ({ navigation, route }) => {
           placeholder={'输入短信验证码'} />
         {
           startCount ?
-            <Text style={[_styles.verify_code_count,
-            { backgroundColor: Skin1.themeColor }]}>{`${countDown}秒`}</Text> :
+            <UGText style={[_styles.verify_code_count,
+            { backgroundColor: Skin1.themeColor }]}>{`${countDown}秒`}</UGText> :
             <Button title={'获取短信验证码'}
               titleStyle={_styles.verify_code_text}
               containerStyle={[_styles.verify_code_bt,

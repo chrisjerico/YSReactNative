@@ -12,6 +12,7 @@ import { anyEmpty, arrayLength } from '../../../../../public/tools/Ext'
 import LotteryEBall from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT, SingleOption } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
+import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
 
 
 /**
@@ -62,11 +63,11 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
               tabLen > 3 ? null : { width: scale(400 / tabLen) },//tab 少于4个 就平均分配空间
             ]}>
-        <Text key={key + item[0]?.alias}
+        <UGText key={key + item[0]?.alias}
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.alias}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -134,7 +135,7 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   size={scale(36)}
                   name={'circle-o'}/>
         }
-        <Text style={_styles.option_item_text}>{optionArray[index]}</Text>
+        <UGText style={_styles.option_item_text}>{optionArray[index]}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -150,29 +151,29 @@ const PK10GFWFComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       {//显示赔率标题
         index == 0 && <View key={key + ' sub renderGFWF 2 = ' + groupData?.id}
                             style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderGFWF' + groupData?.id}
+          <UGText key={key + ' text renderGFWF' + groupData?.id}
                 style={[
                   _styles.sub_big_title_text,
                   { color: Skin1.themeColor },
-                ]}>{`赔率: ${groupData?.exPlays[0]?.odds}`}</Text>
+                ]}>{`赔率: ${groupData?.exPlays[0]?.odds}`}</UGText>
         </View>
       }
 
       {//显示赔率提醒文字
         index == 0 && !anyEmpty(groupData?.exHint) && <View key={key + ' sub renderGFWF 2 = ' + groupData?.id}
                                                             style={_styles.sub_big_hint_container}>
-          <Text key={key + ' text renderGFWF' + groupData?.id}
-                style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
+          <UGText key={key + ' text renderGFWF' + groupData?.id}
+                style={_styles.sub_big_hint_text}>{groupData?.exHint}</UGText>
         </View>
       }
 
       <View key={key + ' sub renderGFWF 2 =' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderGFWF' + groupData?.id}
+        <UGText key={key + ' text renderGFWF' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.exPlays[0]?.alias}</Text>
+              ]}>{groupData?.exPlays[0]?.alias}</UGText>
       </View>
 
       <View key={key + ' ball renderGFWF' + groupData?.id}

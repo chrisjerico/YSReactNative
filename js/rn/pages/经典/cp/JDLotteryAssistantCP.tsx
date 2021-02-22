@@ -16,6 +16,7 @@ import moment from 'moment';
 import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
 import { ImagePlaceholder } from '../tools/ImagePlaceholder';
 import { JDCLTimeCP } from './JDCLTimeCP';
+import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
 
 export interface JDLotteryAssistantCPAction {
   stopTime?: () => void
@@ -86,12 +87,12 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 限制只能输入数字和小数
-* 
+*
 */
   function chkPrice(obj) { //方法1
     obj = obj.replace(/[^\d.]/g, ""); //清除"数字"和"."以外的字符
-    obj = obj.replace(/^\./g, "");//保证只有出现一个.而没有多个. 
-    obj = obj.replace(/\.{2,}/g, ".");//保证.只出现一次，而不能出现两次以上 
+    obj = obj.replace(/^\./g, "");//保证只有出现一个.而没有多个.
+    obj = obj.replace(/\.{2,}/g, ".");//保证.只出现一次，而不能出现两次以上
     obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
     obj = obj.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数
     return obj;
@@ -100,7 +101,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 下注
-* 
+*
 */
   function betClick() {
     let count: number = 0;
@@ -215,7 +216,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
       OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationGetUserInfo']);
       betItem.select = false;
       setSelBetItem(null)
-       
+
 
 
     }).useFailure((err) => {
@@ -227,7 +228,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 清空方法
-* 
+*
 */
   function clearClick() {
     for (let index = 0; index < items.length; index++) {
@@ -242,13 +243,13 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
     setBetCount(0)
     setAmountLabel('')
     setText('');
-     
+
     infoAction();
   }
 
   /**
 * 去聊天室下注页
-* 
+*
 */
   async function goLotteryBetAndChatVC() {
     await OCHelper.call('UGSystemConfigModel.currentConfig.setHasShare:', [true])
@@ -269,7 +270,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 最小下注数
-* 
+*
 */
   function isBetMin(amountfloat?: number) {
 
@@ -287,7 +288,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 拼装字典用来上传
-* 
+*
 */
   function shareBettingData(betModel?: UGChanglongaideModel, amount?: string) {
 
@@ -303,7 +304,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
 
     let name: string = betModel?.playCateName + '_' + betS?.playName;
-    // 组装list 
+    // 组装list
     {
       let betList: UGbetListModel = new UGbetListModel();
       betList.clsName = undefined;  // 原生要的数据不需要转成Class
@@ -374,7 +375,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * cell 按钮点击
-* 
+*
 */
   function betItemSelect(item?: any, index?: number) {
     let obj = item?.betList[index];
@@ -397,7 +398,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
       if (anyEmpty(amountLabel)) {
         setBetDetailViewhidden(true)
-         
+
         return;
       }
       setBetDetailViewhidden(false)
@@ -412,14 +413,14 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
       setBetCount(0)
 
     }
-     
+
 
   }
 
 
   /**
 * cell img的显示数据
-* 
+*
 */
   function cellImg(item: any) {
 
@@ -433,7 +434,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
   }
   /**
 * betView2 的颜色
-* 
+*
 */
   function betView2Color(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -449,7 +450,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 *  betView1 的颜色
-* 
+*
 */
   function betView1Color(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -465,7 +466,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * oddsLabel2 playNameLabel2 的颜色
-* 
+*
 */
   function lastLabelColor(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -484,7 +485,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * oddsLabel1 playNameLabel1 的颜色
-* 
+*
 */
   function fastLabelColor(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -503,7 +504,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 根据oddsLabel2 的显示数据
-* 
+*
 */
   function oddsLabel2(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -514,7 +515,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 根据playNameLabel2 的显示数据
-* 
+*
 */
   function playName2(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -526,7 +527,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 根据oddsLabel1 的显示数据
-* 
+*
 */
   function oddsLabel1(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -536,7 +537,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 根据playNameLabel1 的显示数据
-* 
+*
 */
   function playName1(item: any) {
     if (!arrayEmpty(item.betList)) {
@@ -548,7 +549,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
 * 根据数据playNameColor返回颜色数据
-* 
+*
 */
   function playNameColor(item: any) {
 
@@ -568,7 +569,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
  * 根据数据是数组还是字典返回数据
- * 
+ *
  */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -581,7 +582,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   /**
  *  备注页控制
- * 
+ *
  */
   function infoAction() {
     if (anyEmpty(selBetItem)) {
@@ -598,21 +599,21 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
         + selAideModel?.playCateName + ', '
         + selBetItem?.playName)
       setBetDetail2Label(' 奖金:' + total?.toFixed(4))
-       
+
     }
     else {
       setBetDetailViewhidden(true)
-       
+
     }
 
   }
 
   /**
 * 下拉刷新
-* 
+*
 */
   const onHeaderRefresh = () => {
-    
+
     setIsRefreshing(true)
     // console.log('下拉刷新');
     getChanglong()
@@ -673,7 +674,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
         }
       }
 
-       
+
       starttime()
 
     });
@@ -699,11 +700,11 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
 
   }
 
-  
+
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ index, item}) => {
     {
@@ -721,14 +722,14 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
           {/* 内容 */}
           <View style={[{ flexDirection: 'column', marginLeft: 10, }]}>
             {/* 文字1 */}
-            <Text style={{ fontSize: 15, color: Skin1.textColor1, }}>
+            <UGText style={{ fontSize: 15, color: Skin1.textColor1, }}>
               {item.title}
-            </Text>
+            </UGText>
             {/* 文字2 */}
             <View style={[{ flexDirection: 'row', alignItems: 'center', height: 28, }]}>
-              <Text style={{ fontSize: 13, color: Skin1.textColor1 }}>
+              <UGText style={{ fontSize: 13, color: Skin1.textColor1 }}>
                 {!anyEmpty(item.displayNumber) ? item.displayNumber : item.issue}
-              </Text>
+              </UGText>
               {/* 倒计时 */}
               <JDCLTimeCP   serverTime = {item.serverTime} closeTime ={item.closeTime}/>
 
@@ -736,19 +737,19 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
             {/* 图标 */}
             <View style={[{ flexDirection: 'row', }]}>
               <View style={{ backgroundColor: '#A9A9A9', borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
+                <UGText style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.playCateName}
-                </Text>
+                </UGText>
               </View>
               <View style={{ marginLeft: 10, backgroundColor: playNameColor(item), borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
+                <UGText style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.playName}
-                </Text>
+                </UGText>
               </View>
               <View style={{ marginLeft: 10, backgroundColor: '#DC143C', borderRadius: 3, }}>
-                <Text style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
+                <UGText style={{ fontSize: 12, color: 'white', marginHorizontal: 5, marginVertical: 3 }}>
                   {item.count}
-                </Text>
+                </UGText>
               </View>
 
             </View>
@@ -765,12 +766,12 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
                 betItemSelect(item, 0)
               }}
             >
-              <Text style={{ fontSize: 14, color: fastLabelColor(item), marginTop: 6 }}>
+              <UGText style={{ fontSize: 14, color: fastLabelColor(item), marginTop: 6 }}>
                 {playName1(item)}
-              </Text>
-              <Text style={{ fontSize: 12, color: fastLabelColor(item), marginTop: 8 }}>
+              </UGText>
+              <UGText style={{ fontSize: 12, color: fastLabelColor(item), marginTop: 8 }}>
                 {oddsLabel1(item)}
-              </Text>
+              </UGText>
             </TouchableOpacity>
             <TouchableOpacity style={[{
               marginLeft: 15, flexDirection: 'column', alignItems: 'center', width: 50, height: 50, borderRadius: 4, borderColor: Skin1.textColor1, borderWidth: 1,
@@ -780,12 +781,12 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
                 betItemSelect(item, 1)
               }}
             >
-              <Text style={{ fontSize: 14, color: lastLabelColor(item), marginTop: 6 }}>
+              <UGText style={{ fontSize: 14, color: lastLabelColor(item), marginTop: 6 }}>
                 {playName2(item)}
-              </Text>
-              <Text style={{ fontSize: 12, color: lastLabelColor(item), marginTop: 8 }}>
+              </UGText>
+              <UGText style={{ fontSize: 12, color: lastLabelColor(item), marginTop: 8 }}>
                 {oddsLabel2(item)}
-              </Text>
+              </UGText>
             </TouchableOpacity>
           </View>
         </View>
@@ -845,12 +846,12 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
           flexDirection: 'row',
           borderRadius: 3,
         }}>
-          <Text style={{ fontSize: 14, color: 'black' }}>
+          <UGText style={{ fontSize: 14, color: 'black' }}>
             {betDetailLabel}
-          </Text>
-          <Text style={{ fontSize: 14, color: '#DC143C' }}>
+          </UGText>
+          <UGText style={{ fontSize: 14, color: '#DC143C' }}>
             {betDetail2Label}
-          </Text>
+          </UGText>
 
         </View>}
         {/* 底部 */}
@@ -868,20 +869,20 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
               clearClick()
             }}
           >
-            <Text style={{ fontSize: 18, color: '#FF8C00' }}>
+            <UGText style={{ fontSize: 18, color: '#FF8C00' }}>
               {'清空'}
-            </Text>
+            </UGText>
           </TouchableOpacity>
           <View style={{ height: bottomH, flex: 1, flexDirection: 'row', alignItems: 'center', }}>
-            <Text style={{ fontSize: 16, color: 'white', marginRight: 2, marginLeft: 10 }}>
+            <UGText style={{ fontSize: 16, color: 'white', marginRight: 2, marginLeft: 10 }}>
               {'共'}
-            </Text>
-            <Text style={{ fontSize: 18, color: '#DC143C' }}>
+            </UGText>
+            <UGText style={{ fontSize: 18, color: '#DC143C' }}>
               {betCount}
-            </Text>
-            <Text style={{ fontSize: 16, color: 'white', marginHorizontal: 2 }}>
+            </UGText>
+            <UGText style={{ fontSize: 16, color: 'white', marginHorizontal: 2 }}>
               {'注'}
-            </Text>
+            </UGText>
             <View style={{ flex: 1 }}></View>
             <TextInput style={{ height: 30, width: 130, backgroundColor: Skin1.textColor4, marginRight: 10, borderRadius: 3, overflow: 'hidden', borderColor: Skin1.textColor3, borderWidth: 1, color: Skin1.textColor1 }}
               placeholder={'   投注金额'}
@@ -902,9 +903,9 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
               betClick()
             }}
           >
-            <Text style={{ fontSize: 18, color: 'white' }}>
+            <UGText style={{ fontSize: 18, color: 'white' }}>
               {'马上投注'}
-            </Text>
+            </UGText>
           </TouchableOpacity>
         </View>
 

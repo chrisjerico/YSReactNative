@@ -16,6 +16,7 @@ import { popToRoot } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { List, PromotionsModel } from '../../public/network/Model/PromotionsModel'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window
@@ -80,7 +81,7 @@ const PromotionListPage = ({ navigation }) => {
             />
           </View>
         ) : null}
-        <Text
+        <UGText
           style={{
             textAlign: 'center',
             color: Skin1.isBlack ? 'white' : Skin1.textColor3,
@@ -88,7 +89,7 @@ const PromotionListPage = ({ navigation }) => {
             fontWeight: 'bold',
           }}>
           优惠活动
-        </Text>
+        </UGText>
       </LinearGradient>
       <LinearGradient style={{ flex: 1, paddingBottom: 50 }} colors={Skin1.bgColor}>
         {categories?.length > 0 ? (
@@ -135,7 +136,7 @@ export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSour
                 }
               })}>
               <View style={{}}>
-                <Text
+                <UGText
                   style={{
                     fontWeight: 'bold',
                     fontSize: 16,
@@ -143,7 +144,7 @@ export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSour
                     color: Skin1.textColor1,
                   }}>
                   {item.title}
-                </Text>
+                </UGText>
                 <FastImageAutoHeight source={{ uri: item.pic }} />
               </View>
             </TouchableWithoutFeedback>
@@ -198,7 +199,7 @@ const RenderTabBar = (props: TabBarProps & { hidden: boolean; titles: string[] }
     <View style={{ marginLeft: 5, flexDirection: 'row', height: 45 }}>
       {tabs?.map((title, idx) => {
         return (
-          <Text
+          <UGText
             onPress={() => {
               props.goToPage(idx)
             }}
@@ -215,7 +216,7 @@ const RenderTabBar = (props: TabBarProps & { hidden: boolean; titles: string[] }
               borderRadius: 3,
             }}>
             {title}
-          </Text>
+          </UGText>
         )
       })}
     </View>

@@ -12,6 +12,22 @@ const deleteHtml = (s?: string): string => {
 }
 
 /**
+ * 清除多余的HTML标签
+ * @param text
+ */
+const clearExHtml = (text?: string): string => {
+  return "<span style='color:#555555;'>" + text?.replace(/font/g, 'span').replace(/color="#/g, 'style=\"color:#') + "</span>"
+}
+
+/**
+ * 清除所有的HTML标签
+ * @param text
+ */
+const clearAllHtml = (text?: string): string => {
+  return text?.replace(/<[^>]+>/g, '')
+}
+
+/**
  * 判断是否以某个字符串结尾
  *
  * @param str 字符串
@@ -35,6 +51,8 @@ const numberToFloatString = (x?: number, len: number = 2): string => {
 }
 
 export {
+  clearExHtml,
+  clearAllHtml,
   deleteHtml,
   endString,
   numberToFloatString,

@@ -19,6 +19,7 @@ import { ugLog } from "../../public/tools/UgLog";
 import { hideLoading, showLoading, UGLoadingType } from "../../public/widget/UGLoadingCP";
 import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -322,8 +323,8 @@ const ZLRegisterPage = () => {
         <View style={{ flex: 1 }}>
             <Header />
             <ScrollView style={{ flex: 1, backgroundColor: 'black', paddingHorizontal: 10 }}>
-                <Text style={{ textAlign: 'center', color: 'white', fontSize: 20, marginTop: 15, marginBottom: 20, fontWeight: "bold" }}>账户注册</Text>
-                <Text style={{ textAlign: 'left', color: 'white', fontSize: 14, marginTop: 15, marginBottom: 20, fontWeight: "bold" }}>为了您的资金安全，请使用真实资料!</Text>
+                <UGText style={{ textAlign: 'center', color: 'white', fontSize: 20, marginTop: 15, marginBottom: 20, fontWeight: "bold" }}>账户注册</UGText>
+                <UGText style={{ textAlign: 'left', color: 'white', fontSize: 14, marginTop: 15, marginBottom: 20, fontWeight: "bold" }}>为了您的资金安全，请使用真实资料!</UGText>
                 <ZLRegInput iconName={"user"} message={"请输入推荐人ID"} placeholder={"请输入推荐人ID"} regConfig={hide_reco} control={control} name={FormName.inviter} />
                 <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}>
                     <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
@@ -474,12 +475,12 @@ const ZLRegisterPage = () => {
                     <TouchableOpacity onPress={() => {
                         setRegType('user')
                     }} style={{ backgroundColor: regType == 'user' ? 'blue' : 'black', justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
-                        <Text style={{ color: 'white' }}>普通用户</Text>
+                        <UGText style={{ color: 'white' }}>普通用户</UGText>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         setRegType('agent')
                     }} style={{ backgroundColor: regType == 'agent' ? 'blue' : 'black', justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
-                        <Text style={{ color: 'white' }}>注册代理</Text>
+                        <UGText style={{ color: 'white' }}>注册代理</UGText>
                     </TouchableOpacity>
                 </View> : null}
 
@@ -491,7 +492,7 @@ const ZLRegisterPage = () => {
                         borderRadius: 8,
                         marginTop: 20, justifyContent: 'center', alignItems: 'center'
                     }}>
-                        <Text style={{ color: "white", fontSize: 20 }}>注册</Text>
+                        <UGText style={{ color: "white", fontSize: 20 }}>注册</UGText>
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={{ height: 100 }}></View>
@@ -517,7 +518,7 @@ const Header = () => {
             <TouchableWithoutFeedback onPress={() => {
                 navigate(PageName.ZLLoginPage, {})
             }}>
-                <Text style={{ color: "#68abf9", fontSize: 18, fontWeight: "bold" }}>登录</Text>
+                <UGText style={{ color: "#68abf9", fontSize: 18, fontWeight: "bold" }}>登录</UGText>
             </TouchableWithoutFeedback>
 
         </View>
@@ -593,7 +594,7 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
                 placeholder={placeholder + (regConfig == 1 || regConfig == '1' ? "(选填)" : "")}
             />
             {name == FormName.smsCode ? <TouchableOpacity onPress={requestSms}>
-                <Text>获取验证码</Text>
+                <UGText>获取验证码</UGText>
             </TouchableOpacity> : null}
             {isPassword ? <TouchableOpacity
                 style={{}}
@@ -642,7 +643,7 @@ const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: s
                 setHide(false)
                 onPress()
             }}>
-                    <Text>点击显示验证码</Text>
+                    <UGText>点击显示验证码</UGText>
                 </TouchableWithoutFeedback>}
 
         </View>
