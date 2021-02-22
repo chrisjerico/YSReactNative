@@ -5,7 +5,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import LinearGradient from 'react-native-linear-gradient'
 import { Skin1 } from '../theme/UGSkinManagers'
 import AppDefine from '../define/AppDefine'
-import { pop, push } from '../navigation/RootNavigation'
+import { pop, popToRoot, push } from '../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { anyEmpty } from '../tools/Ext'
 import { ugLog } from '../tools/UgLog'
@@ -64,7 +64,7 @@ export const OnlineService = () => {
         ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
       }
     }
-    // ugLog('zzURl 链接==', zzURl);
+    ugLog('zzURl 链接==', zzURl);
     return zzURl;
   }
   const webUrl = name()
@@ -77,9 +77,9 @@ export const OnlineService = () => {
     { value: 3, label: '游戏大厅' }];
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 ,backgroundColor:'yellow'}}>
       {/* 下拉控件 */}
-      <View style={{ zIndex: 1, height: scale(66), marginTop: 60, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 }}>
+      <View style={{ zIndex: 1, height: scale(66), marginTop: 55, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 }}>
         <DropDownPicker
           items={
             levelArray
@@ -158,14 +158,14 @@ export const OnlineService = () => {
           </View>
         </SafeAreaView>
       </LinearGradient>
-      <SafeAreaView forceInset={{ bottom: 'never', vertical: 'never' }} style={{ flex: 1, zIndex: 0 }}>
+      <View forceInset={{ bottom: 'never', vertical: 'never' }} style={{ flex: 1, zIndex: 0 ,backgroundColor:'blue'}}>
         <WebView
           injectedJavaScript={script}
           onMessage={(event) => {
             setTitle(event.nativeEvent.title)
           }}
-          style={{ flex: 1 }} containerStyle={{ flex: 1 }} source={{ uri: webUrl }} />
-      </SafeAreaView>
+          style={{ flex: 1,backgroundColor:'red' }} containerStyle={{ flex: 1 ,backgroundColor:'yellow'}} source={{ uri: webUrl }} />
+      </View>
 
 
 

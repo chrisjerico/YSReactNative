@@ -756,6 +756,10 @@ export default class PushHelper {
           case UGLinkPositionType.今日输赢:
             OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGBetRecordViewController.new[setSelectIndex:]', args1: [3] }, true])
             break
+          case UGLinkPositionType.返回首页:
+            popToRoot()
+            OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [7, code])
+            break
           default:
             OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [7, code])
         }
