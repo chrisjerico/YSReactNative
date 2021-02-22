@@ -45,7 +45,14 @@ export const OnlineService = () => {
   
   //拼接URl
   function pjUrl(url: string) {
-    let pjStr = url + '?' + 'from=app' + '&hideHeader=1' + '&token=' + UGUserModel.getToken();
+
+    let pjStr :string;
+    if (anyEmpty(UGUserModel.getToken())) {
+      pjStr  = url + '?' + 'from=app' + '&hideHeader=1' ;
+    } else {
+      pjStr  = url + '?' + 'from=app' + '&hideHeader=1' + '&token=' + UGUserModel.getToken();
+    }
+    
     return pjStr;
   }
 
