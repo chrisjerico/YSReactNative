@@ -35,7 +35,7 @@ export async function setRnPageInfo(force = false) {
       rnName: PageName.OnlineService,
       userCenterItemCode: 14,
       fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
+      允许游客访问: true,
       允许未登录访问: false,
     })
 

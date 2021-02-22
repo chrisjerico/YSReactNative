@@ -42,12 +42,11 @@ export const OnlineService = () => {
     }
   }
 
+  
   //拼接URl
   function pjUrl(url: string) {
-    // let pjStr = url + '?' + 'from=app' + '&hideHeader=1' + '&token=' + UGUserModel.getToken();
-    // return pjStr;
-
-    return url
+    let pjStr = url + '?' + 'from=app' + '&hideHeader=1' + '&token=' + UGUserModel.getToken();
+    return pjStr;
 
 
   }
@@ -69,6 +68,7 @@ export const OnlineService = () => {
     ugLog('zzURl 链接==', zzURl);
     return zzURl;
   }
+  const webUrl = name()
   // 返回首页/存款/取款/游戏大厅  
   let capitalController //类型选择
   let levelArray =
@@ -165,7 +165,7 @@ export const OnlineService = () => {
           onMessage={(event) => {
             setTitle(event.nativeEvent.title)
           }}
-          style={{ flex: 1 }} containerStyle={{ flex: 1 }} source={{ uri: name() }} />
+          style={{ flex: 1 }} containerStyle={{ flex: 1 }} source={{ uri: webUrl }} />
       </SafeAreaView>
 
 
