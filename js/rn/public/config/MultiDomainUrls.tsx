@@ -481,8 +481,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://70333n.org',
   ],
   'h003b': [
-    'https://3947b.com:8082',
-    'https://3947c.com:8082',
+    'https://betv5.com',
+    'https://3947b.com',
+    'https://3947c.com',
   ],
   'h005': [
     'https://534023.com',
