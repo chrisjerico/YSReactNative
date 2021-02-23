@@ -353,11 +353,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2909tycjt.com',
   ],
   'c200': [
-    'https://19952027.com',
-    'https://19952028.com',
-    'https://19952029.com',
-    'https://19952030.com',
-    'https://19952006.com',
+    'https://00852017.com',
+    'https://00852018.com',
+    'https://00852019.com',
+    'https://00852020.com',
+    'https://00852022.com',
   ],
   'c203': [
     'https://xpjcpapp.com',
@@ -481,7 +481,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://70333n.org',
   ],
   'h003b': [
-    'https://betv5.com',
+    'https://3947b.com:8082',
+    'https://3947c.com:8082',
   ],
   'h005': [
     'https://534023.com',
