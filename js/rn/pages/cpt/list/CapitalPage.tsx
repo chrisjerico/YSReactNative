@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
@@ -57,24 +57,28 @@ const CapitalPage = ({ navigation, route, setProps }) => {
 
   //初始化
   useEffect(() => {
-    setProps({
-      didFocus: (params) => {
-        requestYueBao()
-        let dic = params;
-        ugLog('dic==',dic)
-        for (var key in dic) {
-          if (key == 'selectIndex' ||key == 'initTabIndex') {
-            console.log('key ==============', key);
-            console.log('v ==============', dic[key]);
-            // tabRef?.current?.goToPage(2)
-            setTabIndex(dic[key])
-            setRefreshCount(dic[key] + 1)
-            //  setRefreshCount(moment().unix())
+    switch (Platform.OS) {
+      case 'ios':
+        setProps({
+          didFocus: (params) => {
+            requestYueBao()
+            let dic = params;
+            ugLog('dic==',dic)
+            for (var key in dic) {
+              if (key == 'selectIndex' ||key == 'initTabIndex') {
+                console.log('key ==============', key);
+                console.log('v ==============', dic[key]);
+                // tabRef?.current?.goToPage(2)
+                setTabIndex(dic[key])
+                setRefreshCount(dic[key] + 1)
+                //  setRefreshCount(moment().unix())
 
+              }
+            }
           }
-        }
-      }
-    })
+        })
+        break;
+    }
 
   }, [])
   useEffect(() => {
