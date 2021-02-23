@@ -54,10 +54,6 @@ const Tab = ({ logo, name, focused, onPress, index }) => {
 }
 
 const TabBar = ({ activeTab, goToPage }) => {
-  if (AppDefine.siteId.includes('c108')) {
-    tabs[0].name = '热门彩种'
-    tabs[1].name = '中奖排行'
-  }
   return (
     <View style={{ flexDirection: 'row' }}>
       {tabs?.map((item, index) => {

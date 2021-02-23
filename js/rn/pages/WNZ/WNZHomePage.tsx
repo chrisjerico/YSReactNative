@@ -86,7 +86,6 @@ const WNZHomePage = () => {
 
   // @ts-ignore
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
-
   const renderGameSubTypeComponent = (games: any[]) => (
     <GameSubTypeComponent
       uniqueKey={'WNZHomePage_GameSubTypeComponent'}
