@@ -57,7 +57,9 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
       titleArr = [`十`]
       break
 
+    case gameCode == HoChiMin.DDQX: //地段倾斜
     case gameCode == HoChiMin.LBXC: //来宾线程
+    case gameCode == HoChiMin.CQ: //抽签
     case playCode == HoChiMinSub.PIHAO2:  //批号2
     case playCode == HoChiMinSub.LOT2FIRST:  //Lot2第一个号码"
     case playCode == HoChiMinSub.DIDUAN2:  //地段2 1K
