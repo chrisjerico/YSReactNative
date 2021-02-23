@@ -299,11 +299,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://7053ccc.vip',
   ],
   'c186': [
-    'https://200300c.com',
-    'https://200300d.com',
     'https://200300e.com',
-    'https://288388e.com',
-    'https://288388i.com',
+    'https://200300k.com',
+    'https://200300j.com',
+    'https://200300e.com',
+    'https://288388d.com',
   ],
   'c190': [
     'https://474745.com',
