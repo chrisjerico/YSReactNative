@@ -26,6 +26,7 @@ import { ILotteryBall } from '../../../../../public/components/view/LotteryBall'
 import { array } from 'prop-types'
 import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 import DialogRecordComponent from '../../counter/越南彩开奖记录/DialogRecordComponent'
+import { UGStore } from '../../../../../redux/store/UGStore'
 
 
 /**
@@ -374,7 +375,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View style={_styles.content_container}>
         {renderAllBall()}
       </View>
-      <DialogRecordComponent/>
+      <DialogRecordComponent nextIssueData={UGStore.globalProps?.nextIssueData}/>
     </ScrollView>
 
   )

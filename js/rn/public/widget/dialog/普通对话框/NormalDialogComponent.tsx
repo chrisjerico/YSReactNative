@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewBase, ViewComponent } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
 import { forwardRef, useEffect } from 'react'
@@ -22,7 +22,7 @@ interface INormalDialogComponent {
   title?: string //标题
   content?: string //提示内容
   button?: INormalDialogButton[] //按钮
-  customView?: View //自定义布局
+  customView?: () => any //自定义布局
   onClosingDialog?: () => void //窗口 关闭时 回调
 }
 
@@ -76,21 +76,6 @@ const NormalDialogComponent = ({
       ]}>{item?.text}</Text>
     </View>
 
-  const renderContent = () => {
-    return <View style={_styles.content_default}>
-      <Text style={[
-        _styles.title_text,
-        { backgroundColor: Skin1.themeColor },
-      ]}>{title ?? '提示'}</Text>
-      <Text style={_styles.content_text}>{content}</Text>
-      <View style={_styles.button_parent}>
-        {
-          button?.map((item, index) => (renderButton(item, index)))
-        }
-      </View>
-    </View>
-  }
-
   return (
     <View style={_styles.container}>
       <Modal isVisible={true}
@@ -101,9 +86,18 @@ const NormalDialogComponent = ({
              animationOut={'fadeOut'}
              backdropOpacity={0.5}>
         <View style={_styles.content}>
+          <Text style={[
+            _styles.title_text,
+            { backgroundColor: Skin1.themeColor },
+          ]}>{title ?? '提示'}</Text>
           {
-            customView ?? renderContent()
+            (customView && customView()) ?? <Text style={_styles.content_text}>{content}</Text>
           }
+          <View style={_styles.button_parent}>
+            {
+              button?.map((item, index) => (renderButton(item, index)))
+            }
+          </View>
         </View>
       </Modal>
     </View>

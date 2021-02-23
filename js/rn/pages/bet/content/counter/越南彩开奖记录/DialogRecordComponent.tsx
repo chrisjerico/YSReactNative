@@ -17,9 +17,8 @@ import { AnimZoomInOut, AnimZoomOutIn } from '../../../anim/BetAnim'
 import NormalDialogComponent, { INormalDialogButton } from '../../../../../public/widget/dialog/普通对话框/NormalDialogComponent'
 
 interface IDialogRecordComponent {
-  betData?: LotteryResultData //开奖结果
   nextIssueData?: NextIssueData //下一期数据
-  showCallback?: () => void //窗口 是否显示 回调
+  onClosingDialog?: () => void //窗口 关闭时 回调
 }
 
 /**
@@ -28,27 +27,50 @@ interface IDialogRecordComponent {
  * @param ref
  * @constructor
  */
-const DialogRecordComponent = ({ betData, nextIssueData, showCallback }: IDialogRecordComponent, ref?: any) => {
+const DialogRecordComponent = ({
+                                 nextIssueData,
+                                 onClosingDialog,
+                               }: IDialogRecordComponent, ref?: any) => {
+
+  // const leftData = nextIssueData?
 
   const {} = UseDialogRecord()
+
+  //左边条目
+  const renderLeftColumn = () => {
+
+  }
+
+  //右边条目
+  const renderRightColumn = () => {
+
+  }
+
+  //绘制内容
+  const renderContent = () => <View style={_styles.content}>
+    {renderLeftColumn()}
+    {renderRightColumn()}
+  </View>
 
   return (
     <View style={_styles.container}>
       <NormalDialogComponent
-                             content={'标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题'}
-                             button={[
-                               {
-                                 text: '否',
-                                 clickCallback: () => {
-                                 },
-                               } as INormalDialogButton,
-                               {
-                                 text: '是',
-                                 highlighted: true,
-                                 clickCallback: () => {
-                                 },
-                               } as INormalDialogButton,
-                             ]}/>
+        content={'标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题'}
+        customView={() => <Text>bbb</Text>}
+        onClosingDialog={onClosingDialog}
+        button={[
+          {
+            text: '否',
+            clickCallback: () => {
+            },
+          } as INormalDialogButton,
+          {
+            text: '是',
+            highlighted: true,
+            clickCallback: () => {
+            },
+          } as INormalDialogButton,
+        ]}/>
     </View>
   )
 }
@@ -60,9 +82,9 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    width: scale(600),
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   mmc_image: {
     width: '100%',
