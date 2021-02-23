@@ -140,6 +140,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c002': [
     'https://66075.vip',
+    'https://66477.vip',
+    'https://66260.vip',
   ],
   'c012': [
     'https://fjc012cpamg12aktk.org',
@@ -245,6 +247,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c120': [
     'https://asafew435yrtgre.net',
+    'https://x8988.com',
+    'https://x6161.com',
   ],
   'c126': [
     'https://hqcp00001.com',
@@ -269,6 +273,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c137': [
     'https://7033005.com',
+    'https://www.7033633.com',
+    'https://www.7033733.com',
   ],
   'c150': [
     'https://0187655.com',
@@ -278,6 +284,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c158': [
     'https://9055188.com',
+    'https://www.9055233.com',
+    'https://www.9055255.com',
   ],
   'c163': [
     'https://c91c91hh.com',
@@ -354,6 +362,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c225': [
     'https://8393483.com',
+    'https://51666dd.com',
+    'https://51666ee.com',
+    'https://51666ff.com',
+    'https://51666hh.com',
   ],
   'c235': [
     'https://www.hilliot.com',
