@@ -129,11 +129,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test03.6yc.com',
   ],
   'a002': [
-    'https://2034c49.com',
-    'https://2033c49.com',
-    'https://2032c49.com',
     'https://2031c49.com',
     'https://2030c49.com',
+    'https://2029c49.com',
+    'https://2028c49.com',
+    'https://2027c49.com',
   ],
   'c001': [
     'https://c47c47appapp.com',
