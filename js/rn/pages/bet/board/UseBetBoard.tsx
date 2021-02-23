@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { anyEmpty } from '../../../public/tools/Ext'
@@ -36,10 +36,16 @@ const UseBetBoard = () => {
   const betShareModel = UGStore.globalProps.betShareModel //下注数据
   const reBetShareModel = UGStore.globalProps.betChaseMap && UGStore.globalProps.betChaseMap[UGStore.globalProps?.lotteryId] //追号的下注数据
 
+  // //收到消息封盘
+  // const emitterCallback = useCallback((item?: IEmitterMessage) => {
+  //   setLockBoard(n => item)
+  // }, [])
+
   useEffect(() => {
     //收到消息封盘或解封
     const lisRandom = DeviceEventEmitter.addListener(EmitterTypes.LOCK_BOARD, (item?: IEmitterMessage) => {
-      setLockBoard(item)
+      ugLog('item item = ', JSON.stringify(item))
+      setLockBoard(n => item)
     })
 
     return () => {

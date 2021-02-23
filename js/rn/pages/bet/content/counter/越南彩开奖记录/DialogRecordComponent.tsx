@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import Modal from 'react-native-modal'
 import * as React from 'react'
 import { forwardRef, useEffect } from 'react'
@@ -14,6 +14,7 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import CommStyles from '../../../../base/CommStyles'
 import { NextIssueData } from '../../../../../public/network/Model/lottery/NextIssueModel'
 import { AnimZoomInOut, AnimZoomOutIn } from '../../../anim/BetAnim'
+import NormalDialogComponent, { INormalDialogButton } from '../../../../../public/widget/dialog/普通对话框/NormalDialogComponent'
 
 interface IDialogRecordComponent {
   betData?: LotteryResultData //开奖结果
@@ -29,65 +30,25 @@ interface IDialogRecordComponent {
  */
 const DialogRecordComponent = ({ betData, nextIssueData, showCallback }: IDialogRecordComponent, ref?: any) => {
 
-  const {
-    setNextIssueData,
-    closeWindow,
-    setCloseWindow,
-    betResult,
-    setBetResult,
-    counter,
-    autoBet,
-    setAutoBet,
-  } = UseDialogRecord()
-
-  useEffect(() => {
-    setBetResult(betData)
-    setNextIssueData(nextIssueData)
-  }, [])
-
-  useEffect(() => {
-    //等到timer关闭才关闭窗口
-    closeWindow && !autoBet && showCallback()
-  }, [closeWindow, autoBet])
-
+  const {} = UseDialogRecord()
 
   return (
     <View style={_styles.container}>
-      <Modal isVisible={true}
-             style={_styles.modal_content}
-             animationIn={'fadeIn'}
-             animationOut={'fadeOut'}
-             backdropOpacity={0.5}>
-        <View style={_styles.content}>
-
-          <FastImage source={{ uri: Res.mmcbackpic }}
-                     resizeMode={'contain'}
-                     style={_styles.mmc_image}/>
-
-          {renderBonus()}
-
-          {renderCounter()}
-
-          {renderPrize()}
-
-          {renderAutoBet()}
-
-          {renderResult()}
-
-          <View style={_styles.close_container}>
-            <Icon size={scale(48)}
-                  onPress={() => {
-                    setAutoBet(false)
-                    setCloseWindow(true)
-                  }}
-                  style={_styles.close}
-                  color={'white'}
-                  name={'close'}/>
-          </View>
-
-
-        </View>
-      </Modal>
+      <NormalDialogComponent
+                             content={'标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题'}
+                             button={[
+                               {
+                                 text: '否',
+                                 clickCallback: () => {
+                                 },
+                               } as INormalDialogButton,
+                               {
+                                 text: '是',
+                                 highlighted: true,
+                                 clickCallback: () => {
+                                 },
+                               } as INormalDialogButton,
+                             ]}/>
     </View>
   )
 }
@@ -184,5 +145,5 @@ const _styles = StyleSheet.create({
 
 })
 
-export default forwardRef(DialogRecordComponent)
+export default DialogRecordComponent
 
