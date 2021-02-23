@@ -33,7 +33,7 @@ import { UGBasePageProps } from '../base/UGPage'
 import AppDefine from '../../public/define/AppDefine'
 import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
 import { useHtml5Image } from '../../Res/icon'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
   const {

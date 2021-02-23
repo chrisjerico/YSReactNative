@@ -23,7 +23,7 @@ import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 import { InviteCodeModel } from '../Model/InviteCodeModel';
 import { number } from 'prop-types';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDPromotionCodeListPage {
   pageTitle?: string,//界面名称数据

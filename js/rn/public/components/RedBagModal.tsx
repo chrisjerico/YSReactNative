@@ -12,7 +12,7 @@ import { scale } from '../tools/Scale'
 import { ugLog } from '../tools/UgLog'
 import TouchableImage from '../views/tars/TouchableImage'
 import Button from '../views/temp/Button'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface RedBagModalProps {
   show?: any

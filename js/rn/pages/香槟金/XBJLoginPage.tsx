@@ -22,7 +22,7 @@ import { hideLoading, showError, showLoading, showMessage, showSuccess, UGLoadin
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { TextFieldAlertCP } from '../../public/widget/TextFieldAlertCP';
 import { img_assets, useHtml5Image } from '../../Res/icon';
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 // 声明成员变量
 interface XJBLoginVars {

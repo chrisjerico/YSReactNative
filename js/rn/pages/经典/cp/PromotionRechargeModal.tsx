@@ -17,7 +17,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { ToastError } from '../../../public/tools/tars'
 import { Toast } from '../../../public/tools/ToastUtils'
 import APIRouter from '../../../public/network/APIRouter'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface PromotionRechargeModalProps {
   item: any,

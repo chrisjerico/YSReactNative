@@ -23,7 +23,7 @@ import { navigationRef, pop } from "../../public/navigation/RootNavigation"
 import { UGBasePageProps } from "../base/UGPage"
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {Toast} from "../../public/tools/ToastUtils";
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const ZLMinePage = (props: UGBasePageProps) => {
     const { setProps } = props;

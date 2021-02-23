@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 import List from './List'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface CouponBlock {
   containerStyle?: ViewStyle | ViewStyle[];

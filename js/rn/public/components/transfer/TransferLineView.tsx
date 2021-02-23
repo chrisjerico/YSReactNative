@@ -27,7 +27,7 @@ import useTransfer from '../../hooks/useTransfer'
 import { PageName } from '../../navigation/Navigation'
 import { TransferRecordView } from './TransferRecordView'
 import { TransferLineRecordView } from './TransferLineRecordView'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const quickArr = ['全部', 100, 500, 1000, 5000, 10000]
 export const TransferLineView = () => {

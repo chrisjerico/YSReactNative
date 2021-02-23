@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../theme/UGSkinManagers';
 import {anyEmpty} from "../../tools/Ext";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface MineHeaderProps {
   showRightTitle?: boolean

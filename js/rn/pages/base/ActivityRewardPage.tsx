@@ -13,7 +13,7 @@ import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import ProgressCircle from '../../public/views/temp/ProgressCircle'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ApplyRewardProps {
   tabLabel: string

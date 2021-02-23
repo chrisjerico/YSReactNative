@@ -13,7 +13,7 @@ import PushHelper from '../../define/PushHelper'
 import { PushHomeGame } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { push } from '../../navigation/RootNavigation'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface AutoHeightCouponAutoHeightCouponComponentProps {
   title: string

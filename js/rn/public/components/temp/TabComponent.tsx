@@ -12,7 +12,7 @@ import AppDefine from '../../define/AppDefine'
 import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
 import { deleteHtml } from '../../tools/StringUtil'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface TabComponentProps {
   tabGames: TabGame[];

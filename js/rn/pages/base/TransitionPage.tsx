@@ -5,7 +5,7 @@ import { PageName } from '../../public/navigation/Navigation';
 import { jumpTo, push } from '../../public/navigation/RootNavigation';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { UGBasePageProps } from './UGPage';
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 // 声明Props
 export interface TransitionProps extends UGBasePageProps<TransitionProps> {

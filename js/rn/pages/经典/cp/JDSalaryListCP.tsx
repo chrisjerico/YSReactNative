@@ -9,7 +9,7 @@ import { SalaryModel } from '../../../public/network/Model/SalaryModel'
 import { hideLoading, showLoading, showSuccess } from '../../../public/widget/UGLoadingCP'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { AnimationFadeView } from '../../../public/tools/animation/AnimationViews'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export interface JDSalaryListCP {
   showSalaryAlert?: () => void

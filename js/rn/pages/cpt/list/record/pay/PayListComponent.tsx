@@ -20,7 +20,7 @@ import { ugLog } from '../../../../../public/tools/UgLog'
 import { jsDic } from '../../../../经典/Model/UGChanglongaideModel'
 import { clearExHtml } from '../../../../../public/tools/StringUtil'
 import AppDefine from '../../../../../public/define/AppDefine'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面

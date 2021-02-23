@@ -11,7 +11,7 @@ import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const KSSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, reference } = useSignInPage({

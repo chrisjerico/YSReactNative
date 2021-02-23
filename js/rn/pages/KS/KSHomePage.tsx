@@ -19,7 +19,7 @@ import HomeHeader from './views/HomeHeader'
 import MoreGameButton from './views/MoreGameButton'
 import ProfileBlock from './views/ProfileBlock'
 import { goToUserCenterType } from '../../public/tools/tars'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const buttonHeight = scale(82)
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)

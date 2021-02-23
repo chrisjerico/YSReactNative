@@ -12,7 +12,7 @@ import { UGBasePageProps } from '../base/UGPage';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { getStackLength } from '../../public/navigation/RootNavigation';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 type TopTabStyle = '背景透明' | '背景不透明' | '没有选中背景色'

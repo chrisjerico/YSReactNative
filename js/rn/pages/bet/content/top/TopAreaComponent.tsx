@@ -12,7 +12,7 @@ import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { GameTab } from '../../const/LotteryConst'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { chatMenuArray, currentChatRoomName } from '../../board/tools/chat/ChatTools'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 顶部功能区域 标题栏，游戏聊天切换 等等

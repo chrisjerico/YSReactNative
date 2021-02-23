@@ -6,7 +6,7 @@ import FastImage from "react-native-fast-image";
 import {scale} from "../../../public/tools/Scale";
 import TouchableImage from "../../../public/views/temp/TouchableImage";
 import {ugLog} from "../../../public/tools/UgLog";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface GameRowProps {
   iconsItem: Icon,

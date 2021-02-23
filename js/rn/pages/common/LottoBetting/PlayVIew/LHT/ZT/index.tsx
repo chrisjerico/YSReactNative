@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react'
 import {UGStore} from "../../../../../../redux/store/UGStore"
 import HKBallsView from "../HKBallsView"
 import HKNormalWithSBView from "../HKNormalWithSBView"
-import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const ZTContainer = ({setProps}) => {
     const {currentPlayOdd,} = UGStore.globalProps.BettingReducer;

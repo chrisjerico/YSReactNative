@@ -28,7 +28,7 @@ import moment from 'moment'
 import AppDefine from '../define/AppDefine'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { PageName } from '../navigation/Navigation'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const typeArr = ['全部状态', '待回复', '已回复']
 const borderColor = '#d9d9d9'

@@ -11,7 +11,7 @@ import {GAME_ITEM_HEIGHT, GameListView} from './GameListView'
 import FastImage from 'react-native-fast-image'
 import {ugLog} from '../../../public/tools/UgLog'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const HomeTabView = () => {
   const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()

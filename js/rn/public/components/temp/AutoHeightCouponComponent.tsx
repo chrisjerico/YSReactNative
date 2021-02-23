@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface AutoHeightCouponAutoHeightCouponComponentProps {
   title: string;

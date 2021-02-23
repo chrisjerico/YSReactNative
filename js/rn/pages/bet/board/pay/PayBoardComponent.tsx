@@ -16,7 +16,7 @@ import { BetShareModel, PlayNameArray } from '../../../../redux/model/game/bet/B
 import { filterShareItem } from '../tools/BetUtil'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { calculateSliderValue } from '../../util/ArithUtil'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IPayBoardComponent {
   showCallback?: (data?: LotteryResultData) => void //窗口 是否显示 回调

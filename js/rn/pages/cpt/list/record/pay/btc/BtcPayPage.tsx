@@ -37,7 +37,7 @@ import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { CapitalConst } from '../../../../const/CapitalConst'
 import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
 import { clearAllHtml } from '../../../../../../public/tools/StringUtil'
-import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据

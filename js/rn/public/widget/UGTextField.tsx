@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { skin1 } from '../theme/UGSkinManagers';
 import FUtils, { deepMergeProps } from '../tools/FUtils';
 import { sc375 } from '../tools/Scale';
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton';
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton';
 
 interface IPorps extends InputProps {
   // 父类变量

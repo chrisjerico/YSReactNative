@@ -16,7 +16,7 @@ import Menu from './views/Menu'
 import SignHeader from './views/SignHeader'
 import MineHeader from "../../public/views/temp/MineHeader";
 import { skinColors } from '../../public/theme/const/UGSkinColor'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LEFSignUpPage = () => {
   const menu = useRef(null)

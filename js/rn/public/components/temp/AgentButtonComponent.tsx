@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import { AgentType } from '../../models/Enum'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface AgentButtonComponentProps {
   onChangeAgent: (toggle: AgentType) => any;

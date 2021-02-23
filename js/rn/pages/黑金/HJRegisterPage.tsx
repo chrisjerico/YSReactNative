@@ -20,7 +20,7 @@ import SignUpFormList from "./reg/SignUpFormList";
 import FastImage from "react-native-fast-image";
 import CommStyles from "../base/CommStyles";
 import { skinColors } from '../../public/theme/const/UGSkinColor'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 注册

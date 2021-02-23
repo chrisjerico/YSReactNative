@@ -8,7 +8,7 @@ import { Res } from "../../../Res/icon/Res";
 import AppDefine from "../../../public/define/AppDefine";
 import { ImagePlaceholder } from "../tools/ImagePlaceholder";
 import moment from "moment";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDCLTimeCP {

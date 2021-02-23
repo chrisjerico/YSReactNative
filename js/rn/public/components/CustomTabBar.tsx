@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ScrollView, Text, TouchableWithoutFeedback, View,} from 'react-native'
 import AppDefine from "../define/AppDefine";
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const CustomTabBar = (props) => {
     // const renderButton = (name, page, isTabActive, onPressHandler) => {

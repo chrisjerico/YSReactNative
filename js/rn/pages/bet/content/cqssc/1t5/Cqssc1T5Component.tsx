@@ -14,7 +14,7 @@ import LotteryEBall from '../../../widget/LotteryEBall'
 import { arrayLength } from '../../../../../public/tools/Ext'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { UGStore } from '../../../../../redux/store/UGStore'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 1-5球

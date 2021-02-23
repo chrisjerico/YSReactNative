@@ -11,7 +11,7 @@ import { push } from '../../../public/navigation/RootNavigation'
 import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IXLGameList {
   gameData?: Array<UGYYGames> //所有数据

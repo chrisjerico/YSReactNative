@@ -8,7 +8,7 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import { BET_ITEM_HEIGHT, BET_ITEM_WIDTH } from '../PayBoardComponent'
 import { calculateItemCount } from '../../tools/BetUtil'
 import CommStyles from '../../../../base/CommStyles'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IBetTMComponentParams {
   lotteryCode?: string

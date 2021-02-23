@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Animated, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {TabBarProps} from 'react-native-tab-view';
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export default class UGDefaultTabBar extends Component {
   constructor(props: TabBarProps) {

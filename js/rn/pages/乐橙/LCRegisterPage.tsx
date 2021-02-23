@@ -25,7 +25,7 @@ import { hideLoading, showLoading } from '../../public/widget/UGLoadingCP'
 import { AgentType } from '../../public/models/Enum'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import { ToastSuccess, ToastError } from '../../public/tools/tars'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface RegisterData {
   acc: string

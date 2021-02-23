@@ -4,7 +4,7 @@ import Dash from 'react-native-dash'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface MenuProps {
   title: string

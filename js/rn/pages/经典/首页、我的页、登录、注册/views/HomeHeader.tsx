@@ -10,7 +10,7 @@ import PushHelper from '../../../../public/define/PushHelper'
 import { sc540, scale } from '../../../../public/tools/Scale'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 import { img_assets, img_mobileTemplate } from '../../../../Res/icon'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc540
 

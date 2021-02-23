@@ -14,7 +14,7 @@ import { findZodiacByName } from '../../../util/LotteryUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { array } from 'prop-types'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 六合彩 合肖 等等

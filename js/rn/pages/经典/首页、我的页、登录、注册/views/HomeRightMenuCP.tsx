@@ -19,7 +19,7 @@ import { UGUserCenterType } from "../../../../redux/model/全局/UGSysConfModel"
 import { UGStore } from "../../../../redux/store/UGStore"
 import { img_assets, img_images } from "../../../../Res/icon"
 import { FastImagePlaceholder, ImagePlaceholder } from "../../tools/ImagePlaceholder"
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc540
 

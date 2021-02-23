@@ -4,7 +4,7 @@ import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import Icon from 'react-native-vector-icons/Foundation'
 import Modal from 'react-native-modal'
 import { useState } from 'react'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const width = Dimensions.get('screen').width
 

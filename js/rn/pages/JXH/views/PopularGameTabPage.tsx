@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import PushHelper from '../../../public/define/PushHelper'
 import { scale } from '../../../public/tools/Scale'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const HalfButton = ({ title, data, logo }) => {
   const item = data?.slice(0, 1) ?? {}

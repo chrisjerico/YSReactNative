@@ -25,7 +25,7 @@ import {ugLog} from "../../public/tools/UgLog";
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {

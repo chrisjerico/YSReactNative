@@ -23,7 +23,7 @@ import { ugLog } from '../../../public/tools/UgLog'
 import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
 import MineHeader from '../../../public/views/tars/MineHeader'
 import moment from 'moment'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   initTabIndex?: string, //选中哪个TAB

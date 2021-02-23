@@ -22,7 +22,7 @@ import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP';
 import { AvatarModel } from '../../public/network/Model/SystemAvatarListModel';
 import { img_assets } from '../../Res/icon';
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 // 定义Props
 export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {}

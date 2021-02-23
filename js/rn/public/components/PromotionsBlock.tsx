@@ -9,7 +9,7 @@ import { useDimensions } from '@react-native-community/hooks'
 import { httpClient } from '../network/httpClient'
 import { List } from '../network/Model/PromotionsModel'
 import PushHelper from '../define/PushHelper'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal?: boolean, titleVisible?: boolean }) => {
     const {couponListData,} = useGetHomeInfo(['system_promotions'])

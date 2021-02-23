@@ -9,7 +9,7 @@ import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MineHeader from '../../public/views/temp/MineHeader'
 import { UGStore } from '../../redux/store/UGStore'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const UserInfoPage = () => {
   const userInfo = UGStore.globalProps.userInfo

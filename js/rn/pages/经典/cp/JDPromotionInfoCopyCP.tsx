@@ -9,7 +9,7 @@ import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
 import { Toast } from "../../../public/tools/ToastUtils";
 import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
 import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 interface JDPromotionInfoCopyCP {
   title?: string,
   content?: string,

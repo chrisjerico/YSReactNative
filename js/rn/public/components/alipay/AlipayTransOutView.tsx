@@ -6,7 +6,7 @@ import { pop } from '../../navigation/RootNavigation'
 import { Alert, Modal, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import { Skin1 } from '../../theme/UGSkinManagers'
 import AppDefine from '../../define/AppDefine'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getData: () => void }) => {
   const [money, setMoney] = useState<any>()

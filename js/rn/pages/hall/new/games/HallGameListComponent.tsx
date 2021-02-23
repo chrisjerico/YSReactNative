@@ -14,7 +14,7 @@ import PushHelper from '../../../../public/define/PushHelper'
 import UseHallGameList from './UseHallGameList'
 import { BallStyles, BallType, LCode, lotteryBallStyle } from '../../../bet/const/LotteryConst'
 import { doubleDigit } from '../../../../public/tools/StringUtil'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   refreshing?: boolean //刷新

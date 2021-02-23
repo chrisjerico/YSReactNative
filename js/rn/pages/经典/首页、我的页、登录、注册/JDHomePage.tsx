@@ -51,7 +51,7 @@ import { HomeFriendReferralCP } from './views/HomeFriendReferralCP'
 import HomeHeader from './views/HomeHeader'
 import { HomeRightMenuCP } from './views/HomeRightMenuCP'
 import NavBlock from './views/NavBlock'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc540
 
@@ -354,7 +354,7 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
               }}
               tabTextStyle={{
                 marginTop: 3,
-         
+
               }}
               enableMinWidth={false}
               showIndicator={false}

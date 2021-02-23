@@ -5,7 +5,7 @@ import {useDimensions} from "@react-native-community/hooks"
 import LMItem from "./balls/LMItem"
 import {UGStore} from "../../../../../redux/store/UGStore";
 import {BettingReducerActions} from "../../../../../redux/reducer/BettingReducer";
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const itemSize = 40
 const HKSBItemView = ({data, frameWidth, setProps}: { data: PlayGroup, frameWidth?: number, setProps: any }) => {

@@ -23,7 +23,7 @@ import { img_assets, useHtml5Image } from '../../../Res/icon';
 import { appConfig } from '../../../../../config';
 import PromotionRechargeModal from './PromotionRechargeModal';
 import { UGStore } from '../../../redux/store/UGStore';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDPromotionTabMemberCP {

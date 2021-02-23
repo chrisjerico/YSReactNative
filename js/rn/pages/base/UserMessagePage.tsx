@@ -10,7 +10,7 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import BottomGap from '../../public/views/temp/BottomGap'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const sleep = async (ms = 0) => {
   return new Promise((r) => setTimeout(r, ms))

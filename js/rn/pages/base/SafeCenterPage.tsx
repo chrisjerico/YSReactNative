@@ -9,7 +9,7 @@ import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const Form = ({ title, placeholder, onChangeText }) => {
   return (

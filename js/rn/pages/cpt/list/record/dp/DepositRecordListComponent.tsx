@@ -8,7 +8,7 @@ import UseDepositRecordList from './UseDepositRecordList'
 import EmptyView from '../../../../../public/components/view/empty/EmptyView'
 import { DepositListData } from '../../../../../public/network/Model/wd/DepositRecordModel'
 import CommStyles from '../../../../base/CommStyles'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 存款记录

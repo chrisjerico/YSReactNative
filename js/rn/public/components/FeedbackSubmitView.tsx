@@ -21,7 +21,7 @@ import { showLoading, showSuccess } from '../widget/UGLoadingCP'
 import { UGSignInHistoryModel } from '../../redux/model/other/UGSignInHistoryModel'
 import AppDefine from '../define/AppDefine'
 import { Toast } from '../tools/ToastUtils'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const FeedbackSubmitView = ({ route }) => {
   const [content, setContent] = useState('')

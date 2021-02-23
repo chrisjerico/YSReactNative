@@ -4,7 +4,7 @@ import { List } from "../../../../../public/network/Model/HomeGamesModel"
 import { fillArray } from "../../../utils/fillArray"
 import AppDefine from "../../../../../public/define/AppDefine"
 import PushHelper from "../../../../../public/define/PushHelper"
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const LotteryTabView = ({ list }: { list: List[] }) => {
   return (

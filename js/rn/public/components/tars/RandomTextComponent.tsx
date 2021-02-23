@@ -3,7 +3,7 @@ import { StyleProp, TextStyle, Text, StyleSheet } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import useRandomString from '../../hooks/useRandomString'
 import MaskedView from '@react-native-community/masked-view'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface RandomTextComponentProps {
   style?: StyleProp<TextStyle>

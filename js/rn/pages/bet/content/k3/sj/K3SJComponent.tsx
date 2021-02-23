@@ -12,7 +12,7 @@ import LotteryERect from '../../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT, K3Code } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import K3LineEBall from '../../../widget/K3LineEBall'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 快三 等等

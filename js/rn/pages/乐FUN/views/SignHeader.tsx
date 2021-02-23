@@ -3,7 +3,7 @@ import { Text, TouchableWithoutFeedback, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../public/tools/Scale'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface SignHeaderProps {
   onPressLeftTool: () => any

@@ -47,7 +47,7 @@ import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { pop } from '../../../public/navigation/RootNavigation'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法

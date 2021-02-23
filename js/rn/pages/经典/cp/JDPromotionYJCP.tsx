@@ -7,7 +7,7 @@ import AppDefine from "../../../public/define/AppDefine";
 import UGinviteInfoModel from "../../../redux/model/全局/UGinviteInfoModel";
 import { anyEmpty } from "../../../public/tools/Ext";
 import { appConfig } from "../../../../../config";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDPromotionYJCP {
   list?: Array<UGinviteInfoModel>,//tab界面名称数据

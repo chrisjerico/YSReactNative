@@ -14,7 +14,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { scale } from '../tools/Scale'
 import PushHelper from '../define/PushHelper'
 import { PageName } from '../navigation/Navigation'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const OnlineService = () => {
   const [title, setTitle] = useState<string>()

@@ -8,7 +8,7 @@ import { httpClient } from '../../public/network/httpClient'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import CheckBox from '../../public/views/tars/CheckBox'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const LLLoginPage = ({ setProps }) => {
   const { onChange, show, slideCodeRef, sign, valid, navigateTo, value } = useSignInPage({

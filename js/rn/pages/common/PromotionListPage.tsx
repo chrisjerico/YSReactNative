@@ -16,7 +16,7 @@ import { popToRoot } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { List, PromotionsModel } from '../../public/network/Model/PromotionsModel'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window

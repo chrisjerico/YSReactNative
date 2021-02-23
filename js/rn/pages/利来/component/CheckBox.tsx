@@ -2,7 +2,7 @@ import {StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import * as React from "react";
 import {useEffect, useState} from "react";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface CheckBoxProps {
     isCheck: boolean

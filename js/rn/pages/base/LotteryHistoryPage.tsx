@@ -7,7 +7,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers'
 import List from '../../public/views/tars/List'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MineHeader from '../../public/views/temp/MineHeader'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const TotalHistory = ({ tabLabel }) => {
   return (

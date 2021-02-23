@@ -17,7 +17,7 @@ import { PageName } from '../../../../../public/navigation/Navigation'
 import Icon from 'react-native-vector-icons/Entypo'
 import NeedNameInputComponent from '../../../../../public/components/tars/NeedNameInputComponent'
 import { ugLog } from '../../../../../public/tools/UgLog'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 提现界面

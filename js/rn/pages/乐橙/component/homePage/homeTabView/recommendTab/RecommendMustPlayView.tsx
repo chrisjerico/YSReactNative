@@ -2,7 +2,7 @@ import {Text, View} from "react-native";
 import {ImageButton} from "../../../ImageButton";
 import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
-import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RecommendMustPlayView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
     return (

@@ -10,7 +10,7 @@ import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const JXHSignUpPage = () => {
   const { show, reference, label, onChange, sign, passwordLimit, placeholder, navigateTo, value } = useSignUpPage({

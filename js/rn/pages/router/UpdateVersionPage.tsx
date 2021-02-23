@@ -23,7 +23,7 @@ import { push } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
 import { combination, combineArr } from '../bet/util/ArithUtil'
 import { IWebPage } from '../common/web/WebPage'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {

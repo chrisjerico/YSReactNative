@@ -3,7 +3,7 @@ import {RankListModel} from "../network/Model/RankListModel"
 import {useEffect, useState} from "react"
 import * as React from 'react'
 import {UGStore} from "../../redux/store/UGStore"
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const RankListCP = ({ranks, width, height = 200, titleVisible = true, backgroundColor = 'white', textColor = "black", timing = 10000, titleTextStyle}:
                         { ranks: any[], width: number, height?: number, titleVisible?: boolean, backgroundColor?: string, textColor: string, timing: number, titleTextStyle?: TextStyle}) => {

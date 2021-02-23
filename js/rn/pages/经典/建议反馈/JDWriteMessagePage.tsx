@@ -17,7 +17,7 @@ import { UGStore } from '../../../redux/store/UGStore';
 import { number, string } from 'prop-types';
 import { pop } from '../../../public/navigation/RootNavigation';
 import { img_assets, img_fullPath, img_platform, useHtml5Image } from '../../../Res/icon';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDWriteMessagePage {
   list?: UGSignInHistoryModel[]  //添加图片fastList 数据

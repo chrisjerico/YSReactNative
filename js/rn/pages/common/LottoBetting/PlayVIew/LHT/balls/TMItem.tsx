@@ -4,7 +4,7 @@ import {Play} from "../../../../../../public/network/Model/PlayOddDataModel"
 import {UGStore} from "../../../../../../redux/store/UGStore"
 import {getHKballColor} from "../../lottoSetting"
 import {BettingReducerActions} from "../../../../../../redux/reducer/BettingReducer"
-import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const TMItem = ({data, setProps }: { data: Play, setProps?: any}) => {
     const {bettingResult} = UGStore.globalProps.BettingReducer;

@@ -2,7 +2,7 @@ import React from 'react'
 import { ImageBackground, StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ProfileBlockProps {
   curLevelInt: string

@@ -10,7 +10,7 @@ import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lot
 import LotteryEBall from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 /**

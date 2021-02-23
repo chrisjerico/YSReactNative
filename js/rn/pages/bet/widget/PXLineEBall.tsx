@@ -9,7 +9,7 @@ import { isSelectedBallOnId } from './it/ISelBall'
 import LotteryEBall from './LotteryEBall'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty } from '../../../public/tools/Ext'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IPXEBall {
   item?: IPXLineEBallItem // 要绘制的数据

@@ -15,7 +15,7 @@ import { Calendar } from 'react-native-plain-calendar'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import { useEffect, useRef, useState } from 'react'
 import MiddleMenu, { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 资金明细记录1

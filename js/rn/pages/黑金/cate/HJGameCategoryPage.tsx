@@ -8,7 +8,7 @@ import FastImage from "react-native-fast-image";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {pop} from "../../../public/navigation/RootNavigation";
 import { skinColors } from "../../../public/theme/const/UGSkinColor";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 所有分类

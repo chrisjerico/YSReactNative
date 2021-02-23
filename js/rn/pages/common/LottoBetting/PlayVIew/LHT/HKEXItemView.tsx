@@ -5,7 +5,7 @@ import {IGlobalState, UGStore} from "../../../../../redux/store/UGStore"
 import {getHKballColor} from "../lottoSetting"
 import {BettingReducerActions} from "../../../../../redux/reducer/BettingReducer"
 import AppDefine from "../../../../../public/define/AppDefine";
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const HKEXItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) => {
     const {shengXiaoValue, bettingResult} = UGStore.globalProps.BettingReducer;

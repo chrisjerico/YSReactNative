@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Skin1 } from "../../../public/theme/UGSkinManagers";
 import { scale } from "../../../public/tools/Scale";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDAgentInput {
   placeholder?: string  //输入框提示文字

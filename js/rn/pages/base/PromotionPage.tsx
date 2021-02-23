@@ -17,7 +17,7 @@ import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const PromotionPage = (props: any) => {
   const { showBackBtn } = props?.route?.params ?? {}

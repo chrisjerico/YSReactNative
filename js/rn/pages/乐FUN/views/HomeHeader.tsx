@@ -5,7 +5,7 @@ import {scale} from '../../../public/tools/Scale'
 import Button from '../../../public/views/temp/Button'
 import { TouchableHighlight, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface HomeHeaderProps {
   name: string;

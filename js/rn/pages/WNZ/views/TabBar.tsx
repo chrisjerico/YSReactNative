@@ -6,7 +6,7 @@ import { appConfig } from '../../../../../config'
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import { UGImageHost, useHtml5Image } from '../../../Res/icon'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 

@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface HomeHeaderProps {
   name: string

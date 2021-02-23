@@ -8,7 +8,7 @@ import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import LottoItem from './LottoItem';
 import {LottoContext, useLottoContext} from '../LottoBetting/LottoContext';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LottoSelector = () => {
     const [lottoData, setLottoData] = useState<LottoGamesModel>()

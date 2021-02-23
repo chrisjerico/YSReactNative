@@ -11,7 +11,7 @@ import UseFreedomGameList from './UseFreedomGameList'
 import LinearGradient from 'react-native-linear-gradient'
 import { Res } from '../../../../Res/icon/Res'
 import { LCode } from '../../../bet/const/LotteryConst'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   gameData?: HallGameData //所有数据

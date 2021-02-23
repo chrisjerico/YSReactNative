@@ -7,7 +7,7 @@ import {LottoContext, LottoContextProvider} from "./LottoContext";
 import Headers from './Header';
 import {useDimensions} from "@react-native-community/hooks";
 import LottoContent from "./LottoContent";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LottoBetting = ({setProps}) => {
     const [tab, setTab] = useState(0)

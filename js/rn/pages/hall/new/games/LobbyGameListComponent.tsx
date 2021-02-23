@@ -21,7 +21,7 @@ import PushHelper from '../../../../public/define/PushHelper'
 import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { BallType } from '../../../bet/const/LotteryConst'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   refreshing?: boolean //刷新

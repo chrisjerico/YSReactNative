@@ -3,7 +3,7 @@ import { Text, TouchableWithoutFeedback, View } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import React from 'react'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
   const { width, height } = useDimensions().screen

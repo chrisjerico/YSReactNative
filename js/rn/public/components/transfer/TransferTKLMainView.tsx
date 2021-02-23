@@ -32,7 +32,7 @@ import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { httpClient } from '../../network/httpClient'
 import { PageName } from '../../navigation/Navigation'
 import { showLoading, showSuccess } from '../../widget/UGLoadingCP'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const tab = [
   { title: '真人', category: 'real' },

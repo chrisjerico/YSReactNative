@@ -21,7 +21,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import CommStyles from "../base/CommStyles";
 import {pop} from "../../public/navigation/RootNavigation";
 import { skinColors } from "../../public/theme/const/UGSkinColor"
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 个人中心

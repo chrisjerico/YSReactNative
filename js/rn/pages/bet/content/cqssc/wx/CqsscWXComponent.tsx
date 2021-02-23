@@ -16,7 +16,7 @@ import { UGStore } from '../../../../../redux/store/UGStore'
 import { calculateSliderValue } from '../../../util/ArithUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import WXTitleComponent from './WXTitleComponent'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 /**

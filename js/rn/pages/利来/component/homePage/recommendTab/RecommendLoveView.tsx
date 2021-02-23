@@ -2,7 +2,7 @@ import {FlatList, Image, Text, TouchableWithoutFeedback, View} from "react-nativ
 import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RecommendLoveView = ({list}: { list: List[] }) => {
     return (

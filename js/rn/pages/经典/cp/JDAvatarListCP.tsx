@@ -16,7 +16,7 @@ import { UGColor } from '../../../public/theme/UGThemeColor'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import { OCEventType } from '../../../public/define/OCHelper/OCBridge/OCEvent'
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 export interface JDAvatarListCP {

@@ -22,7 +22,7 @@ import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
 import { ImagePlaceholder } from '../../../经典/tools/ImagePlaceholder'
 import { BallType } from '../../../bet/const/LotteryConst'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ITwoLevelGameList {
   refreshing?: boolean //刷新

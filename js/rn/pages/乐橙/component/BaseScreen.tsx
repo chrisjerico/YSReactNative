@@ -7,7 +7,7 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import { clearAllHtml } from '../../../public/tools/StringUtil'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface BaseScreenProps {
     hideBar?: boolean //隐藏标题栏

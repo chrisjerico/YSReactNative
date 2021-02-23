@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import { scale } from '../../tools/Scale'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface LinearBadgeProps {
   title: string

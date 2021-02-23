@@ -17,7 +17,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const BYMinePage = () => {
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, info } = useMinePage({

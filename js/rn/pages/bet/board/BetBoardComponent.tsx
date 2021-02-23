@@ -27,7 +27,7 @@ import { mapTotalCount } from '../util/ArithUtil'
 import { EmitterTypes } from '../../../public/define/EmitterTypes'
 import { useEffect } from 'react'
 import { IEmitterMessage } from './it/IEmitterMessage'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 彩票功能区入参

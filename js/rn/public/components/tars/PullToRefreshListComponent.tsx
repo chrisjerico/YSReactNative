@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { ActivityIndicator, Animated, Easing, FlatListProps, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import List from '../../views/tars/List'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const PullToRefreshListComponent = (props: Readonly<FlatListProps<any>> & { uniqueKey: string; onReleaseToRefresh?: () => Promise<any> }) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))

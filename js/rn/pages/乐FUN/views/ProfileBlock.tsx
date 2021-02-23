@@ -6,7 +6,7 @@ import LinearBadge from '../../../public/views/temp/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/temp/ReLoadBalanceComponent'
 import CommStyles from "../../base/CommStyles";
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ProfileBlockProps {
   balance: string | number;

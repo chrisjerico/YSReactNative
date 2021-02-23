@@ -4,7 +4,7 @@ import {PlayGroup} from "../../../../../public/network/Model/PlayOddDataModel"
 import {useDimensions} from "@react-native-community/hooks"
 import LMItem from "./balls/LMItem"
 import {UGStore} from "../../../../../redux/store/UGStore";
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const itemSize = 40
 const HKWXItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) => {

@@ -9,7 +9,7 @@ import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { Skin1 } from '../theme/UGSkinManagers'
 import { AnimationFadeView } from '../tools/animation/AnimationViews'
 import { showLoading, hideLoading, showSuccess } from './UGLoadingCP'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 export interface TextFieldAlertCP {

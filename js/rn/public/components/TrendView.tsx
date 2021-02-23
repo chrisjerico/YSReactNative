@@ -17,7 +17,7 @@ import { scale } from '../tools/Scale'
 import { httpClient } from '../network/httpClient'
 import { UGBasePageProps } from '../../pages/base/UGPage'
 import { UGNextIssueModel } from '../network/Model/LottoGamesModel'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
   const [trendData, setTrendData] = useState<TrendData>()

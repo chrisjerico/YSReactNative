@@ -16,7 +16,7 @@ import moment from 'moment';
 import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
 import { ImagePlaceholder } from '../tools/ImagePlaceholder';
 import { JDCLTimeCP } from './JDCLTimeCP';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export interface JDLotteryAssistantCPAction {
   stopTime?: () => void

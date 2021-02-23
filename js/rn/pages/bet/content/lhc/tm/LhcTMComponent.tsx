@@ -16,7 +16,7 @@ import { ugLog } from '../../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { isSelectedBallOnId } from '../../../widget/it/ISelBall'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 六合彩特码

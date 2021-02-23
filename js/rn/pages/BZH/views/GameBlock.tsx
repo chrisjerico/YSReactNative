@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { scale } from '../../../public/tools/Scale'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface GameBlockProps {
   containerStyle?: StyleProp<ViewStyle>

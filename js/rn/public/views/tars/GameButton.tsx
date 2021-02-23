@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { img_platform } from '../../../Res/icon'
 import { IconProps } from 'react-native-vector-icons/Icon'
 import { FastImagePlaceholder } from '../../../pages/经典/tools/ImagePlaceholder'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface GameButtonProps {
   logo?: string

@@ -31,7 +31,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { pop, push } from '../../../public/navigation/RootNavigation'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { UGBasePageProps } from '../../base/UGPage'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 自由游戏大厅

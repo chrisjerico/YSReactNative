@@ -7,7 +7,7 @@ import { anyEmpty } from '../../../public/tools/Ext'
 import { BallStyles, LCode, lotteryBallStyle } from '../const/LotteryConst'
 import LotteryBall from '../../../public/components/view/LotteryBall'
 import { doubleDigit } from '../../../public/tools/StringUtil'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ILotteryZodiacAndBallItem {
   gameType?: string; //彩种 六合彩，秒秒彩 等等

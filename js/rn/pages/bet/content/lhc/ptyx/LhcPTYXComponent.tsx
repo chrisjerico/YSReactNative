@@ -16,7 +16,7 @@ import { findZodiacByName } from '../../../util/LotteryUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等

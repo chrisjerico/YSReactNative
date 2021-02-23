@@ -24,7 +24,7 @@ import FastImage from "react-native-fast-image";
 import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ProfileBlockProps {
   balance: string | number;

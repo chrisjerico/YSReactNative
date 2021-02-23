@@ -30,7 +30,7 @@ import MarqueePopupView from '../common/MarqueePopupView'
 import NavBlock from './component/homePage/NavBlock'
 import Carousel from 'react-native-banner-carousel'
 import Activitys from '../../public/views/tars/Activitys'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 const LCHomePage = ({ setProps }) => {

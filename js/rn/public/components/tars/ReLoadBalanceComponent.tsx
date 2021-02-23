@@ -5,7 +5,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
 import { stringToFloat } from '../../tools/tars'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ReLoadComponentProps {
   balance: string

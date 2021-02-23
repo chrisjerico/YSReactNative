@@ -4,7 +4,7 @@ import { FlatList, Text, View } from 'react-native'
 import AppDefine from '../../define/AppDefine'
 import LinearGradient from 'react-native-linear-gradient'
 import { Skin1 } from '../../theme/UGSkinManagers'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const TransferLineRecordView = () => {
   const [dataList, setDataList] = useState([])

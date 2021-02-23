@@ -22,7 +22,7 @@ import { BankConst } from '../const/BankConst'
 import ReloadSlidingVerification from '../../../public/components/tars/ReloadSlidingVerification'
 import NeedNameInputComponent from '../../../public/components/tars/NeedNameInputComponent'
 import WebView from 'react-native-webview'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 银行卡管理

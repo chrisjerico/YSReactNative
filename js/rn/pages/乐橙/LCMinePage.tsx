@@ -20,7 +20,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { ugLog } from '../../public/tools/UgLog'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LCMinePage = () => {
   const { info } = useMinePage({

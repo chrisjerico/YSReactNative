@@ -26,7 +26,7 @@ import APIRouter from '../../public/network/APIRouter';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { img_assets } from '../../Res/icon';
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface XBJRegisterVars {

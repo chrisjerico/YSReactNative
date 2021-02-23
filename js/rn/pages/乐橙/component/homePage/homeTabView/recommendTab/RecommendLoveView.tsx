@@ -3,7 +3,7 @@ import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PushHelper from "../../../../../../public/define/PushHelper";
-import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RecommendLoveView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
     return list.length > 0 ? (

@@ -13,7 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {scale} from '../../tools/Scale'
 import APIRouter from '../../network/APIRouter'
 import {UGStore} from '../../../redux/store/UGStore'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ReLoadComponentProps {
   color?: string;

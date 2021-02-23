@@ -8,7 +8,7 @@ import { Res } from '../../../../Res/icon/Res'
 import { anyEmpty } from '../../../tools/Ext'
 import Button from '../../../views/tars/Button'
 import { CapitalConst } from '../../../../pages/cpt/const/CapitalConst'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface EmptyViewProps {
   text?: string, //提示文字

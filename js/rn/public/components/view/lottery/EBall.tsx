@@ -4,7 +4,7 @@ import { scale } from '../../../tools/Scale'
 import { UGColor } from '../../../theme/UGThemeColor'
 import LotteryBall, { ILotteryBall } from '../LotteryBall'
 import { anyEmpty } from '../../../tools/Ext'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IEBall {
   ballType?: ILotteryBall //球风格

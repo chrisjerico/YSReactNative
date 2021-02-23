@@ -11,7 +11,7 @@ import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
 import { push } from '../../../public/navigation/RootNavigation';
 import { PageName } from '../../../public/navigation/Navigation';
 import { img_images, img_vueTemplate } from '../../../Res/icon';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const JDFeedBackPage = () => {
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([

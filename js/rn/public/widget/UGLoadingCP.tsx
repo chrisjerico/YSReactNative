@@ -9,7 +9,7 @@ import Animated, { Easing } from 'react-native-reanimated'
 import { Res } from '../../Res/icon/Resources'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Toast } from '../tools/ToastUtils'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 export enum UGLoadingType {

@@ -8,7 +8,7 @@ import UGDefaultTabBar from './UGDefaultTabBar';
 import IUGBottomTabBarProps from './IUGBottomTabBarProps';
 import {UGColor} from '../../../theme/UGThemeColor';
 import {Skin1} from '../../../theme/UGSkinManagers';
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 底部 tab bar

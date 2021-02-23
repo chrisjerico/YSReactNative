@@ -15,7 +15,7 @@ import { showSuccess } from '../../../public/widget/UGLoadingCP';
 import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
 import { UGBasePageProps } from '../../base/UGPage';
 import { JDAgentInput } from '../cp/JDAgentInput';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDAgentPage {
 

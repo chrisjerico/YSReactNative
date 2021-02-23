@@ -34,7 +34,7 @@ import { OCHelper } from '../../define/OCHelper/OCHelper'
 import LinearGradient from 'react-native-linear-gradient'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { showLoading, showSuccess } from '../../widget/UGLoadingCP'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const myWallet = { title: '我的钱包', id: 0 }
 const dataArr = [myWallet]

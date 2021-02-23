@@ -2,7 +2,7 @@ import { Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native
 import Modal from 'react-native-modal'
 import * as React from 'react'
 import { useState } from 'react'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame, games}) => {
     const [chosen, setChosen] = useState()

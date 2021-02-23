@@ -11,7 +11,7 @@ import {UGPromoteModel} from '../../../redux/model/other/UGPromoteModel'
 import { scale } from '../../../public/tools/Scale'
 import { FastImagePlaceholder } from '../tools/ImagePlaceholder'
 import { WebView } from 'react-native-webview'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDPromoteDetailPage {

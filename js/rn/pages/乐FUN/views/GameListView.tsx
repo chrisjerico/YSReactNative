@@ -15,7 +15,7 @@ import {useEffect, useState} from "react";
 import {useDimensions} from "@react-native-community/hooks";
 import {PushHomeGame} from "../../../public/models/Interface";
 import { skinColors } from "../../../public/theme/const/UGSkinColor";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 // import {ImageButton} from "../../../../乐橙/component/ImageButton";
 // import {fillArray} from "../../../utils/fillArray";
 // import {List} from "../../../../../public/network/Model/HomeGamesModel";

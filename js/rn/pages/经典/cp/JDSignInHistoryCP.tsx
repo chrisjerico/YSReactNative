@@ -9,7 +9,7 @@ import { UGSignInHistoryModel } from "../../../redux/model/other/UGSignInHistory
 import { Button } from 'react-native-elements';
 import { hideLoading, showLoading } from "../../../public/widget/UGLoadingCP";
 import { FlatList } from 'react-native-gesture-handler'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export interface JDSignInHistoryCP {
   showSalaryAlert?: () => void

@@ -15,7 +15,7 @@ import { GameHistorylistBean, GameHistoryModel } from '../../../../public/networ
 import APIRouter from '../../../../public/network/APIRouter'
 import { UGBetsRecordListModel, UGBetsRecordModel } from '../../Model/UGBetsRecordModel'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDDayDetailPage {

@@ -9,7 +9,7 @@ import EmptyView from '../../../../../public/components/view/empty/EmptyView'
 import { WithdrawalListData } from '../../../../../public/network/Model/wd/WithdrawalRecordModel'
 import CommStyles from '../../../../base/CommStyles'
 import { DepositListData } from '../../../../../public/network/Model/wd/DepositRecordModel'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 取款记录

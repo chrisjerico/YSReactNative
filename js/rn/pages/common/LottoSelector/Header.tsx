@@ -5,7 +5,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import React from 'react'
 import { useLottoContext } from '../LottoBetting/LottoContext';
 import { useSafeArea } from 'react-native-safe-area-context';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 const Header = () => {
   const { width } = useDimensions().screen
   const { top } = useSafeArea()

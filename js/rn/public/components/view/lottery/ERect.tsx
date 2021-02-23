@@ -2,7 +2,7 @@ import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-n
 import React from 'react'
 import { scale } from '../../../tools/Scale'
 import { UGColor } from '../../../theme/UGThemeColor'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IERect {
   title?: string, //名字

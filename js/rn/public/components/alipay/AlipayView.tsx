@@ -9,7 +9,7 @@ import { httpClient } from '../../network/httpClient'
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import { PageName } from '../../navigation/Navigation'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface Yuebao {
   annualizedRate: string

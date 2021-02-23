@@ -7,7 +7,7 @@ import {getHKballColor} from "../../lottoSetting";
 import {anyLength} from "../../../../../../public/tools/Ext";
 import FastImage from "react-native-fast-image";
 import { UGImageHost, useHtml5Image } from "../../../../../../Res/icon";
-import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const {img_assets} = useHtml5Image(UGImageHost.test5)
 

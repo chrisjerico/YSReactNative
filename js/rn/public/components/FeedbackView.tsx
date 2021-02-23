@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { httpClient } from '../network/httpClient'
 import { goToUserCenterType } from '../tools/tars'
 import { PageName } from '../navigation/Navigation'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const FeedbackView = () => {
   return (

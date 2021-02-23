@@ -34,7 +34,7 @@ import { PushHomeGame } from '../../public/models/Interface'
 import Button from '../../public/views/temp/Button'
 import TwoLevelType from '../../public/network/Model/HomeRecommendModel'
 import TwoLevelListComponent from '../hall/new/games/TwoLevelListComponent'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface TwoLevelProps {
   showBackButton: Boolean,

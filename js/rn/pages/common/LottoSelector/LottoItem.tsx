@@ -6,7 +6,7 @@ import {Skin1} from '../../../public/theme/UGSkinManagers';
 import React, {memo, useMemo, useState} from 'react'
 import {useDimensions} from "@react-native-community/hooks";
 import {useLottoContext} from "../LottoBetting/LottoContext";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LottoItem = memo(({item, index, currentTimeStamp}: { item: List, index: number, currentTimeStamp: moment.Moment }) => {
     const [imgError, setImgError] = useState(false)

@@ -19,7 +19,7 @@ import Animated, {
   Value,
 } from 'react-native-reanimated'
 import UGUserModel from '../../../../redux/model/全局/UGUserModel'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const CardView = () => {
   const userStore = UGStore.globalProps.userInfo

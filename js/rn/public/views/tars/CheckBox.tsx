@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, TextStyle } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import { scale } from '../../../public/tools/Scale'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export interface CheckBoxProps {
   onPress: (check: boolean) => any

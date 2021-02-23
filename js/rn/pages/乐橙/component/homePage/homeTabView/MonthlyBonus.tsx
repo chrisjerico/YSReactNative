@@ -2,7 +2,7 @@ import { Image, Text, View } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import NumberFormat from 'react-number-format'
 import React, { useEffect, useState } from 'react'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const MonthlyBonus = () => {
   const [bonus, setBonus] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)

@@ -4,7 +4,7 @@ import PushHelper from '../../../../public/define/PushHelper'
 import { PageName } from '../../../../public/navigation/Navigation'
 import useSignInPage from '../../../../public/hooks/tars/useSignInPage'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const LoginButtonBar = () => {
   const { sign, navigateTo } = useSignInPage({

@@ -11,7 +11,7 @@ import AppDefine from '../../../public/define/AppDefine';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IProps {
   list: Array<UGPromoteModel>;

@@ -8,7 +8,7 @@ import DateUtil from '../../../public/tools/andrew/DateUtil';
 import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
 import { UGBasePageProps } from '../../base/UGPage';
 import { scale } from "../../../public/tools/Scale";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 interface JDRedEnveloperPage {
   pageSize?: number//每页多少条数据
   pageNumber?: number//当前显示第几页

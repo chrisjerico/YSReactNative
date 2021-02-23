@@ -12,7 +12,7 @@ import { hideLoading, showLoading } from "../../../../public/widget/UGLoadingCP"
 import UGUserModel from "../../../../redux/model/全局/UGUserModel"
 import { UGStore } from "../../../../redux/store/UGStore"
 import { img_assets } from "../../../../Res/icon"
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc540
 interface HomeFriendReferralProps {

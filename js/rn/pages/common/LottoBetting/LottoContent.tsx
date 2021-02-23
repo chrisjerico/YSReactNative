@@ -21,7 +21,7 @@ import EZDWContainer from "./PlayVIew/SSC/EZDW";
 import SZDWContainer from "./PlayVIew/SSC/SZDW";
 import BDWContainer from "./PlayVIew/SSC/BDW";
 import DWDContainer from "./PlayVIew/SSC/DWD";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LottoContent = ({ setProps }) => {
   const value = useLottoContext()

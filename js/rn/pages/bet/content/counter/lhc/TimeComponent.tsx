@@ -5,7 +5,7 @@ import UseTime from './UseTime'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import { scale } from '../../../../../public/tools/Scale'
 import { Res } from '../../../../../Res/icon/Res'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
 

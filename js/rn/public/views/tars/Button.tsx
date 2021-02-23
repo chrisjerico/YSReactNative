@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { Image, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface Button {
   containerStyle?: StyleProp<ViewStyle>

@@ -11,7 +11,7 @@ import { getBankIcon } from '../../../pages/bank/list/UseManageBankList'
 import FastImage from 'react-native-fast-image'
 import CommStyles from '../../../pages/base/CommStyles'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface IMiddleMenuItem {

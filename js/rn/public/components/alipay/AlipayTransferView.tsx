@@ -9,7 +9,7 @@ import { AlipayTransInView } from './AlipayTransInView'
 import useHomePage from '../../hooks/tars/useHomePage'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { AlipayTransOutView } from './AlipayTransOutView'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const AlipayTransferView = ({ route }) => {
   const [activeTab, setActiveTab] = useState(0)

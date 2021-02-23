@@ -10,7 +10,7 @@ import APIRouter from '../../public/network/APIRouter'
 import { httpClient } from '../../public/network/httpClient'
 import NeedNameInputComponent from '../../public/components/tars/NeedNameInputComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LCLoginPage = () => {
   const { sign, value, onChange, navigateTo, show, valid, reference } = useSignInPage({

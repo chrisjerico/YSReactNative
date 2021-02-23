@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface LotteryBallProps {
   score?: number | string

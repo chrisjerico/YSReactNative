@@ -22,7 +22,7 @@ import APIRouter from '../../../../public/network/APIRouter'
 import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
 import { NSValue } from '../../../../public/define/OCHelper/OCBridge/OCCall'
 import { OCEventType } from '../../../../public/define/OCHelper/OCBridge/OCEvent'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   onCallback?: () => any, //设置密码成功

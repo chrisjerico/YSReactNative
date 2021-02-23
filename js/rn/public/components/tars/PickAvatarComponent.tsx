@@ -8,7 +8,7 @@ import APIRouter from '../../network/APIRouter'
 import { ToastSuccess, ToastError } from '../../tools/tars'
 import Avatar from '../../views/tars/Avatar'
 import ProgressCircle from '../../views/tars/ProgressCircle'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface PickAvatarComponentProps {
   onSaveAvatarSuccess?: () => any

@@ -3,7 +3,7 @@ import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp, TextStyle, Easi
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface RankList {
   username: string

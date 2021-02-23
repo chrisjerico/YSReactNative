@@ -19,7 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { img_assets, useHtml5Image } from '../../../Res/icon';
 import { appConfig } from '../../../../../config';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDPromotionTabWithdrawalReportCP {

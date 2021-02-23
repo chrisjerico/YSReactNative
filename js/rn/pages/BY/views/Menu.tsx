@@ -7,7 +7,7 @@ import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanc
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import List from '../../../public/views/tars/List'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface MenuProps {
   menus: any[]

@@ -8,7 +8,7 @@ import Avatar from '../../public/views/tars/Avatar'
 import AppDefine from '../../public/define/AppDefine'
 import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const ExpBar = () => {
   return (

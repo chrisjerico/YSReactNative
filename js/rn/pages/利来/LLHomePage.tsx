@@ -33,7 +33,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import Activitys from '../../public/views/tars/Activitys'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])

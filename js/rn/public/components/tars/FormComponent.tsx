@@ -7,7 +7,7 @@ import { scale } from '../../tools/Scale'
 import { ToastSuccess, ToastError } from '../../tools/tars'
 import Button from '../../views/tars/Button'
 import { hideLoading, showLoading } from '../../widget/UGLoadingCP'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export interface FormComponentProps {
   onChangeText?: any

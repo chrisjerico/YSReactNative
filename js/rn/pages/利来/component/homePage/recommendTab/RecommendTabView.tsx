@@ -9,7 +9,7 @@ import { BannerModel } from '../../../../../public/network/Model/BannerModel'
 import { useDimensions } from '@react-native-community/hooks'
 import Carousel from 'react-native-banner-carousel'
 import FastImage from 'react-native-fast-image'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RecommendTabView = ({ list, marquee, banner, onlineNum, onlineSwitch = 0 }: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number, onlineSwitch: number }) => {
   const onPress = (list: List) => {

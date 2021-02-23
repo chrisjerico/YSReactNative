@@ -21,7 +21,7 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDLotteryAssistantPage {
   bottomH?: number,//底部的高度

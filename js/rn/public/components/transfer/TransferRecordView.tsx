@@ -6,7 +6,7 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { pop } from '../../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const TransferRecordView = () => {
   const [dataList, setDataList] = useState([])

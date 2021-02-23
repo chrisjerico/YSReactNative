@@ -10,7 +10,7 @@ import {
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface GameButtonProps {
   logo?: string;

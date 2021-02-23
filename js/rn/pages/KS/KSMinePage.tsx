@@ -19,7 +19,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import { goToUserCenterType } from '../../public/tools/tars'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image, img_images } = useHtml5Image(UGImageHost.t132f)
 

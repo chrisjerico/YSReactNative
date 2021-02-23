@@ -7,7 +7,7 @@ import FastImage from "react-native-fast-image";
 import PushHelper from "../../../public/define/PushHelper";
 import {UGUserCenterType} from "../../../redux/model/全局/UGSysConfModel";
 import { skinColors } from "../../../public/theme/const/UGSkinColor";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const icon1 = 'http://test61a.fhptcdn.com/views/mobileTemplate/30/images/recharge.png'
 const icon2 = 'http://test61a.fhptcdn.com/views/mobileTemplate/30/images/recharge.png'

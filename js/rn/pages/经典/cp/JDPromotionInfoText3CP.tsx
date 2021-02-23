@@ -13,7 +13,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { img_vueTemplate } from "../../../Res/icon";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { ugLog } from "../../../public/tools/UgLog";
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDPromotionInfoText3CP {
   title?: string,

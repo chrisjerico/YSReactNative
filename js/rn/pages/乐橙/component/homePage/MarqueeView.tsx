@@ -5,7 +5,7 @@ import {MarqueeHorizontal} from 'react-native-marquee-ab';
 import Modal from 'react-native-modal';
 import AutoHeightWebView from "react-native-autoheight-webview";
 import {Scroll} from "../../../../public/network/Model/NoticeModel";
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const width = Dimensions.get("screen").width
 

@@ -10,7 +10,7 @@ import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lot
 import LotteryERect from '../../../widget/LotteryERect'
 import { BALL_CONTENT_HEIGHT, LCode } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
-import { UGText } from '../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 色波, 两面, 正码1-6, 总肖, 五行

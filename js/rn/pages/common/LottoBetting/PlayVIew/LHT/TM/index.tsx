@@ -16,7 +16,7 @@ import {BettingReducerActions} from '../../../../../../redux/reducer/BettingRedu
 import HKBallsView from '../HKBallsView';
 import HKSBItemView from '../HKSBItemView';
 import HKNormalItemView from '../HKNormalItemView';
-import { UGText } from '../../../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const TMPlayView = ({setProps}) => {
     const {selectedShengXiao, shengXiaoValue, subPlay} = UGStore.globalProps.BettingReducer;

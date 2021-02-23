@@ -13,7 +13,7 @@ import { httpClient } from '../../public/network/httpClient'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { AgentType } from '../../public/models/Enum'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const LLRegisterPage = () => {
   const { show, onChange, sign, reference, placeholder } = useSignUpPage({

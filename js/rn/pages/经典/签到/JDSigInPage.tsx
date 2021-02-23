@@ -16,7 +16,7 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
 import { JDSignInHistoryCP } from '../cp/JDSignInHistoryCP';
 import chroma from 'chroma-js';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 const { getHtml5Image, img_platform, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test10)

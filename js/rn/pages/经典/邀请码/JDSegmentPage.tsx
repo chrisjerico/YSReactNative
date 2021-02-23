@@ -14,7 +14,7 @@ import { useHtml5Image, UGImageHost } from '../../../Res/icon';
 import { Res } from '../../../Res/icon/Res';
 import { UGBasePageProps } from '../../base/UGPage';
 import { JDCLInfoText, JDCLText, JDCLView } from '../cp/JDCLInfoText';
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 

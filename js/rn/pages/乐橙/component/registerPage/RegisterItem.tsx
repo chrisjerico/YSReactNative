@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../../public/network/APIRouter'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
-import { UGText } from '../../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RegisterItem = ({ sms = false, config, placeHolder, iconName, iconType = 'font-awesome', onChangeText, phoneNumber }:
                                { sms?: boolean, config?: any, placeHolder: string, iconName: string, iconType?: string, onChangeText: (text) => void, phoneNumber?: string }) => {

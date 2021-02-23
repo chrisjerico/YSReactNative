@@ -6,7 +6,7 @@ import { Yuebao } from '../../type/YuebaoInterface'
 import md5 from 'blueimp-md5'
 import useHomePage from '../../hooks/tars/useHomePage'
 import { pop } from '../../navigation/RootNavigation'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const quickArr = [100, 500, 1000, 5000, 10000, '全部金额']
 export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData: () => void }) => {

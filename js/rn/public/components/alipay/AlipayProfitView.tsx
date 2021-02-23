@@ -7,7 +7,7 @@ import { pop } from '../../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import moment from 'moment'
-import { UGText } from '../../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const AlipayProfitView = () => {
   const [data, setData] = useState()

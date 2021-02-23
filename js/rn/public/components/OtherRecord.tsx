@@ -25,7 +25,7 @@ import moment from 'moment'
 import Dialog from "react-native-dialog";
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { UGStore } from '../../redux/store/UGStore'
-import { UGText } from '../../../doy/public/Button之类的基础组件/DoyButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 其他注单1
