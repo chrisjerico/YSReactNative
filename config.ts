@@ -27,7 +27,7 @@ export const appConfig = {
     h003b: '经典1',
   },
 
-  isWNZBottomTabHot: () => AppDefine.inSites('c245,c251'), // 威尼斯首页底部官方玩法改热门彩种，信用玩法改中奖排行
+  isWNZBottomTabHot: () => AppDefine.inSites('c245,c251,c108'), // 威尼斯首页底部官方玩法改热门彩种，信用玩法改中奖排行
   isBgColorForMoneyVC: () => AppDefine.inSites('c134,test29'), // /**< 存款页面进去的底色为bg色   */
   isHomeWhiteBorder: () => AppDefine.inSites('c213,c012'), // 首页游戏cell加白边
   isHomeShowLXB: () => AppDefine.inSites('c035'),// 首页是否显示利息宝图标
