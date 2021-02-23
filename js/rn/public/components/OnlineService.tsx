@@ -23,7 +23,6 @@ const levelArray = [
   { value: 1, label: '存款' },
   { value: 2, label: '取款' },
   { value: 3, label: '游戏大厅' },
-  { value: -1, label: '关闭' }
 ];
 
 
