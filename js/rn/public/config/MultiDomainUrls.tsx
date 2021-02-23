@@ -283,11 +283,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c91c91hh.com',
   ],
   'c165': [
-    'https://1875883.com',
-    'https://1875885.com',
-    'https://1875886.com',
-    'https://1875887.com',
-    'https://1875005.com',
+    'https://86886CP.com',
+    'https://www.81f9.com',
+    'https://www.82f9.com',
+    'https://www.f933.cc',
+    'https://87886cp.com',
   ],
   'c169': [
     'http://heixxqic169cqhmszw.playzone88.com',
