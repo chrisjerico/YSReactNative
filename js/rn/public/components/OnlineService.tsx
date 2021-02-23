@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
+import { Platform, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import WebView from 'react-native-webview'
 import { UGStore } from '../../redux/store/UGStore'
 import LinearGradient from 'react-native-linear-gradient'
@@ -22,7 +22,8 @@ const levelArray = [
   { value: 0, label: '返回首页' },
   { value: 1, label: '存款' },
   { value: 2, label: '取款' },
-  { value: 3, label: '游戏大厅' }
+  { value: 3, label: '游戏大厅' },
+  { value: -1, label: '关闭' }
 ];
 
 
@@ -72,12 +73,16 @@ export const OnlineService = () => {
   return (
     <View style={{ flex: 1, }}>
       {/* 下拉控件 */}
-      <View style={{ zIndex: 1, height: scale(66), marginTop: AppDefine.safeArea.top + 8, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 }}>
+      <View style={[
+        { height: scale(66), marginTop: AppDefine.safeArea.top + 8, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 },
+        Platform.OS == 'ios' ? {zIndex: 1} : null,
+      ]}>
         <DropDownPicker
           items={
             levelArray
 
           }
+          dropDownMaxHeight={scale(260)}
           defaultValue={0}
           containerStyle={{ height: 40, width: AppDefine.width / 3 }}
           controller={instance => capitalController = instance}
@@ -100,7 +105,8 @@ export const OnlineService = () => {
               case 3:
                 PushHelper.pushLinkPositionType(UGLinkPositionType.游戏大厅)
                 break;
-              default: ;
+              default:
+                capitalController?.toggle()
             }
           }}
         />
