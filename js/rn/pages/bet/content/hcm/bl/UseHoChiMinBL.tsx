@@ -28,6 +28,7 @@ const UseHoChiMinBL = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    addAndRemoveBallList,
     currentPageData,
   } = UseLotteryHelper()
 
@@ -53,6 +54,7 @@ const UseHoChiMinBL = () => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    addAndRemoveBallList,
     currentPageData,
   }
 }

@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
+  TextInput, TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
@@ -52,6 +52,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     selectedBalls,
     setSelectedBalls,
     addOrRemoveBall,
+    addAndRemoveBallList,
   } = UseHoChiMinBL()
 
   //当前这一页的数据
@@ -255,6 +256,44 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                keyboardType={'numeric'}/>
 
   </View>
+  /**
+   * 绘制 所有 大 小 栏目
+   * @param plays 当前栏目的所有球
+   */
+  const renderRowBar = (plays: Array<PlayData>) => {
+    const txtStyle = [
+      _styles.bar_text,
+      // { backgroundColor: `${Skin1.themeColor}55` },
+    ]
+    return <View style={_styles.bar_container}>
+      <TouchableOpacity onPress={() => addAndRemoveBallList(plays)}>
+        <UGText style={txtStyle}>{'所有'}</UGText>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        addAndRemoveBallList(plays?.filter((play) => Number(play?.name) > 4), plays)
+      }}>
+        <UGText style={txtStyle}>{'大'}</UGText>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        addAndRemoveBallList(plays?.filter((play) => Number(play?.name) < 5), plays)
+      }}>
+        <UGText style={txtStyle}>{'小'}</UGText>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        addAndRemoveBallList(plays?.filter((play) => Number(play?.name) % 2 == 1), plays)
+      }}>
+        <UGText style={txtStyle}>{'奇'}</UGText>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        addAndRemoveBallList(plays?.filter((play) => Number(play?.name) % 2 == 0), plays)
+      }}>
+        <UGText style={txtStyle}>{'偶'}</UGText>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => addAndRemoveBallList(null, plays)}>
+        <UGText style={txtStyle}>{'移除'}</UGText>
+      </TouchableOpacity>
+    </View>
+  }
 
   /**
    * 绘制 X胡志明选择球
@@ -277,6 +316,8 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
           groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))
         }
       </View>
+
+      {renderRowBar(groupData?.exPlays)}
     </View>
 
   /**
@@ -482,6 +523,18 @@ const _styles = StyleSheet.create({
     marginHorizontal: scale(6),
     marginVertical: scale(16),
     textAlignVertical: 'top',
+  },
+  bar_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  bar_text: {
+    fontSize: scale(22),
+    // color: 'white',
+    paddingHorizontal: scale(16),
+    paddingVertical: scale(10),
+    borderRadius: scale(4),
+    backgroundColor: UGColor.LineColor4,
   },
 
 
