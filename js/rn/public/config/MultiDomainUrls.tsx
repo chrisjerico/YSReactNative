@@ -140,6 +140,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c002': [
     'https://66075.vip',
+    'https://66477.vip',
+    'https://66260.vip',
   ],
   'c005': [
     'http://nxmdbybnbc005ojrz.playzone88.com',
@@ -254,6 +256,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c120': [
     'https://asafew435yrtgre.net',
+    'https://x8988.com',
+    'https://x6161.com',
   ],
   'c126': [
     'https://hqcp00001.com',
@@ -278,6 +282,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c137': [
     'https://7033005.com',
+    'https://7033633.com',
+    'https://7033733.com',
   ],
   'c150': [
     'https://0187655.com',
@@ -290,6 +296,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c158': [
     'https://9055188.com',
+    'https://9055233.com',
+    'https://9055255.com',
   ],
   'c163': [
     'https://c91c91hh.com',
@@ -341,11 +349,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2909tycjt.com',
   ],
   'c200': [
-    'https://19952022.com',
-    'https://19952023.com',
-    'https://19952024.com',
-    'https://19952025.com',
-    'https://19952026.com',
+    'https://19952027.com',
+    'https://19952028.com',
+    'https://19952029.com',
+    'https://19952030.com',
+    'https://19952006.com',
   ],
   'c203': [
     'https://xpjcpapp.com',
