@@ -77,7 +77,7 @@ export class api_user {
 
   // 登录试玩账号
   static guestLogin() {
-    return this.c.post('guestLogin', {
+    return this.c.post<{'API-SID':string, 'API-TOKEN':string}>('guestLogin', {
       usr: '46da83e1773338540e1e1c973f6c8a68',
       pwd: '46da83e1773338540e1e1c973f6c8a68',
     });

@@ -8,6 +8,7 @@ import { pop, replace } from '../../../public/navigation/RootNavigation';
 import { UGNavigationBar } from '../../../public/widget/UGNavigationBar';
 import { skin1 } from '../../../public/theme/UGSkinManagers';
 import PushHelper from '../../../public/define/PushHelper';
+import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
 
 export type H5Router = [string, string]
 export const H5Router: { [x: string]: H5Router } = {
@@ -88,13 +89,14 @@ export const H5WebPage = ({ setProps, route }: UGBasePageProps<{}, { router?: H5
       }}
       onShouldStartLoadWithRequest={(e) => {
         console.log('onShouldStartLoadWithRequest', e?.url);
+        // 若检测到h5首页、h5登录页，则去rn登录页
         const routers = [
           'mobile/#/login',
           'mobile/#/home',
         ]
         for (const i in routers) {
           if (e?.url?.indexOf(routers[i]) != -1) {
-            PushHelper.pushLogin()
+            PushHelper.pushUserCenterType(UGUserCenterType.登录页)
             return false
           }
         }
