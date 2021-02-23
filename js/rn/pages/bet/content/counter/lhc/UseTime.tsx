@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import moment from 'moment'
 import PushHelper from '../../../../../public/define/PushHelper'
 import AppDefine from '../../../../../public/define/AppDefine'
@@ -23,8 +23,6 @@ const UseTime = () => {
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
 
   // const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
-  const [displayCloseTime, setDisplayCloseTime] = useState<string>(null) //显示封盘时间
-  const [displayOpenTime, setDisplayOpenTime] = useState<string>(null) //显示开奖时间
   const [closeTime, setCloseTime] = useState<number>(-1) //封盘时间倒计时
   const [openTime, setOpenTime] = useState<number>(-1) //开奖时间倒计时
 
@@ -77,35 +75,37 @@ const UseTime = () => {
     return res?.code
   }
 
-  /**
-   * 计算开奖时间封盘时间的显示
-   */
-  useEffect(() => {
+  //显示封盘时间
+  const displayCloseTime = useMemo(() => {
     if (closeTime >= 0) {
       const closeHour = doubleDigit(Math.floor(closeTime / HOUR_1))
       const closeMinute = doubleDigit(Math.floor((closeTime % HOUR_1) / MINUTE_1))
       const closeSecond = doubleDigit(Math.floor((closeTime % MINUTE_1) / SECOND_1))
 
-      setDisplayCloseTime(`${closeHour}:${closeMinute}:${closeSecond}`)
+      return `${closeHour}:${closeMinute}:${closeSecond}`
 
     } else {
       !dicNull(UGStore.globalProps?.betShareModel) && UGStore.dispatch({ type: 'reset', betShareModel: {} })
       DeviceEventEmitter.emit(EmitterTypes.LOCK_BOARD, { locked: true, hintText: '封盘中...' } as IEmitterMessage)
-      setDisplayCloseTime(`封盘中`)
+      return `封盘中`
     }
 
+  }, [closeTime])
+
+  //显示封盘时间
+  const displayOpenTime = useMemo<string>(() => {
     if (openTime >= 0) {
       const openHour = doubleDigit(Math.floor(openTime / HOUR_1))
       const openMinute = doubleDigit(Math.floor((openTime % HOUR_1) / MINUTE_1))
       const openSecond = doubleDigit(Math.floor((openTime % MINUTE_1) / SECOND_1))
 
-      setDisplayOpenTime(`${openHour}:${openMinute}:${openSecond}`)
+      return `${openHour}:${openMinute}:${openSecond}`
     } else {
       DeviceEventEmitter.emit(EmitterTypes.LOCK_BOARD, { locked: true, hintText: '开奖中...' } as IEmitterMessage)
-      setDisplayOpenTime(`开奖中`)
+      return `开奖中`
     }
 
-  }, [closeTime, openTime])
+  }, [openTime])
 
   /**
    * 跳转开奖网
