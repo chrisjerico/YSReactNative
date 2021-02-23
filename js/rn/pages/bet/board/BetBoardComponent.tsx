@@ -384,39 +384,6 @@ const _styles = StyleSheet.create({
     fontSize: scale(18),
     paddingHorizontal: scale(1),
   },
-  tab_title_tb: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  tab_title: {
-    color: UGColor.TextColor2,
-    fontSize: scale(24),
-    padding: scale(6),
-  },
-  tab_title_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: UGColor.LineColor3,
-    borderRadius: scale(8),
-  },
-  sv_container: {
-    flex: 1,
-  },
-  tab_title_content: {
-    flexDirection: 'row',
-  },
-  tab_item: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: scale(4),
-    paddingVertical: scale(8),
-    paddingHorizontal: scale(30),
-  },
-  tab_title_item_text: {
-    color: UGColor.TextColor3,
-    fontSize: scale(22),
-    paddingLeft: scale(6),
-  },
   slider: {
     width: scale(200),
     height: scale(56),

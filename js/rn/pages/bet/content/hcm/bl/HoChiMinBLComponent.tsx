@@ -105,10 +105,11 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               index == tabIndex ? { backgroundColor: UGColor.transparent5 } : null,
               tabLen > 3 ? null : { width: scale(400 / tabLen) },//tab 少于4个 就平均分配空间
             ]}>
-        <UGText style={[
-          _styles.tab_title_item_text,
-          index == tabIndex ? { color: UGColor.TextColor1 } : null,
-        ]}>{item[0]?.plays[0]?.name}</UGText>
+        <UGText numberOfLines={1}
+                style={[
+                  _styles.tab_title_item_text,
+                  index == tabIndex ? { color: UGColor.TextColor1 } : null,
+                ]}>{item[0]?.plays[0]?.name}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -321,7 +322,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * @param groupData
    */
   const renderAllCombinations = (groupData?: PlayGroupData) => {
-    if(ballTypeIndex >= arrayLength(groupData?.allHcPlays)) return
+    if (ballTypeIndex >= arrayLength(groupData?.allHcPlays)) return
 
     return <View key={key + ' renderAllCombinations' + groupData?.id}
                  style={CommStyles.flex}>
@@ -457,12 +458,12 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: scale(4),
     paddingVertical: scale(8),
-    paddingHorizontal: scale(30),
+    minWidth: scale(120),
+    paddingHorizontal: scale(6),
   },
   tab_title_item_text: {
     color: 'white',
     fontSize: scale(22),
-    paddingLeft: scale(6),
   },
   ball_container: {
     width: scale(78),
@@ -495,7 +496,6 @@ const _styles = StyleSheet.create({
   tab_game_title_item_text: {
     color: 'white',
     fontSize: scale(20),
-    paddingLeft: scale(6),
   },
   ball_type_item: {
     width: scale(133),

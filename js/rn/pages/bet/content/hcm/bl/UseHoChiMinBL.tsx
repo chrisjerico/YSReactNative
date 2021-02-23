@@ -49,16 +49,20 @@ const UseHoChiMinBL = () => {
       case gameCode == HoChiMin.DDQX: //地段倾斜
       case gameCode == HoChiMin.CQ: //抽签
         setTabHochimin(HcmTabIndex.输入号码)
-        return [HcmTabIndex.输入号码, HcmTabIndex.快速选择] //玩法种类
+        return [HcmTabIndex.输入号码, HcmTabIndex.快速选择]
+
+      case gameCode == HoChiMin.TW: //头尾
+        setTabHochimin(HcmTabIndex.选择号码)
+        return [HcmTabIndex.选择号码]
 
       case gameCode == HoChiMin.H_4GD: //4更多
       case tabCode == HoChiMinSub.PIHAO4: //批号4
-        return [HcmTabIndex.选择号码, HcmTabIndex.输入号码] //玩法种类
+        return [HcmTabIndex.选择号码, HcmTabIndex.输入号码]
 
     }
 
     setTabHochimin(HcmTabIndex.选择号码)
-    return [HcmTabIndex.选择号码, HcmTabIndex.输入号码, HcmTabIndex.快速选择] //玩法种类
+    return [HcmTabIndex.选择号码, HcmTabIndex.输入号码, HcmTabIndex.快速选择]
   }, [currentPageData()])
 
   return {
