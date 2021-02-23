@@ -7,13 +7,28 @@ import { FastImagePlaceholder } from "../../../../rn/pages/经典/tools/ImagePla
 import { skin1 } from "../../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../../rn/public/tools/Scale"
 import { img_doy } from "../../../../rn/Res/icon"
+import { payType } from "../../../publicClass/network/api/api_order"
 import { DoyText20, DoyText12, DoyText14, DoyText28, DoyButton1 } from "../../../publicComponent/Button之类的基础组件/DoyButton"
 
 const sc = sc375
 
-export const DoySellOrderConfirmPage = ({ setProps }: UGBasePageProps) => {
+interface RouterParams {
+  order: {
+    num: string,
+    payType: payType,
+    regDay: string,
+    commentNum: string,
+    sucNum: string,
+    remark: string,
+  }
+}
+
+export const DoySellOrderConfirmPage = ({ setProps, route }: UGBasePageProps<{}, RouterParams>) => {
   const { current: v } = useRef({})
   const { themeColor, navBarBgColor } = skin1
+
+  const { params: { order } } = route
+  const { } = order
 
   useEffect(() => {
     setProps({ navbarOpstions: { title: '卖单确认' } })

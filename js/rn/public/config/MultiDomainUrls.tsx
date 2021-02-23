@@ -302,7 +302,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://200300e.com',
     'https://200300k.com',
     'https://200300j.com',
-    'https://200300e.com',
     'https://288388d.com',
   ],
   'c190': [

@@ -1,5 +1,6 @@
 import { SampleAPI } from "../DoySessionModel";
 import buyList from "../model/order/buyList";
+import getDetail from "../model/order/getDetail";
 import sellList from "../model/order/sellList";
 
 
@@ -23,22 +24,36 @@ export class api_order {
   }
 
   //创建买单
-  static addBuy() {
-    return this.c.post<addBuy>('addBuy',)
+  static addBuy(p: {
+    payType: payType,
+    num: string,
+    remark?: string,
+    'limit[regDay]': string,
+    'limit[commentNum]': string,
+    'limit[sucNum]': string,
+  }) {
+    return this.c.post<null>('addBuy', p)
   }
 
   //创建卖单
-  static addSell() {
-    return this.c.post<addSell>('addSell',)
+  static addSell(p: {
+    payType: payType,
+    num: string,
+    remark?: string,
+    'limit[regDay]': string,// 注册天数
+    'limit[commentNum]': string,// 评价
+    'limit[sucNum]': string,// 成功交易多少笔
+  }) {
+    return this.c.post<null>('addSell', p)
   }
 
   //订单详情
-  static getDetail(id: string) {
-    return this.c.get<getDetail>('getDetail', { id })
+  static getDetail(orderNo: string) {
+    return this.c.get<getDetail>('getDetail', { orderNo })
   }
 
   //交易下单
-  static pick() {
-    return this.c.get<pick>('pick',)
+  static pick(orderNo: string) {
+    return this.c.get<null>('pick', { orderNo })
   }
 }

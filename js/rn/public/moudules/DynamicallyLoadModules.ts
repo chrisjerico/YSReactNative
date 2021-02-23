@@ -7,7 +7,7 @@ import { PushNotificationIOSStatic } from '@react-native-community/push-notifica
     return await OCHelper.call(clsName + '.className') == clsName
   }
 
-  await canLoad('RNCPushNotificationIOS') && (PushNotificationIOS = require('@react-native-community/push-notification-ios'))
+  await canLoad('RNCPushNotificationIOS') && (PushNotificationIOS = (await import('@react-native-community/push-notification-ios')).default)
 })()
 
 
