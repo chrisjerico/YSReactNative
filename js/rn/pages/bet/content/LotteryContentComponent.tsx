@@ -102,6 +102,9 @@ const LotteryContentComponent = () => {
       case gameCode == HoChiMin.DDQX:  //地段倾斜
       case gameCode == HoChiMin.LBXC:  //来宾线程
       case gameCode == HoChiMin.TW:  //头尾
+      case gameCode == HoChiMin.H_3GD:  //3更多
+      case gameCode == HoChiMin.H_4GD:  //4更多
+      case gameCode == HoChiMin.CQ:  //抽签
         return <HoChiMinBLComponent key={gameCode}
                                playOddData={playOdds}/>
 

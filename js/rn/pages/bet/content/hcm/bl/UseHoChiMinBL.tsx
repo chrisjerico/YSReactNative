@@ -57,6 +57,7 @@ const UseHoChiMinBL = () => {
 
       case gameCode == HoChiMin.H_4GD: //4更多
       case tabCode == HoChiMinSub.PIHAO4: //批号4
+        setTabHochimin(HcmTabIndex.选择号码)
         return [HcmTabIndex.选择号码, HcmTabIndex.输入号码]
 
     }

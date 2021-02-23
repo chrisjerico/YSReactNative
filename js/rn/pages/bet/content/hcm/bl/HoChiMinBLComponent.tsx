@@ -523,6 +523,7 @@ const _styles = StyleSheet.create({
   bar_container: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    marginBottom: scale(16),
   },
   bar_text: {
     fontSize: scale(22),
