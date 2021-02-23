@@ -33,10 +33,9 @@ const UseHoChiMinBL = () => {
 
   useEffect(() => {
     //Tab有变化就清除选择的数据
-    UGStore.dispatch({ type: 'reset', lotteryTabIndex: tabIndex })
     setSelectedBalls([])
 
-  }, [tabHcmIndex])
+  }, [tabHcmIndex, ballTypeIndex])
 
   return {
     GAME_TYPE_ARRAY,

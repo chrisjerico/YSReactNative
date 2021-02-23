@@ -24,6 +24,7 @@ import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { calculateSliderValue } from '../../../util/ArithUtil'
 import { ILotteryBall } from '../../../../../public/components/view/LotteryBall'
 import { array } from 'prop-types'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 /**
@@ -103,10 +104,10 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               index == tabIndex ? { backgroundColor: UGColor.transparent5 } : null,
               tabLen > 3 ? null : { width: scale(400 / tabLen) },//tab 少于4个 就平均分配空间
             ]}>
-        <Text style={[
+        <UGText style={[
           _styles.tab_title_item_text,
           index == tabIndex ? { color: UGColor.TextColor1 } : null,
-        ]}>{item[0]?.plays[0]?.name}</Text>
+        ]}>{item[0]?.plays[0]?.name}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -155,10 +156,10 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               _styles.tab_game_item,
               index == tabHcmIndex ? { backgroundColor: UGColor.transparent5 } : null,
             ]}>
-        <Text style={[
+        <UGText style={[
           _styles.tab_game_title_item_text,
           index == tabHcmIndex ? { color: UGColor.TextColor1 } : null,
-        ]}>{item}</Text>
+        ]}>{item}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -207,10 +208,10 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               _styles.ball_type_item,
               index == ballTypeIndex ? { backgroundColor: UGColor.transparent5 } : null,
             ]}>
-        <Text style={[
+        <UGText style={[
           _styles.ball_type_item_text,
           index == ballTypeIndex ? { color: UGColor.TextColor1 } : null,
-        ]}>{item[0]?.alias}</Text>
+        ]}>{item[0]?.alias}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -265,10 +266,10 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
           style={CommStyles.flex}>
 
       <View style={_styles.sub_title_container}>
-        <Text style={[
+        <UGText style={[
           _styles.sub_title_text,
           { color: Skin1.themeColor },
-        ]}>{groupData?.exPlays[0]?.alias}</Text>
+        ]}>{groupData?.exPlays[0]?.alias}</UGText>
       </View>
 
       <View style={_styles.ball_parent_container}>
@@ -288,10 +289,10 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     return <View key={key + ' renderAllCombinations' + groupData?.id}
                  style={CommStyles.flex}>
       <View style={_styles.sub_title_container}>
-        <Text style={[
+        <UGText style={[
           _styles.sub_title_text,
           { color: Skin1.themeColor },
-        ]}>{groupData?.allHcPlays[ballTypeIndex][0]?.alias}</Text>
+        ]}>{groupData?.allHcPlays[ballTypeIndex][0]?.alias}</UGText>
       </View>
 
       <View style={_styles.ball_parent_container}>
