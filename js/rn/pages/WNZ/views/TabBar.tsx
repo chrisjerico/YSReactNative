@@ -9,7 +9,6 @@ import { UGImageHost, useHtml5Image } from '../../../Res/icon'
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
-
 const tabs = [
   {
     name: '官方玩法',
@@ -55,6 +54,10 @@ const Tab = ({ logo, name, focused, onPress, index }) => {
 }
 
 const TabBar = ({ activeTab, goToPage }) => {
+  if (AppDefine.siteId.includes('c108')) {
+    tabs[0].name = '热门彩种'
+    tabs[1].name = '中奖排行'
+  }
   return (
     <View style={{ flexDirection: 'row' }}>
       {tabs?.map((item, index) => {

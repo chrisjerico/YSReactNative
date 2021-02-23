@@ -57,8 +57,6 @@ const WNZHomePage = () => {
   const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames,homeGamesHot, rankLists } = homeInfo
 
   const getNavs = () => {
-    ugLog("navs = ", navs)
-
   if (AppDefine.siteId == 'c245') {
     var newNavs = uid ? config.c245AuthNavs : config.c245UnAuthNavs
     newNavs.forEach(ele => {
