@@ -8,6 +8,7 @@ import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import PreferenceButton from './views/PreferenceButton'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LHTPreferencePage = ({ route }) => {
   const { onPressConfirm, initPreferences } = route?.params ?? {}
@@ -23,7 +24,7 @@ const LHTPreferencePage = ({ route }) => {
         <MineHeader title={'偏好设置'} onPressBackBtn={pop} showRightTitle={false} showBackBtn={true} />
       </SafeAreaHeader>
       <View style={{ flex: 1, backgroundColor: '#E0E0E0' }}>
-        <Text style={styles.title}>{'选择您感兴趣的彩种'}</Text>
+        <UGText style={styles.title}>{'选择您感兴趣的彩种'}</UGText>
         <View
           style={{
             flexDirection: 'row',

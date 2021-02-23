@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface GameBlockProps {
   containerStyle?: StyleProp<ViewStyle>
@@ -16,11 +17,11 @@ const GameBlock = ({ title = '', containerStyle, onPressTotal, renderGameContent
       <View style={styles.headerConatiner}>
         <View style={styles.titleContainer}>
           <View style={styles.titlePillar} />
-          <Text style={styles.title}>{title}</Text>
+          <UGText style={styles.title}>{title}</UGText>
         </View>
         <TouchableWithoutFeedback onPress={onPressTotal}>
           <View style={styles.titleContainer}>
-            <Text style={[styles.title, { color: '#e53333' }]}>{'全部 '}</Text>
+            <UGText style={[styles.title, { color: '#e53333' }]}>{'全部 '}</UGText>
             <Ionicons name={'ios-arrow-forward'} size={scale(18)} color={'#e53333'} style={{ marginTop: scale(3) }} />
           </View>
         </TouchableWithoutFeedback>

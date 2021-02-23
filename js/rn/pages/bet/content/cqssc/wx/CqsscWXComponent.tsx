@@ -16,6 +16,7 @@ import { UGStore } from '../../../../../redux/store/UGStore'
 import { calculateSliderValue } from '../../../util/ArithUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import WXTitleComponent from './WXTitleComponent'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 /**
@@ -60,11 +61,11 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               _styles.tab_item,
               index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
             ]}>
-        <Text key={key + item[0]?.alias}
+        <UGText key={key + item[0]?.alias}
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.alias}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -96,7 +97,7 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  ballType={{ size: scale(50) }}
+                  ballType={{ size: scale(46) }}
                   ballStyle={{ flexDirection: 'column' }}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
@@ -109,18 +110,19 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <WXTitleComponent title={'赔率'}
                       odds={groupData?.plays[0]?.odds}/>
     <View style={_styles.sub_big_hint_container}>
-      <Text style={_styles.sub_big_hint_text}>{'玩法提示：手动输入一个5位数号码组成一注'}</Text>
+      <UGText style={_styles.sub_big_hint_text}>{'玩法提示：手动输入一个5位数号码组成一注'}</UGText>
     </View>
 
     <TextInput style={_styles.single_input}
                value={wxInputNumber}
                editable={groupData?.enable == '1'}
+               placeholder={groupData?.enable == '1' ? '' : '当前玩法已关闭'}
                onChangeText={(s) => setWxInputNumber(s)}
                keyboardType={'numeric'}/>
 
     <View style={_styles.sub_big_hint_container}>
-      <Text key={key + 'sub text renderSingle = ' + groupData?.id}
-            style={_styles.sub_big_hint_text}>{'每一注号码之间请用逗号、空格、换行进行隔开'}</Text>
+      <UGText key={key + 'sub text renderSingle = ' + groupData?.id}
+            style={_styles.sub_big_hint_text}>{'每一注号码之间请用逗号、空格、换行进行隔开'}</UGText>
     </View>
   </View>
 
@@ -140,19 +142,19 @@ const CqsscWXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       {//显示赔率提醒文字
         index == 0 && !anyEmpty(groupData?.exHint) && <View style={_styles.sub_big_hint_container}>
-          <Text style={_styles.sub_big_hint_text}>{groupData?.exHint}</Text>
+          <UGText style={_styles.sub_big_hint_text}>{groupData?.exHint}</UGText>
         </View>
       }
 
       <View style={_styles.sub_title_container}>
-        <Text style={[
+        <UGText style={[
           _styles.sub_title_text,
           { color: Skin1.themeColor },
-        ]}>{groupData?.exPlays[0]?.alias}</Text>
+        ]}>{groupData?.exPlays[0]?.alias}</UGText>
       </View>
 
       <View style={_styles.ball_parent_container}>
-        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
+        {groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 

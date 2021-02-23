@@ -13,6 +13,7 @@ export interface PlayData {
   isBan?: string//0
   enable?: string//1 //彩种是否开启
   from_id?: string//0
+  rule?: string//规则
 
   exPlayIds?: string //部分彩种下注的时候需要联合其它彩种的ID 如 连肖
   exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, 优先使用本地ID 避免重复，如 TM-特码B-708550
@@ -36,6 +37,7 @@ export interface PlayGroupData {
   exHint?: string //本地生成的提醒文字
   exZodiacs?: ZodiacNum[] //本地生成的生肖数据
   exPlays?: PlayData[] //本地生成的彩球数据
+  allHcPlays?: PlayData[][] //所有数组的组合情况，比如 胡志明 快速选择
 }
 
 export interface PlayOddData {

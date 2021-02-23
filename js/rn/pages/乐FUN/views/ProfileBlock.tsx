@@ -6,6 +6,7 @@ import LinearBadge from '../../../public/views/temp/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/temp/ReLoadBalanceComponent'
 import CommStyles from "../../base/CommStyles";
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ProfileBlockProps {
   balance: string | number;
@@ -37,7 +38,7 @@ const ProfileBlock = ({
           <Avatar uri={avatar} onPress={onPressAvatar}/>
           <View style={styles.infoContainer}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.text}>{name}</Text>
+              <UGText style={styles.text}>{name}</UGText>
               <View style={CommStyles.flex}/>
               <LinearBadge
                 containerStyle={{borderRadius: scale(5), width: scale(80)}}
@@ -50,7 +51,7 @@ const ProfileBlock = ({
             </View>
 
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.text_money_title}>{'金额: '}</Text>
+              <UGText style={styles.text_money_title}>{'金额: '}</UGText>
               <ReLoadBalanceComponent
                 animatedContainerStyle={{marginTop: scale(3)}}
                 titleStyle={{fontSize: scale(26)}}

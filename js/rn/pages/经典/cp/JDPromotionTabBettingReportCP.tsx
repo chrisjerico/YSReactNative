@@ -19,6 +19,7 @@ import UGDropDownPicker from '../../bank/add/view/UGDropdownPicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { img_assets, useHtml5Image } from '../../../Res/icon';
 import { appConfig } from '../../../../../config';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDPromotionTabBettingReportCP {
@@ -32,8 +33,8 @@ interface JDPromotionTabBettingReportCP {
   items?: Array<any>//界面数据
   state: {
     showFoot?: number//控制foot， 0：点击重新加载   1：'数据加载中…  2 ：已加载全部数据(空)
-    isRefreshing?: boolean//下拉刷新开始结束 
-    isLastPage?: boolean //是否是最后一页 
+    isRefreshing?: boolean//下拉刷新开始结束
+    isLastPage?: boolean //是否是最后一页
   }
   //===下拉数据====================================
   levelArray?: Array<any>,// 下拉名称数据
@@ -82,7 +83,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
 
   /**
  * 下拉刷新
- * 
+ *
  */
   const onHeaderRefresh = () => {
     v.state.isRefreshing = true
@@ -92,7 +93,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
   }
   /**
   * 点击（上拉）加载更多数据
-  * 
+  *
   */
   const onFooterRefresh = () => {
     v.pageNumber++
@@ -103,7 +104,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
   }
   /**
 * 点击刷新
-* 
+*
 */
   function onEndReached() {
     console.log('onEndReached');
@@ -119,7 +120,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
       console.log('当前页大于或等于总页数，那就是到最后一页了，则返回');
       return;
     }
-    //是否已是下拉刷新 返回     
+    //是否已是下拉刷新 返回
     if (v.state.isRefreshing) {
       console.log('已是下拉刷新 返回  ');
       return;
@@ -129,7 +130,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
   }
   /**
    * 根据数据是数组还是字典返回数据
-   * 
+   *
    */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -141,7 +142,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
 
   /**
    * 得到投注报表列表数据
-   * 
+   *
    */
   function teamBetStatData() {
     console.log('投注报表列表页码===', v.pageNumber);
@@ -187,7 +188,7 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
 
   /**
   * 数据为空展示页面
-  * 
+  *
   */
   const _renderListEmptyComp = () => {
     return (
@@ -198,14 +199,14 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</Text>
+        <UGText style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</UGText>
       </View>
     );
   }
 
   /**
 * 上拉加载布局
-* 
+*
 */
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
@@ -215,9 +216,9 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               上拉加载
-              </Text>
+              </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -229,9 +230,9 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
         >
           <View style={styles.foot}>
             <ActivityIndicator />
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               正在加载...
-            </Text>
+            </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -242,9 +243,9 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
 
-            </Text>
+            </UGText>
 
           </View>
         </TouchableOpacity>
@@ -256,32 +257,32 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ index, item }) => {
     {
       return (
         <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4,borderBottomWidth:1,borderBottomColor:Skin1.textColor3,alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.level == 0 ? '全部下线' : item.level + '级下线'}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {anyEmpty(item.date) ? '--' : item.date}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.bet_sum}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / 4, }}>
 
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.fandian_sum}
-            </Text>
+            </UGText>
           </View>
         </View>
       );
@@ -354,9 +355,9 @@ const JDPromotionTabBettingReportCP = ({ pageTitle, titleArray }: { pageTitle?: 
                   capitalController?.toggle();
                 }
               }}>
-              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
+              <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
                 {title}
-              </Text>
+              </UGText>
               {(v.pageTitle != PromotionConst.域名绑定 && idx == 0) && <Image style={[{ height: 18, width: 18, marginTop: 15 }]} source={{ uri: Skin1.isBlack ? img_assets('baijiantou1') : img_assets('jiantou1') }} />}
 
             </TouchableOpacity>

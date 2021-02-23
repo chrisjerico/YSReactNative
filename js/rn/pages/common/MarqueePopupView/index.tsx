@@ -3,6 +3,7 @@ import { Text, TouchableWithoutFeedback, View } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import React from 'react'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
   const { width, height } = useDimensions().screen
@@ -26,7 +27,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
             borderBottomColor: 'gray',
             borderBottomWidth: 0.5,
           }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>公告详情</Text>
+            <UGText style={{ fontSize: 16, fontWeight: 'bold' }}>公告详情</UGText>
           </View>
           <View style={{ flex: 1, paddingHorizontal: 10 }}>
             <AutoHeightWebView style={{ width: width * 0.9 - 20 }} source={{ html: content }} />
@@ -38,7 +39,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
                 flex: 1, height: 50, backgroundColor: 'white',
                 marginRight: 8, borderRadius: 5, borderColor: 'gray', borderWidth: 0.5,
               }}>
-                <Text>取消</Text>
+                <UGText>取消</UGText>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={onPress}>
@@ -48,7 +49,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
                 backgroundColor: Skin1.themeColor, borderRadius: 5,
                 borderColor: 'gray', borderWidth: 0.5,
               }}>
-                <Text style={{ color: 'white' }}>确定</Text>
+                <UGText style={{ color: 'white' }}>确定</UGText>
               </View>
             </TouchableWithoutFeedback>
           </View>

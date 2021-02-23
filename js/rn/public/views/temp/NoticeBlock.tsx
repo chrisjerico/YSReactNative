@@ -5,6 +5,7 @@ import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean'
 import { scale } from '../../tools/Scale'
 import AppDefine from '../../define/AppDefine'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface NoticeBlockProps {
   logo?: string;
@@ -41,7 +42,7 @@ const NoticeBlock = ({
           style={styles.iconImage}
           source={{ uri: logo }}
         /> :
-          <Text style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</Text>
+          <UGText style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</UGText>
         }
       </View>
       <View style={styles.noticContainer}>

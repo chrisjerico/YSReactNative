@@ -9,6 +9,7 @@ import { BannerModel } from '../../../../../public/network/Model/BannerModel'
 import { useDimensions } from '@react-native-community/hooks'
 import Carousel from 'react-native-banner-carousel'
 import FastImage from 'react-native-fast-image'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RecommendTabView = ({ list, marquee, banner, onlineNum, onlineSwitch = 0 }: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number, onlineSwitch: number }) => {
   const onPress = (list: List) => {
@@ -25,7 +26,7 @@ export const RecommendTabView = ({ list, marquee, banner, onlineNum, onlineSwitc
       }
       <MarqueeView textArr={marquee} />
       <View style={{ marginHorizontal: 12, flex: 1 }}>
-        <Text style={{ color: '#3C3C3C', fontSize: 18, fontWeight: 'bold', paddingVertical: 8 }}>真人娱乐</Text>
+        <UGText style={{ color: '#3C3C3C', fontSize: 18, fontWeight: 'bold', paddingVertical: 8 }}>真人娱乐</UGText>
         <ImageButton imgStyle={{ height: 140, resizeMode: 'stretch' }}
                      uri={list[0]?.icon}
                      onPress={() => onPress(list[0])} />
@@ -94,7 +95,7 @@ const Banner = ({ bannerData, onlineNum = 0, onlineSwitch = 1 }: { bannerData: B
           borderRadius: 16,
           padding: 5,
         }}>
-          <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
+          <UGText style={{ color: 'white' }}>当前在线:{onlineNum}</UGText>
         </View>}
       </View>
     )

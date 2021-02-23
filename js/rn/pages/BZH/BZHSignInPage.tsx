@@ -11,6 +11,7 @@ import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const BZHSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, reference, valid } = useSignInPage({
@@ -46,10 +47,10 @@ const BZHSignInPage = () => {
           <Button title={'快速注册'} containerStyle={styles.signUpButton} titleStyle={{ color: 'red', fontSize: scale(23) }} onPress={navigateToSignUpPage} />
           <View style={styles.bottomButtonContainer}>
             <TouchableWithoutFeedback onPress={tryPlay}>
-              <Text style={{ color: '#666' }}>{'免费试玩'}</Text>
+              <UGText style={{ color: '#666' }}>{'免费试玩'}</UGText>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={popToRoot}>
-              <Text style={{ color: '#666' }}>{'返回首页'}</Text>
+              <UGText style={{ color: '#666' }}>{'返回首页'}</UGText>
             </TouchableWithoutFeedback>
           </View>
         </View>

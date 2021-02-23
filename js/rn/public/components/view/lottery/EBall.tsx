@@ -4,6 +4,7 @@ import { scale } from '../../../tools/Scale'
 import { UGColor } from '../../../theme/UGThemeColor'
 import LotteryBall, { ILotteryBall } from '../LotteryBall'
 import { anyEmpty } from '../../../tools/Ext'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IEBall {
   ballType?: ILotteryBall //球风格
@@ -33,8 +34,8 @@ const EBall = ({
       <LotteryBall key={key + 'ct'}
                    {...ballType}/>
       {
-        !anyEmpty(odds) && <Text key={key + 'text'}
-              style={[_styles.ball_odds, oddsStyle]}>{odds}</Text>
+        !anyEmpty(odds) && <UGText key={key + 'text'}
+              style={[_styles.ball_odds, oddsStyle]}>{odds}</UGText>
       }
     </View>
   )

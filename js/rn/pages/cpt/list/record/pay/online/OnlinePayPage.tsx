@@ -28,7 +28,8 @@ import { ugLog } from '../../../../../../public/tools/UgLog'
 import UGDropDownPicker from '../../../../../bank/add/view/UGDropdownPicker'
 import { useEffect, useState } from 'react'
 import { getBankIcon } from '../../../../../bank/list/UseManageBankList'
-import { clearAllHtml } from '../../../../../../public/tools/ui/UIUtil'
+import { clearAllHtml } from '../../../../../../public/tools/StringUtil'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据
@@ -88,7 +89,7 @@ const OnlinePayPage = ({ navigation, route }) => {
     {
       !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
-          <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
+          <UGText style={_styles.choose_channel_item_text}>{item + '元'}</UGText>
         </View>
       </TouchableOpacity>)
     }
@@ -108,8 +109,8 @@ const OnlinePayPage = ({ navigation, route }) => {
     }
 
     return <View>
-      <Text style={_styles.choose_channel_title}>{clearAllHtml(showTitle)}</Text>
-      <Text style={_styles.choose_channel_hint}>{payBigData?.transferPrompt}</Text>
+      <UGText style={_styles.choose_channel_title}>{clearAllHtml(showTitle)}</UGText>
+      <UGText style={_styles.choose_channel_hint}>{payBigData?.transferPrompt}</UGText>
     </View>
   }
 
@@ -127,7 +128,7 @@ const OnlinePayPage = ({ navigation, route }) => {
               <Icon size={scale(32)} name={'check'}/> :
               <Icon size={scale(32)} name={'circle-o'}/>
           }
-          <Text style={_styles.select_channel_text}>{item?.payeeName}</Text>
+          <UGText style={_styles.select_channel_text}>{item?.payeeName}</UGText>
 
         </View>
       </TouchableOpacity>)

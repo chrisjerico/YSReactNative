@@ -6,6 +6,7 @@ import { INoticeScroll } from '../../../redux/model/home/INoticeBean'
 import { scale } from '../../tools/Scale'
 import AppDefine from '../../define/AppDefine'
 import { ugLog } from '../../tools/UgLog'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface NoticeBlockProps {
   logo?: string
@@ -28,11 +29,11 @@ const NoticeBlock = ({ logo, logoText = '公告', notices, containerStyle, onPre
         content: _content,
       })
     })
-    
+
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.iconContainer, iconContainerStyle]}>
-        {logo ? <FastImage resizeMode={'contain'} style={styles.iconImage} source={{ uri: logo }} /> : <Text style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</Text>}
+        {logo ? <FastImage resizeMode={'contain'} style={styles.iconImage} source={{ uri: logo }} /> : <UGText style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</UGText>}
       </View>
       <View style={styles.noticContainer}>
         <MarqueeHorizontal

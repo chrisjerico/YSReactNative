@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ProfileButtonProps {
   title: string
@@ -13,7 +14,7 @@ const ProfileButton = ({ title = 'title', logo = '', onPress }: ProfileButtonPro
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.container}>
-        <Text style={styles.title}>{title}</Text>
+        <UGText style={styles.title}>{title}</UGText>
         <FastImage
           style={styles.image}
           resizeMode={'contain'}

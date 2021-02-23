@@ -16,6 +16,7 @@ import { UGColor } from '../../../public/theme/UGThemeColor'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import { OCEventType } from '../../../public/define/OCHelper/OCBridge/OCEvent'
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 export interface JDAvatarListCP {
@@ -101,7 +102,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
         <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center' }}>
           <FastImage source={{ uri: v.selected?.url ?? UGStore.globalProps?.userInfo?.avatar }} style={{ width: 95, height: 95, backgroundColor: '#fff', borderRadius: 50 }} />
         </View>
-        <Text style={{ marginTop: 9, textAlign: 'center', color: '#fff' }}>头像预览</Text>
+        <UGText style={{ marginTop: 9, textAlign: 'center', color: '#fff' }}>头像预览</UGText>
         <View style={{ marginTop: 12, flexDirection: 'row', height: 100, paddingHorizontal: 12 }}>
           <Button
             buttonStyle={{ marginTop: 14, paddingHorizontal: 5, paddingVertical: 10, borderRadius: 0, backgroundColor: '#00000000', }}

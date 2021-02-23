@@ -17,6 +17,7 @@ import BottomGap from '../../public/views/temp/BottomGap'
 import config from './config'
 import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const WNZSignUpPage = () => {
   const openMenu = () => {
@@ -118,7 +119,7 @@ const SignUpForm = (props: SignUpRenderFormProps) => {
       inputContainerStyle={styles.inputContainerStyle}
       leftIconContainerStyle={styles.leftIconContainerStyle}
       rightIconContainerStyle={{ marginRight: scale(10) }}
-      renderLeftIcon={() => <Text style={styles.leftIconText}>{leftIconTitle}</Text>}
+      renderLeftIcon={() => <UGText style={styles.leftIconText}>{leftIconTitle}</UGText>}
       labelTextStyle={{ paddingLeft: scale(20) }}
       placeholderTextColor={'#9D9D9D'}
     />

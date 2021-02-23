@@ -6,10 +6,10 @@ import AppDefine from '../../../../../rn/public/define/AppDefine'
 import { skin1, Skin1 } from '../../../../../rn/public/theme/UGSkinManagers'
 import { AnimationFadeView } from '../../../../../rn/public/tools/animation/AnimationViews'
 import { showLoading, hideLoading, showSuccess } from '../../../../../rn/public/widget/UGLoadingCP'
-import { DoyButton1 } from '../../../../publicComponent/Button之类的基础组件/DoyButton'
 import { sc375 } from '../../../../../rn/public/tools/Scale'
 import FastImage from 'react-native-fast-image'
 import { img_doy } from '../../../../../rn/Res/icon'
+import { UGText } from '../../../../publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc375
 
@@ -45,10 +45,10 @@ export const DoyInRestModeCP = ({ c_ref, onCloseRestModeBtnClick }: DoyInRestMod
     <AnimationFadeView show={v.show} backgroundColor='#00000099'>
       <View style={{ width: AppDefine.width, padding: sc(24), alignItems: 'center' }}>
         <FastImage source={{ uri: img_doy('休息模式中@3x') }} style={{ width: sc(64), aspectRatio: 1 }} />
-        <Text style={{ fontSize: sc(20), fontWeight: '500', color: 'white', marginTop: sc(32) }}>休息模式中</Text>
-        <Text style={{ fontSize: sc(12), color: 'white', lineHeight: sc(18), textAlign: 'center', fontWeight: '500' }}>{`
+        <UGText style={{ fontSize: sc(20), fontWeight: '500', color: 'white', marginTop: sc(32) }}>休息模式中</UGText>
+        <UGText style={{ fontSize: sc(12), color: 'white', lineHeight: sc(18), textAlign: 'center', fontWeight: '500' }}>{`
 休息模式开启后，您的卖单将不会出现在卖单列表
-中，避免挂单在不便回应时被购买。`}</Text>
+中，避免挂单在不便回应时被购买。`}</UGText>
         <Button title='关闭休息模式' containerStyle={{ marginTop: sc(30) }} buttonStyle={{ height: sc(38), width: sc(164), backgroundColor: 'white' }} titleStyle={{ color: themeColor, fontSize: sc(14), fontWeight: '600' }} onPress={() => {
           v.show = !v.show
           setState({})

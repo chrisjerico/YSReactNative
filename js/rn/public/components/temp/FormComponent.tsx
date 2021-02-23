@@ -17,6 +17,7 @@ import {anyEmpty} from "../../tools/Ext";
 import {ugLog} from "../../tools/UgLog";
 import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
 import { ToastSuccess, ToastError } from '../../tools/tars'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export interface FormComponentProps {
   onChangeText?: any;
@@ -277,7 +278,7 @@ const FormComponent = ({
           }}
         />
         {enableLabel ? (
-          <Text style={[styles.labelText, labelTextStyle]}>{label}</Text>
+          <UGText style={[styles.labelText, labelTextStyle]}>{label}</UGText>
         ) : null}
       </View>
     )

@@ -5,6 +5,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import React from 'react'
 import { useLottoContext } from '../LottoBetting/LottoContext';
 import { useSafeArea } from 'react-native-safe-area-context';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 const Header = () => {
   const { width } = useDimensions().screen
   const { top } = useSafeArea()
@@ -24,11 +25,11 @@ const Header = () => {
         }}>
           <Image style={{ width: 25, height: 25, }} source={{ uri: "back_icon" }} />
         </TouchableWithoutFeedback>
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: 'white' }}>点击图标切换彩票</Text>
+        <UGText style={{ fontSize: 18, fontWeight: "bold", color: 'white' }}>点击图标切换彩票</UGText>
         <TouchableWithoutFeedback onPress={() => {
           value.setShowModal(false)
         }}>
-          <Text style={{ color: 'white', fontSize: 16 }}>取消</Text>
+          <UGText style={{ color: 'white', fontSize: 16 }}>取消</UGText>
         </TouchableWithoutFeedback>
       </View>
     </LinearGradient>

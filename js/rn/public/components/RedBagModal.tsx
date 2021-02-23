@@ -12,6 +12,7 @@ import { scale } from '../tools/Scale'
 import { ugLog } from '../tools/UgLog'
 import TouchableImage from '../views/tars/TouchableImage'
 import Button from '../views/temp/Button'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface RedBagModalProps {
   show?: any
@@ -85,16 +86,16 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
             style={styles.image} >
             <View style={[styles.imageContainer, Platform.OS == 'ios' ? { marginTop: scale(75) } : undefined]}>
               <View style={bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
-                <Text style={styles.title}>帐号：</Text>
-                <Text style={styles.text}>{redBagData.username}</Text>
+                <UGText style={styles.title}>帐号：</UGText>
+                <UGText style={styles.text}>{redBagData.username}</UGText>
               </View>
               <View style={bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
-                <Text style={styles.title}>红包余额：</Text>
-                <Text style={styles.text}>{redBagData.leftAmount}</Text>
+                <UGText style={styles.title}>红包余额：</UGText>
+                <UGText style={styles.text}>{redBagData.leftAmount}</UGText>
               </View>
               <View style={bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
-                <Text style={styles.title}>可抢红包：</Text>
-                <Text style={styles.text}>{redBagData.leftCount}</Text>
+                <UGText style={styles.title}>可抢红包：</UGText>
+                <UGText style={styles.text}>{redBagData.leftCount}</UGText>
               </View>
               <View style={bagSkin?.includes("red_pack_big_niu") ? styles.niu_col : styles.col}>
                 <Button
@@ -106,9 +107,9 @@ const RedBagModal = ({ show, onPress, redBag, bagSkin, activitySetting }: RedBag
               </View>
               {bagSkin?.includes("red_pack_big_niu") ? null :
                 <View style={styles.row}>
-                  <Text style={[styles.title, { color: '#FFC950', alignSelf: 'center' }]}>活动介绍</Text>
+                  <UGText style={[styles.title, { color: '#FFC950', alignSelf: 'center' }]}>活动介绍</UGText>
                   <ScrollView style={styles.redBagIntro}>
-                    <Text style={[styles.title, { color: '#ffffff' }]}>{activitySetting?.data?.redBagIntro}</Text>
+                    <UGText style={[styles.title, { color: '#ffffff' }]}>{activitySetting?.data?.redBagIntro}</UGText>
                   </ScrollView>
                 </View>
               }

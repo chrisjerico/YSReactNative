@@ -17,6 +17,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { ToastError } from '../../../public/tools/tars'
 import { Toast } from '../../../public/tools/ToastUtils'
 import APIRouter from '../../../public/network/APIRouter'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface PromotionRechargeModalProps {
   item: any,
@@ -36,11 +37,11 @@ const PromotionRechargeModal = ({ item, showPopView, closePop }: PromotionRechar
       { text: '确认' }
     ])
   }
-  
+
   ugLog("item=", item)
   ugLog("showPop=", showPop)
   return (
-    <Modal 
+    <Modal
       transparent={true}
       onRequestClose={()=> {setShowPop(false)}}
       >
@@ -65,44 +66,44 @@ const PromotionRechargeModal = ({ item, showPopView, closePop }: PromotionRechar
               borderTopRightRadius: scale(10),
               borderTopLeftRadius: scale(10),
             }}>
-            <Text style={{ marginVertical:13, fontSize: 17, fontWeight: '500' }}>用户信息</Text>
+            <UGText style={{ marginVertical:13, fontSize: 17, fontWeight: '500' }}>用户信息</UGText>
             <View style={styles.line} />
           </View>
 
           <ScrollView>
           <View style={{ flex:1, paddingHorizontal: scale(20) }}>
             <View style={styles.textCol}>
-              <Text style={styles.textColTitle}>帐户状态:</Text>
-              <Text style={{ fontSize: 16, fontWeight: '500' }}>{item?.enable}</Text>
+              <UGText style={styles.textColTitle}>帐户状态:</UGText>
+              <UGText style={{ fontSize: 16, fontWeight: '500' }}>{item?.enable}</UGText>
             </View>
             <View style={styles.line} />
             <View style={styles.textCol}>
-              <Text style={styles.textColTitle}>用户姓名:</Text>
-              <Text style={{ fontSize: 16, fontWeight: '500' }}>{item?.name}</Text>
+              <UGText style={styles.textColTitle}>用户姓名:</UGText>
+              <UGText style={{ fontSize: 16, fontWeight: '500' }}>{item?.name}</UGText>
             </View>
             <View style={styles.line} />
             <View style={styles.textCol}>
-              <Text style={styles.textColTitle}>注册时间:</Text>
-              <Text style={{ fontSize: 16, fontWeight: '500' }}>{item?.regtime}</Text>
+              <UGText style={styles.textColTitle}>注册时间:</UGText>
+              <UGText style={{ fontSize: 16, fontWeight: '500' }}>{item?.regtime}</UGText>
             </View>
             <View style={styles.line} />
             <View style={styles.textCol}>
-              <Text style={styles.textColTitle}>上级关系:</Text>
-              <Text style={{ fontSize: 16, fontWeight: '500' }}>{userInfo.usr + " > " + item?.username}</Text>
+              <UGText style={styles.textColTitle}>上级关系:</UGText>
+              <UGText style={{ fontSize: 16, fontWeight: '500' }}>{userInfo.usr + " > " + item?.username}</UGText>
             </View>
             <View style={styles.line} />
             <View style={styles.textCol}>
-              <Text style={styles.textColTitle}>用户余额:</Text>
-              <Text style={{ fontSize: 16, fontWeight: '500', color: 'red' }}>¥ {item?.coin}</Text>
+              <UGText style={styles.textColTitle}>用户余额:</UGText>
+              <UGText style={{ fontSize: 16, fontWeight: '500', color: 'red' }}>¥ {item?.coin}</UGText>
             </View>
             <View style={styles.line} />
             <View style={styles.textCol}>
-              <Text style={styles.textColTitle}>我的余额:</Text>
-              <Text style={{ fontSize: 16, fontWeight: '500', color: 'red' }}>¥ {userInfo?.balance}</Text>
+              <UGText style={styles.textColTitle}>我的余额:</UGText>
+              <UGText style={{ fontSize: 16, fontWeight: '500', color: 'red' }}>¥ {userInfo?.balance}</UGText>
             </View>
             <View style={styles.line} />
             <View style={styles.textCol}>
-              <Text style={styles.textColTitle}>充值金额:</Text>
+              <UGText style={styles.textColTitle}>充值金额:</UGText>
               <TextInput
                 placeholder={'范围: 0-100000元'}
                 style={{
@@ -172,19 +173,19 @@ const styles = StyleSheet.create({
     fontSize: scale(25),
     marginVertical: scale(10),
   },
-  textCol: { 
+  textCol: {
     flexDirection: 'row',
-    marginVertical: scale(15), 
+    marginVertical: scale(15),
   },
-  textColTitle: { 
-    fontSize: 16, 
-    fontWeight: '500', 
+  textColTitle: {
+    fontSize: 16,
+    fontWeight: '500',
     marginRight: scale(20),
     textAlignVertical: 'center',
   },
-  line: { 
-    height:1, 
-    width:'100%', 
+  line: {
+    height:1,
+    width:'100%',
     backgroundColor:'#ddd'
   }
 })

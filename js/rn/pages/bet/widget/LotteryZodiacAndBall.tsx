@@ -7,6 +7,7 @@ import { anyEmpty } from '../../../public/tools/Ext'
 import { BallStyles, LCode, lotteryBallStyle } from '../const/LotteryConst'
 import LotteryBall from '../../../public/components/view/LotteryBall'
 import { doubleDigit } from '../../../public/tools/StringUtil'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ILotteryZodiacAndBallItem {
   gameType?: string; //彩种 六合彩，秒秒彩 等等
@@ -47,14 +48,14 @@ const LotteryZodiacAndBall = ({
               zodiacs?.map((item, index) => (
                 <View key={'renderZodiac' + zodiacStr + item + index}
                       style={_styles.zodiac_cqssc_text_container}>
-                  <Text style={_styles.zodiac_cqssc_text}>{item}</Text>
+                  <UGText style={_styles.zodiac_cqssc_text}>{item}</UGText>
                 </View>
               ))
             }
             {
               lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
                                   style={_styles.zodiac_cqssc_text_container}>
-                <Text style={_styles.zodiac_cqssc_text}>{lastZodiac}</Text>
+                <UGText style={_styles.zodiac_cqssc_text}>{lastZodiac}</UGText>
               </View>
             }
           </View>
@@ -68,18 +69,18 @@ const LotteryZodiacAndBall = ({
               zodiacs?.map((item, index) => (
                 <View key={'renderZodiac' + zodiacStr + item + index}
                       style={_styles.zodiac_text_container}>
-                  <Text style={_styles.zodiac_text}>{item}</Text>
+                  <UGText style={_styles.zodiac_text}>{item}</UGText>
                 </View>
               ))
             }
             {
-              lastZodiac && <Text key={'renderZodiac' + zodiacStr + '+'}
-                                  style={_styles.text_content_plus}>{'+'}</Text>
+              lastZodiac && <UGText key={'renderZodiac' + zodiacStr + '+'}
+                                  style={_styles.text_content_plus}>{'+'}</UGText>
             }
             {
               lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
                                   style={_styles.zodiac_text_container}>
-                <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
+                <UGText style={_styles.zodiac_text}>{lastZodiac}</UGText>
               </View>
             }
           </View>
@@ -95,14 +96,14 @@ const LotteryZodiacAndBall = ({
               zodiacs?.map((item, index) => (
                 <View key={'renderZodiac' + zodiacStr + item + index}
                       style={_styles.zodiac_text_container}>
-                  <Text style={_styles.zodiac_text}>{item}</Text>
+                  <UGText style={_styles.zodiac_text}>{item}</UGText>
                 </View>
               ))
             }
             {
               lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
                                   style={_styles.zodiac_text_container}>
-                <Text style={_styles.zodiac_text}>{lastZodiac}</Text>
+                <UGText style={_styles.zodiac_text}>{lastZodiac}</UGText>
               </View>
             }
           </View>
@@ -116,14 +117,14 @@ const LotteryZodiacAndBall = ({
               zodiacs?.map((item, index) => (
                 <View key={'renderZodiac' + zodiacStr + item + index}
                       style={_styles.zodiac_gdkl10_text_container}>
-                  <Text style={_styles.zodiac_gdkl10_text}>{item}</Text>
+                  <UGText style={_styles.zodiac_gdkl10_text}>{item}</UGText>
                 </View>
               ))
             }
             {
               lastZodiac && <View key={'renderZodiac' + zodiacStr + lastZodiac}
                                   style={_styles.zodiac_gdkl10_text_container}>
-                <Text style={_styles.zodiac_gdkl10_text}>{lastZodiac}</Text>
+                <UGText style={_styles.zodiac_gdkl10_text}>{lastZodiac}</UGText>
               </View>
             }
           </View>
@@ -212,8 +213,8 @@ const LotteryZodiacAndBall = ({
                     <LotteryBall key={key + ballStr + item + index}
                                  type={ballStyle}
                                  ballNumber={item}/>),
-                  lastBall && <Text key={key + ballStr + '+'}
-                                    style={_styles.text_content_plus}>{'+'}</Text>,
+                  lastBall && <UGText key={key + ballStr + '+'}
+                                    style={_styles.text_content_plus}>{'+'}</UGText>,
                   lastBall && <LotteryBall key={key + ballStr + lastBall}
                                            type={ballStyle}
                                            ballNumber={lastBall}/>,

@@ -14,6 +14,7 @@ import { push } from '../../../public/navigation/RootNavigation';
 import { PageName } from '../../../public/navigation/Navigation';
 import { ugLog } from '../../../public/tools/UgLog';
 import JDDayDetailPage from './下注明细(已结算)/JDDayDetailPage';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDBetDetailPage {
@@ -24,7 +25,7 @@ interface JDBetDetailPage {
   //===列表数据====================================
   items?: Array<any>//界面数据
   state: {
-    isRefreshing?: boolean//下拉刷新开始结束 
+    isRefreshing?: boolean//下拉刷新开始结束
   },
 
 }
@@ -71,7 +72,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
 
   /**
  * 下拉刷新
- * 
+ *
  */
   const onHeaderRefresh = (date: string) => {
     v.state.isRefreshing = true
@@ -82,7 +83,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
 
   /**
    * 根据数据是数组还是字典返回数据
-   * 
+   *
    */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -94,7 +95,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
 
   /**
    * 得到列表数据
-   * 
+   *
    */
   function inviteCodeListData(date: string) {
 
@@ -129,7 +130,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
 
   /**
   * 数据为空展示页面
-  * 
+  *
   */
   const _renderListEmptyComp = () => {
     return (
@@ -140,7 +141,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</Text>
+        <UGText style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</UGText>
       </View>
     );
   }
@@ -148,7 +149,7 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ item }) => {
     {
@@ -166,24 +167,24 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
           }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.title}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.betCount}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.betMoney}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.rewardRebate}
-            </Text>
+            </UGText>
           </View>
         </TouchableOpacity>
 
@@ -201,9 +202,9 @@ const JDBetDetailPage = ({ }: { pageTitle?: string, titleArray?: Array<string>, 
                 <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}
                   onPress={() => {
                   }}>
-                  <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+                  <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
                     {title}
-                  </Text>
+                  </UGText>
                 </TouchableOpacity>
               )
             })}

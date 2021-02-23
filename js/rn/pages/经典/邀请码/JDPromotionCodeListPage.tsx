@@ -23,6 +23,7 @@ import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 import { InviteCodeModel } from '../Model/InviteCodeModel';
 import { number } from 'prop-types';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDPromotionCodeListPage {
   pageTitle?: string,//界面名称数据
@@ -35,8 +36,8 @@ interface JDPromotionCodeListPage {
   items?: Array<InviteCodeModel>//界面数据
   state: {
     showFoot?: number//控制foot， 0：点击重新加载   1：'数据加载中…  2 ：已加载全部数据(空)
-    isRefreshing?: boolean//下拉刷新开始结束 
-    isLastPage?: boolean //是否是最后一页 
+    isRefreshing?: boolean//下拉刷新开始结束
+    isLastPage?: boolean //是否是最后一页
   },
   //===弹窗====================================
   codeCP?: JDInviteCodeGenerateCP,
@@ -88,7 +89,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
   /**
     * 跳到生成邀请码界面
-    * 
+    *
     */
   function rightClicked() {
     console.log('跳到生成邀请码界面');
@@ -98,7 +99,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   }
   /**
  * 下拉刷新
- * 
+ *
  */
   const onHeaderRefresh = () => {
     v.state.isRefreshing = true
@@ -108,7 +109,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   }
   /**
   * 点击（上拉）加载更多数据
-  * 
+  *
   */
   const onFooterRefresh = () => {
     v.pageNumber++
@@ -119,7 +120,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   }
   /**
 * 点击刷新
-* 
+*
 */
   function onEndReached() {
     console.log('onEndReached');
@@ -135,7 +136,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
       console.log('当前页大于或等于总页数，那就是到最后一页了，则返回');
       return;
     }
-    //是否已是下拉刷新 返回     
+    //是否已是下拉刷新 返回
     if (v.state.isRefreshing) {
       console.log('已是下拉刷新 返回  ');
       return;
@@ -145,7 +146,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   }
   /**
    * 根据数据是数组还是字典返回数据
-   * 
+   *
    */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -157,7 +158,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
   /**
    * 得到邀请码列表数据
-   * 
+   *
    */
   function inviteCodeListData() {
 
@@ -204,7 +205,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
   /**
    * 开启关闭邀请码
-   * 
+   *
    */
   function updateInviteCodeStatus(id: number, status: number) {
     let params = {
@@ -230,7 +231,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
   /**
   * 数据为空展示页面
-  * 
+  *
   */
   const _renderListEmptyComp = () => {
     return (
@@ -241,14 +242,14 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</Text>
+        <UGText style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</UGText>
       </View>
     );
   }
 
   /**
 * 上拉加载布局
-* 
+*
 */
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
@@ -258,9 +259,9 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               上拉加载
-              </Text>
+              </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -272,9 +273,9 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         >
           <View style={styles.foot}>
             <ActivityIndicator />
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               正在加载...
-            </Text>
+            </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -285,9 +286,9 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
 
-            </Text>
+            </UGText>
 
           </View>
         </TouchableOpacity>
@@ -296,7 +297,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   }
   /**
 * 按钮背景色
-* 
+*
 */
   function btnBgColor(item: InviteCodeModel) {
 
@@ -309,31 +310,31 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ index, item }) => {
     {
       return (
         <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 5, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.invite_code}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 5, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.user_type_txt}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 5, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.created_time}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 5, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.used_num}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, height: scale(66), alignItems: 'center' }}>
             <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, backgroundColor: btnBgColor(item), borderRadius: 5 }}
@@ -348,9 +349,9 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
                 }
 
               }}>
-              <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(18), color: item?.status === '1'?  Skin1.textColor4 : skin1.textColor2 }}>
+              <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(18), color: item?.status === '1'?  Skin1.textColor4 : skin1.textColor2 }}>
                 {item?.status === '1'? '关闭' : '开启' }
-              </Text>
+              </UGText>
             </TouchableOpacity>
           </View>
         </View>
@@ -362,9 +363,9 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
     [<View style={styles.container}>
       <View style={{}}>
         {inviteCode.canUseNum != '0' && <View style={{ height: 44, justifyContent: 'center', alignItems: 'center', backgroundColor: Skin1.CLBgColor, borderBottomColor: Skin1.textColor3, borderBottomWidth: 1, }}>
-          <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+          <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
             {'每个' + inviteCode.displayWord + '可以使用' + inviteCode.canUseNum + '次'}
-          </Text>
+          </UGText>
         </View>}
         <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.CLBgColor }}>
           {v.titleArray?.map((title, idx) => {
@@ -372,9 +373,9 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
               <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}
                 onPress={() => {
                 }}>
-                <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+                <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
                   {title}
-                </Text>
+                </UGText>
               </TouchableOpacity>
             )
           })}

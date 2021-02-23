@@ -14,6 +14,7 @@ import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { calculateSliderValue } from '../../../util/ArithUtil'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 /**
@@ -57,11 +58,11 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
             _styles.tab_item,
             index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
           ]}>
-      <Text key={key + item[0]?.alias}
+      <UGText key={key + item[0]?.alias}
             style={[
               _styles.tab_title_item_text,
               index == tabIndex ? { color: `white` } : null,
-            ]}>{item[0]?.alias}</Text>
+            ]}>{item[0]?.alias}</UGText>
     </View>
   </TouchableWithoutFeedback>
 
@@ -119,29 +120,29 @@ const LhcLMAComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       {//显示赔率标题
         <View key={key + ' sub renderLMA2 = ' + groupData?.id}
               style={_styles.sub_big_title_container}>
-          <Text key={key + ' text renderYZDW' + groupData?.id}
+          <UGText key={key + ' text renderYZDW' + groupData?.id}
                 style={[
                   _styles.sub_big_title_text,
                   { color: Skin1.themeColor },
                 ]}>{
             `赔率: ${calculateSliderValue(odds, sliderValue)}`
-          }</Text>
+          }</UGText>
         </View>
       }
 
       <View key={key + ' sub renderLMA' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderLMA' + groupData?.id}
+        <UGText key={key + ' text renderLMA' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.alias}</Text>
+              ]}>{groupData?.alias}</UGText>
       </View>
 
       <View key={key + ' ball renderLMA' + groupData?.id}
             style={_styles.ball_parent_container}>
         {
-          groupData?.exPlays.map((item, index) => renderEBall(groupData, item))
+          groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))
         }
       </View>
     </View>

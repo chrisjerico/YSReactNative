@@ -15,6 +15,7 @@ interface ITMData {
 
 /**
  * 解析X字定位等数据
+ * @param gameType
  * @param playOddData
  * @param zodiacNum
  */

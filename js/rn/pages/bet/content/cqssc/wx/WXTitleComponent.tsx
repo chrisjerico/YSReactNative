@@ -24,6 +24,7 @@ import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import { calculateSliderValue } from '../../../util/ArithUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IWXTitleComponent {
   title?: string, //标题
@@ -46,10 +47,10 @@ const WXTitleComponent = ({
 
   return (
     <View style={_styles.sub_big_title_container}>
-      <Text style={[
+      <UGText style={[
         _styles.sub_big_title_text,
         { color: Skin1.themeColor },
-      ]}>{`${title}: ${calculateSliderValue(odds, sliderValue)}`}</Text>
+      ]}>{`${title}: ${calculateSliderValue(odds, sliderValue)}`}</UGText>
     </View>
 
   )

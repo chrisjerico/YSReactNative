@@ -52,6 +52,7 @@ import { hideLoading, showLoading, UGLoadingType } from "../../public/widget/UGL
 import { Toast } from "../../public/tools/ToastUtils";
 import { ANHelper } from "../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 /**
  *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -185,22 +186,22 @@ const ZLHomePage = ({ navigation, setProps }) => {
                             borderRadius: 10, paddingLeft: 5, paddingTop: 10,
                             justifyContent: 'space-between'
                         }} >
-                            <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[0]?.name}</Text>
-                            <Text style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[0]?.subtitle}</Text>
+                            <UGText style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[0]?.name}</UGText>
+                            <UGText style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[0]?.subtitle}</UGText>
                         </FastImage>
                     </TouchableWithoutFeedback>
 
                     <View style={{ flexDirection: 'column', flex: 0.4, justifyContent: 'space-between', borderRadius: 10, }}>
                         <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 1)}>
                             <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[1]?.icon }} style={{ flex: 6, marginBottom: 8, borderRadius: 10, paddingLeft: 5, paddingTop: 10, justifyContent: 'space-between' }}>
-                                <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[1]?.name}</Text>
-                                <Text style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[1]?.subtitle}</Text>
+                                <UGText style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[1]?.name}</UGText>
+                                <UGText style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[1]?.subtitle}</UGText>
                             </FastImage>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 2)}>
                             <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[2]?.icon }} style={{ flex: 4, borderRadius: 10, paddingLeft: 5, paddingTop: 10, justifyContent: 'space-between' }}>
-                                <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[2]?.name}</Text>
-                                <Text style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[2]?.subtitle}</Text>
+                                <UGText style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[2]?.name}</UGText>
+                                <UGText style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[2]?.subtitle}</UGText>
                             </FastImage>
                         </TouchableWithoutFeedback>
                     </View>
@@ -209,8 +210,8 @@ const ZLHomePage = ({ navigation, setProps }) => {
                     <View style={{ flex: 0.65, backgroundColor: colorEnum.gameitemBgColor, borderRadius: 10, marginRight: 8, padding: 5 }}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                             <View>
-                                <Text style={{ textAlign: 'center', fontSize: 12, color: "#d19881", letterSpacing: 2, marginBottom: 5 }}>电子游戏</Text>
-                                <Text style={{ textAlign: 'center', fontSize: 12, color: "#d19881", letterSpacing: 2 }}>奖金池</Text>
+                                <UGText style={{ textAlign: 'center', fontSize: 12, color: "#d19881", letterSpacing: 2, marginBottom: 5 }}>电子游戏</UGText>
+                                <UGText style={{ textAlign: 'center', fontSize: 12, color: "#d19881", letterSpacing: 2 }}>奖金池</UGText>
                             </View>
                             <View style={{
                                 height: "100%", width: "70%", borderRadius: 20,
@@ -221,7 +222,7 @@ const ZLHomePage = ({ navigation, setProps }) => {
                                 justifyContent: 'center',
                                 alignItems: 'center'
                             }}>
-                                <Text style={{ color: 'white', fontSize: 15 }}>{randomString}</Text>
+                                <UGText style={{ color: 'white', fontSize: 15 }}>{randomString}</UGText>
                             </View>
                         </View>
                         <View style={{ height: 0.5, width: "100%", backgroundColor: "#97989d" }}></View>
@@ -229,25 +230,25 @@ const ZLHomePage = ({ navigation, setProps }) => {
                             <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 3)}>
                                 <View style={{ alignItems: 'center' }}>
                                     <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[3]?.icon }} />
-                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</Text>
+                                    <UGText style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</UGText>
                                 </View>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 4)}>
                                 <View style={{ alignItems: 'center' }}>
                                     <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[4]?.icon }} />
-                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</Text>
+                                    <UGText style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</UGText>
                                 </View>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 5)}>
                                 <View style={{ alignItems: 'center' }}>
                                     <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[5]?.icon }} />
-                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</Text>
+                                    <UGText style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</UGText>
                                 </View>
                             </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 6)} >
                                 <View style={{ alignItems: 'center' }}>
                                     <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[6]?.icon }} />
-                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</Text>
+                                    <UGText style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</UGText>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
@@ -255,8 +256,8 @@ const ZLHomePage = ({ navigation, setProps }) => {
                     <TouchableWithoutFeedback style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 7)}>
                         <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[7]?.icon }}
                             style={{ flex: 0.35, borderRadius: 10, paddingLeft: 5, paddingTop: 10, justifyContent: 'space-between' }}>
-                            <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[7]?.name}</Text>
-                            <Text style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[7]?.subtitle}</Text>
+                            <UGText style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[7]?.name}</UGText>
+                            <UGText style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[7]?.subtitle}</UGText>
                         </FastImage>
                     </TouchableWithoutFeedback>
                 </View>
@@ -265,8 +266,8 @@ const ZLHomePage = ({ navigation, setProps }) => {
                         <View style={styles.buttonContainer} >
                             <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[8]?.icon }}
                                 style={{ borderRadius: 10, paddingVertical: 10, paddingLeft: 5, height: 67, }}>
-                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.name}</Text>
-                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.subtitle}</Text>
+                                <UGText style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.name}</UGText>
+                                <UGText style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.subtitle}</UGText>
                             </FastImage>
                         </View>
                     </TouchableWithoutFeedback>
@@ -274,8 +275,8 @@ const ZLHomePage = ({ navigation, setProps }) => {
                         <View style={styles.buttonContainer}>
                             <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[9]?.icon }}
                                 style={{ borderRadius: 10, height: 67, paddingLeft: 5, paddingTop: 10 }}>
-                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.name}</Text>
-                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.subtitle}</Text>
+                                <UGText style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.name}</UGText>
+                                <UGText style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.subtitle}</UGText>
                             </FastImage>
                         </View>
                     </TouchableWithoutFeedback>
@@ -283,8 +284,8 @@ const ZLHomePage = ({ navigation, setProps }) => {
                         <View style={styles.buttonContainer}>
                             <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[10]?.icon }}
                                 style={{ flex: 1, borderRadius: 10, paddingLeft: 5, paddingTop: 10, height: 67, }}>
-                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.name}</Text>
-                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.subtitle}</Text>
+                                <UGText style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.name}</UGText>
+                                <UGText style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.subtitle}</UGText>
                             </FastImage>
                         </View>
                     </TouchableWithoutFeedback>
@@ -292,12 +293,12 @@ const ZLHomePage = ({ navigation, setProps }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
                     <View style={{ flexDirection: 'row' }} >
                         <Image style={{ width: 13, height: 13, tintColor: 'white', marginRight: 5 }} source={{ uri: "礼品-(1)" }} />
-                        <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
+                        <UGText style={{ color: 'white', fontWeight: "bold" }}>优惠活动</UGText>
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
                         push(PageName.JDPromotionListPage)
                     }}>
-                        <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
+                        <UGText style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</UGText>
                     </TouchableWithoutFeedback>
                 </View>
 
@@ -311,7 +312,7 @@ const ZLHomePage = ({ navigation, setProps }) => {
                             }
                         })}>
                             <View>
-                                <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white' }}>{item.title}</Text>
+                                <UGText style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white' }}>{item.title}</UGText>
                                 <FastImageAutoHeight source={{ uri: item.pic }} />
                             </View>
                         </TouchableWithoutFeedback>
@@ -342,15 +343,15 @@ const ZLHomePage = ({ navigation, setProps }) => {
                 <RankListCP timing={10000} backgroundColor={'black'} textColor={'white'} width={width - 24} ranks={rankList} />
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <Text onPress={() => {
+                    <UGText onPress={() => {
                         console.log(httpClient.defaults.baseURL + '/index2.php')
                         PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-                    }} style={{ color: 'white', textAlign: 'center', marginRight: 20, marginBottom: 5 }} >💻电脑版</Text>
-                    <Text style={{ color: 'white', textAlign: 'center' }} onPress={() => {
+                    }} style={{ color: 'white', textAlign: 'center', marginRight: 20, marginBottom: 5 }} >💻电脑版</UGText>
+                    <UGText style={{ color: 'white', textAlign: 'center' }} onPress={() => {
                         push(PageName.JDPromotionListPage)
-                    }}>🎁优惠活动</Text>
+                    }}>🎁优惠活动</UGText>
                 </View>
-                <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
+                <UGText style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</UGText>
                 <View style={{ height: 100 }}></View>
             </ScrollView>
             <RedBagItem loginPage={PageName.ZLLoginPage} redBag={redBag} />
@@ -473,13 +474,13 @@ const ZLHeader = () => {
                         PushHelper.pushUserCenterType(UGUserCenterType.站内信)
                     }} style={{ flexDirection: 'column', marginRight: 20 }}>
                         <Icon type={'materialIcon'} color={'white'} name={"notifications"} size={25} />
-                        <Text style={{ color: "#8c9ea7", marginTop: 3 }}>消息</Text>
+                        <UGText style={{ color: "#8c9ea7", marginTop: 3 }}>消息</UGText>
                         {unreadMsg > 0 ? <View style={{
                             position: 'absolute', right: 0, top: 0, backgroundColor: 'red',
                             height: 15, width: 15,
                             borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
                         }}>
-                            <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
+                            <UGText style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</UGText>
                         </View> : null}
 
                     </TouchableOpacity> : null
@@ -489,7 +490,7 @@ const ZLHeader = () => {
                     PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
                 }} style={{ flexDirection: 'column', marginRight: 20 }}>
                     <FastImage style={{ width: 27, height: 24 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service1.png" }} />
-                    <Text style={{ color: "#8c9ea7", marginTop: 3 }}>客服</Text>
+                    <UGText style={{ color: "#8c9ea7", marginTop: 3 }}>客服</UGText>
                 </TouchableOpacity>
             </View>
         </View>
@@ -505,14 +506,14 @@ const UserStatusBar = () => {
                     push(PageName.ZLLoginPage);
                 }}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 18, color: 'white' }}>登录</Text>
+                        <UGText style={{ fontSize: 18, color: 'white' }}>登录</UGText>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     push(PageName.ZLRegisterPage);
                 }}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 18, color: 'white' }}>注册</Text>
+                        <UGText style={{ fontSize: 18, color: 'white' }}>注册</UGText>
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -522,7 +523,7 @@ const UserStatusBar = () => {
                         <>
                             <Icon name="credit-card" type="materialIcon" color="white" size={24} />
                             <View style={{ backgroundColor: 'white', height: '40%', width: 1 }}></View>
-                            <Text style={{ color: 'white' }}>取款</Text>
+                            <UGText style={{ color: 'white' }}>取款</UGText>
                         </>
                     </TouchableOpacity >
                 </View></> : <TouchableOpacity onPress={() => {
@@ -531,11 +532,11 @@ const UserStatusBar = () => {
 
                     <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}
                         source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
-                        <Text style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</Text>
+                        <UGText style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</UGText>
                     </FastImage>
                     <View style={{ flexDirection: 'column', marginLeft: 10, justifyContent: 'space-between', height: 47 }}>
-                        <Text style={{ color: 'white', fontSize: 16 }}>{usr}</Text>
-                        <Text style={{ color: 'white', fontSize: 14, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"}</Text>
+                        <UGText style={{ color: 'white', fontSize: 16 }}>{usr}</UGText>
+                        <UGText style={{ color: 'white', fontSize: 14, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"}</UGText>
                     </View>
                     <TouchableOpacity style={{
                         position: 'absolute',
@@ -601,9 +602,9 @@ const AcctountDetail = () => {
             <LinearGradient start={{ x: 0.5, y: 0.7 }} colors={colorEnum.gradientColor}
                 style={{ height: 110, marginBottom: 10, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', borderRadius: 10, marginTop: 10, }}>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: 'space-between', paddingHorizontal: 10, }}>
-                    <Text style={{ fontSize: 15, color: 'white', }}>我的账户</Text>
+                    <UGText style={{ fontSize: 15, color: 'white', }}>我的账户</UGText>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, color: 'white', marginRight: 20 }}> ¥ {balance}</Text>
+                        <UGText style={{ fontSize: 14, color: 'white', marginRight: 20 }}> ¥ {balance}</UGText>
                         <TouchableWithoutFeedback onPress={requestBalance}>
                             <Icon name="refresh" type="materialIcon" color="#8c9ba7" size={24} />
                         </TouchableWithoutFeedback>
@@ -627,7 +628,7 @@ const AcctountDetail = () => {
 
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15.5 }}> 存款</Text>
+                        <UGText style={{ color: 'white', fontSize: 15.5 }}> 存款</UGText>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
@@ -646,7 +647,7 @@ const AcctountDetail = () => {
 
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15.5 }}> 额度转换</Text>
+                        <UGText style={{ color: 'white', fontSize: 15.5 }}> 额度转换</UGText>
 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
@@ -665,7 +666,7 @@ const AcctountDetail = () => {
 
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15.5 }}> 取款</Text>
+                        <UGText style={{ color: 'white', fontSize: 15.5 }}> 取款</UGText>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
@@ -682,7 +683,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
             <View style={{ width, height, position: 'absolute', justifyContent: 'center', alignItems: 'center', zIndex: 1000, marginBottom: 10 }}>
                 <View style={{ width: '90%', height: '55%', backgroundColor: 'white', borderRadius: 15 }}>
                     <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', borderBottomColor: "gray", borderBottomWidth: 0.5 }}>
-                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>公告详情</Text>
+                        <UGText style={{ fontSize: 16, fontWeight: "bold" }}>公告详情</UGText>
                     </View>
                     <View style={{ flex: 1, paddingHorizontal: 10 }}>
                         <AutoHeightWebView style={{ width: width * 0.9 - 20 }} source={{ html: content }}></AutoHeightWebView>
@@ -693,7 +694,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
                             width: "47%", height: 50, backgroundColor: 'white',
                             borderRadius: 5, borderColor: "gray", borderWidth: 0.5
                         }}>
-                            <Text>取消</Text>
+                            <UGText>取消</UGText>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={onPress} style={{
                             justifyContent: 'center',
@@ -701,7 +702,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
                             backgroundColor: '#46A3FF', borderRadius: 5,
                             borderColor: "gray", borderWidth: 0.5
                         }}>
-                            <Text style={{ color: 'white' }}>确定</Text>
+                            <UGText style={{ color: 'white' }}>确定</UGText>
                         </TouchableOpacity>
                     </View>
                 </View>

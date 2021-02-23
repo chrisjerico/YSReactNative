@@ -3,21 +3,22 @@ import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import PushHelper from '../../../public/define/PushHelper'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const HalfButton = ({ title, data, logo }) => {
   const item = data?.slice(0, 1) ?? {}
   return (
     <View style={{ flex: 1, aspectRatio: 2, backgroundColor: '#282828', borderRadius: scale(5), flexDirection: 'row', marginTop: '2%' }}>
       <View style={{ flex: 1 }}>
-        <Text style={{ color: '#ffffff', fontSize: scale(30), margin: scale(10) }}>{title}</Text>
+        <UGText style={{ color: '#ffffff', fontSize: scale(30), margin: scale(10) }}>{title}</UGText>
         <TouchableWithoutFeedback
           onPress={() => {
             PushHelper.pushHomeGame(item)
           }}>
           <View style={{ flex: 1, justifyContent: 'center', paddingLeft: scale(10) }}>
-            <Text style={{ color: '#ffffff' }} numberOfLines={1}>
+            <UGText style={{ color: '#ffffff' }} numberOfLines={1}>
               {item?.title}
-            </Text>
+            </UGText>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -31,7 +32,7 @@ const HalfButton = ({ title, data, logo }) => {
 const RowButton = ({ title, data, logo }) => (
   <View style={{ backgroundColor: '#282828', aspectRatio: 4, borderRadius: scale(5), flexDirection: 'row', marginTop: scale(10), width: '100%' }}>
     <View style={{ flex: 2 }}>
-      <Text style={{ color: '#ffffff', fontSize: scale(30), margin: scale(10) }}>{title}</Text>
+      <UGText style={{ color: '#ffffff', fontSize: scale(30), margin: scale(10) }}>{title}</UGText>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
         {data?.slice(0, 6)?.map((item: any, index: number) => (
           <TouchableWithoutFeedback
@@ -39,9 +40,9 @@ const RowButton = ({ title, data, logo }) => (
               PushHelper.pushHomeGame(item)
             }}>
             <View key={index} style={{ width: '33%', height: '50%', alignItems: 'flex-start', justifyContent: 'center', paddingLeft: scale(10) }}>
-              <Text style={{ color: '#ffffff' }} numberOfLines={1}>
+              <UGText style={{ color: '#ffffff' }} numberOfLines={1}>
                 {item?.title || item?.name}
-              </Text>
+              </UGText>
             </View>
           </TouchableWithoutFeedback>
         ))}

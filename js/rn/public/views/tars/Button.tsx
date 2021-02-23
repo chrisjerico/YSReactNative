@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import { Image, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface Button {
   containerStyle?: StyleProp<ViewStyle>
@@ -21,9 +22,9 @@ const Button = ({ containerStyle, disabledContainerStyle, titleStyle, title, num
     <TouchableWithoutFeedback onPress={disabled ? null : onPress}>
       <View style={disabled ? [styles.disabledContainer, disabledContainerStyle] : [styles.container, containerStyle]}>
         {showLogo && (useFastImage ? <FastImage source={{ uri: logo }} style={logoStyle} resizeMode={'contain'} /> : <Image source={{ uri: logo }} style={logoStyle} resizeMode={'contain'} />)}
-        <Text style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>
+        <UGText style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>
           {title}
-        </Text>
+        </UGText>
       </View>
     </TouchableWithoutFeedback>
   )

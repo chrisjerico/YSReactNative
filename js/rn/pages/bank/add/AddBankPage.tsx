@@ -47,6 +47,7 @@ import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { pop } from '../../../public/navigation/RootNavigation'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -383,7 +384,7 @@ const AddBankPage = ({ navigation, route }) => {
                 {curAccountType == BankConst.WX && renderWx()}
                 {curAccountType == BankConst.ALI && renderAli()}
 
-                <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
+                <UGText style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</UGText>
                 <Button title={'提交'}
                   titleStyle={_styles.submit_text}
                   containerStyle={[_styles.submit_bt,

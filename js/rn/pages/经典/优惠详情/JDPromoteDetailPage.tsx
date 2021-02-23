@@ -11,6 +11,7 @@ import {UGPromoteModel} from '../../../redux/model/other/UGPromoteModel'
 import { scale } from '../../../public/tools/Scale'
 import { FastImagePlaceholder } from '../tools/ImagePlaceholder'
 import { WebView } from 'react-native-webview'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDPromoteDetailPage {
@@ -77,9 +78,9 @@ const JDPromoteDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
         {/* 标题 */}
         <View style={{ justifyContent: 'center', height: scale(66), alignItems: 'center', backgroundColor:'blue' }}>
-          <Text style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
+          <UGText style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
             {v.item.title}
-          </Text>
+          </UGText>
         </View>
         {/* 图片 */}
         <View style={{  backgroundColor:'red' }}>

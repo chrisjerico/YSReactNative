@@ -10,6 +10,7 @@ import PushHelper from '../../../../public/define/PushHelper'
 import { sc540, scale } from '../../../../public/tools/Scale'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 import { img_assets, img_mobileTemplate } from '../../../../Res/icon'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc540
 
@@ -19,7 +20,7 @@ const HomeHeader = ({ logo, uid, name, onPressSignIn, onPressSignUp, onPressTryP
       <FastImage source={{ uri: logo }} style={styles.logo} resizeMode={'contain'} />
       {uid ? (
         <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-          <Text style={{ color: 'white', fontSize:sc(19.5),  flex: 1, textAlign:'right', marginRight:sc(7)}} numberOfLines={1} onPress={()=>{PushHelper.pushUserCenterType(UGUserCenterType.我的页)}}>{name}</Text>
+          <UGText style={{ color: 'white', fontSize:sc(19.5),  flex: 1, textAlign:'right', marginRight:sc(7)}} numberOfLines={1} onPress={()=>{PushHelper.pushUserCenterType(UGUserCenterType.我的页)}}>{name}</UGText>
           <Feather name='menu' color={'white'} size={sc(45)} style={{marginRight:sc(5)}} onPress={onPressMenu} />
         </View>
       ) : (

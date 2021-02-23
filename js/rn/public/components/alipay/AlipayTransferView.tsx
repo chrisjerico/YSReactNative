@@ -9,6 +9,7 @@ import { AlipayTransInView } from './AlipayTransInView'
 import useHomePage from '../../hooks/tars/useHomePage'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { AlipayTransOutView } from './AlipayTransOutView'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const AlipayTransferView = ({ route }) => {
   const [activeTab, setActiveTab] = useState(0)
@@ -55,7 +56,7 @@ const Header = ({ name, activeTab }) => {
                             }}>
             <Icon size={28} name={'home'} color={Skin1.isBlack ? '#fff' : Skin1.textColor1} />
           </TouchableOpacity>
-          <Text style={{
+          <UGText style={{
             alignSelf: 'center',
             paddingTop: 15,
             paddingBottom: 15,
@@ -63,7 +64,7 @@ const Header = ({ name, activeTab }) => {
             fontSize: 20,
             flex: 1,
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-          }}>{`${activeTab == 0 ? '转入' : '转出'}${name || `支付宝`}`}</Text>
+          }}>{`${activeTab == 0 ? '转入' : '转出'}${name || `支付宝`}`}</UGText>
         </View>
       </SafeAreaView>
     </LinearGradient>
@@ -88,10 +89,10 @@ const TabBar = ({ activeTab, setActiveTab }) => {
           justifyContent: 'center',
           borderColor: Skin1.tabSelectedColor,
         }}>
-          <Text style={{
+          <UGText style={{
             fontSize: 15,
             color: activeTab == 0 ? Skin1.tabSelectedColor : Skin1.tabNoSelectColor,
-          }}>转入</Text>
+          }}>转入</UGText>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => setActiveTab(1)}>
@@ -103,11 +104,11 @@ const TabBar = ({ activeTab, setActiveTab }) => {
           justifyContent: 'center',
           borderColor: Skin1.tabSelectedColor,
         }}>
-          <Text
+          <UGText
             style={{
               fontSize: 15,
               color: activeTab == 1 ? Skin1.tabSelectedColor : Skin1.tabNoSelectColor,
-            }}>转出</Text>
+            }}>转出</UGText>
         </View>
       </TouchableWithoutFeedback>
     </View>

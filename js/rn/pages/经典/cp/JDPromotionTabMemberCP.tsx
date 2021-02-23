@@ -23,6 +23,7 @@ import { img_assets, useHtml5Image } from '../../../Res/icon';
 import { appConfig } from '../../../../../config';
 import PromotionRechargeModal from './PromotionRechargeModal';
 import { UGStore } from '../../../redux/store/UGStore';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDPromotionTabMemberCP {
@@ -36,8 +37,8 @@ interface JDPromotionTabMemberCP {
   items?: Array<any>//界面数据
   state: {
     showFoot?: number//控制foot， 0：点击重新加载   1：'数据加载中…  2 ：已加载全部数据(空)
-    isRefreshing?: boolean//下拉刷新开始结束 
-    isLastPage?: boolean //是否是最后一页 
+    isRefreshing?: boolean//下拉刷新开始结束
+    isLastPage?: boolean //是否是最后一页
   }
   //===下拉数据====================================
   levelArray?: Array<any>,// 下拉名称数据
@@ -102,7 +103,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
   /**
  * 下拉刷新
- * 
+ *
  */
   const onHeaderRefresh = () => {
     v.state.isRefreshing = true
@@ -112,7 +113,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   }
   /**
   * 点击（上拉）加载更多数据
-  * 
+  *
   */
   const onFooterRefresh = () => {
     v.pageNumber++
@@ -123,7 +124,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   }
   /**
 * 点击刷新
-* 
+*
 */
   function onEndReached() {
     console.log('onEndReached');
@@ -139,7 +140,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
       console.log('当前页大于或等于总页数，那就是到最后一页了，则返回');
       return;
     }
-    //是否已是下拉刷新 返回     
+    //是否已是下拉刷新 返回
     if (v.state.isRefreshing) {
       console.log('已是下拉刷新 返回  ');
       return;
@@ -149,7 +150,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
   }
   /**
    * 根据数据是数组还是字典返回数据
-   * 
+   *
    */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -161,7 +162,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
   /**
    * 得到下线信息列表数据
-   * 
+   *
    */
   function teamInviteListData() {
 
@@ -207,7 +208,7 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
   /**
   * 数据为空展示页面
-  * 
+  *
   */
   const _renderListEmptyComp = () => {
     return (
@@ -218,14 +219,14 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</Text>
+        <UGText style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</UGText>
       </View>
     );
   }
 
   /**
 * 上拉加载布局
-* 
+*
 */
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
@@ -235,9 +236,9 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               上拉加载
-              </Text>
+              </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -249,9 +250,9 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
         >
           <View style={styles.foot}>
             <ActivityIndicator />
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               正在加载...
-            </Text>
+            </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -262,9 +263,9 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
 
-            </Text>
+            </UGText>
 
           </View>
         </TouchableOpacity>
@@ -276,36 +277,36 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ index, item }) => {
     {
       return (
         <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.level == 0 ? '全部下线' : item.level + '级下线'}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6 + 10, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.username}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6 - 10, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.is_online == 1 ? '在线' : '离线'}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {anyEmpty(item.regtime) ? '--' : item.regtime}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6 - 26, }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 9 }}>
               {item.sunyi}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 6, }}>
             {checkWhiteListAgentRecharge() && item.is_setting == '1' && <View style={{ flexDirection: 'row', marginTop: 9 }}>
@@ -414,9 +415,9 @@ const JDPromotionTabMemberCP = ({ pageTitle, titleArray }: { pageTitle?: string,
                     capitalController?.toggle();
                   }
                 }}>
-                <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
+                <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, marginTop: 15 }}>
                   {title}
-                </Text>
+                </UGText>
                 {(v.pageTitle != PromotionConst.域名绑定 && idx == 0) && <Image style={[{ height: 18, width: 18, marginTop: 15 }]} source={{ uri: Skin1.isBlack ? img_assets('baijiantou1') : img_assets('jiantou1') }} />}
 
               </TouchableOpacity>

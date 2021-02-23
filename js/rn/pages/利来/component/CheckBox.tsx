@@ -2,6 +2,7 @@ import {StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import * as React from "react";
 import {useEffect, useState} from "react";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface CheckBoxProps {
     isCheck: boolean
@@ -34,7 +35,7 @@ export const CheckBox = ({isCheck, onCheck, style, iconColor, activeColor, unAct
             }, style]}>
                 <Icon color={iconColor || "white"} name={"check"}/>
             </View>
-            <Text style={{color: "#333333", paddingLeft: 8}}>{text}</Text>
+            <UGText style={{color: "#333333", paddingLeft: 8}}>{text}</UGText>
         </TouchableOpacity>
     )
 }

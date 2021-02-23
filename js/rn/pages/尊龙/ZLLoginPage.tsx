@@ -25,6 +25,7 @@ import {ugLog} from "../../public/tools/UgLog";
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {
@@ -231,7 +232,7 @@ const ZLLoginPage = ({ route, navigation }) => {
         <View style={{ backgroundColor: '#1a1a1e', flex: 1 }}>
             <Header />
             <ScrollView style={{ flex: 1, paddingHorizontal: 15 }}>
-                <Text style={{ textAlign: 'center', color: 'white', fontSize: 20, marginTop: 10, marginBottom: 20, fontWeight: "bold" }}>账号登录</Text>
+                <UGText style={{ textAlign: 'center', color: 'white', fontSize: 20, marginTop: 10, marginBottom: 20, fontWeight: "bold" }}>账号登录</UGText>
                 <View style={{ backgroundColor: accountFocus ? "white" : '#34393c', height: 50, borderRadius: 4, borderColor: '#34393c', borderWidth: 0, flexDirection: 'row', alignItems: 'center' }}>
                     <FastImage style={{ width: 14, height: 15, marginHorizontal: 15 }} tintColor={accountFocus ? 'black' : 'white'} source={{ uri: "http://test10.6yc.com/images/icon-user.png" }}></FastImage>
                     <View style={{ height: '40%', width: 1, backgroundColor: accountFocus ? '#8e8e93' : "white", marginRight: 5 }}></View>
@@ -292,9 +293,9 @@ const ZLLoginPage = ({ route, navigation }) => {
                 </View>
 
                 <View style={{ marginTop: 30, flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text onPress={() => {
+                    <UGText onPress={() => {
                         PushHelper.pushUserCenterType(UGUserCenterType.在线客服);
-                    }} style={{ color: '#8e8e93', fontSize: 14 }}>忘记密码?</Text>
+                    }} style={{ color: '#8e8e93', fontSize: 14 }}>忘记密码?</UGText>
                     <TouchableWithoutFeedback
 
                         onPress={() => {
@@ -311,7 +312,7 @@ const ZLLoginPage = ({ route, navigation }) => {
                                         type='foundation' color="white" size={13} />
                                 ) : null}
                             </View>
-                            <Text style={{ color: '#8e8e93', fontSize: 14, marginLeft: 3 }}>记住密码</Text>
+                            <UGText style={{ color: '#8e8e93', fontSize: 14, marginLeft: 3 }}>记住密码</UGText>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
@@ -322,7 +323,7 @@ const ZLLoginPage = ({ route, navigation }) => {
                         borderRadius: 8,
                         marginTop: 20, justifyContent: 'center', alignItems: 'center'
                     }}>
-                        <Text style={{ color: "white", fontSize: 20 }}>登录</Text>
+                        <UGText style={{ color: "white", fontSize: 20 }}>登录</UGText>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={testPlay}>
@@ -332,7 +333,7 @@ const ZLLoginPage = ({ route, navigation }) => {
                         borderRadius: 8,
                         marginTop: 20, justifyContent: 'center', alignItems: 'center'
                     }}>
-                        <Text style={{ color: "white", fontSize: 20 }}>免费试玩</Text>
+                        <UGText style={{ color: "white", fontSize: 20 }}>免费试玩</UGText>
                     </View>
                 </TouchableWithoutFeedback>
             </ScrollView>
@@ -366,7 +367,7 @@ const Header = () => {
             <TouchableWithoutFeedback onPress={() => {
                 push(PageName.ZLRegisterPage)
             }}>
-                <Text style={{ color: "#68abf9", fontSize: 18, fontWeight: "bold" }}>注册</Text>
+                <UGText style={{ color: "#68abf9", fontSize: 18, fontWeight: "bold" }}>注册</UGText>
             </TouchableWithoutFeedback>
         </View>
     )

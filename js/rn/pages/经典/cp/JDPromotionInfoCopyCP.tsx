@@ -9,6 +9,7 @@ import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
 import { Toast } from "../../../public/tools/ToastUtils";
 import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
 import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 interface JDPromotionInfoCopyCP {
   title?: string,
   content?: string,
@@ -32,7 +33,7 @@ export const JDPromotionInfoCopyCP = (props: JDPromotionInfoCopyCP) => {
     {/* 👆的界面 */}
     <View style={{ height: 120, flexDirection: 'column', width: '100%' }}>
       <View style={{ flexDirection: "row", height: 55, justifyContent: 'space-between' }}>
-        <Text style={{ fontSize: scale(24), marginTop: scale(20), marginLeft: scale(20), color: Skin1.textColor1 }} >{props.title}</Text>
+        <UGText style={{ fontSize: scale(24), marginTop: scale(20), marginLeft: scale(20), color: Skin1.textColor1 }} >{props.title}</UGText>
         <Button title={'复制链接'} containerStyle={{ marginRight: scale(20), marginTop: scale(15), width: 95, height: 40, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
           onPress={
             (v) => {
@@ -55,7 +56,7 @@ export const JDPromotionInfoCopyCP = (props: JDPromotionInfoCopyCP) => {
       </View>
       <View style={{ flexDirection: 'row', flex: 1, }}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          <Text style={{ fontSize: scale(20), marginHorizontal: scale(20), color: '#1E90FF' }} >{props.content}</Text>
+          <UGText style={{ fontSize: scale(20), marginHorizontal: scale(20), color: '#1E90FF' }} >{props.content}</UGText>
         </View>
         <View style={{ width: 50, alignItems: 'center', justifyContent: 'center', }}>
           <Switch
@@ -72,7 +73,7 @@ export const JDPromotionInfoCopyCP = (props: JDPromotionInfoCopyCP) => {
           />
         </View>
         <View style={{ width: 80, alignItems: 'center', justifyContent: 'center', }}>
-          <Text style={{ fontSize: scale(24), marginRight: scale(20), color: Skin1.textColor1 }} >{'二维码'}</Text>
+          <UGText style={{ fontSize: scale(24), marginRight: scale(20), color: Skin1.textColor1 }} >{'二维码'}</UGText>
         </View>
       </View>
     </View>

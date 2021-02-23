@@ -16,6 +16,7 @@ import { findZodiacByName } from '../../../util/LotteryUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
 import { UGStore } from '../../../../../redux/store/UGStore'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 六合彩 平特一肖, 平特尾数, 头尾数, 特肖 等等
@@ -57,11 +58,11 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
               _styles.tab_item,
               index == tabIndex ? { backgroundColor: `${Skin1.themeColor}dd` } : null,
             ]}>
-        <Text key={key + 'tab' + index + item[0]?.id}
+        <UGText key={key + 'tab' + index + item[0]?.id}
               style={[
                 _styles.tab_title_item_text,
                 index == tabIndex ? { color: `white` } : null,
-              ]}>{item[0]?.alias}</Text>
+              ]}>{item[0]?.alias}</UGText>
       </View>
     </TouchableWithoutFeedback>
 
@@ -123,11 +124,11 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + 'renderAllRect sub' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + 'renderAllRect sub' + groupData?.id}
+        <UGText key={key + 'renderAllRect sub' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.alias}</Text>
+              ]}>{groupData?.alias}</UGText>
       </View>
 
       <View key={key + 'renderAllRect sub2' + groupData?.id}
@@ -149,11 +150,11 @@ const LhcPTYXComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View key={key + 'renderLineBall' + groupData?.id}
             style={_styles.sub_title_container}>
-        <Text key={key + 'renderLineBall text' + groupData?.id}
+        <UGText key={key + 'renderLineBall text' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.alias}</Text>
+              ]}>{groupData?.alias}</UGText>
       </View>
 
       <View key={key + 'renderLineBall sub' + groupData?.id}

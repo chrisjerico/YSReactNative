@@ -15,6 +15,7 @@ import { Calendar } from 'react-native-plain-calendar'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import { useEffect, useRef, useState } from 'react'
 import MiddleMenu, { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 资金明细记录1
@@ -72,7 +73,7 @@ const CapitalDetailListComponent = () => {
    */
   const renderCalendarTitle = () => <View key={'renderCalendarTitle'}>
     <View style={_styles.text_title_container}>
-      <Text style={_styles.calendar_item_title}>{'日期'}</Text>
+      <UGText style={_styles.calendar_item_title}>{'日期'}</UGText>
       <TouchableWithoutFeedback onPress={() => {
         //如果另外一个日历打开的，先关闭掉
         if (selectEndDate) {
@@ -82,12 +83,12 @@ const CapitalDetailListComponent = () => {
         }
       }}>
         <View style={_styles.calendar_item_container}>
-          <Text style={_styles.calendar_item_text}
-                numberOfLines={1}>{anyEmpty(startDate) ? '----------' : startDate}</Text>
+          <UGText style={_styles.calendar_item_text}
+                numberOfLines={1}>{anyEmpty(startDate) ? '----------' : startDate}</UGText>
           <Icon size={scale(20)} name={'calendar'}/>
         </View>
       </TouchableWithoutFeedback>
-      <Text style={_styles.calendar_item_title}>{'至'}</Text>
+      <UGText style={_styles.calendar_item_title}>{'至'}</UGText>
       <TouchableWithoutFeedback onPress={() => {
         //如果另外一个日历打开的，先关闭掉
         if (selectStartDate) {
@@ -97,7 +98,7 @@ const CapitalDetailListComponent = () => {
         }
       }}>
         <View style={_styles.calendar_item_container}>
-          <Text style={_styles.calendar_item_text} numberOfLines={1}>{anyEmpty(endDate) ? '----------' : endDate}</Text>
+          <UGText style={_styles.calendar_item_text} numberOfLines={1}>{anyEmpty(endDate) ? '----------' : endDate}</UGText>
           <Icon size={scale(20)} name={'calendar'}/>
         </View>
       </TouchableWithoutFeedback>
@@ -142,11 +143,11 @@ const CapitalDetailListComponent = () => {
                              const arr = currentMonth.split(' ')
                              return <View style={{ flexDirection: 'row' }}>
                                <TouchableWithoutFeedback onPress={onPrevMonth}>
-                                 <Text style={_styles.calendar_button}>{'上一月'}</Text>
+                                 <UGText style={_styles.calendar_button}>{'上一月'}</UGText>
                                </TouchableWithoutFeedback>
-                               <Text style={_styles.calendar_title}>{arr[1] + '年'}</Text>
+                               <UGText style={_styles.calendar_title}>{arr[1] + '年'}</UGText>
                                <TouchableWithoutFeedback onPress={onNextMonth}>
-                                 <Text style={_styles.calendar_button}>{'下一月'}</Text>
+                                 <UGText style={_styles.calendar_button}>{'下一月'}</UGText>
                                </TouchableWithoutFeedback>
                              </View>
                            }}
@@ -165,17 +166,17 @@ const CapitalDetailListComponent = () => {
    */
   const renderTitleHint = () => <View key={'renderTitleHint'}>
     <View style={_styles.text_title_container}>
-      <Text style={_styles.text_title_0}>{'日期'}</Text>
-      <Text style={_styles.text_title_0}>{'金额'}</Text>
+      <UGText style={_styles.text_title_0}>{'日期'}</UGText>
+      <UGText style={_styles.text_title_0}>{'金额'}</UGText>
       <TouchableWithoutFeedback onPress={() => refMenu?.current?.toggleMenu()}>
         <View style={_styles.item_type}>
-          <Text style={_styles.text_title_0} numberOfLines={1}>{
+          <UGText style={_styles.text_title_0} numberOfLines={1}>{
             menuItem?.find((item) => item.id == curGroup?.toString()).title
-          }</Text>
+          }</UGText>
           <Icon size={scale(20)} name={'chevron-down'}/>
         </View>
       </TouchableWithoutFeedback>
-      <Text style={_styles.text_title_0}>{'余额'}</Text>
+      <UGText style={_styles.text_title_0}>{'余额'}</UGText>
     </View>
   </View>
 
@@ -185,10 +186,10 @@ const CapitalDetailListComponent = () => {
    * @param index
    */
   const renderItemContent = (item: CapitalListData, index?: number) => <View key={item?.time + index} style={_styles.text_item_container}>
-    <Text style={_styles.text_content_0}>{item.time}</Text>
-    <Text style={_styles.text_content_0}>{item.changeMoney}</Text>
-    <Text style={_styles.text_content_0}>{item.category}</Text>
-    <Text style={_styles.text_content_0}>{item.balance}</Text>
+    <UGText style={_styles.text_content_0}>{item.time}</UGText>
+    <UGText style={_styles.text_content_0}>{item.changeMoney}</UGText>
+    <UGText style={_styles.text_content_0}>{item.category}</UGText>
+    <UGText style={_styles.text_content_0}>{item.balance}</UGText>
   </View>
 
   /**

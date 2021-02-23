@@ -5,6 +5,7 @@ import {scale} from '../../../public/tools/Scale'
 import Button from '../../../public/views/temp/Button'
 import { TouchableHighlight, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface HomeHeaderProps {
   name: string;
@@ -36,8 +37,8 @@ const HomeHeader = ({
       {uid ? (
         <View style={_styles.row}>
           <View style={_styles.left}>
-            <Text style={_styles.left_text}>易记网址</Text>
-            <Text style={_styles.left_text} numberOfLines={1}>{easyRememberDomain}</Text>
+            <UGText style={_styles.left_text}>易记网址</UGText>
+            <UGText style={_styles.left_text} numberOfLines={1}>{easyRememberDomain}</UGText>
           </View>
           <View style={_styles.imageContainer}>
             <FastImage
@@ -57,19 +58,19 @@ const HomeHeader = ({
                 style={_styles.user_icon}
                 resizeMode={'contain'}
               />
-              <Text
+              <UGText
                 numberOfLines={1}
                 style={{color: 'white', fontSize: scale(20), flex:1}}>
                 {name}
-              </Text>
+              </UGText>
             </View>
           </TouchableWithoutFeedback>
         </View>
       ) : (
         <View style={_styles.row}>
           <View style={_styles.left}>
-            <Text style={_styles.left_text}>易记网址</Text>
-            <Text style={_styles.left_text} numberOfLines={1}>{easyRememberDomain}</Text>
+            <UGText style={_styles.left_text}>易记网址</UGText>
+            <UGText style={_styles.left_text} numberOfLines={1}>{easyRememberDomain}</UGText>
           </View>
           <View style={_styles.imageContainer}>
             <FastImage

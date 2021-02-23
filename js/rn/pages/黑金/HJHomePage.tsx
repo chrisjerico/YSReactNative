@@ -52,6 +52,7 @@ import {icon_大转盘} from "../../Res/icon/Res";
 import { skinColors } from "../../public/theme/const/UGSkinColor"
 import { getActivityPosition } from "../../public/tools/tars"
 import { UGBasePageProps } from "../base/UGPage"
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 主页
@@ -230,12 +231,12 @@ const HJHomePage = ({navigation, setProps}: UGBasePageProps) => {
                           }
                         })}>
                         <View>
-                          <Text style={{
+                          <UGText style={{
                             fontWeight: "bold",
                             fontSize: 16,
                             marginBottom: 5,
                             color: 'white'
-                          }}>{item.title}</Text>
+                          }}>{item.title}</UGText>
                           <FastImageAutoHeight source={{uri: item.pic}}/>
                         </View>
                       </TouchableWithoutFeedback>
@@ -266,15 +267,15 @@ const HJHomePage = ({navigation, setProps}: UGBasePageProps) => {
         <RankListCP timing={10000} backgroundColor={'white'} textColor={'black'} width={width - 24} ranks={rankList}/>
 
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Text onPress={() => {
+          <UGText onPress={() => {
             console.log(httpClient.defaults.baseURL + '/index2.php')
             PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-          }} style={{color: 'white', textAlign: 'center', marginRight: 20, marginBottom: 5}}>💻电脑版</Text>
-          <Text style={{color: 'white', textAlign: 'center'}} onPress={() => {
+          }} style={{color: 'white', textAlign: 'center', marginRight: 20, marginBottom: 5}}>💻电脑版</UGText>
+          <UGText style={{color: 'white', textAlign: 'center'}} onPress={() => {
             push(PageName.JDPromotionListPage)
-          }}>🎁优惠活动</Text>
+          }}>🎁优惠活动</UGText>
         </View>
-        <Text style={{color: 'white', textAlign: 'center'}}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
+        <UGText style={{color: 'white', textAlign: 'center'}}>COPYRIGHT © {systemStore.webName} RESERVED</UGText>
         <View style={{height: 100}}/>
 
       </ScrollView>
@@ -349,12 +350,12 @@ const _couponTitleItem = () => {
   return <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10}}>
     <View style={{flexDirection: 'row'}}>
       <Image style={{width: 13, height: 13, tintColor: 'white', marginRight: 5}} source={{uri: "礼品-(1)"}}/>
-      <Text style={{color: 'white', fontWeight: "bold"}}>优惠活动</Text>
+      <UGText style={{color: 'white', fontWeight: "bold"}}>优惠活动</UGText>
     </View>
     <TouchableWithoutFeedback onPress={() => {
       push(PageName.JDPromotionListPage)
     }}>
-      <Text style={{color: 'white', fontWeight: "bold"}}>{"查看更多>>"}</Text>
+      <UGText style={{color: 'white', fontWeight: "bold"}}>{"查看更多>>"}</UGText>
     </TouchableWithoutFeedback>
   </View>
 }
@@ -446,9 +447,9 @@ const AccountDetail = () => {
           }} style={[CommStyles.center, {padding: scale(20)}]}>
             <FastImage style={_styles.bottom_icon}
                        source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png"}}/>
-            <Text style={_styles.bottom_font}>充值</Text>
+            <UGText style={_styles.bottom_font}>充值</UGText>
           </TouchableOpacity>
-          <Text style={_styles.bottom_money}> ¥ {balance}</Text>
+          <UGText style={_styles.bottom_money}> ¥ {balance}</UGText>
         </View>
 
         <TouchableOpacity onPress={() => {
@@ -459,7 +460,7 @@ const AccountDetail = () => {
         }} style={[CommStyles.center, {padding: scale(20)}]}>
           <FastImage style={_styles.bottom_icon}
                      source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png"}}/>
-          <Text style={_styles.bottom_font}>转账</Text>
+          <UGText style={_styles.bottom_font}>转账</UGText>
 
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
@@ -471,7 +472,7 @@ const AccountDetail = () => {
           {padding: scale(20)}]}>
           <FastImage style={_styles.bottom_icon}
                      source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png"}}/>
-          <Text style={_styles.bottom_font}>提现</Text>
+          <UGText style={_styles.bottom_font}>提现</UGText>
         </TouchableOpacity>
 
       </FastImage>
@@ -491,7 +492,7 @@ const AccountDetail = () => {
         }} style={[CommStyles.center, {padding: 16}]}>
           <FastImage style={_styles.bottom_icon}
                      source={{uri: "http://test29f.fhptcdn.com/views/mobileTemplate/28/images/icon_login.png"}}/>
-          <Text style={_styles.bottom_font}>登录</Text>
+          <UGText style={_styles.bottom_font}>登录</UGText>
 
         </TouchableOpacity>
       </View>
@@ -506,7 +507,7 @@ const AccountDetail = () => {
         }} style={[CommStyles.center, {padding: 16}]}>
           <FastImage style={_styles.bottom_icon}
                      source={{uri: "http://test29f.fhptcdn.com/views/mobileTemplate/28/images/icon_reg.png"}}/>
-          <Text style={_styles.bottom_font}>注册</Text>
+          <UGText style={_styles.bottom_font}>注册</UGText>
         </TouchableOpacity>
       </View>
 
@@ -578,7 +579,7 @@ const MarqueePopupView = ({content, show, onPress, onDismiss}) => {
             borderBottomColor: "gray",
             borderBottomWidth: 0.5
           }}>
-            <Text style={{fontSize: 16, fontWeight: "bold"}}>公告详情</Text>
+            <UGText style={{fontSize: 16, fontWeight: "bold"}}>公告详情</UGText>
           </View>
           <View style={{flex: 1, paddingHorizontal: 10}}>
             <AutoHeightWebView style={{width: width * 0.9 - 20}} source={{html: content}}></AutoHeightWebView>
@@ -596,7 +597,7 @@ const MarqueePopupView = ({content, show, onPress, onDismiss}) => {
               width: "47%", height: 50, backgroundColor: 'white',
               borderRadius: 5, borderColor: "gray", borderWidth: 0.5
             }}>
-              <Text>取消</Text>
+              <UGText>取消</UGText>
             </TouchableOpacity>
             <TouchableOpacity onPress={onPress} style={{
               justifyContent: 'center',
@@ -604,7 +605,7 @@ const MarqueePopupView = ({content, show, onPress, onDismiss}) => {
               backgroundColor: '#46A3FF', borderRadius: 5,
               borderColor: "gray", borderWidth: 0.5
             }}>
-              <Text style={{color: 'white'}}>确定</Text>
+              <UGText style={{color: 'white'}}>确定</UGText>
             </TouchableOpacity>
           </View>
         </View>

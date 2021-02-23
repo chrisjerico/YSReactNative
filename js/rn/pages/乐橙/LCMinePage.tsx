@@ -20,6 +20,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { MinePageImgConfig } from '../../public/config/MinePageImgConfig'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { ugLog } from '../../public/tools/UgLog'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LCMinePage = () => {
   const { info } = useMinePage({
@@ -44,14 +45,14 @@ const LCMinePage = () => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-          <Text style={{
+          <UGText style={{
             paddingTop: 15,
             paddingBottom: 15,
             textAlign: 'center',
             fontSize: 17,
             width: '100%',
             alignSelf: 'center',
-          }}>{'我的'}</Text>
+          }}>{'我的'}</UGText>
         </View>
       </SafeAreaView>
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
@@ -81,8 +82,8 @@ const LCMinePage = () => {
                   }}>
                     <Image style={{ height: 29, width: 29, marginRight: 10, resizeMode: 'stretch' }}
                            source={{ uri: item.logo }} />
-                    <Text
-                      style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</Text>
+                    <UGText
+                      style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</UGText>
                     <View style={{ marginRight: 20 }}>
                       <Icon size={20} name={'angle-right'} />
                     </View>
@@ -96,7 +97,7 @@ const LCMinePage = () => {
                         width: 20,
                         height: 20,
                       }}>
-                        <Text style={{ alignSelf: 'center', color: 'white' }}>{unreadMsg}</Text>
+                        <UGText style={{ alignSelf: 'center', color: 'white' }}>{unreadMsg}</UGText>
                       </View>)}
                   </View>
                 </TouchableWithoutFeedback>
@@ -119,7 +120,7 @@ const LCMinePage = () => {
                 alignItems: 'center',
                 borderRadius: 8,
               }}>
-                <Text style={{ color: 'white', fontSize: 21, alignSelf: 'center' }}>退出登录</Text>
+                <UGText style={{ color: 'white', fontSize: 21, alignSelf: 'center' }}>退出登录</UGText>
               </View>
             </TouchableWithoutFeedback>
           </LinearGradient>

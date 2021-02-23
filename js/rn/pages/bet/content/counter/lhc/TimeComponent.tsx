@@ -5,6 +5,7 @@ import UseTime from './UseTime'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import { scale } from '../../../../../public/tools/Scale'
 import { Res } from '../../../../../Res/icon/Res'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
 
@@ -54,16 +55,16 @@ const TimeComponent = ({  }: IRouteParams) => {
           style={_styles.container}>
       <View key={key + 'time sub container'}
             style={_styles.time_container}>
-        <Text key={key + 'time container 1' + nextIssueData?.displayNumber}
-              style={_styles.issue_text}>{`${nextIssueData?.displayNumber ?? '无 '}期`}</Text>
-        <Text key={key + 'time container close'}
-              style={_styles.close_text}>{'封盘:'}</Text>
-        <Text key={key + 'time container 2' + displayCloseTime}
-              style={_styles.close_time}>{displayCloseTime}</Text>
-        <Text key={key + 'time container open'}
-              style={_styles.close_text}>{'开盘:'}</Text>
-        <Text key={key + 'time container 3' + displayOpenTime}
-              style={_styles.open_time}>{displayOpenTime}</Text>
+        <UGText key={key + 'time container 1' + nextIssueData?.displayNumber}
+              style={_styles.issue_text}>{`${nextIssueData?.displayNumber ?? '无 '}期`}</UGText>
+        <UGText key={key + 'time container close'}
+              style={_styles.close_text}>{'封盘:'}</UGText>
+        <UGText key={key + 'time container 2' + displayCloseTime}
+              style={_styles.close_time}>{displayCloseTime}</UGText>
+        <UGText key={key + 'time container open'}
+              style={_styles.close_text}>{'开盘:'}</UGText>
+        <UGText key={key + 'time container 3' + displayOpenTime}
+              style={_styles.open_time}>{displayOpenTime}</UGText>
       </View>
       <View key={key + 'time sub2 container'}
             style={_styles.fc_container}>

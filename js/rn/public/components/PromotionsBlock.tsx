@@ -9,6 +9,7 @@ import { useDimensions } from '@react-native-community/hooks'
 import { httpClient } from '../network/httpClient'
 import { List } from '../network/Model/PromotionsModel'
 import PushHelper from '../define/PushHelper'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal?: boolean, titleVisible?: boolean }) => {
     const {couponListData,} = useGetHomeInfo(['system_promotions'])
@@ -40,12 +41,12 @@ const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal
                         }
                     })}>
                     <View>
-                        {titleVisible && <Text style={{
+                        {titleVisible && <UGText style={{
                             fontWeight: "bold",
                             fontSize: 18,
                             marginBottom: 5,
                             color: 'black'
-                        }}>{item.title}</Text>}
+                        }}>{item.title}</UGText>}
                         <FastImageAutoHeight resizeMode={"stretch"} style={horizontal && {width: 200, height: 150}}
                                              source={{uri: item.pic}}/>
                     </View>

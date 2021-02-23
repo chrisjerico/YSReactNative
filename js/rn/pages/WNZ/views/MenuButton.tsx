@@ -4,6 +4,7 @@ import Dash from 'react-native-dash'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface MenuProps {
   title: string
@@ -15,7 +16,7 @@ const MenuButton = ({ title, onPress, subTitle, showSubTitle }: MenuProps) => {
   return (
     <>
       <Button containerStyle={styles.menuConatiner} title={title} titleStyle={styles.menuTitle} onPress={onPress} />
-      {showSubTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
+      {showSubTitle && <UGText style={styles.subTitle}>{subTitle}</UGText>}
       <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
     </>
   )

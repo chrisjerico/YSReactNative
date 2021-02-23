@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableWithoutFeedback } from 'react-native'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface Button {
   containerStyle?: ViewStyle | ViewStyle[];
@@ -15,7 +16,7 @@ const Button = ({ containerStyle, disabledContainerStyle, titleStyle, title, num
   return (
     <TouchableWithoutFeedback onPress={disabled ? null : onPress}>
       <View style={disabled ? [styles.disabledContainer, disabledContainerStyle] : [styles.container, containerStyle]}>
-        <Text style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>{title}</Text>
+        <UGText style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>{title}</UGText>
       </View>
     </TouchableWithoutFeedback>
   )

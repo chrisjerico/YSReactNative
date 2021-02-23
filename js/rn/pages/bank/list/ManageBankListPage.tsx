@@ -22,6 +22,7 @@ import { BankConst } from '../const/BankConst'
 import ReloadSlidingVerification from '../../../public/components/tars/ReloadSlidingVerification'
 import NeedNameInputComponent from '../../../public/components/tars/NeedNameInputComponent'
 import WebView from 'react-native-webview'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 银行卡管理
@@ -62,9 +63,9 @@ const ManageBankListPage = ({ navigation, setProps }) => {
    * @param item
    */
   const renderBank = (item: BankInfoParam) => <View>
-    <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
-    <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
-    <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
+    <UGText style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</UGText>
+    <UGText style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</UGText>
+    <UGText style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</UGText>
   </View>
 
   /**
@@ -72,10 +73,10 @@ const ManageBankListPage = ({ navigation, setProps }) => {
    * @param item
    */
   const renderBtc = (item: BankInfoParam) => <View>
-    <Text style={_styles.bank_user_name}>{'币种: ' + item.bankName}</Text>
-    <Text style={_styles.bank_user_name}>{'钱包地址: ' + item.bankCard}</Text>
+    <UGText style={_styles.bank_user_name}>{'币种: ' + item.bankName}</UGText>
+    <UGText style={_styles.bank_user_name}>{'钱包地址: ' + item.bankCard}</UGText>
     {
-      !anyEmpty(item.bankAddr) && <Text style={_styles.bank_user_name}>{'链名称: ' + item.bankAddr}</Text>
+      !anyEmpty(item.bankAddr) && <UGText style={_styles.bank_user_name}>{'链名称: ' + item.bankAddr}</UGText>
     }
   </View>
 
@@ -84,10 +85,10 @@ const ManageBankListPage = ({ navigation, setProps }) => {
    * @param item
    */
   const renderWx = (item: BankInfoParam) => <View>
-    <Text style={_styles.bank_user_name}>{'真实姓名: ' + item.ownerName}</Text>
-    <Text style={_styles.bank_user_name}>{'微信号: ' + item.bankCard}</Text>
+    <UGText style={_styles.bank_user_name}>{'真实姓名: ' + item.ownerName}</UGText>
+    <UGText style={_styles.bank_user_name}>{'微信号: ' + item.bankCard}</UGText>
     {
-      !anyEmpty(item.bankAddr) && <Text style={_styles.bank_user_name}>{'绑定手机号: ' + item.bankAddr}</Text>
+      !anyEmpty(item.bankAddr) && <UGText style={_styles.bank_user_name}>{'绑定手机号: ' + item.bankAddr}</UGText>
     }
   </View>
 
@@ -96,8 +97,8 @@ const ManageBankListPage = ({ navigation, setProps }) => {
    * @param item
    */
   const renderAli = (item: BankInfoParam) => <View>
-    <Text style={_styles.bank_user_name}>{'真实姓名: ' + item.ownerName}</Text>
-    <Text style={_styles.bank_user_name}>{'支付宝账户: ' + item.bankCard}</Text>
+    <UGText style={_styles.bank_user_name}>{'真实姓名: ' + item.ownerName}</UGText>
+    <UGText style={_styles.bank_user_name}>{'支付宝账户: ' + item.bankCard}</UGText>
   </View>
 
   /**
@@ -157,7 +158,7 @@ const ManageBankListPage = ({ navigation, setProps }) => {
   const rightButton = anyEmpty(categoryData) || !showRightButton ?
     null :
     <TouchableWithoutFeedback onPress={addNewAccount}>
-      <Text style={_styles.right_button}>新增</Text>
+      <UGText style={_styles.right_button}>新增</UGText>
     </TouchableWithoutFeedback>
 
   return (
@@ -200,7 +201,7 @@ const ManageBankListPage = ({ navigation, setProps }) => {
                                               <FastImage source={bankIcon}
                                                          resizeMode={'contain'}
                                                          style={_styles.bank_name_icon}/>
-                                              <Text style={_styles.bank_name}>{item.bankName}</Text>
+                                              <UGText style={_styles.bank_name}>{item.bankName}</UGText>
                                               <TouchableWithoutFeedback onPress={clickEdit}>
                                                 <FastImage source={{ uri: Res.edit }}
                                                            style={_styles.bank_name_edit}/>

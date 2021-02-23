@@ -8,6 +8,7 @@ import DateUtil from '../../../public/tools/andrew/DateUtil';
 import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
 import { UGBasePageProps } from '../../base/UGPage';
 import { scale } from "../../../public/tools/Scale";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 interface JDRedEnveloperPage {
   pageSize?: number//每页多少条数据
   pageNumber?: number//当前显示第几页
@@ -15,8 +16,8 @@ interface JDRedEnveloperPage {
   type?: string//红包类型 1-普通红包 2-扫雷红包
   state: {
     showFoot?: number//控制foot， 0：点击重新加载   1：'数据加载中…  2 ：已加载全部数据(空)
-    isRefreshing?: boolean//下拉刷新开始结束 
-    isLastPage?: boolean //是否是最后一页 
+    isRefreshing?: boolean//下拉刷新开始结束
+    isLastPage?: boolean //是否是最后一页
   }
 }
 
@@ -90,7 +91,7 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
 
    /**
    * 下拉刷新
-   * 
+   *
    */
   const onHeaderRefresh = () => {
     v.state.isRefreshing = true
@@ -101,7 +102,7 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
 
    /**
    * 点击（上拉）加载更多数据
-   * 
+   *
    */
   const onFooterRefresh = () => {
     v.pageNumber++
@@ -113,7 +114,7 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
 
    /**
    * 网络请求
-   * 
+   *
    */
   function loadWBData() {
     let params = {
@@ -154,7 +155,7 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
 
    /**
    * 点击刷新
-   * 
+   *
    */
   function onEndReached() {
     console.log('onEndReached');
@@ -170,7 +171,7 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
       console.log('当前页大于或等于总页数，那就是到最后一页了，则返回');
       return;
     }
-    //是否已是下拉刷新 返回     
+    //是否已是下拉刷新 返回
     if (v.state.isRefreshing) {
       console.log('已是下拉刷新 返回  ');
       return;
@@ -182,7 +183,7 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
 
    /**
    * 上拉加载布局
-   * 
+   *
    */
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
@@ -192,9 +193,9 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               点击重新加载
-                </Text>
+                </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -206,9 +207,9 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
         >
           <View style={styles.foot}>
             <ActivityIndicator />
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               正在加载...
-              </Text>
+              </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -219,9 +220,9 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
 
-            </Text>
+            </UGText>
 
           </View>
         </TouchableOpacity>
@@ -232,7 +233,7 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
 
    /**
    * 数据为空展示页面
-   * 
+   *
    */
   const _renderListEmptyComp = () => {
     return (
@@ -243,27 +244,27 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={[{color: Skin1.textColor3,},styles.listEmpty, ]}>暂无更多数据</Text>
+        <UGText style={[{color: Skin1.textColor3,},styles.listEmpty, ]}>暂无更多数据</UGText>
       </View>
     );
   }
 
    /**
    * 渲染列表项
-   * 
+   *
    */
   const _renderItem = ({ index, item }) => {
     return (
       <View style={[styles.viewItem, { backgroundColor: index % 2 ? Skin1.isBlack ? '#707070' : '#F7F8F8' : Skin1.isBlack ? Skin1.CLBgColor : 'white' }]}>
         <View style={[styles.item,]}>
-          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{DateUtil.stampformat(item.createTime, "YYYY-MM-DD")}</Text>
-          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{DateUtil.stampformat(item.createTime, "hh:mm:ss")}</Text>
+          <UGText style={[styles.text, { color: Skin1.textColor1 }]}>{DateUtil.stampformat(item.createTime, "YYYY-MM-DD")}</UGText>
+          <UGText style={[styles.text, { color: Skin1.textColor1 }]}>{DateUtil.stampformat(item.createTime, "hh:mm:ss")}</UGText>
         </View>
         <View style={styles.item}>
-          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{item.operateText}</Text>
+          <UGText style={[styles.text, { color: Skin1.textColor1 }]}>{item.operateText}</UGText>
         </View>
         <View style={styles.item}>
-          <Text style={[styles.text, { color: labelColor(item), }]}>{labelStr(item)}</Text>
+          <UGText style={[styles.text, { color: labelColor(item), }]}>{labelStr(item)}</UGText>
         </View>
       </View>
     );
@@ -273,13 +274,13 @@ const JDRedEnveloperPage = ({ route, setProps, setNavbarProps }: UGBasePageProps
     <View style={styles.container}>
       <View style={[styles.viewItem, { backgroundColor: Skin1.isBlack ? Skin1.textColor4 : '#F7F8F8' }]}>
         <View style={styles.item}>
-          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{'时间'}</Text>
+          <UGText style={[styles.text, { color: Skin1.textColor1 }]}>{'时间'}</UGText>
         </View>
         <View style={styles.item}>
-          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{'类型'}</Text>
+          <UGText style={[styles.text, { color: Skin1.textColor1 }]}>{'类型'}</UGText>
         </View>
         <View style={styles.item}>
-          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{'输赢'}</Text>
+          <UGText style={[styles.text, { color: Skin1.textColor1 }]}>{'输赢'}</UGText>
         </View>
       </View>
 

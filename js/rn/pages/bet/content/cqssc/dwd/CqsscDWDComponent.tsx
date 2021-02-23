@@ -10,6 +10,7 @@ import { PlayData, PlayGroupData } from '../../../../../public/network/Model/lot
 import LotteryEBall from '../../../widget/LotteryEBall'
 import { BALL_CONTENT_HEIGHT } from '../../../const/LotteryConst'
 import { ILotteryRouteParams } from '../../../const/ILotteryRouteParams'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 /**
@@ -45,7 +46,7 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                   item={ballInfo}
                   selectedBalls={selectedBalls}
-                  ballType={{ size: scale(50) }}
+                  ballType={{ size: scale(46) }}
                   ballStyle={{ flexDirection: 'column' }}
                   callback={() => addOrRemoveBall(ballInfo, item?.enable)}/>
 
@@ -55,30 +56,30 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    */
   const renderRowBar = (plays: Array<PlayData>) => <View style={_styles.bar_container}>
     <TouchableOpacity onPress={() => addAndRemoveBallList(plays)}>
-      <Text style={_styles.bar_text}>{'所有'}</Text>
+      <UGText style={_styles.bar_text}>{'所有'}</UGText>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => {
       addAndRemoveBallList(plays?.filter((play) => Number(play?.name) > 4), plays)
     }}>
-      <Text style={_styles.bar_text}>{'大'}</Text>
+      <UGText style={_styles.bar_text}>{'大'}</UGText>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => {
       addAndRemoveBallList(plays?.filter((play) => Number(play?.name) < 5), plays)
     }}>
-      <Text style={_styles.bar_text}>{'小'}</Text>
+      <UGText style={_styles.bar_text}>{'小'}</UGText>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => {
       addAndRemoveBallList(plays?.filter((play) => Number(play?.name) % 2 == 1), plays)
     }}>
-      <Text style={_styles.bar_text}>{'奇'}</Text>
+      <UGText style={_styles.bar_text}>{'奇'}</UGText>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => {
       addAndRemoveBallList(plays?.filter((play) => Number(play?.name) % 2 == 0), plays)
     }}>
-      <Text style={_styles.bar_text}>{'偶'}</Text>
+      <UGText style={_styles.bar_text}>{'偶'}</UGText>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => addAndRemoveBallList(null, plays)}>
-      <Text style={_styles.bar_text}>{'移除'}</Text>
+      <UGText style={_styles.bar_text}>{'移除'}</UGText>
     </TouchableOpacity>
   </View>
 
@@ -92,18 +93,18 @@ const CqsscDWDComponent = ({ playOddData, style }: ILotteryRouteParams) => {
           style={CommStyles.flex}>
       <View key={key + ' sub renderDWD 2=' + groupData?.id + groupData?.alias}
             style={_styles.sub_title_container}>
-        <Text key={key + ' text renderDWD' + groupData?.id}
+        <UGText key={key + ' text renderDWD' + groupData?.id}
               style={[
                 _styles.sub_title_text,
                 { color: Skin1.themeColor },
-              ]}>{groupData?.exPlays[0]?.alias}</Text>
+              ]}>{groupData?.exPlays[0]?.alias}</UGText>
       </View>
 
       {renderRowBar(groupData?.exPlays)}
 
       <View key={key + ' ball renderDWD 3=' + groupData?.id + groupData?.alias}
             style={_styles.ball_parent_container}>
-        {groupData?.exPlays.map((item, index) => renderEBall(groupData, item))}
+        {groupData?.exPlays?.map((item, index) => renderEBall(groupData, item))}
       </View>
     </View>
 

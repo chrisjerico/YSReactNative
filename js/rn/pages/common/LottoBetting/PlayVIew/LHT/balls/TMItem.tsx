@@ -4,6 +4,7 @@ import {Play} from "../../../../../../public/network/Model/PlayOddDataModel"
 import {UGStore} from "../../../../../../redux/store/UGStore"
 import {getHKballColor} from "../../lottoSetting"
 import {BettingReducerActions} from "../../../../../../redux/reducer/BettingReducer"
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const TMItem = ({data, setProps }: { data: Play, setProps?: any}) => {
     const {bettingResult} = UGStore.globalProps.BettingReducer;
@@ -33,9 +34,9 @@ const TMItem = ({data, setProps }: { data: Play, setProps?: any}) => {
                     alignItems: 'center',
                     marginHorizontal: 5
                 }}>
-                    <Text style={{color: bettingResult[data.id] ? "white" : "black"}}>{data.name}</Text>
+                    <UGText style={{color: bettingResult[data.id] ? "white" : "black"}}>{data.name}</UGText>
                 </View>
-                <Text>{data.odds.replace(".0000", "").replace(".00", "").replace("00", "")}</Text>
+                <UGText>{data.odds.replace(".0000", "").replace(".00", "").replace("00", "")}</UGText>
             </View>
         </TouchableWithoutFeedback>
     )

@@ -5,6 +5,7 @@ import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface HomeHeaderProps {
   name: string
@@ -30,9 +31,9 @@ const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', sho
           <>
             <Avatar uri={avatar} size={40} />
             <View style={styles.nameContainer}>
-              <Text style={styles.nameText} numberOfLines={1}>
+              <UGText style={styles.nameText} numberOfLines={1}>
                 {name}
-              </Text>
+              </UGText>
             </View>
             <LinearBadge
               showIcon={false}
@@ -42,7 +43,7 @@ const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', sho
               textStyle={{ color: skinColors.themeColor.六合厅, fontSize: scale(20) }}
               onPress={onPressSignOut}
             />
-            <Text style={styles.text}>{' | '}</Text>
+            <UGText style={styles.text}>{' | '}</UGText>
             <TouchableWithoutFeedback onPress={onPressLogo}>
               <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
             </TouchableWithoutFeedback>
@@ -52,17 +53,17 @@ const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', sho
             <TouchableWithoutFeedback onPress={onPressLogo}>
               <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
             </TouchableWithoutFeedback>
-            <Text style={styles.text}>{' | '}</Text>
+            <UGText style={styles.text}>{' | '}</UGText>
             <TouchableWithoutFeedback onPress={onPressSignIn}>
-              <Text style={styles.text}>{'登录'}</Text>
+              <UGText style={styles.text}>{'登录'}</UGText>
             </TouchableWithoutFeedback>
-            <Text style={styles.text}>{' | '}</Text>
+            <UGText style={styles.text}>{' | '}</UGText>
             <TouchableWithoutFeedback onPress={onPressSignUp}>
-              <Text style={styles.text}>{'注册'}</Text>
+              <UGText style={styles.text}>{'注册'}</UGText>
             </TouchableWithoutFeedback>
-            <Text style={styles.text}>{' | '}</Text>
+            <UGText style={styles.text}>{' | '}</UGText>
             <TouchableWithoutFeedback onPress={onPressTryPlay}>
-              <Text style={styles.text}>{'试玩'}</Text>
+              <UGText style={styles.text}>{'试玩'}</UGText>
             </TouchableWithoutFeedback>
           </>
         )}

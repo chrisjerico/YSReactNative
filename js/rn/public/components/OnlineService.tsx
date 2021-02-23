@@ -15,6 +15,7 @@ import { scale } from '../tools/Scale'
 import PushHelper, { UGLinkPositionType } from '../define/PushHelper'
 import { PageName } from '../navigation/Navigation'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 const levelArray = [
@@ -119,7 +120,7 @@ export const OnlineService = () => {
             <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
               <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
             </TouchableOpacity>
-            <Text style={{
+            <UGText style={{
               alignSelf: 'center',
               paddingTop: 15,
               paddingBottom: 15,
@@ -127,7 +128,7 @@ export const OnlineService = () => {
               fontSize: 20,
               color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
 
-            }}>{title || '在线客服'}</Text>
+            }}>{title?.length > 10 ? '在线客服' : title}</UGText>
             <TouchableOpacity style={{ width: 30, position: 'absolute', left: AppDefine.width - 50 }} onPress={
               () => {
                 capitalController?.toggle();

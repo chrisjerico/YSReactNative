@@ -36,7 +36,8 @@ import { CapitalConst } from '../../../../const/CapitalConst'
 import CapitalContext from '../../../CapitalContext'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
-import { clearAllHtml } from '../../../../../../public/tools/ui/UIUtil'
+import { clearAllHtml } from '../../../../../../public/tools/StringUtil'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据
@@ -98,7 +99,7 @@ const TransferPayPage = ({ navigation, route }) => {
     {
       !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
-          <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
+          <UGText style={_styles.choose_channel_item_text}>{item + '元'}</UGText>
         </View>
       </TouchableOpacity>)
     }
@@ -109,7 +110,7 @@ const TransferPayPage = ({ navigation, route }) => {
    */
   const renderSelectedChannelItem = (title: string,
                                      copyText: string) => <View style={_styles.choose_result_title_item}>
-    <Text style={_styles.choose_result_title}>{title + copyText}</Text>
+    <UGText style={_styles.choose_result_title}>{title + copyText}</UGText>
     <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
         case 'ios':
@@ -121,7 +122,7 @@ const TransferPayPage = ({ navigation, route }) => {
       }
       Toast('复制成功')
     }}>
-      <Text style={_styles.choose_result_copy}>复制</Text>
+      <UGText style={_styles.choose_result_copy}>复制</UGText>
     </TouchableOpacity>
   </View>
 
@@ -133,10 +134,10 @@ const TransferPayPage = ({ navigation, route }) => {
     let nameHint: ITransName = transName(payData, payChannelBean)
 
     return <View>
-      <Text style={_styles.choose_result_hint}>{payBigData?.depositPrompt}</Text>
+      <UGText style={_styles.choose_result_hint}>{payBigData?.depositPrompt}</UGText>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
-          <Text style={_styles.choose_result_title}>{nameHint?.bank_name + nameHint?.bank_name_des}</Text>
+          <UGText style={_styles.choose_result_title}>{nameHint?.bank_name + nameHint?.bank_name_des}</UGText>
         </View>
         {
           [
@@ -171,7 +172,7 @@ const TransferPayPage = ({ navigation, route }) => {
               <Icon size={scale(32)} name={'check'}/> :
               <Icon size={scale(32)} name={'circle-o'}/>
           }
-          <Text style={_styles.select_channel_text}>{item?.payeeName}</Text>
+          <UGText style={_styles.select_channel_text}>{item?.payeeName}</UGText>
         </View>
       </TouchableOpacity>)
     }
@@ -189,7 +190,7 @@ const TransferPayPage = ({ navigation, route }) => {
                  onChangeText={(text) => setInputName(text)}
                  placeholder={nameHint?.trans_hint}/>
       <View style={_styles.date_info_container}>
-        <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+        <UGText style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</UGText>
         <Icon size={scale(20)} name={'calendar'}/>
       </View>
       <TextInput style={_styles.input_info}
@@ -212,9 +213,9 @@ const TransferPayPage = ({ navigation, route }) => {
           ]
         }
 
-        <Text style={_styles.select_channel_hint}>
+        <UGText style={_styles.select_channel_hint}>
           {clearAllHtml(payData.prompt)}
-        </Text>
+        </UGText>
 
         {
           renderInputInfo()

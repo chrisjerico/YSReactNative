@@ -19,6 +19,7 @@ import { UGUserCenterType } from "../../../../redux/model/全局/UGSysConfModel"
 import { UGStore } from "../../../../redux/store/UGStore"
 import { img_assets, img_images } from "../../../../Res/icon"
 import { FastImagePlaceholder, ImagePlaceholder } from "../../tools/ImagePlaceholder"
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc540
 
@@ -84,9 +85,9 @@ export const HomeRightMenuCP = (props: HomeRightMenuProps) => {
       return (
         <View style={{ height: '100%', backgroundColor: '#fff' }}>
           <LinearGradient colors={skin1.menuHeadViewColor} start={{ x: 0, y: 0 }} end={{ x: 2, y: 0 }} style={{ height: sc(260), paddingLeft: sc(10) }}>
-            <Text style={{ marginTop: sc(115), color: 'white', textAlign: 'center', fontSize: sc(24.5) }}>欢迎您！</Text>
-            <Text style={{ marginTop: sc(42), color: 'white', textAlign: 'center', fontSize: sc(21.5) }}>{usr}</Text>
-            <Text style={{ marginTop: sc(8), color: 'white', textAlign: 'center', fontSize: sc(21.5) }}>{'¥' + balance}</Text>
+            <UGText style={{ marginTop: sc(115), color: 'white', textAlign: 'center', fontSize: sc(24.5) }}>欢迎您！</UGText>
+            <UGText style={{ marginTop: sc(42), color: 'white', textAlign: 'center', fontSize: sc(21.5) }}>{usr}</UGText>
+            <UGText style={{ marginTop: sc(8), color: 'white', textAlign: 'center', fontSize: sc(21.5) }}>{'¥' + balance}</UGText>
             <Button style={{ marginTop: -sc(44), marginLeft: sc(175) }} buttonStyle={{ backgroundColor: 'transparent' }} onPress={refreshBalance} icon={(
               <Animated.View style={{ transform: [{ rotateZ: v.rotateZ }] }}>
                 <MaterialCommunityIcons name={'refresh'} size={sc(42)} color={'white'} />
@@ -130,7 +131,7 @@ export const HomeRightMenuCP = (props: HomeRightMenuProps) => {
                 PushHelper.pushLinkPositionType(subId)
               }}>
                 <FastImagePlaceholder source={{ uri: icon ?? logo }} style={{ marginLeft: sc(20), width: sc(37), aspectRatio: 1 }} />
-                <Text style={{ marginLeft: sc(15), flex: 1, fontSize: sc(20) }}>{text}</Text>
+                <UGText style={{ marginLeft: sc(15), flex: 1, fontSize: sc(20) }}>{text}</UGText>
                 {isHot ? <FastImage source={{ uri: img_images('hot2x') }} style={{ height: '100%', aspectRatio: 1 }} /> : <Entypo name='chevron-thin-right' color={UGColor.LineColor2} size={sc(29)} style={{ marginRight: sc(10) }} />}
                 <View style={{ position: 'absolute', top: sc(63), marginLeft: sc(70), width: '100%', height: 1, backgroundColor: '#e9e9e9' }} />
               </TouchableOpacity>

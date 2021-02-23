@@ -45,7 +45,7 @@ export const DoyButton2 = (p: ButtonProps) => {
 }
 
 
-
+// 复选框☑️
 interface DoyCheckboxProps {
   selected?: boolean
   onClick?: (selected: boolean) => boolean
@@ -128,7 +128,7 @@ const DoyText = (p: DoyTextProps) => {
   bold2 && (fontWeight = '600')
   bold3 && (fontWeight = '700')
 
-  let color = textColor1
+  let color = textColor2
   white && (color = '#fff')
   gray2 && (color = textColor3)
   gray1 && (color = textColor2)
@@ -165,5 +165,6 @@ export const DoyText28 = (p: DoyTextProps) => <DoyText {...p} size28 />
 export const DoyText30 = (p: DoyTextProps) => <DoyText {...p} size30 />
 export const DoyText35 = (p: DoyTextProps) => <DoyText {...p} size35 />
 export const DoyText40 = (p: DoyTextProps) => <DoyText {...p} size40 />
+export const UGText = (p: DoyTextProps) => <DoyText {...p} />
 
 

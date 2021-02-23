@@ -85,6 +85,7 @@ export enum UGColor {
   transparent2 = '#ffffff44',
   transparent3 = '#000000aa',
   transparent4 = '#000000cc',
+  transparent5 = '#ffffff99',
 
   // 禁用
   disableColor1 = '#EFF3F8',

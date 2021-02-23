@@ -3,6 +3,7 @@ import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface RankList {
   username: string;
@@ -61,22 +62,22 @@ const AnimatedRankComponent = ({
       <View style={containerStyle}>
         <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
           <FontAwesome name={'bar-chart'} size={scale(20)} />
-          <Text style={styles.iconText}>
+          <UGText style={styles.iconText}>
             {type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}
-          </Text>
+          </UGText>
         </View>
         <View style={[styles.contentContainer, contentContainerStyle]}>
           <View style={[styles.titleConatiner, titleConatinerStyle]}>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{'玩家'}</Text>
+              <UGText style={styles.title}>{'玩家'}</UGText>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{'游戏'}</Text>
+              <UGText style={styles.title}>{'游戏'}</UGText>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>
+              <UGText style={styles.title}>
                 {type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}
-              </Text>
+              </UGText>
             </View>
           </View>
           <View style={[styles.listContainer, { height: listHeight }]}>
@@ -95,19 +96,19 @@ const AnimatedRankComponent = ({
                 return (
                   <View key={index} style={styles.itemContainer}>
                     <View style={styles.itemTextContainer}>
-                      <Text style={styles.item} numberOfLines={1}>
+                      <UGText style={styles.item} numberOfLines={1}>
                         {username}
-                      </Text>
+                      </UGText>
                     </View>
                     <View style={styles.itemTextContainer}>
-                      <Text style={styles.item} numberOfLines={1}>
+                      <UGText style={styles.item} numberOfLines={1}>
                         {type}
-                      </Text>
+                      </UGText>
                     </View>
                     <View style={styles.itemTextContainer}>
-                      <Text style={styles.item} numberOfLines={1}>
+                      <UGText style={styles.item} numberOfLines={1}>
                         {coin}
-                      </Text>
+                      </UGText>
                     </View>
                   </View>
                 )

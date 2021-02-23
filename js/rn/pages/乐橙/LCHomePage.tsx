@@ -30,6 +30,7 @@ import MarqueePopupView from '../common/MarqueePopupView'
 import NavBlock from './component/homePage/NavBlock'
 import Carousel from 'react-native-banner-carousel'
 import Activitys from '../../public/views/tars/Activitys'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 const LCHomePage = ({ setProps }) => {
@@ -148,13 +149,13 @@ const LCHomePage = ({ setProps }) => {
             <TouchableWithoutFeedback onPress={() => {
               push(PageName.PromotionListPage)
             }}>
-              <Text style={{ fontSize: 18, color: '#333333', lineHeight: 22, marginVertical: 10 }}>优惠活动</Text>
+              <UGText style={{ fontSize: 18, color: '#333333', lineHeight: 22, marginVertical: 10 }}>优惠活动</UGText>
             </TouchableWithoutFeedback>
             <View style={{ flex: 1 }} />
             <TouchableWithoutFeedback onPress={() => {
               push(PageName.PromotionListPage)
             }}>
-              <Text style={{ fontSize: 18, color: '#333333', textAlign: 'center' }}>查看更多>></Text>
+              <UGText style={{ fontSize: 18, color: '#333333', textAlign: 'center' }}>{'查看更多>>'}</UGText>
             </TouchableWithoutFeedback>
           </View>
           <View style={{ backgroundColor: 'white', marginHorizontal: 10, borderRadius: 16 }}>
@@ -165,12 +166,12 @@ const LCHomePage = ({ setProps }) => {
         {rankingListSwitch === 2 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
-              <Text style={{
+              <UGText style={{
                 fontSize: 16,
                 lineHeight: 22,
                 color: '#3c3c3c',
                 marginVertical: 10,
-              }}>投注排行榜</Text>
+              }}>投注排行榜</UGText>
             </View>
             <RankListCP titleVisible={false} timing={5000} backgroundColor={'white'} textColor={'black'}
                         width={Dimensions.get('screen').width - 24} ranks={rankLists} />
@@ -178,21 +179,21 @@ const LCHomePage = ({ setProps }) => {
           rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
-              <Text style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</Text>
+              <UGText style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</UGText>
             </View>
             <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
                         width={Dimensions.get('screen').width - 24} ranks={rankLists} />
           </SafeAreaView> : <></>}
         {/*<View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>*/}
-        {/*  <Text onPress={() => {*/}
+        {/*  <UGText onPress={() => {*/}
         {/*    PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')*/}
-        {/*  }} style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }}>💻 电 脑 版</Text>*/}
-        {/*  <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {*/}
+        {/*  }} style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }}>💻 电 脑 版</UGText>*/}
+        {/*  <UGText style={{ color: 'black', textAlign: 'center' }} onPress={() => {*/}
         {/*    push(PageName.PromotionListPage)*/}
-        {/*  }}>🎁优惠活动</Text>*/}
+        {/*  }}>🎁优惠活动</UGText>*/}
         {/*</View>*/}
-        {/*<Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>*/}
-        {/*<Text style={{ color: '#000000', textAlign: 'center' }}>{'VERSION : 13'}</Text>*/}
+        {/*<UGText style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</UGText>*/}
+        {/*<UGText style={{ color: '#000000', textAlign: 'center' }}>{'VERSION : 13'}</UGText>*/}
         <View style={{ height: 100 }} />
       </ScrollView>
       <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag}
@@ -258,7 +259,7 @@ const Banner = ({ bannerData, onlineNum = 0, showOnlineCount = true, customHeigh
           borderRadius: 16,
           padding: 5,
         }}>
-          <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
+          <UGText style={{ color: 'white' }}>当前在线:{onlineNum}</UGText>
         </View>}
       </View>
     )

@@ -26,6 +26,7 @@ import APIRouter from '../../public/network/APIRouter';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { img_assets } from '../../Res/icon';
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface XBJRegisterVars {
@@ -177,10 +178,10 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
             jumpTo(PageName.XBJLoginPage);
           }}>
           <FastImage source={{ uri: img_assets('entry_login_toggle_btn') }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
-          <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>返回登录</Text>
+          <UGText style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>返回登录</UGText>
         </TouchableOpacity>
         <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.3)', padding: 24 }}>
-          <Text style={{ fontSize: 20, fontWeight: '500', color: 'white', textAlign: 'center' }}>注册</Text>
+          <UGText style={{ fontSize: 20, fontWeight: '500', color: 'white', textAlign: 'center' }}>注册</UGText>
           <View
             style={{
               marginTop: agentRegbutton == '1' ? 20 : 0,

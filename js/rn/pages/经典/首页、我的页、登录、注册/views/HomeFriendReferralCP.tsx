@@ -12,6 +12,7 @@ import { hideLoading, showLoading } from "../../../../public/widget/UGLoadingCP"
 import UGUserModel from "../../../../redux/model/全局/UGUserModel"
 import { UGStore } from "../../../../redux/store/UGStore"
 import { img_assets } from "../../../../Res/icon"
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const sc = sc540
 interface HomeFriendReferralProps {
@@ -39,7 +40,7 @@ export const HomeFriendReferralCP = ({ visible, onPress, containerStyle }: HomeF
       })
     })}>
       <FastImage source={{ uri: img_assets('icon-icon3-b') }} style={{ marginLeft: sc(15), height: '65%', aspectRatio: 1 }} />
-      <Text style={{ marginLeft: sc(5), fontSize: sc(21) }}>推荐好友赚取丰厚的佣金，好运齐分享哦！</Text>
+      <UGText style={{ marginLeft: sc(5), fontSize: sc(21) }}>推荐好友赚取丰厚的佣金，好运齐分享哦！</UGText>
     </TouchableOpacity >
   )
 }

@@ -14,6 +14,7 @@ import PushHelper from '../../../../public/define/PushHelper'
 import UseHallGameList from './UseHallGameList'
 import { BallStyles, BallType, LCode, lotteryBallStyle } from '../../../bet/const/LotteryConst'
 import { doubleDigit } from '../../../../public/tools/StringUtil'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -117,7 +118,7 @@ const HallGameListComponent = ({
                                                   ballNumber={item}/>)
               }
               {
-                lastBall && <Text style={_styles.text_content_plus}>{'+'}</Text>
+                lastBall && <UGText style={_styles.text_content_plus}>{'+'}</UGText>
               }
               {
                 lastBall && <LotteryBall type={ballStyle}
@@ -178,16 +179,16 @@ const HallGameListComponent = ({
                      resizeMode={'contain'}
                      source={{ uri: item.pic ?? item.logo }}/>
           <View style={CommStyles.flex}>
-            <Text style={_styles.text_content_title}>{item.title}</Text>
+            <UGText style={_styles.text_content_title}>{item.title}</UGText>
             {renderBalls(item?.parentGameType, item?.preNum)}
             {
               <View style={_styles.date_container}>
                 {
                   anyEmpty(item?.preDisplayNumber) ? null :
-                    <Text style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</Text>
+                    <UGText style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</UGText>
                 }
                 {
-                  anyEmpty(item?.preOpenTime) ? null : <Text style={_styles.text_content_date}>{item.preOpenTime}</Text>
+                  anyEmpty(item?.preOpenTime) ? null : <UGText style={_styles.text_content_date}>{item.preOpenTime}</UGText>
                 }
               </View>
             }

@@ -7,6 +7,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import { scale } from '../../tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface BottomLogo {
   webName: string;
@@ -29,25 +30,25 @@ const BottomLogo = ({
     <View style={[styles.containerStyle, containerStyle]}>
       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
         <TouchableWithoutFeedback onPress={onPressComputer}>
-          <Text
+          <UGText
             style={{
               color: '#000000',
             }}
           >
             {'💻电脑版'}
-          </Text>
+          </UGText>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={onPressPromotion}>
-          <Text
+          <UGText
             style={{
               color: '#000000',
             }}
           >
             {'🎁优惠活动'}
-          </Text>
+          </UGText>
         </TouchableWithoutFeedback>
       </View>
-      <Text
+      <UGText
         style={{
           color: '#000000',
           textAlign: 'center',
@@ -55,11 +56,11 @@ const BottomLogo = ({
         }}
       >
         {'COPYRIGHT © ' + webName + 'RESERVED'}
-      </Text>
+      </UGText>
       {debug ? (
-        <Text style={{ color: '#000000', textAlign: 'center' }}>
+        <UGText style={{ color: '#000000', textAlign: 'center' }}>
           {'VERSION : ' + version}
-        </Text>
+        </UGText>
       ) : null}
     </View>
   )

@@ -5,6 +5,7 @@ import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanc
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ProfileBlockProps {
   profileButtons: any[]
@@ -45,9 +46,9 @@ const ProfileBlock = ({
           <View style={{ paddingLeft: scale(18) }}>
             <View style={styles.nameTextContainer}>
               <View style={{ maxWidth: scale(150) }}>
-                <Text style={styles.nameText} numberOfLines={1}>
+                <UGText style={styles.nameText} numberOfLines={1}>
                   {name}
-                </Text>
+                </UGText>
               </View>
               <LinearBadge
                 title={level}

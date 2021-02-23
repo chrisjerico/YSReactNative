@@ -12,6 +12,7 @@ import { syncUserInfo } from '../../../../public/tools/user/UserTools'
 import { GameTab } from '../../const/LotteryConst'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { chatMenuArray, currentChatRoomName } from '../../board/tools/chat/ChatTools'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 顶部功能区域 标题栏，游戏聊天切换 等等
@@ -42,9 +43,9 @@ const TopAreaComponent = () => {
               color={Skin1.navBarTitleColor}/>
       </View>
     </TouchableWithoutFeedback>
-    <Text key={'renderTopBar title' + playOddDetailData?.game?.title}
+    <UGText key={'renderTopBar title' + playOddDetailData?.game?.title}
           style={[_styles.top_game_name,
-            { color: Skin1.navBarTitleColor }]}>{playOddDetailData?.game?.title}</Text>
+            { color: Skin1.navBarTitleColor }]}>{playOddDetailData?.game?.title}</UGText>
     <Icon key={'renderTopBar down'}
           size={scale(28)}
           name={'caret-down'}
@@ -52,9 +53,9 @@ const TopAreaComponent = () => {
     <View key={'renderTopBar space'}
           style={CommStyles.flex}/>
     <TouchableWithoutFeedback onPress={() => syncUserInfo(false)}>
-      <Text key={'renderTopBar money' + userInfo?.balance}
+      <UGText key={'renderTopBar money' + userInfo?.balance}
             style={[_styles.top_money,
-              { color: Skin1.navBarTitleColor }]}>{!dicNull(userInfo) && userInfo?.balance}</Text>
+              { color: Skin1.navBarTitleColor }]}>{!dicNull(userInfo) && userInfo?.balance}</UGText>
     </TouchableWithoutFeedback>
     <TouchableWithoutFeedback onPress={() => syncUserInfo(false)}>
       <Icon key={'renderTopBar refresh'}
@@ -93,8 +94,8 @@ const TopAreaComponent = () => {
               _styles.game_tab,
               _styles.game_tab_left,
               gameTabIndex == GameTab.LOTTERY ? { backgroundColor: UGColor.transparent2 } : null]}>
-        <Text key={'renderGameTab 投注区'}
-              style={_styles.tab_text}>{'投注区'}</Text>
+        <UGText key={'renderGameTab 投注区'}
+              style={_styles.tab_text}>{'投注区'}</UGText>
       </View>
     </TouchableWithoutFeedback>
     <TouchableWithoutFeedback key={'renderGameTab right'}
@@ -112,8 +113,8 @@ const TopAreaComponent = () => {
               _styles.game_tab,
               _styles.game_tab_right,
               gameTabIndex == GameTab.CHAT ? { backgroundColor: UGColor.transparent2 } : null]}>
-        <Text key={'renderGameTab 主房间'}
-              style={_styles.tab_text}>{currentChatRoomName()}</Text>
+        <UGText key={'renderGameTab 主房间'}
+              style={_styles.tab_text}>{currentChatRoomName()}</UGText>
       </View>
     </TouchableWithoutFeedback>
 

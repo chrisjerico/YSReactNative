@@ -6,6 +6,7 @@ import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
 import { deleteHtml } from '../../tools/StringUtil'
 import { ugLog } from '../../tools/UgLog'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface TabComponentProps {
   tabGames: TabGame[]
@@ -118,7 +119,7 @@ const TabComponent = ({
     subTypeHeights: {},
     currentIndex: 0,
   })
- 
+
   function getTitleStr() {
     let titles = '';
     for (let index = 0; index < tabGames.length; index++) {
@@ -249,7 +250,7 @@ const TabComponent = ({
                             width:   getSJTabWidth(title) ,
                           },
                         ]}>
-                        <Text
+                        <UGText
                           numberOfLines={1}
                           // adjustsFontSizeToFit={true}
                           style={[
@@ -262,7 +263,7 @@ const TabComponent = ({
                             },
                           ]}>
                           {title}
-                        </Text>
+                        </UGText>
                         {showIndicator && (
                           <View
                             style={[

@@ -19,6 +19,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import { goToUserCenterType } from '../../public/tools/tars'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image, img_images } = useHtml5Image(UGImageHost.t132f)
 
@@ -71,12 +72,12 @@ const KSMinePage = () => {
       >
         <LinearGradient colors={['#eb5d4d', '#fb2464']} style={{ borderRadius: scale(10), width: '100%', aspectRatio: 2, paddingHorizontal: scale(20) }}>
           <View style={{ flex: 1, justifyContent: 'center' }}>
-            <Text style={{ color: '#ffffff', fontSize: scale(30) }}>{usr}</Text>
+            <UGText style={{ color: '#ffffff', fontSize: scale(30) }}>{usr}</UGText>
           </View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <FastImage source={{ uri: getHtml5Image(22, 'touxiang') }} style={{ height: '50%', aspectRatio: 1 }} />
-              <Text style={{ color: '#ffffff', marginLeft: scale(20), fontSize: scale(25) }}>{curLevelGrade}</Text>
+              <UGText style={{ color: '#ffffff', marginLeft: scale(20), fontSize: scale(25) }}>{curLevelGrade}</UGText>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
               <TouchableWithoutFeedback onPress={goToUserCenterType.任务中心}>
@@ -108,7 +109,7 @@ const KSMinePage = () => {
           </View>
         </LinearGradient>
         <View style={{ width: '100%', aspectRatio: 4, justifyContent: 'space-evenly', paddingLeft: scale(20) }}>
-          <Text style={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}>{'总资产'}</Text>
+          <UGText style={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}>{'总资产'}</UGText>
           <ReLoadBalanceComponent
             title={'¥ '}
             titleStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}

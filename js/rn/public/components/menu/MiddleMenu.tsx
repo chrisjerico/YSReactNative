@@ -11,6 +11,7 @@ import { getBankIcon } from '../../../pages/bank/list/UseManageBankList'
 import FastImage from 'react-native-fast-image'
 import CommStyles from '../../../pages/base/CommStyles'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface IMiddleMenuItem {
@@ -86,11 +87,11 @@ const MiddleMenu = ({ curId, menuTitle, showMenu = false, menu, onMenuClick, onC
           { height: (arrayLength(menu) < 12 ? arrayLength(menu) : 11) * ITEM_HEIGHT },
         ]}>
           {
-            !anyEmpty(menuTitle) && <Text numberOfLines={1}
+            !anyEmpty(menuTitle) && <UGText numberOfLines={1}
                                           style={[
                                             _styles.menu_title,
                                             { color: Skin1.themeColor },
-                                          ]}>{menuTitle}</Text>
+                                          ]}>{menuTitle}</UGText>
           }
           <ScrollView style={_styles.sv_container}
                       showsVerticalScrollIndicator={false}
@@ -101,16 +102,16 @@ const MiddleMenu = ({ curId, menuTitle, showMenu = false, menu, onMenuClick, onC
                   <View style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
                     {renderIcon(item)}
                     <View style={_styles.item_sub_content}>
-                      <Text numberOfLines={1}
+                      <UGText numberOfLines={1}
                             style={[
                               _styles.item_name,
                               item?.id == curId?.toString() ? { color: `${Skin1.themeColor}ee` } : null,
-                            ]}>{item.title}</Text>
+                            ]}>{item.title}</UGText>
                       {
-                        !anyEmpty(item.subTitle) && <Text numberOfLines={1}
+                        !anyEmpty(item.subTitle) && <UGText numberOfLines={1}
                                                           style={[_styles.item_sub_name, { color: Skin1.themeColor }]}>
                           {'( ' + item.subTitle + ' )'}
-                        </Text>
+                        </UGText>
                       }
                     </View>
                   </View>

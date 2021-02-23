@@ -12,6 +12,7 @@ import AppDefine from '../../define/AppDefine'
 import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
 import { deleteHtml } from '../../tools/StringUtil'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface TabComponentProps {
   tabGames: TabGame[];
@@ -220,7 +221,7 @@ const TabComponent = ({
                           alignItems: 'center',
                         }}
                       >
-                        <Text
+                        <UGText
                           style={[
                             styles.tabText,
                             tabTextStyle,
@@ -229,7 +230,7 @@ const TabComponent = ({
                           numberOfLines={1}
                         >
                           {route?.title}
-                        </Text>
+                        </UGText>
                         {focused && (
                           <View
                             style={[

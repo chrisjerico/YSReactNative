@@ -2,6 +2,7 @@ import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-n
 import React from 'react'
 import { scale } from '../../../tools/Scale'
 import { UGColor } from '../../../theme/UGThemeColor'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IERect {
   title?: string, //名字
@@ -30,10 +31,10 @@ const ERect = ({
             _styles.container,
             containerStyle
           ]}>
-      <Text key={key + 'title'}
-            style={[_styles.title_text, titleStyle]}>{title}</Text>
-      <Text key={key + 'odds'}
-            style={[_styles.odds_text, oddsStyle]}>{odds}</Text>
+      <UGText key={key + 'title'}
+            style={[_styles.title_text, titleStyle]}>{title}</UGText>
+      <UGText key={key + 'odds'}
+            style={[_styles.odds_text, oddsStyle]}>{odds}</UGText>
     </View>
   )
 }

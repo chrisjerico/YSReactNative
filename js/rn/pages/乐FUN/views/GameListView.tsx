@@ -15,6 +15,7 @@ import {useEffect, useState} from "react";
 import {useDimensions} from "@react-native-community/hooks";
 import {PushHomeGame} from "../../../public/models/Interface";
 import { skinColors } from "../../../public/theme/const/UGSkinColor";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 // import {ImageButton} from "../../../../乐橙/component/ImageButton";
 // import {fillArray} from "../../../utils/fillArray";
 // import {List} from "../../../../../public/network/Model/HomeGamesModel";
@@ -180,9 +181,9 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
                        resizeMode={'stretch'}
                        source={{uri: item.icon}}/>
             <View style={CommStyles.flex}>
-              <Text style={_styles.list_title}>
+              <UGText style={_styles.list_title}>
                 {anyEmpty(item?.name) ? item?.title : item?.name}
-              </Text>
+              </UGText>
             </View>
             <AntDesign
               name={anyEmpty(item?.subType) ? 'right' : 'appstore1'}
@@ -213,7 +214,7 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
                                 }}>
         <View style={[_styles.sub_item_container, {width: width / 3}]}>
           <View style={_styles.sub_item}>
-            <Text style={_styles.sub_title}>{anyEmpty(item?.name) ? item?.title : item?.name}</Text>
+            <UGText style={_styles.sub_title}>{anyEmpty(item?.name) ? item?.title : item?.name}</UGText>
           </View>
         </View>
       </TouchableWithoutFeedback>

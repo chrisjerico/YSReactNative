@@ -9,6 +9,8 @@ import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 import { IBetLotteryParams } from '../../public/network/it/bet/IBetLotteryParams'
 import { chatMenuArray } from './board/tools/chat/ChatTools'
 import { Share2ChatStatus } from '../../public/network/Model/chat/ShareChatRoomModel'
+import { specialPlay } from './util/LotteryUtil'
+import { currentPlayOddData } from './util/select/ParseSelectedUtil'
 
 /**
  * 彩票下注
@@ -55,7 +57,8 @@ const UseBetLottery = () => {
    * @param betData
    */
   const showShareRoom = (betData?: LotteryResultData) => {
-    if (systemInfo?.chatRoomSwitch && userInfo?.chatShareBet == 1 && Number(betData?.betParams?.totalMoney) >= Number(systemInfo?.chatShareBetMinAmount)) {
+    if (systemInfo?.chatRoomSwitch && userInfo?.chatShareBet == 1 && Number(betData?.betParams?.totalMoney) >= Number(systemInfo?.chatShareBetMinAmount)
+      && !specialPlay(playOddDetailData?.game?.gameType, currentPlayOddData()?.pageData?.groupTri)) {
       UGStore.dispatch({
         type: 'reset',
         chatArray: chatMenuArray(),

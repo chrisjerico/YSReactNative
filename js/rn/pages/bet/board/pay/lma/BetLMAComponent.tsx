@@ -6,6 +6,7 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import * as React from 'react'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import { BET_ITEM_HEIGHT, BET_ITEM_WIDTH } from '../PayBoardComponent'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IBetLMAComponentParams {
   lotteryCode?: string
@@ -38,10 +39,10 @@ const BetLMAComponent = ({
   const play0 = groupData?.plays[0]
   return (<View key={play0?.id + play0?.name}
                 style={_styles.item_container}>
-    <Text style={_styles.item_title}
+    <UGText style={_styles.item_title}
           numberOfLines={2}>{
       `[ ${groupData?.alias} - ${des} ]`
-    }</Text>
+    }</UGText>
     <TextInput defaultValue={averageMoney?.toString()}
                onChangeText={text => onChangeText(text, play0)}
                keyboardType={'numeric'}

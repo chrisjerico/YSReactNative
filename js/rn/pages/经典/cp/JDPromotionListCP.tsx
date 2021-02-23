@@ -11,6 +11,7 @@ import AppDefine from '../../../public/define/AppDefine';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IProps {
   list: Array<UGPromoteModel>;
@@ -128,7 +129,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             }
 
           }}>
-          {pm.title?.length > 0 && <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 5, color: Skin1.textColor1, fontSize: 16, fontWeight: '500' }}>{pm.title}</Text>}
+          {pm.title?.length > 0 && <UGText style={{ marginTop: 10, marginBottom: 5, marginLeft: 5, color: Skin1.textColor1, fontSize: 16, fontWeight: '500' }}>{pm.title}</UGText>}
           <FastImage
             style={{ height: pm.picHeight ?? 100 }}
             source={{ uri: pm.pic }}
@@ -184,7 +185,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
   render() {
     if (!this.list.length) {
       return (
-        <Text style={{ marginTop: 50, textAlign: 'center', color: 'white' }}>暂无</Text>
+        <UGText style={{ marginTop: 50, textAlign: 'center', color: 'white' }}>暂无</UGText>
       );
     }
     if (this.style1 == '外边框') {

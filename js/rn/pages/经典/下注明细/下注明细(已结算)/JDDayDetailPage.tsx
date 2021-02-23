@@ -15,6 +15,7 @@ import { GameHistorylistBean, GameHistoryModel } from '../../../../public/networ
 import APIRouter from '../../../../public/network/APIRouter'
 import { UGBetsRecordListModel, UGBetsRecordModel } from '../../Model/UGBetsRecordModel'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDDayDetailPage {
@@ -29,8 +30,8 @@ interface JDDayDetailPage {
   items?: Array<UGBetsRecordModel>//界面数据
   state: {
     showFoot?: number//控制foot， 0：点击重新加载   1：'数据加载中…  2 ：已加载全部数据(空)
-    isRefreshing?: boolean//下拉刷新开始结束 
-    isLastPage?: boolean //是否是最后一页 
+    isRefreshing?: boolean//下拉刷新开始结束
+    isLastPage?: boolean //是否是最后一页
   }
 }
 
@@ -100,7 +101,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   /**
    * 下拉刷新
-   * 
+   *
    */
   const onHeaderRefresh = () => {
     v.state.isRefreshing = true
@@ -111,7 +112,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   /**
 * 点击（上拉）加载更多数据
-* 
+*
 */
   const onFooterRefresh = () => {
     v.pageNumber++
@@ -123,7 +124,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   /**
 * 点击刷新
-* 
+*
 */
   function onEndReached() {
     console.log('onEndReached');
@@ -139,7 +140,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
       console.log('当前页大于或等于总页数，那就是到最后一页了，则返回');
       return;
     }
-    //是否已是下拉刷新 返回     
+    //是否已是下拉刷新 返回
     if (v.state.isRefreshing) {
       console.log('已是下拉刷新 返回  ');
       return;
@@ -150,7 +151,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   /**
    * 根据数据是数组还是字典返回数据
-   * 
+   *
    */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -162,7 +163,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   /**
  * 获取注单列表数据
- * 
+ *
  */
   function loadWBData() {
 
@@ -171,12 +172,12 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
     //  APIRouter.ticket_history_args('1','20','lottery',date,date,gameId,).then(({ data: res }) => {
     //   ugLog('获取注單數據=======', res)
     //   if (res?.code == 0) {
-      
+
     //   } else {
-       
+
     //   }
     // }).finally(() => {
-    
+
     // })
 
 
@@ -222,7 +223,7 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   /**
   * 数据为空展示页面
-  * 
+  *
   */
   const _renderListEmptyComp = () => {
     return (
@@ -233,14 +234,14 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={[{ color: Skin1.textColor3, }, _styles.listEmpty,]}>暂无更多数据</Text>
+        <UGText style={[{ color: Skin1.textColor3, }, _styles.listEmpty,]}>暂无更多数据</UGText>
       </View>
     );
   }
 
   /**
   * 上拉加载布局
-  * 
+  *
   */
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
@@ -250,9 +251,9 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
         }}
         >
           <View style={_styles.foot}>
-            <Text style={[_styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[_styles.footText, { color: Skin1.textColor2 }]}>
               上拉加载
-            </Text>
+            </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -264,9 +265,9 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
         >
           <View style={_styles.foot}>
             <ActivityIndicator />
-            <Text style={[_styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[_styles.footText, { color: Skin1.textColor2 }]}>
               正在加载...
-          </Text>
+          </UGText>
           </View>
         </TouchableOpacity>
       );
@@ -277,9 +278,9 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
         }}
         >
           <View style={_styles.foot}>
-            <Text style={[_styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[_styles.footText, { color: Skin1.textColor2 }]}>
 
-            </Text>
+            </UGText>
 
           </View>
         </TouchableOpacity>
@@ -291,35 +292,35 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ index, item }) => {
     {
       return (
         <View style={[_styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
           <View style={{ flex: 1, flexDirection: 'column' , borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), justifyContent: 'center',}}>
-            <Text style={{ color: Skin1.textColor1, fontSize: scale(20),marginHorizontal:5 }}>{item.issue}</Text>
-            <Text style={{ color: 'red', fontSize: scale(20),marginHorizontal:5 }}>{item.id}</Text>
+            <UGText style={{ color: Skin1.textColor1, fontSize: scale(20),marginHorizontal:5 }}>{item.issue}</UGText>
+            <UGText style={{ color: 'red', fontSize: scale(20),marginHorizontal:5 }}>{item.id}</UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center',flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
             {item.playGroupName +'  '+item.playName+'  ' + '@'+'  ' + item.odds}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
             {item.lotteryNo}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5  }}>
             {item.betAmount}
-            </Text>
+            </UGText>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1,  borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(110), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5 }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,marginHorizontal:5 }}>
             {item.settleAmount}
-            </Text>
+            </UGText>
           </View>
         </View>
       )
@@ -336,32 +337,32 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
           <View style={_styles.container}>
             <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.CLBgColor }}>
               <View style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-                <Text style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
+                <UGText style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
                   {'期号/'}
-                </Text>
-                <Text style={{ flexDirection: 'row', fontSize: scale(20), color: 'red', }}>
+                </UGText>
+                <UGText style={{ flexDirection: 'row', fontSize: scale(20), color: 'red', }}>
                   {'注单号'}
-                </Text>
+                </UGText>
               </View>
               <View style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-                <Text style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
+                <UGText style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
                   {'下注明细'}
-                </Text>
+                </UGText>
               </View>
               <View style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-                <Text style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
+                <UGText style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
                   {'开奖号码'}
-                </Text>
+                </UGText>
               </View>
               <View style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-                <Text style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
+                <UGText style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
                   {'投注金额'}
-                </Text>
+                </UGText>
               </View>
               <View style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
-                <Text style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
+                <UGText style={{ flexDirection: 'row', fontSize: scale(20), color: Skin1.textColor1, }}>
                   {'输赢'}
-                </Text>
+                </UGText>
               </View>
             </View>
             <View style={{ flex: 1 }}>
@@ -401,12 +402,12 @@ const JDDayDetailPage = ({ route, setProps }: UGBasePageProps) => {
       }
       <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
         <View style={[_styles.text_content_bottom, { alignItems: 'flex-start',  flexDirection: 'row', justifyContent: 'center', }]}>
-          <Text style={{ fontSize: scale(22), color: skin1.navBarTitleColor, }}>{'下注: '}</Text>
-          <Text style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2  }]}>{v.totalBetAmount}</Text>
+          <UGText style={{ fontSize: scale(22), color: skin1.navBarTitleColor, }}>{'下注: '}</UGText>
+          <UGText style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2  }]}>{v.totalBetAmount}</UGText>
         </View>
         <View style={[_styles.text_content_bottom, { alignItems: 'flex-start',  flexDirection: 'row', justifyContent: 'center', }]}>
-          <Text style={{ fontSize: scale(22), color: skin1.navBarTitleColor, }}>{'输赢: '}</Text>
-          <Text style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2 }]}>{v.totalWinAmount}</Text>
+          <UGText style={{ fontSize: scale(22), color: skin1.navBarTitleColor, }}>{'输赢: '}</UGText>
+          <UGText style={[{ fontSize: scale(25),color: 'yellow',marginTop:-2 }]}>{v.totalWinAmount}</UGText>
         </View>
 
       </View>

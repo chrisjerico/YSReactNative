@@ -7,6 +7,7 @@ import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanc
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import List from '../../../public/views/tars/List'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface MenuProps {
   menus: any[]
@@ -28,7 +29,7 @@ const MenuButton = ({ title, logo, containerStyle, onPress }: MenuButtonProps) =
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[containerStyle, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
         <FastImage source={{ uri: logo }} style={{ width: scale(30), aspectRatio: 1, marginRight: scale(10) }} resizeMode={'contain'} />
-        <Text>{title}</Text>
+        <UGText>{title}</UGText>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -39,8 +40,8 @@ const Menu = ({ menus, balance, balanceDecimal, usr, uid }: MenuProps) => {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#8d92e4', '#64d0ef']} style={[styles.gradientBlock, { paddingTop: top }]} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}>
-        <Text style={styles.titile}>{'UG集團'}</Text>
-        {uid && <Text style={styles.titile}>{usr}</Text>}
+        <UGText style={styles.titile}>{'UG集團'}</UGText>
+        {uid && <UGText style={styles.titile}>{usr}</UGText>}
 
         <ReLoadBalanceComponent balance={balance} balanceDecimal={balanceDecimal} currency={'RMB'} iconColor={'#ffffff'} balanceStyle={styles.titile} />
       </LinearGradient>

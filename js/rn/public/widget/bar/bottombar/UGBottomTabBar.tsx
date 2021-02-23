@@ -8,6 +8,7 @@ import UGDefaultTabBar from './UGDefaultTabBar';
 import IUGBottomTabBarProps from './IUGBottomTabBarProps';
 import {UGColor} from '../../../theme/UGThemeColor';
 import {Skin1} from '../../../theme/UGSkinManagers';
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 底部 tab bar
@@ -37,9 +38,9 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
       <TouchableHighlight key={name} underlayColor="#00000000" style={_styles.tabContainer} onPress={() => onPressHandler(page)}>
         <View style={_styles.tabContainer} key={name}>
           <Image source={curTab.icon} style={[_styles.tabIcon, {tintColor: textColor}]} />
-          <Text numberOfLines={1} style={[_styles.tabText, {color: textColor, fontWeight}]}>
+          <UGText numberOfLines={1} style={[_styles.tabText, {color: textColor, fontWeight}]}>
             {name}
-          </Text>
+          </UGText>
         </View>
       </TouchableHighlight>
     );

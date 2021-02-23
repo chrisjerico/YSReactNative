@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ButtonGroupProps {
   leftLogo: string
@@ -18,14 +19,14 @@ const ButtonGroup = ({ leftLogo, rightLogo, leftTitle, rightTitle, onPressLeftBu
         <View style={styles.leftButtonContainer}>
           <View style={styles.leftButton}>
             <Image source={{ uri: leftLogo }} style={{ width: scale(34), aspectRatio: 34 / 27 }} />
-            <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>{leftTitle}</Text>
+            <UGText style={{ fontSize: scale(25), paddingLeft: scale(10) }}>{leftTitle}</UGText>
           </View>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={onPressRightButton}>
         <View style={styles.rightButtonContainer}>
           <Image source={{ uri: rightLogo }} style={{ width: scale(34), aspectRatio: 34 / 27 }} />
-          <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>{rightTitle}</Text>
+          <UGText style={{ fontSize: scale(25), paddingLeft: scale(10) }}>{rightTitle}</UGText>
         </View>
       </TouchableWithoutFeedback>
     </View>

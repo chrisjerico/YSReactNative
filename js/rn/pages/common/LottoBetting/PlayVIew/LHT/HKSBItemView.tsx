@@ -5,6 +5,7 @@ import {useDimensions} from "@react-native-community/hooks"
 import LMItem from "./balls/LMItem"
 import {UGStore} from "../../../../../redux/store/UGStore";
 import {BettingReducerActions} from "../../../../../redux/reducer/BettingReducer";
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const itemSize = 40
 const HKSBItemView = ({data, frameWidth, setProps}: { data: PlayGroup, frameWidth?: number, setProps: any }) => {
@@ -12,14 +13,14 @@ const HKSBItemView = ({data, frameWidth, setProps}: { data: PlayGroup, frameWidt
     const {bettingResult} = UGStore.globalProps.BettingReducer;
     return (
         <View style={{flex: 1, flexWrap: 'wrap'}}>
-            <Text style={{
+            <UGText style={{
                 textAlign: 'center',
                 width: "100%",
                 color: "#c8222f",
                 backgroundColor: "#eee",
                 paddingVertical: 8,
                 flex: 1
-            }}>{data.alias}</Text>
+            }}>{data.alias}</UGText>
             <View style={{flexDirection: 'row', flexWrap: 'wrap', flex: 1}}>
                 {
                     data.plays.map((data, index) => {

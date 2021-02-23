@@ -11,6 +11,7 @@ import {GAME_ITEM_HEIGHT, GameListView} from './GameListView'
 import FastImage from 'react-native-fast-image'
 import {ugLog} from '../../../public/tools/UgLog'
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const HomeTabView = () => {
   const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
@@ -77,8 +78,8 @@ export const HomeTabView = () => {
                   <TouchableWithoutFeedback key={name + pageIndex} onPress={() => onPressHandler(pageIndex)}>
                     <View style={[_styles.tab_bar_item, isTabActive ? {backgroundColor: 'white'} : {}]}>
                       <FastImage style={_styles.tab_bar_img} source={{uri: games[pageIndex].logo}}/>
-                      <Text
-                        style={[_styles.tab_bar_text, isTabActive ? {color: skinColors.textColor2.乐FUN} : {}]}>{name}</Text>
+                      <UGText
+                        style={[_styles.tab_bar_text, isTabActive ? {color: skinColors.textColor2.乐FUN} : {}]}>{name}</UGText>
                     </View>
                   </TouchableWithoutFeedback>
                 )

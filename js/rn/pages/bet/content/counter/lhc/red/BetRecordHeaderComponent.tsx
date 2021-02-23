@@ -10,6 +10,7 @@ import BetRecordListComponent from './BetRecordListComponent'
 import TimeComponent from '../TimeComponent'
 import UseBetRecordHeader from './UseBetRecordHeader'
 import LotteryZodiacAndBall from '../../../../widget/LotteryZodiacAndBall'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
 }
@@ -46,9 +47,9 @@ const BetRecordHeaderComponent = ({}: IHallGameList) => {
           {
             anyEmpty(item?.preDisplayNumber)
               ? null :
-              <Text key={'renderItemContent issue_container' + item.preDisplayNumber}
+              <UGText key={'renderItemContent issue_container' + item.preDisplayNumber}
                     style={_styles.text_content_issue}
-                    numberOfLines={1}>{item.preDisplayNumber + '期'}</Text>
+                    numberOfLines={1}>{item.preDisplayNumber + '期'}</UGText>
           }
           <Icon key={'renderItemContent issue_container' + showHistory}
                 size={scale(48)}

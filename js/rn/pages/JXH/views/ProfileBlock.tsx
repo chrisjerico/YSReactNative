@@ -7,6 +7,7 @@ import { UGImageHost, useHtml5Image } from '../../../Res/icon'
 import Avatar from '../../../public/views/tars/Avatar'
 import Button from '../../../public/views/tars/Button'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
@@ -48,7 +49,7 @@ const ProfileBlock = ({
           <>
             <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
               <Avatar size={30} uri={avatar} />
-              <Text style={{ color: '#a0a0a0', marginHorizontal: scale(10), fontSize: scale(20) }}>{usr}</Text>
+              <UGText style={{ color: '#a0a0a0', marginHorizontal: scale(10), fontSize: scale(20) }}>{usr}</UGText>
               <LinearBadge
                 title={curLevelTitle}
                 colors={['#cfa461', '#cfa461']}
@@ -66,7 +67,7 @@ const ProfileBlock = ({
         ) : (
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <Avatar size={30} uri={avatar} />
-            <Text style={{ color: '#a0a0a0', fontSize: scale(20), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
+            <UGText style={{ color: '#a0a0a0', fontSize: scale(20), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</UGText>
           </View>
         )}
       </View>
@@ -74,7 +75,7 @@ const ProfileBlock = ({
         {uid ? (
           <View style={{ flex: 1, marginLeft: scale(20) }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ color: '#676767', marginRight: scale(10) }}>{'账户余额'}</Text>
+              <UGText style={{ color: '#676767', marginRight: scale(10) }}>{'账户余额'}</UGText>
               <Ionicons
                 name={hideBalance ? 'ios-eye-off' : 'ios-eye'}
                 color={'#676767'}
@@ -84,7 +85,7 @@ const ProfileBlock = ({
                 }}
               />
             </View>
-            <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{hideBalance ? '*****' : balance}</Text>
+            <UGText style={{ color: '#cfa461', fontSize: scale(35) }}>{hideBalance ? '*****' : balance}</UGText>
           </View>
         ) : (
           <>
@@ -123,10 +124,10 @@ const ProfileBlock = ({
         ) : (
           <>
             <TouchableWithoutFeedback onPress={onPressForgetPassword}>
-              <Text style={{ color: '#c7c7c7' }}>{'忘记密码'}</Text>
+              <UGText style={{ color: '#c7c7c7' }}>{'忘记密码'}</UGText>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={onPressTryPlay}>
-              <Text style={{ color: '#cfa461' }}>{'免费试玩'}</Text>
+              <UGText style={{ color: '#cfa461' }}>{'免费试玩'}</UGText>
             </TouchableWithoutFeedback>
           </>
         )}

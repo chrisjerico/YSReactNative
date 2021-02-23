@@ -7,6 +7,7 @@ import { skinColors } from '../../../public/theme/const/UGSkinColor'
 import { scale } from '../../../public/tools/Scale'
 import List from '../../../public/views/tars/List'
 import { LotteryType } from '../../../redux/model/全局/UGLotteryModel'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface RightGame {
   id?: string
@@ -68,7 +69,7 @@ const HomeGameComponent = ({
               },
             ]}>
             <FastImage style={styles.image} source={{ uri: leftIcon }} />
-            <Text style={styles.tabText}>{'热门资讯'}</Text>
+            <UGText style={styles.tabText}>{'热门资讯'}</UGText>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => setIndex(1)}>
@@ -80,7 +81,7 @@ const HomeGameComponent = ({
               },
             ]}>
             <FastImage style={styles.image} source={{ uri: rightIcon }} />
-            <Text style={styles.tabText}>{'购彩大厅'}</Text>
+            <UGText style={styles.tabText}>{'购彩大厅'}</UGText>
           </View>
         </TouchableWithoutFeedback>
       </View>

@@ -6,6 +6,7 @@ import {Skin1} from '../../../public/theme/UGSkinManagers';
 import React, {memo, useMemo, useState} from 'react'
 import {useDimensions} from "@react-native-community/hooks";
 import {useLottoContext} from "../LottoBetting/LottoContext";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LottoItem = memo(({item, index, currentTimeStamp}: { item: List, index: number, currentTimeStamp: moment.Moment }) => {
     const [imgError, setImgError] = useState(false)
@@ -37,8 +38,8 @@ const LottoItem = memo(({item, index, currentTimeStamp}: { item: List, index: nu
         {imgError ? <Image source={{uri: "loading"}} style={{width: 60, height: 60}}/> : memoFastImage}
 
         <View style={{flexDirection: 'column', marginLeft: 5}}>
-            <Text style={{color: 'white', marginBottom: 5}}>{item.title}</Text>
-            <Text style={{color: 'green', fontSize: 14}}>{item.openCycle}</Text>
+            <UGText style={{color: 'white', marginBottom: 5}}>{item.title}</UGText>
+            <UGText style={{color: 'green', fontSize: 14}}>{item.openCycle}</UGText>
             <TimeLabel isInstant={item.isInstant} curCloseTime={item.curCloseTime} currentTimeStamp={currentTimeStamp}/>
         </View>
     </TouchableOpacity>)
@@ -62,6 +63,6 @@ const TimeLabel = ({isInstant, currentTimeStamp, curCloseTime}: { isInstant: str
         }
 
     }
-    return <Text style={{color: 'red'}}>{isInstant == "0" ? getTimeDiff(currentTimeStamp, curCloseTime) : ""}</Text>
+    return <UGText style={{color: 'red'}}>{isInstant == "0" ? getTimeDiff(currentTimeStamp, curCloseTime) : ""}</UGText>
 }
 export default LottoItem

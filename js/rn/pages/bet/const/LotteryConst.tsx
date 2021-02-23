@@ -17,7 +17,9 @@ enum SingleOption {
  */
 const BallType = {
   'round': '圆球', //彩色
+  'black_white': '黑白', //黑白
   'square': '方球', //彩色
+  'rectangle': '长方球', //纯色
   'colorful': '花球', //多种图片
   'pure': '纯色球', //纯色
   'vegetable': '蔬菜', //蔬菜
@@ -73,6 +75,8 @@ const LCode = {
   pcdd: 'pcdd', //蛋蛋系列
   jsk3: 'jsk3', //快三系列
   gd11x5: 'gd11x5', //11选5系列
+  ofclvn_hochiminhvip: 'ofclvn_hochiminhvip', //胡志明
+  ofclvn_haboivip: 'ofclvn_haboivip', //河内
 }
 
 /**
@@ -169,6 +173,50 @@ const FC3d = {
 }
 
 /**
+ * 胡志明
+ */
+const HoChiMin = {
+  BL: 'BL', //宝路
+  DDQX: 'DDQX', //地段倾斜
+  LBXC: 'LBXC', //来宾线程
+  TW: 'TW', //头尾
+  H_3GD: '3GD', //3更多
+  H_4GD: '4GD', //4更多
+  CQ: 'CQ', //抽签
+}
+
+/**
+ * 胡志明 子类
+ */
+const HoChiMinSub = {
+  PIHAO2: 'PIHAO2', //批号2
+  DIDUAN2: 'DIDUAN2', //地段2 1K
+  LOT2FIRST: 'LOT2FIRST', //Lot2第一个号码"
+  PIHAO3: 'PIHAO3', //批号3
+  PIHAO4: 'PIHAO4', //批号4
+
+  PIANXIE2: 'PIANXIE2', //偏斜2"
+  PIANXIE3: 'PIANXIE3', //偏斜3
+  PIANXIE4: 'PIANXIE4', //偏斜4
+
+  BIAOTI: 'BIAOTI', //标题
+  ZHUANTI: 'ZHUANTI', //"专题
+  TEBIEBIAOTI: 'TEBIEBIAOTI', //特别标题",
+  BIAOTIWB: 'BIAOTIWB', //"标题尾巴
+  ZHUZHANG7: 'ZHUZHANG7', //主张7",
+  YIDENGJIANG: 'YIDENGJIANG', //一等奖",
+
+  TOU: 'TOU', //"头"
+  WEI: 'WEI', //尾",
+
+  H_3YINJIE: '3YINJIE', //3个音阶
+  H_3GTEBIE: '3GTEBIE', //3更特别
+  H_3WBDJT: '3WBDJT', //3尾巴的尽头",
+
+  H_4GTEBIE: '4GTEBIE', //4更特别",
+}
+
+/**
  * 当前TAB是 彩票0 还是 聊天室1
  */
 enum GameTab {
@@ -190,5 +238,7 @@ export {
   K3Code,
   GD11x5,
   FC3d,
+  HoChiMin,
+  HoChiMinSub,
   GameTab,
 }

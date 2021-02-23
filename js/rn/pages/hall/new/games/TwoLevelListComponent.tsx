@@ -22,6 +22,7 @@ import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { showLoading } from '../../../../public/widget/UGLoadingCP'
 import { ImagePlaceholder } from '../../../经典/tools/ImagePlaceholder'
 import { BallType } from '../../../bet/const/LotteryConst'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ITwoLevelGameList {
   refreshing?: boolean //刷新
@@ -89,9 +90,9 @@ const TwoLevelListComponent = ({ refreshing,
           style={{ height: scale(160), width: scale(160)}}
           source={{ uri: item.pic }}/>
 
-          <Text
+          <UGText
               style={_styles.name}
-              >{item.name}</Text>
+              >{item.name}</UGText>
       </View>
       </TouchableWithoutFeedback>
     )

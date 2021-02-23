@@ -6,6 +6,7 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { pop } from '../../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const TransferRecordView = () => {
   const [dataList, setDataList] = useState([])
@@ -48,7 +49,7 @@ export const TransferRecordView = () => {
             alignItems: 'center',
             alignSelf: 'center',
           }}>
-            <Text style={{
+            <UGText style={{
               paddingTop: 15,
               paddingBottom: 15,
               textAlign: 'center',
@@ -56,7 +57,7 @@ export const TransferRecordView = () => {
               width: '100%',
               alignSelf: 'center',
               color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-            }}>{'额度转换记录'}</Text>
+            }}>{'额度转换记录'}</UGText>
             <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
               <Icon size={33} name={'angle-left'} color={Skin1.isBlack ? '#fff' :Skin1.textColor4} />
             </TouchableOpacity>
@@ -70,19 +71,19 @@ export const TransferRecordView = () => {
           borderBottomWidth: 1, }}>
           <View
             style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>游戏</Text>
+            <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>游戏</UGText>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>金额</Text>
+            <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>金额</UGText>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>日期</Text>
+            <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>日期</UGText>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16, borderColor: '#d9d9d9' }}>
-            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>模式</Text>
+            <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>模式</UGText>
           </View>
         </View>
       </LinearGradient>
@@ -97,26 +98,26 @@ export const TransferRecordView = () => {
             <View style={{ position: 'absolute', width: AppDefine.width, height: AppDefine.height, top: 0 }}>
               {emptyRow()}
             </View>
-            <Text style={{ color: Skin1.isBlack ? "#000" : '#c7c7c7', fontSize: 18,  }}>暂无更多数据</Text>
+            <UGText style={{ color: Skin1.isBlack ? "#000" : '#c7c7c7', fontSize: 18,  }}>暂无更多数据</UGText>
           </View>
         )}
         renderItem={({ item }) => (
           <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Skin1.isBlack ? Skin1.themeColor : Skin1.cellBgColor }}>
             <View
               style={{ flex: 1, paddingVertical: 16 }}>
-              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>{item.gameName}</Text>
+              <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>{item.gameName}</UGText>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16 }}>
-              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{`¥ ${item.amount}`}</Text>
+              <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{`¥ ${item.amount}`}</UGText>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16 }}>
-              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{item.actionTime}</Text>
+              <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{item.actionTime}</UGText>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16 }}>
-              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{item.isAuto ? '手动' : '自动'}</Text>
+              <UGText style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{item.isAuto ? '手动' : '自动'}</UGText>
             </View>
           </View>
         )}

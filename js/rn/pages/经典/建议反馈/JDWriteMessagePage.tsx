@@ -17,6 +17,7 @@ import { UGStore } from '../../../redux/store/UGStore';
 import { number, string } from 'prop-types';
 import { pop } from '../../../public/navigation/RootNavigation';
 import { img_assets, img_fullPath, img_platform, useHtml5Image } from '../../../Res/icon';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDWriteMessagePage {
   list?: UGSignInHistoryModel[]  //添加图片fastList 数据
@@ -79,7 +80,7 @@ const JDWriteMessagePage = ({ setProps }) => {
             imgs.length = 0
             // console.log('返回的数据'+JSON.stringify(data));
             let dic = data;
-            // console.log("输出最初的字典元素: "); 
+            // console.log("输出最初的字典元素: ");
             for (var key in dic) {
               // console.log("key: " + key + " ,value: " + dic[key]);
               if (key == 'url') {
@@ -152,7 +153,7 @@ const JDWriteMessagePage = ({ setProps }) => {
       navbarOpstions: { hidden: false, title: '建议反馈', back: true },
       didFocus: (params) => {
         let dic = params;
-        // console.log("输出最初的字典元素: "); 
+        // console.log("输出最初的字典元素: ");
         for (var key in dic) {
           // console.log("key: " + key + " ,value: " + dic[key]);
           if (key == 'feedType') {
@@ -205,7 +206,7 @@ const JDWriteMessagePage = ({ setProps }) => {
 
       <View style={[{ marginHorizontal: 15 }]}>
 
-        <Text style={[{ fontSize: 18, color: Skin1.textColor1, marginTop: 30, }]}>{messageType}</Text>
+        <UGText style={[{ fontSize: 18, color: Skin1.textColor1, marginTop: 30, }]}>{messageType}</UGText>
 
         <TextInput onChangeText={(text) => setRemark(text)}
           style={{ marginTop: 20, borderColor: '#d9d9d9', height: 120, paddingHorizontal: 10, borderWidth: AppDefine.onePx, color: Skin1.textColor1, }}

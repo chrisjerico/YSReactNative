@@ -17,6 +17,7 @@ import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const PromotionPage = (props: any) => {
   const { showBackBtn } = props?.route?.params ?? {}
@@ -140,14 +141,14 @@ const PromotionPage = (props: any) => {
                           ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType] }
                           : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType] }
                       }>
-                      <Text
+                      <UGText
                         style={
                           selectedTabIndex == item
                             ? [styles.tabText, { color: skinColors.themeColor }]
                             : [styles.tabText, { color: skinColors.promotion.tabTextColor[Skin1.skitType] }]
                         }>
                         {categories[item]}
-                      </Text>
+                      </UGText>
                     </View>
                   </TouchableWithoutFeedback>
                 )

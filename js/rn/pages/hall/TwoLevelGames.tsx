@@ -34,6 +34,7 @@ import { PushHomeGame } from '../../public/models/Interface'
 import Button from '../../public/views/temp/Button'
 import TwoLevelType from '../../public/network/Model/HomeRecommendModel'
 import TwoLevelListComponent from '../hall/new/games/TwoLevelListComponent'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface TwoLevelProps {
   showBackButton: Boolean,
@@ -99,10 +100,10 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
       setFilterData(data)
 
     }
-    
+
     api.game.realGameTypes(gameDataId(), "").useSuccess(({ data }) => {
       let res = { data: data }
-     
+
       if ( anyEmpty(res.data)) {
         return;
       }
@@ -149,11 +150,11 @@ const TwoLevelGames = ({ navigation, route, setProps }: UGBasePageProps) => {
                 onPress={() => {
                   setFilterData(gameData)
                 }}>
-                <Text style={{
+                <UGText style={{
                   fontSize: scale(23),
                   color: Skin1.textColor1,
                   marginRight: scale(15),
-                }}>全部游戏</Text>
+                }}>全部游戏</UGText>
               </TouchableOpacity>
               <TextInput
                 style={[_styles.searchInput,{ color: Skin1.textColor1,}]}

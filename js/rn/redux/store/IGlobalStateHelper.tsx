@@ -9,6 +9,8 @@ import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 export enum AsyncStorageKey {
   IGlobalState = 'IGlobalState',
+  token = 'token',
+  lastLoginAccount = 'lastLoginAccount',
 }
 
 export async function updateUserInfo() {

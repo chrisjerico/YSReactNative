@@ -9,6 +9,7 @@ import { isSelectedBallOnId } from './it/ISelBall'
 import LotteryEBall from './LotteryEBall'
 import CommStyles from '../../base/CommStyles'
 import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IK3EBall {
   item?: IK3LineEBallItem // 要绘制的数据
@@ -78,11 +79,11 @@ const K3LineEBall = ({
                             }}/>)
           }
         </View>
-        <Text key={item?.odds}
+        <UGText key={item?.odds}
               style={[
                 _styles.sub_title_text_odds,
                 isSel ? { color: 'white' } : null,
-              ]}>{item?.odds}</Text>
+              ]}>{item?.odds}</UGText>
       </View>
     </TouchableWithoutFeedback>
   )

@@ -1,30 +1,65 @@
 import { anyEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
 import { ugLog } from '../../../public/tools/UgLog'
+//
+// /**
+//  * 彩种计算组合的数量，比如<二连尾> len=2 表示2个数据为1组进行组合计算，4个数据就有6种组合: [1,2,3,4] -> [1,2],[1,3],[1,4],[2,3],[2,6],[3,4]
+//  * @param arr 数组
+//  * @param len 组合长度
+//  */
+// const combination = (arr?: Array<any>, len?: number): Array<any> => {
+//   let resultArr = []
+//   if (len <= 0 || len > arr.length) {
+//     return resultArr
+//   }
+//   for (let i = 0; i < arr.length; i++) {
+//     let tempArr = []
+//     tempArr.push(arr[i])
+//     if (len === 1) {
+//       resultArr.push(tempArr)
+//     } else {
+//       let x = arr.slice(i + 1)
+//       let newArr = combination(x, len - 1)
+//       for (let j = 0; j < newArr.length; j++) {
+//         resultArr.push(tempArr.concat(newArr[j]))
+//       }
+//     }
+//   }
+//   return resultArr
+// }
+
+
 
 /**
- * 彩种计算组合的数量，比如<二连尾> len=2 表示2个数据为1组进行组合计算，4个数据就有6种组合: [1,2,3,4] -> [1,2],[1,3],[1,4],[2,3],[2,6],[3,4]
- * @param arr 数组
- * @param len 组合长度
+ * 计算排列组合情况，比如 [1, 2, 3] ->  [ [ 1, 2 ], [ 1, 3 ], [ 2, 3 ] ] 或者 [ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 3, 1 ], [ 3, 2 ] ]
+ * @param {*} source 源数组
+ * @param {*} count 长度多少为一项
+ * @param {*} isPermutation 是否使用排列的方式
+ * @return {any[]} 所有排列组合,格式为 [ [1,2], [1,3]] ...
  */
-const combination = (arr?: Array<any>, len?: number): Array<any> => {
-  let resultArr = []
-  if (len <= 0 || len > arr.length) {
-    return resultArr
+const combineArray = (source: any[], count: number, isPermutation?: boolean): any[] => {
+  //如果只取一位，返回数组中的所有项，例如 [ [1], [2], [3] ]
+  let currentList = source.map((item) => [item]);
+  if (count === 1) {
+    return currentList;
   }
-  for (let i = 0; i < arr.length; i++) {
-    let tempArr = []
-    tempArr.push(arr[i])
-    if (len === 1) {
-      resultArr.push(tempArr)
-    } else {
-      let x = arr.slice(i + 1)
-      let newArr = combination(x, len - 1)
-      for (let j = 0; j < newArr.length; j++) {
-        resultArr.push(tempArr.concat(newArr[j]))
-      }
+  let result = [];
+  //取出第一项后，再取出后面count - 1 项的排列组合，并把第一项的所有可能（currentList）和 后面count-1项所有可能交叉组合
+  for (let i = 0; i < currentList.length; i++) {
+    let current = currentList[i];
+    //如果是排列的方式，在取count-1时，源数组中排除当前项
+    let children = [];
+    if (isPermutation) {
+      children = combineArray(source.filter(item => item !== current[0]), count - 1, isPermutation);
+    }
+    //如果是组合的方法，在取count-1时，源数组只使用当前项之后的
+    else {
+      children = combineArray(source.slice(i + 1), count - 1, isPermutation);
+    }
+    for (let child of children) {
+      result.push([...current, ...child]);
     }
   }
-  return resultArr
+  return result;
 }
 
 /**
@@ -122,7 +157,7 @@ const mapTotalCount = (list?: Map<any, number>): number => {
 }
 
 export {
-  combination,
+  combineArray,
   combineArr,
   randomItem,
   mapTotalCount,

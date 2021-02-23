@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../../public/network/APIRouter'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RegisterItem = ({ sms = false, config, placeHolder, iconName, iconType = 'font-awesome', onChangeText, phoneNumber }:
                                { sms?: boolean, config?: any, placeHolder: string, iconName: string, iconType?: string, onChangeText: (text) => void, phoneNumber?: string }) => {
@@ -70,9 +71,9 @@ export const RegisterItem = ({ sms = false, config, placeHolder, iconName, iconT
               backgroundColor: '#F1E1FF',
               borderRadius: scale(5),
             }]}>
-              <Text style={[styles.title, { fontSize: scale(20) }]} numberOfLines={1}>
+              <UGText style={[styles.title, { fontSize: scale(20) }]} numberOfLines={1}>
                 {disableSms ? '重新获取' + sec : '获取验证码'}
-              </Text>
+              </UGText>
             </View>
           </TouchableWithoutFeedback>}
         </View>

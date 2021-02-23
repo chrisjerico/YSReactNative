@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
 import { anyEmpty } from '../../tools/Ext'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface MineHeaderProps {
   showCustomerService?: boolean
@@ -35,7 +36,7 @@ const MineHeader = ({
         <TouchableWithoutFeedback onPress={onPressBackBtn}>
           <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
             <AntDesign name={'left'} color={anyEmpty(titleColor) ? '#ffffff' : titleColor} size={scale(25)} />
-            <Text style={anyEmpty(titleColor) ? _styles.backTitle : [_styles.backTitle, { color: titleColor }]}>{backTitle}</Text>
+            <UGText style={anyEmpty(titleColor) ? _styles.backTitle : [_styles.backTitle, { color: titleColor }]}>{backTitle}</UGText>
           </View>
         </TouchableWithoutFeedback>
       ) : (
@@ -61,7 +62,7 @@ const DefaultHeader = ({ title, customerTitle, customerIcon, titleColor, showCus
   return (
     <>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={anyEmpty(titleColor) ? _styles.headerTitle : [_styles.headerTitle, { color: titleColor }]}>{title}</Text>
+        <UGText style={anyEmpty(titleColor) ? _styles.headerTitle : [_styles.headerTitle, { color: titleColor }]}>{title}</UGText>
       </View>
       {showCustomerService ? (
         <TouchableWithoutFeedback onPress={onPressCustomerService}>
@@ -69,7 +70,7 @@ const DefaultHeader = ({ title, customerTitle, customerIcon, titleColor, showCus
             {!anyEmpty(customerIcon) ? (
               <AntDesign style={{ paddingHorizontal: scale(12) }} name={customerIcon} color={titleColor} size={scale(28)} onPress={onPressCustomerService} />
             ) : (
-              <Text style={anyEmpty(titleColor) ? _styles.rightTextStyle : [_styles.rightTextStyle, { color: titleColor }]}>{customerTitle ?? '客服'}</Text>
+              <UGText style={anyEmpty(titleColor) ? _styles.rightTextStyle : [_styles.rightTextStyle, { color: titleColor }]}>{customerTitle ?? '客服'}</UGText>
             )}
           </View>
         </TouchableWithoutFeedback>

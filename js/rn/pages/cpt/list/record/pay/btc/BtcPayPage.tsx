@@ -36,7 +36,8 @@ import AppDefine from '../../../../../../public/define/AppDefine'
 import { pop } from '../../../../../../public/navigation/RootNavigation'
 import { CapitalConst } from '../../../../const/CapitalConst'
 import { OCHelper } from '../../../../../../public/define/OCHelper/OCHelper'
-import { clearAllHtml } from '../../../../../../public/tools/ui/UIUtil'
+import { clearAllHtml } from '../../../../../../public/tools/StringUtil'
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的条目数据
@@ -101,8 +102,8 @@ const BtcPayPage = ({ navigation, route }) => {
                onChangeText={(text) => setInputMoney(text)}
                placeholder={'请填写存款金额'}/>
     <View style={_styles.btc_hint_container}>
-      <Text style={_styles.choose_result_title}>{`虚拟币金额: ${btcMoney}`}</Text>
-      <Text style={_styles.btc_type}>{payData?.channel[selPayChannel]?.domain}</Text>
+      <UGText style={_styles.choose_result_title}>{`虚拟币金额: ${btcMoney}`}</UGText>
+      <UGText style={_styles.btc_type}>{payData?.channel[selPayChannel]?.domain}</UGText>
 
       <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
@@ -115,11 +116,11 @@ const BtcPayPage = ({ navigation, route }) => {
       }
       Toast('复制成功')
     }}>
-        <Text style={_styles.choose_result_copy}>复制</Text>
+        <UGText style={_styles.choose_result_copy}>复制</UGText>
       </TouchableOpacity>
     </View>
     <View style={_styles.btc_hint_container}>
-      <Text style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newUsd}CNY`}</Text>
+      <UGText style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newUsd}CNY`}</UGText>
     </View>
   </View>
 
@@ -130,7 +131,7 @@ const BtcPayPage = ({ navigation, route }) => {
     {
       !anyEmpty(moneyOption) && moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
         <View style={_styles.choose_channel_item_container}>
-          <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
+          <UGText style={_styles.choose_channel_item_text}>{item + '元'}</UGText>
         </View>
       </TouchableOpacity>)
     }
@@ -140,7 +141,7 @@ const BtcPayPage = ({ navigation, route }) => {
    * 已选择的渠道单个条目
    */
   const renderSelectedChannelItem = (title: string, copyText: string) => <View style={_styles.choose_result_title_item}>
-    <Text style={_styles.choose_result_title}>{title + copyText}</Text>
+    <UGText style={_styles.choose_result_title}>{title + copyText}</UGText>
     <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
         case 'ios':
@@ -152,7 +153,7 @@ const BtcPayPage = ({ navigation, route }) => {
       }
       Toast('复制成功')
     }}>
-      <Text style={_styles.choose_result_copy}>复制</Text>
+      <UGText style={_styles.choose_result_copy}>复制</UGText>
     </TouchableOpacity>
   </View>
 
@@ -162,10 +163,10 @@ const BtcPayPage = ({ navigation, route }) => {
   const renderSelectedChannel = () => {
     const payChannelBean = payData?.channel[selPayChannel]
     return <View>
-      <Text style={_styles.choose_result_hint}>{intentData?.payBigData?.depositPrompt}</Text>
+      <UGText style={_styles.choose_result_hint}>{intentData?.payBigData?.depositPrompt}</UGText>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
-          <Text style={_styles.choose_result_title}>{'币种: ' + payChannelBean?.domain}</Text>
+          <UGText style={_styles.choose_result_title}>{'币种: ' + payChannelBean?.domain}</UGText>
         </View>
         {
           [
@@ -201,7 +202,7 @@ const BtcPayPage = ({ navigation, route }) => {
               <Icon size={scale(32)} name={'check'}/> :
               <Icon size={scale(32)} name={'circle-o'}/>
           }
-          <Text style={_styles.select_channel_text}>{item?.payeeName}</Text>
+          <UGText style={_styles.select_channel_text}>{item?.payeeName}</UGText>
         </View>
       </TouchableOpacity>)
     }
@@ -214,7 +215,7 @@ const BtcPayPage = ({ navigation, route }) => {
 
     return <View style={_styles.input_info_container}>
       <View style={_styles.date_info_container}>
-        <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+        <UGText style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</UGText>
         <Icon size={scale(20)} name={'calendar'}/>
       </View>
       <TextInput style={_styles.input_info}
@@ -238,9 +239,9 @@ const BtcPayPage = ({ navigation, route }) => {
           ]
         }
 
-        <Text style={_styles.select_channel_hint}>
+        <UGText style={_styles.select_channel_hint}>
           {clearAllHtml(payData?.prompt)}
-        </Text>
+        </UGText>
 
         {
           renderInputInfo()

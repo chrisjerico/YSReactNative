@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface BottomLogo {
   webName: string
@@ -18,7 +19,7 @@ const BottomLogo = ({ webName, onPressComputer, onPressPromotion, containerStyle
     <View style={[styles.containerStyle, containerStyle]}>
       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
         <TouchableWithoutFeedback onPress={onPressComputer}>
-          <Text
+          <UGText
             style={[
               {
                 color: '#000000',
@@ -26,10 +27,10 @@ const BottomLogo = ({ webName, onPressComputer, onPressPromotion, containerStyle
               titleStyle,
             ]}>
             {'💻电脑版'}
-          </Text>
+          </UGText>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={onPressPromotion}>
-          <Text
+          <UGText
             style={[
               {
                 color: '#000000',
@@ -37,10 +38,10 @@ const BottomLogo = ({ webName, onPressComputer, onPressPromotion, containerStyle
               titleStyle,
             ]}>
             {' 🎁优惠活动'}
-          </Text>
+          </UGText>
         </TouchableWithoutFeedback>
       </View>
-      <Text
+      <UGText
         style={[
           {
             color: '#000000',
@@ -50,8 +51,8 @@ const BottomLogo = ({ webName, onPressComputer, onPressPromotion, containerStyle
           subTitleStyle,
         ]}>
         {'COPYRIGHT © ' + webName + 'RESERVED'}
-      </Text>
-      {debug ? <Text style={{ color: '#000000', textAlign: 'center' }}>{'VERSION : ' + version}</Text> : null}
+      </UGText>
+      {debug ? <UGText style={{ color: '#000000', textAlign: 'center' }}>{'VERSION : ' + version}</UGText> : null}
     </View>
   )
 }
