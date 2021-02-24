@@ -248,7 +248,7 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
             <TouchableWithoutFeedback onPress={() => PushHelper.pushCategory(7, 21)}>
               <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
-                       source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png' }} />
+                       source={{ uri: 'http://test05.fhptdev.com/views/mobileTemplate/20/images/Cdeposit.png' }} />
                 <UGText style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>充值</UGText>
               </View>
             </TouchableWithoutFeedback>
@@ -256,21 +256,21 @@ const LLMinePage = ({ navigation, setProps }: UGBasePageProps) => {
             }>
               <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
-                       source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png' }} />
+                       source={{ uri: 'http://test05.fhptdev.com/views/mobileTemplate/20/images/Cwithdraw.png' }} />
                 <UGText style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>提现</UGText>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(transferItem.code)}>
               <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
-                       source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png' }} />
+                       source={{ uri: 'http://test05.fhptdev.com/views/mobileTemplate/20/images/Cconversion.png' }} />
                 <UGText style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>额度转换</UGText>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(missionItem.code)}>
               <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
-                       source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png' }} />
+                       source={{ uri: 'http://test05.fhptdev.com/views/mobileTemplate/20/images/Ctask.png' }} />
                 <UGText style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>任务中心</UGText>
               </View>
             </TouchableWithoutFeedback>

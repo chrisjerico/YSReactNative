@@ -2,7 +2,7 @@
 type ImageType = 'png' | 'jpg' | 'gif' | 'svg'
 
 export enum UGImageHost {
-  test5 = 'http://test05.6yc.com',
+  test5 = 'http://test05.fhptdev.com',
   test10 = 'http://test10.fhptdev.com',
   t132f = 'http://t132f.fhptcdn.com',
 

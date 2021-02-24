@@ -87,7 +87,7 @@ const ProfileBlock = ({
             <TouchableWithoutFeedback onPress={onPressTaskCenter}>
               <FastImage
                 source={{
-                  uri: 'http://test05.6yc.com/static/vuePublic/images/my/userInfo/missionhall.png',
+                  uri: 'http://test05.fhptdev.com/static/vuePublic/images/my/userInfo/missionhall.png',
                 }}
                 style={{
                   width: '100%',
@@ -103,7 +103,7 @@ const ProfileBlock = ({
               <TouchableWithoutFeedback onPress={onPressDaySign}>
                 <FastImage
                   source={{
-                    uri: 'http://test05.6yc.com/static/vuePublic/images/my/userInfo/dailysign.png',
+                    uri: 'http://test05.fhptdev.com/static/vuePublic/images/my/userInfo/dailysign.png',
                   }}
                   style={{
                     width: '100%',

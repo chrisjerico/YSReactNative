@@ -18,7 +18,7 @@ export const HomeHeaderButtonBar = ({logoIcon}: { logoIcon: string }) => {
                 <View style={{flex: 1}}/>
                 <TouchableWithoutFeedback onPress={onPress}>
                     <Image style={{width: 30, height: 30}}
-                           source={{uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/zxkf2.png'}}/>
+                           source={{uri: 'http://test05.fhptdev.com/views/mobileTemplate/20/images/zxkf2.png'}}/>
                 </TouchableWithoutFeedback>
             </View>
         </SafeAreaView>
