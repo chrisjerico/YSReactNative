@@ -44,6 +44,7 @@ export const OnlineService = () => {
     if (!isLogin && !guestToken) {
       api.user.guestLogin().useSuccess(({ data }) => {
         const { "API-SID": token } = data
+        ugLog('token ==',token)
         setGuestToken(token)
       })
     }
@@ -58,15 +59,19 @@ export const OnlineService = () => {
       if (!anyEmpty(url)) {
         const token = isLogin ? userToken : guestToken
         if (checkUrlWithString(url)) {
+          const token = isLogin ? userToken : guestToken
+          ugLog('token ==',token)
           //拼接URl
           retURl = `${url}?from=app&hideHeader=1&token=${token}`;     
         } else {
           var strArray = AppDefine.host.split('://')
           ugLog('strArray[1] ===', strArray[1])
           if (url.indexOf(strArray[1]) > 0) {
+            const token = isLogin ? userToken : guestToken
             //拼接URl
             retURl = `http://${url}?from=app&hideHeader=1&token=${token}`;
           } else {
+            const token = isLogin ? userToken : guestToken
             //拼接URl
             retURl = `${AppDefine.host}/${url}?from=app&hideHeader=1&token=${token}`;
           }
