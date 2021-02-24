@@ -6,7 +6,7 @@ import { scale } from '../../tools/Scale'
 import { icon_任务弹窗, icon_利息宝, icon_刮刮乐, icon_砸金蛋, icon_大转盘, Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
-import { img_images } from '../../../Res/icon'
+import { img_images, UGImageHost, useHtml5Image } from '../../../Res/icon'
 import { appConfig } from '../../../../../config'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import { anyEmpty, anyString } from '../../tools/Ext'
@@ -102,7 +102,7 @@ const Activitys = ({ refreshing, uid, isTest, redBag, roulette, redBagLogo:redBa
         containerStyle={{ top: scale(355), right: 0 }}
         enableFastImage={false}
         show={roulette && (roulette[0]?.param?.visitor_show == "0" || (uid && !isTest))}
-        logo={anyString(turntableLogo) ?? icon_大转盘}
+        logo={icon_大转盘 ?? useHtml5Image(UGImageHost.test10).img_home('dzp')}
         onPress={() => {
           // 大转盘
           PushHelper.pushWheel(roulette)
