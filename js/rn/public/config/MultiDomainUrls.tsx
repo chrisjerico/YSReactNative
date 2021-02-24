@@ -29,6 +29,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'test20': [
     'http://t020f.fhptdev.com',
   ],
+  'test30f': [
+    'http://test30.fhptdev.com',
+  ],
   'zora': [
     'http://zhibot071f.fhptcdn.com',
   ],
@@ -69,7 +72,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t029cz.fhptcdn.com',
   ],
   'txt30': [
-    'http://test30f.fhptcdn.com',
+    'http://test30.fhptdev.com',
   ],
   'txt32': [
     'http://t005f.fhptcdn.com',
