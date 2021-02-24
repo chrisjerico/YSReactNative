@@ -14,11 +14,26 @@ import { anyEmpty } from '../tools/Ext'
  */
 
 const MultiDomainUrls: { [x: string]: Array<string> } = {
+  't005': [
+    'http://t005f.fhptdev.com',
+  ],
+  'testadaf': [
+    'http://t059f.fhptdev.com',
+  ],
+  'test60f': [
+    'http://t060f.fhptdev.com',
+  ],
+  'test61f': [
+    'http://t061f.fhptdev.com',
+  ],
+  'test20': [
+    'http://t020f.fhptdev.com',
+  ],
   'zora': [
     'http://zhibot071f.fhptcdn.com',
   ],
   'txt005': [
-    'http://t005f.fhptcdn.com',
+    'http://t005f.fhptdev.com',
   ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
@@ -45,7 +60,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test19.6yc.com',
   ],
   'txt20': [
-    'http://test20.6yc.com',
+    'http://t020f.fhptdev.com',
   ],
   'txt29': [
     'http://test29f.fhptcdn.com',
@@ -66,7 +81,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test5804.ccpt.site',
   ],
   'txtada': [
-    'http://testadaf.6yc.com',
+    'http://t059f.fhptdev.com',
   ],
   'txtada_b': [
     'http://testadafb.fhptcdn.com',
@@ -75,10 +90,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://testadafc.fhptcdn.com',
   ],
   'txt60': [
-    'http://test60f.6yc.com',
+    'http://t060f.fhptdev.com',
   ],
   'txt61': [
-    'http://test61f.6yc.com',
+    'http://t061f.fhptdev.com',
   ],
   'txt61b': [
     'http://test61a.fhptcdn.com',
