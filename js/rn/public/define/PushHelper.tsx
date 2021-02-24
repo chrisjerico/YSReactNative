@@ -151,10 +151,10 @@ export default class PushHelper {
 
     switch (Platform.OS) {
       case 'ios':
-      
-      if (anyEmpty(game.gameId)) {
-        game.gameId = game.id
-      }
+
+        if (anyEmpty(game.gameId)) {
+          game.gameId = game.id
+        }
 
         OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game])
         break
