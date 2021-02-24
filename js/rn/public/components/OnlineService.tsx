@@ -89,7 +89,7 @@ export const OnlineService = () => {
     <View style={{ flex: 1, }}>
       {/* 下拉控件 */}
       <View style={[
-        { height: scale(66), marginTop: AppDefine.safeArea.top + 8, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 },
+        { height: scale(66), marginTop: AppDefine.safeArea.top + 5, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 },
         Platform.OS == 'ios' ? { zIndex: 1 } : null,
       ]}>
         <DropDownPicker
