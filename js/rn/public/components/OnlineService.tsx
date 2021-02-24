@@ -49,29 +49,33 @@ export const OnlineService = () => {
     }
   }, [userToken])
 
-  ugLog('AppDefine.host ==',AppDefine.host)
+  ugLog('AppDefine.host ==', AppDefine.host)
 
   //返回最后的url
   function getWebURL() {
     let retURl: string;
     [zxkfUrl, zxkfUrl2].forEach((url) => {
       if (!anyEmpty(url)) {
+        const token = isLogin ? userToken : guestToken
         if (checkUrlWithString(url)) {
           //拼接URl
-          const token = isLogin ? userToken : guestToken
-          retURl = `${url}?from=app&hideHeader=1&token=${token}`;
-          return
+          retURl = `${url}?from=app&hideHeader=1&token=${token}`;     
         } else {
-          //拼接URl
-          const token = isLogin ? userToken : guestToken
-          retURl = `${AppDefine.host}/${url}?from=app&hideHeader=1&token=${token}`;
-          return
+          var strArray = AppDefine.host.split('://')
+          ugLog('strArray[1] ===', strArray[1])
+          if (url.indexOf(strArray[1]) > 0) {
+            //拼接URl
+            retURl = `http://${url}?from=app&hideHeader=1&token=${token}`;
+          } else {
+            //拼接URl
+            retURl = `${AppDefine.host}/${url}?from=app&hideHeader=1&token=${token}`;
+          }
+         
         }
-
+        return;
       }
     })
-    ugLog('retURl ==',retURl)
-
+    ugLog('retURl ==', retURl)
     if (!retURl) {
       ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
       ugLog('zxkfUrl1 链接有问题==', zxkfUrl)
