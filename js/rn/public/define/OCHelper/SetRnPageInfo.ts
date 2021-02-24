@@ -172,6 +172,14 @@ export async function setRnPageInfo(force = false) {
     }
   }
 
+  // 在线客服
+  pages.push({
+    rnName: PageName.OnlineService,
+    userCenterItemCode: 14,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  })
 
   // 我的提款账户
   pages.push({
