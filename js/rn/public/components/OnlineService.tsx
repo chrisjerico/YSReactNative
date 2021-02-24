@@ -49,17 +49,29 @@ export const OnlineService = () => {
     }
   }, [userToken])
 
+  ugLog('AppDefine.host ==',AppDefine.host)
+
   //返回最后的url
   function getWebURL() {
     let retURl: string;
     [zxkfUrl, zxkfUrl2].forEach((url) => {
-      if (!anyEmpty(url && checkUrlWithString(url))) {
-        //拼接URl
-        const token = isLogin ? userToken : guestToken
-        retURl = `${url}?from=app&hideHeader=1&token=${token}`;
-        return
+      if (!anyEmpty(url)) {
+        if (checkUrlWithString(url)) {
+          //拼接URl
+          const token = isLogin ? userToken : guestToken
+          retURl = `${url}?from=app&hideHeader=1&token=${token}`;
+          return
+        } else {
+          //拼接URl
+          const token = isLogin ? userToken : guestToken
+          retURl = `${AppDefine.host}/${url}?from=app&hideHeader=1&token=${token}`;
+          return
+        }
+
       }
     })
+    ugLog('retURl ==',retURl)
+
     if (!retURl) {
       ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
       ugLog('zxkfUrl1 链接有问题==', zxkfUrl)
@@ -74,7 +86,7 @@ export const OnlineService = () => {
       {/* 下拉控件 */}
       <View style={[
         { height: scale(66), marginTop: AppDefine.safeArea.top + 8, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 },
-        Platform.OS == 'ios' ? {zIndex: 1} : null,
+        Platform.OS == 'ios' ? { zIndex: 1 } : null,
       ]}>
         <DropDownPicker
           items={
