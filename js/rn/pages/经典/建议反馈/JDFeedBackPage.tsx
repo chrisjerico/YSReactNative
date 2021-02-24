@@ -11,6 +11,7 @@ import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
 import { push } from '../../../public/navigation/RootNavigation';
 import { PageName } from '../../../public/navigation/Navigation';
 import { img_images, img_vueTemplate } from '../../../Res/icon';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const JDFeedBackPage = () => {
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([
@@ -59,10 +60,10 @@ const JDFeedBackPage = () => {
         if (item.idKey == '1') {
           PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           // OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [14])
-        } 
+        }
         else if (item.idKey == '2') {
           push(PageName.JDWriteMessagePage, {feedType:0})
-        } 
+        }
         else if (item.idKey == '3') {
           push(PageName.JDWriteMessagePage, {feedType:1})
         }
@@ -72,18 +73,18 @@ const JDFeedBackPage = () => {
             args1: ['UGFeedBackRecordController'],
           }, true])
         }
-       
+
 
       }}>
         <Image style={[{ height: 40, width: 40, marginTop: 25 }]} source={{ uri: item.imgUrl }} />
         <View style={[{ flex: 1, marginTop: 14 }]}>
           <View style={{ flexDirection: 'row' }}>
-            <Text style={[{ fontSize: 15, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{item.name}</Text>
+            <UGText style={[{ fontSize: 15, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{item.name}</UGText>
             <View style={{ flex: 1 }} />
-            <Text style={[{ fontSize: 20, color: Skin1.textColor1 }]}>{'›'}</Text>
+            <UGText style={[{ fontSize: 20, color: Skin1.textColor1 }]}>{'›'}</UGText>
           </View >
           <View style={[{ height: 1.5, backgroundColor: '#AEAEAE', marginLeft: 11, marginTop: 8 }]}></View>
-          <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginLeft: 10, marginTop: 10, marginRight: 70 }]}>{item.remark}</Text>
+          <UGText style={[{ fontSize: 13, color: Skin1.textColor2, marginLeft: 10, marginTop: 10, marginRight: 70 }]}>{item.remark}</UGText>
         </View>
       </TouchableOpacity>
     );

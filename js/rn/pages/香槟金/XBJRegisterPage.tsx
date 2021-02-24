@@ -26,10 +26,12 @@ import APIRouter from '../../public/network/APIRouter';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { img_assets } from '../../Res/icon';
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface XBJRegisterVars {
   referrerId?: string;// 推荐人ID
+  inviteCode?: string;// 邀请码
   account?: string;// 账号
   pwd1?: string;// 密码
   pwd2?: string;// 确认密码
@@ -79,12 +81,16 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       smsVerify, // 是否需要短信验证码
       pass_length_min,
       pass_length_max,
+      inviteCodeSwitch,
+      inviteWord = '邀请码',
     } = UGStore.globalProps?.sysConf;
     let err: string;
-    const pwdWrongLength: boolean = v.pwd1?.length < pass_length_min || v.pwd1?.length > pass_length_max;
-    if (hide_reco == 2) {
+    const pwdWrongLength: boolean = v.pwd1?.length < parseInt(pass_length_min) || v.pwd1?.length > parseInt(pass_length_max);
+    if (hide_reco == '2') {
       err = !v.referrerId?.length ? '请输入推荐人ID' : undefined;
       err = v.referrerId?.length > 10 ? '长度在1到10之间' : undefined;
+    } else if (inviteCodeSwitch == '2' && !v.inviteCode?.length) {
+      err = '请输入' + inviteWord;
     } else if (!v.account?.trim().length) {
       err = '请输入账号';
     } else if (v.account?.length < 6 || v.account?.length > 15 || !v.account?.isIntegerAndLetter) {
@@ -95,34 +101,34 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       err = '请输入确认密码';
     } else if (v.pwd1 !== v.pwd2) {
       err = '两次输入的密码不一致';
-    } else if (pass_limit == 1) {
+    } else if (pass_limit == '1') {
       if (pwdWrongLength || !v.pwd1?.isIntegerAndLetter) {
         err = `请输入${pass_length_min}到${pass_length_max}位数字字母组成的密码`;
       }
-    } else if (pass_limit == 2) {
+    } else if (pass_limit == '2') {
       if (pwdWrongLength || !v.pwd1?.isVisibleASCII) {
         err = `请输入${pass_length_min}到${pass_length_max}位数字字母符号组成的密码`;
       }
     } else if (pwdWrongLength) {
       err = `请输入${pass_length_min}到${pass_length_max}位长度的密码`;
-    } else if (reg_name == 2) {
+    } else if (reg_name == '2') {
       err = !v.realname?.length ? '请输入真实姓名' : undefined;
       err = v.realname?.length < 2 || !v.realname?.isChinese ? '请输入正确的真实姓名' : undefined;
-    } else if (reg_qq == 2 && !v.qq?.length) {
+    } else if (reg_qq == '2' && !v.qq?.length) {
       err = '请输入QQ号';
-    } else if (reg_wx == 2 && !v.wechat?.length) {
+    } else if (reg_wx == '2' && !v.wechat?.length) {
       err = '请输入微信号';
-    } else if (reg_phone == 2) {
+    } else if (reg_phone == '2') {
       err = !v.phone?.length ? '请输入手机号' : undefined;
       err = !v.phone?.isMobile ? '请输入正确的手机号' : undefined;
-    } else if (reg_email == 2) {
+    } else if (reg_email == '2') {
       err = !v.email?.length ? '请输入邮箱' : undefined;
       err = !v.email?.isEmail ? '请输入正确的邮箱' : undefined;
-    } else if (reg_fundpwd == 2 && v.fundPwd?.length < 4) {
+    } else if (reg_fundpwd == '2' && v.fundPwd?.length < 4) {
       err = '请输入4位数字的取款密码';
-    } else if (reg_vcode == 1 && !v.letterCode?.length) {
+    } else if (reg_vcode == '1' && !v.letterCode?.length) {
       err = '请输入验证码';
-    } else if (smsVerify == true && !v.smsCode?.length) {
+    } else if (smsVerify == '1' && !v.smsCode?.length) {
       err = '请输入短信验证码';
     }
     if (err) {
@@ -148,6 +154,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       slideCode: new SlideCodeModel(v.slideCode),
       email: v.email,
       regType: props.isAgent ? 'agent' : 'user',
+      inviteCode: v.inviteCode,
     }).then((sm) => {
       sm.useSuccess(({ data: { autoLogin } }) => {
         showSuccess('注册成功');
@@ -157,7 +164,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     });
   }
 
-  const { agentRegbutton = '1', domainBindAgentId, hide_reco, reg_name, reg_fundpwd, reg_qq, reg_wx, reg_phone, reg_email, reg_vcode, smsVerify, mobile_logo } = UGStore.globalProps.sysConf;
+  const { agentRegbutton = '1', domainBindAgentId, hide_reco, inviteCodeSwitch, inviteWord = '邀请码', reg_name, reg_fundpwd, reg_qq, reg_wx, reg_phone, reg_email, reg_vcode, smsVerify, mobile_logo } = UGStore.globalProps.sysConf;
   const selectedColor = 'rgba(0, 0, 0, 0.5)';
 
   return (
@@ -171,10 +178,10 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
             jumpTo(PageName.XBJLoginPage);
           }}>
           <FastImage source={{ uri: img_assets('entry_login_toggle_btn') }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
-          <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>返回登录</Text>
+          <UGText style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>返回登录</UGText>
         </TouchableOpacity>
         <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.3)', padding: 24 }}>
-          <Text style={{ fontSize: 20, fontWeight: '500', color: 'white', textAlign: 'center' }}>注册</Text>
+          <UGText style={{ fontSize: 20, fontWeight: '500', color: 'white', textAlign: 'center' }}>注册</UGText>
           <View
             style={{
               marginTop: agentRegbutton == '1' ? 20 : 0,
@@ -205,9 +212,16 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               }}
             />
           </View>
-          {hide_reco != 0 && <UGTextField
+          {inviteCodeSwitch != '0' && <UGTextField
+            type="邀请码"
+            placeholder={inviteWord + (inviteCodeSwitch == '1' ? '（选填）' : '')}
+            onChangeText={text => {
+              v.inviteCode = text;
+            }}
+          />}
+          {hide_reco != '0' && <UGTextField
             type="推荐人ID"
-            placeholder={'推荐人ID' + (hide_reco == 1 ? '（选填）' : '')}
+            placeholder={'推荐人ID' + (hide_reco == '1' ? '（选填）' : '')}
             value={parseInt(domainBindAgentId) > 0 ? domainBindAgentId : ''}
             editable={parseInt(domainBindAgentId) <= 0}
             onChangeText={text => {
@@ -235,42 +249,42 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.pwd2 = text;
             }}
           />
-          {reg_name != 0 && <UGTextField
+          {reg_name != '0' && <UGTextField
             type="真实姓名"
-            placeholder={'真实姓名' + (reg_name == 1 ? '（选填）' : '')}
+            placeholder={'真实姓名' + (reg_name == '1' ? '（选填）' : '')}
             onChangeText={text => {
               v.realname = text;
             }}
           />}
-          {reg_qq != 0 && <UGTextField
+          {reg_qq != '0' && <UGTextField
             type="QQ"
-            placeholder={'QQ号' + (reg_qq == 1 ? '（选填）' : '')}
+            placeholder={'QQ号' + (reg_qq == '1' ? '（选填）' : '')}
             onChangeText={text => {
               v.qq = text;
             }}
           />}
-          {reg_wx != 0 && <UGTextField
+          {reg_wx != '0' && <UGTextField
             type="微信"
-            placeholder={'微信号' + (reg_wx == 1 ? '（选填）' : '')}
+            placeholder={'微信号' + (reg_wx == '1' ? '（选填）' : '')}
             onChangeText={text => {
               v.wechat = text;
             }}
           />}
-          {reg_email != 0 && <UGTextField
+          {reg_email != '0' && <UGTextField
             type="邮箱"
-            placeholder={'邮箱地址' + (reg_email == 1 ? '（选填）' : '')}
+            placeholder={'邮箱地址' + (reg_email == '1' ? '（选填）' : '')}
             onChangeText={text => {
               v.email = text;
             }}
           />}
-          {(reg_phone != 0 || smsVerify == true) && <UGTextField
+          {(reg_phone != '0' || smsVerify == '1') && <UGTextField
             type="手机号"
-            placeholder={'手机号' + (reg_phone == 1 ? '（选填）' : '')}
+            placeholder={'手机号' + (reg_phone == '1' ? '（选填）' : '')}
             onChangeText={text => {
               v.phone = text;
             }}
           />}
-          {smsVerify != false && <UGTextField
+          {smsVerify != '0' && <UGTextField
             type="短信验证码"
             didSmsButtonClick={startCountdown => {
               api.secure.smsCaptcha(v.phone).useSuccess(() => {
@@ -281,22 +295,22 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.smsCode = text;
             }}
           />}
-          {reg_vcode == 1 && <UGTextField
+          {reg_vcode == '1' && <UGTextField
             type="字母验证码"
             onChangeText={text => {
               v.letterCode = text;
             }}
           />}
-          {reg_fundpwd != 0 && <UGTextField
+          {reg_fundpwd != '0' && <UGTextField
             type="密码"
             maxLength={4}
-            placeholder={'取款密码' + (reg_fundpwd == 1 ? '（选填）' : '')}
+            placeholder={'取款密码' + (reg_fundpwd == '1' ? '（选填）' : '')}
             keyboardType="number-pad"
             onChangeText={text => {
               v.fundPwd = text;
             }}
           />}
-          <SlidingVerification hidden={reg_vcode == 0} setReload={(reload) => {
+          <SlidingVerification hidden={reg_vcode == '0'} setReload={(reload) => {
             v.reloadSlide = reload;
           }} didVerified={slideCode => {
             v.slideCode = slideCode

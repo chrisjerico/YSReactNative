@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TranslateXTransform, TranslateYTransform, View } from 'react-native';
+import { StyleProp, TranslateXTransform, TranslateYTransform, View, ViewStyle } from 'react-native';
 import Animated, { Easing } from 'react-native-reanimated'
 import AppDefine from '../../define/AppDefine'
 
@@ -11,9 +11,10 @@ interface UGAnimationFadeProps {
   children: any;
   show?: boolean;
   backgroundColor?: string;
+  style?: StyleProp<ViewStyle>
 }
 export const AnimationFadeView = (props: UGAnimationFadeProps) => {
-  const { show, backgroundColor } = props;
+  const { show, backgroundColor, style } = props;
   const { current: v } = useRef({
     opacity: new Animated.Value(0),
     scale: new Animated.Value(0.6)
@@ -33,8 +34,8 @@ export const AnimationFadeView = (props: UGAnimationFadeProps) => {
   }, [show]);
 
   return (
-    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: AppDefine.width, height: AppDefine.height, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: backgroundColor }, { opacity: v.opacity }]}>
-      <Animated.View style={[{ transform: [{ scale: v.scale, }] }]}>
+    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: '100%', height: '100%', backgroundColor: backgroundColor }, { opacity: v.opacity }]}>
+      <Animated.View style={[{ transform: [{ scale: v.scale, }] }, { width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', }, style]}>
         {props?.children}
       </Animated.View>
     </Animated.View>
@@ -52,9 +53,10 @@ interface UGAnimationMoveProps {
   show?: boolean;
   direction?: 'left' | 'right' | 'top' | 'bottom';
   backgroundColor?: string;
+  style?: StyleProp<ViewStyle>
 }
 export const AnimationMoveView = (props: UGAnimationMoveProps) => {
-  const { show, direction = 'bottom', backgroundColor } = props;
+  const { show, direction = 'bottom', backgroundColor, style } = props;
   let startValue: number;
   switch (direction) {
     case 'left':
@@ -89,13 +91,14 @@ export const AnimationMoveView = (props: UGAnimationMoveProps) => {
   }, [show]);
 
   return (
-    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: AppDefine.width, height: AppDefine.height, alignItems: 'center', backgroundColor: backgroundColor }, { opacity: v.opacity }]}>
+    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: '100%', height: '100%', backgroundColor: backgroundColor }, { opacity: v.opacity }]}>
       <Animated.View style={[{
         transform: [{
           translateX: direction == 'left' || direction == 'right' ? v.offset : 0,
           translateY: direction == 'top' || direction == 'bottom' ? v.offset : 0,
         }]
-      }
+      }, { width: '100%', height: '100%', alignItems: 'center', },
+        style,
       ]}>
         {props?.children}
       </Animated.View>

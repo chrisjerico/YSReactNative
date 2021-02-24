@@ -46,7 +46,7 @@ export default class ExtUGApplication {
     PageName.GameHallPage,
     PageName.FreedomHallPage,
     PageName.LEFMinePage,
-    PageName.UpdateVersionPage,    
+    PageName.UpdateVersionPage,
     PageName.GameLobbyPage,
     PageName.TwoLevelGames,
     PageName.OtherRecord,
@@ -85,7 +85,7 @@ export default class ExtUGApplication {
         let currentScene
         // B_DEBUG ?
         //   currentScene = PageName[PageName.WNZHomePage] :
-          currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)]
+        currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)]
         ugLog('ext currentScene=', currentScene)
         if (anyEmpty(currentScene)) {
           initName = PageName.UpdateVersionPage
@@ -101,6 +101,8 @@ export default class ExtUGApplication {
    * 该暂存的UI是不是 tab UI
    */
   static tabUI = () => {
+    if(B_DEBUG) return null
+
     const pageName = ExtUGApplication.syncCurrentPage()
     const isTab = ExtUGApplication.TAB_LIST.includes(pageName)
     if (isTab) return pageName
@@ -112,6 +114,8 @@ export default class ExtUGApplication {
    * 该暂存的UI是不是 stack UI
    */
   static stackUI = () => {
+    if(B_DEBUG) return null
+
     const pageName = ExtUGApplication.syncCurrentPage()
     const isStack = ExtUGApplication.STACK_LIST.includes(pageName)
     if (isStack) return pageName

@@ -7,12 +7,14 @@ import { anyEmpty } from '../../../../public/tools/Ext'
 import EmptyView from '../../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
+import LotteryBall from '../../../../public/components/view/LotteryBall'
 import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
 import UseHallGameList from './UseHallGameList'
-import { BallStyles } from '../../../bet/const/LotteryConst'
+import { BallStyles, BallType, LCode, lotteryBallStyle } from '../../../bet/const/LotteryConst'
+import { doubleDigit } from '../../../../public/tools/StringUtil'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -48,20 +50,20 @@ const HallGameListComponent = ({
    */
   const renderBalls = (gameType?: string,
                        ballStr?: string) => {
-    let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
+    let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => doubleDigit(item)) //球的数组
     let lastBall = balls.pop() //最后一个球
-    let ballStyle = BallStyles[gameType] //球的样式
-    ballStyle = anyEmpty(ballStyle) ? BallStyles['lhc'] : ballStyle
+    let ballStyle = lotteryBallStyle(gameType) //球的样式
 
     let ballView
     switch (gameType) {
-      case 'bjkl8'://北京快8
+      case LCode.bjkl8://北京快8
         ballView = (
           [
             <View style={_styles.ball_wrap_container}>
               {
 
-                [...balls, lastBall]?.map((item) => <LotteryBall type={ballStyle}
+                [...balls, lastBall]?.map((item) => <LotteryBall key={item}
+                                                                 type={ballStyle}
                                                                  size={scale(38)}
                                                                  ballNumber={item}/>)
               }
@@ -69,15 +71,16 @@ const HallGameListComponent = ({
           ]
         )
         break
-      case 'pk10'://赛车系列
-      case 'xyft'://飞艇系列
-      case 'pk10nn'://牛牛系列
+      case LCode.pk10://赛车系列
+      case LCode.xyft://飞艇系列
+      case LCode.pk10nn://牛牛系列
         ballView = (
           [
             <View style={CommStyles.flex}/>,
             <View style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item) => <LotteryBall type={ballStyle}
+                [...balls, lastBall]?.map((item) => <LotteryBall key={item}
+                                                                 type={ballStyle}
                                                                  size={scale(39)}
                                                                  ballNumber={item}/>)
               }
@@ -85,13 +88,14 @@ const HallGameListComponent = ({
           ]
         )
         break
-      case 'dlt'://大乐透系列
+      case LCode.dlt://大乐透系列
         ballView = (
           [
             <View style={CommStyles.flex}/>,
             <View style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item, index) => <LotteryBall type={ballStyle}
+                [...balls, lastBall]?.map((item, index) => <LotteryBall key={item}
+                                                                        type={ballStyle}
                                                                         ballColor={index < balls.length - 1 ?
                                                                           UGColor.RedColor5 :
                                                                           UGColor.BlueColor6}
@@ -101,19 +105,24 @@ const HallGameListComponent = ({
           ]
         )
         break
-      case 'lhc'://六合彩
+      case LCode.lhc://六合彩
         ballView = (
           [
-            <View style={CommStyles.flex}/>,
-            <View style={_styles.ball_container}>
+            <View key={'0'}
+                  style={CommStyles.flex}/>,
+            <View key={'1'}
+                  style={_styles.ball_container}>
               {
-                [
-                  balls?.map((item) => <LotteryBall type={ballStyle}
-                                                    ballNumber={item}/>),
-                  lastBall && <Text style={_styles.text_content_plus}>{'+'}</Text>,
-                  lastBall && <LotteryBall type={ballStyle}
-                                           ballNumber={lastBall}/>,
-                ]
+                balls?.map((item) => <LotteryBall key={item}
+                                                  type={ballStyle}
+                                                  ballNumber={item}/>)
+              }
+              {
+                lastBall && <UGText style={_styles.text_content_plus}>{'+'}</UGText>
+              }
+              {
+                lastBall && <LotteryBall type={ballStyle}
+                                         ballNumber={lastBall}/>
               }
             </View>,
           ]
@@ -122,10 +131,13 @@ const HallGameListComponent = ({
       default:
         ballView = (
           [
-            <View style={CommStyles.flex}/>,
-            <View style={_styles.ball_container}>
+            <View key={'00'}
+                  style={CommStyles.flex}/>,
+            <View key={'11'}
+                  style={_styles.ball_container}>
               {
-                [...balls, lastBall]?.map((item) => <LotteryBall type={ballStyle}
+                [...balls, lastBall]?.map((item) => <LotteryBall key={item}
+                                                                 type={ballStyle}
                                                                  ballNumber={item}/>)
               }
             </View>,
@@ -134,12 +146,14 @@ const HallGameListComponent = ({
         break
     }
 
-    return anyEmpty(balls) ?
+    return anyEmpty(balls)
+      ?
       <View style={_styles.start_game_container} pointerEvents={'none'}>
         <Button containerStyle={[_styles.start_game_button, { borderColor: Skin1.themeColor }]}
                 titleStyle={[_styles.start_game_text, { color: Skin1.themeColor }]}
                 title={'立即游戏'}/>
-      </View> :
+      </View>
+      :
       ballView
   }
 
@@ -149,7 +163,8 @@ const HallGameListComponent = ({
    */
   const renderItemContent = (item: HallGameListData) => {
     return (
-      <TouchableWithoutFeedback onPress={() => {
+      <TouchableWithoutFeedback key={item?.name}
+                                onPress={() => {
         PushHelper.pushHomeGame(
           Object.assign({}, item, {
             seriesId: '1',
@@ -158,25 +173,24 @@ const HallGameListComponent = ({
           })
         )
       }}>
-        <View style={_styles.ball_item_container}>
+        <View key={item?.name}
+              style={_styles.ball_item_container}>
           <FastImage style={_styles.item_logo}
                      resizeMode={'contain'}
                      source={{ uri: item.pic ?? item.logo }}/>
           <View style={CommStyles.flex}>
-            <Text style={_styles.text_content_title}>{item.title}</Text>
+            <UGText style={_styles.text_content_title}>{item.title}</UGText>
+            {renderBalls(item?.parentGameType, item?.preNum)}
             {
-              [
-                renderBalls(item?.parentGameType, item?.preNum),
-                <View style={_styles.date_container}>
-                  {
-                    anyEmpty(item?.preDisplayNumber) ? null :
-                      <Text style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</Text>
-                  }
-                  {
-                    anyEmpty(item?.preOpenTime) ? null : <Text style={_styles.text_content_date}>{item.preOpenTime}</Text>
-                  }
-                </View>,
-              ]
+              <View style={_styles.date_container}>
+                {
+                  anyEmpty(item?.preDisplayNumber) ? null :
+                    <UGText style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</UGText>
+                }
+                {
+                  anyEmpty(item?.preOpenTime) ? null : <UGText style={_styles.text_content_date}>{item.preOpenTime}</UGText>
+                }
+              </View>
             }
           </View>
         </View>
@@ -194,8 +208,8 @@ const HallGameListComponent = ({
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${item}-${index}`}
                         data={gameData?.list}
-                        ListHeaderComponent={<View style={{height:5}} />}
-                        ListFooterComponent={<View style={{height:80}} />}
+                        ListHeaderComponent={<View key={'header'} style={{height:5}} />}
+                        ListFooterComponent={<View key={'footer'} style={{height:80}} />}
                         renderItem={({ item, index }) => {
                           return (
                             renderItemContent(item)
@@ -254,10 +268,10 @@ const _styles = StyleSheet.create({
   start_game_button: {
     width: scale(180),
     height: scale(40),
-    borderTopLeftRadius: scale(38),
-    borderTopRightRadius: scale(16),
-    borderBottomRightRadius: scale(38),
-    borderBottomLeftRadius: scale(16),
+    borderTopLeftRadius: scale(32),
+    borderTopRightRadius: scale(24),
+    borderBottomRightRadius: scale(32),
+    borderBottomLeftRadius: scale(24),
     borderWidth: scale(1),
   },
   start_game_text: {

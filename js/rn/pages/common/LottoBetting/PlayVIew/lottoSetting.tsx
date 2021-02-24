@@ -1,6 +1,7 @@
 import { number } from "prop-types";
 import { anyEmpty } from '../../../../public/tools/Ext'
 import { Res } from '../../../../Res/icon/Res'
+import { doubleDigit } from '../../../../public/tools/StringUtil'
 
 export type ShengXiaoType = "鼠" | "牛" | "虎" | "兔" | "龙" | "蛇" | "马" | "羊" | "猴" | "鸡" | "狗" | "猪"
 export interface ShengXiaoValueProps {
@@ -41,10 +42,12 @@ export const getShengXiaoString = (num: number): ShengXiaoType => {
 const redSet = ["01", "02", "07", "08", "12", "13", "18", "19", "23", "24", "30", "34", "35", "40", "45", "46"]
 const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36", "37", "41", "42", "47", "48"]
 const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
-export const getHKballColor = (BallName: string) => {
-  if (redSet.includes(BallName)) {
+export const getHKballColor = (ballName: string) => {
+  const remainder = Number(ballName)%6
+
+  if (remainder == 1 || remainder == 2) {
     return '#e23'
-  } else if (blueSet.includes(BallName)) {
+  } else if (remainder == 3 || remainder == 4) {
     return '#4bf'
   } else {
     return '#3b6'
@@ -56,9 +59,11 @@ export const getHKballColor = (BallName: string) => {
  * @param BallName
  */
 export const getColorfulBallPic = (ballName: string) => {
-  if (redSet.includes(ballName)) {
+  const remainder = Number(ballName)%6
+
+  if (remainder == 1 || remainder == 2) {
     return Res.red_ball
-  } else if (blueSet.includes(ballName)) {
+  } else if (remainder == 3 || remainder == 4) {
     return Res.blue_ball
   } else {
     return Res.green_ball
@@ -67,35 +72,35 @@ export const getColorfulBallPic = (ballName: string) => {
 
 /**
  * 得到骰子
- * @param BallName
+ * @param ballName
  */
 export const getSZBallPic = (ballName: string) => {
-  const color = SzPics[ballName]
-  return !anyEmpty(color) ? color : SzPics['01']
+  const color = SzPics[Number(ballName)%7]
+  return !anyEmpty(color) ? color : SzPics[1]
 }
 
 /**
  * 得到农场
- * @param BallName
+ * @param ballName
  */
 export const getVegetableBallPic = (ballName: string) => {
-  const color = VegetablePics[ballName]
-  return !anyEmpty(color) ? color : VegetablePics['01']
+  const color = VegetablePics[Number(ballName)%21]
+  return !anyEmpty(color) ? color : VegetablePics[1]
 }
 
 /**
  * 得到方格颜色
- * @param BallName
+ * @param ballName
  */
 export const getSQBallColor = (ballName: string) => {
-  const color = SquareColors[ballName]
-  return !anyEmpty(color) ? color : SquareColors['01']
+  const color = SquareColors[Number(ballName)%11]
+  return !anyEmpty(color) ? color : SquareColors[1]
 }
 
 export function factorial(m, n) {
-  var num = 1;
-  var count = 0;
-  for (var i = m; i > 0; i--) {
+  let num = 1;
+  let count = 0;
+  for (let i = m; i > 0; i--) {
     if (count == n) {
       break;
     }
@@ -113,52 +118,52 @@ export function combination(m, n) {
  * 方格颜色
  */
 const SquareColors = {
-  '01': '#E1D463',
-  '02': '#008BF9',
-  '03': '#4C4D51',
-  '04': '#F47A00',
-  '05': '#63D2D2',
-  '06': '#420AFF',
-  '07': '#AEA6A6',
-  '08': '#FF0400',
-  '09': '#770100',
-  '10': '#2BC610',
+  1: '#E1D463',
+  2: '#008BF9',
+  3: '#4C4D51',
+  4: '#F47A00',
+  5: '#63D2D2',
+  6: '#420AFF',
+  7: '#AEA6A6',
+  8: '#FF0400',
+  9: '#770100',
+  10: '#2BC610',
 }
 
 /**
  * 骰子图片
  */
 const SzPics = {
-  '01': Res.sz1,
-  '02': Res.sz2,
-  '03': Res.sz3,
-  '04': Res.sz4,
-  '05': Res.sz5,
-  '06': Res.sz6,
+  1: Res.sz1,
+  2: Res.sz2,
+  3: Res.sz3,
+  4: Res.sz4,
+  5: Res.sz5,
+  6: Res.sz6,
 }
 
 /**
  * 农场图片
  */
 const VegetablePics = {
-  '01': Res.xync_num_01,
-  '02': Res.xync_num_02,
-  '03': Res.xync_num_03,
-  '04': Res.xync_num_04,
-  '05': Res.xync_num_05,
-  '06': Res.xync_num_06,
-  '07': Res.xync_num_07,
-  '08': Res.xync_num_08,
-  '09': Res.xync_num_09,
-  '10': Res.xync_num_10,
-  '11': Res.xync_num_11,
-  '12': Res.xync_num_12,
-  '13': Res.xync_num_13,
-  '14': Res.xync_num_14,
-  '15': Res.xync_num_15,
-  '16': Res.xync_num_16,
-  '17': Res.xync_num_17,
-  '18': Res.xync_num_18,
-  '19': Res.xync_num_19,
-  '20': Res.xync_num_20,
+  1: Res.xync_num_01,
+  2: Res.xync_num_02,
+  3: Res.xync_num_03,
+  4: Res.xync_num_04,
+  5: Res.xync_num_05,
+  6: Res.xync_num_06,
+  7: Res.xync_num_07,
+  8: Res.xync_num_08,
+  9: Res.xync_num_09,
+  10: Res.xync_num_10,
+  11: Res.xync_num_11,
+  12: Res.xync_num_12,
+  13: Res.xync_num_13,
+  14: Res.xync_num_14,
+  15: Res.xync_num_15,
+  16: Res.xync_num_16,
+  17: Res.xync_num_17,
+  18: Res.xync_num_18,
+  19: Res.xync_num_19,
+  20: Res.xync_num_20,
 }

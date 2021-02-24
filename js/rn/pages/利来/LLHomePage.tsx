@@ -33,6 +33,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import Activitys from '../../public/views/tars/Activitys'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
@@ -78,9 +79,9 @@ const LLHomePage = ({ setProps, navigation }) => {
                   push(PageName.PromotionListPage)
                 }}>
                 <Icon size={16} name={'gift'} />
-                <Text style={{ fontSize: 16, color: '#333333', padding: 10 }}>优惠活动</Text>
+                <UGText style={{ fontSize: 16, color: '#333333', padding: 10 }}>优惠活动</UGText>
                 <View style={{ flex: 1 }} />
-                <Text style={{ fontSize: 16, color: '#333333', textAlign: 'center' }}>{`查看更多 >>`}</Text>
+                <UGText style={{ fontSize: 16, color: '#333333', textAlign: 'center' }}>{`查看更多 >>`}</UGText>
               </TouchableOpacity>
               <View style={{ backgroundColor: '#ffffff' }}>
                 <PromotionsBlock horizontal={true} titleVisible={false} />
@@ -103,12 +104,12 @@ const LLHomePage = ({ setProps, navigation }) => {
           {rankingListSwitch === 2 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
-                <Text style={{
+                <UGText style={{
                   fontSize: 16,
                   lineHeight: 22,
                   color: '#3c3c3c',
                   marginVertical: 10,
-                }}>投注排行榜</Text>
+                }}>投注排行榜</UGText>
               </View>
               <RankListCP titleVisible={false} timing={5000} backgroundColor={'white'} textColor={'black'}
                           width={Dimensions.get('screen').width - 24} ranks={rankLists} />
@@ -116,30 +117,30 @@ const LLHomePage = ({ setProps, navigation }) => {
             rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
-                <Text style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</Text>
+                <UGText style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</UGText>
               </View>
               <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
                           width={Dimensions.get('screen').width - 24} ranks={rankLists} />
             </SafeAreaView> : <></>}
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-            <Text
+            <UGText
               onPress={() => {
                 console.log(httpClient.defaults.baseURL + '/index2.php')
                 PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
               }}
               style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }}>
               💻 电 脑 版
-            </Text>
-            <Text
+            </UGText>
+            <UGText
               style={{ color: 'black', textAlign: 'center' }}
               onPress={() => {
                 push(PageName.PromotionListPage)
               }}>
               🎁优惠活动
-            </Text>
+            </UGText>
           </View>
-          <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>
-          <Text style={{ color: 'black', textAlign: 'center' }}>version: {30}</Text>
+          <UGText style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</UGText>
+          <UGText style={{ color: 'black', textAlign: 'center' }}>version: {30}</UGText>
           <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
@@ -156,12 +157,12 @@ const LLHomePage = ({ setProps, navigation }) => {
             <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 8 }}>
               <TouchableOpacity style={{ height: 40, justifyContent: 'center', paddingHorizontal: 30 }}
                                 onPress={() => navigate(PageName.LLLoginPage, {})}>
-                <Text style={{ fontSize: 20, color: '#ffffff' }}>登录</Text>
+                <UGText style={{ fontSize: 20, color: '#ffffff' }}>登录</UGText>
               </TouchableOpacity>
               <View style={{ width: 1, backgroundColor: '#ffffff', height: 40 }} />
               <TouchableOpacity style={{ height: 40, justifyContent: 'center', paddingHorizontal: 30 }}
                                 onPress={() => push(PageName.LLRegisterPage)}>
-                <Text style={{ fontSize: 20, color: '#ffffff' }}>注册</Text>
+                <UGText style={{ fontSize: 20, color: '#ffffff' }}>注册</UGText>
               </TouchableOpacity>
             </View>
           </LinearGradient>

@@ -6,8 +6,9 @@ import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import * as React from 'react'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import { BET_ITEM_HEIGHT, BET_ITEM_WIDTH } from '../PayBoardComponent'
-import { calculateItemCount } from '../../tl/BetUtil'
+import { calculateItemCount } from '../../tools/BetUtil'
 import CommStyles from '../../../../base/CommStyles'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IBetTMComponentParams {
   lotteryCode?: string
@@ -46,12 +47,12 @@ const BetTMComponent = ({
       groupData?.plays?.map((playData) => {
         return (<View key={playData?.id + playData?.name}
                       style={_styles.item_container}>
-          <Text style={_styles.item_title}
+          <UGText style={_styles.item_title}
                 numberOfLines={2}>{
             `[ ${groupData?.alias}-${playData?.id} ]`
-          }</Text>
-          <Text style={_styles.item_odds}>{`@${playData?.odds}`}</Text>
-          <Text style={_styles.item_x}>{'X'}</Text>
+          }</UGText>
+          <UGText style={_styles.item_odds}>{`@${playData?.odds}`}</UGText>
+          <UGText style={_styles.item_x}>{'X'}</UGText>
           <TextInput defaultValue={averageMoney?.toString()}
                      onChangeText={(text => onChangeText(text, playData))}
                      keyboardType={'numeric'}

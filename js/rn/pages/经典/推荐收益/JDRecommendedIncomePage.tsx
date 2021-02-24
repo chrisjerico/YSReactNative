@@ -4,7 +4,7 @@ import AppDefine from '../../../public/define/AppDefine';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { UGBasePageProps } from '../../base/UGPage';
 import { scale } from "../../../public/tools/Scale";
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { ScrollableTabBar, TabBarProps } from 'react-native-scrollable-tab-view';
 import EmptyView from '../../../public/components/view/empty/EmptyView';
 import { arrayEmpty } from '../../../public/tools/Ext';
 import { ugLog } from '../../../public/tools/UgLog';
@@ -27,6 +27,8 @@ import { push } from '../../../public/navigation/RootNavigation';
 import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader';
 import { skinColors } from '../../../public/theme/const/UGSkinColor';
 import { UGNavigationBar } from '../../../public/widget/UGNavigationBar';
+import { appConfig } from '../../../../../config';
+import moment from 'moment';
 
 
 interface JDRecommendedIncomePage {
@@ -38,6 +40,7 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
 
   //调用sysConf
   const { inviteCode } = UGStore.globalProps.sysConf
+  const tabRef = useRef<TabBarProps>(null)
 
   let { current: v } = useRef<JDRecommendedIncomePage>(
     {
@@ -55,7 +58,7 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
         PromotionConst.真人记录
       ]
     })
-  const [tabIndex] = useState<number>(0)
+  const [tabIndex , setTabIndex] = useState<number>(0)
   /**
    * 初始化
    * @param item
@@ -72,7 +75,7 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
   }, [])
 
   const ZLHeader = () => {
-    if (isHideBut()) {
+    if (appConfig.isHideButtion()) {
       return(
         <View></View>
       )
@@ -89,15 +92,6 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
 
   }
 
-  function isHideBut(){
-    
-    if (AppDefine.siteId ==='c084') {
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
 
   /**
      * 跳到邀请码界面
@@ -113,7 +107,16 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
   const renderRecordList = (item: string) => {
     switch (item) {
       case PromotionConst.推荐信息:
-        return <JDPromotionInfoCP tabLabel={item} key={item} />
+        return <JDPromotionInfoCP tabLabel={item} key={item} 
+        onRealPress={() => {
+          ugLog('真人事件==============')
+          tabRef?.current?.goToPage(9)
+        }}
+        onEarnPress={() => {
+          ugLog('彩票事件==============')
+          tabRef?.current?.goToPage(2)
+        }}
+        />
       case PromotionConst.会员管理:
         return <JDPromotionTabMemberCP tabLabel={item} key={item} />
       case PromotionConst.投注报表:
@@ -150,6 +153,7 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
               onChangeTab={value => {
                 ugLog('tab index=', value?.from, value?.i)
               }}
+              ref={tabRef}
               // ref={instance => tabController = instance}
               tabBarUnderlineStyle=
               {[styles.tab_bar_underline,
@@ -157,8 +161,8 @@ JDRecommendedIncomePage = ({ setProps }: UGBasePageProps) => {
               tabBarActiveTextColor={Skin1.themeColor }
               tabBarInactiveTextColor={Skin1.tabNoSelectColor}
               tabBarTextStyle={{ fontSize: scale(20) }}
-              style={[{ flex: 1 ,}]}
-              renderTabBar={() => <ScrollableTabBar style={styles.tab_bar} />}>
+              style={[{ flex: 1}]}
+              renderTabBar={() => <ScrollableTabBar style={styles.tab_bar} tabsContainerStyle={{ width: '90%'}} />}>
               {
                 v.tabNames?.map((tabItem) => {
                   return (

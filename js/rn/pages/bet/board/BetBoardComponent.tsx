@@ -1,15 +1,14 @@
 import {
+  DeviceEventEmitter,
   StyleProp,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native'
 import * as React from 'react'
-import { useContext, useEffect, useRef } from 'react'
 import { scale } from '../../../public/tools/Scale'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -18,21 +17,23 @@ import { Slider } from 'react-native-elements'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
-import BetLotteryContext from '../BetLotteryContext'
-import PayBoardComponent from './pay/PayBoardComponent'
-import SelectedLotteryModel from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
-import { Toast } from '../../../public/tools/ToastUtils'
-import { calculateItemCount } from './tl/BetUtil'
 import { ugLog } from '../../../public/tools/UgLog'
+import { GameTab } from '../const/LotteryConst'
+import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
+import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
+import { dicNull } from '../../../public/tools/Ext'
+import { mapTotalCount } from '../util/ArithUtil'
+import { EmitterTypes } from '../../../public/define/EmitterTypes'
+import { useEffect } from 'react'
+import { IEmitterMessage } from './it/IEmitterMessage'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 彩票功能区入参
  */
 interface IBetBoardParams {
-  locked?: boolean // 是否封盘中
-  lockStr?: string // 封盘文字提醒
+  lockedItem?: IEmitterMessage // 是否封盘中
   style?: StyleProp<ViewStyle>
 }
 
@@ -42,24 +43,30 @@ interface IBetBoardParams {
  * @param navigation
  * @constructor
  */
-const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
+const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
 
   const {
-    showBetPayment,
-    setShowBetPayment,
+    lockBoard,
+    setLockBoard,
+    gameTabIndex,
+    betShareModel,
     userInfo,
     systemInfo,
     showSlider,
     setShowSlider,
     sliderValue,
     setSliderValue,
-    inputMoney,
-    setInputMoney,
     showChip,
     setShowChip,
     playOddDetailData,
+    reBetShareModel,
+    ballSelected,
     checkShowBetPayment,
   } = UseBetBoard()
+
+  useEffect(() => {
+    setLockBoard(lockedItem)
+  }, [])
 
   /**
    * 加大拉条
@@ -88,7 +95,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                                        style={_styles.extra_container}
                                        pointerEvents={'box-none'}>
     {
-      showSlider ?
+      showSlider
+        ?
         <View key={'renderSliderArea slider'}
               style={_styles.slider_container}>
 
@@ -101,8 +109,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 color={'white'}
                 name={'chevron-down'}/>
 
-          <Text key={'renderSliderArea slider tx'}
-                style={_styles.sub_title_text}>{`退水: ${sliderValue?.toFixed(2)}%`}</Text>
+          <UGText key={'renderSliderArea slider tx'}
+                style={_styles.sub_title_text}>{`退水: ${sliderValue?.toFixed(2)}%`}</UGText>
 
           <Icon key={'renderSliderArea slider icon2'}
                 size={scale(48)}
@@ -129,7 +137,8 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                 onPress={increaseSlider}
                 style={_styles.slider_minus}
                 name={'plus-circle'}/>
-        </View> :
+        </View>
+        :
         <View key={'renderSliderArea slider arrow up'}
               style={_styles.slider_button_container}>
           <Icon key={'renderSliderArea slider icon up'}
@@ -151,7 +160,10 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
           {
             Object.keys(CHIP_OPTION).map((money) =>
               <TouchableWithoutFeedback key={'renderSliderArea chip' + money}
-                                        onPress={() => setInputMoney(money == 'c' ? '0' : money)}>
+                                        onPress={() => UGStore.dispatch({
+                                          type: 'reset',
+                                          inputMoney: money == 'c' ? 0 : Number(money),
+                                        })}>
                 <FastImage key={'renderSliderArea chip' + money}
                            source={{ uri: CHIP_OPTION[money] }}
                            style={_styles.chip_img}
@@ -164,60 +176,104 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   </View>
 
   /**
+   * 追号
+   */
+  const renderChaseNumber = () => {
+    if (systemInfo?.chaseNumber != '1') return null
+
+    // ugLog('systemInfo?.chaseNumber', systemInfo?.chaseNumber)
+    // ugLog('systemInfo?.reBetShareModel', reBetShareModel)
+
+    return !dicNull(reBetShareModel)
+      ?
+      <TouchableWithoutFeedback onPress={() => {
+        UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
+      }}>
+        <UGText style={_styles.bet_again}>追号</UGText>
+      </TouchableWithoutFeedback>
+      :
+      <UGText style={[
+        _styles.bet_again,
+        {
+          backgroundColor: UGColor.TextColor7,
+          color: UGColor.TextColor4,
+        },
+      ]}>追号</UGText>
+  }
+
+  /**
+   * 机选
+   */
+  const renderRandomSelected = () => {
+    return <TouchableWithoutFeedback onPress={() => DeviceEventEmitter.emit(EmitterTypes.RANDOM_SELECT_LOTTERY)}>
+      <UGText style={_styles.bet_again}>机选</UGText>
+    </TouchableWithoutFeedback>
+  }
+
+  /**
    * 绘制输入功能区
    */
-  const renderInputArea = () => <View key={'renderInputArea'}
-                                      style={_styles.input_container}>
+  const renderInputArea = () => {
 
-    <View key={'renderInputArea 追号 机选'}>
-      <Text style={_styles.bet_again}>追号</Text>
-      <Text style={_styles.bet_again}>机选</Text>
-    </View>
+    return <View key={'renderInputArea'}
+                 style={_styles.input_container}>
 
-    <View key={'renderInputArea middle'}
-          style={_styles.middle_container}>
-      <View key={'renderInputArea sub middle'}
-            style={_styles.bet_info}>
-        <Text key={'renderInputArea middle 已选中'}
-              style={_styles.lottery_count_hint}>已选中</Text>
-        <Text key={'renderInputArea middle 0'}
-              style={_styles.lottery_count_count}>0</Text>
-        <Text key={'renderInputArea middle 注'}
-              style={_styles.lottery_count_hint}>注</Text>
-        <View key={'renderInputArea ct'}
-              style={CommStyles.flex}/>
-        <TouchableWithoutFeedback key={'renderInputArea 筹码'}
-                                  onPress={() => setShowChip(!showChip)}>
-          <Text key={'renderInputArea 筹码'}
-                style={_styles.lottery_count_chip}>筹码</Text>
+      <View key={'renderInputArea 追号 机选'}>
+        {renderChaseNumber()}
+        {renderRandomSelected()}
+      </View>
+
+      <View key={'renderInputArea middle'}
+            style={_styles.middle_container}>
+        <View key={'renderInputArea sub middle'}
+              style={_styles.bet_info}>
+          <UGText key={'renderInputArea middle 已选中'}
+                style={_styles.lottery_count_hint}>已选中</UGText>
+          <UGText key={'renderInputArea middle 0'}
+                style={_styles.lottery_count_count}>{mapTotalCount(ballSelected)}</UGText>
+          <UGText key={'renderInputArea middle 注'}
+                style={_styles.lottery_count_hint}>注</UGText>
+          <View key={'renderInputArea ct'}
+                style={CommStyles.flex}/>
+          <TouchableWithoutFeedback key={'renderInputArea 筹码'}
+                                    onPress={() => setShowChip(!showChip)}>
+            <UGText key={'renderInputArea 筹码'}
+                  style={_styles.lottery_count_chip}>筹码</UGText>
+          </TouchableWithoutFeedback>
+        </View>
+        <TextInput key={'renderInputArea input'}
+                   value={UGStore.globalProps?.inputMoney?.toString()}
+                   style={_styles.input_text}
+                   maxLength={11}
+                   onChangeText={(s) => {
+                     UGStore.dispatch({ type: 'reset', inputMoney: Number(s) })
+                   }}
+                   keyboardType={'numeric'}/>
+      </View>
+
+      <View key={'renderInputArea input 下注 重置'}
+            style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableWithoutFeedback onPress={checkShowBetPayment}>
+          <UGText key={'renderInputArea input 下注'}
+                style={_styles.start_bet}>下注</UGText>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => {
+          ugLog('clear selected')
+          DeviceEventEmitter.emit(EmitterTypes.CLEAR_SELECT_LOTTERY)
+          UGStore.dispatch({
+            type: 'reset',
+            selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
+          })
+        }
+        }>
+          <UGText key={'renderInputArea input 重置'}
+                style={_styles.start_reset}>重置</UGText>
         </TouchableWithoutFeedback>
       </View>
-      <TextInput key={'renderInputArea input'}
-                 value={inputMoney}
-                 style={_styles.input_text}
-                 onChangeText={(s) => {
-                   setInputMoney(s)
-                 }}
-                 keyboardType={'numeric'}/>
+
     </View>
-
-    <View key={'renderInputArea input 下注 重置'}
-          style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TouchableWithoutFeedback onPress={checkShowBetPayment}>
-        <Text key={'renderInputArea input 下注'}
-              style={_styles.start_bet}>下注</Text>
-      </TouchableWithoutFeedback>
-
-      <TouchableWithoutFeedback onPress={() => {
-        ugLog('clear selected')
-        UGStore.dispatch({type: 'reset', selectedLotteryModel: {}})}
-      }>
-        <Text key={'renderInputArea input 重置'}
-              style={_styles.start_reset}>重置</Text>
-      </TouchableWithoutFeedback>
-    </View>
-
-  </View>
+  }
 
   /**
    * 绘制封盘中
@@ -227,10 +283,10 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
                  style={_styles.lock_container}>
       <View key={'renderLock sub'}
             style={_styles.lock_content}>
-        <Text key={'renderLock 封盘中'}
+        <UGText key={'renderLock 封盘中'}
               style={_styles.lock_text}>
           {item}
-        </Text>
+        </UGText>
       </View>
     </View>
   }
@@ -238,13 +294,15 @@ const BetBoardComponent = ({ locked, lockStr, style }: IBetBoardParams) => {
   return (
     <View key={'bet board content'}
           pointerEvents={'box-none'}
-          style={[_styles.container, style]}>
+          style={[
+            _styles.container,
+            style,
+            gameTabIndex == GameTab.LOTTERY ? null : { height: 0, width: 0, opacity: 0, display: 'none' }, //非彩票界面不需要显示 下注面板
+          ]}>
       <View style={_styles.bet_container}>
         {systemInfo?.activeReturnCoinStatus && renderSliderArea()}
         {renderInputArea()}
-        {locked ? renderLock(lockStr) : null}
-        {showBetPayment && <PayBoardComponent key={'BetBoardComponent'}
-                                              showCallback={() => setShowBetPayment(false)}/>}
+        {lockBoard?.locked ? renderLock(lockBoard?.hintText) : null}
       </View>
     </View>
   )

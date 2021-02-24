@@ -1,53 +1,38 @@
 import { Platform, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { memo, useEffect, useRef, useState } from 'react'
-import { anyEmpty, arrayEmpty } from '../tools/Ext'
+import { anyEmpty } from '../tools/Ext'
 import { scale } from '../tools/Scale'
 import { skin1, Skin1 } from '../theme/UGSkinManagers'
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import { UGColor } from '../theme/UGThemeColor'
 import EmptyView from './view/empty/EmptyView'
 import APIRouter from '../network/APIRouter'
 import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
-import Modal from 'react-native-modal'
-import RightMenu from './menu/RightMenu'
-import Icon from 'react-native-vector-icons/Entypo'
-import PushHelper from '../define/PushHelper'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import SafeAreaHeader from '../views/tars/SafeAreaHeader'
-import BackBtnComponent from './tars/BackBtnComponent'
-import { PageName } from '../navigation/Navigation'
 import MineHeader from '../views/tars/MineHeader'
 import { OCHelper } from '../define/OCHelper/OCHelper'
-import { navigate, pop, push } from '../navigation/RootNavigation'
-import { api } from '../network/NetworkRequest1/NetworkRequest1'
-import { PayAisleListData } from '../network/Model/wd/PayAisleModel'
-import { FlatList, ScrollView, TextInput, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler'
-import { PushHomeGame } from '../models/Interface'
-import Button from '../views/temp/Button'
+import { pop } from '../navigation/RootNavigation'
+import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { UGBasePageProps } from '../../pages/base/UGPage'
 import CommStyles from '../../pages/base/CommStyles'
 import UseGameHall from '../../pages/hall/new/UseGameHall'
 import MiddleMenu, { IMiddleMenuItem } from './menu/MiddleMenu'
 import { GameHistorylistBean, GameHistoryModel } from '../network/Model/HomeRecommendModel'
-import Game3rdView from './Game3rdView'
-import { iteratorSymbol } from 'immer/dist/internal'
 import AppDefine from '../define/AppDefine'
 import { Calendar } from 'react-native-plain-calendar'
-import { format } from 'prettier'
 import moment from 'moment'
 import Dialog from "react-native-dialog";
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { UGStore } from '../../redux/store/UGStore'
-import { color } from 'react-native-reanimated'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
- * 其他注单
+ * 其他注单1
  * @param navigation
  * @constructor
  */
-const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
+const OtherRecord = ({ route, setProps }: UGBasePageProps) => {
 
   let { type, showBackButton } = route?.params
   // ugLog('--------------------------route?.params==', route?.params)
@@ -101,10 +86,10 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   ]
 
 
-  const [currentType, setCurrentType] = useState({})  //選擇注單類形
+  const [currentType, setCurrentType] = useState<IMiddleMenuItem>()  //選擇注單類形
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
-  const [page, setPage] = useState(1)
-  const [data, setData] = useState<Array<GameHistorylistBean>>([])
+  const [page] = useState(1)
+  const [history, setHistory] = useState<Array<GameHistorylistBean>>([])
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
   const [betTotal, setBetTotal] = useState(0) //是否存取過數據
   const [validbetTotal, setValidBetTotal] = useState('0') //是否存取過數據
@@ -113,37 +98,38 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const [startDate, setStartDate] = useState<string>(moment().format('yyyy-MM-DD'))//选中的开始日期
 
   // ugLog('startDate ==  ',startDate)
-  const {
-    systemInfo,
-    userInfo,
-  } = UseGameHall()
 
   useEffect(() => {
+    typeArray.forEach((item) => {
+      if (item.id == type)
+        setCurrentType(item)
+    })
     setProps({
       didFocus: (params) => {
         ugLog('--------------------------params==', params)
         switch (Platform.OS) {
           case 'ios':
-            let dic = params;
-            for (var key in dic) {
-              if (key == 'gameType') {
-                if (anyEmpty(dic[key])) {
-                  type = 'real';
+              let dic = params;
+              for (var key in dic) {
+                if (key == 'gameType') {
+                  if (anyEmpty(dic[key])) {
+                    type = 'real';
+                  }
+                  else {
+                    type = dic[key];
+                  }
+                  setCurrentType(typeArray.find((v) => v.type == type))
+                  requestGameData()
                 }
-                else {
-                  type = dic[key];
-                }
-                setCurrentType(typeArray.find((v) => v.type == type))
-                 requestGameData()
               }
-            }
+
             break;
           case 'android':
             //TODO Android 传参
             break;
         }
 
-        
+
       },
     }, false)
   }, [])
@@ -151,12 +137,15 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
 
   useEffect(() => {
-    ugLog("startDate: " + startDate)
-    requestGameData()
+    if (currentType?.type)  requestGameData()
   }, [currentType, startDate])
 
   useEffect(() => {
   }, [selectStartDate])
+
+  useEffect(() => {
+    ugLog("history= ", history)
+  }, [history])
 
 
 
@@ -167,8 +156,6 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     refMenu?.current?.toggleMenu()
     setCurrentType(item)
-
-
   }
 
   //刷新控件
@@ -181,14 +168,19 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
    * 请求游戏数据
    */
   const requestGameData = async () => {
+    console.log("requestGameData")
     setRefreshing(true)
 
     // 刷新UI
     function refreshUI(data: GameHistoryModel) {
       setRefreshing(false)
-      setData(data.data.list)
+      setHistory(data.data.list)
       let vBetTotal = data.data.totalValidBetAmount
-      setValidBetTotal(vBetTotal)
+
+      if (!anyEmpty(vBetTotal)) {
+        setValidBetTotal(vBetTotal)
+      }
+
       let total = 0
       data.data.list.forEach((e) => {
         total += Number(e.betAmount)
@@ -202,15 +194,16 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       renderAllData()
     }
 
-// ugLog('page==',page)
-// ugLog('currentType?.type==',currentType?.type)
-// ugLog('startDate==',startDate)
+    // ugLog('page==',page)
+    ugLog('currentType?.type==',currentType?.type)
+    // ugLog('startDate==',startDate)
     // 获取注單數據
     APIRouter.ticket_history_args(
       page + '', '20', currentType?.type, startDate, startDate
     ).then(({ data: res }) => {
       // ugLog('获取注單數據=======', res)
       if (res?.code == 0) {
+        console.log("refreshUI = ", res)
         setIsSetData(true)
         refreshUI(res)
       } else {
@@ -226,7 +219,6 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
    * @param item
    */
   const renderDataList = (item: Array<GameHistorylistBean>) => {
-    // ugLog('item=', item)
     return (
       <>
         <View style={{ flex: 1 }}>
@@ -240,13 +232,13 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
                   keyExtractor={(item, index) => item.id + index}
                   data={item}
                   numColumns={1}
-                  renderItem={({ item, index }) => {
+                  renderItem={({ item }) => {
                     return (
                       <View style={[_styles.text_title_container, { backgroundColor: skin1.textColor4 }]}>
-                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.gameName}{'\n'}{item.gameTypeName}</Text>
-                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.betTime}</Text>
-                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.betAmount}</Text>
-                        <Text style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.winAmount}</Text>
+                        <UGText style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.gameName}{'\n'}{item.gameTypeName}</UGText>
+                        <UGText style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.betTime}</UGText>
+                        <UGText style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.betAmount}</UGText>
+                        <UGText style={[_styles.text_content_0, { color: skin1.textColor1 }]}>{item.winAmount}</UGText>
                         <View style={_styles.text_content_0}>
                           <TouchableOpacity onPress={
                             () => {
@@ -269,7 +261,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
 
                             }
                           }>
-                            <Text style={{ color: 'red' }}>{'详情'}</Text>
+                            <UGText style={{ color: 'red' }}>{'详情'}</UGText>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -290,13 +282,13 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
     return (
       isSetData
         ?
-        anyEmpty(data)
+        anyEmpty(history)
           ? <EmptyView style={{ flex: 1 }} />
           :
           <View>
             <ScrollView style={{ height: AppDefine.height - 44 - AppDefine.safeArea.top - 0 - 60 - 50, }}>
               {
-                renderDataList(data)
+                renderDataList(history)
               }
               <View style={{ height: 20, }}>
               </View>
@@ -339,11 +331,11 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
             ugLog(arr[0] + arr[1])
             return <View style={{ flexDirection: 'row' }}>
               <TouchableWithoutFeedback onPress={onPrevMonth}>
-                <Text style={[_styles.calendar_button, { color: UGColor.TextColor3, }]}>{'上一月'}</Text>
+                <UGText style={[_styles.calendar_button, { color: UGColor.TextColor3, }]}>{'上一月'}</UGText>
               </TouchableWithoutFeedback>
-              <Text style={[_styles.calendar_title, { color: UGColor.TextColor2, }]}>{arr[1] + '年 ' + Number(months.indexOf(arr[0]) + 1) + '月'}</Text>
+              <UGText style={[_styles.calendar_title, { color: UGColor.TextColor2, }]}>{arr[1] + '年 ' + Number(months.indexOf(arr[0]) + 1) + '月'}</UGText>
               <TouchableWithoutFeedback onPress={onNextMonth}>
-                <Text style={[_styles.calendar_button, { color: UGColor.TextColor3, }]}>{'下一月'}</Text>
+                <UGText style={[_styles.calendar_button, { color: UGColor.TextColor3, }]}>{'下一月'}</UGText>
               </TouchableWithoutFeedback>
             </View>
           }}
@@ -376,9 +368,8 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
           rightButton={rightButton}
           showRightTitle={true}
           onPressBackBtn={() => {
-            // ugLog('999999')
             //情况网络数据
-            setData([]);
+            setHistory([]);
             pop()
           }
           }
@@ -392,7 +383,7 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
       </SafeAreaHeader>
       <MiddleMenu
         styles={{ width: scale(200) }}
-        curId={currentType.id}
+        curId={currentType?.id}
         key={currentType?.id}
         ref={refMenu}
         onMenuClick={clickMenu}
@@ -411,24 +402,24 @@ const OtherRecord = ({ navigation, route, setProps }: UGBasePageProps) => {
         </Dialog.Container>
       </>
       <View style={_styles.text_title_container}>
-        <Text style={_styles.text_content_0}>{'游戏'}</Text>
-        <Text style={_styles.text_content_0}>{'时间'}</Text>
-        <Text style={_styles.text_content_0}>{'投注金额'}</Text>
-        <Text style={_styles.text_content_0}>{'输赢'}</Text>
-        <Text style={_styles.text_content_0}>{'详情'}</Text>
+        <UGText style={_styles.text_content_0}>{'游戏'}</UGText>
+        <UGText style={_styles.text_content_0}>{'时间'}</UGText>
+        <UGText style={_styles.text_content_0}>{'投注金额'}</UGText>
+        <UGText style={_styles.text_content_0}>{'输赢'}</UGText>
+        <UGText style={_styles.text_content_0}>{'详情'}</UGText>
       </View>
       <View style={[_styles.text_bottom_container, { bottom: 0, backgroundColor: skin1.themeColor, }]}>
         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'下注总金额: '}</Text>
-          <Text style={[_styles.text_content_bottom, { color: 'yellow', }]}>{betTotal}</Text>
+          <UGText style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'下注总金额: '}</UGText>
+          <UGText style={[_styles.text_content_bottom, { color: 'yellow', }]}>{betTotal}</UGText>
         </View>
         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'有效下注总金额:'}</Text>
-          <Text style={[_styles.text_content_bottom, { color: 'yellow', }]}>{validbetTotal}</Text>
+          <UGText style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'有效下注总金额:'}</UGText>
+          <UGText style={[_styles.text_content_bottom, { color: 'yellow', }]}>{validbetTotal}</UGText>
         </View>
         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, marginTop: 10 }]}>{'输赢金额: '}</Text>
-          <Text style={[_styles.text_content_bottom, { color: skin1.textColor1, }]}>{winTotal}</Text>
+          <UGText style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, marginTop: 10 }]}>{'输赢金额: '}</UGText>
+          <UGText style={[_styles.text_content_bottom, { color: skin1.navBarTitleColor, }]}>{winTotal}</UGText>
         </View>
 
       </View>

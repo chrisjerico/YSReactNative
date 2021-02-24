@@ -7,6 +7,7 @@ import { pop } from '../../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import moment from 'moment'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const AlipayTransferRecordView = () => {
   const [data, setData] = useState([])
@@ -30,7 +31,7 @@ export const AlipayTransferRecordView = () => {
         stickyHeaderIndices={[0]}
         ListEmptyComponent={() => (
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <Text style={{ color: Skin1.textColor2, paddingTop: 32 }}>暂无数据</Text>
+            <UGText style={{ color: Skin1.textColor2, paddingTop: 32 }}>暂无数据</UGText>
           </View>
         )}
         style={{backgroundColor: '#f3f3f3', flex: 1}}
@@ -44,7 +45,7 @@ export const AlipayTransferRecordView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>时间</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>时间</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -53,7 +54,7 @@ export const AlipayTransferRecordView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>类型</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>类型</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -62,11 +63,11 @@ export const AlipayTransferRecordView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>帐变金额</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>帐变金额</UGText>
             </View>
             <View
               style={{ flex: 1, alignItems: 'center', paddingVertical: 12 }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>余额</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>余额</UGText>
             </View>
           </View>
         )}
@@ -80,7 +81,7 @@ export const AlipayTransferRecordView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.changeTime}</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.changeTime}</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -90,7 +91,7 @@ export const AlipayTransferRecordView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.category}</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.category}</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -100,7 +101,7 @@ export const AlipayTransferRecordView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.amount}</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.amount}</UGText>
             </View>
             <View style={{
               flex: 1,
@@ -108,7 +109,7 @@ export const AlipayTransferRecordView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.newBalance}</Text>
+              <UGText style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.newBalance}</UGText>
             </View>
           </View>
         )}
@@ -136,7 +137,7 @@ const Header = () => {
                             }}>
             <Icon size={28} name={'angle-left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
           </TouchableOpacity>
-          <Text style={{
+          <UGText style={{
             alignSelf: 'center',
             paddingTop: 15,
             paddingBottom: 15,
@@ -144,7 +145,7 @@ const Header = () => {
             fontSize: 20,
             flex: 1,
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-          }}>转入转出记录</Text>
+          }}>转入转出记录</UGText>
         </View>
       </SafeAreaView>
     </LinearGradient>

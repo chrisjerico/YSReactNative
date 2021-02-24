@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image'
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface GameRowButtonProps {
   title: string
@@ -17,10 +18,10 @@ const GameRowButton = ({ title, logo, onPress }: GameRowButtonProps) => {
       <View style={styles.container}>
         <FastImage source={{ uri: logo }} style={{ width: '20%', aspectRatio: 1, marginRight: scale(10) }} />
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: scale(25), fontWeight: '600' }}>{title}</Text>
+          <UGText style={{ fontSize: scale(25), fontWeight: '600' }}>{title}</UGText>
           <View style={{ flexDirection: 'row', marginTop: scale(10) }}>
-            <Text style={{ color: '#8a8d96' }}>{'彩票 | '}</Text>
-            <Text style={{ color: '#fb9802', fontWeight: '600' }}>{'500人在玩'}</Text>
+            <UGText style={{ color: '#8a8d96' }}>{'彩票 | '}</UGText>
+            <UGText style={{ color: '#fb9802', fontWeight: '600' }}>{'500人在玩'}</UGText>
           </View>
         </View>
         <Button title={'进入游戏'} containerStyle={{ backgroundColor: '#71abff', width: scale(150), aspectRatio: 3, borderRadius: scale(100) }} titleStyle={{ color: '#ffffff' }} onPress={onPress} />

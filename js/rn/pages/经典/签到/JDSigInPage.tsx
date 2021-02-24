@@ -16,6 +16,7 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
 import { JDSignInHistoryCP } from '../cp/JDSignInHistoryCP';
 import chroma from 'chroma-js';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 const { getHtml5Image, img_platform, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test10)
@@ -179,7 +180,7 @@ const JDSigInPage = () => {
 
    /**
    * 得到领取连续签到奖励数据
-   * 
+   *
    */
     function checkinBonusData(type: string) {
         console.log('123');
@@ -196,7 +197,7 @@ const JDSigInPage = () => {
 
    /**
    * 用户签到（签到类型：0是签到，1是补签）
-   * 
+   *
    */
     function checkinDataWithType(type: string, date: string) {
         api.task.checkin(type, date).useSuccess(({ data, msg }) => {
@@ -211,7 +212,7 @@ const JDSigInPage = () => {
 
    /**
    * 用户签到列表
-   * 
+   *
    */
     function checkinList() {
         api.task.checkinList().useSuccess(({ data }) => {
@@ -272,17 +273,17 @@ const JDSigInPage = () => {
 
         return (
             <View key={item.key} style={styles.itemViewStyle}>
-                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{formatTime(item?.whichDay, 'MM月dd日')}</Text>
-                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item?.week}</Text>
+                <UGText style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{formatTime(item?.whichDay, 'MM月dd日')}</UGText>
+                <UGText style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item?.week}</UGText>
 
                 <TouchableOpacity onPress={() => {
                     itemAction(item)
                 }}>
                     <ImageBackground style={[styles.itemImageStyle, { borderRadius: 5, overflow: 'hidden', }]} source={{ uri: checkinImgBg(item) }}>
-                        <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{'+' + item?.integral}</Text>
+                        <UGText style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{'+' + item?.integral}</UGText>
                         <Image style={[styles.itemImageImageStyle,]} source={{ uri: img_vueTemplate('my/userInfo/sign/gold') }} />
                         <ImageBackground style={[styles.itemImageImage2Style,]} source={{ uri: imgbgCheckinState(item) }}>
-                            <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle, { marginTop: 2 }]}>{checkinState(item)}</Text>
+                            <UGText style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle, { marginTop: 2 }]}>{checkinState(item)}</UGText>
                         </ImageBackground>
                     </ImageBackground>
 
@@ -294,7 +295,7 @@ const JDSigInPage = () => {
     const _renderListEmptyComp = () => {
         return (
             <View>
-                <Text>没有数据!</Text>
+                <UGText>没有数据!</UGText>
             </View>
         );
     }
@@ -317,16 +318,16 @@ const JDSigInPage = () => {
                 {/* 签到领积分 */}
                 <View style={[{ height: 110, }]}>
                     <View style={{ flexDirection: 'row', marginTop: 15, justifyContent: 'center' }}>
-                        <Text style={[{ fontSize: 41, color: '#FBF2D5' }]}>{'签到领积分'}</Text>
+                        <UGText style={[{ fontSize: 41, color: '#FBF2D5' }]}>{'签到领积分'}</UGText>
                         <View style={[{ marginTop: 16, backgroundColor: '#FFAA2F', borderRadius: 5, }]}>
-                            <Text style={[{ fontSize: 13, color: 'white', marginHorizontal: 10, marginVertical: 5, }]}>{'用 积 分 兑 换 现 金'}</Text>
+                            <UGText style={[{ fontSize: 13, color: 'white', marginHorizontal: 10, marginVertical: 5, }]}>{'用 积 分 兑 换 现 金'}</UGText>
                         </View>
 
                     </View>
                     <View style={{ flexDirection: 'row', marginTop: 15, justifyContent: 'center', }}>
-                        <Text style={[{ fontSize: 18, color: Skin1.textColor1 }]}>{'已连续'}</Text>
-                        <Text style={[{ fontSize: 27, color: 'red', marginVertical: -7 }]}>{checkinListModel.checkinTimes}</Text>
-                        <Text style={[{ fontSize: 18, color: Skin1.textColor1 }]}>{'天签到'}</Text>
+                        <UGText style={[{ fontSize: 18, color: Skin1.textColor1 }]}>{'已连续'}</UGText>
+                        <UGText style={[{ fontSize: 27, color: 'red', marginVertical: -7 }]}>{checkinListModel.checkinTimes}</UGText>
+                        <UGText style={[{ fontSize: 18, color: Skin1.textColor1 }]}>{'天签到'}</UGText>
 
                     </View>
                 </View>
@@ -363,7 +364,7 @@ const JDSigInPage = () => {
 
                 {/* 签到礼包 */}
                 {hide1 && hide2 && <View style={[{ height: 200, backgroundColor: Skin1.homeContentColor }]}>
-                    <Text style={[{ fontSize: 18, color: Skin1.textColor1, marginLeft: 12, marginTop: 10 }]}>{'连续签到礼包'}</Text>
+                    <UGText style={[{ fontSize: 18, color: Skin1.textColor1, marginLeft: 12, marginTop: 10 }]}>{'连续签到礼包'}</UGText>
                     <View style={[{ marginTop: 10, marginHorizontal: 12 }]}>
 
                         {hide1 && <View>
@@ -371,8 +372,8 @@ const JDSigInPage = () => {
                             <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center', height: 60 }}>
                                 <Image style={[{ height: 40, width: 40, }]} source={{ uri: img_vueTemplate('my/userInfo/sign/award5') }} />
                                 <View style={[]}>
-                                    <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus1}</Text>
-                                    <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
+                                    <UGText style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus1}</UGText>
+                                    <UGText style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</UGText>
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
@@ -390,8 +391,8 @@ const JDSigInPage = () => {
 
 
                                 <View style={[]}>
-                                    <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus2}</Text>
-                                    <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到7天即可领取'}</Text>
+                                    <UGText style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus2}</UGText>
+                                    <UGText style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到7天即可领取'}</UGText>
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}

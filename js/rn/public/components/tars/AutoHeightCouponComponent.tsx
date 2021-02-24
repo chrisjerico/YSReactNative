@@ -13,6 +13,7 @@ import PushHelper from '../../define/PushHelper'
 import { PushHomeGame } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { push } from '../../navigation/RootNavigation'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface AutoHeightCouponAutoHeightCouponComponentProps {
   title: string
@@ -33,10 +34,9 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
   const [showUrl, setShowUrl] = useState((linkUrl?.length>0) || (linkCategory>0))
   // const [show, setShow] = useState(true)
   // if (show) {
-    ugLog("linkUrl: " + linkUrl + ", linkCategory：" + linkCategory + ", linkPosition: " + linkPosition + ", showUrl: " + showUrl)
   return (
     <View style={[{ width: '100%' }, containerStyle]}>
-      <Text style={[styles.title, titleStyle]}>{title}</Text>
+      <UGText style={[styles.title, titleStyle]}>{title}</UGText>
       <TouchableImage
         pic={pic}
         containerStyle={{ width: '100%', aspectRatio }}
@@ -66,6 +66,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
   <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
   <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
   <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
+  <style>table{width:auto !important;}</style>
   <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
   </head>` +
               `<script>
@@ -78,8 +79,8 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
           }}
         />
       )}
-      <Modal 
-        visible={showPop} 
+      <Modal
+        visible={showPop}
         transparent={true}
         onRequestClose={()=> {setShowPop(false)}}
         >
@@ -104,12 +105,12 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
                 borderTopRightRadius: scale(10),
                 borderTopLeftRadius: scale(10),
               }}>
-              <Text style={{ marginVertical:13, fontSize: 17, fontWeight: '500' }}>{title}</Text>
+              <UGText style={{ marginVertical:13, fontSize: 17, fontWeight: '500' }}>{title}</UGText>
               <View style={{ height:1, width:'100%', backgroundColor:'#ddd'}} />
             </View>
             <View style={{ flex:8 }}>
-              <ScrollView 
-                showsVerticalScrollIndicator={false} 
+              <ScrollView
+                showsVerticalScrollIndicator={false}
                 style={{paddingHorizontal:5}}>
                 <View style={{ flex:1 }}>
                   <AutoHeightWebView
@@ -123,6 +124,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
     <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
     <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
     <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
+    <style>table{width:auto !important;}</style>
     <style>body{width:100%-20;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:10}</style>
     </head>` +
                         `<script>
@@ -133,7 +135,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
     </script>` +
                         content,
                     }}/>
-                    {showUrl ? 
+                    {showUrl ?
                       (<Button
                           containerStyle={{ flex: 1, width: '100%', height: scale(90), alignItems: 'center'}}
                           showLogo={true}

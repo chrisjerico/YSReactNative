@@ -9,6 +9,7 @@ import EmptyView from '../../../../../public/components/view/empty/EmptyView'
 import { WithdrawalListData } from '../../../../../public/network/Model/wd/WithdrawalRecordModel'
 import CommStyles from '../../../../base/CommStyles'
 import { DepositListData } from '../../../../../public/network/Model/wd/DepositRecordModel'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 取款记录
@@ -53,9 +54,9 @@ const WithdrawalRecordListComponent = () => {
    * @param item
    */
   const renderTitleHint = () => <View style={_styles.text_title_container}>
-    <Text style={_styles.text_title_0}>{'日期'}</Text>
-    <Text style={_styles.text_title_0}>{'金额'}</Text>
-    <Text style={_styles.text_title_0}>{'状态'}</Text>
+    <UGText style={_styles.text_title_0}>{'日期'}</UGText>
+    <UGText style={_styles.text_title_0}>{'金额'}</UGText>
+    <UGText style={_styles.text_title_0}>{'状态'}</UGText>
   </View>
 
   /**
@@ -64,9 +65,9 @@ const WithdrawalRecordListComponent = () => {
    */
   const renderItemContent = (item: WithdrawalListData) => <TouchableWithoutFeedback onPress={() => showItemDialog(item)}>
     <View style={_styles.text_item_container}>
-      <Text style={_styles.text_content_0}>{item.applyTime}</Text>
-      <Text style={_styles.text_content_0}>{item.amount}</Text>
-      <Text style={_styles.text_content_0}>{item.status}</Text>
+      <UGText style={_styles.text_content_0}>{item.applyTime}</UGText>
+      <UGText style={_styles.text_content_0}>{item.amount}</UGText>
+      <UGText style={_styles.text_content_0}>{item.status}</UGText>
     </View>
   </TouchableWithoutFeedback>
 

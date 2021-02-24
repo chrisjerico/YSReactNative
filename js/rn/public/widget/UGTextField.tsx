@@ -1,8 +1,11 @@
-import React, {Component, useState} from 'react';
-import {Text} from 'react-native';
-import {Input, InputProps, Icon, Button} from 'react-native-elements';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React, { Component, useState } from 'react';
+import { StyleProp, Text, TextStyle, ViewStyle } from 'react-native';
+import { Input, InputProps, Icon, Button } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { skin1 } from '../theme/UGSkinManagers';
 import FUtils, { deepMergeProps } from '../tools/FUtils';
+import { sc375 } from '../tools/Scale';
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton';
 
 interface IPorps extends InputProps {
   // 父类变量
@@ -12,7 +15,7 @@ interface IPorps extends InputProps {
   onChangeText?: (text: string) => void;
 
   // 自定义变量
-  type?: '推荐人ID' | '账号' | '密码' | '确认密码' | '真实姓名' | 'QQ' | '微信' | '邮箱' | '手机号' | '字母验证码' | '短信验证码' | '空';
+  type?: '推荐人ID' | '账号' | '密码' | '确认密码' | '真实姓名' | 'QQ' | '微信' | '邮箱' | '手机号' | '字母验证码' | '短信验证码' | '空' | 'doy验证码' | 'doy密码' | '邀请码';
   styleType?: '下划线样式' | '圆角背景样式';
   hidden?: boolean; // 隐藏
   onlyInteger?: boolean; // 仅数字
@@ -36,19 +39,19 @@ export default class UGTextField extends Component<IPorps, IState> {
 
   constructor(props: IPorps) {
     super(props);
-    this.state = {text: props?.value, secureTextEntry: !!props.secureTextEntry};
+    this.state = { text: props?.value, secureTextEntry: !!props.secureTextEntry };
     const iconSize = 20;
 
     let defaultProps: IPorps = {
-      styleType:'圆角背景样式',
-      containerStyle: [{marginTop: 12, height: 45, backgroundColor: 'rgba(0, 0, 0, 0.6)', borderRadius: 22.5, overflow: 'hidden'}],
-      inputStyle: {marginLeft: 8, height: 45, color: 'white', fontSize: 15},
-      leftIconContainerStyle: {marginLeft: 2, width: iconSize + 10, height: iconSize},
+      styleType: '圆角背景样式',
+      containerStyle: [{ marginTop: 12, height: 45, backgroundColor: 'rgba(0, 0, 0, 0.6)', borderRadius: 22.5, overflow: 'hidden' }],
+      inputStyle: { marginLeft: 8, height: 45, color: 'white', fontSize: 15 },
+      leftIconContainerStyle: { marginLeft: 2, width: iconSize + 10, height: iconSize },
       placeholderTextColor: 'rgba(255, 255, 255, 0.3)',
       clearButtonMode: 'while-editing',
     };
     if (props.styleType == '下划线样式') {
-      defaultProps = deepMergeProps(defaultProps, {containerStyle:{backgroundColor:'transparent', height:50}});
+      defaultProps = deepMergeProps(defaultProps, { containerStyle: { backgroundColor: 'transparent', height: 50 } });
     }
 
     const other = ((): IPorps => {
@@ -56,21 +59,27 @@ export default class UGTextField extends Component<IPorps, IState> {
         case '推荐人ID':
           return {
             placeholder: '推荐人ID',
-            leftIcon: {name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             keyboardType: 'number-pad',
+            onlyIntegerAndLetter: true,
+          };
+        case '邀请码':
+          return {
+            leftIcon: { name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
+            keyboardType: 'email-address',
             onlyIntegerAndLetter: true,
           };
         case '账号':
           return {
             placeholder: '请输入账号',
-            leftIcon: {name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             keyboardType: 'email-address',
             onlyIntegerAndLetter: true,
           };
         case '密码':
           return {
             placeholder: '请输入密码',
-            leftIcon: {name: 'lock', type: 'material', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'lock', type: 'material', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             rightIcon: (
               <this.Eye
                 secureTextEntry={true}
@@ -81,38 +90,38 @@ export default class UGTextField extends Component<IPorps, IState> {
               />
             ),
             secureTextEntry: true,
-            rightIconContainerStyle: {marginLeft: -6, marginRight: 3, height: iconSize},
+            rightIconContainerStyle: { marginLeft: -6, marginRight: 3, height: iconSize },
             keyboardType: 'email-address',
             onlyVisibleASCII: true,
           };
         case '真实姓名':
           return {
             placeholder: '真实姓名',
-            leftIcon: {name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
           };
         case 'QQ':
           return {
             placeholder: 'QQ号',
-            leftIcon: {name: 'qq', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'qq', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             keyboardType: 'number-pad',
             onlyInteger: true,
           };
         case '微信':
           return {
             placeholder: '微信号',
-            leftIcon: {name: 'wechat', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'wechat', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             keyboardType: 'email-address',
           };
         case '邮箱':
           return {
             placeholder: '邮箱地址',
-            leftIcon: {name: 'mail', type: 'entypo', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'mail', type: 'entypo', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             keyboardType: 'email-address',
           };
         case '手机号':
           return {
             placeholder: '手机号',
-            leftIcon: {name: 'device-mobile', type: 'octicon', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'device-mobile', type: 'octicon', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             keyboardType: 'phone-pad',
             onlyInteger: true,
           };
@@ -121,7 +130,7 @@ export default class UGTextField extends Component<IPorps, IState> {
             placeholder: '验证码',
             keyboardType: 'email-address',
             onlyIntegerAndLetter: true,
-            leftIcon: {name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             rightIcon: (
               <this.LetterVerificationCode
                 didClick={(code) => {
@@ -135,8 +144,38 @@ export default class UGTextField extends Component<IPorps, IState> {
             placeholder: '验证码',
             keyboardType: 'email-address',
             onlyIntegerAndLetter: true,
-            leftIcon: {name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            leftIcon: { name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize },
             rightIcon: <this.SysButton didClick={this.props.didSmsButtonClick} />,
+          };
+        case 'doy验证码':
+          return {
+            placeholder: '请输入验证码',
+            placeholderTextColor: '#ccc',
+            keyboardType: 'email-address',
+            onlyIntegerAndLetter: true,
+            containerStyle: { backgroundColor: 'white', borderRadius: sc375(4), marginTop: sc375(16) },
+            rightIcon: <this.SysButton titleStyle={{ color: skin1.themeColor, fontSize: sc375(14), fontWeight: '600' }} didClick={this.props.didSmsButtonClick} />,
+          };
+        case 'doy密码':
+          return {
+            placeholder: '请输入密码',
+            placeholderTextColor: '#ccc',
+            containerStyle: { backgroundColor: 'white', borderRadius: sc375(4), marginTop: sc375(16) },
+            rightIcon: (
+              <this.Eye
+                secureTextEntry={true}
+                didClick={(selected) => {
+                  this.newProps.secureTextEntry = selected;
+                  this.setState({});
+                }}
+                color="#b2b2b2"
+                size={sc375(19)}
+              />
+            ),
+            secureTextEntry: true,
+            rightIconContainerStyle: { marginLeft: -6, marginRight: 3, height: iconSize },
+            keyboardType: 'email-address',
+            onlyVisibleASCII: true,
           };
         default:
           return {};
@@ -145,8 +184,8 @@ export default class UGTextField extends Component<IPorps, IState> {
     this.newProps = deepMergeProps(defaultProps, other);
   }
 
-  SysButton(props: {didClick: (startCountdown: () => void) => void}) {
-    let {didClick} = props;
+  SysButton(props: { titleStyle?: StyleProp<TextStyle>, didClick: (startCountdown: () => void) => void }) {
+    let { didClick, titleStyle } = props;
     let [count, setCount] = useState(59);
     let [willCountdown, setWillCountdown] = useState(0);
 
@@ -169,10 +208,10 @@ export default class UGTextField extends Component<IPorps, IState> {
       <Button
         title={title}
         disabled={disabled}
-        disabledStyle={{backgroundColor: 'rgba(255, 255, 255, 0.2)'}}
-        disabledTitleStyle={{color: '#CCC'}}
-        buttonStyle={{marginRight: 3, backgroundColor: 'rgba(255, 255, 255, 0.25)'}}
-        titleStyle={{fontSize: 11}}
+        disabledStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+        disabledTitleStyle={{ color: '#CCC' }}
+        buttonStyle={{ marginRight: 3, backgroundColor: 'rgba(255, 255, 255, 0.25)' }}
+        titleStyle={[{ fontSize: sc375(11) }, titleStyle]}
         onPress={() => {
           didClick &&
             didClick(() => {
@@ -184,8 +223,8 @@ export default class UGTextField extends Component<IPorps, IState> {
   }
 
   // 安全输入的眼睛图标
-  Eye(props: {secureTextEntry: boolean; didClick: (selected: boolean) => void}) {
-    var {secureTextEntry, didClick} = props;
+  Eye(props: { secureTextEntry: boolean; didClick: (selected: boolean) => void, color?: string, size?: number }) {
+    var { secureTextEntry, didClick, color, size } = props;
     var [selected, setSelected] = useState(secureTextEntry);
     var name = selected ? 'md-eye-off' : 'md-eye';
     return (
@@ -194,13 +233,13 @@ export default class UGTextField extends Component<IPorps, IState> {
           setSelected((selected = !selected));
           didClick(selected);
         }}>
-        <Icon name={name} type="ionicon" size={22} color="rgba(255, 255, 255, 0.3)" containerStyle={{marginLeft: 15, marginRight: 4}} />
+        <Icon name={name} type="ionicon" size={size ?? 22} color={color ?? "rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
       </TouchableOpacity>
     );
   }
 
   // 验证码
-  LetterVerificationCode(props: {didClick: (code: string) => void}) {
+  LetterVerificationCode(props: { didClick: (code: string) => void }) {
     var [count, setCount] = useState(0);
 
     var code = '';
@@ -211,7 +250,7 @@ export default class UGTextField extends Component<IPorps, IState> {
       code += selectChar[charIndex];
     }
     return (
-      <Text
+      <UGText
         style={{
           color: 'white',
           backgroundColor: 'rgba(255, 255, 255, 0.3)',
@@ -230,7 +269,7 @@ export default class UGTextField extends Component<IPorps, IState> {
           props.didClick(code);
         }}>
         {code}
-      </Text>
+      </UGText>
     );
   }
 
@@ -242,7 +281,7 @@ export default class UGTextField extends Component<IPorps, IState> {
     }
     let props = deepMergeProps(this.newProps, this.props);
     if (this.props.hidden) {
-      props = deepMergeProps(props, {containerStyle: {marginTop: 0, height: 0}});
+      props = deepMergeProps(props, { containerStyle: { marginTop: 0, height: 0 } });
     }
     return (
       <Input
@@ -283,7 +322,7 @@ export default class UGTextField extends Component<IPorps, IState> {
           if (reg) {
             text = text.match(new RegExp(reg, 'g'))?.join('') ?? '';
           }
-          this.setState({text: text});
+          this.setState({ text: text });
 
           // 回调
           this.props.onChangeText && this.props.onChangeText(text);

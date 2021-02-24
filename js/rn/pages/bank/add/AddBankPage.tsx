@@ -47,6 +47,7 @@ import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { pop } from '../../../public/navigation/RootNavigation'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -192,6 +193,13 @@ const AddBankPage = ({ navigation, route }) => {
         onChangeText={text => setBtcAddr(text)}
         placeholder={'请输入您的虚拟币收款钱包地址'} />
     </View>
+    {
+      systemInfo?.switchBindVerify == 1 && <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   onChangeText={text => setBankPassword(text)}
+                   placeholder={'请输入提款密碼'} />
+      </View>
+    }
   </View>
 
   /**
@@ -208,6 +216,13 @@ const AddBankPage = ({ navigation, route }) => {
         onChangeText={text => setWxPhone(text)}
         placeholder={'请输入微信所绑定手机号'} />
     </View>
+    {
+      systemInfo?.switchBindVerify == 1 && <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   onChangeText={text => setBankPassword(text)}
+                   placeholder={'请输入提款密碼'} />
+      </View>
+    }
   </View>
 
   /**
@@ -219,6 +234,13 @@ const AddBankPage = ({ navigation, route }) => {
         onChangeText={text => setAliAccount(text)}
         placeholder={'请输入您的支付宝账号'} />
     </View>
+    {
+      systemInfo?.switchBindVerify == 1 && <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   onChangeText={text => setBankPassword(text)}
+                   placeholder={'请输入提款密碼'} />
+      </View>
+    }
   </View>
 
   /**
@@ -273,7 +295,7 @@ const AddBankPage = ({ navigation, route }) => {
     <View
       style={{
         ...(Platform.OS !== 'android' && {
-          zIndex: 5, 
+          zIndex: 5,
         })
       }}
     >
@@ -318,7 +340,7 @@ const AddBankPage = ({ navigation, route }) => {
     <View
       style={{
         ...(Platform.OS !== 'android' && {
-          zIndex: 1, 
+          zIndex: 1,
         })
       }}
     >
@@ -362,7 +384,7 @@ const AddBankPage = ({ navigation, route }) => {
                 {curAccountType == BankConst.WX && renderWx()}
                 {curAccountType == BankConst.ALI && renderAli()}
 
-                <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
+                <UGText style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</UGText>
                 <Button title={'提交'}
                   titleStyle={_styles.submit_text}
                   containerStyle={[_styles.submit_bt,

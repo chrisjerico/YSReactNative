@@ -19,6 +19,7 @@ import Animated, {
   Value,
 } from 'react-native-reanimated'
 import UGUserModel from '../../../../redux/model/全局/UGUserModel'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const CardView = () => {
   const userStore = UGStore.globalProps.userInfo
@@ -51,15 +52,15 @@ export const CardView = () => {
       <View style={{ paddingTop: 12 }}>
         <View style={{ paddingLeft: 50, paddingRight: 30, paddingTop: 10, flexDirection: 'row' }}>
           <View style={{ flexDirection: 'row', flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', alignSelf: 'center' }}>{usr}</Text>
+            <UGText style={{ fontSize: 16, fontWeight: 'bold', alignSelf: 'center' }}>{usr}</UGText>
             <View
               style={{ height: 22, marginLeft: 8, backgroundColor: '#84C1FF', borderRadius: 10, alignSelf: 'center' }}>
-              <Text style={{
+              <UGText style={{
                 color: '#ffffff',
                 fontWeight: 'bold',
                 paddingVertical: 2,
                 paddingHorizontal: 6,
-              }}>{curLevelGrade}</Text>
+              }}>{curLevelGrade}</UGText>
             </View>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
@@ -78,7 +79,7 @@ export const CardView = () => {
           </View>
         </View>
         <View style={{ paddingHorizontal: 50, flexDirection: 'row' }}>
-          <Text style={{ color: '#65727B', alignSelf: 'center', marginRight: 10 }}>余额 : </Text>
+          <UGText style={{ color: '#65727B', alignSelf: 'center', marginRight: 10 }}>余额 : </UGText>
           <TouchableWithoutFeedback onPress={() => setShowBalance(!showBalance)}>
             {showBalance ? <Image source={{
                 width: 22,
@@ -93,14 +94,14 @@ export const CardView = () => {
           </TouchableWithoutFeedback>
         </View>
         <View style={{ paddingHorizontal: 50, paddingTop: 2, flexDirection: 'row', alignItems: 'center' }}>
-          {showBalance ? <Text style={{
+          {showBalance ? <UGText style={{
             fontSize: 18,
             paddingRight: 10,
             fontWeight: 'bold',
             textAlign: 'center',
             alignSelf: 'center',
             lineHeight: 36,
-          }}>{`${balance} RMB`}</Text> : <Text style={{
+          }}>{`${balance} RMB`}</UGText> : <UGText style={{
             fontSize: 30,
             paddingRight: 10,
             fontWeight: 'bold',
@@ -110,7 +111,7 @@ export const CardView = () => {
             top: 5,
           }}>
             * * * *
-          </Text>}
+          </UGText>}
           {showBalance &&
           <TouchableWithoutFeedback onPress={() => {
             animatedSpin(spinValue, setSpinValue)
@@ -159,7 +160,7 @@ const CardButton = ({ uri, text, imgStyle, onPress }: { uri: string, text: strin
                  source={{ uri }} />
         </View>
         <View style={{ flex: 1 }} />
-        <Text style={{ marginTop: 12 }}>{text}</Text>
+        <UGText style={{ marginTop: 12 }}>{text}</UGText>
       </View>
     </TouchableWithoutFeedback>
   )

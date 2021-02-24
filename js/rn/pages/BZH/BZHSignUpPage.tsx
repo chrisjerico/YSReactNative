@@ -11,6 +11,7 @@ import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const BZHSignUpPage = () => {
   const { show, reference, label, onChange, sign, passwordLimit, value, placeholder } = useSignUpPage({
@@ -55,10 +56,10 @@ const BZHSignUpPage = () => {
               onPress={() => {
                 push(PageName.BZHSignInPage, {})
               }}>
-              <Text style={{ fontWeight: '300' }}>{'返回登录'}</Text>
+              <UGText style={{ fontWeight: '300' }}>{'返回登录'}</UGText>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={popToRoot}>
-              <Text style={{ fontWeight: '300' }}>{'返回首页'}</Text>
+              <UGText style={{ fontWeight: '300' }}>{'返回首页'}</UGText>
             </TouchableWithoutFeedback>
           </View>
         </View>

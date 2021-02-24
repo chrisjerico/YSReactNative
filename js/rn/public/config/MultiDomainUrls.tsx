@@ -18,7 +18,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://zhibot071f.fhptcdn.com',
   ],
   'txt005': [
-    'https://t005f.fhptcdn.com',
+    'http://t005f.fhptcdn.com',
   ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
@@ -30,7 +30,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test08.6yc.com',
   ],
   'tx09': [
-    'http://test09.6yc.com/',
+    'http://test09.6yc.com',
   ],
   'tx10': [
     'https://test10.6yc.com',
@@ -129,17 +129,19 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test03.6yc.com',
   ],
   'a002': [
-    'https://2021c49.com',
-    'https://c49ln.com',
-    'https://c49nx.com',
-    'https://2022c49.com',
-    'https://2020c49.com',
+    'https://2031c49.com',
+    'https://2030c49.com',
+    'https://2029c49.com',
+    'https://2028c49.com',
+    'https://2027c49.com',
   ],
   'c001': [
     'https://c47c47appapp.com',
   ],
   'c002': [
     'https://66075.vip',
+    'https://66477.vip',
+    'https://66260.vip',
   ],
   'c005': [
     'http://nxmdbybnbc005ojrz.playzone88.com',
@@ -156,9 +158,14 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c035': [
     'https://5504578.com',
+    'https://5504366.com',
+    'https://5504303.com',
+    'https://5504288.com',
+    'https://5504266.com',
   ],
   'c041': [
     'https://70258.com',
+    'https://70258.net',
   ],
   'c048': [
     'https://f28z.com',
@@ -182,14 +189,23 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t111f.fhptcdn.com',
   ],
   'c084': [
-    'https://papghawshugposwaughwsoohu.com',
+    'https://x2appxz.com',
+    'https://ffx2888appxz.com',
+    'https://x2cpapp.com',
   ],
   'c085': [
-    'https://www.ya1237888.cc',
-    'https://www.ya2238888.cc',
-    'https://www.ya3388888.cc',
-    'https://www.ya442778111.cc',
-    'https://www.ya557887.cc',
+    'https://www.jmhnnn1.cc',
+    'https://www.jmsfds2.cc',
+    'https://www.jmsddv3.cc',
+    'https://www.jmnhhn4.cc',
+    'https://www.jmfgvn5.cc',
+  ],
+  'c085ahy': [
+    'https://www.jmhnnn1.cc',
+    'https://www.jmsfds2.cc',
+    'https://www.jmsddv3.cc',
+    'https://www.jmnhhn4.cc',
+    'https://www.jmfgvn5.cc',
   ],
   'c085yw': [
     'https://x558.cc',
@@ -217,7 +233,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://69989app.com',
   ],
   'c114': [
-    'https://c432019.com',
+    'https://c43222.com',
+    'https://222c43.com',
+    'https://c43zr.com',
+    'https://c43qp.com',
   ],
   'c115': [
     'https://6615nn.com',
@@ -227,11 +246,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615vv.com',
   ],
   'c116': [
-    'https://20801353.com',
-    'https://58922c.com',
+    'https://58922e.com',
+    'https://58933e.com',
     'https://58922d.com',
     'https://58933c.com',
-    'https://58933d.com',
+    'https://58933b.com',
   ],
   'c117': [
     'https://646482.com',
@@ -242,13 +261,15 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c120': [
     'https://asafew435yrtgre.net',
+    'https://x8988.com',
+    'https://x6161.com',
   ],
   'c126': [
-    'https://jz0222.com',
-    'https://jz0444.com',
-    'https://jz1444.com',
-    'https://jz2444.com',
-    'https://jz2111.com',
+    'https://hqcp00001.com',
+    'https://hqcp00002.com',
+    'https://hqcp00003.com',
+    'https://hqcp00004.com',
+    'https://hqcp00005.com',
   ],
   'c126b': [
     'https://bc44698.com',
@@ -266,6 +287,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c137': [
     'https://7033005.com',
+    'https://7033633.com',
+    'https://7033733.com',
   ],
   'c150': [
     'https://0187655.com',
@@ -278,16 +301,18 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c158': [
     'https://9055188.com',
+    'https://9055233.com',
+    'https://9055255.com',
   ],
   'c163': [
     'https://c91c91hh.com',
   ],
   'c165': [
-    'https://1875883.com',
-    'https://1875885.com',
-    'https://1875886.com',
-    'https://1875887.com',
-    'https://1875005.com',
+    'https://86886cp.com',
+    'https://www.81f9.com',
+    'https://www.82f9.com',
+    'https://www.f933.cc',
+    'https://87886cp.com',
   ],
   'c169': [
     'http://heixxqic169cqhmszw.playzone88.com',
@@ -296,8 +321,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.dfjt1.com',
   ],
   'c175': [
-    'https://7053bbb.com',
-    'https://7053fff.vip',
+    'https://7053ccc.cc',
+    'https://7053bbb.cc',
     'https://7053eee.vip',
     'https://7053ccc.vip',
   ],
@@ -305,31 +330,34 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://00fhcp.cn',
   ],
   'c186': [
-    'https://200300c.com',
-    'https://200300d.com',
     'https://200300e.com',
-    'https://288388e.com',
-    'https://288388i.com',
+    'https://200300k.com',
+    'https://200300j.com',
+    'https://288388d.com',
   ],
   'c190': [
     'https://474745.com',
+    'https://243939.com',
+    'https://141454.com',
+    'https://141464.com',
+    'https://489494.com',
   ],
   'c193': [
-    'https://4906211.com',
-    'https://4906212.com',
-    'https://49060333.com',
-    'https://49060222.com',
-    'https://49061111.com',
+    'https://4906204.com',
+    'https://4906216.com',
+    'https://4906217.com',
+    'https://4906213.com',
+    'https://4906218.com',
   ],
   'c198': [
     'https://2909tycjt.com',
   ],
   'c200': [
-    'https://19952022.com',
-    'https://19952023.com',
-    'https://19952024.com',
-    'https://19952025.com',
-    'https://19952026.com',
+    'https://00852017.com',
+    'https://00852018.com',
+    'https://00852019.com',
+    'https://00852020.com',
+    'https://00852022.com',
   ],
   'c203': [
     'https://xpjcpapp.com',
@@ -358,11 +386,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4504506.com',
-    'https://vip45022.com',
-    'https://45033app.com',
-    'https://4504505.com',
-    'https://4508450.com',
+    'https://00998800b.com',
+    'https://0980gg.com',
+    'https://098545a.com',
+    'https://098hg.net',
+    'https://123kkdd.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -393,6 +421,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://398595.com',
     'https://697896.com',
     'https://697956.com',
+    'https://238698.com',
+    'https://923455.com',
   ],
   'c243': [
     'https://55979711.vip',
@@ -402,7 +432,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://55979755.vip',
   ],
   'c245': [
-    'https://4823app.com',
+    'https://4823kcmanucxeanm.com',
+    'https://4823btuenaldfpvm.com',
   ],
   'c246': [
     'https://847758.com',
@@ -435,7 +466,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://yl29003.com',
     'https://yl29005.com',
     'https://yl29006.com',
-
   ],
   'l001': [
     'https://4988wap.com',
@@ -444,14 +474,16 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333a.org',
-    'https://70333s.org',
-    'https://70333d.org',
-    'https://70333f.org',
-    'https://70333g.org',
+    'https://70333b.org',
+    'https://70333k.org',
+    'https://70333c.org',
+    'https://70333m.org',
+    'https://70333n.org',
   ],
   'h003b': [
     'https://betv5.com',
+    'https://3947b.com',
+    'https://3947c.com',
   ],
   'h005': [
     'https://534023.com',

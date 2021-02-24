@@ -1,14 +1,21 @@
-import { img_root, UGImageHost, useHtml5Image } from '.'
+import { img_images, img_root, UGImageHost, useHtml5Image } from '.'
+import AppDefine from '../../public/define/AppDefine'
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 /**
  * 全局资源统一管理
  *
  */
-export const ROULETTE_LOGO = img_assets('c018dzp', 'gif') //大转盘
+export const icon_大转盘 = img_home('dzp') //大转盘
 export const icon_砸金蛋 = img_home('zjd/zjd')    //大转盘
-export const icon_刮刮乐 = img_assets('gyg')    //大转盘
+export const icon_刮刮乐 = img_home('gyg/gyg')    //大转盘
 export const icon_任务弹窗 = img_assets('task_home')    //任务弹框
+export const icon_利息宝 = () => {
+  if (AppDefine.inSites('c085')) {
+    return img_platform('c085', 'lxb', 'gif')
+  }
+  return img_images('lxb', 'gif')
+}
 
 export const Res = {
 
@@ -76,12 +83,13 @@ export const Res = {
 
   //秒秒彩
   mmckjz: img_root('web/images/zh/mmckjz'), //开奖中
-  mmcwzj: img_root('web/images/zh/mmcwzj'),//未开奖
+  mmcwzj: img_root('web/images/zh/mmcwzj'),//未中奖
   mmczjl: img_root('web/images/zh/mmczjl'), //中奖啦
   mmczt: img_root('web/images/zh/mmczt'), //暂停
   mmczdtz: img_root('web/images/zh/mmczdtz'), //自动投注
-  mmcBg23: img_root('web/images/mmcBg23'), //牛仔背景
   mmcbackpic: img_root('web/static/vueTemplate/vue/images/mmcbackpic'), //背景
+  mmcBg23: img_root('web/images/mmcBg23'), //牛仔背景
+  mmcbg2_2: img_assets('mmcbg2_2'),//背景2
 
   //筹码
   a10: img_assets('chip/a10'),
@@ -140,4 +148,8 @@ export const Res = {
 
   //第三方遊戲返回
   back_home: img_assets('back_home'),
+  //紅包
+  redBg: img_root('web/static/vueTemplate/vue/images/my/red_pack_big'),
+  closeDialog: img_assets('dialog/dialog_close'),
+  pig: img_assets('pig'),
 }

@@ -27,6 +27,7 @@ import useTransfer from '../../hooks/useTransfer'
 import { PageName } from '../../navigation/Navigation'
 import { TransferRecordView } from './TransferRecordView'
 import { TransferLineRecordView } from './TransferLineRecordView'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const quickArr = ['全部', 100, 500, 1000, 5000, 10000]
 export const TransferLineView = () => {
@@ -170,8 +171,8 @@ export const TransferLineView = () => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <Text
-                style={{ fontSize: 14, textAlign: 'center', color: Skin1.textColor1 }}>转入金额：</Text>
+              <UGText
+                style={{ fontSize: 14, textAlign: 'center', color: Skin1.textColor1 }}>转入金额：</UGText>
             </View>
             <View style={{
               marginLeft: 4,
@@ -185,7 +186,7 @@ export const TransferLineView = () => {
             }}>
               <TextInput onChangeText={(text) => setMoney(parseInt(text))} keyboardType={'numeric'}
                          style={{ color: 'black', fontSize: 16, width: 80 }}>{money}</TextInput>
-              <Text style={{ color: 'black', fontSize: 14, width: 80 }}>元</Text>
+              <UGText style={{ color: 'black', fontSize: 14, width: 80 }}>元</UGText>
             </View>
           </View>
           <FlatList
@@ -210,10 +211,10 @@ export const TransferLineView = () => {
                     alignItems: 'center',
                     paddingVertical: 10,
                   }}>
-                    <Text style={{
+                    <UGText style={{
                       color: '#111',
                       fontSize: 13,
-                    }}>{text}</Text>
+                    }}>{text}</UGText>
                   </View>
                 </TouchableWithoutFeedback>
               )
@@ -231,12 +232,12 @@ export const TransferLineView = () => {
                 borderRadius: 4,
                 backgroundColor: Skin1.themeDarkColor,
               }}>
-                <Text style={{
+                <UGText style={{
                   fontSize: 17,
                   color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
                   alignSelf: 'center',
                   paddingVertical: 12,
-                }}>开始转换</Text>
+                }}>开始转换</UGText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={{ marginLeft: 30, flex: 1 }} onPress={() => autoTransfer().then(async () => {
@@ -247,12 +248,12 @@ export const TransferLineView = () => {
                 borderRadius: 4,
                 backgroundColor: Skin1.themeDarkColor,
               }}>
-                <Text style={{
+                <UGText style={{
                   fontSize: 17,
                   color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
                   alignSelf: 'center',
                   paddingVertical: 12,
-                }}>一键提取</Text>
+                }}>一键提取</UGText>
               </View>
             </TouchableOpacity>
           </View>
@@ -296,14 +297,14 @@ const Header = () => {
           {show && <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
             <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
           </TouchableOpacity>}
-          <Text style={{
+          <UGText style={{
             alignSelf: 'center',
             paddingTop: 15,
             paddingBottom: 15,
             textAlign: 'center',
             fontSize: 20,
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-          }}>额度转换</Text>
+          }}>额度转换</UGText>
         </View>
       </SafeAreaView>
     </LinearGradient>
@@ -346,24 +347,24 @@ const UserContent = () => {
              source={{ uri: isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar }} />
       <View style={{ justifyContent: 'center', marginLeft: 24 }}>
         <View style={{ flexDirection: 'row' }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 14, color: Skin1.isBlack ? 'white' : 'black' }}>{usr}</Text>
+          <UGText style={{ fontWeight: 'bold', fontSize: 14, color: Skin1.isBlack ? 'white' : 'black' }}>{usr}</UGText>
         </View>
         <TouchableWithoutFeedback onPress={() => {
           animatedSpin(spinValue, setSpinValue)
           UGUserModel.updateFromNetwork()
         }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 8 }}>
-            <Text style={{ color: Skin1.textColor2, fontSize: 14 }}>用户余额：</Text>
-            <Text style={{ color: Skin1.themeColor, fontSize: 14 }}>{balance}</Text>
-            <Text style={{ color: Skin1.textColor2, fontSize: 14 }}> RMB</Text>
+            <UGText style={{ color: Skin1.textColor2, fontSize: 14 }}>用户余额：</UGText>
+            <UGText style={{ color: Skin1.themeColor, fontSize: 14 }}>{balance}</UGText>
+            <UGText style={{ color: Skin1.textColor2, fontSize: 14 }}> RMB</UGText>
             <Animated.Image
               style={{ transform: [{ rotate: spin }], height: 20, width: 20, marginLeft: 4 }}
               source={{ uri: httpClient.defaults.baseURL + '/images/icon-refresh.png' }} />
           </View>
         </TouchableWithoutFeedback>
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 8 }}>
-          <Text style={{ color: Skin1.textColor2, fontSize: 14 }}>真实姓名：</Text>
-          <Text style={{ color: Skin1.themeColor, fontSize: 14 }}>{fullName}</Text>
+          <UGText style={{ color: Skin1.textColor2, fontSize: 14 }}>真实姓名：</UGText>
+          <UGText style={{ color: Skin1.themeColor, fontSize: 14 }}>{fullName}</UGText>
         </View>
       </View>
     </View>
@@ -390,10 +391,10 @@ const TabBar = ({ activeTab, setActiveTab }) => {
           justifyContent: 'center',
           borderColor: activeTab == 0 ? Skin1.themeColor : Skin1.textColor2,
         }}>
-          <Text style={{
+          <UGText style={{
             fontSize: 14,
             color: activeTab == 0 ? Skin1.themeColor : Skin1.textColor2,
-          }}>额度转换</Text>
+          }}>额度转换</UGText>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => {
@@ -407,11 +408,11 @@ const TabBar = ({ activeTab, setActiveTab }) => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Text
+          <UGText
             style={{
               fontSize: 14,
               color: activeTab == 1 ? Skin1.themeColor : Skin1.textColor2,
-            }}>转换记录</Text>
+            }}>转换记录</UGText>
         </View>
       </TouchableWithoutFeedback>
     </View>
@@ -432,7 +433,7 @@ const WalletTabBar = ({ activeTab, setActiveTab, data }) => {
               paddingVertical: 16,
               borderColor: activeTab == item ? Skin1.themeColor : '#dddddd',
             }}>
-              <Text style={{ color: activeTab == item ? Skin1.themeColor : Skin1.textColor2 }}>{item.title}</Text>
+              <UGText style={{ color: activeTab == item ? Skin1.themeColor : Skin1.textColor2 }}>{item.title}</UGText>
             </View>
           </TouchableWithoutFeedback>
         ) : <></>
@@ -456,8 +457,8 @@ const TransferPicker = ({ onGreyBGPress, bgOpen, placeholder = '请选择钱包'
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text
-          style={{ fontSize: 14, textAlign: 'center', color: Skin1.textColor1 }}>{text}</Text>
+        <UGText
+          style={{ fontSize: 14, textAlign: 'center', color: Skin1.textColor1 }}>{text}</UGText>
       </View>
       <TouchableWithoutFeedback onPress={() => bgOpen ? onGreyBGPress() : onPress()}>
         <View style={{
@@ -469,11 +470,11 @@ const TransferPicker = ({ onGreyBGPress, bgOpen, placeholder = '请选择钱包'
           flexDirection: 'row',
           backgroundColor: bgOpen ? 'rgba(0,0,0, 0.1)' : '#fff',
         }}>
-          <Text
+          <UGText
             style={{
               color: wallet ? Skin1.isBlack ? 'white' : 'black' : Skin1.textColor2,
               fontSize: 18,
-            }}>{wallet ? wallet.title : placeholder}</Text>
+            }}>{wallet ? wallet.title : placeholder}</UGText>
         </View>
       </TouchableWithoutFeedback>
       <Animated.View
@@ -498,7 +499,7 @@ const TransferPicker = ({ onGreyBGPress, bgOpen, placeholder = '请选择钱包'
               setWallet(item)
             }}>
               <View style={{ paddingVertical: 12, paddingHorizontal: 12, justifyContent: 'center' }}>
-                <Text>{item ? item.title || '' : ''}</Text>
+                <UGText>{item ? item.title || '' : ''}</UGText>
               </View>
             </TouchableWithoutFeedback>
           )} />}
@@ -548,21 +549,21 @@ const AccItem = ({ userBalance, item, updateBalance, setUpdateWallet, index, las
       borderLeftWidth: (lastItem && index % 3 == 0) || (index % 3 == 1) ? 0.5 : 0,
       borderRightWidth: (lastItem && index % 3 == 0) || (index % 3 == 1) ? 0.5 : 0,
     }}>
-      <Text style={{ fontSize: 14 }}>{item.title || ''}</Text>
+      <UGText style={{ fontSize: 14 }}>{item.title || ''}</UGText>
       {balance == '' ?
         loading ? <ActivityIndicator style={{ marginTop: 2 }} size={'small'} color={Skin1.themeColor} /> :
           <TouchableWithoutFeedback onPress={() => {
             checkBalance(item.id)
           }}>
             <View style={{ backgroundColor: Skin1.themeColor, borderRadius: 6, marginTop: 4 }}>
-              <Text style={{ paddingVertical: 2, paddingHorizontal: 6, color: '#fff' }}>点击加载</Text>
+              <UGText style={{ paddingVertical: 2, paddingHorizontal: 6, color: '#fff' }}>点击加载</UGText>
             </View>
           </TouchableWithoutFeedback> :
         loading ? <ActivityIndicator style={{ marginTop: 2 }} size={'small'} color={Skin1.themeColor} /> :
           <TouchableWithoutFeedback onPress={() => {
             checkBalance(item.id)
           }}>
-            <Text style={{ color: Skin1.textColor1, marginTop: 4 }}>{`${balance}`}</Text>
+            <UGText style={{ color: Skin1.textColor1, marginTop: 4 }}>{`${balance}`}</UGText>
           </TouchableWithoutFeedback>
       }
     </View>

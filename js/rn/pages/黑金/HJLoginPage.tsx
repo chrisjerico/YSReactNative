@@ -15,6 +15,7 @@ import FastImage from "react-native-fast-image";
 import {UGStore} from "../../redux/store/UGStore";
 import SignInFormList from "./reg/SignInFormList";
 import { skinColors } from '../../public/theme/const/UGSkinColor'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 登录
@@ -87,9 +88,9 @@ const HJLoginPage = () => {
                 <FastImage style={_styles.text_icon}
                            resizeMode={'contain'}
                            source={{uri: "http://test61a.fhptcdn.com/views/mobileTemplate/28/images/login_ptsy.png"}}/>
-                <Text onPress={() => {
+                <UGText onPress={() => {
                   push(PageName.HJHomePage)
-                }} style={{color: '#8e8e93', fontSize: scale(20)}}>平台首页</Text>
+                }} style={{color: '#8e8e93', fontSize: scale(20)}}>平台首页</UGText>
               </View>
 
               <View style={[CommStyles.line_v, {height: scale(20), marginHorizontal: scale(32)}]}/>
@@ -98,9 +99,9 @@ const HJLoginPage = () => {
                 <FastImage style={_styles.text_icon}
                            resizeMode={'contain'}
                            source={{uri: "http://test61a.fhptcdn.com/views/mobileTemplate/28/images/login_lxkf.png"}}/>
-                <Text onPress={() => {
+                <UGText onPress={() => {
                   PushHelper.pushUserCenterType(UGUserCenterType.在线客服);
-                }} style={{color: '#8e8e93', fontSize: scale(20)}}>联系客服</Text>
+                }} style={{color: '#8e8e93', fontSize: scale(20)}}>联系客服</UGText>
               </View>
 
             </View>

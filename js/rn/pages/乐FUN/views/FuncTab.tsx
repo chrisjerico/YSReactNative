@@ -7,6 +7,7 @@ import FastImage from "react-native-fast-image";
 import PushHelper from "../../../public/define/PushHelper";
 import {UGUserCenterType} from "../../../redux/model/全局/UGSysConfModel";
 import { skinColors } from "../../../public/theme/const/UGSkinColor";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const icon1 = 'http://test61a.fhptcdn.com/views/mobileTemplate/30/images/recharge.png'
 const icon2 = 'http://test61a.fhptcdn.com/views/mobileTemplate/30/images/recharge.png'
@@ -24,7 +25,7 @@ export const FuncTab = ({onPress}: IFuncTab) => {
           <FastImage style={_styles.icon}
                      resizeMode={'contain'}
                      source={{uri: icon1}}/>
-          <Text style={_styles.title}>我要充值</Text>
+          <UGText style={_styles.title}>我要充值</UGText>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={()=>onPress(UGUserCenterType.取款)}>
@@ -32,7 +33,7 @@ export const FuncTab = ({onPress}: IFuncTab) => {
           <FastImage style={_styles.icon}
                      resizeMode={'contain'}
                      source={{uri: icon2}}/>
-          <Text style={_styles.title}>我要提现</Text>
+          <UGText style={_styles.title}>我要提现</UGText>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={()=>onPress(UGUserCenterType.额度转换)}>
@@ -40,7 +41,7 @@ export const FuncTab = ({onPress}: IFuncTab) => {
           <FastImage style={_styles.icon}
                      resizeMode={'contain'}
                      source={{uri: icon3}}/>
-          <Text style={_styles.title}>转换额度</Text>
+          <UGText style={_styles.title}>转换额度</UGText>
         </View>
       </TouchableWithoutFeedback>
     </View>

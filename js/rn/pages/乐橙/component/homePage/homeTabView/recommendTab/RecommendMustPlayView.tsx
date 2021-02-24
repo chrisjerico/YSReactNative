@@ -2,14 +2,15 @@ import {Text, View} from "react-native";
 import {ImageButton} from "../../../ImageButton";
 import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RecommendMustPlayView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
     return (
         <>
             <View style={{flexDirection: "row", alignItems: "center"}}>
-                <Text style={{fontWeight: "bold", color: '#333', fontSize: 18}}>必玩</Text>
-                <Text style={{fontSize: 15, marginHorizontal: 10}}>|</Text>
-                <Text style={{fontSize: 16, color: '#333'}}>全民来玩</Text>
+                <UGText style={{fontWeight: "bold", color: '#333', fontSize: 18}}>必玩</UGText>
+                <UGText style={{fontSize: 15, marginHorizontal: 10}}>|</UGText>
+                <UGText style={{fontSize: 16, color: '#333'}}>全民来玩</UGText>
             </View>
             <ImageButton onPress={() => onPress(list[0])}
                          imgStyle={{height: 153, width: "100%"}}

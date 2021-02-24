@@ -17,6 +17,7 @@ import { PageName } from '../../../../../public/navigation/Navigation'
 import Icon from 'react-native-vector-icons/Entypo'
 import NeedNameInputComponent from '../../../../../public/components/tars/NeedNameInputComponent'
 import { ugLog } from '../../../../../public/tools/UgLog'
+import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 提现界面
@@ -70,14 +71,14 @@ const WithdrawComponent = ({ navigation, route }) => {
     {
       systemInfo?.switchCoinPwd == '1' && <View style={_styles.forget_pwd_container}>
         <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
-          <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
+          <UGText style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</UGText>
         </TouchableOpacity>
       </View>
     }
     {
       systemInfo?.switchBalanceChannel == '1' && <View style={_styles.forget_pwd_container}>
         <TouchableOpacity onPress={() => setWithdrawType(0)}>
-          <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
+          <UGText style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</UGText>
         </TouchableOpacity>
       </View>
     }
@@ -135,11 +136,11 @@ const WithdrawComponent = ({ navigation, route }) => {
         <Icon size={scale(36)}
               color={Skin1.themeColor}
               name={'plus'}/>
-        <Text style={[_styles.bind_text, { color: Skin1.themeColor }]}>
+        <UGText style={[_styles.bind_text, { color: Skin1.themeColor }]}>
           {
             `绑定${curBank?.parentTypeName}`
           }
-        </Text>
+        </UGText>
       </View>
     </TouchableOpacity>
 
@@ -155,9 +156,9 @@ const WithdrawComponent = ({ navigation, route }) => {
       a = '= ' + btcMoney + ' ' + curBank?.bankCode
     }
     if (anyEmpty(newUsd) || isNaN(newUsd)) {
-      b = ',   ' + curBank?.bankCode + ' = 0' + ' CNY'
+      b = ',   1 ' + curBank?.bankCode + ' = 0' + ' CNY'
     } else {
-      b = ',   ' + curBank?.bankCode + ' = ' + newUsd + ' CNY'
+      b = ',   1 ' + curBank?.bankCode + ' = ' + newUsd + ' CNY'
     }
     return a + ' ' + b
 
@@ -180,13 +181,13 @@ const WithdrawComponent = ({ navigation, route }) => {
       {
         curBank?.type != BankConst.BTC ?
           null :
-          <Text style={_styles.btc_hint}>{
+          <UGText style={_styles.btc_hint}>{
             bankLabel()
-          }</Text>
+          }</UGText>
       }
-      <Text style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
+      <UGText style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
         Number(tipsItem?.maxWithdrawMoney) <= 0 ? '不限' : Number(tipsItem?.maxWithdrawMoney)
-      }`}</Text>
+      }`}</UGText>
       <View style={_styles.input_container}>
         <TextInput style={_styles.input_name}
                    maxLength={4}
@@ -220,12 +221,12 @@ const WithdrawComponent = ({ navigation, route }) => {
         refMenu?.current?.toggleMenu()
       }}>
         <View style={_styles.input_container}>
-          <Text style={_styles.input_name}>
+          <UGText style={_styles.input_name}>
             {
               curBank != null &&
               `${curBank?.parentTypeName} (${curBank?.bankName}, ${curBank?.bankCard}, ${curBank?.ownerName})`
             }
-          </Text>
+          </UGText>
         </View>
       </TouchableOpacity>
       {
@@ -266,14 +267,14 @@ const WithdrawComponent = ({ navigation, route }) => {
       {
         curBank?.type != BankConst.BTC ?
           null :
-          <Text style={_styles.btc_hint}>{
+          <UGText style={_styles.btc_hint}>{
             // `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
             bankLabel()
-          }</Text>
+          }</UGText>
       }
-      <Text style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
+      <UGText style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
         Number(tipsItem?.maxWithdrawMoney) <= 0 ? '不限' : Number(tipsItem?.maxWithdrawMoney)
-      }`}</Text>
+      }`}</UGText>
       <View style={_styles.input_container}>
         <TextInput style={_styles.input_name}
                    maxLength={4}
@@ -307,11 +308,11 @@ const WithdrawComponent = ({ navigation, route }) => {
         refMenu?.current?.toggleMenu()
       }}>
         <View style={_styles.input_container}>
-          <Text style={_styles.input_name}>
+          <UGText style={_styles.input_name}>
             {
               curBank && `${curBank?.parentTypeName} (${curBank?.bankName}, ${curBank?.bankCard}, ${curBank?.ownerName})`
             }
-          </Text>
+          </UGText>
         </View>
       </TouchableOpacity>
       {
@@ -325,7 +326,7 @@ const WithdrawComponent = ({ navigation, route }) => {
       {
         systemInfo?.switchCoinPwd == '1' && <View style={_styles.forget_pwd_container}>
           <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
-            <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
+            <UGText style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</UGText>
           </TouchableOpacity>
         </View>
       }
@@ -333,9 +334,9 @@ const WithdrawComponent = ({ navigation, route }) => {
         systemInfo?.switchYuebaoChannel == '1' &&
         <View style={_styles.forget_pwd_container}>
           <TouchableOpacity onPress={() => setWithdrawType(1)}>
-            <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{
+            <UGText style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{
               '切换到' + systemInfo?.yuebaoName + '取款'
-            }</Text>
+            }</UGText>
           </TouchableOpacity>
         </View>
       }
@@ -350,18 +351,18 @@ const WithdrawComponent = ({ navigation, route }) => {
       <View
         style={[_styles.sub_tab_item,
           { borderBottomColor: tabIndex == 0 ? Skin1.themeColor : 'transparent' }]}>
-        <Text
+        <UGText
           style={[_styles.sub_tab_text,
-            { color: tabIndex == 0 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[0]}</Text>
+            { color: tabIndex == 0 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[0]}</UGText>
       </View>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => setTabIndex(1)}>
       <View
         style={[_styles.sub_tab_item,
           { borderBottomColor: tabIndex == 1 ? Skin1.themeColor : 'transparent' }]}>
-        <Text
+        <UGText
           style={[_styles.sub_tab_text,
-            { color: tabIndex == 1 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[1]}</Text>
+            { color: tabIndex == 1 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[1]}</UGText>
       </View>
     </TouchableOpacity>
   </View>

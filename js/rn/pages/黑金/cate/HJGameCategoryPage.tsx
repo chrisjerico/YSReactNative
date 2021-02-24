@@ -8,6 +8,7 @@ import FastImage from "react-native-fast-image";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {pop} from "../../../public/navigation/RootNavigation";
 import { skinColors } from "../../../public/theme/const/UGSkinColor";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
  * 所有分类
@@ -26,8 +27,8 @@ const HJGameCategoryPage = (props: any) => {
       <FastImage
         style={_styles.item}
         source={{uri: item.icon}}>
-        <Text style={_styles.itemText}
-              numberOfLines={1} >{item.name}</Text>
+        <UGText style={_styles.itemText}
+              numberOfLines={1} >{item.name}</UGText>
       </FastImage>
     </TouchableWithoutFeedback>
   };
@@ -79,7 +80,7 @@ const ZLHeader = () => {
         </View>
       </TouchableWithoutFeedback>
       <View style={CommStyles.flex}/>
-      <Text style={_styles.title}>游戏中心</Text>
+      <UGText style={_styles.title}>游戏中心</UGText>
       <View style={CommStyles.flex}/>
 
     </View>

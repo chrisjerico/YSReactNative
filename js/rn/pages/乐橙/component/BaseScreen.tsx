@@ -6,6 +6,8 @@ import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { TouchableHighlight } from 'react-native-gesture-handler'
+import { clearAllHtml } from '../../../public/tools/StringUtil'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface BaseScreenProps {
     hideBar?: boolean //隐藏标题栏
@@ -31,7 +33,7 @@ export const BaseScreen = ({ hideBar, children, screenName, style, icon, hideLef
                             alignItems: "center",
                             alignSelf: "center",
                         }}>
-                            <Text style={{
+                            <UGText style={{
                                 paddingTop: scale(20),
                                 paddingBottom: scale(20),
                                 textAlign: "center",
@@ -39,7 +41,7 @@ export const BaseScreen = ({ hideBar, children, screenName, style, icon, hideLef
                                 width: "100%",
                                 alignSelf: "center",
                                 color: Skin1.navBarTitleColor //根据当前主题来
-                            }}>{screenName}</Text>
+                            }}>{clearAllHtml(screenName)}</UGText>
                             {
                                 <TouchableOpacity style={{ width: 60, height: 40, position: "absolute",  }}
                                     onPress={() => {

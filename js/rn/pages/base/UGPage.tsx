@@ -19,7 +19,7 @@ import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 
 // Props
-export interface UGBasePageProps<P extends UGBasePageProps = {}, F = any> {
+export interface UGBasePageProps<P extends UGBasePageProps = UGBasePageProps<{}>, F = any> {
   // React-Navigation
   navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}> // 导航助手
   route?: { name: PageName; key: string, params: F }
@@ -72,7 +72,7 @@ export default (Page: Function) => {
       })
       navigation.removeListener('transitionEnd', null)
       navigation.addListener('transitionEnd', (e) => {
-        ugLog('当前routes=', e?.data?.closing, navigationRef?.current?.getRootState()?.routes?.length)
+        // ugLog('当前routes=', e?.data?.closing, navigationRef?.current?.getRootState()?.routes?.length)
         if (e?.data?.closing && navigationRef?.current?.getRootState()?.routes?.length == 1) {
           this._showMainTab()
         }
@@ -132,7 +132,7 @@ export default (Page: Function) => {
     setNavbarProps(navBarProps: UGNavigationBarProps): void {
       const { route: { key } } = this.props
       const props = UGStore.getPageProps<UGBasePageProps>(key) ?? {}
-      props.navbarOpstions = deepMergeProps(props.navbarOpstions, navBarProps)
+      props.navbarOpstions = deepMergeProps(props.navbarOpstions, navBarProps, { c_ref: this.navBar })
       this.navBar?.setNavBarProps && this.navBar.setNavBarProps(props.navbarOpstions)
     }
 
@@ -144,7 +144,7 @@ export default (Page: Function) => {
       return (
         <LinearGradient colors={bgGradientColor ?? [backgroundColor, backgroundColor]} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
-            {navbarOpstions && !navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} c_ref={this.navBar} />}
+            <UGNavigationBar {...navbarOpstions} c_ref={this.navBar} />
             <Page
               {...this.props}
               {...props}

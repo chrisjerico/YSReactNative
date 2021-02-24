@@ -1,9 +1,42 @@
 /**
+ * 转成2位数
+ */
+import { Toast } from './ToastUtils'
+
+/**
+ * 转换数据为2位数
+ * @param value
+ */
+const doubleDigit = (value?: string | number) => ('0' + value).slice(-2)
+
+/**
+ * 转换数据为3位数
+ * @param value
+ */
+const threeDigit = (value?: string | number) => ('00' + value).slice(-3)
+
+/**
  * 删除HTML标签
  * @param s
  */
 const deleteHtml = (s?: string): string => {
   return s?.replace(/<[^>]+>/g, '')
+}
+
+/**
+ * 清除多余的HTML标签
+ * @param text
+ */
+const clearExHtml = (text?: string): string => {
+  return "<span style='color:#555555;'>" + text?.replace(/font/g, 'span').replace(/color="#/g, 'style=\"color:#') + "</span>"
+}
+
+/**
+ * 清除所有的HTML标签
+ * @param text
+ */
+const clearAllHtml = (text?: string): string => {
+  return text?.replace(/<[^>]+>/g, '')
 }
 
 /**
@@ -23,17 +56,28 @@ const endString = (str?: string, end?: string): boolean => {
 }
 
 /**
- * 转换2位小数形式
+ * 转换n位小数形式
  */
-const numberToFloatString = (x?: number): string => {
-  if (!x) return '0.00'
-  const i = Math.floor(x)
-  const d = x?.toString()?.split('.')[1] || '00'
-  return i.toLocaleString('en-US') + '.' + d
+const numberToFloatString = (x?: number, len: number = 2): string => {
+  return x ? x.toFixed(len) : Number(0).toFixed(len)
+}
+
+/**
+ * 选择提示
+ * @param count
+ * @param alias
+ */
+const showHintToast = (count?: number, alias?: string) => {
+  !count ? Toast(`请选择数据`) : Toast(`请选择${count}个《${alias}》数据`)
 }
 
 export {
+  clearExHtml,
+  clearAllHtml,
   deleteHtml,
   endString,
   numberToFloatString,
+  doubleDigit,
+  threeDigit,
+  showHintToast,
 }

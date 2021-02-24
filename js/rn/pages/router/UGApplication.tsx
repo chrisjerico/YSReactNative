@@ -2,7 +2,6 @@ import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { Component } from 'react'
 import CodePush from 'react-native-code-push'
-import { DoyLaunchPage } from '../../../doy/pages/DoyLaunchPage'
 import { AlipayProfitView } from '../../public/components/alipay/AlipayProfitView'
 import { AlipayTransferRecordView } from '../../public/components/alipay/AlipayTransferRecordView'
 import { AlipayTransferView } from '../../public/components/alipay/AlipayTransferView'
@@ -94,8 +93,6 @@ import ZLLoginPage from '../尊龙/ZLLoginPage'
 import ZLMinePage from '../尊龙/ZLMinePage'
 import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
-import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
-import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
 import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
 import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
 import JDAgentPage from '../经典/申请代理/JDAgentPage'
@@ -116,6 +113,53 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import JDDayDetailPage from '../经典/下注明细/下注明细(已结算)/JDDayDetailPage'
+import { DoyLoginPage } from '../../../doy/pages/启动页/DoyLoginPage'
+import { DoyRegisterPage1 } from '../../../doy/pages/启动页/DoyRegisterPage1'
+import { DoyMinePage } from '../../../doy/pages/我的/DoyMinePage'
+import { DoyNickNamePage } from '../../../doy/pages/我的/个人资料/DoyNickNamePage'
+import { DoyPhoneNumberPage1 } from '../../../doy/pages/我的/个人资料/DoyPhoneNumberPage1'
+import { DoyPhoneNumberPage2 } from '../../../doy/pages/我的/个人资料/DoyPhoneNumberPage2'
+import { DoySelfIntroductionPage } from '../../../doy/pages/我的/个人资料/DoySelfIntroductionPage'
+import { DoyUserInfoEditPage } from '../../../doy/pages/我的/个人资料/DoyUserInfoEditPage'
+import { DoyUserInfoPage } from '../../../doy/pages/我的/个人资料/DoyUserInfoPage'
+import { DoyChangeLoginPwdPage } from '../../../doy/pages/我的/修改密码/DoyChangeLoginPwdPage'
+import { DoyChangePayPwdPage } from '../../../doy/pages/我的/修改密码/DoyChangePayPwdPage'
+import { DoyMyCommentPage } from '../../../doy/pages/我的/我的评价/DoyMyCommentPage'
+import { DoyPaymentChannlPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentChannlPage'
+import { DoyChatDetailPage } from '../../../doy/pages/聊聊/DoyChatDetailPage'
+import { DoyChatListPage } from '../../../doy/pages/聊聊/DoyChatListPage'
+import { DoyNoticeListPage } from '../../../doy/pages/通知/DoyNoticeListPage'
+import { DoyNoticeOrderFeedbackPage } from '../../../doy/pages/通知/DoyNoticeOrderFeedbackPage'
+import { DoyNoticeOrderPage } from '../../../doy/pages/通知/DoyNoticeOrderPage'
+import { DoyNoticeSentSuccessPage } from '../../../doy/pages/通知/DoyNoticeSentSuccessPage'
+import { DoyHomePage } from '../../../doy/pages/首页/首页/DoyHomePage'
+import { DoyMyOrderPage } from '../../../doy/pages/首页/我的订单/DoyMyOrderPage'
+import { DoySearchOrderPage } from '../../../doy/pages/首页/我的订单/DoySearchOrderPage'
+import { DoySearchReultPage } from '../../../doy/pages/首页/我的订单/DoySearchReultPage'
+import { DoyNotifySellerPage } from '../../../doy/pages/首页/我要买/DoyNotifySellerPage'
+import { DoyPendingPaymentPage } from '../../../doy/pages/首页/我要买/DoyPendingPaymentPage'
+import { DoySellOrderPage } from '../../../doy/pages/首页/我要买/DoySellOrderPage'
+import { DoyWantBuyPage } from '../../../doy/pages/首页/我要买/DoyWantBuyPage'
+import { DoySellOrderConfirmPage } from '../../../doy/pages/首页/我要卖/DoySellOrderConfirmPage'
+import { DoySetSellOrderPage } from '../../../doy/pages/首页/我要卖/DoySetSellOrderPage'
+import { DoyWantSellPage } from '../../../doy/pages/首页/我要卖/DoyWantSellPage'
+import { DoyReceiveCurrencyPage } from '../../../doy/pages/首页/打币收币/DoyReceiveCurrencyPage'
+import { DoyTransferCurrencyPage } from '../../../doy/pages/首页/打币收币/DoyTransferCurrencyPage'
+import { DoyTransferSuccessPage } from '../../../doy/pages/首页/打币收币/DoyTransferSuccessPage'
+import { DoyScanPage } from '../../../doy/pages/首页/扫一扫/DoyScanPage'
+import { DoyWalletRecordDetailPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordDetailPage'
+import { DoyWalletRecordListPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordListPage'
+import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordSearchPage'
+import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
+import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
+import JDPromoteDetailPage from '../经典/优惠详情/JDPromoteDetailPage'
+import WebPage from '../common/web/WebPage'
+import { Platform } from 'react-native'
+import { H5WebPage } from '../base/H5页面/H5WebPage'
+import { JSLuzhuPage } from '../base/H5页面/JSLuzhuPage'
+import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
+import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
 
 /**
  * 所有界面
@@ -124,7 +168,6 @@ const pageComponents: { [key in PageName]?: Function } = {
   // ———————————— 测试页面 —————————————
   JDSegmentPage,
   // ———————————— 通用页面 —————————————
-  JDVirtualCurrencyTutorialPage, //虚拟币充值教程
   TransitionPage, //过渡页
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表
@@ -132,7 +175,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   GameLobbyPage, // 游戏大厅主页-默认
   TwoLevelGames, //二级游戏分类
   OtherRecord, //其他投注记录（真人、棋牌、电子、体育、捕鱼、电竞）
-  Game3rdView, //优惠活动详情
+  Game3rdView, //游戏
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
@@ -155,6 +198,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferPayPage, //银行支付
   EmptyPage, //空界面
   BetLotteryPage, //彩票下注
+  WebPage, //网页
   BtcPayPage, //虚拟币支付
   BtcTutorialPage, //虚拟币教程
   AlipayView, //利息宝
@@ -178,6 +222,11 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDBetDetailPage, //下注明细
   OnlineService, //在线客服
   JDLotterySecondPage, //2级系列游戏
+  JDDayDetailPage, //下注明细明细
+  JDPromoteDetailPage, //优惠列表详情
+  H5WebPage, // H5页面
+  JSLuzhuPage, // 路珠
+
   // ———————————— 模板页面 —————————————
 
   JDHomePage, // 经典-首页
@@ -245,7 +294,46 @@ const pageComponents: { [key in PageName]?: Function } = {
   LLRegisterPage, //利来-注册
 
   // Doy钱包
-  DoyLaunchPage, // 启动页
+  DoyLaunchPage, // doy启动页
+  DoyLoginPage, //doy登录页
+  DoyRegisterPage1, //doy注册步骤1
+  DoyRegisterPage2, //doy注册步骤2
+  DoyNickNamePage, //doy修改昵称
+  DoyPhoneNumberPage1, //doy修改手机号1
+  DoyPhoneNumberPage2, //doy修改手机号2
+  DoySelfIntroductionPage, //doy
+  DoyUserInfoEditPage, //doy编辑个人资料
+  DoyUserInfoPage, //doy个人资料
+  DoyChangeLoginPwdPage, //doy修改登录密码
+  DoyChangePayPwdPage, //doy修改支付密码
+  DoyMyCommentPage, //doy我的评论
+  DoyPaymentChannlPage, //doy收付款方式
+  DoyPaymentEditPage, //doy编辑收付款方式
+  DoyMinePage, //doy我的页
+  DoyChatDetailPage, //doy聊天页
+  DoyChatListPage, //doy聊天列表
+  DoyNoticeListPage, //doy通知列表
+  DoyNoticeOrderFeedbackPage, //doy通知评价卖方
+  DoyNoticeOrderPage, //doy通知订单页
+  DoyNoticeSentSuccessPage, //doy通知doy支付成功页
+  DoyMyOrderPage, //doy我的订单
+  DoySearchOrderPage, //doy查询订单
+  DoySearchReultPage, //doy订单查询结果
+  DoyNotifySellerPage, //doy告诉卖方
+  DoyPendingPaymentPage, //doy待付款
+  DoySellOrderPage, //doy卖方订单
+  DoyWantBuyPage, //doy我想买
+  DoySellOrderConfirmPage, //doy确认卖单设置
+  DoySetSellOrderPage, //doy设置卖单
+  DoyWantSellPage, //doy我想卖
+  DoyReceiveCurrencyPage, //doy收币
+  DoyTransferCurrencyPage, //doy打币
+  DoyTransferSuccessPage, //doy打币成功
+  DoyScanPage, //doy扫一扫
+  DoyWalletRecordDetailPage, //doy钱包记录详情
+  DoyWalletRecordListPage, //doy钱包记录列表
+  DoyWalletRecordSearchPage, //doy钱包记录查询
+  DoyHomePage,
 }
 
 // TabbarController
@@ -258,8 +346,16 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
   render() {
-    const initialName = ExtUGApplication.tabUI()
-    ugLog('tab initialName=', initialName)
+    let initialName = null
+    switch (
+      Platform.OS //暂时保留 兼容旧版本 以后可以删除
+    ) {
+      case 'android':
+        initialName = ExtUGApplication.tabUI()
+        ugLog('tab initialName=', initialName)
+        break
+    }
+
     return (
       <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
@@ -273,8 +369,16 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
 }
 
 const StackScreens = () => {
-  const initialName = ExtUGApplication.stackUI()
-  ugLog('stack initialName=', initialName)
+  let initialName = null
+  switch (
+    Platform.OS //暂时保留 兼容旧版本 以后可以删除
+  ) {
+    case 'android':
+      initialName = ExtUGApplication.stackUI()
+      ugLog('stack initialName=', initialName)
+      break
+  }
+
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />

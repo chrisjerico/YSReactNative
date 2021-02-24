@@ -27,7 +27,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
-  timeout: 3000, // 0 no limit
+  timeout: 60000, // 0 no limit
   headers: { 'Content-Type': 'application/json' },
 })
 const publicParams = {
@@ -78,10 +78,18 @@ httpClient.interceptors.response.use(
       // api请求信息添加到iOS下拉调试页面
       const data = JSON.parse(JSON.stringify(response?.data))
       data.info = undefined;
-      OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [config?.url], args2: [Object.assign({token:UGUserModel.getToken()}, config?.orParams)], args3: [data] }]);
+      OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [config?.url], args2: [Object.assign({ token: UGUserModel.getToken() }, config?.orParams)], args3: [data] }]);
     }
 
-    //ugLog("http ful filled res 5 = ", JSON.stringify(response))
+    if (response.status == 200 && response?.data?.code == 0) {
+      // 请求成功
+      if (Platform.OS == 'ios' && response.config?.url?.indexOf('c=user&a=info') != -1) {
+        // 更新原生iOS用户信息
+        OCHelper.call('UGUserModel.currentUser.setValuesWithDictionary:', [response.data?.data]);
+      }
+    }
+
+    // ugLog("http ful filled res 5 = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {
     //   if (config?.expiredTime < 1000000000000000) {
@@ -157,7 +165,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   let { isEncrypt = true } = config
   let encryptData = await encryptParams(params, isEncrypt);
 
-  //ugLog('http isEncrypt encryptData 1 =', isEncrypt, config.url, encryptData)
+  ugLog('http isEncrypt encryptData 1 =', isEncrypt, config.url, encryptData)
 
   if (config?.method?.toLowerCase() == 'get') {
     if (isEncrypt) {
@@ -192,7 +200,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
     if (config.noToken == true) {
       delete encryptData?.token
     }
-    debugger
+
     for (let paramsKey in encryptData) {
       // if (paramsKey.includes("slideCode")) {
       //   config.data[paramsKey] = config.data[paramsKey];

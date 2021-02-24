@@ -14,6 +14,7 @@ export interface IBetLotteryParams {
   betBean?: Array<BetLotteryData>
 
   isTest?: boolean //是不是试玩账号
+  tag?: string //跟注需要带上
 }
 
 export interface BetLotteryData {
@@ -22,4 +23,18 @@ export interface BetLotteryData {
   odds?: string // 赔率48.8000
   playId?: string // 当前彩球id 7127749
   playIds?: string // 230 彩票ID
+
+  betNum?: string //"1",
+  name?: string //1,  彩球编号
+  rebate?: string //"0" 退水
+
+  exFlag?: string //本地使用，该条目唯一识别标识
+}
+
+export interface ShareBetLotteryData {
+  betMoney?: string // 金额10.00
+  index?: string // 顺序
+  name?: string //1,  彩球编号
+  odds?: string // 赔率48.8000
+
 }

@@ -8,6 +8,7 @@ import APIRouter from '../../network/APIRouter'
 import { ToastSuccess, ToastError } from '../../tools/tars'
 import Avatar from '../../views/tars/Avatar'
 import ProgressCircle from '../../views/tars/ProgressCircle'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface PickAvatarComponentProps {
   onSaveAvatarSuccess?: () => any
@@ -74,7 +75,7 @@ const PickAvatarComponent = ({ initAvatar, color, onSaveAvatarSuccess }: PickAva
         <View style={styles.pickerBlock}>
           <View style={styles.avatarContainer}>
             <Avatar uri={avatar} size={200} />
-            <Text style={{ marginTop: scale(10) }}>{'头像预览'}</Text>
+            <UGText style={{ marginTop: scale(10) }}>{'头像预览'}</UGText>
           </View>
           {loading ? (
             <ProgressCircle />

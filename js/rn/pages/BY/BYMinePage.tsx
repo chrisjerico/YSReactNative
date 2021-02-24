@@ -17,6 +17,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const BYMinePage = () => {
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, info } = useMinePage({
@@ -49,18 +50,18 @@ const BYMinePage = () => {
           <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: AppDefine.onePx, borderColor: '#d9d9d9', alignItems: 'center', paddingLeft: scale(20) }}>
             <Avatar size={100} uri={isTest || !avatar ? AppDefine.defaultAvatar : avatar} onPress={onPressAvatar} />
             <View style={{ marginLeft: scale(20) }}>
-              <Text style={{ fontSize: scale(25) }}>{usr}</Text>
-              <Text style={{ fontSize: scale(25) }}>{curLevelGrade}</Text>
+              <UGText style={{ fontSize: scale(25) }}>{usr}</UGText>
+              <UGText style={{ fontSize: scale(25) }}>{curLevelGrade}</UGText>
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', paddingBottom: scale(20) }}>
             <View style={{ flex: 1, borderRightWidth: AppDefine.onePx, borderColor: '#d9d9d9', justifyContent: 'space-between', paddingVertical: scale(20), paddingLeft: scale(10) }}>
-              <Text style={{ fontSize: scale(20), color: '#8e8e93' }}>{'余额(RMB)>'}</Text>
+              <UGText style={{ fontSize: scale(20), color: '#8e8e93' }}>{'余额(RMB)>'}</UGText>
               <ReLoadBalanceComponent balance={balance} balanceDecimal={balanceDecimal} currency={currency} iconColor={'#007aff'} balanceStyle={{ fontWeight: '600', fontSize: scale(25) }} />
             </View>
             <View style={{ flex: 1, justifyContent: 'space-between', paddingVertical: scale(20), paddingLeft: scale(10) }}>
-              <Text style={styles.title}>{'积分>'}</Text>
-              <Text style={{ fontWeight: '600', fontSize: scale(25), color: '#007aff' }}>{curLevelInt}</Text>
+              <UGText style={styles.title}>{'积分>'}</UGText>
+              <UGText style={{ fontWeight: '600', fontSize: scale(25), color: '#007aff' }}>{curLevelInt}</UGText>
             </View>
           </View>
         </View>

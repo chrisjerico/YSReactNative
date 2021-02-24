@@ -2,6 +2,7 @@ import { Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native
 import Modal from 'react-native-modal'
 import * as React from 'react'
 import { useState } from 'react'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame, games}) => {
     const [chosen, setChosen] = useState()
@@ -20,7 +21,7 @@ export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame, games}
                     borderTopLeftRadius: 8,
                     borderTopRightRadius: 8
                 }}>
-                    <Text style={{fontSize: 16, paddingVertical: 16}}>选择彩种</Text>
+                    <UGText style={{fontSize: 16, paddingVertical: 16}}>选择彩种</UGText>
                 </View>
                 <FlatList
                     style={{height: 340, backgroundColor: "white", paddingVertical: 2, paddingHorizontal: 2}}
@@ -42,11 +43,11 @@ export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame, games}
                                 marginHorizontal: 4,
                                 marginVertical: 4,
                             }} onPress={() => setChosen(item)}>
-                            <Text style={{
+                            <UGText style={{
                                 textAlign: "center",
                                 fontSize: 13,
                                 color: item === chosen ? "white" : "black"
-                            }}>{item.title}</Text>
+                            }}>{item.title}</UGText>
                         </TouchableOpacity>
                     )}/>
                 <View style={{
@@ -66,7 +67,7 @@ export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame, games}
                         height: 40,
                         marginRight: 4,
                     }} onPress={() => setShowModal(false)}>
-                        <Text style={{textAlign: "center"}}>取消</Text>
+                        <UGText style={{textAlign: "center"}}>取消</UGText>
                     </TouchableOpacity>
                     <TouchableOpacity style={{
                         marginLeft: 4,
@@ -81,7 +82,7 @@ export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame, games}
                         setShowModal(false)
                         chosen && setCurrentGame(chosen)
                     }}>
-                        <Text style={{textAlign: "center", color: "white"}}>确定</Text>
+                        <UGText style={{textAlign: "center", color: "white"}}>确定</UGText>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -3,7 +3,6 @@ import { Platform } from 'react-native'
 import { Action, Unsubscribe } from 'redux'
 import { setProps, UGBasePageProps } from '../../pages/base/UGPage'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import { PageName } from '../../public/navigation/Navigation'
 import UGBannerModel from '../model/全局/UGBannerModel'
 import UGGameLobbyModel from '../model/全局/UGGameLobbyModel'
 import UGRightMenuModel from '../model/全局/UGRightMenuModel'
@@ -13,11 +12,16 @@ import UGSystemModel from '../model/全局/UGSystemModel'
 import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
-import SelectedLotteryModel from '../model/game/SelectedLotteryModel'
-import { PlayOddData, PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty, mergeObject } from '../../public/tools/Ext'
-import { ugLog } from '../../public/tools/UgLog'
+import { SelectedPlayModel } from '../model/game/SelectedLotteryModel'
+import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
+import { anyNull, arrayEmpty, mergeObject } from '../../public/tools/Ext'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
+import { BetShareModel } from '../model/game/bet/BetShareModel'
+import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
+import { GameTab } from '../../pages/bet/const/LotteryConst'
+import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
+import { ShareChatRoomModel } from '../../public/network/Model/chat/ShareChatRoomModel'
+import { ugLog } from '../../public/tools/UgLog'
 
 // 整个State的树结构
 
@@ -31,16 +35,31 @@ export interface IGlobalState {
   rightMenu?: UGRightMenuModel[] // 又選單 陣列
   banner?: UGBannerModel
 
-  //下注
-  currentPlayOddData?: PlayOddData //当前选中的彩种数据 特码 两面 等
-  nextIssueData?: NextIssueData //下一期的数据数据
-  playOddDetailData?: PlayOddDetailData //彩票数据
-  selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
-
-  // lotteryColumnIndex?: number //彩种索引
-
   sys?: UGSystemModel
   // value?: any;
+
+  //下注彩票信息相关数据
+  lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
+  lotteryTabIndex?: number //当前的彩种处于TAB哪一页
+  singleTabIndex?: number //当前的彩种处于TAB的单式还是复式
+  gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
+  currentColumnIndex?: number //当前彩种栏目索引
+  betShareModel?: BetShareModel //下注数据结构
+  nextIssueData?: NextIssueData //下一期的数据数据
+  playOddDetailData?: PlayOddDetailData //彩票数据 六合彩 秒秒彩
+  selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>> //选中了哪些数据，3层结构(code -> code -> value), 如 TM -> 特码B/特码A -> 特码/两面/色波 -> GroupData
+
+  //附加数据
+  betChaseMap?: Map<string, BetShareModel> //追号的存档数据
+  inputMoney?: number //输入的游戏金额
+  sliderValue?: number //退水拉条数据
+
+  //聊天室相关数据
+  chatRoomIndex?: number //当前聊天室索引
+  chatRoomData?: ChatRoomData //聊天数据
+  chatArray?: Array<IMiddleMenuItem> //聊天室列表
+  shareChatModel?: ShareChatRoomModel //聊天室待分享数据
+
 }
 
 // 更新Props到全局数据
@@ -60,10 +79,23 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.rightMenu && (state.rightMenu = act.rightMenu)
 
     //彩票数据
-    act.currentPlayOddData && (state.currentPlayOddData = act.currentPlayOddData)
+    act.lotteryId && (state.lotteryId = act.lotteryId)
+    act.lotteryTabIndex >= 0 && (state.lotteryTabIndex = act.lotteryTabIndex)
+    act.singleTabIndex >= 0 && (state.singleTabIndex = act.singleTabIndex)
+    act.gameTabIndex >= 0 && (state.gameTabIndex = act.gameTabIndex)
+    act.currentColumnIndex >= 0 && (state.currentColumnIndex = act.currentColumnIndex)
+    act.betShareModel && (state.betShareModel = act.betShareModel)
     act.nextIssueData && (state.nextIssueData = act.nextIssueData)
     act.playOddDetailData && (state.playOddDetailData = act.playOddDetailData)
-    act.selectedLotteryModel && (state.selectedLotteryModel = act.selectedLotteryModel)
+    act.chatRoomIndex >= 0 && (state.chatRoomIndex = act.chatRoomIndex)
+    act.chatRoomData && (state.chatRoomData = act.chatRoomData)
+    act.chatArray && (state.chatArray = act.chatArray)
+    act.shareChatModel && (state.shareChatModel = act.shareChatModel)
+
+    act.selectedData && (state.selectedData = act.selectedData)
+    act.betChaseMap && (state.betChaseMap = act.betChaseMap)
+    act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
+    act.sliderValue >= 0 && (state.sliderValue = act.sliderValue)
 
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
@@ -72,13 +104,13 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     state.banner = { ...state.banner, ...act.banner }
 
     //彩票数据
-    state.currentPlayOddData = { ...state.currentPlayOddData, ...act.currentPlayOddData }
+    state.betShareModel = { ...state.betShareModel, ...act.betShareModel }
     state.nextIssueData = { ...state.nextIssueData, ...act.nextIssueData }
     state.playOddDetailData = { ...state.playOddDetailData, ...act.playOddDetailData }
-    // ugLog('state.selectedLotteryModel 1 = ', JSON.stringify(state.selectedLotteryModel))
-    // ugLog('state.selectedLotteryModel 2 = ', JSON.stringify(act.selectedLotteryModel))
-    state.selectedLotteryModel = mergeObject(state.selectedLotteryModel, act.selectedLotteryModel)
-    // ugLog('state.selectedLotteryModel 3 = ', JSON.stringify(state.selectedLotteryModel))
+    state.chatRoomData = { ...state.chatRoomData, ...act.chatRoomData }
+    state.betChaseMap = { ...state.betChaseMap, ...act.betChaseMap }
+
+    state.selectedData = mergeObject(state.selectedData, act.selectedData)
 
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
@@ -94,27 +126,14 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
 }
 
 // 声明UGAction
-export interface UGAction<P = {}> extends Action {
+export interface UGAction<P = {}> extends Action, IGlobalState {
   type: 'reset' | 'merge' | BettingReducerActions // reset替换整个对象，merge只改变指定变量
   page?: string // 配合props使用
   props?: P // 配合page使用
-  sysConf?: UGSysConfModel // 修改系统配置
-  userInfo?: UGUserModel // 修改用户信息
-  sign?: UGSignModel // 登入註冊訊息
-  gameLobby?: UGGameLobbyModel[] // 遊戲大廳
-  banner?: UGBannerModel
 
-  //彩票数据
-  currentPlayOddData?: PlayOddData //当前选中的彩种数据
-  nextIssueData?: NextIssueData //下一期的数据数据
-  playOddDetailData?: PlayOddDetailData //彩票数据
-  selectedLotteryModel?: SelectedLotteryModel //选中的游戏数据，如 特码B的第1个、第2个
+  // 纯数据
+  BettingReducer?: BettingReducerProps
 
-  // lotteryColumnIndex?: number //彩种索引
-
-  sys?: UGSystemModel
-  rightMenu?: UGRightMenuModel[]
-  // value?: any;// 其他 example
 }
 
 export class UGStore {
@@ -153,26 +172,35 @@ export class UGStore {
 
   // 从本地获取所有数据，并刷新UI
   static async refreshFromLocalData() {
-    const str = await this.load(AsyncStorageKey.IGlobalState)
-    const gs: IGlobalState = JSON.parse(str)
+    const gs = await this.loadValueForKey<IGlobalState>(AsyncStorageKey.IGlobalState)
     gs && UGStore.dispatch({ type: 'reset', sysConf: gs?.sysConf, userInfo: gs?.userInfo })
   }
 
   // 存储到本地
-  static async save(key = AsyncStorageKey.IGlobalState, value: any = this.globalProps) {
+  static async save() {
+    return this.saveValueAndKey(AsyncStorageKey.IGlobalState, this.getPageProps)
+  }
+
+  // 存储到本地
+  static async saveValueAndKey(key: AsyncStorageKey, value: any): Promise<any> {
+    ugLog('save key = ', key)
+    value = JSON.stringify(value)
     if (Platform.OS == 'ios') {
-      await OCHelper.call('NSUserDefaults.standardUserDefaults[setObject:forKey:]', [JSON.stringify(value), key])
+      await OCHelper.call('NSUserDefaults.standardUserDefaults[setObject:forKey:]', [value, key])
     } else {
-      await AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(value))
+      await AsyncStorage.setItem(key, value)
     }
   }
 
   // 获取本地缓存
-  static async load(key: AsyncStorageKey): Promise<string> {
+  static async loadValueForKey<T>(key: AsyncStorageKey | string): Promise<T> {
+    ugLog('load key = ', key)
+    let value = undefined
     if (Platform.OS == 'ios') {
-      return OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', [key])
+      value = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', [key])
     } else {
-      return AsyncStorage.getItem(key)
+      value = await AsyncStorage.getItem(key)
     }
+    return JSON.parse(value)
   }
 }

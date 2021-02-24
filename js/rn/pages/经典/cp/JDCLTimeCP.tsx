@@ -8,6 +8,7 @@ import { Res } from "../../../Res/icon/Res";
 import AppDefine from "../../../public/define/AppDefine";
 import { ImagePlaceholder } from "../tools/ImagePlaceholder";
 import moment from "moment";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface JDCLTimeCP {
@@ -68,7 +69,7 @@ export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
       if (moment(severNowTime) >= moment( closeTime)) {
         return '已封盘'
       } else {
-  
+
         let days: number = moment( closeTime).diff(moment(severNowTime), 'days');
         // console.log('days =', days);
         let hours: number = moment( closeTime).diff(moment(severNowTime), 'hours') - days * 24;
@@ -77,7 +78,7 @@ export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
         // console.log('minutes =', minutes);
         let seconds: number = moment( closeTime).diff(moment(severNowTime), 'seconds') - days * 24 * 3600 - hours * 3600 - minutes * 60;
         // console.log('seconds =', seconds);
-  
+
         let dayStr: string; let hoursStr: string; let minutesStr: string; let secondsStr: string;
         dayStr = '' + days;
         if (hours < 10) {
@@ -95,11 +96,11 @@ export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
         } else {
           secondsStr = '' + (seconds);
         }
-  
+
         if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
           return '已封盘'
         }
-  
+
         if (days) {
           return   dayStr + '天' + hoursStr + ':' + minutesStr + ':' + secondsStr;
         }
@@ -113,9 +114,9 @@ export const JDCLTimeCP =  ({serverTime,closeTime}:JDCLTimeCP  ) => {
 
     return (
       <View style={{}}>
-        <Text style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
+        <UGText style={{ fontSize: 13, color: 'red', marginLeft: 10 }}>
         {reloadText()}
-        </Text>
+        </UGText>
       </View>
     );
 

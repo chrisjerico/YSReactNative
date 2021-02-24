@@ -2,14 +2,17 @@ import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import {
   getColorfulBallPic,
   getHKballColor,
-  getSQBallColor, getSZBallPic, getVegetableBallPic,
+  getSQBallColor,
+  getSZBallPic,
+  getVegetableBallPic,
 } from '../../../pages/common/LottoBetting/PlayVIew/lottoSetting'
 import { anyEmpty } from '../../tools/Ext'
 import { scale } from '../../tools/Scale'
 import { UGColor } from '../../theme/UGThemeColor'
 import FastImage from 'react-native-fast-image'
 import React from 'react'
-import { ugLog } from '../../tools/UgLog'
+import { BallType } from '../../../pages/bet/const/LotteryConst'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ILotteryBall {
   type?: string, //球的种类 BallType
@@ -57,6 +60,14 @@ const LotteryBall = ({
   } else if (type == BallType.vegetable) {
     ballUrl = getVegetableBallPic(ballNumber)
     round = 0
+  } else if (type == BallType.black_white) {
+    txColor = UGColor.TextColor1
+    bColor = anyEmpty(ballColor) ? '#eee' : ballColor
+    round = 999
+  } else if (type == BallType.rectangle) {
+    txColor = 'white'
+    bColor = anyEmpty(ballColor) ? UGColor.linkColor1 : ballColor
+    round = scale(4)
   } else {
     bColor = anyEmpty(ballColor) ? getHKballColor(ballNumber) : ballColor
     round = 999
@@ -76,11 +87,11 @@ const LotteryBall = ({
                        { width: width }]}
                      resizeMode={'contain'}
                      source={{ uri: ballUrl }}/>,
-          <Text key={key}
+          <UGText key={key}
                 style={[
                   _styles.ball_colorful_text,
                   { color: txColor, fontSize: width * 3 / 7 },
-                ]}>{ballNumber}</Text>,
+                ]}>{ballNumber}</UGText>,
         ]
       case BallType.sz:
       case BallType.vegetable:
@@ -91,22 +102,23 @@ const LotteryBall = ({
                           resizeMode={'contain'}
                           source={{ uri: ballUrl }}/>
       default:
-        return <Text key={key + 'text'}
+        return <UGText key={key + 'text'}
                      style={[_styles.ball_text,
-                       { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
+                       { color: txColor, fontSize: width * 4 / 7 }]}>{ballNumber}</UGText>
     }
   }
 
   return (
     <View key={key + 'content'}
           style={[_styles.ball_item,
-      {
-        backgroundColor: bColor,
-        borderRadius: round,
-        width: width,
-        margin: scale(2),
-      },
-      style]}>
+            {
+              backgroundColor: bColor,
+              borderRadius: round,
+              width: width,
+              margin: scale(1),
+            },
+            type == BallType.rectangle ? { aspectRatio: 1.4, width: null, height: width } : null,
+            style]}>
       {
         renderBalls(type)
       }
@@ -127,6 +139,7 @@ const _styles = StyleSheet.create({
   ball_text: {
     fontSize: scale(18),
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   ball_colorful_text: {
     fontSize: scale(18),
@@ -135,17 +148,5 @@ const _styles = StyleSheet.create({
 
 })
 
-/**
- * 球的种类
- */
-const BallType = {
-  'round': '圆球',
-  'square': '方球',
-  'colorful': '花球',
-  'pure': '纯色球',
-  'vegetable': '蔬菜',
-  'sz': '骰子',
-}
-
 export default LotteryBall
-export { BallType, ILotteryBall }
+export { ILotteryBall }

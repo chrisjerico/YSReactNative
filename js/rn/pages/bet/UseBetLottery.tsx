@@ -1,11 +1,16 @@
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import APIRouter from '../../public/network/APIRouter'
 import { anyEmpty } from '../../public/tools/Ext'
-import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
 import { UGStore } from '../../redux/store/UGStore'
-import { parseLotteryDetailData } from './util/LotteryUtil'
-import { ugLog } from '../../public/tools/UgLog'
+import { parseLotteryDetailData } from './util/parse/ParseLotteryUtil'
+import { LotteryResultData } from '../../public/network/Model/lottery/result/LotteryResultModel'
+import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
+import { IBetLotteryParams } from '../../public/network/it/bet/IBetLotteryParams'
+import { chatMenuArray } from './board/tools/chat/ChatTools'
+import { Share2ChatStatus } from '../../public/network/Model/chat/ShareChatRoomModel'
+import { specialPlay } from './util/LotteryUtil'
+import { currentPlayOddData } from './util/select/ParseSelectedUtil'
 
 /**
  * 彩票下注
@@ -15,11 +20,15 @@ const UseBetLottery = () => {
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
+  const betShareModel = UGStore.globalProps.betShareModel //下注数据结构
+  const chatArray = UGStore.globalProps.chatArray //聊天菜单
+  const shareChatModel = UGStore.globalProps.shareChatModel //分享数据
 
-  const refListController = useRef()
   const [lotteryId, setLotteryId] = useState(null) //当前彩票ID
-  const [playOddDetailData, setPlayOddDetailData] = useState<PlayOddDetailData>(null) //彩票数据
+  const playOddDetailData = UGStore.globalProps?.playOddDetailData//彩票数据
+  const nextIssueData = UGStore.globalProps?.nextIssueData//下期彩票数据
   const [loadedLottery, setLoadedLottery] = useState<Array<string>>([])//需要加载进来的彩票列表
+  const [betResult, setBetResult] = useState<LotteryResultData>(null) //下注结果
 
   useEffect(() => {
     requestLotteryData(lotteryId)
@@ -37,20 +46,45 @@ const UseBetLottery = () => {
 
     if (res?.code == 0) {
       const newPlayOdds = parseLotteryDetailData(res?.data)
-      setPlayOddDetailData({...res?.data, playOdds: newPlayOdds})
+      UGStore.dispatch({ type: 'reset', playOddDetailData: { ...res?.data, playOdds: newPlayOdds } })
     }
 
     return res?.code
   }
 
+  /**
+   * 是否显示分享聊天室
+   * @param betData
+   */
+  const showShareRoom = (betData?: LotteryResultData) => {
+    if (systemInfo?.chatRoomSwitch && userInfo?.chatShareBet == 1 && Number(betData?.betParams?.totalMoney) >= Number(systemInfo?.chatShareBetMinAmount)
+      && !specialPlay(playOddDetailData?.game?.gameType, currentPlayOddData()?.pageData?.groupTri)) {
+      UGStore.dispatch({
+        type: 'reset',
+        chatArray: chatMenuArray(),
+        shareChatModel: {
+          betData: betData,
+          shareStatus: Share2ChatStatus.READY,
+        },
+      })
+    }
+
+  }
+
   return {
-    refListController,
     userInfo,
     systemInfo,
+    betShareModel,
+    betResult,
+    setBetResult,
     setLotteryId,
     playOddDetailData,
+    nextIssueData,
     loadedLottery,
     setLoadedLottery,
+    chatArray,
+    shareChatModel,
+    showShareRoom,
     requestLotteryData,
   }
 }

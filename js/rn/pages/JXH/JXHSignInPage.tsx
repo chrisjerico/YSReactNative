@@ -11,6 +11,7 @@ import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const JXHSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, reference } = useSignInPage({
@@ -32,15 +33,15 @@ const JXHSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <Text style={{ color: '#ffffff', fontSize: scale(42), marginBottom: scale(12), fontWeight: '600' }}>{'欢迎您'}</Text>
+          <UGText style={{ color: '#ffffff', fontSize: scale(42), marginBottom: scale(12), fontWeight: '600' }}>{'欢迎您'}</UGText>
           <View style={{ flexDirection: 'row', marginBottom: scale(30) }}>
-            <Text style={{ color: '#ffffff', fontSize: scale(17) }}>{'没有账号,立即'}</Text>
+            <UGText style={{ color: '#ffffff', fontSize: scale(17) }}>{'没有账号,立即'}</UGText>
             <TouchableWithoutFeedback onPress={navigateToSignUpPage}>
-              <Text style={{ color: '#cfa461', fontSize: scale(17) }}>{'注册'}</Text>
+              <UGText style={{ color: '#cfa461', fontSize: scale(17) }}>{'注册'}</UGText>
             </TouchableWithoutFeedback>
-            <Text style={{ color: '#ffffff', fontSize: scale(17) }}>{'或'}</Text>
+            <UGText style={{ color: '#ffffff', fontSize: scale(17) }}>{'或'}</UGText>
             <TouchableWithoutFeedback onPress={tryPlay}>
-              <Text style={{ color: '#cfa461', fontSize: scale(17) }}>{'免费试玩'}</Text>
+              <UGText style={{ color: '#cfa461', fontSize: scale(17) }}>{'免费试玩'}</UGText>
             </TouchableWithoutFeedback>
           </View>
           <SignInFormList slideCodeColor={'#000000'} reference={reference} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />

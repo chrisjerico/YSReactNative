@@ -3,28 +3,21 @@ import { Linking, Platform } from 'react-native'
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { ANHelper } from '../define/ANHelper/ANHelper'
 import { CMD } from '../define/ANHelper/hp/CmdDefine'
-import AppDefine from '../define/AppDefine'
 import { OCHelper } from '../define/OCHelper/OCHelper'
-import { Toast } from '../tools/ToastUtils'
 import { UGStore } from './../../redux/store/UGStore'
 import { CachePolicyEnum, httpClient } from './httpClient'
-import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
 import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
 import { BalanceModel } from './Model/BalanceModel'
 import { BankDetailListModel } from './Model/bank/BankDetailListModel'
 import { ManageBankCardModel } from './Model/bank/ManageBankCardModel'
 import { BannerModel } from './Model/BannerModel'
 import { FloatADModel } from './Model/FloatADModel'
-import { HallGameModel } from './Model/game/HallGameModel'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
 import { GameHistoryModel, GameUrlModel, HomeRecommendModel, TwoLevelGame } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
-import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
-import { NextIssueModel } from './Model/lottery/NextIssueModel'
-import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
 import { LottoGamesModel } from './Model/LottoGamesModel'
 import { NormalModel } from './Model/NormalModel'
 import { NoticeModel } from './Model/NoticeModel'
@@ -46,10 +39,18 @@ import { UserInfoModel } from './Model/UserInfoModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
 import { CapitalDetailModel } from './Model/wd/CapitalDetailModel'
 import { DepositRecordModel } from './Model/wd/DepositRecordModel'
-import { NewRateModel } from './Model/wd/NewRateModel'
-import { PayAisleModel } from './Model/wd/PayAisleModel'
 import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
+import { ActivitySettingModel } from './Model/ActivitySettingModel'
+import { Toast } from '../tools/ToastUtils'
+import { HallGameModel } from './Model/game/HallGameModel'
+import { PayAisleModel } from './Model/wd/PayAisleModel'
+import AppDefine from '../define/AppDefine'
+import { NewRateModel } from './Model/wd/NewRateModel'
+import { NextIssueModel } from './Model/lottery/NextIssueModel'
+import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
+import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
+import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
 
 //1
 //api 統一在這邊註冊
@@ -228,13 +229,14 @@ class APIRouter {
   }
 
   //注单讯息
-  static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string) => {
+  static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string, betId?: string) => {
     let parameter = {
       page: page,
       rows: rows,
       category: category,
       startDate: startDate,
       endDate: endDate,
+      betId: betId,
     }
 
     return httpClient.get<GameHistoryModel>('c=ticket&a=history', { params: parameter })
@@ -272,25 +274,15 @@ class APIRouter {
     return httpClient.get<PromotionsModel>('c=system&a=promotions')
   }
   static user_info = async () => {
-    let token = null
-    switch (Platform.OS) {
-      case 'ios':
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        token = user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        token = pms?.token
-        break
-    }
-    if (token) {
-      const tokenParams = Platform.OS == 'ios' ? 'token=' + token : token
-      return httpClient.get<UserInfoModel>('c=user&a=info&' + tokenParams)
-    } else {
-      UGStore.dispatch({ type: 'reset', userInfo: {} })
-      UGStore.save()
-      return Promise.reject('使用者未登入，拒絕更新使用者資料')
-    }
+    let tokenParams = await APIRouter.encryptGetParams({})
+    return httpClient.get<UserInfoModel>('c=user&a=info' + tokenParams)
+    // if (tokenParams) {
+    //   return httpClient.get<UserInfoModel>('c=user&a=info' + tokenParams)
+    // } else {
+    //   UGStore.dispatch({ type: 'reset', userInfo: {} })
+    //   UGStore.save()
+    //   return Promise.reject('使用者未登入，拒絕更新使用者資料')
+    // }
   }
 
   static user_guestLogin = async () => {
@@ -515,10 +507,8 @@ class APIRouter {
 
     return httpClient.get<RedBagDetailActivityModel>('c=activity&a=redBagDetail&' + tokenParams)
   }
+
   static activity_turntableList = async () => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      return {}
-    }
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -531,13 +521,10 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<TurntableListModel>('c=activity&a=turntableList&' + tokenParams)
+    return httpClient.get<TurntableListModel>('c=activity&a=turntableList') //&' + tokenParams)
   }
 
   static activity_goldenEggList = async () => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      return {}
-    }
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -549,13 +536,10 @@ class APIRouter {
         tokenParams = 'token=' + pms?.token
         break
     }
-    return httpClient.get<GoldenEggListModel>('c=activity&a=goldenEggList&' + tokenParams)
+    return httpClient.get<GoldenEggListModel>('c=activity&a=goldenEggList') //&' + tokenParams)
   }
 
   static activity_scratchList = async () => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      return {}
-    }
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -567,7 +551,7 @@ class APIRouter {
         tokenParams = 'token=' + pms?.token
         break
     }
-    return httpClient.get<ScratchListModel>('c=activity&a=scratchList&' + tokenParams)
+    return httpClient.get<ScratchListModel>('c=activity&a=scratchList') //&' + tokenParams)
   }
 
   /**
@@ -800,6 +784,29 @@ class APIRouter {
     return httpClient.post<TaskChangeAvatarModel>('c=task&a=changeAvatar', tokenParams)
   }
 
+  static recommend_recharge = async (uid: string, coin: string): Promise<AxiosResponse<NormalModel>> => {
+    let tokenParams = {}
+    switch (Platform.OS) {
+      case 'ios':
+        let user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = {
+          token: user?.token,
+          uid,
+          coin,
+        }
+        break
+      case 'android':
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = {
+          ...pms,
+          uid,
+          coin,
+        }
+        break
+    }
+    return httpClient.post<NormalModel>('c=team&a=transfer', tokenParams)
+  }
+
   static system_homeAds = async () => {
     return httpClient.get<HomeADModel>('c=system&a=homeAds')
   }
@@ -814,6 +821,29 @@ class APIRouter {
   }
   static yuebao_stat = async () => {
     return httpClient.get<YueBaoStatModel>('c=yuebao&a=stat')
+  }
+
+  //獲取活動配置
+  static activity_setting = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+
+    return httpClient.get<ActivitySettingModel>('c=activity&a=settings&' + tokenParams)
+  }
+
+  static request_redbag = async (redBagId): Promise<AxiosResponse<NormalModel>> => {
+    return httpClient.post<NormalModel>('c=activity&a=getRedBag', {
+      id: redBagId,
+    })
   }
 
   /**

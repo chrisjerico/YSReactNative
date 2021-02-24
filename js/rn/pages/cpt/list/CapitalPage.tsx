@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar, TabBarProps } from 'react-native-scrollable-tab-view'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import UseCapital from './UseCapital'
@@ -22,6 +22,8 @@ import { PageName } from '../../../public/navigation/Navigation'
 import { ugLog } from '../../../public/tools/UgLog'
 import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
 import MineHeader from '../../../public/views/tars/MineHeader'
+import moment from 'moment'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IRouteParams {
   initTabIndex?: string, //选中哪个TAB
@@ -43,7 +45,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
   const [refreshCount, setRefreshCount] = useState(0) //更新界面
 
   // let tabController //tab选择器
-
+  const tabRef = useRef<TabBarProps>(null)
   const {
     systemInfo,
     userInfo,
@@ -55,20 +57,28 @@ const CapitalPage = ({ navigation, route, setProps }) => {
 
   //初始化
   useEffect(() => {
-    setProps({
-      didFocus: (params) => {
-        requestYueBao()
-        let dic = params;
-        for (var key in dic) {
-          if (key == 'selectIndex') {
-            console.log('key ==============', key);
-            console.log('v ==============', dic[key]);
-            setTabIndex(dic[key])
-            setRefreshCount(refreshCount + 1)
+    switch (Platform.OS) {
+      case 'ios':
+        setProps({
+          didFocus: (params) => {
+            requestYueBao()
+            let dic = params;
+            ugLog('dic==',dic)
+            for (var key in dic) {
+              if (key == 'selectIndex' ||key == 'initTabIndex') {
+                console.log('key ==============', key);
+                console.log('v ==============', dic[key]);
+                // tabRef?.current?.goToPage(2)
+                setTabIndex(dic[key])
+                setRefreshCount(dic[key] + 1)
+                //  setRefreshCount(moment().unix())
+
+              }
+            }
           }
-        }
-      }
-    })
+        })
+        break;
+    }
 
   }, [])
   useEffect(() => {
@@ -117,25 +127,27 @@ const CapitalPage = ({ navigation, route, setProps }) => {
     }
   }
 
+  ugLog("blance=", !anyEmpty(userInfo?.balance) && `${Number(userInfo?.balance).toFixed(1)}`)
   /**
    * 绘制个人信息
    */
-  const renderMineInfo = () => 
+  const renderMineInfo = () =>
   <View style={[_styles.mine_info_container,{backgroundColor:Skin1.themeColor}]}>
     <FastImage source={{ uri: userInfo?.avatar }}
       resizeMode={'contain'}
       style={_styles.mine_info_avatar} />
     <View>
-      <Text style={[_styles.mine_info_name,{color:'white',}]}>{userInfo?.usr}</Text>
+      <UGText style={[_styles.mine_info_name,{color:'white',}]}>{userInfo?.usr}</UGText>
       <View style={{ flexDirection: 'row', marginTop: 8 }}>
-        <Text style={[_styles.mine_info_balance, { color:  'white', }]}>{!anyEmpty(userInfo?.balance) && `用户余额:`}</Text>
-        <Text style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${userInfo?.balance}`}</Text>
+        <UGText style={[_styles.mine_info_balance, { color:  'white', }]}>{!anyEmpty(userInfo?.balance) && `用户余额:  `}</UGText>
+        <UGText style={[_styles.mine_info_balance, { color: 'red', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${Number(userInfo?.balance).toFixed(1)}`}</UGText>
+        <UGText style={[_styles.mine_info_balance, { color:  'white', }]}> RMB</UGText>
       </View>
 
-      <View style={{ flexDirection: 'row', marginTop: 8 }}>
-        <Text style={[_styles.mine_info_balance, { color: 'white', }]}>{!anyEmpty(yueBaoData) && yueBaoData?.yuebaoName + '余额: ' }</Text>
-        <Text style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${yueBaoData?.balance}`}</Text>
-      </View>
+      {/* <View style={{ flexDirection: 'row', marginTop: 8 }}>
+        <UGText style={[_styles.mine_info_balance, { color: 'white', }]}>{!anyEmpty(yueBaoData) && yueBaoData?.yuebaoName + '余额: ' }</UGText>
+        <UGText style={[_styles.mine_info_balance, { color: 'white', fontWeight: 'bold', }]}>{!anyEmpty(userInfo?.balance) && `${yueBaoData?.balance}`}</UGText>
+      </View> */}
     </View>
   </View>
 
@@ -156,7 +168,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
                 key={'ScrollableTabView' + refreshCount}
                 initialPage={tabIndex}
                 onChangeTab={value => { }}
-
+                ref={tabRef}
                 // ref={instance => tabController = instance}
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,
                 { backgroundColor: Skin1.themeColor }]}
@@ -191,6 +203,7 @@ const _styles = StyleSheet.create({
   mine_info_container: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: scale(60),
     padding: scale(16),
     height: scale(160)
   },

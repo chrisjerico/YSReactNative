@@ -77,6 +77,7 @@ export enum UGUserCenterType {
   电子大厅 = 44,
   体育大厅 = 45,
   电竞大厅 = 46,
+  路珠 = 55,
   // 自定义（从100+开始写，前面的都是后台定制的）
   彩票大厅 = 47,
   捕鱼大厅 = 48,
@@ -122,6 +123,25 @@ export class UGUserCenterItem {
     17: img_assets('menu-activity'), // 全民竞猜
     18: img_assets('kj_trend'), // 开奖走势
     19: img_assets('usrCenter_qq'), // QQ客服
+    20: img_assets('center_kaijiang@2x'), // UCI_开奖网
+    21: img_assets('zdgl@2x'), // UCI_未结注单
+    22: img_assets('zdgl@2x'), // UCI_电子注单
+    23: img_assets('zdgl@2x'), // UCI_真人注单
+    24: img_assets('zdgl@2x'), // UCI_棋牌注单 
+    25: img_assets('zdgl@2x'), // UCI_捕鱼注单
+    26: img_assets('zdgl@2x'), // UCI_电竞注单
+    27: img_assets('zdgl@2x'), // UCI_体育注单
+    28: img_assets('zdgl@2x'), // UCI_UG注单
+    29: img_assets('zdgl@2x'), // UCI_已结注单
+    30: img_assets('chongzhi@2x'), // UCI_充值纪录
+    31: img_assets('chongzhi@2x'), // UCI_提现纪录
+    32: img_assets('chongzhi@2x'), // UCI_资金明细
+    33: img_assets('zdgl@2x'), // UCI_活动大厅
+    34: img_assets('weChat_icon'), // 聊天室
+    35: img_assets('invi@2x'), // UCI_我的关注
+    36: img_assets('friend'), // UCI_我的动态
+    37: img_assets('fans'), // UCI_我的粉丝
+
   }
 
   constructor(props: UGUserCenterItem) {
@@ -135,7 +155,7 @@ export class UGUserCenterItem {
 }
 
 // 六合发帖价格范围
-export class LHPriceModel {}
+export class LHPriceModel { }
 
 // 系统配置Model
 export default class UGSysConfModel {
@@ -155,7 +175,7 @@ export default class UGSysConfModel {
   static updateFromNetwork(completed?: () => void) {
     return api.system.config().useSuccess(({ data }, sm) => {
       sm.noShowErrorHUD = true
-      console.log('系统配置数据：',data);
+      console.log('系统配置数据：', data);
 
       UGStore.dispatch({ type: 'merge', sysConf: data })
       completed && completed()
@@ -195,6 +215,7 @@ export default class UGSysConfModel {
   homeTypeSelect?: string // 是否开启前台分类
   chatRoomName?: string // 聊天室名称
   chatMinFollowAmount?: string // 聊天室跟注最小金额*/
+  chaseNumber?: string // 是否开启跟注
   easyRememberDomain?: string // 易记域名*/
   chatLink?: string // 聊天的链接*/
   mBonsSwitch?: boolean // 俸禄开关开启。0 为开启， 1 为 关闭
@@ -205,22 +226,24 @@ export default class UGSysConfModel {
   coinPwdAuditOptionAry?: Array<string> //忘记密码有哪些选项 mobile, bank, id
   chatShareBetMinAmount?: string /**<   聊天室 注单分享最小金额限制*/
   // 邀请码
-  inviteCode ?: InviteCodeConfigModel
+  inviteCode?: InviteCodeConfigModel
   // 注册页
-  hide_reco?: number // 代理人 0不填，1选填，2必填
-  reg_name?: number // 真实姓名 0不填，1选填，2必填
-  reg_fundpwd?: number // 取款密码 0不填，1选填，2必填
-  reg_qq?: number // QQ 0不填，1选填，2必填
-  reg_wx?: number // 微信 0不填，1选填，2必填
-  reg_phone?: number // 手机 0不填，1选填，2必填
-  reg_email?: number // 邮箱 0不填，1选填，2必填
-  reg_vcode?: number // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-  pass_limit?: number // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-  pass_length_min?: number // 注册密码最小长度
-  pass_length_max?: number // 注册密码最大长度
-  smsVerify?: boolean // 手机短信验证
+  hide_reco?: '0' | '1' | '2' // 代理人 0不填，1选填，2必填
+  inviteCodeSwitch?: '0' | '1' | '2' // 邀请码开关 0不填，1选填，2必填
+  inviteWord?: string // 邀请码文案
+  reg_name?: '0' | '1' | '2' // 真实姓名 0不填，1选填，2必填
+  reg_fundpwd?: '0' | '1' | '2' // 取款密码 0不填，1选填，2必填
+  reg_qq?: '0' | '1' | '2' // QQ 0不填，1选填，2必填
+  reg_wx?: '0' | '1' | '2' // 微信 0不填，1选填，2必填
+  reg_phone?: '0' | '1' | '2' // 手机 0不填，1选填，2必填
+  reg_email?: '0' | '1' | '2' // 邮箱 0不填，1选填，2必填
+  reg_vcode?: '0' | '1' | '2' // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
+  pass_limit?: '0' | '1' | '2' // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
+  pass_length_min?: string // 注册密码最小长度
+  pass_length_max?: string // 注册密码最大长度
+  smsVerify?: '0' | '1' // 手机短信验证
 
-  rankingListSwitch?: number // 是否显示中奖/投注排行榜
+  rankingListSwitch?: 0 | 1 // 是否显示中奖/投注排行榜
   googleVerifier?: boolean // 是否开启google 验证
   recharge?: boolean // 上级充值开关
   allowreg?: boolean // 是否开启注册功能。
@@ -230,7 +253,9 @@ export default class UGSysConfModel {
   yuebaoName?: string // 利息宝名字
   chatFollowSwitch?: boolean // 是否允许聊天室跟注
   switchBindVerify?: number // 新增提款账号時，校验取款密码
+  //推荐收益-会员管理-充值
   switchAgentRecharge?: boolean // 给下级会员充值开关
+  nameAgentRecharge?: string
 
   lhcdocMiCard?: boolean // 六合彩开奖咪牌(默认状态)开关
   lhcdocLotteryStr?: string // 六合彩预备开奖文字
@@ -239,7 +264,7 @@ export default class UGSysConfModel {
   mobileMenu?: Array<UGTabbarItem> // 底部Tab按钮
   userCenter?: Array<UGUserCenterItem> // 我的页功能按钮
 
-
+  chatRoomSwitch?: boolean //聊天室开关
   switchBalanceChannel?: string //余额提款开关
   balanceChannelStartTime?: string //开关时间段
   balanceChannelEndTime?: string //开关时间段
@@ -254,7 +279,7 @@ export default class UGSysConfModel {
 
   switchShowFriendReferral?: '0' | '1' //是否显示首页推荐好友 0不显示，1显示
   showNavigationBar?: '0' | '1'   //首页推荐好友显示在前还是后 1 前 0 后
-
+  popup_type: '0' | '1'//公告  0直接弹窗，1登录后弹出
 
   // 登陸頁
   loginVCode?: boolean // 登录增加了滑动验证码配置  默认开
@@ -264,7 +289,7 @@ export default class UGSysConfModel {
   // 我的頁
   userCenterItems?: Array<userCenterItems>
   userCenterCategoryList: [{ id: number, name: string }]//个人中心页分类列表
-
+  frontend_agent_add_member?: '0' | '1' // 推荐收益页添加会员功能  0关闭，1开启
 }
 
 interface userCenterItems {

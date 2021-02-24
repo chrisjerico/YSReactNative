@@ -1,21 +1,24 @@
-import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
-import { StyleProp, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import EBall, { IEBall } from '../../../public/components/view/lottery/EBall'
 import * as React from 'react'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import ISelBall, { isSelectedBallOnId } from '../const/ISelBall'
-import { anyEmpty } from '../../../public/tools/Ext'
-import { ugLog } from '../../../public/tools/UgLog'
-import { BallStyles } from '../const/LotteryConst'
+import { isSelectedBallOnId } from './it/ISelBall'
+import { ILotteryBall } from '../../../public/components/view/LotteryBall'
+import { PlayData, ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
+import { UGStore } from '../../../redux/store/UGStore'
+import { calculateSliderValue } from '../util/ArithUtil'
+import { BallType, lotteryBallStyle } from '../const/LotteryConst'
 
 interface ILotteryEBall {
-  item?: ILotteryEBallItem // 要绘制的数据
+  item?: PlayData // 要绘制的数据
   ballProps?: IEBall //球的属性
-  selectedBalls?: Array<string> // 已选中的数据
-  containerStyle?: StyleProp<ViewStyle>
-  ballStyle?: StyleProp<ViewStyle>
+  selectedBalls?: Array<PlayData | ZodiacNum> // 已选中的数据
+  containerStyle?: StyleProp<ViewStyle> //球的容器风格
+  ballStyle?: StyleProp<ViewStyle> //球的风格
+  ballType?: ILotteryBall //球风格
+  oddsStyle?: StyleProp<TextStyle>, //赔率风格
   callback?: () => void // 按压回调
 }
 
@@ -28,33 +31,32 @@ const renderContent = ({
                          selectedBalls,
                          containerStyle,
                          ballStyle,
+                         ballType,
+                         oddsStyle,
                          callback,
                        }: ILotteryEBall) => {
-  let isSel = isSelectedBallOnId(selectedBalls, item?.exId ?? item?.id) //优先使用本地生成的唯一识别ID
+  let isSel = isSelectedBallOnId(selectedBalls, item) //优先使用本地生成的唯一识别ID
+  const sliderValue = UGStore.globalProps?.sliderValue //退水拉条数据
+  const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   return (
     <View key={'e ball content' + item?.id}
           style={[
             _styles.ball_item_tm,
-            {
-              backgroundColor:
-                isSel ?
-                  `${Skin1.themeColor}dd` :
-                  null,
-            },
+            { backgroundColor: isSel ? `${Skin1.themeColor}ee` : null },
             containerStyle,
           ]}>
       <EBall key={'e ball content e' + item?.id}
              ballType={{
-               type: BallStyles.lhc,
+               type: lotteryBallStyle(gameType),
                ballNumber: item?.name,
+               ...ballType,
              }}
-             oddsStyle={{
-               color: isSel ?
-                 UGColor.TextColor6 :
-                 UGColor.TextColor7,
-             }}
-             odds={item?.odds}
+             oddsStyle={[
+               { color: isSel ? UGColor.TextColor6 : UGColor.TextColor7 },
+               oddsStyle,
+             ]}
+             odds={item?.enable != '0' ? calculateSliderValue(item?.odds, sliderValue) : '- -'}
              {...ballProps}
              style={ballStyle}/>
     </View>
@@ -63,20 +65,14 @@ const renderContent = ({
 
 /**
  * 彩票球，一个球、一个文字+点击回调
- * @param item 条目数据
- * @param ballProps 球的类型
- * @param selectedBalls 选中的球列表
- * @param containerStyle 球的容器风格
- * @param ballStyle 球的风格
- * @param callback 点击回调
- * @constructor
+ * @param iBall
  */
 const LotteryEBall = (iBall: ILotteryEBall) => {
   const { item, callback } = iBall
 
   return (
     callback != null ? <TouchableWithoutFeedback key={`LotteryEBall-${item?.exId}-${item?.id}`}
-                                         onPress={() => callback && callback()}>
+                                                 onPress={() => callback && callback()}>
         {renderContent(iBall)}
       </TouchableWithoutFeedback> :
       renderContent(iBall)
@@ -85,31 +81,19 @@ const LotteryEBall = (iBall: ILotteryEBall) => {
 
 const _styles = StyleSheet.create({
   ball_item_tm: {
-    width: scale(126),
+    width: scale(130),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: scale(8),
-    marginVertical: scale(2),
-    borderBottomRightRadius: scale(32),
-    borderTopLeftRadius: scale(32),
-    borderTopRightRadius: scale(16),
-    borderBottomLeftRadius: scale(16),
+    marginVertical: scale(0.4),
+    // borderBottomRightRadius: scale(32),
+    // borderTopLeftRadius: scale(32),
+    // borderTopRightRadius: scale(24),
+    // borderBottomLeftRadius: scale(24),
+    borderRadius: scale(4),
   },
 })
 
-/**
- * 球的数据 和 PlayData 结构类似
- */
-interface ILotteryEBallItem {
-  id?: string; //708501
-  exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, TM,特码B,708550
-  name?: string; //01
-  alias?: string;//特码A"
-  code?: string;//01
-  odds?: string;//42.5500
-}
-
 export default LotteryEBall
-export { ILotteryEBallItem }
 

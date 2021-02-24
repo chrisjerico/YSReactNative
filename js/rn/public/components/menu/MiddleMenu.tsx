@@ -11,6 +11,7 @@ import { getBankIcon } from '../../../pages/bank/list/UseManageBankList'
 import FastImage from 'react-native-fast-image'
 import CommStyles from '../../../pages/base/CommStyles'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 
 interface IMiddleMenuItem {
@@ -23,20 +24,19 @@ interface IMiddleMenuItem {
 
 interface IMiddleMenu {
   curId?: string //当前选中的识别标识
+  menuTitle?: string //菜单标题
   menu?: Array<IMiddleMenuItem> //菜单
+  showMenu?: boolean //是否直接显示菜单
   onMenuClick?: (index: number, item: IMiddleMenuItem) => void //点击了哪个菜单
+  onClose?: () => void // 关闭了窗口回调
 }
 
 /**
  * 中间菜单
- * @param menu
- * @param onMenuClick
- * @param ref
- * @constructor
  */
-const MiddleMenu = ({ curId, menu, onMenuClick }: IMiddleMenu, ref?: any) => {
+const MiddleMenu = ({ curId, menuTitle, showMenu = false, menu, onMenuClick, onClose }: IMiddleMenu, ref?: any) => {
 
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(showMenu)
 
   useImperativeHandle(ref, () => ({
     toggleMenu: () => {
@@ -65,19 +65,34 @@ const MiddleMenu = ({ curId, menu, onMenuClick }: IMiddleMenu, ref?: any) => {
                  style={_styles.bank_name_icon}/>)
   }
 
+  /**
+   * 关闭窗口
+   */
+  const closeWindow = () => {
+    setShow(false)
+    onClose && onClose()
+  }
+
   return (
     <View style={_styles.container}>
       <Modal isVisible={show}
              style={_styles.modal_content}
-             onBackdropPress={() => setShow(false)}
-             onBackButtonPress={() => setShow(false)}
+             onBackdropPress={() => closeWindow()}
+             onBackButtonPress={() => closeWindow()}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
-             backdropOpacity={0.3}>
+             backdropOpacity={0.5}>
         <View style={[
           _styles.content,
-          { height: (arrayLength(menu) < 11 ? arrayLength(menu) : 10) * ITEM_HEIGHT },
+          { height: (arrayLength(menu) < 12 ? arrayLength(menu) : 11) * ITEM_HEIGHT },
         ]}>
+          {
+            !anyEmpty(menuTitle) && <UGText numberOfLines={1}
+                                          style={[
+                                            _styles.menu_title,
+                                            { color: Skin1.themeColor },
+                                          ]}>{menuTitle}</UGText>
+          }
           <ScrollView style={_styles.sv_container}
                       showsVerticalScrollIndicator={false}
                       key={'ScrollView-IMiddleMenu'}>
@@ -87,16 +102,16 @@ const MiddleMenu = ({ curId, menu, onMenuClick }: IMiddleMenu, ref?: any) => {
                   <View style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
                     {renderIcon(item)}
                     <View style={_styles.item_sub_content}>
-                      <Text numberOfLines={1}
+                      <UGText numberOfLines={1}
                             style={[
                               _styles.item_name,
-                              item?.id == curId?.toString() ? {color: Skin1.themeColor} : null,
-                            ]}>{item.title}</Text>
+                              item?.id == curId?.toString() ? { color: `${Skin1.themeColor}ee` } : null,
+                            ]}>{item.title}</UGText>
                       {
-                        !anyEmpty(item.subTitle) && <Text numberOfLines={1}
+                        !anyEmpty(item.subTitle) && <UGText numberOfLines={1}
                                                           style={[_styles.item_sub_name, { color: Skin1.themeColor }]}>
                           {'( ' + item.subTitle + ' )'}
-                        </Text>
+                        </UGText>
                       }
                     </View>
                   </View>
@@ -117,23 +132,33 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  content: {},
-  sv_container: {
-    width: scale(460),
+  content: {
     borderRadius: scale(8),
     backgroundColor: UGColor.BackgroundColor1,
   },
+  sv_container: {},
   item_content: {
     height: ITEM_HEIGHT,
+    minWidth: scale(360),
+    maxWidth: scale(420),
     paddingHorizontal: scale(24),
-    borderTopWidth: scale(1),
     alignItems: 'center',
+    borderTopWidth: scale(1),
     borderTopColor: UGColor.LineColor4,
     flexDirection: 'row',
   },
-  item_sub_content: {
-    flex: 1,
+  menu_title: {
+    color: UGColor.TextColor1,
+    fontSize: scale(26),
+    height: ITEM_HEIGHT,
+    paddingHorizontal: scale(24),
+    textAlignVertical: 'center',
+    borderBottomWidth: scale(2),
+    borderBottomColor: UGColor.LineColor4,
+    fontWeight: 'bold',
+
   },
+  item_sub_content: {},
   item_name: {
     color: UGColor.TextColor1,
     fontSize: scale(22),

@@ -13,6 +13,7 @@ import { httpClient } from '../../public/network/httpClient'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { AgentType } from '../../public/models/Enum'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const LLRegisterPage = () => {
   const { show, onChange, sign, reference, placeholder } = useSignUpPage({
@@ -85,13 +86,13 @@ export const LLRegisterPage = () => {
         }} placeholder={accountPlaceholder || '请输入会员账号（7-15位字母或数字)'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
         {!regex.test(acc) && <View style={{ flexDirection: 'row' }}>
-          <Text style={{
+          <UGText style={{
             color: 'red',
             fontSize: 12,
             textAlign: 'left',
             flex: 1,
             paddingVertical: 4,
-          }}>*请使用7-15位英文或数字的组合</Text>
+          }}>*请使用7-15位英文或数字的组合</UGText>
         </View>}
         <LLRegisterInput maxLength={15} isPwd={true} onChangeText={(text) => {
           setPwd(text)
@@ -100,13 +101,13 @@ export const LLRegisterPage = () => {
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
         {pass_length_min && pass_length_max && (pwd.length < pass_length_min || pwd.length > pass_length_max) &&
         <View style={{ flexDirection: 'row' }}>
-          <Text style={{
+          <UGText style={{
             color: 'red',
             fontSize: 12,
             textAlign: 'left',
             flex: 1,
             paddingVertical: 4,
-          }}>{`*请使用${pass_length_min}-${pass_length_max}位英文或数字的组合`}</Text>
+          }}>{`*请使用${pass_length_min}-${pass_length_max}位英文或数字的组合`}</UGText>
         </View>}
         <LLRegisterInput isPwd={true} onChangeText={onChangeConfirmPassword} placeholder={confirmPasswordPlaceholder || '请确认密码'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
@@ -148,12 +149,12 @@ export const LLRegisterPage = () => {
             onChangeAgent(AgentType.用户注册)
           }}>
             <View style={{ backgroundColor: agentType == AgentType.用户注册 ? '#3ba2d0' : '#b6b6b6' }}>
-              <Text style={{
+              <UGText style={{
                 paddingVertical: 4,
                 paddingHorizontal: 8,
                 width: 74,
                 color: agentType == AgentType.用户注册 ? '#ffffff' : '#000000',
-              }}>普通用户</Text>
+              }}>普通用户</UGText>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => {
@@ -161,36 +162,36 @@ export const LLRegisterPage = () => {
             onChangeAgent(AgentType.代理注册)
           }}>
             <View style={{ backgroundColor: agentType == AgentType.代理注册 ? '#3ba2d0' : '#b6b6b6' }}>
-              <Text style={{
+              <UGText style={{
                 paddingVertical: 4,
                 paddingHorizontal: 8,
                 width: 74,
                 color: agentType == AgentType.代理注册 ? '#ffffff' : '#000000',
-              }}>注册代理</Text>
+              }}>注册代理</UGText>
             </View>
           </TouchableWithoutFeedback>
         </View> : null}
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity style={{ flex: 1, backgroundColor: '#d19898', borderRadius: 30, marginTop: 12 }}
                             onPress={userSingUp}>
-            <Text
+            <UGText
               style={{
                 fontSize: 16,
                 color: 'white',
                 textAlign: 'center',
                 paddingVertical: 16,
-              }}>立即开户</Text>
+              }}>立即开户</UGText>
           </TouchableOpacity>
         </View>
         <View style={{ alignItems: 'center' }}>
           <View style={{ flexDirection: 'row', marginTop: 16 }}>
-            <Text style={{ color: '#3c3c3c', fontSize: 14 }}>已有账号？</Text>
-            <Text style={{ color: '#387ef5', fontSize: 14 }} onPress={() => {
+            <UGText style={{ color: '#3c3c3c', fontSize: 14 }}>已有账号？</UGText>
+            <UGText style={{ color: '#387ef5', fontSize: 14 }} onPress={() => {
               push(PageName.LLLoginPage)
-            }}>马上登录</Text>
+            }}>马上登录</UGText>
           </View>
-          <Text style={{ color: '#666', marginTop: 16, fontSize: 14 }}>Copyright ©2012-2021 All Right
-            Reserved</Text>
+          <UGText style={{ color: '#666', marginTop: 16, fontSize: 14 }}>Copyright ©2012-2021 All Right
+            Reserved</UGText>
         </View>
       </ScrollView>
     </BaseScreen>

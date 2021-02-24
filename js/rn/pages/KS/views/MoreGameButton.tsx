@@ -2,6 +2,7 @@ import React from 'react'
 import { Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface MoreGameButtonProps {
   title: string
@@ -28,12 +29,12 @@ const MoreGameButton = ({ onPress, title, logo, subtitle }: MoreGameButtonProps)
         <View style={{ flex: 4, flexDirection: 'row', height: '100%' }}>
           <FastImage source={{ uri: logo }} style={{ height: '100%', aspectRatio: 1 }} resizeMode={'contain'} />
           <View style={{ justifyContent: 'center', paddingLeft: scale(10) }}>
-            <Text style={{ color: '#ffffff' }}>{title}</Text>
-            <Text style={{ color: '#95979f', marginTop: scale(10) }}>{subtitle}</Text>
+            <UGText style={{ color: '#ffffff' }}>{title}</UGText>
+            <UGText style={{ color: '#95979f', marginTop: scale(10) }}>{subtitle}</UGText>
           </View>
         </View>
         <View style={{ flex: 1, borderColor: '#fb5858', justifyContent: 'center', alignItems: 'center', borderWidth: scale(1), height: '50%', borderRadius: scale(5) }}>
-          <Text style={{ color: '#fb5858' }}>{'去游戏'}</Text>
+          <UGText style={{ color: '#fb5858' }}>{'去游戏'}</UGText>
         </View>
       </View>
     </TouchableWithoutFeedback>

@@ -3,14 +3,15 @@ import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PushHelper from "../../../../../../public/define/PushHelper";
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 export const RecommendLoveView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
     return list.length > 0 ? (
         <>
             <View style={{flexDirection: "row", alignItems: "center", marginTop: 10}}>
-                <Text style={{fontWeight: "bold", color: '#333', fontSize: 18}}>猜你喜欢</Text>
-                <Text style={{fontSize: 15, marginHorizontal: 10}}>|</Text>
-                <Text style={{fontSize: 16, color: '#333', textAlign: "center"}}>你想玩的，这里都有</Text>
+                <UGText style={{fontWeight: "bold", color: '#333', fontSize: 18}}>猜你喜欢</UGText>
+                <UGText style={{fontSize: 15, marginHorizontal: 10}}>|</UGText>
+                <UGText style={{fontSize: 16, color: '#333', textAlign: "center"}}>你想玩的，这里都有</UGText>
             </View>
             <FlatList
                 bounces={false}

@@ -1,23 +1,17 @@
 import React, { useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { appConfig } from '../../../../config'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
-import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
 import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType, RankingListType } from '../../public/models/Enum'
-import { PushHomeGame } from '../../public/models/Interface'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
-import { ugLog } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -30,6 +24,12 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
+import { ugLog } from '../../public/tools/UgLog'
+import { MenuType } from '../../public/define/ANHelper/hp/GotoDefine'
+import { skinColors } from '../../public/theme/const/UGSkinColor'
+import { appConfig } from '../../../../config'
+import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
+import { PushHomeGame } from '../../public/models/Interface'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -52,10 +52,16 @@ const WNZHomePage = () => {
 
   const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, homeGamesHot, rankLists } = homeInfo
 
   const getNavs = () => {
-    if (AppDefine.siteId == 'c245') return uid ? config.c245AuthNavs : config.c245UnAuthNavs
+    if (AppDefine.siteId == 'c245') {
+      var newNavs = uid ? config.c245AuthNavs : config.c245UnAuthNavs
+      newNavs.forEach((ele) => {
+        ele.icon = navs?.find((e) => e?.name == ele?.name)?.icon
+      })
+      return newNavs
+    }
     if (AppDefine.siteId.includes('c108') && !uid) return config.c108UnAuthNavs
     return navs
   }
@@ -66,6 +72,7 @@ const WNZHomePage = () => {
   const tabGames = [
     {
       // @ts-ignore
+      // games: homeGamesHot.concat(config?.moreGame),
       games: officialGames?.slice(0, 9).concat(config?.moreGame),
     },
     {
@@ -76,7 +83,6 @@ const WNZHomePage = () => {
 
   // @ts-ignore
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
-
   const renderGameSubTypeComponent = (games: any[]) => (
     <GameSubTypeComponent
       uniqueKey={'WNZHomePage_GameSubTypeComponent'}
@@ -224,6 +230,9 @@ const WNZHomePage = () => {
                     width: '20%',
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
+                    borderRightWidth: 1,
+                    borderBottomWidth: 1,
+                    borderColor: '#F1F1F1',
                   }}
                   imageContainerStyle={{
                     width: '75%',
@@ -231,7 +240,7 @@ const WNZHomePage = () => {
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
-                    fontSize: scale(19),
+                    fontSize: scale(18),
                   }}
                   circleContainerStyle={{ width: '85%' }}
                   circleColor={'transparent'}
@@ -285,6 +294,7 @@ const WNZHomePage = () => {
               tabBarBackgroundColor={'#ffffff'}
               tabBarStyle={{
                 marginHorizontal: scale(5),
+                marginTop: scale(5),
               }}
               tabTextStyle={{
                 fontSize: scale(20),

@@ -26,49 +26,14 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-    // 其他注单
+    // 站内信
+    // 在线客服
     pages.push({
-      vcName: 'UGRealBetRecordViewController',
-      rnName: PageName.OtherRecord,
+      rnName: PageName.OnlineService,
+      userCenterItemCode: 14,
       fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-
-    // 2级系列大厅
-    pages.push({
-      vcName: 'UGYYLotterySecondHomeViewController',
-      rnName: PageName.JDLotterySecondPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-
-    // 资金管理
-    pages.push({
-      vcName: 'UGFundsViewController',
-      rnName: PageName.CapitalPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-
-    // 我的提款账户
-    pages.push({
-      vcName: 'WithdrawalAccountListVC',
-      rnName: PageName.ManageBankListPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-
-    // 游戏大厅
-    pages.push({
-      vcName: 'UGYYLotteryHomeViewController',
-      rnName: PageName.GameLobbyPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
+      允许游客访问: true,
+      允许未登录访问: true,
     })
   }
 
@@ -88,6 +53,14 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(KSPages) // [pages addObjectsFromArray:多个页面]
     }
 
+    // 在线客服
+    pages.push({
+      rnName: PageName.OnlineService,
+      userCenterItemCode: 14,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
     // 其他注单
     pages.push({
       vcName: 'UGRealBetRecordViewController',
@@ -171,70 +144,14 @@ export async function setRnPageInfo(force = false) {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    // 申请代理
-    pages.push({
-      vcName: 'UGAgentViewController',
-      rnName: PageName.JDAgentPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    })
-    //个人讯息頁
-    pages.push({
-      rnName: PageName.UserInfoPage,
-      userCenterItemCode: 12,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-    //站内信
-    pages.push({
-      rnName: PageName.UserMessagePage,
-      userCenterItemCode: 9,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-    //安全中心
-    pages.push({
-      rnName: PageName.SafeCenterPage,
-      userCenterItemCode: 10,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-    //活动彩金
-    pages.push({
-      rnName: PageName.ActivityRewardPage,
-      userCenterItemCode: 15,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-    // 彩票注单记录
-    pages.push({
-      rnName: PageName.LotteryHistoryPage,
-      userCenterItemCode: 6,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
-    // 任务中心
-    pages.push({
-      rnName: PageName.TaskCenterPage,
-      userCenterItemCode: 11,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
     // 在线客服
-    pages.push({
-      rnName: PageName.OnlineService,
-      userCenterItemCode: 14,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: false,
-      允许未登录访问: false,
-    })
+    // pages.push({
+    //   rnName: PageName.OnlineService,
+    //   userCenterItemCode: 14,
+    //   fd_prefersNavigationBarHidden: true,
+    //   允许游客访问: false,
+    //   允许未登录访问: false,
+    // })
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -257,6 +174,46 @@ export async function setRnPageInfo(force = false) {
     }
   }
 
+  // 我的提款账户
+  pages.push({
+    vcName: 'WithdrawalAccountListVC',
+    rnName: PageName.ManageBankListPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+  // 资金管理
+  pages.push({
+    vcName: 'UGFundsViewController',
+    rnName: PageName.CapitalPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+  // 其他注单
+  pages.push({
+    vcName: 'UGRealBetRecordViewController',
+    rnName: PageName.OtherRecord,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+  // 2级系列大厅
+  pages.push({
+    vcName: 'UGYYLotterySecondHomeViewController',
+    rnName: PageName.JDLotterySecondPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+  // 2级游戏分类
+  pages.push({
+    vcName: 'UGGameListViewController',
+    rnName: PageName.TwoLevelGames,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 游戏大厅
   pages.push({
     vcName: 'UGYYLotteryHomeViewController',
@@ -289,7 +246,15 @@ export async function setRnPageInfo(force = false) {
     允许游客访问: false,
     允许未登录访问: false,
   })
-
+  //路珠
+  pages.push({
+    rnName: PageName.JSLuzhuPage,
+    linkCategory: 7, //导航链接
+    linkPosition: 55, //导航链接ID
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
   // 申请代理
   pages.push({
     vcName: 'UGAgentViewController',
@@ -336,7 +301,7 @@ export async function setRnPageInfo(force = false) {
   if (AppDefine.siteId != 'c012') {
     pages.push({
       vcName: 'HelpDocViewController',
-      rnName: PageName.JDVirtualCurrencyTutorialPage,
+      rnName: PageName.BtcTutorialPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -385,6 +350,9 @@ export async function setRnPageInfo(force = false) {
     })
   }
 
+  if (skitType.indexOf('经典') != -1) {
+    pages = pages.concat(JDPages.filter((ele) => ele.rnName == PageName.JDHomePage))
+  }
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
   }

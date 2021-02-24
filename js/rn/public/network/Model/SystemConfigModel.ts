@@ -128,7 +128,7 @@ export interface Data {
   pass_limit: string;
   popup_announce: string;
   popup_hour: string;
-  popup_type: string;
+  popup_type: '0' | '1'//公告  0直接弹窗，1登录后弹出
   rankingListSwitch: number;
   reg_email: string;
   reg_fundpwd: string;
@@ -153,4 +153,5 @@ export interface Data {
   znxNotify: string;
   zxkfUrl: string;
   zxkfUrl2: string;
+  frontend_agent_add_member?: '0' | '1' // 推荐收益页添加会员功能  0关闭，1开启
 }

@@ -11,6 +11,7 @@ import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
 
@@ -91,7 +92,7 @@ const SignInForm = (props: SignInRenderFormProps) => {
     <>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: scale(10) }}>
         <FastImage source={{ uri: topLabelLogo }} style={{ width: scale(20), aspectRatio: 1 }} />
-        <Text style={{ fontSize: scale(30), fontWeight: '600', marginLeft: scale(10) }}>{topLabel}</Text>
+        <UGText style={{ fontSize: scale(30), fontWeight: '600', marginLeft: scale(10) }}>{topLabel}</UGText>
       </View>
       <FormComponent
         {...props}

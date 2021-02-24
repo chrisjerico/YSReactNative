@@ -3,9 +3,12 @@ interface UGinviteInfoModel {
   rid?: string;
   link_i?: string;/**<   首页推广地址 */
   link_r?: string; /**<   注册推广地址 */
-  month_earn?: string; /**<   本月推荐收益 */
-  month_member?: string;/**<   本月推荐会员 */
 
+  month_member?: string;/**<   本月推荐会员 */
+  all_earn?: string; /**<   本月总收益 */
+  month_real_earn?: string; /**<   本月真人收益 */
+  month_earn?: string; /**<   本月彩票推荐收益 */
+  
   total_member?: string; /**<   推荐会员总计 */
   fandian?: string; /**<   一级下线比例 */
 

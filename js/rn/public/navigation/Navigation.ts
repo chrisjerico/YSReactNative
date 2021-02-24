@@ -1,3 +1,5 @@
+import WebPage from '../../pages/common/web/WebPage'
+
 export enum PageName {
   // ———————————— 通用页面 —————————————
   TransitionPage = 'TransitionPage',
@@ -15,13 +17,13 @@ export enum PageName {
   ManageBankListPage = 'ManageBankListPage',
   EmptyPage = 'EmptyPage', //空界面
   BetLotteryPage = 'BetLotteryPage', //彩票下注
+  WebPage = 'WebPage', //网页
   BtcPayPage = 'BtcPayPage', //虚拟币支付
   BtcTutorialPage = 'BtcTutorialPage', //虚拟币教程
   CapitalPage = 'CapitalPage', //资金管理
   SetPasswordPage = 'SetPasswordPage', //取消界面
   ForgetPasswordPage = 'ForgetPasswordPage', //忘记密码
   AddBankPage = 'AddBankPage', //添加银行卡
-  JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',
   TrendView = 'TrendView',
   LottoSelector = 'LottoSelector',
   LottoBetting = 'LottoBetting',
@@ -39,6 +41,11 @@ export enum PageName {
   JDBetRecordDetailPage = 'JDBetRecordDetailPage',
   JDBetDetailPage = 'JDBetDetailPage',
   JDLotterySecondPage ='JDLotterySecondPage',
+  JDDayDetailPage = 'JDDayDetailPage',
+  JDPromoteDetailPage = 'JDPromoteDetailPage',
+  H5WebPage = 'H5WebPage',
+  JSLuzhuPage = 'JSLuzhuPage',
+  
   // ———————————— 模板页面 —————————————
   JDHomePage = 'JDHomePage',
 
@@ -132,5 +139,47 @@ export enum PageName {
   OnlineService = 'OnlineService',
   OtherRecord = "OtherRecord",
   Game3rdView = "Game3rdView",
+
+  // Doy
   DoyLaunchPage = "DoyLaunchPage",
+  DoyLoginPage = "DoyLoginPage",
+  DoyRegisterPage1 = "DoyRegisterPage1",
+  DoyRegisterPage2 = "DoyRegisterPage2",
+  DoyNickNamePage = "DoyNickNamePage",
+  DoyPhoneNumberPage1 = "DoyPhoneNumberPage1",
+  DoyPhoneNumberPage2 = "DoyPhoneNumberPage2",
+  DoySelfIntroductionPage = "DoySelfIntroductionPage",
+  DoyUserInfoEditPage = "DoyUserInfoEditPage",
+  DoyUserInfoPage = "DoyUserInfoPage",
+  DoyChangeLoginPwdPage = "DoyChangeLoginPwdPage",
+  DoyChangePayPwdPage = "DoyChangePayPwdPage",
+  DoyMyCommentPage = "DoyMyCommentPage",
+  DoyPaymentChannlPage = "DoyPaymentChannlPage",
+  DoyPaymentEditPage = "DoyPaymentEditPage",
+  DoyMinePage = "DoyMinePage",
+  DoyChatDetailPage = "DoyChatDetailPage",
+  DoyChatListPage = "DoyChatListPage",
+  DoyNoticeListPage = "DoyNoticeListPage",
+  DoyNoticeOrderFeedbackPage = "DoyNoticeOrderFeedbackPage",
+  DoyNoticeOrderPage = "DoyNoticeOrderPage",
+  DoyNoticeSentSuccessPage = "DoyNoticeSentSuccessPage",
+  DoyMyOrderPage = "DoyMyOrderPage",
+  DoySearchOrderPage = "DoySearchOrderPage",
+  DoySearchReultPage = "DoySearchReultPage",
+  DoyNotifySellerPage = "DoyNotifySellerPage",
+  DoyPendingPaymentPage = "DoyPendingPaymentPage",
+  DoySellOrderPage = "DoySellOrderPage",
+  DoyWantBuyPage = "DoyWantBuyPage",
+  DoySellOrderConfirmPage = "DoySellOrderConfirmPage",
+  DoySetSellOrderPage = "DoySetSellOrderPage",
+  DoyWantSellPage = "DoyWantSellPage",
+  DoyReceiveCurrencyPage = "DoyReceiveCurrencyPage",
+  DoyTransferCurrencyPage = "DoyTransferCurrencyPage",
+  DoyTransferSuccessPage = "DoyTransferSuccessPage",
+  DoyScanPage = "DoyScanPage",
+  DoyWalletRecordDetailPage = "DoyWalletRecordDetailPage",
+  DoyWalletRecordListPage = "DoyWalletRecordListPage",
+  DoyWalletRecordSearchPage = "DoyWalletRecordSearchPage",
+  DoyHomePage = "DoyHomePage",
+
 }

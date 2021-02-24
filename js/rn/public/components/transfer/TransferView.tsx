@@ -34,6 +34,7 @@ import { OCHelper } from '../../define/OCHelper/OCHelper'
 import LinearGradient from 'react-native-linear-gradient'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { showLoading, showSuccess } from '../../widget/UGLoadingCP'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const myWallet = { title: '我的钱包', id: 0 }
 const dataArr = [myWallet]
@@ -205,7 +206,7 @@ export const TransferView = ({ setProps, navigation }) => {
             }} />
           </TouchableWithoutFeedback>}
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, textAlign: 'center', color: Skin1.isBlack ? 'white' : '#111' }}>转换金额</Text>
+            <UGText style={{ fontSize: 16, textAlign: 'center', color: Skin1.isBlack ? 'white' : '#111' }}>转换金额</UGText>
             <TextInput
               keyboardType={'numeric'}
               value={money}
@@ -230,12 +231,12 @@ export const TransferView = ({ setProps, navigation }) => {
                 borderRadius: 4,
                 backgroundColor: Skin1.themeColor,
               }}>
-                <Text style={{
+                <UGText style={{
                   fontSize: 17,
                   color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
                   alignSelf: 'center',
                   paddingVertical: 10,
-                }}>开始转换</Text>
+                }}>开始转换</UGText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={autoTransfer}>
@@ -244,12 +245,12 @@ export const TransferView = ({ setProps, navigation }) => {
                 marginTop: 12,
                 backgroundColor: Skin1.themeColor,
               }}>
-                <Text style={{
+                <UGText style={{
                   fontSize: 17,
                   color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
                   alignSelf: 'center',
                   paddingVertical: 10,
-                }}>一键提取</Text>
+                }}>一键提取</UGText>
               </View>
             </TouchableOpacity>
             <TouchableWithoutFeedback onPress={() => {
@@ -264,13 +265,13 @@ export const TransferView = ({ setProps, navigation }) => {
                   <View style={{
                     flexDirection: 'row', paddingVertical: 10,
                   }}>
-                    <Text
+                    <UGText
                       style={{
                         marginLeft: 12,
                         fontSize: 17,
                         color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
                         alignSelf: 'center',
-                      }}>{`帐号余额: ￥${balance || 0}`}</Text>
+                      }}>{`帐号余额: ￥${balance || 0}`}</UGText>
                     <Animated.View
                       style={{ transform: [{ rotate: spin }], height: 20, width: 20, marginLeft: 16 }}>
                       <Icon size={20} name={'reload1'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
@@ -322,17 +323,17 @@ const Header = ({ pressRecord, setProps }: { pressRecord: () => {}, setProps: ()
           {show && <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
             <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
           </TouchableOpacity>}
-          <Text style={{
+          <UGText style={{
             alignSelf: 'center',
             paddingTop: 15,
             paddingBottom: 15,
             textAlign: 'center',
             fontSize: 20,
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-          }}>额度转换</Text>
+          }}>额度转换</UGText>
           <TouchableWithoutFeedback onPress={pressRecord}>
             <View style={{ justifyContent: 'flex-end', position: 'absolute', left: AppDefine.width - 80 }}>
-              <Text style={{ color: Skin1.isBlack ? '#fff' : Skin1.textColor4, fontSize: 18 }}>转换记录</Text>
+              <UGText style={{ color: Skin1.isBlack ? '#fff' : Skin1.textColor4, fontSize: 18 }}>转换记录</UGText>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -376,7 +377,7 @@ const TransferPicker = ({ placeholder = '请选择钱包', text, animation, data
                           { placeholder?: string, text: string, enable?: boolean, animation: any, zIndex, data: any, wallet: any, setWallet: (item: any) => void, onPress: () => void }) => {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', zIndex }}>
-      <Text style={{ fontSize: 16, textAlign: 'center', color: Skin1.isBlack ? 'white' : '#111' }}>{text}</Text>
+      <UGText style={{ fontSize: 16, textAlign: 'center', color: Skin1.isBlack ? 'white' : '#111' }}>{text}</UGText>
       <TouchableWithoutFeedback onPress={() => onPress()}>
         <View style={{
           flex: 1,
@@ -387,8 +388,8 @@ const TransferPicker = ({ placeholder = '请选择钱包', text, animation, data
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-          <Text
-            style={{ color: wallet ? Skin1.isBlack ? 'white' : 'black' : Skin1.textColor2 }}>{wallet ? wallet.title : placeholder}</Text>
+          <UGText
+            style={{ color: wallet ? Skin1.isBlack ? 'white' : 'black' : Skin1.textColor2 }}>{wallet ? wallet.title : placeholder}</UGText>
           <View style={{ flex: 1 }} />
           <Icon color={Skin1.isBlack ? '#fff' : '#111'}
                 style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
@@ -417,7 +418,7 @@ const TransferPicker = ({ placeholder = '请选择钱包', text, animation, data
               setWallet(item)
             }}>
               <View style={{ paddingVertical: 12, paddingHorizontal: 12, justifyContent: 'center' }}>
-                <Text>{item ? item.title || '' : ''}</Text>
+                <UGText>{item ? item.title || '' : ''}</UGText>
               </View>
             </TouchableWithoutFeedback>
           )} />}
@@ -457,8 +458,8 @@ const AccItem = ({ item, updateBalance, setUpdateWallet }: { item: any, updateBa
       paddingVertical: 12,
     }}>
       <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
-      <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title || ''}</Text>
-      <Text style={{ color: '#F75000' }}>{`￥${balance}`}</Text>
+      <UGText style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title || ''}</UGText>
+      <UGText style={{ color: '#F75000' }}>{`￥${balance}`}</UGText>
       <TouchableWithoutFeedback onPress={() => {
         animatedSpin(spinValue, setSpinValue)
         checkBalance(item.id)

@@ -14,6 +14,7 @@ import { Platform } from 'react-native'
 import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { MenuType } from '../../define/ANHelper/hp/GotoDefine'
+import { ugLog } from '../../tools/UgLog'
 
 interface UseHomePage {
   onSuccessSignOut?: () => any
@@ -44,6 +45,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     homeAd,
     turntableList,
     redBag,
+    activitySetting,
     floatAd,
     goldenEggList,
     scratchList,
@@ -104,6 +106,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notice?.data?.popup?.map((item: any) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     }) ?? []
+  const popupSwitch = notice?.data?.popupSwitch
 
   const homeGameData = useMemo(() => {
     const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
@@ -111,7 +114,11 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     //@ts-ignore
     const homeGamesConcat = homeGames?.flatMap((ele) => ele?.list)
 
-    return { navs, homeGames, homeGamesConcat }
+    // ugLog('homeGamesConcat ==========================',JSON.stringify(homeGamesConcat))
+    const homeGamesHot = homeGamesConcat?.filter((ele) => ele?.is_hot == '1') // 官
+    ugLog('homeGamesHot ==========================',JSON.stringify(homeGamesHot))
+
+    return { navs, homeGames, homeGamesConcat,homeGamesHot}
   }, [homeGame])
 
   const lotteryData = useMemo(() => {
@@ -138,6 +145,10 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
 
   const coupons = useMemo(() => {
     return couponList?.data?.list?.slice(0, 5) ?? []
+  }, [couponList])
+
+  const couponClickStyle = useMemo(() => {
+    return couponList?.data?.style
   }, [couponList])
 
   const rankLists = rankList?.data?.list ?? []
@@ -176,15 +187,18 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notices,
     midBanners,
     announcements,
+    popupSwitch,
     gameLobby,
     coupons,
     rankLists,
     redBag,
+    activitySetting,
     redBagLogo,
     roulette,
     floatAds,
     goldenEggs,
     scratchs,
+    couponClickStyle,
     ...homeGameData,
     ...lotteryData,
     ...official_customise_Games,

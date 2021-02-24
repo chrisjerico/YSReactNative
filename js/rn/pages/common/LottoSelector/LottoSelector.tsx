@@ -8,6 +8,7 @@ import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import LottoItem from './LottoItem';
 import {LottoContext, useLottoContext} from '../LottoBetting/LottoContext';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LottoSelector = () => {
     const [lottoData, setLottoData] = useState<LottoGamesModel>()
@@ -61,12 +62,12 @@ const LottoSelector = () => {
                 style={{flex: 1}}
                 renderItem={({item}) => {
                     return <>
-                        <Text style={{
+                        <UGText style={{
                             fontSize: 18,
                             marginLeft: 20,
                             marginVertical: 10,
                             fontWeight: "bold"
-                        }}>{item.gameTypeName}</Text>
+                        }}>{item.gameTypeName}</UGText>
                         <FlatList data={item.list}
                                   numColumns={2}
                                   columnWrapperStyle={{paddingHorizontal: 10}}

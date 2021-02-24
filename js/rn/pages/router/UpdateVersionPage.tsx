@@ -19,9 +19,11 @@ import { UGStore } from '../../redux/store/UGStore'
 import { DefaultMenu } from '../../Res/DefaultMenu'
 import { UGBasePageProps } from '../base/UGPage'
 import UseVersion from './us/UseVersion'
-import { Toast } from '../../public/tools/ToastUtils'
-import { navigate } from '../../public/navigation/RootNavigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
+import { combination, combineArr } from '../bet/util/ArithUtil'
+import { IWebPage } from '../common/web/WebPage'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -256,6 +258,12 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                 '访问出现异常，请检查网络情况，重新打开App再试试。\n或者联系客服...',
                 [
                   {
+                    text: '尝试直接打开',
+                    onPress: () => {
+                      push(PageName.WebPage, {url: AppDefine.host} as IWebPage)
+                    }, style: 'default',
+                  },
+                  {
                     text: '退出',
                     onPress: () => {
                       ANHelper.callAsync(CMD.FINISH_ACTIVITY)
@@ -329,7 +337,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   return (
     <View style={_styles.container}>
       <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="transparent" color="#00000055" height={height} width={AppDefine.width} />
-      <Text style={_styles.title}>{textProgress}</Text>
+      <UGText style={_styles.title}>{textProgress}</UGText>
       <View style={_styles.container_timer}>
         <Progress.Circle
           progress={circleProgress / MAX_TIME}
@@ -351,7 +359,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             }
           }}>
           <View style={_styles.counter_container}>
-            <Text style={_styles.title_counter}>{circleProgress + '秒'}</Text>
+            <UGText style={_styles.title_counter}>{circleProgress + '秒'}</UGText>
           </View>
         </TouchableWithoutFeedback>
       </View>

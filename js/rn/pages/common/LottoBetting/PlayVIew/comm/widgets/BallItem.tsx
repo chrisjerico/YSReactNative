@@ -7,6 +7,7 @@ import {getHKballColor} from "../../lottoSetting";
 import {anyLength} from "../../../../../../public/tools/Ext";
 import FastImage from "react-native-fast-image";
 import { UGImageHost, useHtml5Image } from "../../../../../../Res/icon";
+import { UGText } from '../../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const {img_assets} = useHtml5Image(UGImageHost.test5)
 
@@ -94,8 +95,8 @@ const BallItem = ({text, ballStyle}: IBallItem) => {
         {
           borderColor: _roundBall(text),
         }]}>
-        <Text style={[_styles.ball_text,
-          {color: _roundBall(text)}]}>{text}</Text>
+        <UGText style={[_styles.ball_text,
+          {color: _roundBall(text)}]}>{text}</UGText>
       </View>
     case BALL_TYPE.ROUND_FILLED:
       return <View style={[BALL_STYLES.grid_ball_round,
@@ -103,7 +104,7 @@ const BallItem = ({text, ballStyle}: IBallItem) => {
           borderColor: _roundBall(text),
           backgroundColor: _roundBall(text)
         }]}>
-        <Text style={_styles.ball_text}>{text}</Text>
+        <UGText style={_styles.ball_text}>{text}</UGText>
       </View>
     case BALL_TYPE.SQUARE_FILLED:
       return <View style={[BALL_STYLES.grid_ball_rect,
@@ -111,13 +112,13 @@ const BallItem = ({text, ballStyle}: IBallItem) => {
           borderColor: _squareBall(text),
           backgroundColor: _squareBall(text),
         }]}>
-        <Text style={_styles.ball_text}>{text}</Text>
+        <UGText style={_styles.ball_text}>{text}</UGText>
       </View>
     default:
       return <FastImage style={[BALL_STYLES.grid_ball_round, { borderWidth: 0 }]}
                         source={{uri: _roundBallPic(text)}}>
-        <Text style={[_styles.ball_text,
-          {color: 'black'}]}>{text}</Text>
+        <UGText style={[_styles.ball_text,
+          {color: 'black'}]}>{text}</UGText>
       </FastImage>
 
   }

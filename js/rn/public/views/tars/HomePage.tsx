@@ -1,12 +1,16 @@
 import React, { memo, ReactElement, useCallback } from 'react'
-import { ListRenderItem, RefreshControl, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { ListRenderItem, Platform, RefreshControl, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { UGStore } from '../../../redux/store/UGStore'
 import AnimatedRankComponent from '../../components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../components/tars/AutoHeightCouponComponent'
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import PushHelper from '../../define/PushHelper'
 import { RankingListType } from '../../models/Enum'
 import { httpClient } from '../../network/httpClient'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
-import { sc540, scale } from '../../tools/Scale'
+import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
+import { scale } from '../../tools/Scale'
 import Activitys, { FloatAd, GoldenEgg, Roulette } from './Activitys'
 import BannerBlock from './BannerBlock'
 import BottomGap from './BottomGap'
@@ -17,6 +21,8 @@ import NoticeBlock from './NoticeBlock'
 import ProgressCircle from './ProgressCircle'
 import SafeAreaHeader from './SafeAreaHeader'
 import TouchableImage from './TouchableImage'
+import { Data, ScratchList } from '../../network/Model/ScratchListModel'
+import { OCHelper } from '../../define/OCHelper/OCHelper'
 
 interface HomePageProps {
   headerColor: string
@@ -25,6 +31,7 @@ interface HomePageProps {
   refreshing: boolean
   refresh: () => any
   announcements: any[]
+  popupSwitch: '0' | '1' | '2'; // 0不弹窗，1、2都弹窗
   items?: readonly any[]
   renderHeader: () => ReactElement
   renderListHeaderComponent: () => ReactElement
@@ -36,10 +43,11 @@ interface HomePageProps {
   isTest?: boolean
   redBagLogo: string
   redBag: RedBagDetailActivityModel
+  activitySetting: ActivitySettingModel
   roulette: Roulette[]
   floatAds: FloatAd[]
   goldenEggs: GoldenEgg[]
-  scratchs: unknown
+  scratchs: Data
   showOnlineNum: boolean
   bannersInterval: number
   onlineNum: number
@@ -54,6 +62,7 @@ interface HomePageProps {
   couponBlockStyles?: CouponBlockStyles//底部优惠活动
   animatedRankComponentStyles?: AnimatedRankComponentStyles//底部排行榜
   couponStyles?: CouponStyles//底部优惠活动
+  couponClickStyle?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   bottomLogoStyles?: BottomLogoStyles//底部商标
   containerStyle?: StyleProp<ViewStyle>
   noticeBlockStyles?: NoticeBlockStyles // 跑马灯
@@ -61,7 +70,8 @@ interface HomePageProps {
   showBannerBlock?: boolean
   refreshTintColor?: string
   equalFactor?: any
-  bannerBadgeStyle?:StyleProp<ViewStyle>// 在线人数
+  bannerBadgeStyle?: StyleProp<ViewStyle>// 在线人数
+  popup_type: '0' | '1'//公告  0直接弹窗，1登录后弹出
 }
 
 interface CouponBlockStyles {
@@ -101,12 +111,17 @@ interface NoticeBlockStyles {
   containerStyle?: StyleProp<ViewStyle>
 }
 
+
+let couponSelectedIndex = -1
+const couponRef = { reRenderCoupon: () => { } }
+
 const HomePage = ({
   headerColor,
   loading,
   pagekey,
   refreshing,
   announcements,
+  popupSwitch,
   refresh,
   items,
   renderItem,
@@ -119,6 +134,7 @@ const HomePage = ({
   isTest,
   redBagLogo,
   redBag,
+  activitySetting,
   roulette,
   floatAds,
   goldenEggs,
@@ -137,6 +153,7 @@ const HomePage = ({
   couponBlockStyles,//底部优惠活动
   animatedRankComponentStyles,//底部排行榜
   couponStyles,//底部优惠活动
+  couponClickStyle,
   bottomLogoStyles,//底部商标
   containerStyle,
   noticeBlockStyles,//跑马灯
@@ -144,6 +161,7 @@ const HomePage = ({
   showBannerBlock = true,
   refreshTintColor = '#000000',
   bannerBadgeStyle,
+  popup_type,
 }: HomePageProps) => {
   const onPressNotice = useCallback(({ content }) => {
     PushHelper.pushNoticePopUp(content)
@@ -151,12 +169,32 @@ const HomePage = ({
 
   const renderBanner = useCallback((item, index) => {
     const { linkCategory, linkPosition, pic, url } = item
-    const pushCategory = useCallback(() => {
-      if (url?.length) {
-        PushHelper.openWebView(url)
-      } else {
-        PushHelper.pushCategory(linkCategory, linkPosition)
+    const pushCategory = useCallback(async () => {
+
+      switch (Platform.OS) {
+        case 'ios':
+          {
+            let  ret = await  OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
+            if (!ret) {
+              if (url.indexOf("mobile") != -1  ) {
+                return;
+              } else {
+                if (url?.length) {
+                  PushHelper.openWebView(url)
+                }
+              }
+            }
+          }
+          break
+        case 'android':
+          if (url?.length) {
+            PushHelper.openWebView(url)
+          } else {
+            PushHelper.pushCategory(linkCategory, linkPosition)
+          }
+          break
       }
+
     }, [])
     return <TouchableImage key={index} pic={pic} resizeMode={'stretch'} onPress={pushCategory} />
   }, [])
@@ -164,8 +202,10 @@ const HomePage = ({
   const onRefresh = useCallback(async () => {
     try {
       await refresh()
-      PushHelper.pushAnnouncement(announcements)
-    } catch (error) {}
+      if ((popup_type == '1' && !uid?.length) || popupSwitch == '0') { } else {
+        PushHelper.pushAnnouncement(announcements)
+      }
+    } catch (error) { }
   }, [announcements])
 
   if (loading) {
@@ -188,11 +228,12 @@ const HomePage = ({
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={refreshTintColor} />}
           ListHeaderComponent={() => (
             <>
+              {/* 顶部横幅 +在线人数 */}
               {showBannerBlock && (
                 <BannerBlock
                   showOnlineNum={showOnlineNum}
                   containerStyle={styles.bannerContainer}
-                  badgeStyle={{...styles.bannerBadge, ...bannerBadgeStyle}}
+                  badgeStyle={{ ...styles.bannerBadge, ...bannerBadgeStyle }}
                   autoplayTimeout={bannersInterval}
                   onlineNum={onlineNum}
                   banners={banners}
@@ -207,34 +248,66 @@ const HomePage = ({
           ListFooterComponent={() => (
             <>
               {renderListFooterTopComponent && renderListFooterTopComponent()}
+              {/* 优惠活动 */}
               <CouponBlock
                 {...couponBlockStyles}
+                c_ref={couponRef}
                 visible={showCoupon}
                 onPressMore={goToPromotionPage}
                 coupons={coupons}
                 renderCoupon={({ item, index }) => {
-                  const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
+                  const { pic, linkCategory, linkPosition, title, content, linkUrl ,} = item
                   return (
                     <AutoHeightCouponComponent
                       {...couponStyles}
                       key={index}
                       title={title}
                       pic={pic}
+                      slide={couponClickStyle == 'slide' && couponSelectedIndex == index}
                       content={content}
-                      onPress={(setShowPop) => {
-                        if (linkUrl) {
-                          PushHelper.openWebView(linkUrl)
-                        } else if (!linkCategory && !linkPosition) {
-                          setShowPop(true)
-                        } else {
-                          PushHelper.pushCategory(linkCategory, linkPosition)
+                      onPress={async (setShowPop) => {
+                        //slide=折叠式,popup=弹窗式 page = 内页*/
+                        switch (Platform.OS) {
+                          case 'ios':
+                            {
+                              let  ret = await  OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
+                              if (!ret) {
+                                if (couponClickStyle === 'slide') {
+                                  if (index == couponSelectedIndex) {
+                                    couponSelectedIndex = -1
+                                    couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                                  } else {
+                                    couponSelectedIndex = index
+                                    couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
+                                  }
+                                }
+                                else if(couponClickStyle === 'popup') {
+                                  setShowPop(true)
+                                }
+                                else if(couponClickStyle === 'page') {
+                                  PushHelper.pushPromoteDetail({ clsName: 'UGPromoteModel', ...item })
+                                }
+                              }
+                            }
+                            break
+                          case 'android':
+                              // 弹框
+                              ANHelper.callAsync(CMD.OPEN_COUPON, {
+                                ...item,
+                                couponClickStyle,
+                              })
+                            break
                         }
+
+
                       }}
                     />
                   )
                 }}
               />
+              {/**<   排行榜 */}
               <AnimatedRankComponent {...animatedRankComponentStyles} type={rankingListType} rankLists={rankLists} />
+              {/* 底部商标 */}
               <BottomLogo
                 {...bottomLogoStyles}
                 webName={webName}
@@ -250,7 +323,8 @@ const HomePage = ({
             </>
           )}
         />
-        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
+        {/**<   浮动按钮 *//*  */}
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} activitySetting={activitySetting} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
         {renderRestComponent && renderRestComponent()}
       </>
     )

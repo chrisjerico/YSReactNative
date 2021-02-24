@@ -1,4 +1,4 @@
-import { UGImageHost, useHtml5Image } from '../../Res/icon'
+import { img_assets, UGImageHost, useHtml5Image } from '../../Res/icon'
 const { getHtml5Image, img_platform } = useHtml5Image(UGImageHost.test5)
 
 const config = {
@@ -34,6 +34,10 @@ const config = {
     32: getHtml5Image(23, 'center/account_bill'), // 资金明细
     33: getHtml5Image(23, 'center/activity_hall'), // 优惠活动
     34: getHtml5Image(23, 'center/my_chat'), // 聊天室
+    35: img_assets('invi@2x'), // UCI_我的关注
+    36: img_assets('friend'), // UCI_我的动态
+    37: img_assets('fans'), // UCI_我的粉丝
+
   }
 }
 

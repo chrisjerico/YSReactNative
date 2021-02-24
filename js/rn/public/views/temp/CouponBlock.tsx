@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 import List from './List'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface CouponBlock {
   containerStyle?: ViewStyle | ViewStyle[];
@@ -34,10 +35,10 @@ const CouponBlock = ({
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image style={{ width: scale(25), height: scale(25), tintColor: '#000000', marginRight: scale(5), marginBottom: scale(5) }} source={{ uri: "礼品-(1)" }} />
-            <Text style={{ fontSize: scale(25) }}>{'优惠活动'}</Text>
+            <UGText style={{ fontSize: scale(25) }}>{'优惠活动'}</UGText>
           </View>
           <TouchableWithoutFeedback onPress={onPressMore}>
-            <Text style={{ fontSize: scale(25) }}>{'查看更多>>'}</Text>
+            <UGText style={{ fontSize: scale(25) }}>{'查看更多>>'}</UGText>
           </TouchableWithoutFeedback>
         </View>
         <List

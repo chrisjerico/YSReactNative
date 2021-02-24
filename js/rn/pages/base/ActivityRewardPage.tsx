@@ -14,6 +14,7 @@ import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import ProgressCircle from '../../public/views/temp/ProgressCircle'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 
 interface ApplyRewardProps {
@@ -52,7 +53,7 @@ const RewardList = ({ tabLabel, data, uniqueKey, onPress, onPressApply }) => (
               <ImageBackground source={{ uri: 'winapply_default' }} style={{ width: '100%', height: '100%' }}>
                 <View style={{ flex: 3 }}></View>
                 <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'center', alignItems: 'center' }}>
-                  <Text style={{ color: '#ffffff' }}>{name}</Text>
+                  <UGText style={{ color: '#ffffff' }}>{name}</UGText>
                 </View>
               </ImageBackground>
             </View>
@@ -97,10 +98,10 @@ const ApplyFeedBack = ({ tabLabel, list }) => {
     <List
       uniqueKey={'ApplyFeedBack'}
       ListHeaderComponent={() => (
-        <View style={{ flexDirection: 'row', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
-          <Text style={{ fontWeight: '500', flex: 2, textAlign: 'center' }}>{'申请日期'}</Text>
-          <Text style={{ fontWeight: '500', flex: 1, textAlign: 'center' }}>{'申请金额'}</Text>
-          <Text style={{ fontWeight: '500', flex: 1, textAlign: 'center' }}>{'状态'}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
+          <UGText style={{ fontWeight: '500' }}>{'申请日期'}</UGText>
+          <UGText style={{ fontWeight: '500' }}>{'申请金额'}</UGText>
+          <UGText style={{ fontWeight: '500' }}>{'状态'}</UGText>
         </View>
       )}
       data={list}
@@ -191,7 +192,7 @@ const ActivityRewardPage = () => {
       <Modal transparent={true} style={{ flex: 1, backgroundColor: 'transparent' }} visible={activityVisible}>
         <View style={{ backgroundColor: 'transparent', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <View style={{ width: '75%', height: 200, backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, fontWeight: '500', marginVertical: 10 }}>{'彩金活动'}</Text>
+            <UGText style={{ fontSize: 20, fontWeight: '500', marginVertical: 10 }}>{'彩金活动'}</UGText>
             <Image
               source={{
                 uri: 'winapply_default',
@@ -223,10 +224,10 @@ const ActivityRewardPage = () => {
       <Modal transparent={true} style={{ flex: 1, backgroundColor: 'transparent' }} visible={applyVisible}>
         <View style={{ backgroundColor: 'transparent', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <View style={{ width: '75%', height: '60%', backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
-            <Text style={{ fontSize: 15, marginVertical: 10 }}>{'彩金活动'}</Text>
-            <View style={styles.title}>
-              <Text style={{ marginBottom: 10 }}>{'活动说明'}</Text>
-              <Text>{removeHTMLTag(activityContent)}</Text>
+            <UGText style={{ fontSize: 15, marginVertical: 10 }}>{'彩金活动'}</UGText>
+            <View style={{ width: '100%', marginVertical: 10, paddingHorizontal: 20 }}>
+              <UGText style={{ marginBottom: 10 }}>{'活动说明'}</UGText>
+              <UGText>{removeHTMLTag(activityContent)}</UGText>
             </View>
             <View style={styles.title}>
               <Text>{'快捷金额'}</Text>

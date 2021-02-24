@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, View, StyleSheet, ViewStyle, StyleProp } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ToolBlockProps {
   tools: any[]
@@ -23,14 +24,14 @@ const ToolBlock = ({ tools, renderTool, title, contentContainer }: ToolBlockProp
           borderBottomColor: '#d9d9d9',
           borderBottomWidth: scale(0.1),
         }}>
-        <Text
+        <UGText
           style={{
             paddingLeft: scale(25),
             fontWeight: '500',
             fontSize: scale(20),
           }}>
           {title}
-        </Text>
+        </UGText>
       </View>
       <View style={[styles.contentContainer, contentContainer]}>{tools?.map(renderTool)}</View>
     </View>

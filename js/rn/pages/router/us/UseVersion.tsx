@@ -24,8 +24,8 @@ interface UseVersion {
  * @constructor
  */
 const UseVersion = ({
-                      testResult,
-                    }: UseVersion) => {
+  testResult,
+}: UseVersion) => {
 
   //测试网络情况
   const testNetwork = () => {
@@ -58,7 +58,15 @@ const UseVersion = ({
    * 查找最快的域名
    * @param callback 是否有正常的域名
    */
-  const testSite = async (callback: (result?: boolean) => void) => {
+  let siteHost = undefined //哪条速度最快用哪条
+  const testSite = async (callback: (result?: boolean) => void, force = true) => {
+    if (force) {
+      siteHost = undefined
+    } else if (siteHost) {
+      callback(siteHost)
+      return
+    }
+
     // 站点编号
     let siteId = ''
     switch (Platform.OS) {
@@ -68,31 +76,35 @@ const UseVersion = ({
         OCHelper.ocTest && callback && callback(true)
         break
       case 'android':
-        siteId = await ANHelper.callAsync(CMD.APP_SITE)
+        siteId = await ANHelper.callAsync(CMD.APP_REAL_SITE)
+        //测试渠道不检查
+        if (siteId == 'txtTest') {
+          callback && callback(true)
+          notifyDomainChanged(null)
+          return
+        }
         break
     }
 
-    //ugLog('site = siteId', siteId)
+    ugLog('site = siteId', siteId)
     let domains = MultiDomainUrls[siteId]
     //ugLog('site = domains 7 ', domains)
 
-    let firstUrl = '' //哪条速度最快用哪条
     for (let url of domains) {
       // ugLog('site = url', url)
       axios
         .create({
           baseURL: url,
-          timeout: 3000,
           headers: { 'Content-Type': 'application/json' },
         })
         .get('/wjapp/api.php?c=system&a=onlineCount')
         .then((res) => {
           //ugLog('site = response 7 ', url, res?.data)
           //最快的那一条
-          if (res?.status === 200 && res?.data?.code === 0 && anyEmpty(firstUrl)) {
+          if (res?.status === 200 && res?.data?.code === 0 && anyEmpty(siteHost)) {
             callback && callback(true)
-            firstUrl = url
-            recombineDomain({ [siteId]: firstUrl })
+            siteHost = url
+            recombineDomain({ [siteId]: siteHost })
             notifyDomainChanged(siteId)
             //ugLog('site = firstUrl 6', url)
           }
@@ -102,6 +114,12 @@ const UseVersion = ({
           ugLog('site = error 6', url, error)
         })
     }
+
+    setTimeout(() => {
+      if (!siteHost) {
+        testSite(callback, false)
+      }
+    }, 5 * 1000);
   }
 
   return {
@@ -111,35 +129,50 @@ const UseVersion = ({
   }
 }
 
- /**
-   * 查找最快的热更新域名
-   * @param callback 是否有正常的域名
-   */
-const testCodePush = async (callback: (ret?: string) => void) => {
+/**
+  * 查找最快的热更新域名
+  * @param callback 是否有正常的域名
+  */
+let codePushHost = undefined
+const testCodePush = async (callback: (ret?: string) => void, force = true) => {
+  if (force) {
+    codePushHost = undefined
+  } else if (codePushHost) {
+    callback(codePushHost)
+    return
+  }
+
   const hosts = [
-    'https://push.cloudaliyun.com',
-    'https://push.cloudbaiidu.com',
-    'https://push.cloudtenccent.com',
-    'https://push.fhptcdn.com',
-    'http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000',
+    'https://push.cloudaliyun.com',//aws
+    'https://push.cloudbaiidu.com',//aws
+    'https://push.cloudtenccent.com',//aws
+    'https://push.ujcloud.cc',//aws（建议）
+    'http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000',//源地址
+    'https://push.lestuffs.com',//阿里云
   ];
 
-  let firstHost = undefined
+  console.log('查找热更新域名');
+
   hosts.forEach(ele => {
     axios.create({
       baseURL: ele,
-      timeout: 3000,
       headers: { 'Content-Type': 'application/json' },
     }).get('/v0.1/public/codepush/update_check?deployment_key=67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog&app_version=1.2&package_hash=ca914ea44ae7a0617b547a3b64498318ad43c0777efd2da5a1b82fb64364503a&label=v354&client_unique_id=2033EC9D-BCD9-4D53-B2DF-0DC8E407D4D6')
       .then((res) => {
-        if (res?.status == 200 && res?.data?.update_info && anyEmpty(firstHost)) {
+        if (res?.status == 200 && res?.data?.update_info && anyEmpty(codePushHost)) {
           callback && callback(ele)
-          firstHost = ele
+          codePushHost = ele
         }
       }).catch((err) => {
         console.log('err = ', err);
       })
   });
+
+  setTimeout(() => {
+    if (!codePushHost) {
+      testCodePush(callback, false)
+    }
+  }, 5 * 1000);
 }
 
 export default UseVersion

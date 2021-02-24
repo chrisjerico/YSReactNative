@@ -5,6 +5,7 @@ import {MarqueeHorizontal} from 'react-native-marquee-ab';
 import Modal from 'react-native-modal';
 import AutoHeightWebView from "react-native-autoheight-webview";
 import {Scroll} from "../../../../public/network/Model/NoticeModel";
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const width = Dimensions.get("screen").width
 
@@ -74,14 +75,14 @@ export const MarqueeView = memo(({notice}: { notice: Scroll[] }) => {
                         borderBottomWidth: 1,
                         borderBottomColor: "#cccccc"
                     }}/>
-                    <Text style={{
+                    <UGText style={{
                         alignSelf: "center",
                         position: "absolute",
                         height: 50,
                         top: 15,
                         fontSize: 16.5,
                         fontWeight: "bold"
-                    }}>公告</Text>
+                    }}>公告</UGText>
                     <AutoHeightWebView
                         style={{
                             width: width - 40,
@@ -104,7 +105,7 @@ export const MarqueeView = memo(({notice}: { notice: Scroll[] }) => {
                             borderWidth: 1,
                             justifyContent: "center"
                         }} onPress={() => setPopupVisible(false)}>
-                            <Text style={{alignSelf: "center"}}>取消</Text>
+                            <UGText style={{alignSelf: "center"}}>取消</UGText>
                         </TouchableHighlight>
                     </View>
                 </View>

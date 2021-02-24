@@ -3,6 +3,7 @@ import {RankListModel} from "../network/Model/RankListModel"
 import {useEffect, useState} from "react"
 import * as React from 'react'
 import {UGStore} from "../../redux/store/UGStore"
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const RankListCP = ({ranks, width, height = 200, titleVisible = true, backgroundColor = 'white', textColor = "black", timing = 10000, titleTextStyle}:
                         { ranks: any[], width: number, height?: number, titleVisible?: boolean, backgroundColor?: string, textColor: string, timing: number, titleTextStyle?: TextStyle}) => {
@@ -31,39 +32,39 @@ const RankListCP = ({ranks, width, height = 200, titleVisible = true, background
           {titleVisible && <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 10}}>
             <Image style={{width: 15, height: 15, tintColor: 'white', marginRight: 5}}
                    source={{uri: "outline_analytics_black_18dp"}}/>
-            <Text style={{
+            <UGText style={{
               color: textColor,
               fontWeight: "bold",
               fontSize: 16,
               marginLeft: -7, ...titleTextStyle
-            }}>投注排行榜</Text>
+            }}>投注排行榜</UGText>
           </View>}
           <View style={{backgroundColor: backgroundColor, alignSelf: 'center', borderRadius: 8}}>
             {ranks?.length > 0 ?
                 <View style={{flexDirection: 'row', width: width, alignSelf: 'center',}}>
 
-                  <Text style={{
+                  <UGText style={{
                     flex: 1,
                     color: textColor,
                     textAlign: "center",
                     paddingVertical: 6,
                     fontWeight: "bold",
 
-                  }}>用户名称</Text>
-                  <Text style={{
+                  }}>用户名称</UGText>
+                  <UGText style={{
                     flex: 1,
                     color: textColor,
                     textAlign: "center",
                     paddingVertical: 6,
                     fontWeight: "bold"
-                  }}>游戏名称</Text>
-                  <Text style={{
+                  }}>游戏名称</UGText>
+                  <UGText style={{
                     flex: 1,
                     color: textColor,
                     textAlign: "center",
                     paddingVertical: 6,
                     fontWeight: "bold"
-                  }}>{rankingListSwitch === 2 ? '投注金额' : '中奖金额'}</Text>
+                  }}>{rankingListSwitch === 2 ? '投注金额' : '中奖金额'}</UGText>
                 </View> : null}
             <View style={{width: width, height: height, overflow: "hidden"}}>
               <Animated.View style={{
@@ -73,28 +74,28 @@ const RankListCP = ({ranks, width, height = 200, titleVisible = true, background
               }}>
               {ranks?.map && ranks?.map((item, index) => {
                   return <View key={item.coin + index} style={{flexDirection: 'row'}}>
-                    <Text style={{
+                    <UGText style={{
                       flex: 1,
                       color: textColor,
                       textAlign: "center",
                       paddingVertical: 6,
                       fontWeight: "bold",
                       marginRight: 10
-                    }}>{item.username}</Text>
-                    <Text style={{
+                    }}>{item.username}</UGText>
+                    <UGText style={{
                       flex: 1,
                       color: textColor,
                       textAlign: "center",
                       paddingVertical: 6,
                       fontWeight: "bold"
-                    }}>{item.type}</Text>
-                    <Text style={{
+                    }}>{item.type}</UGText>
+                    <UGText style={{
                       flex: 1,
                       color: textColor,
                       textAlign: "center",
                       paddingVertical: 6,
                       fontWeight: "bold"
-                    }}>{item.coin}</Text></View>
+                    }}>{item.coin}</UGText></View>
                 })}
               </Animated.View>
             </View>

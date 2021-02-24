@@ -1,21 +1,17 @@
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { HallGameData, HallGameListData } from '../../../../public/network/Model/game/HallGameModel'
+import { HallGameData } from '../../../../public/network/Model/game/HallGameModel'
 import FastImage from 'react-native-fast-image'
 import CommStyles from '../../../base/CommStyles'
 import { anyEmpty } from '../../../../public/tools/Ext'
-import EmptyView from '../../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
-import Button from '../../../../public/views/tars/Button'
-import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
-import { SeriesId } from '../../../../public/models/Enum'
 import UseFreedomGameList from './UseFreedomGameList'
-import UGNavigationBar from '../../../../public/widget/UGNavigationBar'
 import LinearGradient from 'react-native-linear-gradient'
 import { Res } from '../../../../Res/icon/Res'
+import { LCode } from '../../../bet/const/LotteryConst'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   gameData?: HallGameData //所有数据
@@ -55,8 +51,8 @@ const FreedomGameListComponent = ({
               }}>
                 <View style={_styles.tk_item_container}>
                   <View style={_styles.tk_item_content}>
-                    <Text style={_styles.tk_item_name} numberOfLines={1}>{item.title}</Text>
-                    <Text style={_styles.tk_item_play}>{'立即游戏'}</Text>
+                    <UGText style={_styles.tk_item_name} numberOfLines={1}>{item.title}</UGText>
+                    <UGText style={_styles.tk_item_play}>{'立即游戏'}</UGText>
                   </View>
                 </View>
               </TouchableWithoutFeedback>
@@ -73,7 +69,7 @@ const FreedomGameListComponent = ({
   const renderLeftContent = () => {
     let shape = LeftColumnStyles[gameData?.gameType]
     if (anyEmpty(shape)) {
-      shape = LeftColumnStyles['lhc']
+      shape = LeftColumnStyles[LCode.lhc]
     }
 
     return (
@@ -82,8 +78,8 @@ const FreedomGameListComponent = ({
                       start={{ x: 0, y: 1 }}
                       end={{ x: 1, y: 1 }}>
         <View style={_styles.tk_left_column}>
-          <Text style={[_styles.tk_left_title,
-            { color: shape?.textColor }]}>{gameData?.gameTypeName}</Text>
+          <UGText style={[_styles.tk_left_title,
+            { color: shape?.textColor }]}>{gameData?.gameTypeName}</UGText>
           <FastImage style={_styles.tk_left_icon}
                      resizeMode={'contain'}
                      source={{ uri: shape.icon }}/>

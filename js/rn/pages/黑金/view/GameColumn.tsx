@@ -6,6 +6,7 @@ import FastImage from "react-native-fast-image";
 import PushHelper from "../../../public/define/PushHelper";
 import TouchableImage from "../../../public/views/temp/TouchableImage";
 import {ugLog} from "../../../public/tools/UgLog";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface GameRowProps {
   games?: HomeGamesModel,
@@ -38,13 +39,13 @@ const GameColumn = ({games, selectGameIndex, clickListener}: GameRowProps) => {
               onPress={() => {
                 clickListener(index)
               }}/>
-            <Text style={[_styles.itemTitleText, {
+            <UGText style={[_styles.itemTitleText, {
               color: index == selectGameIndex
                 ? '#9f4b0c'
                 : 'white'
             }]} onPress={() => {
               clickListener(index)
-            }}>{item.name}</Text>
+            }}>{item.name}</UGText>
           </View>
         })
       }

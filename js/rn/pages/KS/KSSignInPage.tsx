@@ -11,6 +11,7 @@ import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
+import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const KSSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, reference } = useSignInPage({
@@ -32,11 +33,11 @@ const KSSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <Text style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'登录'}</Text>
+          <UGText style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'登录'}</UGText>
           <SignInFormList slideCodeColor={'#000000'} showCheckBox={false} show={show} onChange={onChange} value={value} reference={reference} renderForm={SignInForm} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <TouchableWithoutFeedback onPress={() => {}}>
-              <Text style={{ color: '#8e8e93' }}>{'忘记密码'}</Text>
+              <UGText style={{ color: '#8e8e93' }}>{'忘记密码'}</UGText>
             </TouchableWithoutFeedback>
             <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} labelTextStyle={{ color: '#8e8e93' }} />
           </View>

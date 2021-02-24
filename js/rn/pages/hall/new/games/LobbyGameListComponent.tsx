@@ -6,7 +6,7 @@ import { anyEmpty } from '../../../../public/tools/Ext'
 import EmptyView from '../../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
+import LotteryBall from '../../../../public/components/view/LotteryBall'
 import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import { SeriesId } from '../../../../public/models/Enum'
@@ -20,6 +20,8 @@ import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 import PushHelper from '../../../../public/define/PushHelper'
 import { OCHelper } from '../../../../public/define/OCHelper/OCHelper'
 import { ugLog } from '../../../../public/tools/UgLog'
+import { BallType } from '../../../bet/const/LotteryConst'
+import { UGText } from '../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -104,7 +106,7 @@ const LobbyGameListComponent = ({
                 push(PageName.JDLotterySecondPage, {
                   dataArray: item.games,
                   title: item.categoryName+'系列',
-                 
+
                 })
               }
         }
@@ -114,12 +116,12 @@ const LobbyGameListComponent = ({
             style={{ width: 60, height: 60, marginRight: 10,marginTop:10,marginLeft:10 }}
             source={{ uri: games.icons[item.category] }} />
           <View>
-            <Text
+            <UGText
               style={[_styles.category_name, { color: Skin1.textColor1, marginRight: 10,marginTop:18 },]}
-            >{item.categoryName}系列</Text>
-            <Text
+            >{item.categoryName}系列</UGText>
+            <UGText
               style={[_styles.play_now, { marginTop: 10, },]}
-            >立即游戏</Text>
+            >立即游戏</UGText>
           </View>
         </View>
       </TouchableWithoutFeedback>

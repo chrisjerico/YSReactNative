@@ -6,6 +6,7 @@ import { Yuebao } from '../../type/YuebaoInterface'
 import md5 from 'blueimp-md5'
 import useHomePage from '../../hooks/tars/useHomePage'
 import { pop } from '../../navigation/RootNavigation'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const quickArr = [100, 500, 1000, 5000, 10000, '全部金额']
 export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData: () => void }) => {
@@ -29,13 +30,13 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: 'row' }}>
           <View style={{ backgroundColor: Skin1.themeColor, flex: 1, alignItems: 'center', paddingVertical: 8 }}>
-            <Text style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4 }}>余额(元)</Text>
-            <Text
-              style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4, marginTop: 4 }}>{userInfo.balance ? userInfo.balance : 0}</Text>
+            <UGText style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4 }}>余额(元)</UGText>
+            <UGText
+              style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4, marginTop: 4 }}>{userInfo.balance ? userInfo.balance : 0}</UGText>
           </View>
           <View style={{ backgroundColor: Skin1.themeColor, flex: 1, alignItems: 'center', paddingVertical: 8 }}>
-            <Text style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4 }}>{yuebao?.yuebaoName}钱包(元)</Text>
-            <Text style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4, marginTop: 4 }}>{yuebao ? yuebao?.balance : 0}</Text>
+            <UGText style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4 }}>{yuebao?.yuebaoName}钱包(元)</UGText>
+            <UGText style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4, marginTop: 4 }}>{yuebao ? yuebao?.balance : 0}</UGText>
           </View>
         </View>
         <View style={{
@@ -86,7 +87,7 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
           />
         </View>
         {pwd.length < 4 &&
-        <Text style={{ marginHorizontal: 28, paddingTop: 12, color: '#E00013', opacity: 0.8 }}>* 请输入 4 位取款密码</Text>}
+        <UGText style={{ marginHorizontal: 28, paddingTop: 12, color: '#E00013', opacity: 0.8 }}>* 请输入 4 位取款密码</UGText>}
         <FlatList
           ListFooterComponent={() => (
             <TouchableWithoutFeedback disabled={pwd.length < 4 || !money} onPress={transIn}>
@@ -100,7 +101,7 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
                   backgroundColor: Skin1.themeColor,
                   opacity: pwd.length >= 4 && money ? 1 : 0.4,
                 }}>
-                <Text style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4 }}>确认转入</Text>
+                <UGText style={{ color: Skin1.isBlack ? "#fff" : Skin1.textColor4 }}>确认转入</UGText>
               </View>
             </TouchableWithoutFeedback>
           )}
@@ -127,10 +128,10 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
                   marginVertical: 4,
                   borderRadius: 4,
                 }}>
-                  <Text style={{
+                  <UGText style={{
                     color: active ? Skin1.tabSelectedColor : '#111',
                     fontSize: 13,
-                  }}>{text}</Text>
+                  }}>{text}</UGText>
                 </View>
               </TouchableWithoutFeedback>
             )

@@ -24,6 +24,7 @@ import FastImage from "react-native-fast-image";
 import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
 import { skinColors } from '../../../public/theme/const/UGSkinColor'
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface ProfileBlockProps {
   balance: string | number;
@@ -76,7 +77,7 @@ const ProfileBlock = ({
           <Avatar uri={avatar} onPress={onPressAvatar}/>
           <View style={_styles.moneyContainer}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={_styles.text}>{name}</Text>
+              <UGText style={_styles.text}>{name}</UGText>
               <LinearBadge
                 containerStyle={{borderRadius: scale(5), width: null}}
                 textStyle={{paddingHorizontal: scale(10)}}

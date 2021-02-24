@@ -1,9 +1,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, Image, TouchableOpacity, View, Platform, Alert } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
-import { Skin1 } from '../../../public/theme/UGSkinManagers';
+import { skin1, Skin1 } from '../../../public/theme/UGSkinManagers';
 import DateUtil from '../../../public/tools/andrew/DateUtil';
 import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
 import { setProps, UGBasePageProps } from '../../base/UGPage';
@@ -21,6 +21,9 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
+import { InviteCodeModel } from '../Model/InviteCodeModel';
+import { number } from 'prop-types';
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 interface JDPromotionCodeListPage {
   pageTitle?: string,//界面名称数据
@@ -30,14 +33,14 @@ interface JDPromotionCodeListPage {
   pageSize?: number//每页多少条数据
   pageNumber?: number,//当前显示第几页
 
-  items?: Array<any>//界面数据
+  items?: Array<InviteCodeModel>//界面数据
   state: {
     showFoot?: number//控制foot， 0：点击重新加载   1：'数据加载中…  2 ：已加载全部数据(空)
-    isRefreshing?: boolean//下拉刷新开始结束 
-    isLastPage?: boolean //是否是最后一页 
+    isRefreshing?: boolean//下拉刷新开始结束
+    isLastPage?: boolean //是否是最后一页
   },
- //===弹窗====================================
-  codeCP?:JDInviteCodeGenerateCP,
+  //===弹窗====================================
+  codeCP?: JDInviteCodeGenerateCP,
 }
 
 const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string, titleArray?: Array<string>, }) => {
@@ -48,16 +51,16 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   let { current: v } = useRef<JDPromotionCodeListPage>(
     {
       pageTitle: '邀请码',
-      titleArray: [inviteCode.displayWord, "招募类型", "创建时间", "注册会员",],
+      titleArray: [inviteCode.displayWord, "招募类型", "创建时间", "注册会员", "操作",],
       items: [],
-      pageSize: 10,
+      pageSize: 50,
       pageNumber: 1,
       state: {
         showFoot: 0,
         isRefreshing: true,
         isLastPage: false,
       },
-      codeCP:{}
+      codeCP: {}
     }
   )
 
@@ -86,17 +89,17 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
   /**
     * 跳到生成邀请码界面
-    * 
+    *
     */
   function rightClicked() {
     console.log('跳到生成邀请码界面');
-    
+
     v.codeCP?.showSalaryAlert && v.codeCP?.showSalaryAlert()
     setProps()
   }
   /**
  * 下拉刷新
- * 
+ *
  */
   const onHeaderRefresh = () => {
     v.state.isRefreshing = true
@@ -106,7 +109,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   }
   /**
   * 点击（上拉）加载更多数据
-  * 
+  *
   */
   const onFooterRefresh = () => {
     v.pageNumber++
@@ -117,7 +120,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   }
   /**
 * 点击刷新
-* 
+*
 */
   function onEndReached() {
     console.log('onEndReached');
@@ -133,7 +136,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
       console.log('当前页大于或等于总页数，那就是到最后一页了，则返回');
       return;
     }
-    //是否已是下拉刷新 返回     
+    //是否已是下拉刷新 返回
     if (v.state.isRefreshing) {
       console.log('已是下拉刷新 返回  ');
       return;
@@ -143,7 +146,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
   }
   /**
    * 根据数据是数组还是字典返回数据
-   * 
+   *
    */
   function returnData(data: any) {
     if (Array.isArray(data)) {
@@ -155,7 +158,7 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
 
   /**
    * 得到邀请码列表数据
-   * 
+   *
    */
   function inviteCodeListData() {
 
@@ -200,10 +203,35 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
     });
   }
 
+  /**
+   * 开启关闭邀请码
+   *
+   */
+  function updateInviteCodeStatus(id: number, status: number) {
+    let params = {
+      id: id,
+      status: status,
+    }
+    api.team.updateInviteCodeStatus(params).useSuccess(({ data }) => {
+      console.log('成功了');
+      onHeaderRefresh()
+      let titleStr: string = status ? '开启' : '关闭';
+      Alert.alert('提示',
+        '现在状态为' + titleStr,
+        [
+          {
+            text: '确定',
+            onPress: () => {
+            },
+          },
+        ])
+
+    });
+  }
 
   /**
   * 数据为空展示页面
-  * 
+  *
   */
   const _renderListEmptyComp = () => {
     return (
@@ -214,118 +242,146 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</Text>
+        <UGText style={[{ color: Skin1.textColor3, }, styles.listEmpty,]}>暂无更多数据</UGText>
       </View>
     );
   }
 
   /**
 * 上拉加载布局
-* 
+*
 */
   const renderFooter = () => {
     if (v.state.showFoot === 0) {
       return (
-        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
-  
+        <TouchableOpacity style={{ paddingBottom: 150 }} onPress={() => {
+
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               上拉加载
-              </Text>
+              </UGText>
           </View>
         </TouchableOpacity>
       );
     } else if (v.state.showFoot === 1) {
       return (
-        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
+        <TouchableOpacity style={{ paddingBottom: 150 }} onPress={() => {
           // onEndReached()  //测试的时候可以打开，打开也没有影响
         }}
         >
           <View style={styles.foot}>
             <ActivityIndicator />
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
               正在加载...
-            </Text>
+            </UGText>
           </View>
         </TouchableOpacity>
       );
     } else if (v.state.showFoot === 2) {
       return (
-        <TouchableOpacity style={{paddingBottom:150}} onPress={() => {
+        <TouchableOpacity style={{ paddingBottom: 150 }} onPress={() => {
           // onEndReached()//测试的时候可以打开，打开也没有影响
         }}
         >
           <View style={styles.foot}>
-            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+            <UGText style={[styles.footText, { color: Skin1.textColor2 }]}>
 
-            </Text>
+            </UGText>
 
           </View>
         </TouchableOpacity>
       );
     }
   }
+  /**
+* 按钮背景色
+*
+*/
+  function btnBgColor(item: InviteCodeModel) {
 
-
+    if (item?.status === '1') {
+      return Skin1.themeColor;
+    } else {
+      return Skin1.CLBgColor;
+    }
+  }
 
   /**
 * 渲染列表项
-* 
+*
 */
   const _renderItem = ({ index, item }) => {
     {
       return (
         <View style={[styles.viewItem, { backgroundColor: Skin1.textColor4, borderBottomWidth: 1, borderBottomColor: Skin1.textColor3, alignItems: 'center' }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, borderRightColor: Skin1.textColor3,borderRightWidth:1,height: scale(66),   alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,  }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 5, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.invite_code}
-            </Text>
+            </UGText>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4, borderRightColor: Skin1.textColor3,borderRightWidth:1 ,height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,  }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 5, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.user_type_txt}
-            </Text>
+            </UGText>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 4,borderRightColor: Skin1.textColor3,borderRightWidth:1 ,height: scale(66), alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,  }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 5, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.created_time}
-            </Text>
+            </UGText>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, height: scale(66),alignItems: 'center' }}>
-            <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', width: AppDefine.width / 5, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}>
+            <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
               {item.used_num}
-            </Text>
+            </UGText>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1, height: scale(66), alignItems: 'center' }}>
+            <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, backgroundColor: btnBgColor(item), borderRadius: 5 }}
+              onPress={() => {
+
+                if (item?.status === '1') {
+                  //开启或者关闭
+                  updateInviteCodeStatus(parseInt(item.id), 0)
+                } else {
+                  //开启或者关闭
+                  updateInviteCodeStatus(parseInt(item.id), 1)
+                }
+
+              }}>
+              <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(18), color: item?.status === '1'?  Skin1.textColor4 : skin1.textColor2 }}>
+                {item?.status === '1'? '关闭' : '开启' }
+              </UGText>
+            </TouchableOpacity>
           </View>
         </View>
-        
+
       );
     }
   }
   return (
-   [ <View style={styles.container}>
-      <View style={{ }}>
-       {inviteCode.canUseNum !='0' && <View style={{ height: 44,  justifyContent: 'center',alignItems: 'center', backgroundColor:Skin1.CLBgColor ,borderBottomColor: Skin1.textColor3,borderBottomWidth:1,}}>
-        <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
-                  {'每个'+inviteCode.displayWord+'可以使用'+inviteCode.canUseNum+'次'}
-                </Text>
+    [<View style={styles.container}>
+      <View style={{}}>
+        {inviteCode.canUseNum != '0' && <View style={{ height: 44, justifyContent: 'center', alignItems: 'center', backgroundColor: Skin1.CLBgColor, borderBottomColor: Skin1.textColor3, borderBottomWidth: 1, }}>
+          <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
+            {'每个' + inviteCode.displayWord + '可以使用' + inviteCode.canUseNum + '次'}
+          </UGText>
         </View>}
-        <View style={{ flexDirection: 'row', height: scale(66), backgroundColor:Skin1.CLBgColor  }}>
+        <View style={{ flexDirection: 'row', height: scale(66), backgroundColor: Skin1.CLBgColor }}>
           {v.titleArray?.map((title, idx) => {
             return (
-              <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, borderRightColor: Skin1.textColor3,borderRightWidth:1,height: scale(66),   alignItems: 'center' }}
+              <TouchableOpacity style={{ borderBottomWidth: scale(1), borderColor: Skin1.textColor3, flexDirection: 'row', justifyContent: 'center', flex: 1, width: AppDefine.width / v.titleArray?.length, borderRightColor: Skin1.textColor3, borderRightWidth: 1, height: scale(66), alignItems: 'center' }}
                 onPress={() => {
                 }}>
-                <Text style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1,}}>
+                <UGText style={{ flexDirection: 'row', textAlign: 'center', fontSize: scale(20), color: Skin1.textColor1, }}>
                   {title}
-                </Text>
+                </UGText>
               </TouchableOpacity>
             )
           })}
         </View>
       </View>
-      <View style={{  }}>
+      <View style={{}}>
         <FlatList
           data={v.items}
           renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
@@ -358,10 +414,12 @@ const JDPromotionCodeListPage = ({ pageTitle, titleArray }: { pageTitle?: string
         />
       </View>
     </View >,
- <JDInviteCodeGenerateCP {...{ c_ref: v.codeCP, reloadBlock:()=>{
-  onHeaderRefresh()
- } }} />]
- )
+    <JDInviteCodeGenerateCP {...{
+      c_ref: v.codeCP, reloadBlock: () => {
+        onHeaderRefresh()
+      }
+    }} />]
+  )
 
 }
 

@@ -7,6 +7,7 @@ import {LottoContext, LottoContextProvider} from "./LottoContext";
 import Headers from './Header';
 import {useDimensions} from "@react-native-community/hooks";
 import LottoContent from "./LottoContent";
+import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const LottoBetting = ({setProps}) => {
     const [tab, setTab] = useState(0)
@@ -25,13 +26,13 @@ const LottoBetting = ({setProps}) => {
                     <TouchableWithoutFeedback onPress={() => setTab(0)}>
                         <View
                             style={tab == 0 ? activeTabStyle: tabStyle}>
-                            <Text style={{fontSize: 16, fontWeight: "bold", color: tab == 0? '#000000' : "gray"}}>投注区</Text>
+                            <UGText style={{fontSize: 16, fontWeight: "bold", color: tab == 0? '#000000' : "gray"}}>投注区</UGText>
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => setTab(1)}>
                         <View
                             style={tab == 1 ? activeTabStyle: tabStyle}>
-                            <Text style={{fontSize: 16, fontWeight: "bold", color: tab == 1? '#000000' : "gray"}}>聊天室</Text>
+                            <UGText style={{fontSize: 16, fontWeight: "bold", color: tab == 1? '#000000' : "gray"}}>聊天室</UGText>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
