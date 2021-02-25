@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, Modal, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
+import { Image, Linking, Modal, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { scale } from '../../tools/Scale'
@@ -107,7 +107,6 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
                   logoStyle={{ flex: 1, width: '100%', alignItems: 'center'}}
                   logo={Res.promotion_more}
                   onPress={() => {
-                    // ugLog("onPress promotion url: " + item?.linkUrl)
                     if (item?.linkUrl) {
                       push(PageName.Game3rdView, {url: item?.linkUrl})
                       setShowPop(false)
@@ -163,12 +162,17 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
                     style={{ width: '100%' }}
                     scalesPageToFit={true} 
                     automaticallyAdjustContentInsets={false}
+                    allowsInlineMediaPlayback={true}
                     onMessage={(webviewState) => {
                       let message  = JSON.parse(webviewState.nativeEvent.data)?.msg;
-                      // console.log("onMessage = ", message)
+                      console.log("onMessage = ", message)
+                      if (message?.length) Linking.openURL(message)
                     }}
                     // onSizeUpdated={size => setHeight(size?.height)}
                     viewportContent={'width=device-width, user-scalable=no'}
+                    // onNavigationStateChange={event => {
+                    //   ugLog("event.url: " + event.url)
+                    // }}
                     source={{
                       html:
                         `<head>
