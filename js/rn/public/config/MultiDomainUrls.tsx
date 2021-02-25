@@ -194,11 +194,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://x2cpapp.com',
   ],
   'c085': [
-    'https://www.jmhnnn1.cc',
-    'https://www.jmsfds2.cc',
-    'https://www.jmsddv3.cc',
-    'https://www.jmnhhn4.cc',
-    'https://www.jmfgvn5.cc',
+    'https://jmxgnd6.cc',
+    'https://jmxgnk7.cc',
+    'https://jmxghn8.cc',
+    'https://jmxgnj9.cc',
+    'https://jmxdn10.cc',
   ],
   'c085ahy': [
     'https://www.jmhnnn1.cc',
