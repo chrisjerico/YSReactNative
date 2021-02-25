@@ -399,7 +399,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://app77787.co',
   ],
   'c225': [
-    'https://8393483.com',
+    'https://51666dd.com',
+    'https://51666ee.com',
+    'https://51666ff.com',
+    'https://51666hh.com',
   ],
   'c230': [
     'https://www.jdapp588.com',
