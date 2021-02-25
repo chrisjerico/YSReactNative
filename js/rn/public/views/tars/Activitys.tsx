@@ -62,13 +62,13 @@ const Activitys = ({ refreshing, uid, isTest, redBag, roulette, redBagLogo:redBa
 
   const [redDialog, setRedDialog] = useState(false)
   const [redBagData, setRedBagData] = useState ({})
-  if (!activitySettings) {
+  if (!activitySettings) {//获取个按钮图片
     api.activity.settings().useSuccess((res) => {
       setActivitySettings(res?.data)
-      ugLog('activitySettings ==',activitySettings)
+      // ugLog('activitySettings ==',activitySettings)
     })
   }
-  ugLog('activitySettings=======',activitySettings)
+  // ugLog('activitySettings=======',activitySettings)
 
 
   return (
@@ -89,7 +89,7 @@ const Activitys = ({ refreshing, uid, isTest, redBag, roulette, redBagLogo:redBa
           if (anyEmpty(goldenEggLogo)) {
             await api.activity.settings().useSuccess((res) => {
               setActivitySettings(res?.data)
-              ugLog('activitySettings ==',activitySettings)
+              // ugLog('activitySettings ==',activitySettings)
             })
           }
 
