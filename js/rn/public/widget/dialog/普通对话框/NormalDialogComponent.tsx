@@ -29,7 +29,7 @@ interface INormalDialogComponent {
 interface INormalDialogButton {
   text?: string //标题
   highlighted?: boolean //高度显示
-  clickCallback?: (button?: string) => void //窗口 是否显示 回调
+  clickCallback?: () => void //窗口 是否显示 回调
 }
 
 /**
@@ -62,19 +62,21 @@ const NormalDialogComponent = ({
    * @param index
    */
   const renderButton = (item?: INormalDialogButton, index?: number) =>
-    <View key={'dialog=' + item?.text + ',' + index}
-          style={[
-            [
-              _styles.button_container,
-              item?.highlighted ? { backgroundColor: Skin1.themeColor } : null,
-            ],
-            { width: scale(440) / arrayLength(button) },
-          ]}>
-      <Text style={[
-        _styles.button_1,
-        item?.highlighted ? { color: 'white' } : null,
-      ]}>{item?.text}</Text>
-    </View>
+    <TouchableWithoutFeedback key={'dialog=' + item?.text + ',' + index}
+                              onPress={item?.clickCallback}>
+      <View style={[
+        [
+          _styles.button_container,
+          item?.highlighted ? { backgroundColor: Skin1.themeColor } : null,
+        ],
+        { width: scale(440) / arrayLength(button) },
+      ]}>
+        <Text style={[
+          _styles.button_1,
+          item?.highlighted ? { color: 'white' } : null,
+        ]}>{item?.text}</Text>
+      </View>
+    </TouchableWithoutFeedback>
 
   return (
     <View style={_styles.container}>

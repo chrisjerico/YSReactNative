@@ -36,26 +36,26 @@ export interface NextIssueData {
   fiveElements?: ZodiacNumsData[]
   winningPlayers?: string[]
 
-  d0?: string //开奖记录
-  d1?: string //开奖记录
-  d2?: string //开奖记录
-  d3?: string //开奖记录
-  d4?: string //开奖记录
-  d5?: string //开奖记录
-  d6?: string //开奖记录
-  d7?: string //开奖记录
-  d8?: string //开奖记录
+  d0?: string //越南彩开奖记录
+  d1?: string //越南彩开奖记录
+  d2?: string //越南彩开奖记录
+  d3?: string //越南彩开奖记录
+  d4?: string //越南彩开奖记录
+  d5?: string //越南彩开奖记录
+  d6?: string //越南彩开奖记录
+  d7?: string //越南彩开奖记录
+  d8?: string //越南彩开奖记录
 
-  t0?: string //开奖记录
-  t1?: string //开奖记录
-  t2?: string //开奖记录
-  t3?: string //开奖记录
-  t4?: string //开奖记录
-  t5?: string //开奖记录
-  t6?: string //开奖记录
-  t7?: string //开奖记录
-  t8?: string //开奖记录
-  t9?: string //开奖记录
+  t0?: string //越南彩开奖记录
+  t1?: string //越南彩开奖记录
+  t2?: string //越南彩开奖记录
+  t3?: string //越南彩开奖记录
+  t4?: string //越南彩开奖记录
+  t5?: string //越南彩开奖记录
+  t6?: string //越南彩开奖记录
+  t7?: string //越南彩开奖记录
+  t8?: string //越南彩开奖记录
+  t9?: string //越南彩开奖记录
 }
 
 export interface ZodiacNumsData {

@@ -160,8 +160,8 @@ export default class PushHelper {
         break
       case 'android':
         if (B_DEBUG) {
-          // push(PageName.BetLotteryPage, {lotteryId: game?.gameId} as IBetLotteryPage)
-          // return
+          push(PageName.BetLotteryPage, {lotteryId: game?.gameId} as IBetLotteryPage)
+          return
         }
         if (this.pushDeposit(game?.seriesId?.toString(), game?.subId?.toString())) return
 

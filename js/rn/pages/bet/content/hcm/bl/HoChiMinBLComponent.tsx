@@ -375,7 +375,6 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       <View style={_styles.content_container}>
         {renderAllBall()}
       </View>
-      <DialogRecordComponent nextIssueData={UGStore.globalProps?.nextIssueData}/>
     </ScrollView>
 
   )

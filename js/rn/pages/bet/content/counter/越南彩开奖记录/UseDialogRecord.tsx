@@ -12,7 +12,11 @@ import { NextIssueData } from '../../../../../public/network/Model/lottery/NextI
  */
 const UseDialogRecord = () => {
 
+  const [windowShow, setWindowShow] = useState(true) //显示还是隐藏
+
   return {
+    windowShow,
+    setWindowShow,
   }
 }
 

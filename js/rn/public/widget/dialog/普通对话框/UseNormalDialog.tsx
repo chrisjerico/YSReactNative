@@ -12,7 +12,7 @@ import { NextIssueData } from '../../../network/Model/lottery/NextIssueModel'
  */
 const UseNormalDialog = () => {
 
-  const [windowShow, setWindowShow] = useState(true)
+  const [windowShow, setWindowShow] = useState(true) //显示还是隐藏
 
   return {
     windowShow,
