@@ -23,11 +23,12 @@ import { GameTab } from '../const/LotteryConst'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { dicNull } from '../../../public/tools/Ext'
-import { mapTotalCount } from '../util/ArithUtil'
+import { calculateSliderValue, mapTotalCount } from '../util/ArithUtil'
 import { EmitterTypes } from '../../../public/define/EmitterTypes'
 import { useEffect } from 'react'
 import { IEmitterMessage } from './it/IEmitterMessage'
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import { currentTabGroupData } from '../util/select/ParseSelectedUtil'
 
 /**
  * 越南彩彩票功能区入参
@@ -84,38 +85,18 @@ const BetVietnamComponent = ({ lockedItem, style }: IBetVietnamParams) => {
   /**
    * 追号
    */
-  const renderChaseNumber = () => {
-    if (systemInfo?.chaseNumber != '1') return null
-
-    // ugLog('systemInfo?.chaseNumber', systemInfo?.chaseNumber)
-    // ugLog('systemInfo?.reBetShareModel', reBetShareModel)
-
-    return !dicNull(reBetShareModel)
-      ?
-      <TouchableWithoutFeedback onPress={() => {
-        UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
-      }}>
-        <UGText style={_styles.bet_again}>追号</UGText>
-      </TouchableWithoutFeedback>
-      :
-      <UGText style={[
-        _styles.bet_again,
-        {
-          backgroundColor: UGColor.TextColor7,
-          color: UGColor.TextColor4,
-        },
-      ]}>追号</UGText>
-  }
+  const renderChaseNumber = () => (
+    <UGText style={_styles.bet_again}>赔率</UGText>
+  )
 
   /**
    * 机选
    */
-  const renderRandomSelected = () => {
-    return <TouchableWithoutFeedback onPress={() => DeviceEventEmitter.emit(EmitterTypes.RANDOM_SELECT_LOTTERY)}>
-      <UGText style={_styles.bet_again}>机选</UGText>
-    </TouchableWithoutFeedback>
-  }
-
+  const renderRandomSelected = () => (
+    <UGText style={_styles.bet_again}>
+      {`1: ${calculateSliderValue(currentTabGroupData()[0]?.plays[0]?.odds, UGStore.globalProps?.sliderValue)}`}
+    </UGText>
+  )
   /**
    * 绘制输入功能区
    */
@@ -259,10 +240,8 @@ const _styles = StyleSheet.create({
   },
   bet_again: {
     fontSize: scale(24),
-    backgroundColor: UGColor.YellowColor3,
     color: 'white',
     borderRadius: scale(4),
-    width: scale(88),
     paddingVertical: scale(4),
     marginVertical: scale(2),
     textAlign: 'center',
