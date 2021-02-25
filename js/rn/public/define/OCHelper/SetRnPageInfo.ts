@@ -57,6 +57,14 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
 
+    // 站内信
+    pages.push({
+      rnName: PageName.UserMessagePage,
+      vcName: 'UGMailBoxTableViewController',
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
     // 在线客服
     pages.push({
       rnName: PageName.OnlineService,
