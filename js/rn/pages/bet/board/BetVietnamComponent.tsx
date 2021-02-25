@@ -29,6 +29,7 @@ import { useEffect } from 'react'
 import { IEmitterMessage } from './it/IEmitterMessage'
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 import { currentTabGroupData } from '../util/select/ParseSelectedUtil'
+import UseVietnamBoard from './UseVietnamBoard'
 
 /**
  * 越南彩彩票功能区入参
@@ -60,14 +61,17 @@ const BetVietnamComponent = ({ lockedItem, style }: IBetVietnamParams) => {
     setSliderValue,
     playOddDetailData,
     reBetShareModel,
+    betCount,
+    betMoney,
     ballSelected,
     increaseSlider,
     decreaseSlider,
+    priceOfItem,
     checkShowBetPayment,
     renderSliderItem,
     renderChipItem,
     renderLock,
-  } = UseBetBoard()
+  } = UseVietnamBoard()
 
   useEffect(() => {
     setLockBoard(lockedItem)
@@ -91,10 +95,10 @@ const BetVietnamComponent = ({ lockedItem, style }: IBetVietnamParams) => {
       <View style={_styles.top_container}>
         <View style={_styles.bet_info}>
           <UGText style={_styles.lottery_count_hint}>{'已选中: '}</UGText>
-          <UGText style={_styles.lottery_count_count}>{mapTotalCount(ballSelected)}</UGText>
+          <UGText style={_styles.lottery_count_count}>{betCount?.toString()}</UGText>
           <UGText style={_styles.lottery_count_hint}>注</UGText>
           <UGText style={_styles.lottery_count_hint_2}>{'金额: '}</UGText>
-          <UGText style={_styles.lottery_count_count}>{'5'}</UGText>
+          <UGText style={_styles.lottery_count_count}>{betMoney?.toString()}</UGText>
           <UGText style={_styles.lottery_count_hint}>元</UGText>
         </View>
       </View>
@@ -207,7 +211,7 @@ const _styles = StyleSheet.create({
     flex: 1,
   },
   lottery_count_hint: {
-    color: 'white',
+    color: UGColor.TextColor5,
     fontSize: scale(24),
     textAlign: 'right',
   },
