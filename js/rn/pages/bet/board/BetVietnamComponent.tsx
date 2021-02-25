@@ -30,9 +30,9 @@ import { IEmitterMessage } from './it/IEmitterMessage'
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 /**
- * 彩票功能区入参
+ * 越南彩彩票功能区入参
  */
-interface IBetBoardParams {
+interface IBetVietnamParams {
   lockedItem?: IEmitterMessage // 是否封盘中
   style?: StyleProp<ViewStyle>
 }
@@ -43,7 +43,7 @@ interface IBetBoardParams {
  * @param navigation
  * @constructor
  */
-const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
+const BetVietnamComponent = ({ lockedItem, style }: IBetVietnamParams) => {
 
   const {
     sliderStep,
@@ -57,8 +57,6 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
     setShowSlider,
     sliderValue,
     setSliderValue,
-    showChip,
-    setShowChip,
     playOddDetailData,
     reBetShareModel,
     ballSelected,
@@ -81,7 +79,6 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
                                        style={_styles.extra_container}
                                        pointerEvents={'box-none'}>
     {systemInfo?.activeReturnCoinStatus && renderSliderItem()}
-    {renderChipItem()}
   </View>
 
   /**
@@ -137,9 +134,6 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
           <UGText style={_styles.lottery_count_count}>{mapTotalCount(ballSelected)}</UGText>
           <UGText style={_styles.lottery_count_hint}>注</UGText>
           <View style={CommStyles.flex}/>
-          <TouchableWithoutFeedback onPress={() => setShowChip(!showChip)}>
-            <UGText style={_styles.lottery_count_chip}>筹码</UGText>
-          </TouchableWithoutFeedback>
         </View>
         <TextInput value={UGStore.globalProps?.inputMoney?.toString()}
                    style={_styles.input_text}
@@ -303,5 +297,5 @@ const _styles = StyleSheet.create({
 
 })
 
-export default BetBoardComponent
-export { IBetBoardParams }
+export default BetVietnamComponent
+export { IBetVietnamParams }

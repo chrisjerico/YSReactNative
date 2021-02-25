@@ -17,9 +17,10 @@ import PayBoardComponent from './board/pay/PayBoardComponent'
 import PayResultComponent from './board/pay/result/PayResultComponent'
 import MiddleMenu, { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 import { currentChatRoomId } from './board/tools/chat/ChatTools'
-import { GameTab } from './const/LotteryConst'
+import { GameTab, LCode } from './const/LotteryConst'
 import { ugLog } from '../../public/tools/UgLog'
 import { Share2ChatStatus } from '../../public/network/Model/chat/ShareChatRoomModel'
+import BetVietnamComponent from './board/BetVietnamComponent'
 
 interface IBetLotteryPage {
   lotteryId: string //当前彩票 id
@@ -51,6 +52,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     requestLotteryData,
   } = UseBetLottery()
 
+  let gameType = playOddDetailData?.game?.gameType // 六合彩 秒秒秒彩 等等
   // const [textSize, setTextSize] = useState(scale(22))
 
   useEffect(() => {
@@ -145,7 +147,13 @@ const BetLotteryPage = ({ navigation, route }) => {
           <WebChatComponent/>
         </View>
 
-        <BetBoardComponent key={'lottery board'}/>
+        {//越南彩下注面板不一样
+          gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_hochiminhvip
+            ?
+            <BetVietnamComponent key={'lottery board'}/>
+            :
+            <BetBoardComponent key={'lottery vietnam'}/>
+        }
 
         {!dicNull(betShareModel) && !dicNull(nextIssueData) && <PayBoardComponent key={'BetBoardComponent'}
                                                                                   showCallback={(data) => {
