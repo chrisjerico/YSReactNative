@@ -70,8 +70,9 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 绘制 球
    * @param item
    * @param ballInfo 手动生成的数据
+   * @param ballType 显示成 圆形 还是 方形
    */
-  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData) =>
+  const renderEBall = (item?: PlayGroupData, ballInfo?: PlayData, ballType?: string) =>
     <LotteryEBall key={key + 'renderEBall' + ballInfo?.id + ballInfo?.name}
                   item={{
                     ...ballInfo,
@@ -81,7 +82,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
                   containerStyle={_styles.ball_container}
                   ballType={{
                     size: scale(46),
-                    type: BallType.rectangle,
+                    type: ballType,
                     ballColor: `${Skin1.themeColor}99`,
                   } as ILotteryBall}
                   ballStyle={{ flexDirection: 'column' }}
@@ -338,7 +339,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
       <View style={_styles.ball_parent_container}>
         {
-          groupData?.allHcPlays[ballTypeIndex]?.map((item, index) => renderEBall(groupData, item))
+          groupData?.allHcPlays[ballTypeIndex]?.map((item, index) => renderEBall(groupData, item, BallType.rectangle))
         }
       </View>
     </View>
