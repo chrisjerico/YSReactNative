@@ -6,7 +6,7 @@ import LinearGradient from "react-native-linear-gradient"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import { UGBasePageProps } from "../../../rn/pages/base/UGPage"
 import { PageName } from "../../../rn/public/navigation/Navigation"
-import { push } from "../../../rn/public/navigation/RootNavigation"
+import { jumpTo, push } from "../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
 import { showLoading, showSuccess } from "../../../rn/public/widget/UGLoadingCP"
@@ -15,6 +15,9 @@ import { img_doy } from "../../../rn/Res/icon"
 import { DoyButton1, DoyText14, DoyText20 } from "../../publicComponent/Button之类的基础组件/DoyButton"
 import { DoyTextInput1, DoyTextInputPwd, DoyTextInputSms } from "../../publicComponent/Button之类的基础组件/DoyTextInput"
 import { doyApi } from "../../publicClass/network/DoyApi"
+import { AsyncStorageKey } from "../../../rn/redux/store/IGlobalStateHelper"
+import { UGStore } from "../../../rn/redux/store/UGStore"
+import { doyDefine } from "../../publicClass/define/DoyDefine"
 
 const sc = sc375
 
@@ -55,9 +58,23 @@ export const DoyRegisterPage2 = ({ setProps, route }: UGBasePageProps) => {
 
     <DoyButton1 title='完成' containerStyle={{ marginTop: sc(32) }} onPress={() => {
       showLoading()
-      doyApi.user.reg(phone, v.pwd, v.nickname).useSuccess(() => {
-        showSuccess('注册成功！')
-        push(PageName.DoyHomePage)
+      const { pwd } = v
+      doyApi.user.reg(phone, pwd, v.nickname).useSuccess(async ({ data }) => {
+        await UGStore.saveValueAndKey(AsyncStorageKey.lastLoginAccount, { phone, pwd: pwd })
+        const { autoLogin } = data
+        // 是否自动登录
+        if (autoLogin) {
+          doyApi.user.login(phone, pwd).useSuccess(async ({ data }) => {
+            doyDefine.token = data["API-SID"]
+            await UGStore.saveValueAndKey(AsyncStorageKey.token, doyDefine.token)
+            await UGStore.saveValueAndKey(AsyncStorageKey.lastLoginAccount, { phone, pwd })
+            showSuccess('注册成功！')
+            jumpTo(PageName.DoyHomePage)
+          })
+        } else {
+          showSuccess('注册成功！')
+          push(PageName.DoyLoginPage)
+        }
       })
     }} />
   </View>

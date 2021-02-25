@@ -1,92 +1,108 @@
-import React, { useState } from 'react'
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Platform, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import WebView from 'react-native-webview'
 import { UGStore } from '../../redux/store/UGStore'
 import LinearGradient from 'react-native-linear-gradient'
 import { Skin1 } from '../theme/UGSkinManagers'
 import AppDefine from '../define/AppDefine'
-import { pop, push } from '../navigation/RootNavigation'
+import { pop, popToRoot, push } from '../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { anyEmpty } from '../tools/Ext'
 import { ugLog } from '../tools/UgLog'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { scale } from '../tools/Scale'
-import PushHelper from '../define/PushHelper'
+import PushHelper, { UGLinkPositionType } from '../define/PushHelper'
 import { PageName } from '../navigation/Navigation'
+import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+
+
+const levelArray = [
+  { value: 0, label: '返回首页' },
+  { value: 1, label: '存款' },
+  { value: 2, label: '取款' },
+  { value: 3, label: '游戏大厅' },
+];
+
 
 export const OnlineService = () => {
   const [title, setTitle] = useState<string>()
+  const [guestToken, setGuestToken] = useState<string>()
+
   const systemConf = UGStore.globalProps.sysConf
   const { zxkfUrl, zxkfUrl2 } = systemConf
   const script = `(function() {
     window.ReactNativeWebView.postMessage(document.title);
   })();`
 
-  //字符串中是否包含url
-  function checkUrlWithString(str_url: string) {
-    var strRegex = "((https|http|ftp|rtsp|mms)?://)"
-      + "(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
-      + "(([0-9]{1,3}\\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
-      + "|" // 允许IP和DOMAIN（域名）
-      + "([0-9a-z_!~*'()-]+\\.)*" // 域名- www.
-      + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\." // 二级域名
-      + "[a-z]{2,6})" // first level domain- .com or .museum
-      + "(:[0-9]{1,4})?" // 端口- :80
-      + "((/?)|" // a slash isn't required if there is no file name
-      + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)";
-    var re = new RegExp(strRegex);
-    if (re.test(str_url)) {
-      return true
-    } else {
-      return false
+  const userToken = UGUserModel.getToken()
+  const isLogin = userToken?.length
+
+  useEffect(() => {
+    // 获取试玩账号token
+    if (!isLogin && !guestToken) {
+      api.user.guestLogin().useSuccess(({ data }) => {
+        const { "API-SID": token } = data
+        ugLog('token ==',token)
+        setGuestToken(token)
+      })
     }
-  }
+  }, [userToken])
 
-
-  //拼接URl
-  function pjUrl(url: string) {
-    let pjStr = url + '?' + 'from=app' + '&hideHeader=1' + '&token=' + UGUserModel.getToken();
-    return pjStr;
-
-
-  }
+  ugLog('AppDefine.host ==', AppDefine.host)
 
   //返回最后的url
-  function name() {
-    let zzURl: string = '';
-    if (!anyEmpty(zxkfUrl && checkUrlWithString(zxkfUrl))) {
-      zzURl = pjUrl(zxkfUrl)
-    } else {
-      if (!anyEmpty(zxkfUrl2 && checkUrlWithString(zxkfUrl2))) {
-        zzURl = pjUrl(zxkfUrl2)
-      } else {
-        ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
-        ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
+  function getWebURL() {
+    let retURl: string;
+    [zxkfUrl, zxkfUrl2].forEach((url) => {
+      if (!anyEmpty(url)) {
+        const token = isLogin ? userToken : guestToken
+        if (checkUrlWithString(url)) {
+          const token = isLogin ? userToken : guestToken
+          ugLog('token ==',token)
+          //拼接URl
+          retURl = `${url}?from=app&hideHeader=1&token=${token}`;     
+        } else {
+          var strArray = AppDefine.host.split('://')
+          ugLog('strArray[1] ===', strArray[1])
+          if (url.indexOf(strArray[1]) > 0) {
+            const token = isLogin ? userToken : guestToken
+            //拼接URl
+            retURl = `http://${url}?from=app&hideHeader=1&token=${token}`;
+          } else {
+            const token = isLogin ? userToken : guestToken
+            //拼接URl
+            retURl = `${AppDefine.host}/${url}?from=app&hideHeader=1&token=${token}`;
+          }
+         
+        }
+        return;
       }
+    })
+    ugLog('retURl ==', retURl)
+    if (!retURl) {
+      ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
+      ugLog('zxkfUrl1 链接有问题==', zxkfUrl)
     }
-    // ugLog('zzURl 链接==', zzURl);
-    return zzURl;
+    return retURl;
   }
-  const webUrl = name()
-  // 返回首页/存款/取款/游戏大厅
-  let capitalController //类型选择
-  let levelArray =
-    [{ value: 0, label: '返回首页' },
-    { value: 1, label: '存款' },
-    { value: 2, label: '取款' },
-    { value: 3, label: '游戏大厅' }];
+  const webUrl = getWebURL()
 
+  let capitalController //类型选择
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, }}>
       {/* 下拉控件 */}
-      <View style={{ zIndex: 1, height: scale(66), marginTop: 60, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 }}>
+      <View style={[
+        { height: scale(66), marginTop: AppDefine.safeArea.top + 5, position: 'absolute', width: '35%', marginLeft: AppDefine.width - AppDefine.width / 3 - 1 },
+        Platform.OS == 'ios' ? { zIndex: 1 } : null,
+      ]}>
         <DropDownPicker
           items={
             levelArray
 
           }
+          dropDownMaxHeight={scale(260)}
           defaultValue={0}
           containerStyle={{ height: 40, width: AppDefine.width / 3 }}
           controller={instance => capitalController = instance}
@@ -96,32 +112,21 @@ export const OnlineService = () => {
           }}
           dropDownStyle={{ backgroundColor: '#fafafa' }}
           onChangeItem={item => {
-            ugLog('item==', item);
             switch (item.value) {
               case 0:
-                //首页
-                ugLog('item.value',item.value)
-                PushHelper.pushLinkPositionType(30)
+                PushHelper.pushLinkPositionType(UGLinkPositionType.返回首页)
                 break;
               case 1:
-                //存款
-                ugLog('item.value',item.value)
-                push(PageName.CapitalPage, { initTabIndex: 0 })
+                PushHelper.pushLinkPositionType(UGLinkPositionType.充值)
                 break;
               case 2:
-                //取款
-                ugLog('item.value',item.value)
-                push(PageName.CapitalPage, { initTabIndex: 1 })
+                PushHelper.pushLinkPositionType(UGLinkPositionType.提现)
                 break;
               case 3:
-                //游戏大厅
-                ugLog('item.value',item.value)
-                PushHelper.pushLinkPositionType(19)
+                PushHelper.pushLinkPositionType(UGLinkPositionType.游戏大厅)
                 break;
-
-
               default:
-                break;
+                capitalController?.toggle()
             }
           }}
         />
@@ -160,17 +165,37 @@ export const OnlineService = () => {
           </View>
         </SafeAreaView>
       </LinearGradient>
-      <SafeAreaView forceInset={{ bottom: 'never', vertical: 'never' }} style={{ flex: 1, zIndex: 0 }}>
-        <WebView
+      <View forceInset={{ bottom: 'never', vertical: 'never' }} style={{ flex: 1, zIndex: 0, }}>
+        {(isLogin || guestToken) && <WebView
           injectedJavaScript={script}
           onMessage={(event) => {
             setTitle(event.nativeEvent.title)
           }}
-          style={{ flex: 1 }} containerStyle={{ flex: 1 }} source={{ uri: webUrl }} />
-      </SafeAreaView>
-
-
-
+          style={{ flex: 1, }} containerStyle={{ flex: 1, }} source={{ uri: webUrl }}
+        />}
+      </View>
     </View>
   )
+}
+
+
+
+//字符串中是否包含url
+function checkUrlWithString(str_url: string) {
+  const strRegex = "((https|http|ftp|rtsp|mms)?://)"
+    + "(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
+    + "(([0-9]{1,3}\\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+    + "|" // 允许IP和DOMAIN（域名）
+    + "([0-9a-z_!~*'()-]+\\.)*" // 域名- www.
+    + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\." // 二级域名
+    + "[a-z]{2,6})" // first level domain- .com or .museum
+    + "(:[0-9]{1,4})?" // 端口- :80
+    + "((/?)|" // a slash isn't required if there is no file name
+    + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)";
+  const re = new RegExp(strRegex);
+  if (re.test(str_url)) {
+    return true
+  } else {
+    return false
+  }
 }

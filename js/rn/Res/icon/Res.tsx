@@ -1,5 +1,6 @@
 import { img_images, img_root, UGImageHost, useHtml5Image } from '.'
 import AppDefine from '../../public/define/AppDefine'
+import { ugLog } from '../../public/tools/UgLog'
 const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } = useHtml5Image(UGImageHost.test5)
 
 /**
@@ -7,6 +8,7 @@ const { getHtml5Image, img_platform, img_home, img_assets, img_mobileTemplate } 
  *
  */
 export const icon_大转盘 = img_home('dzp') //大转盘
+ugLog('大转盘==',icon_大转盘)
 export const icon_砸金蛋 = img_home('zjd/zjd')    //大转盘
 export const icon_刮刮乐 = img_home('gyg/gyg')    //大转盘
 export const icon_任务弹窗 = img_assets('task_home')    //任务弹框

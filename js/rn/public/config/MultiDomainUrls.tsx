@@ -14,11 +14,29 @@ import { anyEmpty } from '../tools/Ext'
  */
 
 const MultiDomainUrls: { [x: string]: Array<string> } = {
+  't005': [
+    'http://t005f.fhptdev.com',
+  ],
+  'testadaf': [
+    'http://t059f.fhptdev.com',
+  ],
+  'test60f': [
+    'http://t060f.fhptdev.com',
+  ],
+  'test61f': [
+    'http://t061f.fhptdev.com',
+  ],
+  'test20': [
+    'http://t020f.fhptdev.com',
+  ],
+  'test30f': [
+    'http://test30.fhptdev.com',
+  ],
   'zora': [
     'http://zhibot071f.fhptcdn.com',
   ],
   'txt005': [
-    'http://t005f.fhptcdn.com',
+    'http://t005f.fhptdev.com',
   ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
@@ -45,7 +63,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test19.6yc.com',
   ],
   'txt20': [
-    'http://test20.6yc.com',
+    'http://t020f.fhptdev.com',
   ],
   'txt29': [
     'http://test29f.fhptcdn.com',
@@ -54,7 +72,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t029cz.fhptcdn.com',
   ],
   'txt30': [
-    'http://test30f.fhptcdn.com',
+    'http://test30.fhptdev.com',
   ],
   'txt32': [
     'http://t005f.fhptcdn.com',
@@ -66,7 +84,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test5804.ccpt.site',
   ],
   'txtada': [
-    'http://testadaf.6yc.com',
+    'http://t059f.fhptdev.com',
   ],
   'txtada_b': [
     'http://testadafb.fhptcdn.com',
@@ -75,10 +93,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://testadafc.fhptcdn.com',
   ],
   'txt60': [
-    'http://test60f.6yc.com',
+    'http://t060f.fhptdev.com',
   ],
   'txt61': [
-    'http://test61f.6yc.com',
+    'http://t061f.fhptdev.com',
   ],
   'txt61b': [
     'http://test61a.fhptcdn.com',
@@ -99,7 +117,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t126f.6yc.com',
+    'http://t126p.fhptdev.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
@@ -120,7 +138,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t126f.6yc.com',
+    'http://t126p.fhptdev.com',
   ],
   'tstksm': [
     'http://t133f.6yc.com',
@@ -129,17 +147,19 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test03.6yc.com',
   ],
   'a002': [
-    'https://2034c49.com',
-    'https://2033c49.com',
-    'https://2032c49.com',
     'https://2031c49.com',
     'https://2030c49.com',
+    'https://2029c49.com',
+    'https://2028c49.com',
+    'https://2027c49.com',
   ],
   'c001': [
     'https://c47c47appapp.com',
   ],
   'c002': [
     'https://66075.vip',
+    'https://66477.vip',
+    'https://66260.vip',
   ],
   'c005': [
     'http://nxmdbybnbc005ojrz.playzone88.com',
@@ -156,9 +176,14 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c035': [
     'https://5504578.com',
+    'https://5504366.com',
+    'https://5504303.com',
+    'https://5504288.com',
+    'https://5504266.com',
   ],
   'c041': [
     'https://70258.com',
+    'https://70258.net',
   ],
   'c048': [
     'https://f28z.com',
@@ -187,11 +212,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://x2cpapp.com',
   ],
   'c085': [
-    'https://www.jmhnnn1.cc',
-    'https://www.jmsfds2.cc',
-    'https://www.jmsddv3.cc',
-    'https://www.jmnhhn4.cc',
-    'https://www.jmfgvn5.cc',
+    'https://jmxghn8.cc',
+    'https://jmxgnj9.cc',
+    'https://jmxdn10.cc',
+    'https://jmxgnk7.cc',
+    'https://jmxgnd6.cc',
   ],
   'c085ahy': [
     'https://www.jmhnnn1.cc',
@@ -212,7 +237,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2013d-666.com',
     'https://2013c-666.com',
     'https://2013b-666.com',
-    'https://2013a-666.com',
+    'https://2013n-666.com',
   ],
   'c105b': [
     'https://390qp8.com',
@@ -227,6 +252,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c114': [
     'https://c43222.com',
+    'https://222c43.com',
+    'https://c43zr.com',
+    'https://c43qp.com',
   ],
   'c115': [
     'https://6615nn.com',
@@ -251,6 +279,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c120': [
     'https://asafew435yrtgre.net',
+    'https://x8988.com',
+    'https://x6161.com',
   ],
   'c126': [
     'https://hqcp00001.com',
@@ -275,6 +305,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c137': [
     'https://7033005.com',
+    'https://7033633.com',
+    'https://7033733.com',
   ],
   'c150': [
     'https://0187655.com',
@@ -287,16 +319,18 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c158': [
     'https://9055188.com',
+    'https://9055233.com',
+    'https://9055255.com',
   ],
   'c163': [
     'https://c91c91hh.com',
   ],
   'c165': [
-    'https://1875883.com',
-    'https://1875885.com',
-    'https://1875886.com',
-    'https://1875887.com',
-    'https://1875005.com',
+    'https://86886cp.com',
+    'https://www.81f9.com',
+    'https://www.82f9.com',
+    'https://www.f933.cc',
+    'https://87886cp.com',
   ],
   'c169': [
     'http://heixxqic169cqhmszw.playzone88.com',
@@ -314,11 +348,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://00fhcp.cn',
   ],
   'c186': [
-    'https://200300c.com',
-    'https://200300d.com',
     'https://200300e.com',
-    'https://288388e.com',
-    'https://288388i.com',
+    'https://200300k.com',
+    'https://200300j.com',
+    'https://288388d.com',
   ],
   'c190': [
     'https://474745.com',
@@ -328,7 +361,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://489494.com',
   ],
   'c193': [
-    'https://4906215.com',
+    'https://4906204.com',
     'https://4906216.com',
     'https://4906217.com',
     'https://4906213.com',
@@ -338,11 +371,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2909tycjt.com',
   ],
   'c200': [
-    'https://19952022.com',
-    'https://19952023.com',
-    'https://19952024.com',
-    'https://19952025.com',
-    'https://19952026.com',
+    'https://00852017.com',
+    'https://00852018.com',
+    'https://00852019.com',
+    'https://00852020.com',
+    'https://00852022.com',
   ],
   'c203': [
     'https://xpjcpapp.com',
@@ -462,11 +495,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://70333b.org',
     'https://70333k.org',
     'https://70333c.org',
-    'https://70333v.org',
+    'https://70333m.org',
     'https://70333n.org',
   ],
   'h003b': [
     'https://betv5.com',
+    'https://3947b.com',
+    'https://3947c.com',
   ],
   'h005': [
     'https://534023.com',

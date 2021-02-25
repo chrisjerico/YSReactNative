@@ -1,13 +1,16 @@
+import AsyncStorage from "@react-native-community/async-storage"
 import React, { useEffect, useRef, useState } from "react"
 import { View, Text, Alert } from "react-native"
 import { Button } from "react-native-elements"
 import FastImage from "react-native-fast-image"
 import { UGBasePageProps } from "../../../rn/pages/base/UGPage"
 import { PageName } from "../../../rn/public/navigation/Navigation"
-import { push } from "../../../rn/public/navigation/RootNavigation"
+import { jumpTo, push } from "../../../rn/public/navigation/RootNavigation"
 import { skin1 } from "../../../rn/public/theme/UGSkinManagers"
 import { sc375 } from "../../../rn/public/tools/Scale"
 import { hideLoading, showError, showLoading, showSuccess } from "../../../rn/public/widget/UGLoadingCP"
+import { AsyncStorageKey } from "../../../rn/redux/store/IGlobalStateHelper"
+import { UGStore } from "../../../rn/redux/store/UGStore"
 import { img_doy } from "../../../rn/Res/icon"
 import { doyDefine } from "../../publicClass/define/DoyDefine"
 import { doyApi } from "../../publicClass/network/DoyApi"
@@ -18,12 +21,24 @@ import { DoyTextInput1, DoyTextInputPwd, DoyTextInputSms, DoyTextInputVerificati
 const sc = sc375
 
 export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
-  const [isPwd, setIsPwd] = useState(false)
+  const [isPwd, setIsPwd] = useState(true)
   const { current: v } = useRef({
     phone: '',
     pwd: '',
     code: '', // 验证码
   })
+
+  useEffect(() => {
+    setProps({
+      didFocus: () => {
+        UGStore.loadValueForKey<{ phone: string, pwd: string }>(AsyncStorageKey.lastLoginAccount).then(({ phone, pwd }) => {
+          v.phone = phone
+          v.pwd = pwd
+          setProps()
+        })
+      },
+    })
+  }, [])
 
   const { themeColor, navBarBgColor } = skin1
 
@@ -36,7 +51,7 @@ export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
         outerViewStyle={{ width: sc(100), marginLeft: sc(5), }}
         containerStyle={{ marginTop: 0 }}
       />
-      <DoyTextInput1 placeholder='请输入手机号' onlyInteger maxLength={11} style={{ flex: 1, marginTop: 0, paddingLeft: sc(7) }} onChangeText={(text) => {
+      <DoyTextInput1 placeholder='请输入手机号' onlyInteger defaultValue={v.phone} maxLength={11} style={{ flex: 1, marginTop: 0, paddingLeft: sc(7) }} onChangeText={(text) => {
         v.phone = text;
       }} />
     </View>
@@ -53,7 +68,6 @@ export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
           startCountdown()
         }
       }}
-      defaultValue={v.pwd}
       onChangeText={(text) => {
         v.code = text
       }}
@@ -68,16 +82,19 @@ export const DoyLoginPage = ({ setProps }: UGBasePageProps) => {
       } else if (!isPwd && !v.code?.length) {
         err = '请输入验证码'
       }
-      
+
       if (err.length) {
         showError(err)
         return
       }
       showLoading()
-      doyApi.user.login(v.phone, v.pwd).useSuccess(({ data }) => {
+      const { phone, pwd } = v
+      doyApi.user.login(phone, pwd).useSuccess(async ({ data }) => {
         doyDefine.token = data["API-SID"]
+        await UGStore.saveValueAndKey(AsyncStorageKey.token, doyDefine.token)
+        await UGStore.saveValueAndKey(AsyncStorageKey.lastLoginAccount, { phone, pwd })
         showSuccess('登录成功！')
-        push(PageName.DoyHomePage)
+        jumpTo(PageName.DoyHomePage)
       })
     }} />
     <View style={{ flex: 1 }} />

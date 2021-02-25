@@ -5,8 +5,8 @@ export default interface Data {
 }
 
 interface list {
-  id: string,
-  orderNo: string//订单ID
+  id: string,//用不上
+  orderNo: string//订单号
   buyer_uid: string// 买方用户ID
   seller_uid: string//卖方用户id
   seller_username: string//卖方昵称

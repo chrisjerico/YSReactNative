@@ -489,7 +489,7 @@ const ZLHeader = () => {
                 <TouchableOpacity onPress={() => {
                     PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
                 }} style={{ flexDirection: 'column', marginRight: 20 }}>
-                    <FastImage style={{ width: 27, height: 24 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service1.png" }} />
+                    <FastImage style={{ width: 27, height: 24 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/service1.png" }} />
                     <UGText style={{ color: "#8c9ea7", marginTop: 3 }}>客服</UGText>
                 </TouchableOpacity>
             </View>
@@ -531,7 +531,7 @@ const UserStatusBar = () => {
                 }} style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1, paddingLeft: 10 }}>
 
                     <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}
-                        source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
+                        source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
                         <UGText style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</UGText>
                     </FastImage>
                     <View style={{ flexDirection: 'column', marginLeft: 10, justifyContent: 'space-between', height: 47 }}>
@@ -627,7 +627,7 @@ const AcctountDetail = () => {
                         }
 
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
+                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/depositlogo.png" }} />
                         <UGText style={{ color: 'white', fontSize: 15.5 }}> 存款</UGText>
                     </TouchableOpacity>
 
@@ -646,7 +646,7 @@ const AcctountDetail = () => {
                         }
 
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png" }} />
+                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/xima.png" }} />
                         <UGText style={{ color: 'white', fontSize: 15.5 }}> 额度转换</UGText>
 
                     </TouchableOpacity>
@@ -665,7 +665,7 @@ const AcctountDetail = () => {
                         }
 
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
+                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
                         <UGText style={{ color: 'white', fontSize: 15.5 }}> 取款</UGText>
                     </TouchableOpacity>
                 </View>

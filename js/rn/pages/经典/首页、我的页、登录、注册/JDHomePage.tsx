@@ -322,14 +322,39 @@ const JDHomePage = ({ setProps }: UGBasePageProps) => {
             banners={midBanners}
             renderBanner={(item, index) => {
               //@ts-ignore
-              const { linkCategory, linkPosition, image } = item
+              
+              const { linkCategory, linkPosition, image ,linkCustom} = item
               return (
                 <TouchableImage
                   key={index}
                   pic={image}
                   resizeMode={'stretch'}
-                  onPress={() => {
-                    PushHelper.pushCategory(linkCategory, linkPosition)
+                  onPress={async () => {
+
+                    ugLog('item============',item);
+                    switch (Platform.OS) {
+                      case 'ios':
+                        {
+                          let  ret = await  OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
+                          if (!ret) {
+                            if (linkCustom.indexOf("mobile") != -1  ) {
+                              return;
+                            } else {
+                              if (linkCustom?.length) {
+                                PushHelper.openWebView(linkCustom)
+                              }
+                            }
+                          }
+                        }
+                        break
+                      case 'android':
+                        if (linkCustom?.length) {
+                          PushHelper.openWebView(linkCustom)
+                        } else {
+                          PushHelper.pushCategory(linkCategory, linkPosition)
+                        }
+                        break
+                    }
                   }}
                 />
               )

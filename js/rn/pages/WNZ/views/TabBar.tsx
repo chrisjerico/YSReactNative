@@ -9,7 +9,6 @@ import { UGImageHost, useHtml5Image } from '../../../Res/icon'
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 
 const { getHtml5Image } = useHtml5Image(UGImageHost.t132f)
-
 const tabs = [
   {
     name: '官方玩法',

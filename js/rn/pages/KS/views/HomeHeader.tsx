@@ -29,7 +29,7 @@ const HomeHeader = ({ logo }: HomeHeaderProps) => {
         <UGText style={styles.title}>弗鲁米嫩塞</UGText>
       </View>
       <View style={styles.brandContainer}>
-        <FastImage resizeMode={'contain'} style={styles.image} source={{ uri: 'http://test10.6yc.com/views/mobileTemplate/22/images/aggb.png' }} />
+        <FastImage resizeMode={'contain'} style={styles.image} source={{ uri: 'http://test10.fhptdev.com/views/mobileTemplate/22/images/aggb.png' }} />
         <UGText style={styles.title}>奥格斯堡</UGText>
       </View>
     </View>
