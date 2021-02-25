@@ -493,7 +493,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'l002': [
     'https://70333b.org',
-    'https://70333k.org',
+    'https://70333q.vip',
     'https://70333c.org',
     'https://70333m.org',
     'https://70333n.org',
