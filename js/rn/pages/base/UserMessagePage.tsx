@@ -1,16 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, Alert, Animated, Easing, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Alert, Animated, Easing, ImageBackground, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import PullToRefreshListComponent from '../../public/components/tars/PullToRefreshListComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import BottomGap from '../../public/views/temp/BottomGap'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import { JDMessagePopCP } from '../经典/cp/JDMessagePopCP'
+import { setProps } from './UGPage'
 
 const sleep = async (ms = 0) => {
   return new Promise((r) => setTimeout(r, ms))
@@ -32,27 +34,40 @@ const UserMessagePage = () => {
     outputRange: ['0deg', '180deg'],
   })
 
-  useEffect(() => {
+
+  const { current: v } = useRef<JDMessagePopCP>({})
+  const [cname, setCName] = useState('站内信')
+  const [content, setContent] = useState('')
+
+  function msgList() {
     APIRouter.user_msgList().then((value) => {
       const _list = value?.data?.data.list
       maxPage.current = Math.ceil(value?.data?.data?.total / 20)
       setList(_list)
     })
+  }
+  useEffect(() => {
+    switch (Platform.OS) {
+      case 'ios':
+        setProps({
+          didFocus: (params) => {
+            msgList()
+          }
+        })
+        break;
+      case 'android':
+        msgList()
+        break;
+    }
   }, [])
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader title={'站內信'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
-      <PullToRefreshListComponent
-        onReleaseToRefresh={async () => {
-          await sleep(1000)
-        }}
-        initialNumToRender={20}
-        uniqueKey={'MessagePage'}
-        onEndReached={() => {
-          if (page.current < maxPage.current) {
-            setLoading(true)
+        <PullToRefreshListComponent
+          onReleaseToRefresh={async () => {
+            page.current = 1
             APIRouter.user_msgList(page.current)
               .then((value) => {
                 const _list = value?.data?.data.list
@@ -62,59 +77,73 @@ const UserMessagePage = () => {
                 page.current = page.current + 1
                 setLoading(false)
               })
-          }
-        }}
-        scrollEnabled={true}
-        data={list}
-        renderItem={({ item }) => {
-          const { content, title, updateTime, isRead, id } = item
-          return (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                APIRouter.user_readMsg(id).finally(() => {
-                  const _list = list?.map((ele) => {
-                    if (ele?.id == id) {
-                      return Object.assign({}, ele, { isRead: 1 })
-                    } else {
-                      return ele
-                    }
-                  })
-                  setList(_list)
+          }}
+          initialNumToRender={20}
+          uniqueKey={'MessagePage'}
+          onEndReached={() => {
+            if (page.current < maxPage.current) {
+              setLoading(true)
+              APIRouter.user_msgList(page.current)
+                .then((value) => {
+                  const _list = value?.data?.data.list
+                  setList(list?.concat(_list))
                 })
-                Alert.alert('UG集团站内信', content, [
-                  {
-                    text: '确定',
-                  },
-                ])
-              }}>
-              <View style={styles.message}>
-                <UGText style={isRead ? styles.readTextStyle : {}}>{title}</UGText>
-                <UGText style={isRead ? styles.readTextStyle : {}}>{updateTime}</UGText>
-              </View>
-            </TouchableWithoutFeedback>
-          )
-        }}
-        ListFooterComponent={() => {
-          if (page.current >= maxPage.current) {
-            return null
-          } else {
-            if (loading) {
-              return (
-                <View style={{ justifyContent: 'center', alignItems: 'center', height: 50, flexDirection: 'row' }}>
-                  <ActivityIndicator />
-                  <UGText style={{ fontWeight: '500', marginLeft: 20 }}>{'Loading...'}</UGText>
-                </View>
-              )
-            } else {
-              return (
-                <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
-                  <UGText style={{ fontWeight: '500' }}>{'Tap or pull up to load more'}</UGText>
-                </View>
-              )
+                .finally(() => {
+                  page.current = page.current + 1
+                  setLoading(false)
+                })
             }
-          }
-        }}
-      />
+          }}
+          scrollEnabled={true}
+          data={list}
+          renderItem={({ item }) => {
+            const { content, title, updateTime, isRead, id } = item
+            return (
+              <TouchableWithoutFeedback
+
+                onPress={() => {
+                  APIRouter.user_readMsg(id).finally(() => {
+                    const _list = list?.map((ele) => {
+                      if (ele?.id == id) {
+                        return Object.assign({}, ele, { isRead: 1 })
+                      } else {
+                        return ele
+                      }
+                    })
+                    setList(_list)
+                  })
+                  setCName(title)
+                  setContent(content)
+                  v?.showSalaryAlert && v?.showSalaryAlert()
+                }}>
+                <View style={[styles.message, { borderBottomColor: skin1.CLBgColor, backgroundColor: Skin1.textColor4 }]}>
+                  <UGText style={isRead ? [styles.readTextStyle, { marginLeft: 20 }] : { width: AppDefine.width - 170, marginLeft: 20, marginRight: 10, color: skin1.textColor1 }}>{title}</UGText>
+                  <UGText style={isRead ? [styles.read2TextStyle] : { width: 160, marginRight: 10, color: skin1.textColor1 }}>{updateTime}</UGText>
+                </View>
+              </TouchableWithoutFeedback>
+            )
+          }}
+          ListFooterComponent={() => {
+            if (page.current >= maxPage.current) {
+              return null
+            } else {
+              if (loading) {
+                return (
+                  <View style={{ justifyContent: 'center', alignItems: 'center', height: 50, flexDirection: 'row' }}>
+                    <ActivityIndicator />
+                    <UGText style={{ fontWeight: '500', marginLeft: 20 }}>{'Loading...'}</UGText>
+                  </View>
+                )
+              } else {
+                return (
+                  <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
+                    <UGText style={{ fontWeight: '500' }}>{'Tap or pull up to load more'}</UGText>
+                  </View>
+                )
+              }
+            }
+          }}
+        />
       <Animated.View style={{ position: 'absolute', bottom: 70, right: 0, height: 100, width: '100%', alignItems: 'flex-end', transform: [{ translateY }] }}>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -152,7 +181,7 @@ const UserMessagePage = () => {
             containerStyle={{ width: '30%', backgroundColor: '#ffffff', borderRadius: 5, aspectRatio: 3, flexDirection: 'row', marginHorizontal: 10 }}
             showLogo
             logoStyle={{ width: '17%', aspectRatio: 1, marginRight: 10 }}
-            titleStyle={{ fontWeight: '600', fontSize: 16 }}
+            titleStyle={{ fontWeight: '600', fontSize: 16, color:'black' }}
             useFastImage={false}
             onPress={() => {
               showLoading()
@@ -175,7 +204,7 @@ const UserMessagePage = () => {
             containerStyle={{ width: '30%', backgroundColor: '#ffffff', borderRadius: 5, aspectRatio: 3, flexDirection: 'row' }}
             showLogo
             logoStyle={{ width: '17%', aspectRatio: 1, marginRight: 10 }}
-            titleStyle={{ fontWeight: '600', fontSize: 16 }}
+            titleStyle={{ fontWeight: '600', fontSize: 16,color:'black' }}
             useFastImage={false}
             onPress={() => {
               showLoading()
@@ -191,15 +220,16 @@ const UserMessagePage = () => {
           />
         </View>
       </Animated.View>
+      <JDMessagePopCP {...{ c_ref: v, c_name: cname, c_content: content }} />
     </>
   )
 }
 
 const styles = StyleSheet.create({
   message: {
-    width: '95%',
+    width: '100%',
+    height: 44,
     aspectRatio: 10,
-    borderBottomColor: '#9D9D9D',
     borderBottomWidth: AppDefine.onePx,
     flexDirection: 'row',
     alignItems: 'center',
@@ -208,7 +238,17 @@ const styles = StyleSheet.create({
   },
   readTextStyle: {
     color: '#9D9D9D',
+    width: AppDefine.width * 0.95 - 170,
+    marginHorizontal: 10
+
   },
+  read2TextStyle: {
+    color: '#9D9D9D',
+    width: 160,
+    marginRight: 10
+  },
+
+
 })
 
 export default UserMessagePage

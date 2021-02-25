@@ -31,8 +31,8 @@ export async function setRnPageInfo(force = false) {
 
     // 站内信
     pages.push({
-      rnName: PageName.OnlineService,
-      vcName: 'UGMessagePopView',
+      rnName: PageName.UserMessagePage,
+      vcName: 'UGMailBoxTableViewController',
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
