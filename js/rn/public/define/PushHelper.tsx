@@ -148,8 +148,14 @@ export default class PushHelper {
   static pushHomeGame(game: PushHomeGame) {
     game = Object.assign({}, game?.category ? { clsName: 'GameModel' } : { clsName: 'GameModel', category: '不要为空' }, game)
     console.log('--------game-------', game)
+
     switch (Platform.OS) {
       case 'ios':
+
+        if (anyEmpty(game.gameId)) {
+          game.gameId = game.id
+        }
+
         OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game])
         break
       case 'android':

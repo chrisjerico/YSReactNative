@@ -9,8 +9,9 @@ export const devConfig = {
     return isTest() // 這邊固定寫isTest()
   }, // 是否是测试环境
 
-  skinKey: UGSkinType1.威尼斯,
-  // skinKey: UGSkinType1.经典1蓝,
+
+  // skinKey: UGSkinType1.威尼斯,
+  skinKey: UGSkinType1.经典1蓝,
   // skinKey: UGSkinType1.GPK0黑,
   // skinKey: UGSkinType1.香槟金0金,
   // skinKey: UGSkinType1.六合资料,

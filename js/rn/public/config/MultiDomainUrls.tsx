@@ -14,11 +14,29 @@ import { anyEmpty } from '../tools/Ext'
  */
 
 const MultiDomainUrls: { [x: string]: Array<string> } = {
+  't005': [
+    'http://t005f.fhptdev.com',
+  ],
+  'testadaf': [
+    'http://t059f.fhptdev.com',
+  ],
+  'test60f': [
+    'http://t060f.fhptdev.com',
+  ],
+  'test61f': [
+    'http://t061f.fhptdev.com',
+  ],
+  'test20': [
+    'http://t020f.fhptdev.com',
+  ],
+  'test30f': [
+    'http://test30.fhptdev.com',
+  ],
   'zora': [
     'http://zhibot071f.fhptcdn.com',
   ],
   'txt005': [
-    'http://t005f.fhptcdn.com',
+    'http://t005f.fhptdev.com',
   ],
   'txt005c': [
     'http://t501f.fhptcdn.com',
@@ -45,7 +63,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test19.6yc.com',
   ],
   'txt20': [
-    'http://test20.6yc.com',
+    'http://t020f.fhptdev.com',
   ],
   'txt29': [
     'http://test29f.fhptcdn.com',
@@ -54,7 +72,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t029cz.fhptcdn.com',
   ],
   'txt30': [
-    'http://test30f.fhptcdn.com',
+    'http://test30.fhptdev.com',
   ],
   'txt32': [
     'http://t005f.fhptcdn.com',
@@ -66,7 +84,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test5804.ccpt.site',
   ],
   'txtada': [
-    'http://testadaf.6yc.com',
+    'http://t059f.fhptdev.com',
   ],
   'txtada_b': [
     'http://testadafb.fhptcdn.com',
@@ -75,10 +93,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://testadafc.fhptcdn.com',
   ],
   'txt60': [
-    'http://test60f.6yc.com',
+    'http://t060f.fhptdev.com',
   ],
   'txt61': [
-    'http://test61f.6yc.com',
+    'http://t061f.fhptdev.com',
   ],
   'txt61b': [
     'http://test61a.fhptcdn.com',
@@ -194,11 +212,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://x2cpapp.com',
   ],
   'c085': [
-    'https://www.jmhnnn1.cc',
-    'https://www.jmsfds2.cc',
-    'https://www.jmsddv3.cc',
-    'https://www.jmnhhn4.cc',
-    'https://www.jmfgvn5.cc',
+    'https://jmxghn8.cc',
+    'https://jmxgnj9.cc',
+    'https://jmxdn10.cc',
+    'https://jmxgnk7.cc',
+    'https://jmxgnd6.cc',
   ],
   'c085ahy': [
     'https://www.jmhnnn1.cc',
@@ -219,7 +237,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2013d-666.com',
     'https://2013c-666.com',
     'https://2013b-666.com',
-    'https://2013a-666.com',
+    'https://2013n-666.com',
   ],
   'c105b': [
     'https://390qp8.com',
