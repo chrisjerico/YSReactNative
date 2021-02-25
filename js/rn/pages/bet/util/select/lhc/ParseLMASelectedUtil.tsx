@@ -27,13 +27,13 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
   //选中了哪些球, 3层结构
   const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
 
-  ugLog(' playOddData ======== ', JSON.stringify(playOddData))
+  // ugLog(' playOddData ======== ', JSON.stringify(playOddData))
   //遍历每一TAB的数据 如 特码B和特码A
   playOddData?.pageData?.groupTri?.map((pageData, index) => {
     const tabMap = new Map<string, SelectedPlayModel>() //每一个TAB的数组 如 特码B TMB -> 对应的数据
     selGroup[pageData[0].alias] = tabMap
 
-    ugLog('tabMap code index = ', pageData[0].alias, index)
+    //ugLog('tabMap code index = ', pageData[0].alias, index)
 
     //遍历TAB的每一组数据，如特码B里面有 特码数据，两面数据，色波数据
     pageData?.map((groupData, index) => {
@@ -51,7 +51,8 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
       }
 
       const pageAlias = `${groupData?.alias},${index}` //当前页的唯一识别
-      ugLog('pageAlias = ', pageAlias)
+      //ugLog('pageAlias 1 = ', pageAlias)
+      //ugLog('pageAlias 2 = ', JSON.stringify(selBalls))
 
       let limitCount = calculateLimitCount(playOddData?.code, groupData?.alias)
 

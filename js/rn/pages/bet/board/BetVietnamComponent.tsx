@@ -83,65 +83,62 @@ const BetVietnamComponent = ({ lockedItem, style }: IBetVietnamParams) => {
   </View>
 
   /**
-   * 追号
-   */
-  const renderChaseNumber = () => (
-    <UGText style={_styles.bet_again}>赔率</UGText>
-  )
-
-  /**
-   * 机选
-   */
-  const renderRandomSelected = () => (
-    <UGText style={_styles.bet_again}>
-      {`1: ${calculateSliderValue(currentTabGroupData()[0]?.plays[0]?.odds, UGStore.globalProps?.sliderValue)}`}
-    </UGText>
-  )
-  /**
    * 绘制输入功能区
    */
   const renderInputArea = () => {
 
-    return <View style={_styles.input_container}>
-
-      <View>
-        {renderChaseNumber()}
-        {renderRandomSelected()}
-      </View>
-
-      <View style={_styles.middle_container}>
+    return <View>
+      <View style={_styles.top_container}>
         <View style={_styles.bet_info}>
-          <UGText style={_styles.lottery_count_hint}>已选中</UGText>
+          <UGText style={_styles.lottery_count_hint}>{'已选中: '}</UGText>
           <UGText style={_styles.lottery_count_count}>{mapTotalCount(ballSelected)}</UGText>
           <UGText style={_styles.lottery_count_hint}>注</UGText>
-          <View style={CommStyles.flex}/>
+          <UGText style={_styles.lottery_count_hint_2}>{'金额: '}</UGText>
+          <UGText style={_styles.lottery_count_count}>{'5'}</UGText>
+          <UGText style={_styles.lottery_count_hint}>元</UGText>
         </View>
-        <TextInput value={UGStore.globalProps?.inputMoney?.toString()}
-                   style={_styles.input_text}
-                   maxLength={11}
-                   onChangeText={(s) => {
-                     UGStore.dispatch({ type: 'reset', inputMoney: Number(s) })
-                   }}
-                   keyboardType={'numeric'}/>
       </View>
+      <View style={_styles.input_container}>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableWithoutFeedback onPress={checkShowBetPayment}>
-          <UGText style={_styles.start_bet}>下注</UGText>
-        </TouchableWithoutFeedback>
+        <View>
+          <UGText style={_styles.bet_again}>赔率</UGText>
+          <UGText style={_styles.bet_again}>
+            {`1: ${calculateSliderValue(currentTabGroupData()[0]?.plays[0]?.odds, UGStore.globalProps?.sliderValue)}`}
+          </UGText>
+        </View>
 
-        <TouchableWithoutFeedback onPress={() => {
-          DeviceEventEmitter.emit(EmitterTypes.CLEAR_SELECT_LOTTERY)
-          UGStore.dispatch({
-            type: 'reset',
-            selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
-          })
-        }
-        }>
-          <UGText style={_styles.start_reset}>重置</UGText>
-        </TouchableWithoutFeedback>
+        <View style={_styles.middle_container}>
+          <View style={_styles.bet_info}>
+            <UGText style={_styles.lottery_count_hint}>注数</UGText>
+            <View style={CommStyles.flex}/>
+          </View>
+          <TextInput value={UGStore.globalProps?.inputMoney?.toString()}
+                     style={_styles.input_text}
+                     maxLength={11}
+                     onChangeText={(s) => {
+                       UGStore.dispatch({ type: 'reset', inputMoney: Number(s) })
+                     }}
+                     keyboardType={'numeric'}/>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableWithoutFeedback onPress={checkShowBetPayment}>
+            <UGText style={_styles.start_bet}>下注</UGText>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={() => {
+            DeviceEventEmitter.emit(EmitterTypes.CLEAR_SELECT_LOTTERY)
+            UGStore.dispatch({
+              type: 'reset',
+              selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
+            })
+          }
+          }>
+            <UGText style={_styles.start_reset}>重置</UGText>
+          </TouchableWithoutFeedback>
+        </View>
+
       </View>
-
     </View>
   }
 
@@ -197,8 +194,13 @@ const _styles = StyleSheet.create({
   input_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: UGColor.transparent4,
+    backgroundColor: UGColor.transparent3,
     padding: scale(12),
+  },
+  top_container: {
+    paddingHorizontal: scale(8),
+    flex: 1,
+    backgroundColor: UGColor.transparent4,
   },
   middle_container: {
     paddingHorizontal: scale(8),
@@ -209,8 +211,14 @@ const _styles = StyleSheet.create({
     fontSize: scale(24),
     textAlign: 'right',
   },
+  lottery_count_hint_2: {
+    color: 'white',
+    fontSize: scale(24),
+    textAlign: 'right',
+    marginLeft: scale(48),
+  },
   lottery_count_count: {
-    color: UGColor.YellowColor3,
+    color: UGColor.RedColor5,
     fontSize: scale(24),
     textAlign: 'right',
     paddingHorizontal: scale(4),

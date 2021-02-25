@@ -9,7 +9,7 @@ import BetRecordHeaderComponent from './content/counter/lhc/red/BetRecordHeaderC
 import LotteryContentComponent from './content/LotteryContentComponent'
 import { TopAreaComponent } from './content/top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
-import { arrayEmpty, arrayLength, dicNull } from '../../public/tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../public/tools/Ext'
 import { clearLotteryData } from './util/LotteryUtil'
 import InstantLotteryComponent from './content/counter/mmc/InstantLotteryComponent'
 import WebChatComponent from './chat/WebChatComponent'
@@ -94,6 +94,23 @@ const BetLotteryPage = ({ navigation, route }) => {
     }
   }
 
+  /**
+   * 绘制下注面板
+   */
+  const renderBetBoard = () => {
+    if (anyEmpty(gameType)) return
+
+    return (
+      //越南彩下注面板不一样
+      gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_hochiminhvip
+        ?
+        <BetVietnamComponent key={'lottery board'}/>
+        :
+        <BetBoardComponent key={'lottery vietnam'}/>
+
+    )
+  }
+
   return (
     <BaseScreen key={'lottery BaseScreen'}
                 screenName={''}
@@ -147,13 +164,7 @@ const BetLotteryPage = ({ navigation, route }) => {
           <WebChatComponent/>
         </View>
 
-        {//越南彩下注面板不一样
-          gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_hochiminhvip
-            ?
-            <BetVietnamComponent key={'lottery board'}/>
-            :
-            <BetBoardComponent key={'lottery vietnam'}/>
-        }
+        {renderBetBoard()}
 
         {!dicNull(betShareModel) && !dicNull(nextIssueData) && <PayBoardComponent key={'BetBoardComponent'}
                                                                                   showCallback={(data) => {

@@ -119,6 +119,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
 
     arrArr.push({
       ...groupData,
+      alias: play0?.name,//每个group的alias都相当于 tab 的名字
       plays: [play0],
       exPlays: arr,
       allHcPlays: arrAll
