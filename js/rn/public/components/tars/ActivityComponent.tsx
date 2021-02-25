@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
 import RedBagModal from '../RedBagModal'
 import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
+import { FastImagePlaceholder } from '../../../pages/经典/tools/ImagePlaceholder'
+import { ugLog } from '../../tools/UgLog'
 
 interface ActivityComponentProps {
   logo: string
@@ -20,6 +22,7 @@ interface ActivityComponentProps {
 const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, containerStyle, refreshing, type }: ActivityComponentProps) => {
   const [hide, setHide] = useState(false)
 
+  ugLog('logo ==',logo)
   useEffect(() => {
     refreshing && setHide(false)
   }, [refreshing])
@@ -27,7 +30,12 @@ const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, contai
   if (show && !hide) {
     return (
       <View style={[styles.container, containerStyle]}>
-        <TouchableImage containerStyle={{ padding: scale(20) }} enableFastImage={enableFastImage} pic={logo} onPress={onPress} resizeMode={'contain'} />
+        {/* <TouchableImage containerStyle={{ padding: scale(20) }} enableFastImage={enableFastImage} pic={logo} onPress={onPress} resizeMode={'contain'} /> */}
+
+        <TouchableWithoutFeedback onPress={onPress}>
+          <FastImagePlaceholder source={{ uri: logo }} style={{ flex: 1, padding: scale(20) }} resizeMode={'contain'} />
+        </TouchableWithoutFeedback>
+
         <TouchableWithoutFeedback
           onPress={() => {
             setHide(true)
