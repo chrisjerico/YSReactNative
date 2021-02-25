@@ -30,12 +30,7 @@ const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, contai
   if (show && !hide) {
     return (
       <View style={[styles.container, containerStyle]}>
-        {/* <TouchableImage containerStyle={{ padding: scale(20) }} enableFastImage={enableFastImage} pic={logo} onPress={onPress} resizeMode={'contain'} /> */}
-
-        <TouchableWithoutFeedback onPress={onPress}>
-          <FastImagePlaceholder source={{ uri: logo }} style={{ flex: 1, padding: scale(20) }} resizeMode={'contain'} />
-        </TouchableWithoutFeedback>
-
+        <TouchableImage containerStyle={{ padding: scale(20) }} enableFastImage={enableFastImage} pic={logo} onPress={onPress} resizeMode={'contain'} />
         <TouchableWithoutFeedback
           onPress={() => {
             setHide(true)

@@ -62,6 +62,12 @@ const Activitys = ({ refreshing, uid, isTest, redBag, roulette, redBagLogo:redBa
 
   const [redDialog, setRedDialog] = useState(false)
   const [redBagData, setRedBagData] = useState ({})
+  if (!activitySettings) {
+    api.activity.settings().useSuccess((res) => {
+      setActivitySettings(res?.data)
+      ugLog('activitySettings ==',activitySettings)
+    })
+  }
   ugLog('activitySettings=======',activitySettings)
 
 
