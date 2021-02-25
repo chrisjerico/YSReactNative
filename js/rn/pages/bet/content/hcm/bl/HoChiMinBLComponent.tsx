@@ -39,6 +39,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
 
   const {
+    inputHint,
     GAME_TYPE_ARRAY,
     ballTypeIndex,
     setBallTypeIndex,
@@ -64,7 +65,6 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     setPlayOddData(playOddData)
   }, [])
   const key = 'lottery page' + playOddData?.code
-
 
   /**
    * 绘制 球
@@ -138,7 +138,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
       </ScrollView>
       {
         tabLen > 3 && <Icon size={scale(36)}
-                            color={Skin1.themeColor}
+                            color={'white'}
                             name={'angle-double-left'}/>
       }
     </View>
@@ -249,8 +249,9 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
     <TextInput style={_styles.single_input}
                value={blInputNumber}
+               multiline={true}
                editable={groupData?.enable == '1'}
-               placeholder={groupData?.enable == '1' ? '怎么玩\n在每个下注号码之间用分号“;”或逗号“,”或空格分隔。\n例如：15;12,10 19' : '当前玩法已关闭'}
+               placeholder={groupData?.enable == '1' ? inputHint : '当前玩法已关闭'}
                onChangeText={(s) => setBlInputNumber(s)}
                keyboardType={'numeric'}/>
 
@@ -379,6 +380,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
 
   )
 }
+
 
 
 const _styles = StyleSheet.create({
@@ -519,6 +521,7 @@ const _styles = StyleSheet.create({
     borderRadius: scale(8),
     minHeight: scale(320),
     marginHorizontal: scale(6),
+    paddingHorizontal: scale(16),
     marginVertical: scale(16),
     textAlignVertical: 'top',
   },
