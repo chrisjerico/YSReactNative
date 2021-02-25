@@ -311,6 +311,8 @@ export default class PushHelper {
         }))
         break
       case 'android':
+        console.log("pushPromoteDetail")
+        push(PageName.PromotionDetailPage, { showBackBtn: true, item: item })
         break
     }
   }

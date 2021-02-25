@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Platform, PointPropType, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
+import { cond } from 'react-native-reanimated'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
@@ -8,7 +10,7 @@ import PushHelper from '../../public/define/PushHelper'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
+import UGSkinManagers, { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
 import { ugLog } from '../../public/tools/UgLog'
@@ -18,11 +20,14 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { UGStore } from '../../redux/store/UGStore'
 
 const PromotionPage = (props: any) => {
   const { showBackBtn } = props?.route?.params ?? {}
   const [loading, setLoading] = useState(true)
   const [showCategory, setShowCategory] = useState(false)
+  const [showCategoryKey, setShowCategoryKey] = useState([])
   const [style, setStyle] = useState<'slide' | 'popup' | 'page'>('popup')
   const [list, setList] = useState([])
   const [categories, setCategories] = useState({})
@@ -30,28 +35,58 @@ const PromotionPage = (props: any) => {
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1)
   const totalList = useRef([])
   const showUnderline = Skin1?.skitType?.indexOf('威尼斯') != -1
-  const showItemBorder = Skin1?.skitType?.indexOf('威尼斯') != -1
+  const Venice = UGStore.globalProps.sysConf?.mobileTemplateCategory == '23'
+  const scroll = useRef(null)
+  const [scrollX, setScrollX] = useState(0)
 
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
       const value = response?.data?.data
       const { showCategory, style, list, categories } = value
+      const newCategories = value.newCategories
       totalList.current = list?.map((item) => Object.assign({}, item, { clsName: 'UGPromoteModel' }))
-      let filterCategory = {}
+      let filterCategory = []
       list?.forEach((ele) => (filterCategory[ele?.category] = categories[ele?.category]))
+      let newFilterCategory = {}
+      let keys = [0]
+      newCategories.forEach((ele, index) => {
+        if (filterCategory.includes(ele.name)) {
+          newFilterCategory[ele.id] = ele.name
+          keys.push(ele.id)
+        }
+      })
+      newFilterCategory["0"] = '全部'
+      
       setLoading(false)
       // @ts-ignore
       setStyle(style)
       setList(totalList.current)
       setShowCategory(showCategory)
-      setCategories(Object.assign({}, filterCategory, { '0': '全部' }))
+      
+      setCategories(newFilterCategory)
+      setShowCategoryKey(keys)
     })
   }, [])
 
-  const categoriesKey = Object.keys(categories)
+  useEffect(() => {
+  },[categories])
+
+  useEffect(() => {
+    scroll?.current?.scrollToOffset({
+      offset: scrollX,
+      animated: true,
+    })
+  }, [scrollX])
+  const onPressPrevious = () => {
+    scroll?.current?.scrollToIndex({ animated: true, index: 0 });
+  };
+
+  const onPressNext = () => {
+    scroll?.current?.scrollToIndex({animated: true, index: 1});
+  };
 
   const handleOnPress = ({ setShowPop, item, index }) => {
-    ugLog("handleOnPress")
+    // ugLog("handleOnPress = " + style)
     switch (Platform.OS) {
       case 'ios':
         switch (style) {
@@ -79,15 +114,16 @@ const PromotionPage = (props: any) => {
         switch (style) {
           // 内页
           case 'page': {
-            // 弹框
-            ANHelper.callAsync(CMD.OPEN_COUPON, {
-              ...item,
-              style,
-            })
+            PushHelper.pushPromoteDetail(item)
             break
           }
           // 弹框
           case 'popup': {
+            // 弹框
+            // ANHelper.callAsync(CMD.OPEN_COUPON, {
+            //   ...item,
+            //   style,
+            // })
             setShowPop(true)
             break
           }
@@ -112,7 +148,7 @@ const PromotionPage = (props: any) => {
         <ProgressCircle />
       </>
     )
-  } else {
+  } else { 
     return (
       <>
         <SafeAreaHeader headerColor={Skin1?.themeColor}>
@@ -120,16 +156,20 @@ const PromotionPage = (props: any) => {
         </SafeAreaHeader>
         {showCategory ? (
           <>
-            <List
-              uniqueKey={'PromotionPage_Tab'}
+            <FlatList
+              ref={scroll}
               style={{ flexGrow: 0 }}
               horizontal={true}
               scrollEnabled={true}
-              data={categoriesKey}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              data={showCategoryKey}
               renderItem={({ item }) => {
                 return (
                   <TouchableWithoutFeedback
-                    onPress={() => {
+                    onPress={(event) => {
+                      const i = showCategoryKey.indexOf(item)
+                      scroll?.current?.scrollToIndex({animated: true, index: i, viewPosition: 0.5});
                       const filterList = totalList.current?.filter((ele) => ele?.category == item)
                       setSelectedTabIndex(stringToNumber(item))
                       setSelectedItemIndex(-1)
@@ -137,10 +177,12 @@ const PromotionPage = (props: any) => {
                     }}>
                     <View
                       style={
-                        selectedTabIndex == item
-                          ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType] }
-                          : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType] }
-                      }>
+                        selectedTabIndex == item 
+                          ? { backgroundColor: skinColors.promotion.selectedTabBgColor[Skin1.skitType],
+                              borderBottomWidth: scale(2),
+                              borderColor: skin1.themeColor } 
+                          : { backgroundColor: skinColors.promotion.tabBgColor[Skin1.skitType],
+                              borderBottomWidth: scale(0)}}>
                       <UGText
                         style={
                           selectedTabIndex == item
@@ -164,8 +206,8 @@ const PromotionPage = (props: any) => {
               renderItem={({ item, index }) => {
                 const { title, pic, content, linkUrl, linkCategory, linkPosition} = item
                 const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
-                const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
-                const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10, padding: 9 } : {}
+                const titleStyle = Venice ? { height: title?.length ? -5 : 0, marginBottom: scale(10), color: 'black', alignSelf: 'center' } : undefined
+                const containerStyle = Venice ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10, paddingHorizontal: scale(10), paddingBottom: scale(10) } : {}
                 return (
                   <AutoHeightCouponComponent
                     title={title?.length ? title : '优惠活动'}
@@ -174,10 +216,8 @@ const PromotionPage = (props: any) => {
                     onPress={onPress}
                     slide={style == 'slide' && selectedItemIndex == index}
                     containerStyle={containerStyle}
-                    titleStyle={{ color: skinColors.promotion.couponTitleColor[Skin1.skitType], ...titleStyle }}
-                    linkUrl={linkUrl}
-                    linkCategory={linkCategory}
-                    linkPosition={linkPosition}
+                    titleStyle={{ ...titleStyle}}
+                    item={item}
                   />
                 )
               }}
@@ -193,8 +233,8 @@ const PromotionPage = (props: any) => {
             renderItem={({ item, index }) => {
               const { title, pic, content, linkUrl, linkCategory, linkPosition } = item
               const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
-              const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
-              const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10, padding: 9 } : {}
+              const titleStyle = Venice ? { height: title?.length ? -5 : 0, marginVertical: 0, color: 'black', alignSelf: 'center' } : undefined
+              const containerStyle = Venice ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10, padding: 9 } : {}
               return (
                 <AutoHeightCouponComponent
                   title={title?.length ? title : '优惠活动'}
@@ -204,9 +244,7 @@ const PromotionPage = (props: any) => {
                   slide={style == 'slide' && selectedItemIndex == index}
                   containerStyle={containerStyle}
                   titleStyle={{ color: Skin1?.promotion?.couponTitleColor, ...titleStyle }}
-                  linkUrl={linkUrl}
-                  linkCategory={linkCategory}
-                  linkPosition={linkPosition}
+                  item={item}
                 />
               )
             }}

@@ -181,5 +181,5 @@ export enum PageName {
   DoyWalletRecordListPage = "DoyWalletRecordListPage",
   DoyWalletRecordSearchPage = "DoyWalletRecordSearchPage",
   DoyHomePage = "DoyHomePage",
-
+  PromotionDetailPage = "PromotionDetailPage"
 }

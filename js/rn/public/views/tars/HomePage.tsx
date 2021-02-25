@@ -11,6 +11,7 @@ import { httpClient } from '../../network/httpClient'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { ActivitySettingModel } from '../../network/Model/ActivitySettingModel'
 import { scale } from '../../tools/Scale'
+import { ugLog } from '../../tools/UgLog'
 import Activitys, { FloatAd, GoldenEgg, Roulette } from './Activitys'
 import BannerBlock from './BannerBlock'
 import BottomGap from './BottomGap'
@@ -53,6 +54,7 @@ interface HomePageProps {
   onlineNum: number
   banners: any[]
   coupons: any[]
+  couponStyle?: string
   rankLists: any[]
   notices: any[]
   showCoupon: boolean
@@ -62,7 +64,7 @@ interface HomePageProps {
   couponBlockStyles?: CouponBlockStyles//底部优惠活动
   animatedRankComponentStyles?: AnimatedRankComponentStyles//底部排行榜
   couponStyles?: CouponStyles//底部优惠活动
-  couponClickStyle?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
+  // couponClickStyle?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   bottomLogoStyles?: BottomLogoStyles//底部商标
   containerStyle?: StyleProp<ViewStyle>
   noticeBlockStyles?: NoticeBlockStyles // 跑马灯
@@ -145,6 +147,7 @@ const HomePage = ({
   banners,
   showCoupon,
   coupons,
+  couponStyle,
   notices,
   goToPromotionPage,
   rankingListType,
@@ -153,7 +156,6 @@ const HomePage = ({
   couponBlockStyles,//底部优惠活动
   animatedRankComponentStyles,//底部排行榜
   couponStyles,//底部优惠活动
-  couponClickStyle,
   bottomLogoStyles,//底部商标
   containerStyle,
   noticeBlockStyles,//跑马灯
@@ -263,44 +265,10 @@ const HomePage = ({
                       key={index}
                       title={title}
                       pic={pic}
-                      slide={couponClickStyle == 'slide' && couponSelectedIndex == index}
                       content={content}
-                      onPress={async (setShowPop) => {
-                        //slide=折叠式,popup=弹窗式 page = 内页*/
-                        switch (Platform.OS) {
-                          case 'ios':
-                            {
-                              let  ret = await  OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)])
-                              if (!ret) {
-                                if (couponClickStyle === 'slide') {
-                                  if (index == couponSelectedIndex) {
-                                    couponSelectedIndex = -1
-                                    couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
-                                  } else {
-                                    couponSelectedIndex = index
-                                    couponRef?.reRenderCoupon && couponRef?.reRenderCoupon()
-                                  }
-                                }
-                                else if(couponClickStyle === 'popup') {
-                                  setShowPop(true)
-                                }
-                                else if(couponClickStyle === 'page') {
-                                  PushHelper.pushPromoteDetail({ clsName: 'UGPromoteModel', ...item })
-                                }
-                              }
-                            }
-                            break
-                          case 'android':
-                              // 弹框
-                              ANHelper.callAsync(CMD.OPEN_COUPON, {
-                                ...item,
-                                couponClickStyle,
-                              })
-                            break
-                        }
-
-
-                      }}
+                      slide={false}
+                      couponStyle={couponStyle}
+                      item={item}
                     />
                   )
                 }}
