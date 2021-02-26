@@ -30,13 +30,13 @@ export async function setRnPageInfo(force = false) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
     // 活动彩金
-    // pages.push({
-    //   rnName: PageName.ActivityRewardPage,
-    //   vcName: 'UGMosaicGoldViewController',
-    //   fd_prefersNavigationBarHidden: true,
-    //   允许游客访问: true,
-    //   允许未登录访问: true,
-    // })
+    pages.push({
+      rnName: PageName.ActivityRewardPage,
+      vcName: 'UGMosaicGoldViewController',
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
 
         // 站内信
         pages.push({
