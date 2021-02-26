@@ -20,7 +20,7 @@ interface INameOrAlias {
 const specialPlay = (lotteryId?: string, pageData?: Array<Array<any>>): boolean => {
   //整个六合彩都是特殊玩法, 有多页数据的，比如二字定位有多页多个TAB，也是特殊玩法
   return lotteryId == 'lhc'
-    || arrayLength(pageData) > 1;
+    || arrayLength(pageData) > 1
 
 }
 
@@ -28,7 +28,9 @@ const specialPlay = (lotteryId?: string, pageData?: Array<Array<any>>): boolean 
  * 根据数据生成唯一识别ID
  * @param play
  */
-const playDataUniqueId = (play?: PlayData): string => `${play?.exId},${play?.id},${play?.name},${play?.alias}`
+const playDataUniqueId = (play?: PlayData): string => (
+  `${play?.exId},${play?.id},${play?.name},${play?.alias}`
+)
 
 /**
  * 赔率串联成名字
@@ -75,7 +77,7 @@ const clearLotteryData = () => {
  * @param len 只提取len长度的字符串
  */
 const parseInputArray = (orgString?: string, len?: number): Array<string> => {
-  if(anyEmpty(orgString)) return null
+  if (anyEmpty(orgString)) return null
   let wxInputArr = orgString?.split(/[,，;；_ \n]/)
 
   if (len > 0) {
@@ -90,15 +92,16 @@ const parseInputArray = (orgString?: string, len?: number): Array<string> => {
  * @param num
  * @param item
  */
-const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum =>
+const findZodiacByName = (num?: ZodiacNum[], item?: INameOrAlias): ZodiacNum => (
   num?.find((zodiac) => ((!anyEmpty(item?.name) && zodiac?.name == item?.name)
     || (!anyEmpty(item?.alias) && zodiac?.alias == item?.alias)))
+)
 
 /**
  * 各彩种选中的数量, 比如特码选中了多少条数据，结构 TM -> 8 条
  * @param selectedData
  */
-const filterSelectedData = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Map<string, number> => {
+const filterSelectedDataCount = (selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Map<string, number> => {
   const map = new Map<string, number>()
 
   if (!dicNull(selectedData)) {
@@ -123,7 +126,9 @@ const filterSelectedData = (selectedData?: Map<string, Map<string, Map<string, S
  * @param subAlias 需要计算的彩种子类别，比如五星玩法 -> 二重号
  * @param selectedBalls 已经选中的球
  */
-const subCountOfSelectedBalls = (subAlias?: string, selectedBalls?: Array<PlayData | ZodiacNum>) => arrayLength(selectedBalls?.filter((item) => item?.alias == subAlias))
+const subCountOfSelectedBalls = (subAlias?: string, selectedBalls?: Array<PlayData | ZodiacNum>) => (
+  arrayLength(selectedBalls?.filter((item) => item?.alias == subAlias))
+)
 
 /**
  * 各彩种选中的数量，比如 二字定位 下面的 子类 选中了多少条，结构
@@ -135,7 +140,7 @@ const subCountOfSelectedBalls = (subAlias?: string, selectedBalls?: Array<PlayDa
  * @param alias 小类标题，如 二字定位下面的 万定位
  * @param selectedData
  */
-const filterSelectedSubData = (code?: string, alias?: string, selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): number => {
+const filterSelectedSubCount = (code?: string, alias?: string, selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): number => {
 
   if (!dicNull(selectedData)) {
     for (let key1 of Object.keys(selectedData)) {
@@ -153,15 +158,33 @@ const filterSelectedSubData = (code?: string, alias?: string, selectedData?: Map
   return 0
 }
 
+/**
+ *
+ * 过滤出某个彩种的数据
+ *
+ * @param code 大类ID，如 二字定位 特码
+ * @param alias 小类标题，如 二字定位下面的 万定位
+ * @param selectedData
+ */
+const filterSelectedSubMap = (code?: string, alias?: string, selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Map<string, SelectedPlayModel> => {
+
+  if (!dicNull(selectedData) && selectedData[code]) {
+    return selectedData[code][alias]
+  }
+
+  return new Map<string, SelectedPlayModel>()
+}
+
 export {
   findZodiacByName,
-  filterSelectedData,
-  filterSelectedSubData,
+  filterSelectedDataCount,
+  filterSelectedSubCount,
   clearLotteryData,
   combineOddsName,
   playDataUniqueId,
   specialPlay,
   parseInputArray,
   subCountOfSelectedBalls,
+  filterSelectedSubMap,
 
 }

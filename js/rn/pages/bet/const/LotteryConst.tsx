@@ -214,6 +214,10 @@ const HoChiMinSub = {
   H_3WBDJT: '3WBDJT', //3尾巴的尽头",
 
   H_4GTEBIE: '4GTEBIE', //4更特别",
+
+  CHUANSHAO4: 'CHUANSHAO4', //串烧4"
+  CHUANSHAO8: 'CHUANSHAO8', //串烧8
+  CHUANSHAO10: 'CHUANSHAO10', //串烧10
 }
 
 /**

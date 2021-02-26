@@ -194,12 +194,12 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: scale(4),
     paddingVertical: scale(8),
-    paddingHorizontal: scale(30),
+    minWidth: scale(120),
+    paddingHorizontal: scale(6),
   },
   tab_title_item_text: {
     color: UGColor.TextColor3,
     fontSize: scale(22),
-    paddingLeft: scale(6),
   },
   bar_container: {
     flexDirection: 'row',

@@ -16,6 +16,7 @@ const UseBetRecordHeader = () => {
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
   const nextIssueData = UGStore.globalProps.nextIssueData //下期数据
+  const playOddDetailData = UGStore.globalProps.playOddDetailData //彩票信息
 
   // const [nextIssueData, setNextIssueData] = useState<NextIssueData>(null) //下期数据
   const [showHistory, setShowHistory] = useState(false) //是否显示历史记录
@@ -87,6 +88,7 @@ const UseBetRecordHeader = () => {
     systemInfo,
     userInfo,
     nextIssueData,
+    playOddDetailData,
     toggleHistory,
   }
 }
