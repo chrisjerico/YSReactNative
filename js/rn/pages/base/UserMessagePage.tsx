@@ -69,10 +69,6 @@ const UserMessagePage = () => {
           onReleaseToRefresh={async () => {
             page.current = 1
             APIRouter.user_msgList(page.current)
-              .then((value) => {
-                const _list = value?.data?.data.list
-                setList(list?.concat(_list))
-              })
               .finally(() => {
                 page.current = page.current + 1
                 setLoading(false)
