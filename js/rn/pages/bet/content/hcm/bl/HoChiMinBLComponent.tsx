@@ -464,11 +464,11 @@ const _styles = StyleSheet.create({
     borderRadius: scale(4),
     paddingVertical: scale(8),
     minWidth: scale(120),
-    paddingHorizontal: scale(6),
+    paddingHorizontal: scale(2),
   },
   tab_title_item_text: {
     color: 'white',
-    fontSize: scale(22),
+    fontSize: scale(21.5),
   },
   ball_container: {
     width: scale(78),
