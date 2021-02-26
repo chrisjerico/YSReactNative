@@ -96,7 +96,7 @@ export const JDMessagePopCP = ({ c_ref,c_name,c_content }: { c_ref: JDMessagePop
         <Button
           title="确定"
           style={{ marginVertical: 10, marginHorizontal: 13 }}
-          buttonStyle= {{backgroundColor:'transparent', color: Skin1.navBarTitleColor, }}
+          buttonStyle= {{backgroundColor:'transparent', }}
           onPress={() => {
             v.content = undefined
             v.show = !v.show
