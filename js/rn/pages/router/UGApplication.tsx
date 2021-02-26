@@ -164,6 +164,7 @@ import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import { H5WebPage } from '../base/H5页面/H5WebPage'
 import { JSLuzhuPage } from '../base/H5页面/JSLuzhuPage'
+import PromotionDetailPage from '../../pages/base/PromotionDetailPage'
 
 
 /**
@@ -177,10 +178,12 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
-  GameLobbyPage,  // 游戏大厅主页-默认
-  TwoLevelGames,//二级游戏分类
-  OtherRecord,//其他投注记录（真人、棋牌、电子、体育、捕鱼、电竞）
-  Game3rdView,//游戏
+  // 彩票大厅-默认
+  GameLobbyPage,
+  TwoLevelGames,
+  OtherRecord,
+  Game3rdView,
+  PromotionDetailPage,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
