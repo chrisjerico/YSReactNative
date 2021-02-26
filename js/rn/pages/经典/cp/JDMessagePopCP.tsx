@@ -73,6 +73,16 @@ export const JDMessagePopCP = ({ c_ref,c_name,c_content }: { c_ref: JDMessagePop
   v.name = c_name;
   v.content = c_content;
 
+ function onShouldStartLoadWithRequest(navigator) {
+    // if (navigator.url.indexOf(INTERCEPT_URL) === -1) {
+    //     return true;
+    // } else {
+    //     // this.refs[WEBVIEW_REF].stopLoading(); //Some reference to your WebView to make it stop loading that URL
+    //     return false;
+    // } 
+    return false;   
+}
+
   return (
     <AnimationFadeView show = {v.show}>
  <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width - 55, height: AppDefine.height - 280, borderRadius: 10, overflow: 'hidden' }}>
@@ -86,10 +96,12 @@ export const JDMessagePopCP = ({ c_ref,c_name,c_content }: { c_ref: JDMessagePop
             // ugLog("h5发送过来的消息--->",JSON.stringify(event.nativeEvent.data))
           }}
           onLoadStart ={(event) => {
-            console.log("当WebView刚开始加载时调用的函数")
+            // console.log("当WebView刚开始加载时调用的函数")
             // ugLog("h5发送过来的消息--->",event)
    
           }}
+          onShouldStartLoadWithRequest={(navigator) => onShouldStartLoadWithRequest(navigator) } //for iOS
+        onNavigationStateChange ={(navigator) => onShouldStartLoadWithRequest(navigator) } //for Android
           style={{ flex: 1, }} containerStyle={{ flex: 1, }} source={{ html: v.content }}
         />
       </View>
