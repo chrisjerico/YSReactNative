@@ -72,6 +72,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
           alias: '00-99',
           odds: showOdds,
           enable: play0?.enable,
+          exFast: true,
         } as PlayData)),
       ]
       break
@@ -89,6 +90,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
             alias: `${threeDigit(stIndex)}-${threeDigit(stIndex + 99)}`,
             odds: showOdds,
             enable: play0?.enable,
+            exFast: true,
           } as PlayData
         })
       })
@@ -122,7 +124,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
       alias: play0?.name,//每个group的alias都相当于 tab 的名字
       plays: [play0],
       exPlays: arr,
-      allHcPlays: arrAll
+      allHcPlays: i == 0 ? arrAll : null //只注入1组就够了，1组就是1页
     })
   }
 

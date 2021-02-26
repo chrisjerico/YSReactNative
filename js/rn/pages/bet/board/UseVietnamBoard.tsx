@@ -26,6 +26,7 @@ import { HoChiMinSub, LCode } from '../const/LotteryConst'
 import { showHintToast } from '../../../public/tools/StringUtil'
 import { combineArr } from '../util/ArithUtil'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
+import { PlayData } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 
 
 /**
@@ -102,10 +103,17 @@ const UseVietnamBoard = () => {
    */
   const betCount = useMemo<number>(() => {
     //选中的条目，如 {'TM' -> {}, 'TM2' -> {}}
-    const mapData = filterSelectedSubMap(currentPlayOddData()?.code, currentTabGroupData()[0]?.alias, UGStore.globalProps?.selectedData)
+    const gameCode = currentPlayOddData()?.code
+    const gameAlias = currentTabGroupData()[0]?.alias
+    const mapData = filterSelectedSubMap(gameCode, gameAlias, UGStore.globalProps?.selectedData)
 
     //选中的条目，如 [[1,2], [3,4]]
     const pageArr = dicNull(mapData) ? null : (Object.values(mapData) as SelectedPlayModel[]).map((item) => item.plays)
+
+    const flatArr = pageArr?.flat(Infinity) as PlayData[] //转一维数组
+    if (!arrayEmpty(flatArr) && flatArr[0]?.exFast) {//快速生成的数据，一个算一条，不用交叉计算，比如 宝路 -> 批号2 -> 快速选择
+      return arrayLength(flatArr)
+    }
 
     //计算组合的数量
     const newArr = dicNull(pageArr) ? null : combineArr(...pageArr)
