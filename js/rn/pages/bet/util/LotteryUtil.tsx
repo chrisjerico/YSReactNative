@@ -4,7 +4,7 @@ import * as React from 'react'
 import { ugLog } from '../../../public/tools/UgLog'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
-import { GameTab, HcmTabIndex, SingleOption } from '../const/LotteryConst'
+import { GameTab, HcmTabOption, SingleOption } from '../const/LotteryConst'
 
 interface INameOrAlias {
   name?: string; //鼠

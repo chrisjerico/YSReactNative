@@ -18,7 +18,7 @@ import { anyEmpty, anyNull, arrayEmpty, mergeObject } from '../../public/tools/E
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
 import { BetShareModel } from '../model/game/bet/BetShareModel'
 import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
-import { GameTab, HcmTabIndex, SingleOption } from '../../pages/bet/const/LotteryConst'
+import { GameTab, HcmTabOption, SingleOption } from '../../pages/bet/const/LotteryConst'
 import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 import { ShareChatRoomModel } from '../../public/network/Model/chat/ShareChatRoomModel'
 import { ugLog } from '../../public/tools/UgLog'
@@ -42,7 +42,7 @@ export interface IGlobalState {
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   lotteryTabIndex?: number //当前的彩种处于TAB哪一页
   singleTabIndex?: SingleOption //当前的彩种处于TAB的单式还是复式
-  fastTabIndex?: HcmTabIndex //当前的越南彩种处于 选择 输入 还是 快速玩法
+  fastTabIndex?: HcmTabOption //当前的越南彩种处于 选择 输入 还是 快速玩法
   gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构

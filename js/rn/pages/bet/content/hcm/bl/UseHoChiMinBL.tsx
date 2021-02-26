@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import UseLotteryHelper from '../../assist/UseLotteryHelper'
 import { UGStore } from '../../../../../redux/store/UGStore'
-import { HcmTabIndex, HoChiMin, HoChiMinSub } from '../../../const/LotteryConst'
+import { HcmTabOption, HoChiMin, HoChiMinSub } from '../../../const/LotteryConst'
 import { tabGroupData } from '../../../util/select/ParseSelectedUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 
@@ -13,7 +13,7 @@ import { ugLog } from '../../../../../public/tools/UgLog'
  */
 const UseHoChiMinBL = () => {
 
-  const [tabHochimin, setTabHochimin] = useState<HcmTabIndex>(null) // HcmTabIndex, 当前选中哪个玩法 选择号码，输入号码，快速选择
+  const [tabHochimin, setTabHochimin] = useState<HcmTabOption>(null) // 当前选中哪个玩法 选择号码，输入号码，快速选择
   const [ballTypeIndex, setBallTypeIndex] = useState(0) //当前单个球从 0 ~ 999 的类别，比如 批号3
   const [blInputNumber, setBlInputNumber] = useState<string>(null) //输入的号码
 
@@ -105,22 +105,22 @@ const UseHoChiMinBL = () => {
     switch (true) {
       case gameCode == HoChiMin.DDQX: //地段倾斜
       case gameCode == HoChiMin.CQ: //抽签
-        setTabHochimin(HcmTabIndex.输入号码)
-        return [HcmTabIndex.输入号码, HcmTabIndex.快速选择]
+        setTabHochimin(HcmTabOption.输入号码)
+        return [HcmTabOption.输入号码, HcmTabOption.快速选择]
 
       case gameCode == HoChiMin.TW: //头尾
-        setTabHochimin(HcmTabIndex.选择号码)
-        return [HcmTabIndex.选择号码]
+        setTabHochimin(HcmTabOption.选择号码)
+        return [HcmTabOption.选择号码]
 
       case gameCode == HoChiMin.H_4GD: //4更多
       case tabCode == HoChiMinSub.PIHAO4: //批号4
-        setTabHochimin(HcmTabIndex.选择号码)
-        return [HcmTabIndex.选择号码, HcmTabIndex.输入号码]
+        setTabHochimin(HcmTabOption.选择号码)
+        return [HcmTabOption.选择号码, HcmTabOption.输入号码]
 
     }
 
-    setTabHochimin(HcmTabIndex.选择号码)
-    return [HcmTabIndex.选择号码, HcmTabIndex.输入号码, HcmTabIndex.快速选择]
+    setTabHochimin(HcmTabOption.选择号码)
+    return [HcmTabOption.选择号码, HcmTabOption.输入号码, HcmTabOption.快速选择]
   }, [currentPageData()])
 
   return {
@@ -128,7 +128,7 @@ const UseHoChiMinBL = () => {
     GAME_TYPE_ARRAY,
     ballTypeIndex,
     setBallTypeIndex,
-    HcmTabIndex,
+    HcmTabOption,
     blInputNumber,
     setBlInputNumber,
     tabHochimin,

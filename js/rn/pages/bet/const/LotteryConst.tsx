@@ -21,7 +21,10 @@ enum SingleOption {
   COMPLEX, //复式
 }
 
-enum HcmTabIndex {
+/**
+ * 越南彩二组玩法选项
+ */
+enum HcmTabOption {
   选择号码 = '选择号码', //选择号码
   输入号码 = '输入号码', //输入号码
   快速选择 = '快速选择', //快速选择
@@ -239,7 +242,7 @@ export {
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
   SingleOption,
-  HcmTabIndex,
+  HcmTabOption,
   BallStyles,
   BallType,
   lotteryBallStyle,
