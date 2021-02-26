@@ -7,8 +7,8 @@ import { zodiacPlayX } from './hx/BetHXUtil'
 import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import {
-  filterSelectedData,
-  filterSelectedSubData,
+  filterSelectedDataCount,
+  filterSelectedSubCount,
   playDataUniqueId,
   subCountOfSelectedBalls,
 } from '../../util/LotteryUtil'
@@ -327,7 +327,7 @@ const checkBetCount = (): boolean => {
       for (let data of curTabGroupData) {
         const subAlias = data?.exPlays[0]?.alias
         const groupAlias = data?.alias
-        const selCount = filterSelectedSubData(gameCode, subAlias, selectedData)
+        const selCount = filterSelectedSubCount(gameCode, subAlias, selectedData)
         ugLog('selCount = ', selCount, gameCode)
 
         switch (groupAlias) {
@@ -422,7 +422,7 @@ const checkBetCount = (): boolean => {
     case gameCode == Pk10Code.GFWF:  //官方玩法
       for (let [key, value] of curTabGroupData?.entries()) {
         const subAlias = value?.exPlays[0]?.alias
-        const selCount = filterSelectedSubData(gameCode, subAlias, selectedData)
+        const selCount = filterSelectedSubCount(gameCode, subAlias, selectedData)
         ugLog('selCount = ', selCount, gameCode)
         const tabAlias = value?.alias //当前tab的名字
 
@@ -463,7 +463,7 @@ const checkBetCount = (): boolean => {
     {
       for (let data of curTabGroupData) {
         const subAlias = data?.alias
-        const selCount = filterSelectedSubData(gameCode, subAlias, selectedData)
+        const selCount = filterSelectedSubCount(gameCode, subAlias, selectedData)
         ugLog('selCount = ', selCount, gameCode, subAlias)
         if (selCount <= 0) {
           showHintToast()
@@ -510,8 +510,9 @@ const checkBetCount = (): boolean => {
     case gameCode == LhcCode.ZX && gameType == LCode.gd11x5:  //广东11x5直选
     {
       for (let data of curTabGroupData) {
-        const selCount = filterSelectedSubData(gameCode, data?.exPlays[0]?.alias, selectedData)
-        ugLog('selCount = ', selCount, gameCode, data?.exPlays[0]?.alias)
+        const rowAlias = data?.exPlays[0]?.alias //小类标题，如 二字定位下面的 万定位
+        const selCount = filterSelectedSubCount(gameCode, rowAlias, selectedData)
+        ugLog('selCount = ', selCount, gameCode, rowAlias)
         if (selCount <= 0) {
           showHintToast()
           return false
@@ -523,8 +524,9 @@ const checkBetCount = (): boolean => {
     case gameCode == FC3d.DWD && gameType == LCode.fc3d:  //福彩3D里面的定位胆
       for (let data of curTabGroupData) {
         const subAlias = data?.alias
-        const selCount = filterSelectedSubData(gameCode, data?.exPlays[0]?.alias, selectedData)
-        ugLog('selCount = ', selCount, gameCode, data?.exPlays[0]?.alias)
+        const rowAlias = data?.exPlays[0]?.alias //小类标题，如 二字定位下面的 万定位
+        const selCount = filterSelectedSubCount(gameCode, rowAlias, selectedData)
+        ugLog('selCount = ', selCount, gameCode, rowAlias)
         if (selCount <= 0) {
           showHintToast()
           return false
@@ -556,7 +558,7 @@ const checkBetCount = (): boolean => {
 
     case gameCode == LhcCode.HX://合肖
     {
-      const selCountMap = filterSelectedData(selectedData)
+      const selCountMap = filterSelectedDataCount(selectedData)
       if (selCountMap[gameCode] <= 1) {
         showHintToast(2, '合肖')
         return false
@@ -566,7 +568,7 @@ const checkBetCount = (): boolean => {
     case gameCode == LhcCode.LMA:  //连码
       for (let data of curTabGroupData) {
         const subAlias = data?.alias
-        const selCount = filterSelectedSubData(gameCode, subAlias, selectedData)
+        const selCount = filterSelectedSubCount(gameCode, subAlias, selectedData)
         ugLog('selCount = ', selCount, gameCode, subAlias)
         if (selCount <= 0) {
           showHintToast()
@@ -642,7 +644,7 @@ const checkBetCount = (): boolean => {
 
     case gameCode == LhcCode.ZXBZ:  //自选不中
     {
-      const selCountMap = filterSelectedData(selectedData)
+      const selCountMap = filterSelectedDataCount(selectedData)
       if (selCountMap[gameCode] < 5) {
         Toast('自选不中请选择5到12个选项')
         return false
@@ -650,7 +652,7 @@ const checkBetCount = (): boolean => {
     }
       break
     default: {
-      const selCountMap = filterSelectedData(selectedData)
+      const selCountMap = filterSelectedDataCount(selectedData)
       if (selCountMap[gameCode] <= 0) {
         showHintToast()
         return false

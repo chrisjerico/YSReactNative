@@ -9,7 +9,7 @@ import { LotteryResultData } from '../../../public/network/Model/lottery/result/
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { BetShareModel } from '../../../redux/model/game/bet/BetShareModel'
 import { ugLog } from '../../../public/tools/UgLog'
-import { filterSelectedData } from '../util/LotteryUtil'
+import { filterSelectedDataCount } from '../util/LotteryUtil'
 import { DeviceEventEmitter, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { EmitterTypes } from '../../../public/define/EmitterTypes'
 import { IEmitterMessage } from './it/IEmitterMessage'
@@ -65,7 +65,7 @@ const UseBetBoard = () => {
 
   //各彩种选中的数量
   const ballSelected = useMemo(() => {
-    return filterSelectedData(UGStore.globalProps?.selectedData)
+    return filterSelectedDataCount(UGStore.globalProps?.selectedData)
   }, [UGStore.globalProps?.selectedData])
 
   /**

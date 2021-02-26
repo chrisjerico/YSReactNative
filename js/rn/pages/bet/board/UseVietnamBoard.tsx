@@ -9,7 +9,7 @@ import { LotteryResultData } from '../../../public/network/Model/lottery/result/
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { BetShareModel } from '../../../redux/model/game/bet/BetShareModel'
 import { ugLog } from '../../../public/tools/UgLog'
-import { filterSelectedData } from '../util/LotteryUtil'
+import { filterSelectedDataCount, filterSelectedSubCount } from '../util/LotteryUtil'
 import { DeviceEventEmitter, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { EmitterTypes } from '../../../public/define/EmitterTypes'
 import { IEmitterMessage } from './it/IEmitterMessage'
@@ -21,8 +21,9 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import FastImage from 'react-native-fast-image'
 import UseBetBoard from './UseBetBoard'
-import { currentPlayOddData } from '../util/select/ParseSelectedUtil'
+import { currentPlayOddData, currentTabGroupData } from '../util/select/ParseSelectedUtil'
 import { HoChiMinSub, LCode } from '../const/LotteryConst'
+import { showHintToast } from '../../../public/tools/StringUtil'
 
 
 /**
@@ -98,6 +99,20 @@ const UseVietnamBoard = () => {
    * 选中的注数
    */
   const betCount = useMemo<number>(() => {
+  //   currentTabGroupData()?.map((groupData) => {
+  //
+  //   })
+  //
+  //   for (let data of curTabGroupData) {
+  //     const rowAlias = data?.exPlays[0]?.alias //小类标题，如 二字定位下面的 万定位
+  //     const selCount = filterSelectedSubData(gameCode, rowAlias, selectedData)
+  //     ugLog('selCount = ', selCount, gameCode, rowAlias)
+  //     if (selCount <= 0) {
+  //       showHintToast()
+  //       return false
+  //     }
+  //   }
+  // }
 
     return 0
   }, [])
