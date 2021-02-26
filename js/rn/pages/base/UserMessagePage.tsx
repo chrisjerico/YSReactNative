@@ -117,8 +117,9 @@ const UserMessagePage = () => {
                   v?.showSalaryAlert && v?.showSalaryAlert()
                 }}>
                 <View style={[styles.message, { borderBottomColor: skin1.CLBgColor, backgroundColor: Skin1.textColor4 }]}>
-                  <UGText style={isRead ? [styles.readTextStyle, { marginLeft: 20 }] : { width: AppDefine.width - 170, marginLeft: 20, marginRight: 10, color: skin1.textColor1 }}>{title}</UGText>
-                  <UGText style={isRead ? [styles.read2TextStyle] : { width: 160, marginRight: 10, color: skin1.textColor1 }}>{updateTime}</UGText>
+                  <UGText style={isRead ? [styles.readTextStyle, {  color: '#9D9D9D', }] : [styles.readTextStyle, {  color: skin1.textColor1 }]}>{title}</UGText>
+                  <View style={{flex:1}}/>
+                  <UGText style={isRead ? [styles.read2TextStyle,{ color: '#9D9D9D',}] :  [styles.read2TextStyle, {  color: skin1.textColor1 }]}>{updateTime}</UGText>
                 </View>
               </TouchableWithoutFeedback>
             )
@@ -227,25 +228,20 @@ const UserMessagePage = () => {
 
 const styles = StyleSheet.create({
   message: {
-    width: '100%',
-    height: 44,
-    aspectRatio: 10,
-    borderBottomWidth: AppDefine.onePx,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
+    height: 44,
+    borderBottomWidth: AppDefine.onePx,
+    alignItems: 'center'
+
   },
   readTextStyle: {
-    color: '#9D9D9D',
-    width: AppDefine.width * 0.95 - 170,
-    marginHorizontal: 10
+     marginLeft: 10, 
+     marginRight: 10,
 
   },
   read2TextStyle: {
-    color: '#9D9D9D',
-    width: 160,
-    marginRight: 10
+    marginRight: 10,
+    textAlign:'right',
   },
 
 
