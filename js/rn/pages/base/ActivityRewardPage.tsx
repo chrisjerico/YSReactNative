@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Image, ImageBackground, Modal, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, Animated, Image, ImageBackground, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
@@ -15,6 +15,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import ProgressCircle from '../../public/views/temp/ProgressCircle'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 import { ugLog } from '../../public/tools/UgLog'
+import { api } from '../../public/network/NetworkRequest1/NetworkRequest1'
 
 interface ApplyRewardProps {
   tabLabel: string
@@ -84,21 +85,67 @@ const ApplyReward = ({ tabLabel, titleArray, list, onPress, onPressApply }: Appl
   )
 }
 
+// cell 点击方法
+function itemAction(item: any) {
+  // applyWinLogDetail
+ 
+  api.activity.applyWinLogDetail(item.id).useSuccess((data) => {
+   ugLog('data==',data)
+   let  objdata = data['data'];
+   
+   let str :string = `
+   活动名称：${objdata.winName}
+   申请日期：${objdata.updateTime}
+   申请金额：${objdata.amount}
+   申请原因：${objdata.userComment} 
+   审核结果：${objdata.state} 
+   审核说明：${objdata.adminComment}
+   `
+
+   let str1 = '活动名称：'+objdata.winName+'\n'+'申请日期：'+objdata.updateTime+'\n'
+   Alert.alert('查看详情', str1, [
+     {
+       text: '关闭',
+       onPress: () => {
+       },
+       style: 'cancel',
+     },
+     
+   ])
+
+  })
+ 
+
+
+
+}
+
 const ApplyFeedBack = ({ tabLabel, list }) => {
+  ugLog('list===',list)
   return (
     <List
       uniqueKey={'ApplyFeedBack'}
       ListHeaderComponent={() => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
-          <UGText style={{ fontWeight: '500' }}>{'申请日期'}</UGText>
-          <UGText style={{ fontWeight: '500' }}>{'申请金额'}</UGText>
+          <UGText style={{ fontWeight: '500' ,}}>{'         申请日期          '}</UGText>
+          <UGText style={{ fontWeight: '500', }}>{'申请金额'}</UGText>
           <UGText style={{ fontWeight: '500' }}>{'状态'}</UGText>
         </View>
       )}
       data={list}
       scrollEnabled={true}
+      keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => {
-        return null
+        return (
+        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 ,}}
+        onPress={() => {
+          itemAction(item)
+        }}>
+        <UGText style={{ fontWeight: '500', }}>{item.updateTime}</UGText>
+        <UGText style={{ fontWeight: '500' ,}}>{item.amount}</UGText>
+        <UGText style={{ fontWeight: '500' }}>{item.state}</UGText>
+      </TouchableOpacity>
+        );
       }}
     />
   )
@@ -159,6 +206,8 @@ const ActivityRewardPage = () => {
         setItemArray(cfArray)//给标题赋值
         //@ts-ignore
         const applyWinLog = value[1]?.data?.data?.list
+
+        ugLog('applyWinLog====',applyWinLog)
         setWinApplyList(winApplyList)
         setApplyWinLog(applyWinLog)
       })
@@ -208,9 +257,9 @@ const ActivityRewardPage = () => {
           )}
       </View>
       <Modal transparent={true} style={{ flex: 1, backgroundColor: 'transparent' }} visible={activityVisible}>
-        <View style={{ backgroundColor: 'transparent', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ backgroundColor: '#0005', flex: 1, justifyContent: 'center', alignItems: 'center' ,borderColor: '#d9d9d9',borderWidth:AppDefine.onePx,}}>
           <View style={{ width: '75%', height: 200, backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
-            <UGText style={{ fontSize: 20, fontWeight: '500', marginVertical: 10 }}>{'彩金活动'}</UGText>
+            <UGText style={{ fontSize: 18, fontWeight: '500', marginVertical: 10 }}>{'彩金活动'}</UGText>
             <Image
               source={{
                 uri: 'winapply_default',
@@ -218,11 +267,11 @@ const ActivityRewardPage = () => {
               style={{ width: '90%', aspectRatio: 3 }}
               resizeMode={'stretch'}
             />
-            <View style={{ flexDirection: 'row', width: '100%', flex: 1, marginTop: 10, borderTopWidth: AppDefine.onePx, borderColor: '#d9d9d9' }}>
+            <View style={{ flexDirection: 'row', width: '100%', flex: 1, marginTop: 25, borderTopWidth: AppDefine.onePx, borderColor: '#d9d9d9' }}>
               <Button
                 title={'确认'}
                 containerStyle={{ flex: 1, borderColor: '#d9d9d9', borderRightWidth: AppDefine.onePx }}
-                titleStyle={{ color: '#2894FF', fontSize: 20 }}
+                titleStyle={{ color: '#2894FF', fontSize: 18 }}
                 onPress={() => {
                   setActivityVisible(false)
                 }}
@@ -230,7 +279,7 @@ const ActivityRewardPage = () => {
               <Button
                 title={'关闭'}
                 containerStyle={{ flex: 1 }}
-                titleStyle={{ color: '#2894FF', fontSize: 20 }}
+                titleStyle={{ color: '#2894FF', fontSize: 18 }}
                 onPress={() => {
                   setActivityVisible(false)
                 }}
@@ -240,7 +289,7 @@ const ActivityRewardPage = () => {
         </View>
       </Modal>
       <Modal transparent={true} style={{ flex: 1, backgroundColor: 'transparent' }} visible={applyVisible}>
-        <View style={{ backgroundColor: 'transparent', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ backgroundColor: '#0005', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <View style={{ width: '75%', height: '60%', backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
             <UGText style={{ fontSize: 15, marginVertical: 10 }}>{'彩金活动'}</UGText>
             <View style={{ width: '100%', marginVertical: 10, paddingHorizontal: 20 }}>
