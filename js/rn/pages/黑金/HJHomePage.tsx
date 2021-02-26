@@ -446,7 +446,7 @@ const AccountDetail = () => {
 
           }} style={[CommStyles.center, {padding: scale(20)}]}>
             <FastImage style={_styles.bottom_icon}
-                       source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png"}}/>
+                       source={{uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/depositlogo.png"}}/>
             <UGText style={_styles.bottom_font}>充值</UGText>
           </TouchableOpacity>
           <UGText style={_styles.bottom_money}> ¥ {balance}</UGText>
@@ -459,7 +459,7 @@ const AccountDetail = () => {
 
         }} style={[CommStyles.center, {padding: scale(20)}]}>
           <FastImage style={_styles.bottom_icon}
-                     source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png"}}/>
+                     source={{uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/xima.png"}}/>
           <UGText style={_styles.bottom_font}>转账</UGText>
 
         </TouchableOpacity>
@@ -471,7 +471,7 @@ const AccountDetail = () => {
         }} style={[CommStyles.center,
           {padding: scale(20)}]}>
           <FastImage style={_styles.bottom_icon}
-                     source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png"}}/>
+                     source={{uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/withdrawlogo.png"}}/>
           <UGText style={_styles.bottom_font}>提现</UGText>
         </TouchableOpacity>
 

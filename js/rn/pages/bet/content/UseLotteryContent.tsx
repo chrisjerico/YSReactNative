@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 import { ZodiacNum } from '../../../public/network/Model/lottery/PlayOddDetailModel'
 import { DeviceEventEmitter } from 'react-native'
 import { ugLog } from '../../../public/tools/UgLog'
-import { filterSelectedData, specialPlay} from '../util/LotteryUtil'
+import { filterSelectedDataCount, specialPlay} from '../util/LotteryUtil'
 import { UGStore } from '../../../redux/store/UGStore'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { currentPlayOddData, tabGroupData, xPlayOddData } from '../util/select/ParseSelectedUtil'
@@ -39,7 +39,7 @@ const UseLotteryContent = () => {
 
   //各彩种选中的数量
   const ballSelected = useMemo(() => {
-    return filterSelectedData(UGStore.globalProps?.selectedData)
+    return filterSelectedDataCount(UGStore.globalProps?.selectedData)
   }, [UGStore.globalProps?.selectedData])
 
   return {

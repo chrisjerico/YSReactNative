@@ -4,6 +4,7 @@ import { ugLog } from '../../../../public/tools/UgLog'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { PlayGroupData, PlayOddData } from '../../../../public/network/Model/lottery/PlayOddDetailModel'
 import { Toast } from '../../../../public/tools/ToastUtils'
+import { arrayLength } from '../../../../public/tools/Ext'
 
 /**
  * 选中的某个玩法
@@ -15,7 +16,12 @@ const xPlayOddData = (columnIndex?: number): PlayOddData => UGStore.globalProps?
 const currentPlayOddData = (): PlayOddData => xPlayOddData(UGStore.globalProps?.currentColumnIndex)
 
 //某一个TAB页界面界面
-const tabGroupData = (tabIndex?: number): Array<PlayGroupData> => currentPlayOddData()?.pageData?.groupTri[tabIndex]
+const tabGroupData = (tabIndex?: number): Array<PlayGroupData> =>
+  tabIndex < arrayLength(currentPlayOddData()?.pageData?.groupTri)
+    ?
+    currentPlayOddData()?.pageData?.groupTri[tabIndex]
+    :
+    []
 
 //当前TAB页界面界面
 const currentTabGroupData = (): Array<PlayGroupData> => tabGroupData(UGStore.globalProps?.lotteryTabIndex)

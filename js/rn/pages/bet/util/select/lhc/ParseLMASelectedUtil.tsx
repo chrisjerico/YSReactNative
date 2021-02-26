@@ -4,11 +4,11 @@ import {
   PlayOddData,
   ZodiacNum,
 } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyEmpty } from '../../../../../public/tools/Ext'
+import { anyEmpty, arrayEmpty } from '../../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { CqsscCode, LCode, LhcCode } from '../../../const/LotteryConst'
-import { filterSelectedData, filterSelectedSubData } from '../../LotteryUtil'
+import { filterSelectedDataCount, filterSelectedSubCount } from '../../LotteryUtil'
 import { Toast } from '../../../../../public/tools/ToastUtils'
 import { calculateLimitCount } from '../ParseSelectedUtil'
 import { isSelectedBallOnId } from '../../../widget/it/ISelBall'
@@ -27,13 +27,13 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
   //选中了哪些球, 3层结构
   const selGroup = new Map<string, Map<string, SelectedPlayModel>>()//重新组合的新数据如 特码TM -> 对应的数据
 
-  ugLog(' playOddData ======== ', JSON.stringify(playOddData))
+  // ugLog(' playOddData ======== ', JSON.stringify(playOddData))
   //遍历每一TAB的数据 如 特码B和特码A
   playOddData?.pageData?.groupTri?.map((pageData, index) => {
     const tabMap = new Map<string, SelectedPlayModel>() //每一个TAB的数组 如 特码B TMB -> 对应的数据
     selGroup[pageData[0].alias] = tabMap
 
-    ugLog('tabMap code index = ', pageData[0].alias, index)
+    //ugLog('tabMap code index = ', pageData[0].alias, index)
 
     //遍历TAB的每一组数据，如特码B里面有 特码数据，两面数据，色波数据
     pageData?.map((groupData, index) => {
@@ -43,15 +43,25 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
       if (gameType == LCode.cqssc && playOddData?.code == CqsscCode.WX && groupData?.alias == '单式') {//秒秒彩五行单式特殊处理
         selBalls = selectedBalls?.filter((item) => item?.exId?.startsWith(groupData?.alias))
       } else {
-        selBalls = !anyEmpty(groupData?.exPlays)
-          ?
+        if (!anyEmpty(groupData?.allHcPlays)) {//越南彩里面会有这种 快速选择 的彩种
+          for (const dataArr of groupData?.allHcPlays) {
+            selBalls = dataArr?.filter((item) => isSelectedBallOnId(selectedBalls, item))
+            if (!arrayEmpty(selBalls)) {//循环直到找到数组
+              break
+            }
+          }
+
+        } else if (!anyEmpty(groupData?.exPlays)) {//优先使用自定义生成的数据
           groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
-          :
+        } else {
           groupData?.plays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
+        }
+
       }
 
       const pageAlias = `${groupData?.alias},${index}` //当前页的唯一识别
-      ugLog('pageAlias = ', pageAlias)
+      //ugLog('pageAlias 1 = ', pageAlias)
+      //ugLog('pageAlias 2 = ', JSON.stringify(selBalls))
 
       let limitCount = calculateLimitCount(playOddData?.code, groupData?.alias)
 

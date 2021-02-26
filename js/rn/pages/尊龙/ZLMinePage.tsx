@@ -100,11 +100,11 @@ const ZLMinePage = (props: UGBasePageProps) => {
         <ZLHeader />
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
             <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10 }}>
-                <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center', marginLeft: 20, marginTop: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
+                <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center', marginLeft: 20, marginTop: 20 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
                     <UGText style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</UGText>
                 </FastImage>
                 <UGText style={{ fontSize: 16.5, color: 'white', marginTop: 10, marginLeft: 10, marginRight: 20 }}>{usr}</UGText>
-                <FastImage style={{ width: 121, height: 135, position: 'absolute', right: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/lmgbh.png" }} />
+                <FastImage style={{ width: 121, height: 135, position: 'absolute', right: 20 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/lmgbh.png" }} />
 
                 <LinearGradient style={{ height: 55, width: "100%", position: 'absolute', bottom: 0, flexDirection: 'row' }} colors={colorEnum.gradientColor}>
                     <View style={{ width: '100%', backgroundColor: "#30323b", height: 1, position: 'absolute', top: 0 }}></View>
@@ -153,19 +153,19 @@ const ZLMinePage = (props: UGBasePageProps) => {
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(UGUserCenterType.存款)
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
+                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/depositlogo.png" }} />
                         <UGText style={{ color: 'white', fontSize: 15 }}> 存款</UGText>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png" }} />
+                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/xima.png" }} />
                         <UGText style={{ color: 'white', fontSize: 15 }}> 额度转换</UGText>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(UGUserCenterType.取款)
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
+                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
                         <UGText style={{ color: 'white', fontSize: 15 }}> 取款</UGText>
                     </TouchableOpacity>
                 </View>
@@ -220,11 +220,11 @@ const ZLMinePage = (props: UGBasePageProps) => {
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 20, marginTop: 4 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <FastImage style={{ width: 18, aspectRatio: 1 }} source={{ uri: "http://test10.6yc.com/images/vip.png" }} />
+                                <FastImage style={{ width: 18, aspectRatio: 1 }} source={{ uri: "http://test10.fhptdev.com/images/vip.png" }} />
                                 <UGText style={{ color: 'white' }}>{userStore.curLevelGrade}</UGText>
                             </View>
                             {parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) == 0 ? <></> : <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <FastImage style={{ width: 18, aspectRatio: 1 }} source={{ uri: "http://test10.6yc.com/images/vip.png" }} />
+                                <FastImage style={{ width: 18, aspectRatio: 1 }} source={{ uri: "http://test10.fhptdev.com/images/vip.png" }} />
                                 <UGText style={{ color: 'white' }}>{userStore.nextLevelGrade}</UGText>
                             </View>}
                         </View>
@@ -308,7 +308,7 @@ const ZLHeader = () => {
             <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.站内信)
             }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png" }} />
+                <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/notice.png" }} />
                 <UGText style={{ color: "white", fontSize: 14 }}>消息</UGText>
                 {unreadMsg > 0 ? <View style={{
                     position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
@@ -323,7 +323,7 @@ const ZLHeader = () => {
             <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
             }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 30 }}>
-                <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service2.png" }} />
+                <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/service2.png" }} />
                 <UGText style={{ color: "white", fontSize: 14 }}>客服</UGText>
             </TouchableOpacity>
         </View>

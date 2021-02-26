@@ -172,28 +172,35 @@ export class UGStore {
 
   // 从本地获取所有数据，并刷新UI
   static async refreshFromLocalData() {
-    const str = await this.load(AsyncStorageKey.IGlobalState)
-    const gs: IGlobalState = JSON.parse(str)
+    const gs = await this.loadValueForKey<IGlobalState>(AsyncStorageKey.IGlobalState)
     gs && UGStore.dispatch({ type: 'reset', sysConf: gs?.sysConf, userInfo: gs?.userInfo })
   }
 
   // 存储到本地
-  static async save(key: AsyncStorageKey | string = AsyncStorageKey.IGlobalState, value: any = this.globalProps) {
+  static async save() {
+    return this.saveValueAndKey(AsyncStorageKey.IGlobalState, this.getPageProps)
+  }
+
+  // 存储到本地
+  static async saveValueAndKey(key: AsyncStorageKey, value: any): Promise<any> {
     ugLog('save key = ', key)
+    value = JSON.stringify(value)
     if (Platform.OS == 'ios') {
-      await OCHelper.call('NSUserDefaults.standardUserDefaults[setObject:forKey:]', [JSON.stringify(value), key])
+      await OCHelper.call('NSUserDefaults.standardUserDefaults[setObject:forKey:]', [value, key])
     } else {
-      await AsyncStorage.setItem(key, JSON.stringify(value))
+      await AsyncStorage.setItem(key, value)
     }
   }
 
   // 获取本地缓存
-  static async load(key: AsyncStorageKey | string): Promise<string> {
+  static async loadValueForKey<T>(key: AsyncStorageKey | string): Promise<T> {
     ugLog('load key = ', key)
+    let value = undefined
     if (Platform.OS == 'ios') {
-      return OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', [key])
+      value = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', [key])
     } else {
-      return AsyncStorage.getItem(key)
+      value = await AsyncStorage.getItem(key)
     }
+    return JSON.parse(value)
   }
 }

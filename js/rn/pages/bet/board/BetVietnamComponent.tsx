@@ -23,16 +23,18 @@ import { GameTab } from '../const/LotteryConst'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { dicNull } from '../../../public/tools/Ext'
-import { mapTotalCount } from '../util/ArithUtil'
+import { calculateSliderValue, mapTotalCount } from '../util/ArithUtil'
 import { EmitterTypes } from '../../../public/define/EmitterTypes'
 import { useEffect } from 'react'
 import { IEmitterMessage } from './it/IEmitterMessage'
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import { currentTabGroupData } from '../util/select/ParseSelectedUtil'
+import UseVietnamBoard from './UseVietnamBoard'
 
 /**
- * 彩票功能区入参
+ * 越南彩彩票功能区入参
  */
-interface IBetBoardParams {
+interface IBetVietnamParams {
   lockedItem?: IEmitterMessage // 是否封盘中
   style?: StyleProp<ViewStyle>
 }
@@ -43,7 +45,7 @@ interface IBetBoardParams {
  * @param navigation
  * @constructor
  */
-const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
+const BetVietnamComponent = ({ lockedItem, style }: IBetVietnamParams) => {
 
   const {
     sliderStep,
@@ -57,18 +59,19 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
     setShowSlider,
     sliderValue,
     setSliderValue,
-    showChip,
-    setShowChip,
     playOddDetailData,
     reBetShareModel,
+    betCount,
+    betMoney,
     ballSelected,
     increaseSlider,
     decreaseSlider,
+    priceOfItem,
     checkShowBetPayment,
     renderSliderItem,
     renderChipItem,
     renderLock,
-  } = UseBetBoard()
+  } = UseVietnamBoard()
 
   useEffect(() => {
     setLockBoard(lockedItem)
@@ -81,92 +84,65 @@ const BetBoardComponent = ({ lockedItem, style }: IBetBoardParams) => {
                                        style={_styles.extra_container}
                                        pointerEvents={'box-none'}>
     {systemInfo?.activeReturnCoinStatus && renderSliderItem()}
-    {renderChipItem()}
   </View>
-
-  /**
-   * 追号
-   */
-  const renderChaseNumber = () => {
-    if (systemInfo?.chaseNumber != '1') return null
-
-    // ugLog('systemInfo?.chaseNumber', systemInfo?.chaseNumber)
-    // ugLog('systemInfo?.reBetShareModel', reBetShareModel)
-
-    return !dicNull(reBetShareModel)
-      ?
-      <TouchableWithoutFeedback onPress={() => {
-        UGStore.dispatch({ type: 'reset', betShareModel: reBetShareModel })
-      }}>
-        <UGText style={_styles.bet_again}>追号</UGText>
-      </TouchableWithoutFeedback>
-      :
-      <UGText style={[
-        _styles.bet_again,
-        {
-          backgroundColor: UGColor.TextColor7,
-          color: UGColor.TextColor4,
-        },
-      ]}>追号</UGText>
-  }
-
-  /**
-   * 机选
-   */
-  const renderRandomSelected = () => {
-    return <TouchableWithoutFeedback onPress={() => DeviceEventEmitter.emit(EmitterTypes.RANDOM_SELECT_LOTTERY)}>
-      <UGText style={_styles.bet_again}>机选</UGText>
-    </TouchableWithoutFeedback>
-  }
 
   /**
    * 绘制输入功能区
    */
   const renderInputArea = () => {
 
-    return <View style={_styles.input_container}>
-
-      <View>
-        {renderChaseNumber()}
-        {renderRandomSelected()}
-      </View>
-
-      <View style={_styles.middle_container}>
+    return <View>
+      <View style={_styles.top_container}>
         <View style={_styles.bet_info}>
-          <UGText style={_styles.lottery_count_hint}>已选中</UGText>
-          <UGText style={_styles.lottery_count_count}>{mapTotalCount(ballSelected)}</UGText>
+          <UGText style={_styles.lottery_count_hint}>{'已选中: '}</UGText>
+          <UGText style={_styles.lottery_count_count}>{betCount?.toString()}</UGText>
           <UGText style={_styles.lottery_count_hint}>注</UGText>
-          <View style={CommStyles.flex}/>
-          <TouchableWithoutFeedback onPress={() => setShowChip(!showChip)}>
-            <UGText style={_styles.lottery_count_chip}>筹码</UGText>
+          <UGText style={_styles.lottery_count_hint_2}>{'金额: '}</UGText>
+          <UGText style={_styles.lottery_count_count}>{betMoney?.toString()}</UGText>
+          <UGText style={_styles.lottery_count_hint}>元</UGText>
+        </View>
+      </View>
+      <View style={_styles.input_container}>
+
+        <View>
+          <UGText style={_styles.bet_again}>赔率</UGText>
+          <UGText style={_styles.bet_again}>
+            {`1: ${calculateSliderValue(currentTabGroupData()[0]?.plays[0]?.odds, UGStore.globalProps?.sliderValue)}`}
+          </UGText>
+        </View>
+
+        <View style={_styles.middle_container}>
+          <View style={_styles.bet_info}>
+            <UGText style={_styles.lottery_count_hint}>注数</UGText>
+            <View style={CommStyles.flex}/>
+          </View>
+          <TextInput value={UGStore.globalProps?.inputMoney?.toString()}
+                     style={_styles.input_text}
+                     maxLength={11}
+                     onChangeText={(s) => {
+                       UGStore.dispatch({ type: 'reset', inputMoney: Number(s) })
+                     }}
+                     keyboardType={'numeric'}/>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableWithoutFeedback onPress={checkShowBetPayment}>
+            <UGText style={_styles.start_bet}>下注</UGText>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={() => {
+            DeviceEventEmitter.emit(EmitterTypes.CLEAR_SELECT_LOTTERY)
+            UGStore.dispatch({
+              type: 'reset',
+              selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
+            })
+          }
+          }>
+            <UGText style={_styles.start_reset}>重置</UGText>
           </TouchableWithoutFeedback>
         </View>
-        <TextInput value={UGStore.globalProps?.inputMoney?.toString()}
-                   style={_styles.input_text}
-                   maxLength={11}
-                   onChangeText={(s) => {
-                     UGStore.dispatch({ type: 'reset', inputMoney: Number(s) })
-                   }}
-                   keyboardType={'numeric'}/>
+
       </View>
-
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableWithoutFeedback onPress={checkShowBetPayment}>
-          <UGText style={_styles.start_bet}>下注</UGText>
-        </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback onPress={() => {
-          DeviceEventEmitter.emit(EmitterTypes.CLEAR_SELECT_LOTTERY)
-          UGStore.dispatch({
-            type: 'reset',
-            selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
-          })
-        }
-        }>
-          <UGText style={_styles.start_reset}>重置</UGText>
-        </TouchableWithoutFeedback>
-      </View>
-
     </View>
   }
 
@@ -222,20 +198,31 @@ const _styles = StyleSheet.create({
   input_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: UGColor.transparent4,
+    backgroundColor: UGColor.transparent3,
     padding: scale(12),
+  },
+  top_container: {
+    paddingHorizontal: scale(8),
+    flex: 1,
+    backgroundColor: UGColor.transparent4,
   },
   middle_container: {
     paddingHorizontal: scale(8),
     flex: 1,
   },
   lottery_count_hint: {
-    color: 'white',
+    color: UGColor.TextColor5,
     fontSize: scale(24),
     textAlign: 'right',
   },
+  lottery_count_hint_2: {
+    color: 'white',
+    fontSize: scale(24),
+    textAlign: 'right',
+    marginLeft: scale(48),
+  },
   lottery_count_count: {
-    color: UGColor.YellowColor3,
+    color: UGColor.RedColor5,
     fontSize: scale(24),
     textAlign: 'right',
     paddingHorizontal: scale(4),
@@ -265,10 +252,8 @@ const _styles = StyleSheet.create({
   },
   bet_again: {
     fontSize: scale(24),
-    backgroundColor: UGColor.YellowColor3,
     color: 'white',
     borderRadius: scale(4),
-    width: scale(88),
     paddingVertical: scale(4),
     marginVertical: scale(2),
     textAlign: 'center',
@@ -303,5 +288,5 @@ const _styles = StyleSheet.create({
 
 })
 
-export default BetBoardComponent
-export { IBetBoardParams }
+export default BetVietnamComponent
+export { IBetVietnamParams }

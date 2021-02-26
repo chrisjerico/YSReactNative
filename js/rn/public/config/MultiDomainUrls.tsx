@@ -14,6 +14,24 @@ import { anyEmpty } from '../tools/Ext'
  */
 
 const MultiDomainUrls: { [x: string]: Array<string> } = {
+  't005': [
+    'http://t005f.fhptdev.com',
+  ],
+  'testadaf': [
+    'http://t059f.fhptdev.com',
+  ],
+  'test60f': [
+    'http://t060f.fhptdev.com',
+  ],
+  'test61f': [
+    'http://t061f.fhptdev.com',
+  ],
+  'test20': [
+    'http://t020f.fhptdev.com',
+  ],
+  'test30f': [
+    'http://test30.fhptdev.com',
+  ],
   'zora': [
     'http://zhibot071f.fhptcdn.com',
   ],
@@ -54,7 +72,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t029cz.fhptcdn.com',
   ],
   'txt30': [
-    'http://test30f.fhptcdn.com',
+    'http://test30.fhptdev.com',
   ],
   'txt32': [
     'http://t005f.fhptcdn.com',
@@ -194,11 +212,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://x2cpapp.com',
   ],
   'c085': [
-    'https://www.jmhnnn1.cc',
-    'https://www.jmsfds2.cc',
-    'https://www.jmsddv3.cc',
-    'https://www.jmnhhn4.cc',
-    'https://www.jmfgvn5.cc',
+    'https://jmxghn8.cc',
+    'https://jmxgnj9.cc',
+    'https://jmxdn10.cc',
+    'https://jmxgnk7.cc',
+    'https://jmxgnd6.cc',
   ],
   'c085ahy': [
     'https://jmxgnd6.cc',

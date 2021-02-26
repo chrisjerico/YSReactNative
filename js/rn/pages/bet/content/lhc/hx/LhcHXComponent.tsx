@@ -133,27 +133,6 @@ const _styles = StyleSheet.create({
     padding: scale(4),
     flex: 1,
   },
-  tab_title_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: UGColor.LineColor3,
-    borderRadius: scale(8),
-  },
-  tab_title_content: {
-    flexDirection: 'row',
-  },
-  tab_item: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: scale(4),
-    paddingVertical: scale(8),
-    paddingHorizontal: scale(30),
-  },
-  tab_title_item_text: {
-    color: UGColor.TextColor3,
-    fontSize: scale(22),
-    paddingLeft: scale(6),
-  },
 })
 
 export default LhcHXComponent

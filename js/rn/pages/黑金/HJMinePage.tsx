@@ -225,7 +225,7 @@ const ZLHeader = () => {
         PushHelper.pushUserCenterType(UGUserCenterType.站内信)
       }} >
         <FastImage style={_styles.top_bt}
-                   source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png"}}/>
+                   source={{uri: "http://test10.fhptdev.com/views/mobileTemplate/16/images/notice.png"}}/>
         {
           unreadMsg > 0 ? <View style={_styles.read_flag}>
               <UGText style={{color: 'white', fontSize: scale(16)}}>{unreadMsg}</UGText>
