@@ -1,5 +1,6 @@
 import WebPage from '../../pages/common/web/WebPage'
 
+
 export enum PageName {
   // ———————————— 通用页面 —————————————
   TransitionPage = 'TransitionPage',
@@ -15,15 +16,15 @@ export enum PageName {
   SafeCenterPage = 'SafeCenterPage',
   IncomeRecommendPage = 'IncomeRecommendPage',
   ManageBankListPage = 'ManageBankListPage',
-  EmptyPage = 'EmptyPage', //空界面
-  BetLotteryPage = 'BetLotteryPage', //彩票下注
-  WebPage = 'WebPage', //网页
-  BtcPayPage = 'BtcPayPage', //虚拟币支付
-  BtcTutorialPage = 'BtcTutorialPage', //虚拟币教程
-  CapitalPage = 'CapitalPage', //资金管理
-  SetPasswordPage = 'SetPasswordPage', //取消界面
-  ForgetPasswordPage = 'ForgetPasswordPage', //忘记密码
-  AddBankPage = 'AddBankPage', //添加银行卡
+  EmptyPage = 'EmptyPage',
+  BetLotteryPage = 'BetLotteryPage',
+  WebPage = 'WebPage',
+  BtcPayPage = 'BtcPayPage',
+  BtcTutorialPage = 'BtcTutorialPage',
+  CapitalPage = 'CapitalPage',
+  SetPasswordPage = 'SetPasswordPage',
+  ForgetPasswordPage = 'ForgetPasswordPage',
+  AddBankPage = 'AddBankPage',
   TrendView = 'TrendView',
   LottoSelector = 'LottoSelector',
   LottoBetting = 'LottoBetting',
@@ -40,12 +41,12 @@ export enum PageName {
   JDChangLongPage = 'JDChangLongPage',
   JDBetRecordDetailPage = 'JDBetRecordDetailPage',
   JDBetDetailPage = 'JDBetDetailPage',
-  JDLotterySecondPage ='JDLotterySecondPage',
+  JDLotterySecondPage = 'JDLotterySecondPage',
   JDDayDetailPage = 'JDDayDetailPage',
   JDPromoteDetailPage = 'JDPromoteDetailPage',
   H5WebPage = 'H5WebPage',
   JSLuzhuPage = 'JSLuzhuPage',
-  
+
   // ———————————— 模板页面 —————————————
   JDHomePage = 'JDHomePage',
 

@@ -30,27 +30,23 @@ export const JDMessagePopCP = ({ c_ref,c_name,c_content }: { c_ref: JDMessagePop
   const [, setState] = useState({})
   const { current: v } = useRef<JDSignInHistoryVars>({})
 
-
-  
-
-
 //得到js
   function  getScript() {
-    let  script:string;
-    if (Skin1.isBlack||Skin1.is23) {
-      script = `
-      document.body.style.color='#DDD'
-      document.body.style.background='#171717'
-      var eles = document.getElementsByTagName('table');
-      for (var i = 0; i < eles.length; i++) {
-          eles[i].setAttribute("style", "border: 0.5px solid white; background:#222");
-      }
-      var eles = document.getElementsByTagName('td');
-      for (var i = 0; i < eles.length; i++) {
-          eles[i].setAttribute("style", "color:#DDD; border: 0.5px solid white; background:#222");
-      }
-      `
-    } 
+    let  script:string ='';
+    // if (Skin1.isBlack||Skin1.is23) {
+    //   script = `
+    //   document.body.style.color='#DDD'
+    //   document.body.style.background='#171717'
+    //   var eles = document.getElementsByTagName('table');
+    //   for (var i = 0; i < eles.length; i++) {
+    //       eles[i].setAttribute("style", "border: 0.5px solid white; background:#222");
+    //   }
+    //   var eles = document.getElementsByTagName('td');
+    //   for (var i = 0; i < eles.length; i++) {
+    //       eles[i].setAttribute("style", "color:#DDD; border: 0.5px solid white; background:#222");
+    //   }
+    //   `
+    // } 
     let meta = `
     var meta = document.createElement('meta');
     meta.content='width=device-width,initial-scale=1.0,minimum-scale=.5,maximum-scale=3';
@@ -77,27 +73,42 @@ export const JDMessagePopCP = ({ c_ref,c_name,c_content }: { c_ref: JDMessagePop
   v.name = c_name;
   v.content = c_content;
 
+ function onShouldStartLoadWithRequest(navigator) {
+    // if (navigator.url.indexOf(INTERCEPT_URL) === -1) {
+    //     return true;
+    // } else {
+    //     // this.refs[WEBVIEW_REF].stopLoading(); //Some reference to your WebView to make it stop loading that URL
+    //     return false;
+    // } 
+    return false;   
+}
+
   return (
     <AnimationFadeView show = {v.show}>
- <LinearGradient colors={Skin1.bgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width - 55, height: AppDefine.height - 260, borderRadius: 10, overflow: 'hidden' }}>
-        <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: 50, justifyContent: 'center' }}>
-          <UGText style={{ textAlign: 'center', color: Skin1.textColor2, fontSize: 16 }}>{v.name}</UGText>
+ <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width - 55, height: AppDefine.height - 280, borderRadius: 10, overflow: 'hidden' }}>
+        <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{  justifyContent: 'center' }}>
+          <UGText style={{marginVertical:15,marginHorizontal:15,  textAlign: 'center', color: Skin1.navBarTitleColor, fontSize: 18 }}>{v.name}</UGText>
         </LinearGradient>
         <View  style={{ flex: 1, }}>
-        {(v.content) && <WebView
+        <WebView
           injectedJavaScript={script}
           onMessage={(event) => {
-           
+            // ugLog("h5发送过来的消息--->",JSON.stringify(event.nativeEvent.data))
           }}
-          onLoadStart ={(event: WebViewNavigationEvent) => {
-            ugLog('WebViewNavigationEvent =',WebViewNavigationEvent)
+          onLoadStart ={(event) => {
+            // console.log("当WebView刚开始加载时调用的函数")
+            // ugLog("h5发送过来的消息--->",event)
+   
           }}
+          onShouldStartLoadWithRequest={(navigator) => onShouldStartLoadWithRequest(navigator) } //for iOS
+        onNavigationStateChange ={(navigator) => onShouldStartLoadWithRequest(navigator) } //for Android
           style={{ flex: 1, }} containerStyle={{ flex: 1, }} source={{ html: v.content }}
-        />}
+        />
       </View>
         <Button
-          title="关闭"
+          title="确定"
           style={{ marginVertical: 10, marginHorizontal: 13 }}
+          buttonStyle= {{backgroundColor:'transparent', }}
           onPress={() => {
             v.content = undefined
             v.show = !v.show
