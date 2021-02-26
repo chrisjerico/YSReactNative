@@ -158,6 +158,23 @@ const filterSelectedSubCount = (code?: string, alias?: string, selectedData?: Ma
   return 0
 }
 
+/**
+ *
+ * 过滤出某个彩种的数据
+ *
+ * @param code 大类ID，如 二字定位 特码
+ * @param alias 小类标题，如 二字定位下面的 万定位
+ * @param selectedData
+ */
+const filterSelectedSubMap = (code?: string, alias?: string, selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): Map<string, SelectedPlayModel> => {
+
+  if (!dicNull(selectedData) && selectedData[code]) {
+    return selectedData[code][alias]
+  }
+
+  return new Map<string, SelectedPlayModel>()
+}
+
 export {
   findZodiacByName,
   filterSelectedDataCount,
@@ -168,5 +185,6 @@ export {
   specialPlay,
   parseInputArray,
   subCountOfSelectedBalls,
+  filterSelectedSubMap,
 
 }

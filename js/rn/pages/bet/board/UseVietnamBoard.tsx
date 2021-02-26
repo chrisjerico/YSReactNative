@@ -2,14 +2,14 @@ import * as React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
 import { Toast } from '../../../public/tools/ToastUtils'
 import { checkBetCount, generateBetArray } from './tools/BetUtil'
 import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { BetShareModel } from '../../../redux/model/game/bet/BetShareModel'
 import { ugLog } from '../../../public/tools/UgLog'
-import { filterSelectedDataCount, filterSelectedSubCount } from '../util/LotteryUtil'
+import { filterSelectedDataCount, filterSelectedSubCount, filterSelectedSubMap } from '../util/LotteryUtil'
 import { DeviceEventEmitter, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { EmitterTypes } from '../../../public/define/EmitterTypes'
 import { IEmitterMessage } from './it/IEmitterMessage'
@@ -24,6 +24,8 @@ import UseBetBoard from './UseBetBoard'
 import { currentPlayOddData, currentTabGroupData } from '../util/select/ParseSelectedUtil'
 import { HoChiMinSub, LCode } from '../const/LotteryConst'
 import { showHintToast } from '../../../public/tools/StringUtil'
+import { combineArr } from '../util/ArithUtil'
+import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 
 
 /**
@@ -59,35 +61,35 @@ const UseVietnamBoard = () => {
    */
   const priceOfItem = (): number => {
     const gameType = betBoard?.playOddDetailData?.game?.gameType // 彩种类别，六合彩 秒秒彩
-    const gameCode = currentPlayOddData()?.code // 特码 连码 等等
+    const subCode = currentTabGroupData()[0]?.plays[0]?.code // 批号2，批号3 等等
 
     switch (true) {
-      case gameCode == HoChiMinSub.PIHAO2:
+      case subCode == HoChiMinSub.PIHAO2:
         if (gameType == LCode.ofclvn_hochiminhvip) {
           return 18
         }
         return 27
 
-      case gameCode == HoChiMinSub.PIHAO3:
+      case subCode == HoChiMinSub.PIHAO3:
         if (gameType == LCode.ofclvn_hochiminhvip) {
           return 17
         }
         return 23
 
-      case gameCode == HoChiMinSub.PIHAO4:
+      case subCode == HoChiMinSub.PIHAO4:
         if (gameType == LCode.ofclvn_hochiminhvip) {
           return 16
         }
         return 20
 
-      case gameCode == HoChiMinSub.LOT2FIRST && gameType == LCode.ofclvn_haboivip:
+      case subCode == HoChiMinSub.LOT2FIRST && gameType == LCode.ofclvn_haboivip:
         return 23
 
-      case gameCode == HoChiMinSub.ZHUZHANG7 && gameType == LCode.ofclvn_haboivip:
+      case subCode == HoChiMinSub.ZHUZHANG7 && gameType == LCode.ofclvn_haboivip:
         return 4
 
-      case gameCode == HoChiMinSub.BIAOTIWB && gameType == LCode.ofclvn_hochiminhvip:
-      case gameCode == HoChiMinSub.H_3WBDJT && gameType == LCode.ofclvn_hochiminhvip:
+      case subCode == HoChiMinSub.BIAOTIWB && gameType == LCode.ofclvn_hochiminhvip:
+      case subCode == HoChiMinSub.H_3WBDJT && gameType == LCode.ofclvn_hochiminhvip:
         return 2
 
     }
@@ -99,23 +101,22 @@ const UseVietnamBoard = () => {
    * 选中的注数
    */
   const betCount = useMemo<number>(() => {
-  //   currentTabGroupData()?.map((groupData) => {
-  //
-  //   })
-  //
-  //   for (let data of curTabGroupData) {
-  //     const rowAlias = data?.exPlays[0]?.alias //小类标题，如 二字定位下面的 万定位
-  //     const selCount = filterSelectedSubData(gameCode, rowAlias, selectedData)
-  //     ugLog('selCount = ', selCount, gameCode, rowAlias)
-  //     if (selCount <= 0) {
-  //       showHintToast()
-  //       return false
-  //     }
-  //   }
-  // }
+    //选中的条目，如 {'TM' -> {}, 'TM2' -> {}}
+    const mapData = filterSelectedSubMap(currentPlayOddData()?.code, currentTabGroupData()[0]?.alias, UGStore.globalProps?.selectedData)
+
+    //选中的条目，如 [[1,2], [3,4]]
+    const pageArr = dicNull(mapData) ? null : (Object.values(mapData) as SelectedPlayModel[]).map((item) => item.plays)
+
+    //计算组合的数量
+    const newArr = dicNull(pageArr) ? null : combineArr(...pageArr)
+
+    //每个条目都需要选数据，才计算，比如 批号2 十 个 都选择了数据
+    if (arrayLength(pageArr) == arrayLength(currentTabGroupData())) {
+      return arrayLength(newArr)
+    }
 
     return 0
-  }, [])
+  }, [UGStore.globalProps?.selectedData])
 
   /**
    * 选中的注数对应的金额
