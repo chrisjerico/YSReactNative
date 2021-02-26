@@ -75,7 +75,7 @@ export const JDMessagePopCP = ({ c_ref,c_name,c_content }: { c_ref: JDMessagePop
 
   return (
     <AnimationFadeView show = {v.show}>
- <LinearGradient colors={Skin1.bgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width - 55, height: AppDefine.height - 260, borderRadius: 10, overflow: 'hidden' }}>
+ <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width - 55, height: AppDefine.height - 280, borderRadius: 10, overflow: 'hidden' }}>
         <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{  justifyContent: 'center' }}>
           <UGText style={{marginVertical:15,marginHorizontal:15,  textAlign: 'center', color: Skin1.navBarTitleColor, fontSize: 18 }}>{v.name}</UGText>
         </LinearGradient>
@@ -96,7 +96,7 @@ export const JDMessagePopCP = ({ c_ref,c_name,c_content }: { c_ref: JDMessagePop
         <Button
           title="确定"
           style={{ marginVertical: 10, marginHorizontal: 13 }}
-          buttonStyle= {{backgroundColor:'transparent' }}
+          buttonStyle= {{backgroundColor:'transparent', color: Skin1.navBarTitleColor, }}
           onPress={() => {
             v.content = undefined
             v.show = !v.show
