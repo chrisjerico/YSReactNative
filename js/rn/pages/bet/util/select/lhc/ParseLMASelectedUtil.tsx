@@ -7,7 +7,7 @@ import {
 import { anyEmpty, arrayEmpty } from '../../../../../public/tools/Ext'
 import { SelectedPlayModel } from '../../../../../redux/model/game/SelectedLotteryModel'
 import { ugLog } from '../../../../../public/tools/UgLog'
-import { CqsscCode, LCode, LhcCode } from '../../../const/LotteryConst'
+import { CqsscCode, HcmTabIndex, LCode, LhcCode } from '../../../const/LotteryConst'
 import { filterSelectedDataCount, filterSelectedSubCount } from '../../LotteryUtil'
 import { Toast } from '../../../../../public/tools/ToastUtils'
 import { calculateLimitCount } from '../ParseSelectedUtil'
@@ -43,18 +43,18 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
       if (gameType == LCode.cqssc && playOddData?.code == CqsscCode.WX && groupData?.alias == '单式') {//秒秒彩五行单式特殊处理
         selBalls = selectedBalls?.filter((item) => item?.exId?.startsWith(groupData?.alias))
       } else {
-        if (!anyEmpty(groupData?.allHcPlays)) {//越南彩里面会有这种 快速选择 的彩种
+        if (!anyEmpty(groupData?.allHcPlays) && UGStore.globalProps?.fastTabIndex == HcmTabIndex.快速选择) {//越南彩里面会有这种 快速选择 的彩种
           for (const dataArr of groupData?.allHcPlays) {
             selBalls = dataArr?.filter((item) => isSelectedBallOnId(selectedBalls, item))
-            if (!arrayEmpty(selBalls)) {//循环直到找到数组
+            if (!arrayEmpty(selBalls)) {//循环直到找到数据
               break
             }
           }
 
         } else if (!anyEmpty(groupData?.exPlays)) {//优先使用自定义生成的数据
-          groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
+          selBalls = groupData?.exPlays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
         } else {
-          groupData?.plays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
+          selBalls = groupData?.plays?.filter((item) => isSelectedBallOnId(selectedBalls, item))
         }
 
       }

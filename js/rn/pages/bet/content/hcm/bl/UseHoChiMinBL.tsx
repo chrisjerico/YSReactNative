@@ -2,12 +2,9 @@ import * as React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import UseLotteryHelper from '../../assist/UseLotteryHelper'
-import { PlayOddData } from '../../../../../public/network/Model/lottery/PlayOddDetailModel'
-import { DeviceEventEmitter } from 'react-native'
-import { EmitterTypes } from '../../../../../public/define/EmitterTypes'
 import { UGStore } from '../../../../../redux/store/UGStore'
-import { HoChiMin, HoChiMinSub } from '../../../const/LotteryConst'
-import { currentPlayOddData, currentTabGroupData, tabGroupData } from '../../../util/select/ParseSelectedUtil'
+import { HcmTabIndex, HoChiMin, HoChiMinSub } from '../../../const/LotteryConst'
+import { tabGroupData } from '../../../util/select/ParseSelectedUtil'
 import { ugLog } from '../../../../../public/tools/UgLog'
 
 /**
@@ -16,7 +13,7 @@ import { ugLog } from '../../../../../public/tools/UgLog'
  */
 const UseHoChiMinBL = () => {
 
-  const [tabHochimin, setTabHochimin] = useState<string>(null) // HcmTabIndex, 当前选中哪个玩法 选择号码，输入号码，快速选择
+  const [tabHochimin, setTabHochimin] = useState<HcmTabIndex>(null) // HcmTabIndex, 当前选中哪个玩法 选择号码，输入号码，快速选择
   const [ballTypeIndex, setBallTypeIndex] = useState(0) //当前单个球从 0 ~ 999 的类别，比如 批号3
   const [blInputNumber, setBlInputNumber] = useState<string>(null) //输入的号码
 
@@ -38,10 +35,14 @@ const UseHoChiMinBL = () => {
   useEffect(() => {
     //Tab有变化就清除选择的数据
     setSelectedBalls([])
+  }, [ballTypeIndex])
 
-  }, [tabHochimin, ballTypeIndex])
+  useEffect(() => {
+    //Tab有变化就清除选择的数据
+    UGStore.dispatch({ type: 'reset', fastTabIndex: tabHochimin })
+    setSelectedBalls([])
+  }, [tabHochimin])
 
-  ugLog('tabIndex tabIndex = ', tabIndex)
   //不同的TAB，输入框提示语
   const inputHint = useMemo<string>(() => {
     const tabCode = tabGroupData(tabIndex)[0]?.plays[0]?.code //当前TAB是哪一个
@@ -142,12 +143,6 @@ const UseHoChiMinBL = () => {
     addAndRemoveBallList,
     currentPageData,
   }
-}
-
-enum HcmTabIndex {
-  选择号码 = '选择号码', //选择号码
-  输入号码 = '输入号码', //输入号码
-  快速选择 = '快速选择', //快速选择
 }
 
 export default UseHoChiMinBL
