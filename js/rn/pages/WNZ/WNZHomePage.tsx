@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
@@ -30,6 +30,7 @@ import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { appConfig } from '../../../../config'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 import { PushHomeGame } from '../../public/models/Interface'
+import { Icon } from '../../public/network/Model/HomeGamesModel'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -69,11 +70,34 @@ const WNZHomePage = () => {
   const { uid, usr, balance } = userInfo
 
   const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType } = sysInfo
+
+  const getTabGames = () => {
+    let res = []
+    if (homeGames && homeGames.length > 0) {
+      const list = homeGames.find((item) => item.name == '彩票').list
+      res.push(list.find((item) => item.name == '澳门六合彩'))
+      res.push(list.find((item) => item.name == '香港六合彩'))
+      res.push(list.find((item) => item.name == '一分六合彩'))
+      res.push(list.find((item) => item.name == '一分时时彩'))
+      res.push(list.find((item) => item.name == '一分PK拾'))
+      res.push(list.find((item) => item.name == '一分快三'))
+      res.push(list.find((item) => item.name == '一分幸运飞艇'))
+      res.push(list.find((item) => item.name == '一分PC蛋蛋'))
+      const LHLHC = list.find((item) => item.name == '台湾六合彩' || '六合秒秒彩')
+      if (LHLHC && homeGames) {
+        LHLHC.name = '六合秒秒彩'
+        LHLHC.title = '六合秒秒彩'
+      }
+      res.push(LHLHC)
+    }
+    return res
+  }
+
   const tabGames = [
     {
       // @ts-ignore
       // games: homeGamesHot.concat(config?.moreGame),
-      games: officialGames?.slice(0, 9).concat(config?.moreGame),
+      games: AppDefine.siteId == 'c245' ? getTabGames().concat(config?.moreGame) : officialGames?.slice(0, 9).concat(config?.moreGame),
     },
     {
       // @ts-ignore
@@ -319,7 +343,9 @@ const WNZHomePage = () => {
             renderTabBar={TabBar}
             renderScene={({ item, index: sceneIndex }) => {
               if (appConfig.isWNZBottomTabHot() && sceneIndex) {
-                return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} iconTitleContainerStyle={{ height: 0 }} />
+                return <AnimatedRankComponent rankLists={rankLists} type={rankingListType}
+                                              containerStyle={{ backgroundColor: '#ffffff' }}
+                                              iconTitleContainerStyle={{ height: 0 }} />
               } else {
                 return (
                   <List
@@ -343,8 +369,8 @@ const WNZHomePage = () => {
                             title == '更多游戏'
                               ? goToUserCenterType.游戏大厅
                               : () => {
-                                  PushHelper.pushLottery(stringToNumber(id))
-                                }
+                                PushHelper.pushLottery(stringToNumber(id))
+                              }
                           }
                         />
                       )
