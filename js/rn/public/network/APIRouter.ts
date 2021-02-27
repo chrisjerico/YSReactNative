@@ -77,25 +77,11 @@ export interface UserReg {
 }
 
 class APIRouter {
-  static activity_applyWin = async ({ amount, userComment, imgCode, id }) => {
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams = 'token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        tokenParams = 'token=' + pms?.token
-        break
-    }
-    return httpClient.post<any>('c=activity&a=applyWin', {
-      amount,
-      userComment,
-      imgCode,
-      id,
-      token: tokenParams,
-    })
+
+  static activity_applyWinLog = async () => {
+
+    return httpClient.get<any>('c=activity&a=applyWinLog')
+
   }
 
   static task_center = async () => {
