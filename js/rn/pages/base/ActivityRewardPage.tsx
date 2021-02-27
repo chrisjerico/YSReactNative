@@ -16,6 +16,7 @@ import ProgressCircle from '../../public/views/temp/ProgressCircle'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 import { ugLog } from '../../public/tools/UgLog'
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1'
+import { scale } from '../../public/tools/Scale'
 
 interface ApplyRewardProps {
   tabLabel: string
@@ -69,7 +70,13 @@ function dataAction(category: string, list: any[],) {
 const ApplyReward = ({ tabLabel, titleArray, list, onPress, onPressApply }: ApplyRewardProps) => {
   return (
     <View style={{ flex: 1 }}>
-      <ScrollableTabView tabBarUnderlineStyle={{ backgroundColor: Skin1.themeColor }} tabBarActiveTextColor={Skin1.themeColor}>
+      <ScrollableTabView 
+      tabBarUnderlineStyle={
+        { backgroundColor: Skin1.themeColor , height: scale(3),}}
+        tabBarActiveTextColor={Skin1.textColor1}
+        tabBarInactiveTextColor={Skin1.tabNoSelectColor}
+        tabBarTextStyle={{ fontSize: scale(20) }}
+      >
         {
           titleArray?.map((item, index) => {
             return (
@@ -239,7 +246,9 @@ const ActivityRewardPage = () => {
         {loading ? (
           <ProgressCircle />
         ) : (
-            <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false}>
+            <ScrollableTabViewComponent
+             indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false}
+            >
               <ApplyReward
                 tabLabel={'申请彩金'}
                 titleArray={itemArray}
@@ -251,6 +260,7 @@ const ActivityRewardPage = () => {
                   setApplyVisible(true)
                   setActivityContent(win_apply_content)
                 }}
+                
               />
               <ApplyFeedBack tabLabel={headerTitle()} list={applyWinLog} />
             </ScrollableTabViewComponent>
@@ -321,5 +331,8 @@ const ActivityRewardPage = () => {
     </>
   )
 }
+
+
+
 
 export default ActivityRewardPage
