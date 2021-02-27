@@ -53,6 +53,7 @@ export interface IGlobalState {
   //附加数据
   betChaseMap?: Map<string, BetShareModel> //追号的存档数据
   inputMoney?: number //输入的游戏金额
+  betCount?: number //注数，比如越南彩有该项
   sliderValue?: number //退水拉条数据
 
   //聊天室相关数据
@@ -97,6 +98,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.selectedData && (state.selectedData = act.selectedData)
     act.betChaseMap && (state.betChaseMap = act.betChaseMap)
     act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
+    act.betCount >= 0 && (state.betCount = act.betCount)
     act.sliderValue >= 0 && (state.sliderValue = act.sliderValue)
 
   } else if (act.type == 'merge') {

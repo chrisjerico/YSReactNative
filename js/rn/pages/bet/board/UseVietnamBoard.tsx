@@ -4,7 +4,7 @@ import { Res } from '../../../Res/icon/Res'
 import { UGStore } from '../../../redux/store/UGStore'
 import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../../public/tools/Ext'
 import { Toast } from '../../../public/tools/ToastUtils'
-import { checkBetCount, generateBetArray } from './tools/BetUtil'
+import { checkBetCount, generateBetArray, vietnamSelectedCount } from './tools/BetUtil'
 import { LotteryResultData } from '../../../public/network/Model/lottery/result/LotteryResultModel'
 import { AsyncStorageKey } from '../../../redux/store/IGlobalStateHelper'
 import { BetShareModel } from '../../../redux/model/game/bet/BetShareModel'
@@ -38,22 +38,29 @@ const UseVietnamBoard = () => {
   const betBoard = UseBetBoard()
 
   useEffect(() => {
-    UGStore.dispatch({ type: 'reset', inputMoney: 1 })
+    UGStore.dispatch({ type: 'reset', betCount: 1 })
   }, [])
 
   /**
    * 开始下注
    */
   const checkShowBetPayment = () => {
-    const inputMoney = UGStore.globalProps?.inputMoney
+    const betCount = UGStore.globalProps?.betCount
 
-    if (!inputMoney || inputMoney <= 0) {
+    if (!betCount || betCount <= 0) {
       Toast('请输入下注数量')
       // } else if (count <= 0) {
       //   Toast('请选择玩法')
     } else if (checkBetCount()) {
-      // const newData = generateBetArray(nextIssueData, UGStore.globalProps?.sliderValue?.toString(), inputMoney?.toString(), selectedData)
-      // UGStore.dispatch({ type: 'reset', betShareModel: newData })
+      const newData = generateBetArray(
+        UGStore.globalProps?.nextIssueData,
+        UGStore.globalProps?.sliderValue?.toString(),
+        UGStore.globalProps?.inputMoney?.toString(),
+        UGStore.globalProps?.selectedData,
+        betCount
+      )
+
+      UGStore.dispatch({ type: 'reset', betShareModel: newData })
     }
   }
 
@@ -102,28 +109,8 @@ const UseVietnamBoard = () => {
    * 选中的注数
    */
   const betCount = useMemo<number>(() => {
-    //选中的条目，如 {'TM' -> {}, 'TM2' -> {}}
-    const gameCode = currentPlayOddData()?.code
-    const gameAlias = currentTabGroupData()[0]?.alias
-    const mapData = filterSelectedSubMap(gameCode, gameAlias, UGStore.globalProps?.selectedData)
+    return vietnamSelectedCount()
 
-    //选中的条目，如 [[1,2], [3,4]]
-    const pageArr = dicNull(mapData) ? null : (Object.values(mapData) as SelectedPlayModel[]).map((item) => item.plays)
-
-    const flatArr = pageArr?.flat(Infinity) as PlayData[] //转一维数组
-    if (!arrayEmpty(flatArr) && flatArr[0]?.exFast) {//快速生成的数据，一个算一条，不用交叉计算，比如 宝路 -> 批号2 -> 快速选择
-      return arrayLength(flatArr)
-    }
-
-    //计算组合的数量
-    const newArr = dicNull(pageArr) ? null : combineArr(...pageArr)
-
-    //每个条目都需要选数据，才计算，比如 批号2 十 个 都选择了数据
-    if (arrayLength(pageArr) == arrayLength(currentTabGroupData())) {
-      return arrayLength(newArr)
-    }
-
-    return 0
   }, [UGStore.globalProps?.selectedData])
 
   /**
@@ -131,6 +118,7 @@ const UseVietnamBoard = () => {
    */
   const betMoney = useMemo<string>(() => {
     const money = betCount * priceOfItem()
+    UGStore.dispatch({ type: 'reset', inputMoney: money })
     return money.toString()
   }, [betCount])
 

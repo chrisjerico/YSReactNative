@@ -116,11 +116,11 @@ const BetVietnamComponent = ({ lockedItem, style }: IBetVietnamParams) => {
             <UGText style={_styles.lottery_count_hint}>注数</UGText>
             <View style={CommStyles.flex}/>
           </View>
-          <TextInput value={UGStore.globalProps?.inputMoney?.toString()}
+          <TextInput value={UGStore.globalProps?.betCount?.toString()}
                      style={_styles.input_text}
                      maxLength={11}
                      onChangeText={(s) => {
-                       UGStore.dispatch({ type: 'reset', inputMoney: Number(s) })
+                       UGStore.dispatch({ type: 'reset', betCount: Number(s) })
                      }}
                      keyboardType={'numeric'}/>
         </View>

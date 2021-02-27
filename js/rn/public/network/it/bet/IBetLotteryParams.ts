@@ -9,6 +9,7 @@ export interface IBetLotteryParams {
   token?: string // s6ugQHBhQapsrPR66kmRr7GH
   totalMoney?: string //总金额
   totalNum?: string //选中数据
+  betMultiple?: string // 越南彩 注数
   isInstant?: string//：是否是即开彩：1=是，0=否
 
   betBean?: Array<BetLotteryData>

@@ -65,6 +65,7 @@ const clearLotteryData = () => {
     chatArray: [],
     shareChatModel: {},
     inputMoney: 0,
+    betCount: 0,
     sliderValue: 0,
     selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
   })

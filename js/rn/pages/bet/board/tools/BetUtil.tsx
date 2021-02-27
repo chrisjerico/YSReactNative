@@ -8,7 +8,7 @@ import { playDataX } from './zxbz/BetZXBZUtil'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import {
   filterSelectedDataCount,
-  filterSelectedSubCount,
+  filterSelectedSubCount, filterSelectedSubMap,
   playDataUniqueId,
   subCountOfSelectedBalls,
 } from '../../util/LotteryUtil'
@@ -309,6 +309,34 @@ const checkClickCount = (ballData?: PlayData | ZodiacNum, playOddData?: PlayOddD
   return true
 }
 
+/**
+ * 越南彩选中了多少个
+ */
+const vietnamSelectedCount = (): number => {
+  //选中的条目，如 {'TM' -> {}, 'TM2' -> {}}
+  const gameCode = currentPlayOddData()?.code
+  const gameAlias = currentTabGroupData()[0]?.alias
+  const mapData = filterSelectedSubMap(gameCode, gameAlias, UGStore.globalProps?.selectedData)
+
+  //选中的条目，如 [[1,2], [3,4]]
+  const pageArr = dicNull(mapData) ? null : (Object.values(mapData) as SelectedPlayModel[]).map((item) => item.plays)
+
+  const flatArr = pageArr?.flat(Infinity) as PlayData[] //转一维数组
+  if (!arrayEmpty(flatArr) && flatArr[0]?.exFast) {//快速生成的数据，一个算一条，不用交叉计算，比如 宝路 -> 批号2 -> 快速选择
+    return arrayLength(flatArr)
+  }
+
+  //计算组合的数量
+  const newArr = dicNull(pageArr) ? null : combineArr(...pageArr)
+
+  //每个条目都需要选数据，才计算，比如 批号2 十 个 都选择了数据
+  if (arrayLength(pageArr) == arrayLength(currentTabGroupData())) {
+    return arrayLength(newArr)
+  }
+
+  return 0
+}
+
 
 /**
  * 计算彩票下注时候，选中的条目数量是否符合要求
@@ -323,6 +351,15 @@ const checkBetCount = (): boolean => {
   const selectedData = UGStore.globalProps?.selectedData //选中的数据
 
   switch (true) {
+    case gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_haboivip:  // 越南彩
+      const vieCount = vietnamSelectedCount()
+      if(vieCount < 1) {
+        showHintToast(1, curTabGroupData[0]?.alias)
+        return false
+      }
+
+      break
+
     case gameCode == LhcCode.WX && gameType == LCode.cqssc:  //五星
       for (let data of curTabGroupData) {
         const subAlias = data?.exPlays[0]?.alias
@@ -706,6 +743,26 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
     const groupAlias = arrayEmpty(pageData) ? null : pageData[0]?.playGroups?.alias
 
     switch (true) {
+      case gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_haboivip: // 越南彩
+        if (arrayLength(pageData) > 1) {
+          const viePlays = pageData?.map((item) => item?.plays) //原来的数据有几组，[[0,4],[7,8]]
+          const newPlays: Array<Array<PlayData>> = combineArr(...viePlays)//重组后的新数据 [[0,7],[0,8],[4,7],[4,8]]
+          const newPage: SelectedPlayModel = {
+            ...pageData[0],
+            viePlays: viePlays,
+            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+              ...arr[0],
+              name: arr?.map((item) => item?.name).join('|'),
+            } as PlayData)),
+          }
+          // ugLog('combineSelectedData newPage = ', gameCode, JSON.stringify(newPage))
+          return newPage
+        }
+
+        //ugLog('combineSelectedData newArr 2 = ', gameCode, JSON.stringify([pageData]))
+
+        return [pageData]
+
       case gameCode == LhcCode.LX://连肖
       case gameCode == LhcCode.LW://连尾
         return pageData?.map((item) => {
@@ -839,6 +896,14 @@ const generateBetNameArray = (nextIssueData?: NextIssueData,
     const groupAlias = selModel?.playGroups?.alias
 
     switch (true) {
+      case gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_haboivip: // 越南彩
+        playNameArray.push({
+          playName1: groupAlias,
+          vieName: selModel?.plays?.map((play) => play?.name),
+          exFlag: '0',
+        } as PlayNameArray)
+        break
+
       case gameCode == LhcCode.LX: //连肖
       case gameCode == LhcCode.LW: //连尾
         selModel?.plays?.map((playData) => {
@@ -918,6 +983,24 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
     const groupAlias = selModel?.playGroups?.alias
 
     switch (true) {
+      case gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_haboivip: // 越南彩
+      {
+        const groupPlay0 = selModel?.playGroups?.plays[0]
+        const play0 = selModel?.plays[0]
+        const nameArr = selModel?.viePlays?.map((itemArr) => itemArr?.map((play) => play?.name).toString())
+        const name = nameArr?.join('|') // 0,1,1 | 3,4,5
+
+        betBeanArray.push({
+          money: inputMoney,
+          playId: groupPlay0?.id,
+          odds: play0?.odds,//连码可以不传
+          playIds: nextIssueData?.id,
+          betInfo: name,
+          exFlag: playDataUniqueId(play0),
+        } as BetLotteryData)
+      }
+        break
+
       case gameCode == LhcCode.LX: //连肖
       case gameCode == LhcCode.LW: //连尾
         selModel?.plays?.map((playData) => {
@@ -1026,11 +1109,13 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
  * @param activeReturnCoinRatio 退水
  * @param inputMoney 下注金额
  * @param selectedData 选中的数据
+ * @param betCount 下注数量，比如越南彩
  */
 const generateBetArray = (nextIssueData?: NextIssueData,
                           activeReturnCoinRatio?: string,
                           inputMoney?: string,
-                          selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>): BetShareModel => {
+                          selectedData?: Map<string, Map<string, Map<string, SelectedPlayModel>>>,
+                          betCount?: number): BetShareModel => {
   const gameType = UGStore.globalProps?.playOddDetailData?.game?.gameType //彩种类别，六合彩 秒秒彩
 
   const combinationData = combineSelectedData(selectedData)
@@ -1082,6 +1167,7 @@ const generateBetArray = (nextIssueData?: NextIssueData,
     playNameArray: playNameArray,
     betBean: betBeanArray,
     totalNums: totalNum,
+    betCount: betCount
   } as BetShareModel
 
   ugLog('下注数据 newData =', JSON.stringify(newData))
@@ -1098,4 +1184,5 @@ export {
   generateBetArray,
   filterShareItem,
   prepareSelectedBetData,
+  vietnamSelectedCount,
 }
