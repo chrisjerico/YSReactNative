@@ -745,12 +745,13 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
     switch (true) {
       case gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_haboivip: // 越南彩
         if (pageData[0]?.vieSelectFastly) {//快速选择
-          const viePlays = [pageData[0]?.plays] //只有一组数据
+          const viePlays = [pageData[0].plays] //只有一组数据 [[11, 22, 33]]
+          const newPlays: Array<Array<PlayData>> = viePlays[0].map((item) => [item])//重组后的新数据 [[11],[22],[33]]
 
           const newPage: SelectedPlayModel = {
             ...pageData[0],
             viePlays: viePlays,
-            plays: viePlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
               ...arr[0],
               name: arr?.map((item) => item?.name).join(';'),
             } as PlayData)),
@@ -768,7 +769,7 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
           viePlays: viePlays,
           plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
             ...arr[0],
-            name: arr?.map((item) => item?.name).join('|'),
+            name: arr?.map((item) => item?.name).join('|'), //最后生成的组合情况 0|1, 2|2, 2|5
           } as PlayData)),
         }
         return newPage
@@ -995,19 +996,36 @@ const generateBetInfoArray = (nextIssueData?: NextIssueData,
     switch (true) {
       case gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_haboivip: // 越南彩
       {
-        const groupPlay0 = selModel?.playGroups?.plays[0]
-        const play0 = selModel?.plays[0]
-        const nameArr = selModel?.viePlays?.map((itemArr) => itemArr?.map((play) => play?.name).toString())
-        const name = nameArr?.join('|') // 0,1,1 | 3,4,5
+        if (selModel?.vieSelectFastly) { //快速选择
+          const groupPlay0 = selModel?.playGroups?.plays[0]
+          const play0 = selModel?.plays[0]
+          const nameArr = selModel?.viePlays?.map((itemArr) => itemArr?.map((play) => play?.name))
+          const name = nameArr?.join(';') // 00;33
 
-        betBeanArray.push({
-          money: inputMoney,
-          playId: groupPlay0?.id,
-          odds: play0?.odds,//连码可以不传
-          playIds: nextIssueData?.id,
-          betInfo: name,
-          exFlag: playDataUniqueId(play0),
-        } as BetLotteryData)
+          betBeanArray.push({
+            money: inputMoney,
+            playId: groupPlay0?.id,
+            odds: play0?.odds,//连码可以不传
+            playIds: nextIssueData?.id,
+            betInfo: name,
+            exFlag: playDataUniqueId(play0),
+          } as BetLotteryData)
+
+        } else { //普通选择
+          const groupPlay0 = selModel?.playGroups?.plays[0]
+          const play0 = selModel?.plays[0]
+          const nameArr = selModel?.viePlays?.map((itemArr) => itemArr?.map((play) => play?.name).toString())
+          const name = nameArr?.join('|') // 0,1,1 | 3,4,5
+
+          betBeanArray.push({
+            money: inputMoney,
+            playId: groupPlay0?.id,
+            odds: play0?.odds,//连码可以不传
+            playIds: nextIssueData?.id,
+            betInfo: name,
+            exFlag: playDataUniqueId(play0),
+          } as BetLotteryData)
+        }
       }
         break
 
@@ -1165,6 +1183,7 @@ const generateBetArray = (nextIssueData?: NextIssueData,
       break
   }
 
+  const vieSelectFastly = combinationData[0]?.vieSelectFastly
   const newData = {
     ftime: (moment(nextIssueData?.curCloseTime).toDate().getTime() / 1000).toString(),
     singleAmount: inputMoney,
@@ -1177,7 +1196,8 @@ const generateBetArray = (nextIssueData?: NextIssueData,
     playNameArray: playNameArray,
     betBean: betBeanArray,
     totalNums: totalNum,
-    betCount: betCount
+    betCount: betCount,
+    vieSelectFastly
   } as BetShareModel
 
   ugLog('下注数据 newData =', JSON.stringify(newData))

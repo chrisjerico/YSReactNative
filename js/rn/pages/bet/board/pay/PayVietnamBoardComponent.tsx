@@ -73,6 +73,9 @@ const PayVietnamBoardComponent = ({ showCallback }: IPayVietnamBoardComponent, r
     </View>)
   }
 
+  /**
+   * 绘制条目
+   */
   const itemViewArr = betShareModel?.betBean?.map((betInfo, index) => {
     const nameArr = betShareModel?.playNameArray[index]
     return renderItem(nameArr, betInfo, betShareModel)
@@ -116,23 +119,29 @@ const PayVietnamBoardComponent = ({ showCallback }: IPayVietnamBoardComponent, r
             <UGText style={[_styles.bet_result_total_money,
               { color: Skin1.themeColor }]}>{totalMoney}</UGText>
           </View>
-          <View style={_styles.last_info_container}>
-            <UGText style={_styles.bet_result}>{'组合明细：'}</UGText>
-          </View>
-          <ScrollView style={_styles.sv_bet_brick_container}
-                      showsVerticalScrollIndicator={false}>
-            <View style={_styles.bet_brick_container}>
-              {
-                betShareModel?.playNameArray[0]?.vieName?.map((play, index) => (
-                  <Text key={play + index}
-                        style={[
-                          _styles.brick_text,
-                          { backgroundColor: skin1.themeColor },
-                        ]}>{play}</Text>
-                ))
-              }
+          {
+            //选择号码才 显示组合明细
+            !betShareModel?.vieSelectFastly && <View style={_styles.last_info_container}>
+              <UGText style={_styles.bet_result}>{'组合明细：'}</UGText>
             </View>
-          </ScrollView>
+          }
+          {
+            //选择号码才 显示组合明细
+            !betShareModel?.vieSelectFastly && <ScrollView style={_styles.sv_bet_brick_container}
+                        showsVerticalScrollIndicator={false}>
+              <View style={_styles.bet_brick_container}>
+                {
+                  betShareModel?.playNameArray[0]?.vieName?.map((play, index) => (
+                    <Text key={play + index}
+                          style={[
+                            _styles.brick_text,
+                            { backgroundColor: skin1.themeColor },
+                          ]}>{play}</Text>
+                  ))
+                }
+              </View>
+            </ScrollView>
+          }
           <View style={_styles.bt_container}>
             <UGText style={_styles.pay_bt}
                     onPress={() => showCallback && showCallback()}>{'取消'}</UGText>
@@ -144,7 +153,8 @@ const PayVietnamBoardComponent = ({ showCallback }: IPayVietnamBoardComponent, r
                         Toast(data?.msg)
                         showCallback(data?.data)
                       })
-                    }}>{'确定'}</UGText>
+                    }}>{'确定'}
+            </UGText>
           </View>
         </View>
       </Modal>

@@ -25,6 +25,7 @@ export interface BetShareModel {
   betBean?: Array<BetLotteryData> //下注数据
   tag?: string //3
 
+  vieSelectFastly: boolean, //本地使用，快速选择，越南彩里面有
   betCount?: number //本地使用，注数，越南彩有
 }
 
