@@ -1,6 +1,15 @@
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import {
+  Alert,
+  AlertOptions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
 import * as React from 'react'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { scale } from '../../../../../public/tools/Scale'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
@@ -35,6 +44,7 @@ interface IRouteParams {
 const PayListComponent = ({ changeTabCount }: IRouteParams) => {
 
   const { refreshTabPage } = useContext(CapitalContext)
+  const [dialogShowing, setDialogShowing] = useState(false)
 
   const {
     refreshCT,
@@ -44,12 +54,24 @@ const PayListComponent = ({ changeTabCount }: IRouteParams) => {
 
   //TAB切换过就提示一次
   useEffect(() => {
-    if (payBigData?.rechargePopUpAlarmSwitch == '1') { //没有提示就提示一次
-      Alert.alert('温馨提示', payBigData?.rechargePopUpAlarmMsg, [
+    if (payBigData?.rechargePopUpAlarmSwitch == '1' && !dialogShowing) { //没有提示就提示一次
+      setDialogShowing(true)
+      Alert.alert('温馨提示',
+        payBigData?.rechargePopUpAlarmMsg,
+        [
+          {
+            text: '确定',
+            onPress: value => {
+              setDialogShowing(false)
+            }
+          },
+        ],
         {
-          text: '确定',
-        },
-      ])
+          onDismiss: () => {
+            setDialogShowing(false)
+          }
+        }
+    )
     }
   }, [changeTabCount, payBigData?.rechargePopUpAlarmMsg])
 
