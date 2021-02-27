@@ -9,7 +9,6 @@ import { AlipayView } from '../../public/components/alipay/AlipayView'
 import { FeedbackRecordView } from '../../public/components/FeedbackRecordView'
 import { FeedbackSubmitView } from '../../public/components/FeedbackSubmitView'
 import { FeedbackView } from '../../public/components/FeedbackView'
-import Game3rdView from '../../public/components/Game3rdView'
 import { OnlineService } from '../../public/components/OnlineService'
 import OtherRecord from '../../public/components/OtherRecord'
 import { SupFeedbackSubmitView } from '../../public/components/SupFeedbackSubmitView'
@@ -161,6 +160,8 @@ import { Platform } from 'react-native'
 import { H5WebPage } from '../base/H5页面/H5WebPage'
 import { JSLuzhuPage } from '../base/H5页面/JSLuzhuPage'
 import PromotionDetailPage from '../../pages/base/PromotionDetailPage'
+import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
+import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
 
 /**
  * 所有界面
