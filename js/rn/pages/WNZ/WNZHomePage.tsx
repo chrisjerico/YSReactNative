@@ -91,7 +91,6 @@ const WNZHomePage = () => {
       }
       if (HKLHC) {
         HKLHC.pic = img_assets('HKLHC_games_logo')
-        console.log(img_assets('HKLHC_games_logo'))
         res.push(HKLHC)
       }
       if (EMLHC) {
