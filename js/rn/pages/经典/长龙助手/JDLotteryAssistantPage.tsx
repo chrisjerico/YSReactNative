@@ -22,6 +22,7 @@ import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 import { UGStore } from '../../../redux/store/UGStore';
 import { JDInviteCodeGenerateCP } from '../cp/JDInviteCodeGenerateCP';
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import { img_web } from '../../../Res/icon';
 
 interface JDLotteryAssistantPage {
   bottomH?: number,//底部的高度
@@ -37,7 +38,7 @@ const JDLotteryAssistantPage = () => {
       bottomH: 60,
       items: [],
       isRefreshing: true,
-      imgLoading: 'https://appstatic.guolaow.com/web/images/loading.png'
+      imgLoading: img_web('images/loading')
     }
   )
 
@@ -367,7 +368,7 @@ const JDLotteryAssistantPage = () => {
 
       didFocus: () => {
         v.bottomH = 60;
-        v.imgLoading = 'https://appstatic.guolaow.com/web/images/loading.png'
+        v.imgLoading = img_web('images/loading')
         onHeaderRefresh()
       }
     })

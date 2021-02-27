@@ -43,6 +43,7 @@ export const img_fullPath = (path: string, type: ImageType = 'png') => getImage(
 export const img_vueTemplate = (path: string, type: ImageType = 'png') => getImage(undefined, 'static/vueTemplate/vue/images/{p1}', path, undefined, type)
 // git服务器的图片
 export const img_assets = (path: string, type: ImageType = 'png') => getImage(UGImageHost.git, 'assets/{p1}', path, undefined, type) 
+export const img_web = (path: string, type: ImageType = 'png') => getImage(UGImageHost.git, 'web/{p1}', path, undefined, type)
 export const img_root = (path: string, type: ImageType = 'png') => getImage(UGImageHost.git, '{p1}', path, undefined, type)
 export const img_doy = (path: string, type: ImageType = 'png') => getImage(UGImageHost.git, 'doy/{p1}', path, undefined, type)
 
