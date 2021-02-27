@@ -26,15 +26,25 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
-    // 站内信
-    // 在线客服
+    // 活动彩金
     pages.push({
-      rnName: PageName.OnlineService,
-      userCenterItemCode: 14,
+      rnName: PageName.ActivityRewardPage,
+      vcName: 'UGMosaicGoldViewController',
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
     })
+
+        // 站内信
+        pages.push({
+          rnName: PageName.UserMessagePage,
+          vcName: 'UGMailBoxTableViewController',
+          fd_prefersNavigationBarHidden: true,
+          允许游客访问: true,
+          允许未登录访问: true,
+        })
+
+
   }
 
   // 测试环境（未上线的内容）
@@ -53,6 +63,14 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(KSPages) // [pages addObjectsFromArray:多个页面]
     }
 
+    // 站内信
+    pages.push({
+      rnName: PageName.UserMessagePage,
+      vcName: 'UGMailBoxTableViewController',
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
     // 在线客服
     pages.push({
       rnName: PageName.OnlineService,

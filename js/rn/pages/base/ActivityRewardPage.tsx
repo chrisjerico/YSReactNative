@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
@@ -15,10 +15,11 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import ProgressCircle from '../../public/views/temp/ProgressCircle'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
-import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
+import { ugLog } from '../../public/tools/UgLog'
 
 interface ApplyRewardProps {
   tabLabel: string
+  titleArray: any[]
   list: any[]
   onPress: () => any
   onPressApply: ({ win_apply_content, quickAmounts, id }: { win_apply_content: string; quickAmounts: string[]; id: string }) => any
@@ -70,24 +71,29 @@ const RewardList = ({ tabLabel, data, uniqueKey, onPress, onPressApply }) => (
   />
 )
 
-const ApplyReward = ({ tabLabel, list, onPress, onPressApply }: ApplyRewardProps) => {
-  let categoryList = {}
-  list?.forEach((item) => {
-    const categoryName = item?.categoryName
-    if (categoryList[categoryName]) {
-      categoryList[categoryName]?.push(item)
-    } else {
-      categoryList[categoryName] = [item]
-    }
-  })
+function dataAction(category: string, list: any[],) {
+  if (category === '0') {
+    return list;
+  } else {
+    return list?.filter((item) => item?.category == category)
+  }
 
+}
+
+const ApplyReward = ({ tabLabel, titleArray, list, onPress, onPressApply }: ApplyRewardProps) => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollableTabView tabBarUnderlineStyle={{ backgroundColor: Skin1.themeColor }} tabBarActiveTextColor={Skin1.themeColor}>
-        <RewardList tabLabel={'全部'} uniqueKey={'ApplyReward_全部'} data={list} onPress={onPress} onPressApply={onPressApply} />
-        {Object.keys(categoryList)?.map((key) => {
-          return <RewardList key={key} tabLabel={key} uniqueKey={'ApplyReward_' + key} data={categoryList[key]} onPress={onPress} onPressApply={onPressApply} />
-        })}
+        {
+          titleArray?.map((item, index) => {
+            return (
+              <View tabLabel={item.categoryName}>
+                <RewardList uniqueKey={'ApplyReward_' + item.categoryName} data={dataAction(item.category, list)} onPress={onPress} onPressApply={onPressApply} />
+              </View>
+            )
+          },
+          )
+        }
       </ScrollableTabView>
     </View>
   )
@@ -122,18 +128,39 @@ const ApplyFeedBack = ({ tabLabel, list }) => {
 
 const ActivityRewardPage = () => {
   const [loading, setLoading] = useState(true)
-  const [winApplyList, setWinApplyList] = useState([])
+  const [winApplyList, setWinApplyList] = useState([])//申请活动彩金列表
+  const [itemArray, setItemArray] = useState([])//申请活动彩金标题列表
   const [applyWinLog, setApplyWinLog] = useState([])
 
   const [activityVisible, setActivityVisible] = useState(false)
   const [applyVisible, setApplyVisible] = useState(false)
   const [activityContent, setActivityContent] = useState('')
-  const [quickAmounts, setQuickAmounts] = useState([])
-  const [applyMoney, setApplyMoney] = useState(null)
-  const [applyDescription, setApplyDescription] = useState(null)
-  const [applyImgCaptcha, setApplyImgCaptcha] = useState(null)
-  const [imgCaptcha, setImgCaptcha] = useState('')
-  const [id, setId] = useState('')
+
+
+  // 删除未分类
+  function filterByName(aim: [], category: string) {
+    return aim.filter(item => item.category !== category)
+  }
+  // 去掉重复
+  function filterCF(jsonArray) {
+    //前端对象数组 按某个属性去重
+    var obj = {};
+    jsonArray = jsonArray.reduce(function (item, next) {
+      obj[next.category] ? '' : obj[next.category] = true && item.push(next);
+      return item;
+    }, []);
+    return jsonArray;
+  }
+  // 只要category 和 categoryName
+  function newArrayAction(array) {
+    let newArr = [];
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      newArr.push({ 'categoryName': element.categoryName, 'category': element.category })
+    }
+    return newArr;
+  }
+
   useEffect(() => {
     Promise.all([
       APIRouter.activity_winApplyList().catch((error) => {
@@ -149,6 +176,12 @@ const ActivityRewardPage = () => {
       .then((value) => {
         //@ts-ignore
         const winApplyList = value[0]?.data?.data?.list
+        //删除未分类
+        let unArray = filterByName(winApplyList, '-1')
+        let newArray = newArrayAction(unArray)
+        let cfArray = filterCF(newArray)
+        cfArray.unshift({ 'categoryName': '全部', 'category': '0' })
+        setItemArray(cfArray)//给标题赋值
         //@ts-ignore
         const applyWinLog = value[1]?.data?.data?.list
         //@ts-ignore
@@ -162,6 +195,20 @@ const ActivityRewardPage = () => {
       })
   }, [])
 
+  function headerTitle() {
+    let str: string = '申请反馈';
+    if (AppDefine.inSites('c217')) {
+      str = '审核进度'
+    } else {
+      if (AppDefine.inSites('c245')) {
+        str = '申请结果'
+      }
+    }
+    return str;
+  }
+
+
+
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
@@ -171,23 +218,22 @@ const ActivityRewardPage = () => {
         {loading ? (
           <ProgressCircle />
         ) : (
-          <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false}>
-            <ApplyReward
-              tabLabel={'申请彩金'}
-              list={winApplyList}
-              onPress={() => {
-                setActivityVisible(true)
-              }}
-              onPressApply={({ win_apply_content, quickAmounts, id }) => {
-                setActivityContent(win_apply_content)
-                setQuickAmounts(quickAmounts)
-                setId(id)
-                setApplyVisible(true)
-              }}
-            />
-            <ApplyFeedBack tabLabel={'申请反馈'} list={applyWinLog} />
-          </ScrollableTabViewComponent>
-        )}
+            <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false}>
+              <ApplyReward
+                tabLabel={'申请彩金'}
+                titleArray={itemArray}
+                list={winApplyList}
+                onPress={() => {
+                  setActivityVisible(true)
+                }}
+                onPressApply={({ win_apply_content }) => {
+                  setApplyVisible(true)
+                  setActivityContent(win_apply_content)
+                }}
+              />
+              <ApplyFeedBack tabLabel={headerTitle()} list={applyWinLog} />
+            </ScrollableTabViewComponent>
+          )}
       </View>
       <Modal transparent={true} style={{ flex: 1, backgroundColor: 'transparent' }} visible={activityVisible}>
         <View style={{ backgroundColor: 'transparent', flex: 1, justifyContent: 'center', alignItems: 'center' }}>

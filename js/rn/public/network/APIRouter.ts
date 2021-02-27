@@ -200,19 +200,13 @@ class APIRouter {
   }
 
   static user_msgList = async (page: number = 1) => {
-    let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams = 'token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        tokenParams = 'token=' + pms?.token
-        break
+    
+    let tokenParams = {
+      rows: 20,
+      page: page,
     }
 
-    return httpClient.get<UserMsgListModel>('c=user&a=msgList&rows=20&type=&page=' + page + tokenParams)
+    return httpClient.get<UserMsgListModel>('c=user&a=msgList', { params: tokenParams })
   }
 
   static game_homeRecommend = async () => {

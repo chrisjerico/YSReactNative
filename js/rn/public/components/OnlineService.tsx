@@ -25,10 +25,11 @@ const levelArray = [
   { value: 3, label: '游戏大厅' },
 ];
 
+let guestToken;
 
 export const OnlineService = () => {
   const [title, setTitle] = useState<string>()
-  const [guestToken, setGuestToken] = useState<string>()
+  const [reload,setReload] = useState<boolean>(false)
 
   const systemConf = UGStore.globalProps.sysConf
   const { zxkfUrl, zxkfUrl2 } = systemConf
@@ -44,49 +45,52 @@ export const OnlineService = () => {
     if (!isLogin && !guestToken) {
       api.user.guestLogin().useSuccess(({ data }) => {
         const { "API-SID": token } = data
-        ugLog('token ==',token)
-        setGuestToken(token)
+        ugLog('token ==', token)
+        guestToken =  token;
+        setReload(!reload)
       })
     }
-  }, [userToken])
+  }, [])
 
-  ugLog('AppDefine.host ==', AppDefine.host)
-
-  //返回最后的url
+ //返回最后的url
   function getWebURL() {
     let retURl: string;
     [zxkfUrl, zxkfUrl2].forEach((url) => {
-      if (!anyEmpty(url)) {
+      if (!anyEmpty(url && checkUrlWithString(url))) {
+        //拼接URl
         const token = isLogin ? userToken : guestToken
-        if (checkUrlWithString(url)) {
-          const token = isLogin ? userToken : guestToken
-          ugLog('token ==',token)
-          //拼接URl
-          retURl = `${url}?from=app&hideHeader=1&token=${token}`;     
-        } else {
-          var strArray = AppDefine.host.split('://')
-          ugLog('strArray[1] ===', strArray[1])
-          if (url.indexOf(strArray[1]) > 0) {
-            const token = isLogin ? userToken : guestToken
-            //拼接URl
-            retURl = `http://${url}?from=app&hideHeader=1&token=${token}`;
-          } else {
-            const token = isLogin ? userToken : guestToken
-            //拼接URl
-            retURl = `${AppDefine.host}/${url}?from=app&hideHeader=1&token=${token}`;
-          }
-         
-        }
-        return;
+        retURl = getRetURL(url,token);
+        return
       }
     })
-    ugLog('retURl ==', retURl)
     if (!retURl) {
       ugLog('zxkfUrl2 链接有问题==', zxkfUrl2)
       ugLog('zxkfUrl1 链接有问题==', zxkfUrl)
     }
+    ugLog('retURl 链接==', retURl)
     return retURl;
   }
+
+  //url截取
+  function getRetURL(url: string,token:string) {
+    let retURl: string;
+    if (!anyEmpty(url)) {
+      if (checkUrlWithString(url)) {
+        retURl = `${url}?from=app&hideHeader=1&token=${token}`;
+      } else {
+        var strArray = AppDefine.host.split('://')
+        ugLog('strArray[1] ===', strArray[1])
+        if (url.indexOf(strArray[1]) > 0) {
+          const token = isLogin ? userToken : guestToken
+          retURl = `http://${url}?from=app&hideHeader=1&token=${token}`;
+        } else {
+          retURl = `${AppDefine.host}/${url}?from=app&hideHeader=1&token=${token}`;
+        }
+      }
+    }
+    return retURl;
+  }
+
   const webUrl = getWebURL()
 
   let capitalController //类型选择
@@ -169,7 +173,7 @@ export const OnlineService = () => {
         {(isLogin || guestToken) && <WebView
           injectedJavaScript={script}
           onMessage={(event) => {
-            setTitle(event.nativeEvent.title)
+            setTitle( anyEmpty(event.nativeEvent.title) ? '在线客服':event.nativeEvent.title)
           }}
           style={{ flex: 1, }} containerStyle={{ flex: 1, }} source={{ uri: webUrl }}
         />}

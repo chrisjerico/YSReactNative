@@ -17,6 +17,7 @@ export interface PlayData {
 
   exPlayIds?: string //部分彩种下注的时候需要联合其它彩种的ID 如 连肖
   exId?: string // 部分彩种的ID不是唯一的，就生成本地唯一识别ID, 优先使用本地ID 避免重复，如 TM-特码B-708550
+  exFast?: boolean //这个数据是不是 快速生成的，比如 宝路 -> 批号2 -> 快速选择
   // exName?: string//本地定义 名字
   // exOdds?: string//本地定义 赔率
   exZodiac?: ZodiacNum //本地定义 对应的生肖数据

@@ -117,7 +117,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test07.6yc.com',
   ],
   'txt126': [
-    'http://t126f.6yc.com',
+    'http://t126p.fhptdev.com',
   ],
   'txt127': [
     'http://t127f.fhptcdn.com',
@@ -138,7 +138,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t126f.6yc.com',
+    'http://t126p.fhptdev.com',
   ],
   'tstksm': [
     'http://t133f.6yc.com',
@@ -219,11 +219,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://jmxgnd6.cc',
   ],
   'c085ahy': [
-    'https://www.jmhnnn1.cc',
-    'https://www.jmsfds2.cc',
-    'https://www.jmsddv3.cc',
-    'https://www.jmnhhn4.cc',
-    'https://www.jmfgvn5.cc',
+    'https://jmxgnd6.cc',
+    'https://jmxgnk7.cc',
+    'https://jmxghn8.cc',
+    'https://jmxgnj9.cc',
+    'https://jmxdn10.cc',
   ],
   'c085yw': [
     'https://x558.cc',
@@ -391,11 +391,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771bb771.com',
-    'https://771771s.com',
-    'https://771771i.com',
-    'https://771771j.com',
-    'https://771771k.com',
+    'https://771vv771.com',
+    'https://771ww771.com',
+    'https://771xx771.com',
+    'https://771yy771.com',
+    'https://771zz771.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
@@ -404,11 +404,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://00998800b.com',
-    'https://0980gg.com',
-    'https://098545a.com',
-    'https://098hg.net',
-    'https://123kkdd.com',
+    'https://899743b.com',
+    'https://87311aa.com',
+    'https://678pk.net',
+    'https://1mmmm.net',
+    'https://168hjkm.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -417,7 +417,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://app77787.co',
   ],
   'c225': [
-    'https://8393483.com',
+    'https://51666dd.com',
+    'https://51666ee.com',
+    'https://51666ff.com',
+    'https://51666hh.com',
   ],
   'c230': [
     'https://www.jdapp588.com',
@@ -493,7 +496,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'l002': [
     'https://70333b.org',
-    'https://70333k.org',
+    'https://70333q.vip',
     'https://70333c.org',
     'https://70333m.org',
     'https://70333n.org',

@@ -17,6 +17,7 @@ import { showError, showSuccess } from '../../../public/widget/UGLoadingCP';
 import { ImagePlaceholder } from '../tools/ImagePlaceholder';
 import { JDCLTimeCP } from './JDCLTimeCP';
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import { img_web } from '../../../Res/icon';
 
 export interface JDLotteryAssistantCPAction {
   stopTime?: () => void
@@ -34,7 +35,7 @@ const JDLotteryAssistantCP = ({ c_ref }: { c_ref: JDLotteryAssistantCPAction }) 
   const [text, setText] = React.useState('');
   const itemHeight = 96
   const bottomH: number = 60; //底部的高度
-  const imgLoading: string = 'https://appstatic.guolaow.com/web/images/loading.png';//默认图片
+  const imgLoading: string = img_web('images/loading');//默认图片
   let [selAideModel, setSelAideModel] = useState<UGChanglongaideModel>()//长龙
   let [selBetItem, setSelBetItem] = useState<UGBetItemModel>()//投注
   let [betCount, setBetCount] = useState<number>(0)//下注数

@@ -22,6 +22,7 @@ import { UGSignInHistoryModel } from '../../redux/model/other/UGSignInHistoryMod
 import AppDefine from '../define/AppDefine'
 import { Toast } from '../tools/ToastUtils'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import { img_assets, img_web } from '../../Res/icon'
 
 export const FeedbackSubmitView = ({ route }) => {
   const [content, setContent] = useState('')
@@ -29,7 +30,7 @@ export const FeedbackSubmitView = ({ route }) => {
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([
     {
       idKey: 'add',
-      imgUrl: 'https://appstatic.guolaow.com/assets/addimg.png',
+      imgUrl: img_assets('addimg')
     },
 
   ])
@@ -146,7 +147,7 @@ export const FeedbackSubmitView = ({ route }) => {
                         <View style={{ flex: 1 }} />
                         <View style={[{ height: 40, width: 40, marginTop: 0, flexDirection: 'row' }]}>
                           <View style={{ flex: 1 }} />
-                          <Image style={[{ height: 25, width: 25, marginRight: 0 }]} source={{ uri: 'https://appstatic.guolaow.com/web/platform/c069/templates/images/close.png' }} />
+                          <Image style={[{ height: 25, width: 25, marginRight: 0 }]} source={{ uri: img_web('platform/c069/templates/images/close') }} />
                         </View>
                       </TouchableOpacity>
                     )

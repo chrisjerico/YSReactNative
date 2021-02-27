@@ -57,7 +57,9 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
       titleArr = [`十`]
       break
 
+    case gameCode == HoChiMin.DDQX: //地段倾斜
     case gameCode == HoChiMin.LBXC: //来宾线程
+    case gameCode == HoChiMin.CQ: //抽签
     case playCode == HoChiMinSub.PIHAO2:  //批号2
     case playCode == HoChiMinSub.LOT2FIRST:  //Lot2第一个号码"
     case playCode == HoChiMinSub.DIDUAN2:  //地段2 1K
@@ -70,6 +72,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
           alias: '00-99',
           odds: showOdds,
           enable: play0?.enable,
+          exFast: true,
         } as PlayData)),
       ]
       break
@@ -87,6 +90,7 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
             alias: `${threeDigit(stIndex)}-${threeDigit(stIndex + 99)}`,
             odds: showOdds,
             enable: play0?.enable,
+            exFast: true,
           } as PlayData
         })
       })
@@ -117,9 +121,10 @@ const createBalls = (gameType?: string, playOddData?: PlayOddData, groupData?: P
 
     arrArr.push({
       ...groupData,
+      alias: play0?.name,//每个group的alias都相当于 tab 的名字
       plays: [play0],
       exPlays: arr,
-      allHcPlays: arrAll
+      allHcPlays: i == 0 ? arrAll : null //只注入1组就够了，1组就是1页
     })
   }
 

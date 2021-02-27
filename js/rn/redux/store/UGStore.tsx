@@ -14,11 +14,11 @@ import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../r
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import { SelectedPlayModel } from '../model/game/SelectedLotteryModel'
 import { PlayOddDetailData } from '../../public/network/Model/lottery/PlayOddDetailModel'
-import { anyNull, arrayEmpty, mergeObject } from '../../public/tools/Ext'
+import { anyEmpty, anyNull, arrayEmpty, mergeObject } from '../../public/tools/Ext'
 import { NextIssueData } from '../../public/network/Model/lottery/NextIssueModel'
 import { BetShareModel } from '../model/game/bet/BetShareModel'
 import { ChatRoomData } from '../../public/network/Model/chat/ChatRoomModel'
-import { GameTab } from '../../pages/bet/const/LotteryConst'
+import { GameTab, HcmTabOption, SingleOption } from '../../pages/bet/const/LotteryConst'
 import { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 import { ShareChatRoomModel } from '../../public/network/Model/chat/ShareChatRoomModel'
 import { ugLog } from '../../public/tools/UgLog'
@@ -41,7 +41,8 @@ export interface IGlobalState {
   //下注彩票信息相关数据
   lotteryId?: string //当前的彩咱ID，六合彩 秒秒彩
   lotteryTabIndex?: number //当前的彩种处于TAB哪一页
-  singleTabIndex?: number //当前的彩种处于TAB的单式还是复式
+  singleTabIndex?: SingleOption //当前的彩种处于TAB的单式还是复式
+  fastTabIndex?: HcmTabOption //当前的越南彩种处于 选择 输入 还是 快速玩法
   gameTabIndex?: GameTab //GameTab 当前TAB是 彩票0 还是 聊天室1
   currentColumnIndex?: number //当前彩种栏目索引
   betShareModel?: BetShareModel //下注数据结构
@@ -52,6 +53,7 @@ export interface IGlobalState {
   //附加数据
   betChaseMap?: Map<string, BetShareModel> //追号的存档数据
   inputMoney?: number //输入的游戏金额
+  betCount?: number //注数，比如越南彩有该项
   sliderValue?: number //退水拉条数据
 
   //聊天室相关数据
@@ -82,6 +84,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.lotteryId && (state.lotteryId = act.lotteryId)
     act.lotteryTabIndex >= 0 && (state.lotteryTabIndex = act.lotteryTabIndex)
     act.singleTabIndex >= 0 && (state.singleTabIndex = act.singleTabIndex)
+    !anyEmpty(act.fastTabIndex) && (state.fastTabIndex = act.fastTabIndex)
     act.gameTabIndex >= 0 && (state.gameTabIndex = act.gameTabIndex)
     act.currentColumnIndex >= 0 && (state.currentColumnIndex = act.currentColumnIndex)
     act.betShareModel && (state.betShareModel = act.betShareModel)
@@ -95,6 +98,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.selectedData && (state.selectedData = act.selectedData)
     act.betChaseMap && (state.betChaseMap = act.betChaseMap)
     act.inputMoney >= 0 && (state.inputMoney = act.inputMoney)
+    act.betCount >= 0 && (state.betCount = act.betCount)
     act.sliderValue >= 0 && (state.sliderValue = act.sliderValue)
 
   } else if (act.type == 'merge') {

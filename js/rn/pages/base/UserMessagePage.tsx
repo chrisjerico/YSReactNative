@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, Animated, Easing, ImageBackground, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import AutoHeightWebView from 'react-native-autoheight-webview'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ActivityIndicator, Alert, Animated, Easing, ImageBackground, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import PullToRefreshListComponent from '../../public/components/tars/PullToRefreshListComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import { JDMessagePopCP } from '../经典/cp/JDMessagePopCP'
+import { setProps } from './UGPage'
 
 const sleep = async (ms = 0) => {
   return new Promise((r) => setTimeout(r, ms))
@@ -37,89 +37,113 @@ const UserMessagePage = () => {
     outputRange: ['0deg', '180deg'],
   })
 
-  useEffect(() => {
+
+  const { current: v } = useRef<JDMessagePopCP>({})
+  const [cname, setCName] = useState('站内信')
+  const [content, setContent] = useState('')
+
+  function msgList() {
     APIRouter.user_msgList().then((value) => {
       const _list = value?.data?.data.list
       maxPage.current = Math.ceil(value?.data?.data?.total / 20)
       setList(_list)
     })
+  }
+  useEffect(() => {
+    switch (Platform.OS) {
+      case 'ios':
+        setProps({
+          didFocus: (params) => {
+            msgList()
+          }
+        })
+        break;
+      case 'android':
+        msgList()
+        break;
+    }
   }, [])
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader title={'站內信(RN)'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
-      <PullToRefreshListComponent
-        onReleaseToRefresh={async () => {
-          await sleep(1000)
-        }}
-        initialNumToRender={20}
-        uniqueKey={'MessagePage'}
-        onEndReached={() => {
-          if (page.current < maxPage.current) {
-            setLoading(true)
+        <PullToRefreshListComponent
+          onReleaseToRefresh={async () => {
+            page.current = 1
             APIRouter.user_msgList(page.current)
-              .then((value) => {
-                const _list = value?.data?.data.list
-                setList(list?.concat(_list))
-              })
               .finally(() => {
                 page.current = page.current + 1
                 setLoading(false)
               })
-          }
-        }}
-        scrollEnabled={true}
-        data={list}
-        renderItem={({ item }) => {
-          const { content, title, updateTime, isRead, id } = item
-          return (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                APIRouter.user_readMsg(id).finally(() => {
-                  const _list = list?.map((ele) => {
-                    if (ele?.id == id) {
-                      return Object.assign({}, ele, { isRead: 1 })
-                    } else {
-                      return ele
-                    }
-                  })
-                  setList(_list)
+          }}
+          initialNumToRender={20}
+          uniqueKey={'MessagePage'}
+          onEndReached={() => {
+            if (page.current < maxPage.current) {
+              setLoading(true)
+              APIRouter.user_msgList(page.current)
+                .then((value) => {
+                  const _list = value?.data?.data.list
+                  setList(list?.concat(_list))
                 })
-                setAlertBlock({
-                  visible: true,
-                  content,
-                  title,
+                .finally(() => {
+                  page.current = page.current + 1
+                  setLoading(false)
                 })
-              }}>
-              <View style={styles.message}>
-                <UGText style={isRead ? styles.readTextStyle : {}}>{title}</UGText>
-                <UGText style={isRead ? styles.readTextStyle : {}}>{updateTime}</UGText>
-              </View>
-            </TouchableWithoutFeedback>
-          )
-        }}
-        ListFooterComponent={() => {
-          if (page.current >= maxPage.current) {
-            return null
-          } else {
-            if (loading) {
-              return (
-                <View style={{ justifyContent: 'center', alignItems: 'center', height: 50, flexDirection: 'row' }}>
-                  <ActivityIndicator />
-                  <UGText style={{ fontWeight: '500', marginLeft: 20 }}>{'Loading...'}</UGText>
-                </View>
-              )
-            } else {
-              return (
-                <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
-                  <UGText style={{ fontWeight: '500' }}>{'Tap or pull up to load more'}</UGText>
-                </View>
-              )
             }
-          }
-        }}
-      />
+          }}
+          scrollEnabled={true}
+          data={list}
+          renderItem={({ item }) => {
+            const { content, title, updateTime, isRead, id } = item
+            return (
+              <TouchableWithoutFeedback
+
+                onPress={() => {
+                  APIRouter.user_readMsg(id).finally(() => {
+                    const _list = list?.map((ele) => {
+                      if (ele?.id == id) {
+                        return Object.assign({}, ele, { isRead: 1 })
+                      } else {
+                        return ele
+                      }
+                    })
+                    setList(_list)
+                  })
+                  setCName(title)
+                  setContent(content)
+                  v?.showSalaryAlert && v?.showSalaryAlert()
+                }}>
+                <View style={[styles.message, { borderBottomColor: skin1.CLBgColor, backgroundColor: Skin1.textColor4 }]}>
+                  <UGText style={isRead ? [styles.readTextStyle, {  color: '#9D9D9D', }] : [styles.readTextStyle, {  color: skin1.textColor1 }]}>{title}</UGText>
+                  <View style={{flex:1}}/>
+                  <UGText style={isRead ? [styles.read2TextStyle,{ color: '#9D9D9D',}] :  [styles.read2TextStyle, {  color: skin1.textColor1 }]}>{updateTime}</UGText>
+                </View>
+              </TouchableWithoutFeedback>
+            )
+          }}
+          ListFooterComponent={() => {
+            if (page.current >= maxPage.current) {
+              return null
+            } else {
+              if (loading) {
+                return (
+                  <View style={{ justifyContent: 'center', alignItems: 'center', height: 50, flexDirection: 'row' }}>
+                    <ActivityIndicator />
+                    <UGText style={{ fontWeight: '500', marginLeft: 20 }}>{'Loading...'}</UGText>
+                  </View>
+                )
+              } else {
+                return (
+                  <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
+                    <UGText style={{ fontWeight: '500' }}>{'Tap or pull up to load more'}</UGText>
+                  </View>
+                )
+              }
+            }
+          }}
+        />
       <Animated.View style={{ position: 'absolute', bottom: 70, right: 0, height: 100, width: '100%', alignItems: 'flex-end', transform: [{ translateY }] }}>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -157,7 +181,7 @@ const UserMessagePage = () => {
             containerStyle={{ width: '30%', backgroundColor: '#ffffff', borderRadius: 5, aspectRatio: 3, flexDirection: 'row', marginHorizontal: 10 }}
             showLogo
             logoStyle={{ width: '17%', aspectRatio: 1, marginRight: 10 }}
-            titleStyle={{ fontWeight: '600', fontSize: 16 }}
+            titleStyle={{ fontWeight: '600', fontSize: 16, color:'black' }}
             useFastImage={false}
             onPress={() => {
               showLoading()
@@ -180,7 +204,7 @@ const UserMessagePage = () => {
             containerStyle={{ width: '30%', backgroundColor: '#ffffff', borderRadius: 5, aspectRatio: 3, flexDirection: 'row' }}
             showLogo
             logoStyle={{ width: '17%', aspectRatio: 1, marginRight: 10 }}
-            titleStyle={{ fontWeight: '600', fontSize: 16 }}
+            titleStyle={{ fontWeight: '600', fontSize: 16,color:'black' }}
             useFastImage={false}
             onPress={() => {
               showLoading()
@@ -196,67 +220,30 @@ const UserMessagePage = () => {
           />
         </View>
       </Animated.View>
-      <Modal visible={alertBlock?.visible} transparent={true}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <View style={{ width: '80%', height: 200, backgroundColor: '#ffffff', borderRadius: 10 }}>
-            <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
-              <Text>{alertBlock?.title}</Text>
-            </View>
-            <ScrollView style={{ flex: 5, paddingHorizontal: 5 }}>
-              <AutoHeightWebView
-                scalesPageToFit={true}
-                viewportContent={'width=device-width, user-scalable=no'}
-                source={{
-                  html:
-                    `<head>
-                  <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-                  <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
-                  <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
-                  <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
-                  </head>` +
-                    `<script>
-                  window.onload = function () {
-                    window.location.hash = 1;
-                    document.title = document.body.scrollHeight;
-                  }
-                  </script>` +
-                    alertBlock?.content,
-                }}
-              />
-            </ScrollView>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                setAlertBlock({
-                  visible: false,
-                  title: null,
-                  content: null,
-                })
-              }}>
-              <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', borderTopWidth: AppDefine.onePx, borderColor: '#d9d9d9' }}>
-                <Text style={{ color: '#2894FF' }}>{'确定'}</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </View>
-      </Modal>
+      <JDMessagePopCP {...{ c_ref: v, c_name: cname, c_content: content }} />
     </>
   )
 }
 
 const styles = StyleSheet.create({
   message: {
-    width: '95%',
-    aspectRatio: 10,
-    borderBottomColor: '#9D9D9D',
-    borderBottomWidth: AppDefine.onePx,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
+    height: 44,
+    borderBottomWidth: AppDefine.onePx,
+    alignItems: 'center'
+
   },
   readTextStyle: {
-    color: '#9D9D9D',
+     marginLeft: 10, 
+     marginRight: 10,
+
   },
+  read2TextStyle: {
+    marginRight: 10,
+    textAlign:'right',
+  },
+
+
 })
 
 export default UserMessagePage

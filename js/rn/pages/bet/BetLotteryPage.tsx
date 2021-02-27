@@ -9,7 +9,7 @@ import BetRecordHeaderComponent from './content/counter/lhc/red/BetRecordHeaderC
 import LotteryContentComponent from './content/LotteryContentComponent'
 import { TopAreaComponent } from './content/top/TopAreaComponent'
 import { UGStore } from '../../redux/store/UGStore'
-import { arrayEmpty, arrayLength, dicNull } from '../../public/tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength, dicNull } from '../../public/tools/Ext'
 import { clearLotteryData } from './util/LotteryUtil'
 import InstantLotteryComponent from './content/counter/mmc/InstantLotteryComponent'
 import WebChatComponent from './chat/WebChatComponent'
@@ -17,9 +17,11 @@ import PayBoardComponent from './board/pay/PayBoardComponent'
 import PayResultComponent from './board/pay/result/PayResultComponent'
 import MiddleMenu, { IMiddleMenuItem } from '../../public/components/menu/MiddleMenu'
 import { currentChatRoomId } from './board/tools/chat/ChatTools'
-import { GameTab } from './const/LotteryConst'
+import { GameTab, LCode } from './const/LotteryConst'
 import { ugLog } from '../../public/tools/UgLog'
 import { Share2ChatStatus } from '../../public/network/Model/chat/ShareChatRoomModel'
+import BetVietnamComponent from './board/BetVietnamComponent'
+import PayVietnamBoardComponent from './board/pay/PayVietnamBoardComponent'
 
 interface IBetLotteryPage {
   lotteryId: string //当前彩票 id
@@ -51,6 +53,7 @@ const BetLotteryPage = ({ navigation, route }) => {
     requestLotteryData,
   } = UseBetLottery()
 
+  let gameType = playOddDetailData?.game?.gameType // 六合彩 秒秒秒彩 等等
   // const [textSize, setTextSize] = useState(scale(22))
 
   useEffect(() => {
@@ -90,6 +93,52 @@ const BetLotteryPage = ({ navigation, route }) => {
         gameTabIndex: GameTab.CHAT,
       })
     }
+  }
+
+  /**
+   * 绘制下注面板, 越南彩面板不一样
+   */
+  const renderBetBoard = () => {
+    if (anyEmpty(gameType)) return
+
+    return (
+      gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_hochiminhvip
+        ?
+        <BetVietnamComponent key={'lottery vietnam'}/>
+        :
+        <BetBoardComponent key={'lottery board'}/>
+
+    )
+  }
+
+  /**
+   * 绘制支付面板, 越南彩面板不一样
+   */
+  const renderPayBoard = () => {
+    if (dicNull(betShareModel) || dicNull(nextIssueData)) return
+
+    return (
+      gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_hochiminhvip
+        ?
+        <PayVietnamBoardComponent key={'PayVietnamBoardComponent'}
+                                  showCallback={(data) => {
+                                    UGStore.dispatch({ type: 'reset', betShareModel: {} })
+                                    setBetResult(null)
+                                  }}/>
+        :
+        <PayBoardComponent key={'BetBoardComponent'}
+                           showCallback={(data) => {
+                             UGStore.dispatch({ type: 'reset', betShareModel: {} })
+
+                             if (data?.betParams?.isInstant == '1') {//秒秒彩
+                               setBetResult(data)
+                             } else {//其它彩种可能有分享界面
+                               setBetResult(null)
+                               showShareRoom(data)
+                             }
+
+                           }}/>
+    )
   }
 
   return (
@@ -145,23 +194,10 @@ const BetLotteryPage = ({ navigation, route }) => {
           <WebChatComponent/>
         </View>
 
-        <BetBoardComponent key={'lottery board'}/>
+        {renderBetBoard()}
 
-        {!dicNull(betShareModel) && !dicNull(nextIssueData) && <PayBoardComponent key={'BetBoardComponent'}
-                                                                                  showCallback={(data) => {
-                                                                                    UGStore.dispatch({
-                                                                                      type: 'reset',
-                                                                                      betShareModel: {},
-                                                                                    })
+        {renderPayBoard()}
 
-                                                                                    if (data?.betParams?.isInstant == '1') {//秒秒彩
-                                                                                      setBetResult(data)
-                                                                                    } else {
-                                                                                      setBetResult(null)
-                                                                                      showShareRoom(data)
-                                                                                    }
-
-                                                                                  }}/>}
         {!dicNull(betResult) && <PayResultComponent key={'PayResultComponent'}
                                                     betData={betResult}
                                                     nextIssueData={UGStore.globalProps?.nextIssueData}
