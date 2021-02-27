@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Alert, Animated, Image, ImageBackground, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import React, { LegacyRef, useEffect, useRef, useState } from 'react'
+import { Alert, Animated, Image, ImageBackground, Modal, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
@@ -17,8 +17,13 @@ import { UGText } from '../../../doy/publicComponent/Button之类的基础组件
 import { ugLog } from '../../public/tools/UgLog'
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1'
 import { scale } from '../../public/tools/Scale'
+import WebView from 'react-native-webview'
+import { event } from 'react-native-reanimated'
+import { UGBasePageProps } from './UGPage'
 
-
+interface ApplyRewardVal {
+  webViewHeight?:number;//webView 高
+}
 
 interface ApplyRewardProps {
   tabLabel: string
@@ -26,6 +31,7 @@ interface ApplyRewardProps {
   list: any[]
   onPress: () => any
   onPressApply: ({ win_apply_content }: { win_apply_content: string }) => any
+
 }
 
 
@@ -96,7 +102,7 @@ const ApplyReward = ({ tabLabel, titleArray, list, onPress, onPressApply }: Appl
 }
 
 
-const ActivityRewardPage = () => {
+const ActivityRewardPage = ({ route, setProps }: UGBasePageProps) => {
   const [loading, setLoading] = useState(true)
   const [winApplyList, setWinApplyList] = useState([])//申请活动彩金列表
   const [itemArray, setItemArray] = useState([])//申请活动彩金标题列表
@@ -107,6 +113,14 @@ const ActivityRewardPage = () => {
   const [activityContent, setActivityContent] = useState('')
   const [alertVisible, setAlertVisible] = useState(false)
   const [content, setContent] = useState('')
+  const [webHeight, setWebHeight] = useState(50)
+    // let tabController //tab选择器
+    let webRef :any;
+    let { current: v } = useRef<ApplyRewardVal>(
+      {
+        webViewHeight:0,
+      })
+  
 
   // cell 点击方法
   function itemAction(item: any) {
@@ -202,8 +216,6 @@ const ActivityRewardPage = () => {
         setItemArray(cfArray)//给标题赋值
         //@ts-ignore
         const applyWinLog = value[1]?.data?.data?.list
-
-        ugLog('applyWinLog====', applyWinLog)
         setWinApplyList(winApplyList)
         setApplyWinLog(applyWinLog)
       })
@@ -224,7 +236,45 @@ const ActivityRewardPage = () => {
     return str;
   }
 
+  //得到js
+  function getScript() {
+    let script: string = '';
+    if (Skin1.isBlack && !AppDefine.inSites('c245')) {
+      script = `document.body.style.backgroundColor=\"#222\";document.body.style.color='#fff'`
+    }
+    let meta = `
+    var meta = document.createElement('meta');
+    meta.content='width=device-width,initial-scale=1.0,minimum-scale=.5,maximum-scale=3';
+    meta.name='viewport';document.getElementsByTagName('head')[0].appendChild(meta);
+    `
+    const BaseScript =
+    `
+    (function () {
+        var height = null;
+        function changeHeight() {
+          if (document.body.scrollHeight != height) {
+            height = document.body.scrollHeight;
+            if (window.postMessage) {
+              window.postMessage(JSON.stringify({
+                type: 'setHeight',
+                height: height,
+              }))
+            }
+          }
+        }
+        setTimeout(changeHeight, 300);
+    } ())
+    `
+ 
+    let retStr = script + meta + BaseScript;
 
+    ugLog('retStr==',retStr)
+    return retStr;
+  }
+
+  const script = getScript();
+
+  // 初始化
 
   return (
     <>
@@ -247,7 +297,24 @@ const ActivityRewardPage = () => {
                 }}
                 onPressApply={({ win_apply_content }) => {
                   setApplyVisible(true)
-                  setActivityContent(win_apply_content)
+                  let htmlStr = `
+                  <head>
+                  <style>table{border-collapse: collapse;}
+                  p{margin: 5px auto} 
+                  img{width:auto !important;max-width:100%;
+                    height:auto !important}
+                  </style>
+                  </head>
+                  <script>
+                  window.onload = function () {
+                    window.webkit.messageHandlers.postSwiperData.postMessage(document.body.scrollHeight);
+                  }
+                  document.addEventListener("DOMContentLoaded", function() {
+                    window.webkit.messageHandlers.postSwiperData.postMessage(document.body.scrollHeight);
+                  }, false);
+                  </script>
+                  ${win_apply_content}`
+                  setActivityContent(htmlStr)
                 }}
 
               />
@@ -289,15 +356,43 @@ const ActivityRewardPage = () => {
       </Modal>
       <Modal transparent={true} style={{ flex: 1, backgroundColor: 'transparent' }} visible={applyVisible}>
         <View style={{ backgroundColor: '#0005', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ width: '75%', height: '60%', backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
+          <View style={{ width: '75%', height: AppDefine.height - 280, backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
             <UGText style={{ fontSize: 15, marginVertical: 10 }}>{'彩金活动'}</UGText>
-            <View style={{ width: '100%', marginVertical: 10, paddingHorizontal: 20 }}>
-              <UGText style={{ marginBottom: 10 }}>{'活动说明'}</UGText>
-              <UGText>{removeHTMLTag(activityContent)}</UGText>
-            </View>
-            <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 30, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5, marginBottom: 10 }} placeholder={'申请金额'} />
-            <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }} placeholder={'申请说明'} numberOfLines={5} />
-            <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', justifyContent: 'space-around', width: '100%', paddingBottom: 20 }}>
+            {/* 内容 */}
+            <ScrollView style={{ width: '95%',  }}>
+              <View style={{ }}>
+                <UGText style={{ marginVertical:10}}>{'活动说明'}</UGText>
+                <WebView
+                   ref={ (e) => {webRef = e }}
+                  injectedJavaScript={script}
+                  style={{
+                    flex: 1, 
+                    minHeight: v.webViewHeight,
+                  }}
+                  onMessage={(e) => {
+                    const h = parseInt(e.nativeEvent.data);
+                    if (h > 0 && h != v.webViewHeight) {
+                      v.webViewHeight = h + (v.webViewHeight ? 0 : 40);
+                      setProps();
+                    }
+                  }}
+                    automaticallyAdjustContentInsets
+                    decelerationRate='normal'
+                    scalesPageToFit
+                    javaScriptEnabled // 仅限Android平台。iOS平台JavaScript是默认开启的。
+                    domStorageEnabled // 适用于安卓
+                    scrollEnabled={false}
+                  source={{ html: activityContent }
+                  }
+                />
+              </View>
+              <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 30, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5, marginBottom: 10 }} placeholder={'申请金额'} />
+              <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }} placeholder={'申请说明'} numberOfLines={5} />
+
+            </ScrollView>
+
+            {/* 按钮 */}
+            <View style={{ flexDirection: 'row', height: 50, alignItems: 'flex-end', justifyContent: 'space-around', width: '100%', paddingBottom: 20 }}>
               <Button
                 title={'关闭'}
                 containerStyle={{ width: '25%', borderWidth: 1, borderColor: '#8E8E8E', borderRadius: 5, height: 30 }}
@@ -319,24 +414,24 @@ const ActivityRewardPage = () => {
       </Modal>
       {/* 申请反馈弹框 */}
       <Modal transparent={true} style={{ flex: 1, backgroundColor: 'transparent' }} visible={alertVisible}>
-      <View style={{ backgroundColor: '#0005', flex: 1,width:'100%', justifyContent: 'center', alignItems: 'center', }}>
-        <View style={{ width: '75%', backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
-          <UGText style={{ fontSize: 18, fontWeight: '500', marginVertical: 10 }}>{'查看详情'}</UGText>
-          <View style={{ flexDirection: 'row', }}>
-            <UGText style={{ marginHorizontal: 15, }}>{content}</UGText>
-          </View>
-          <View style={{ flexDirection: 'row', width: '100%', height: 50, borderTopWidth: AppDefine.onePx, borderColor: '#d9d9d9' }}>
-            <Button
-              title={'关闭'}
-              containerStyle={{ flex: 1 }}
-              titleStyle={{ color: '#2894FF', fontSize: 18 }}
-              onPress={() => {
-                setAlertVisible(false)
-              }}
-            />
+        <View style={{ backgroundColor: '#0005', flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', }}>
+          <View style={{ width: '75%', backgroundColor: '#ffffff', borderRadius: 10, alignItems: 'center' }}>
+            <UGText style={{ fontSize: 18, fontWeight: '500', marginVertical: 10 }}>{'查看详情'}</UGText>
+            <View style={{ flexDirection: 'row', }}>
+              <UGText style={{ marginHorizontal: 15, }}>{content}</UGText>
+            </View>
+            <View style={{ flexDirection: 'row', width: '100%', height: 50, borderTopWidth: AppDefine.onePx, borderColor: '#d9d9d9' }}>
+              <Button
+                title={'关闭'}
+                containerStyle={{ flex: 1 }}
+                titleStyle={{ color: '#2894FF', fontSize: 18 }}
+                onPress={() => {
+                  setAlertVisible(false)
+                }}
+              />
+            </View>
           </View>
         </View>
-      </View>
       </Modal>
     </>
   )
