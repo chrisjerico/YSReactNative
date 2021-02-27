@@ -3,6 +3,8 @@ import { Animated, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, 
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
 import { UGText } from '../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import { Skin1 } from '../../theme/UGSkinManagers'
+import { scale } from '../../tools/Scale'
 
 interface ScrollableTabViewComponentProps {
   children?: any
@@ -103,6 +105,11 @@ const ScrollableTabViewComponent = ({
     <ScrollableTabView
       style={{ flex: 1 }}
       onChangeTab={changeIndex}
+      tabBarUnderlineStyle={
+        { backgroundColor: Skin1.themeColor,height: scale(3), }}
+        tabBarActiveTextColor={Skin1.textColor1}
+        tabBarInactiveTextColor={'#999999'}
+        tabBarTextStyle={{ fontSize: scale(20) }}
       renderTabBar={(props) => {
         const { tabs, activeTab, goToPage } = props
         return renderTabBar ? (
@@ -138,7 +145,7 @@ const ScrollableTabViewComponent = ({
                               width: tabWidth,
                             },
                           ]}>
-                          <UGText style={styles.tabText}>{item}</UGText>
+                          <UGText style={{fontSize: 12,color:Skin1.textColor1}}>{item}</UGText>
                         </View>
                       </TouchableWithoutFeedback>
                     )
@@ -146,7 +153,7 @@ const ScrollableTabViewComponent = ({
                 </View>
                 {showIndicator && (
                   <Animated.View style={[styles.indicatorContainer, indicatorContainerStyle, { width: tabWidth, transform: [{ translateX: x }] }]}>
-                    <View style={[styles.indicator, indicatorStyle]} />
+                    <View style={[styles.indicator, indicatorStyle,{ backgroundColor: Skin1.textColor1,}]} />
                   </Animated.View>
                 )}
               </View>
@@ -172,10 +179,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  tabText: {
-    color: '#000000',
-    fontSize: 12,
-  },
+
   indicatorContainer: {
     backgroundColor: 'transparent',
     height: 5,
@@ -183,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   indicator: {
-    backgroundColor: '#000000',
+   
     width: '50%',
     height: '100%',
   },
