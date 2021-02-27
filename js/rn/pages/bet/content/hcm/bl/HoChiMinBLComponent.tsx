@@ -43,7 +43,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
     GAME_TYPE_ARRAY,
     ballTypeIndex,
     setBallTypeIndex,
-    HcmTabIndex,
+    HcmTabOption,
     blInputNumber,
     setBlInputNumber,
     tabHochimin,
@@ -221,7 +221,7 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
    * 单个球从 0 ~ 999 的类别
    */
   const render3Tab = () => {
-    if (tabHochimin != HcmTabIndex.快速选择 || arrayLength(currentPageData[0]?.allHcPlays) <= 1) return
+    if (tabHochimin != HcmTabOption.快速选择 || arrayLength(currentPageData[0]?.allHcPlays) <= 1) return
 
     return <View key={key + 'render3Tab'}
                  style={[
@@ -352,13 +352,13 @@ const HoChiMinBLComponent = ({ playOddData, style }: ILotteryRouteParams) => {
   const renderAllBall = () => {
 
     switch (tabHochimin) {
-      case HcmTabIndex.选择号码:
+      case HcmTabOption.选择号码:
         return currentPageData?.map(renderBL)
 
-      case HcmTabIndex.输入号码:
+      case HcmTabOption.输入号码:
         return renderSingle(currentPageData[0])
 
-      case HcmTabIndex.快速选择:
+      case HcmTabOption.快速选择:
         return renderAllCombinations(currentPageData[0])
 
     }
@@ -464,11 +464,11 @@ const _styles = StyleSheet.create({
     borderRadius: scale(4),
     paddingVertical: scale(8),
     minWidth: scale(120),
-    paddingHorizontal: scale(6),
+    paddingHorizontal: scale(2),
   },
   tab_title_item_text: {
     color: 'white',
-    fontSize: scale(22),
+    fontSize: scale(21.5),
   },
   ball_container: {
     width: scale(78),

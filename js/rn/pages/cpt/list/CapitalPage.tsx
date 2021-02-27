@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import { Alert, Platform, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
@@ -43,6 +43,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
   // const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(indexValue < 0 ? 0 : indexValue) //当前是哪个Tab
   const [refreshCount, setRefreshCount] = useState(0) //更新界面
+  const [changeTabCount, setChangeTabCount] = useState(0) //切换TAB次数
 
   // let tabController //tab选择器
   const tabRef = useRef<TabBarProps>(null)
@@ -115,7 +116,9 @@ const CapitalPage = ({ navigation, route, setProps }) => {
   const renderRecordList = (item: string) => {
     switch (item) {
       case CapitalConst.DEPOSIT:
-        return <PayListComponent tabLabel={item} key={item} />
+        return <PayListComponent tabLabel={item}
+                                 key={item}
+                                 changeTabCount={changeTabCount}/>
       case CapitalConst.WITHDRAWAL:
         return <WithdrawComponent tabLabel={item} key={item} />
       case CapitalConst.DEPOSIT_RECORD:
@@ -167,7 +170,7 @@ const CapitalPage = ({ navigation, route, setProps }) => {
               <ScrollableTabView
                 key={'ScrollableTabView' + refreshCount}
                 initialPage={tabIndex}
-                onChangeTab={value => { }}
+                onChangeTab={value => setChangeTabCount(changeTabCount + 1)}
                 ref={tabRef}
                 // ref={instance => tabController = instance}
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,

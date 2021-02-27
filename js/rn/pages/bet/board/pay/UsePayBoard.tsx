@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { UGStore } from '../../../../redux/store/UGStore'
-import { arrayLength, dicNull } from '../../../../public/tools/Ext'
+import { anyEmpty, arrayLength, dicNull } from '../../../../public/tools/Ext'
 import { ugLog } from '../../../../public/tools/UgLog'
 import { api } from '../../../../public/network/NetworkRequest1/NetworkRequest1'
 import { BetLotteryData, IBetLotteryParams } from '../../../../public/network/it/bet/IBetLotteryParams'
@@ -102,11 +102,11 @@ const UsePayBoard = () => {
       totalNum: betCount.toString(),
       totalMoney: numberToFloatString(totalMoney),
       isInstant: betShareModel?.isInstant,
-      tag: betShareModel?.tag
+      tag: betShareModel?.tag,
     }
 
     const { data } = await api.user.userGameBetWithParams(pms).promise
-    await syncUserInfo(false)
+    syncUserInfo(false)
     hideLoading()
 
     if (data?.code == 0) {//下注成功 数据保留 用于 追号
@@ -124,6 +124,7 @@ const UsePayBoard = () => {
   return {
     betCount,
     totalMoney,
+    setTotalMoney,
     averageMoney,
     setAverageMoney,
     moneyMap,

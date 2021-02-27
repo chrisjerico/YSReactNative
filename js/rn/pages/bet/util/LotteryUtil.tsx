@@ -4,7 +4,7 @@ import * as React from 'react'
 import { ugLog } from '../../../public/tools/UgLog'
 import { SelectedPlayModel } from '../../../redux/model/game/SelectedLotteryModel'
 import { UGStore } from '../../../redux/store/UGStore'
-import { GameTab, SingleOption } from '../const/LotteryConst'
+import { GameTab, HcmTabOption, SingleOption } from '../const/LotteryConst'
 
 interface INameOrAlias {
   name?: string; //鼠
@@ -53,7 +53,8 @@ const clearLotteryData = () => {
     type: 'reset',
     lotteryId: '0',
     lotteryTabIndex: 0,
-    singleTabIndex: SingleOption.SINGLE,
+    singleTabIndex: null,
+    fastTabIndex: null,
     gameTabIndex: GameTab.LOTTERY,
     currentColumnIndex: 0,
     betShareModel: {},
@@ -64,6 +65,7 @@ const clearLotteryData = () => {
     chatArray: [],
     shareChatModel: {},
     inputMoney: 0,
+    betCount: 0,
     sliderValue: 0,
     selectedData: new Map<string, Map<string, Map<string, SelectedPlayModel>>>(),
   })

@@ -12,6 +12,8 @@ export interface PayAisleData {
   quickAmount?: Array<string>
   depositPrompt?: string
   transferPrompt?: string
+  rechargePopUpAlarmSwitch?: string //存款提示语是否打开
+  rechargePopUpAlarmMsg?: string //存款提示语
 }
 
 export interface PayAisleListData {

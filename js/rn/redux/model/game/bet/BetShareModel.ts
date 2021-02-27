@@ -24,11 +24,14 @@ export interface BetShareModel {
   roomId?: string //"0",
   betBean?: Array<BetLotteryData> //下注数据
   tag?: string //3
+
+  betCount?: number //本地使用，注数，越南彩有
 }
 
 export interface PlayNameArray {
   playName1?: string // 下注彩种名字 如特码B
   playName2?: string // 下注彩种名字 如特码B
 
+  vieName?: string[] // 本地使用，六合彩下注情况组合 ['1,2', '3,4', '5,6']
   exFlag?: string //本地使用，该条目唯一识别标识
 }

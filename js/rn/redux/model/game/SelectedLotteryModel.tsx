@@ -11,6 +11,7 @@ interface SelectedPlayModel {
   playGroups?: PlayGroupData, //球组数据如 特码B, 部分彩种需要使用
   plays?: Array<PlayData>, //彩球格子数据 01, 02, 03
   zodiacs?: Array<ZodiacNum>, //生肖的数据
+  viePlays?: Array<Array<PlayData>>, //越南彩选中的球
 }
 
 export default SelectedLotteryModel

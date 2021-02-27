@@ -4,12 +4,30 @@ import { anyEmpty } from '../../../public/tools/Ext'
 const LEFT_ITEM_HEIGHT = scale(52) //左侧栏单个高度
 const BALL_CONTENT_HEIGHT = scale(720) //投注区域球的总体高度
 
+
+/**
+ * 当前TAB是 彩票0 还是 聊天室1
+ */
+enum GameTab {
+  LOTTERY,//彩票0
+  CHAT //聊天室1
+}
+
 /**
  * 单式复式玩法
  */
 enum SingleOption {
   SINGLE, //单式
   COMPLEX, //复式
+}
+
+/**
+ * 越南彩二组玩法选项
+ */
+enum HcmTabOption {
+  选择号码 = '选择号码', //选择号码
+  输入号码 = '输入号码', //输入号码
+  快速选择 = '快速选择', //快速选择
 }
 
 /**
@@ -220,18 +238,11 @@ const HoChiMinSub = {
   CHUANSHAO10: 'CHUANSHAO10', //串烧10
 }
 
-/**
- * 当前TAB是 彩票0 还是 聊天室1
- */
-enum GameTab {
-  LOTTERY,//彩票0
-  CHAT //聊天室1
-}
-
 export {
   LEFT_ITEM_HEIGHT,
   BALL_CONTENT_HEIGHT,
   SingleOption,
+  HcmTabOption,
   BallStyles,
   BallType,
   lotteryBallStyle,

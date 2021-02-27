@@ -1,6 +1,6 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { scale } from '../../../../../public/tools/Scale'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
@@ -24,6 +24,7 @@ import { UGText } from '../../../../../../doy/publicComponent/Button之类的基
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
+  changeTabCount?: number, //是否提示一下
 }
 
 /**
@@ -31,7 +32,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const PayListComponent = ({ navigation, route }) => {
+const PayListComponent = ({ changeTabCount }: IRouteParams) => {
 
   const { refreshTabPage } = useContext(CapitalContext)
 
@@ -40,6 +41,18 @@ const PayListComponent = ({ navigation, route }) => {
     payBigData,
     requestPayData,
   } = UsePayList()
+
+  //TAB切换过就提示一次
+  useEffect(() => {
+    if (payBigData?.rechargePopUpAlarmSwitch == '1') { //没有提示就提示一次
+      Alert.alert('温馨提示', payBigData?.rechargePopUpAlarmMsg, [
+        {
+          text: '确定',
+        },
+      ])
+    }
+  }, [changeTabCount, payBigData?.rechargePopUpAlarmMsg])
+
 
   /**
    * 跳转虚拟币教程
