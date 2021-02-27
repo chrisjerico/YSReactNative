@@ -15,6 +15,7 @@ import { TransferTKLMainView } from '../../public/components/transfer/TransferTK
 import { TransferView } from '../../public/components/transfer/TransferView'
 import TrendView from '../../public/components/TrendView'
 import Game3rdView from '../../public/components/Game3rdView'
+import OldLetteyHallPage from '../hall/fd/OldLetteyHall'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { Router } from '../../public/navigation/Router'
@@ -188,6 +189,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
   SeriesLobbyPage, // 游戏大厅二级页面（xx系列游戏列表）
+  OldLetteyHallPage,//旧版的游戏大厅（暂时不怎么用，只有六合彩模板在用）
   TrendView, //开奖走势
   ManageBankListPage, //银行卡管理（我的提款账户列表）
   CapitalPage, //存款取款资金明细

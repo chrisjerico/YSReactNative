@@ -141,7 +141,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t126p.fhptdev.com',
   ],
   'tstksm': [
-    'http://t133f.6yc.com',
+    'http://t133f.fhptdev.com',
   ],
   'chat': [
     'http://test03.6yc.com',
