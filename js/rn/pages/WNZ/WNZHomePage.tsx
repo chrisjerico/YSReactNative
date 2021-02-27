@@ -32,6 +32,7 @@ import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 import { PushHomeGame } from '../../public/models/Interface'
 import { Icon } from '../../public/network/Model/HomeGamesModel'
 import { httpClient } from '../../public/network/httpClient'
+import { img_assets } from '../../Res/icon'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -78,22 +79,48 @@ const WNZHomePage = () => {
       const OMLHC = officialGames.find((item) => item.title == '澳门六合彩') || customiseGames.find((item) => item.title == '澳门六合彩')
       const HKLHC = officialGames.find((item) => item.title == '香港六合彩') || customiseGames.find((item) => item.title == '香港六合彩')
       const EMLHC = officialGames.find((item) => item.title == '一分六合彩') || customiseGames.find((item) => item.title == '一分六合彩')
-      const EMSSC = officialGames.find((item) => item.title == '一分时时彩')|| customiseGames.find((item) => item.title == '一分时时彩')
+      const EMSSC = officialGames.find((item) => item.title == '一分时时彩') || customiseGames.find((item) => item.title == '一分时时彩')
       const EMPK10 = officialGames.find((item) => item.title == '一分PK拾') || customiseGames.find((item) => item.title == '一分PK拾')
       const EMK3 = officialGames.find((item) => item.title == '一分快三') || customiseGames.find((item) => item.title == '一分快三')
-      const EMLB =officialGames.find((item) => item.title == '一分幸运飞艇') || customiseGames.find((item) => item.title == '一分幸运飞艇')
+      const EMLB = officialGames.find((item) => item.title == '一分幸运飞艇') || customiseGames.find((item) => item.title == '一分幸运飞艇')
       const EMPCDD = officialGames.find((item) => item.title == '一分PC蛋蛋') || customiseGames.find((item) => item.title == '一分PC蛋蛋')
       const LHLHC = officialGames.find((item) => item.title == '台湾六合彩' || '六合秒秒彩')
-      OMLHC && res.push(OMLHC)
-      HKLHC && res.push(HKLHC)
-      EMLHC && res.push(EMLHC)
-      EMSSC && res.push(EMSSC)
-      EMPK10 && res.push(EMPK10)
-      EMK3 && res.push(EMK3)
-      EMLB && res.push(EMLB)
-      EMPCDD && res.push(EMPCDD)
+      if (OMLHC) {
+        OMLHC.pic = 'https://cdn01.pjyusei.com/views/mobileTemplate/23/images/home/amlhc.png'
+        res.push(OMLHC)
+      }
+      if (HKLHC) {
+        HKLHC.pic = img_assets('HKLHC_games_logo')
+        console.log(img_assets('HKLHC_games_logo'))
+        res.push(HKLHC)
+      }
+      if (EMLHC) {
+        EMLHC.pic = 'https://cdn01.pjyusei.com/views/mobileTemplate/23/images/home/yflhc.png'
+        res.push(EMLHC)
+      }
+      if (EMSSC) {
+        EMSSC.pic = 'https://cdn01.pjyusei.com/views/mobileTemplate/23/images/home/yfssc.png'
+        res.push(EMSSC)
+      }
+      if (EMPK10) {
+        EMPK10.pic = 'https://cdn01.pjyusei.com/views/mobileTemplate/23/images/home/yfpk10.png'
+        res.push(EMPK10)
+      }
+      if (EMK3) {
+        EMK3.pic = 'https://cdn01.pjyusei.com/views/mobileTemplate/23/images/home/yfk3.png'
+        res.push(EMK3)
+      }
+      if (EMLB) {
+        EMLB.pic = img_assets('luckyAirship')
+        res.push(EMLB)
+      }
+      if (EMPCDD) {
+        EMPCDD.pic = 'https://cdn01.pjyusei.com/views/mobileTemplate/23/images/home/yfpcdd.png'
+        res.push(EMPCDD)
+      }
       if (LHLHC) {
         LHLHC.title = '六合秒秒彩'
+        LHLHC.pic = 'https://cdn01.pjyusei.com/platform/c245/images/lhmmc.png'
         res.push(LHLHC)
       }
     }
