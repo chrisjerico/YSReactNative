@@ -31,6 +31,7 @@ import { appConfig } from '../../../../config'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 import { PushHomeGame } from '../../public/models/Interface'
 import { Icon } from '../../public/network/Model/HomeGamesModel'
+import { httpClient } from '../../public/network/httpClient'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -73,22 +74,28 @@ const WNZHomePage = () => {
 
   const getTabGames = () => {
     let res = []
-    if (homeGames && homeGames.length > 0) {
-      const list = homeGames.find((item) => item.name == '彩票').list
-      res.push(list.find((item) => item.name == '澳门六合彩'))
-      res.push(list.find((item) => item.name == '香港六合彩'))
-      res.push(list.find((item) => item.name == '一分六合彩'))
-      res.push(list.find((item) => item.name == '一分时时彩'))
-      res.push(list.find((item) => item.name == '一分PK拾'))
-      res.push(list.find((item) => item.name == '一分快三'))
-      res.push(list.find((item) => item.name == '一分幸运飞艇'))
-      res.push(list.find((item) => item.name == '一分PC蛋蛋'))
-      const LHLHC = list.find((item) => item.name == '台湾六合彩' || '六合秒秒彩')
-      if (LHLHC && homeGames) {
-        LHLHC.name = '六合秒秒彩'
+    if (officialGames && (officialGames.length > 0 || customiseGames.length > 0)) {
+      const OMLHC = officialGames.find((item) => item.title == '澳门六合彩') || customiseGames.find((item) => item.title == '澳门六合彩')
+      const HKLHC = officialGames.find((item) => item.title == '香港六合彩') || customiseGames.find((item) => item.title == '香港六合彩')
+      const EMLHC = officialGames.find((item) => item.title == '一分六合彩') || customiseGames.find((item) => item.title == '一分六合彩')
+      const EMSSC = officialGames.find((item) => item.title == '一分时时彩')|| customiseGames.find((item) => item.title == '一分时时彩')
+      const EMPK10 = officialGames.find((item) => item.title == '一分PK拾') || customiseGames.find((item) => item.title == '一分PK拾')
+      const EMK3 = officialGames.find((item) => item.title == '一分快三') || customiseGames.find((item) => item.title == '一分快三')
+      const EMLB =officialGames.find((item) => item.title == '一分幸运飞艇') || customiseGames.find((item) => item.title == '一分幸运飞艇')
+      const EMPCDD = officialGames.find((item) => item.title == '一分PC蛋蛋') || customiseGames.find((item) => item.title == '一分PC蛋蛋')
+      const LHLHC = officialGames.find((item) => item.title == '台湾六合彩' || '六合秒秒彩')
+      OMLHC && res.push(OMLHC)
+      HKLHC && res.push(HKLHC)
+      EMLHC && res.push(EMLHC)
+      EMSSC && res.push(EMSSC)
+      EMPK10 && res.push(EMPK10)
+      EMK3 && res.push(EMK3)
+      EMLB && res.push(EMLB)
+      EMPCDD && res.push(EMPCDD)
+      if (LHLHC) {
         LHLHC.title = '六合秒秒彩'
+        res.push(LHLHC)
       }
-      res.push(LHLHC)
     }
     return res
   }
