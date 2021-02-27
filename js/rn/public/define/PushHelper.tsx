@@ -188,7 +188,15 @@ export default class PushHelper {
           push(PageName.PromotionPage, { showBackBtn: true })
           return
         }
-
+        if (game?.seriesId == 7 && game?.subId == MenuType.YHDD) {  //优惠活动
+          console.log('优惠活动')
+          push(PageName.PromotionPage, { showBackBtn: true })
+          return
+        }
+        if (game?.gameId == 6) {
+          PushHelper.pushUserCenterType(UGUserCenterType.推荐收益);
+          return
+        }
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break
     }
@@ -317,6 +325,8 @@ export default class PushHelper {
         }))
         break
       case 'android':
+        console.log("pushPromoteDetail")
+        push(PageName.PromotionDetailPage, { showBackBtn: true, item: item })
         break
     }
   }

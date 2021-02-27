@@ -86,7 +86,13 @@ const LobbyGameListComponent = ({
       <TouchableWithoutFeedback onPress={() => {
 
         if (item.category == 'lottery') {
-          PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)
+          if (systemInfo?.mobileGameHall == '1') {//新彩票大厅
+            push(PageName.GameHallPage, { showBackButton: true })
+          } else if (systemInfo?.mobileGameHall == '2') {//自由彩票大厅
+            push(PageName.FreedomHallPage, { showBackButton: true })
+          } else if (systemInfo?.mobileGameHall == '0'){
+            push(PageName.OldLetteyHallPage, { showBackButton: true })
+          }
         } else {
 
 

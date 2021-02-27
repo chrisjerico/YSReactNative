@@ -21,11 +21,18 @@ export interface Categories {
   9: string;
 }
 
+export interface newCategory {
+  id: number,
+  name: string,
+  sort: number,
+}
+
 export interface Data {
   list: List[];
   style: string;
   showCategory: boolean;
   categories: Categories;
+  newCategories: newCategory[];
 }
 
 export interface TraceBack {
