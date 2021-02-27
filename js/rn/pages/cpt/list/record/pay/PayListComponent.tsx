@@ -30,6 +30,7 @@ import { jsDic } from '../../../../经典/Model/UGChanglongaideModel'
 import { clearExHtml } from '../../../../../public/tools/StringUtil'
 import AppDefine from '../../../../../public/define/AppDefine'
 import { UGText } from '../../../../../../doy/publicComponent/Button之类的基础组件/DoyButton'
+import NormalDialogComponent, { INormalDialogButton } from '../../../../../public/widget/dialog/普通对话框/NormalDialogComponent'
 
 interface IRouteParams {
   // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
@@ -56,22 +57,6 @@ const PayListComponent = ({ changeTabCount }: IRouteParams) => {
   useEffect(() => {
     if (payBigData?.rechargePopUpAlarmSwitch == '1' && !dialogShowing) { //没有提示就提示一次
       setDialogShowing(true)
-      Alert.alert('温馨提示',
-        payBigData?.rechargePopUpAlarmMsg,
-        [
-          {
-            text: '确定',
-            onPress: value => {
-              setDialogShowing(false)
-            }
-          },
-        ],
-        {
-          onDismiss: () => {
-            setDialogShowing(false)
-          }
-        }
-    )
     }
   }, [changeTabCount, payBigData?.rechargePopUpAlarmMsg])
 
@@ -163,7 +148,7 @@ const PayListComponent = ({ changeTabCount }: IRouteParams) => {
           <View style={_styles.text_item_container}>
             <View style={_styles.text_title_container}>
               <HTML
-                baseFontStyle={{color: UGColor.TextColor2}}
+                baseFontStyle={{ color: UGColor.TextColor2 }}
                 source={{ html: clearExHtml(item?.name) }}/>
               <View style={CommStyles.flex}/>
               {
@@ -198,6 +183,18 @@ const PayListComponent = ({ changeTabCount }: IRouteParams) => {
                         )
                       }}/>
       }
+      {
+        dialogShowing && <NormalDialogComponent title={'温馨提示'}
+                                                content={payBigData?.rechargePopUpAlarmMsg}
+                                                button={[{
+                                                  text: '确定',
+                                                  clickCallback: () => (
+                                                    setDialogShowing(false)
+                                                  ),
+                                                } as INormalDialogButton]}
+                                                onClosingDialog={() => setDialogShowing(false)}/>
+      }
+
     </View>
   )
 }
@@ -232,7 +229,7 @@ const _styles = StyleSheet.create({
     borderWidth: scale(1),
     borderRadius: scale(8),
     paddingHorizontal: scale(4),
-    paddingVertical:scale(4),
+    paddingVertical: scale(4),
   },
   text_content_0: {
     paddingTop: scale(4),
