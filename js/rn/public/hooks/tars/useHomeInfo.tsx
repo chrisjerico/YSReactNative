@@ -14,6 +14,7 @@ import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { ScratchListModel } from '../../network/Model/ScratchListModel'
 import { TurntableListModel } from '../../network/Model/TurntableListModel'
+import AppDefine from '../../define/AppDefine'
 
 const localRouters = [
   'system_rankingList',
@@ -35,6 +36,7 @@ const localRouters = [
 const globalRouters = ['game_homeRecommend', 'system_config', 'system_banners', 'system_mobileRight']
 
 const routers = localRouters.concat(globalRouters)
+
 interface CallApis {
   onStart: () => any
   onSuccess: () => any
@@ -82,9 +84,16 @@ const useHome = (dependency: any[]) => {
           } catch (error) {
             console.log(router + ' : ' + error)
           }
-        })
+        }),
       )
+      let newLotteryGame = null
       !loading && updateStore(response)
+      if (response && response[7] && response[7].data && AppDefine.siteId == 'c245') {
+        newLotteryGame = response[7]
+        const lhcIndex = newLotteryGame?.data.data.findIndex((item) => item.gameType == 'lhc')
+        const twIndex = newLotteryGame?.data.data[lhcIndex].list.findIndex((item) => item.title == '台湾六合彩')
+        newLotteryGame.data.data[lhcIndex].list[twIndex].title = '六合秒秒彩'
+      }
       setValue({
         rankList: response[0] ? response[0]?.data : value?.rankList,
         homeGame: response[1] ? response[1]?.data : value?.homeGame,
@@ -94,13 +103,13 @@ const useHome = (dependency: any[]) => {
         couponList: response[4] ? response[4]?.data : value?.couponList,
         homeAd: response[5] ? response[5]?.data : value?.homeAd,
         lotteryNumber: response[6] ? response[6]?.data : value?.lotteryNumber,
-        lotteryGame: response[7] ? response[7]?.data : value?.lotteryGame,
+        lotteryGame: response[7] ? newLotteryGame ? newLotteryGame.data : response[7]?.data : value?.lotteryGame,
         turntableList: response[8] ? response[8]?.data : value?.turntableList,
         redBag: response[9] ? response[9]?.data : value?.redBag,
         goldenEggList: response[10] ? response[10]?.data : value?.goldenEggList,
         scratchList: response[11] ? response[11]?.data : value?.scratchList,
         floatAd: response[12] ? response[12]?.data : value?.floatAd,
-        activitySetting: response[13] ? response[13]?.data: value?.activitySetting,
+        activitySetting: response[13] ? response[13]?.data : value?.activitySetting,
       })
     } catch (error) {
       console.log('--------useHome init error--------', error)
@@ -122,7 +131,8 @@ const useHome = (dependency: any[]) => {
 
   useEffect(() => {
     callApis({
-      onStart: () => {},
+      onStart: () => {
+      },
       onSuccess: () => {
         setLoading(false)
       },

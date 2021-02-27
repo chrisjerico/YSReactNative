@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Image, ImageBackground, Modal, Text, TouchableWithoutFeedback, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Image, ImageBackground, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
@@ -8,6 +8,7 @@ import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { removeHTMLTag } from '../../public/tools/removeHTMLTag'
+import { Toast } from '../../public/tools/ToastUtils'
 import Button from '../../public/views/tars/Button'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -21,17 +22,31 @@ interface ApplyRewardProps {
   titleArray: any[]
   list: any[]
   onPress: () => any
-  onPressApply: ({ win_apply_content }: { win_apply_content: string }) => any
+  onPressApply: ({ win_apply_content, quickAmounts, id }: { win_apply_content: string; quickAmounts: string[]; id: string }) => any
 }
 
-const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
+const RewardList = ({ tabLabel, data, uniqueKey, onPress, onPressApply }) => (
   <List
     uniqueKey={uniqueKey}
     data={data}
     scrollEnabled={true}
     renderItem={({ item }) => {
-      const { name } = item
-      const win_apply_content = item?.param?.win_apply_content
+      const { name, id } = item
+      const params = item?.param ?? {}
+      const win_apply_content = params?.win_apply_content
+      const quickAmounts = [
+        params.quickAmount1,
+        params.quickAmount2,
+        params.quickAmount3,
+        params.quickAmount4,
+        params.quickAmount5,
+        params.quickAmount6,
+        params.quickAmount7,
+        params.quickAmount8,
+        params.quickAmount9,
+        params.quickAmount10,
+        params.quickAmount11,
+      ]
       return (
         <>
           <TouchableWithoutFeedback onPress={onPress}>
@@ -48,7 +63,7 @@ const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
             title={'点击申请'}
             containerStyle={{ width: 100, height: 30, backgroundColor: Skin1.themeColor, borderRadius: 5, alignSelf: 'center', marginVertical: 10 }}
             titleStyle={{ color: '#ffffff' }}
-            onPress={() => onPressApply({ win_apply_content })}
+            onPress={() => onPressApply({ win_apply_content, quickAmounts, id })}
           />
         </>
       )
@@ -98,7 +113,14 @@ const ApplyFeedBack = ({ tabLabel, list }) => {
       data={list}
       scrollEnabled={true}
       renderItem={({ item }) => {
-        return null
+        const { amount, state, updateTime } = item
+        return (
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
+            <Text style={{ flex: 2, textAlign: 'center' }}>{updateTime}</Text>
+            <Text style={{ flex: 1, textAlign: 'center' }}>{amount}</Text>
+            <Text style={{ flex: 1, textAlign: 'center' }}>{state}</Text>
+          </View>
+        )
       }}
     />
   )
@@ -147,6 +169,9 @@ const ActivityRewardPage = () => {
       APIRouter.activity_applyWinLog().catch((error) => {
         console.log(error)
       }),
+      APIRouter.secure_imgCaptcha().catch((error) => {
+        console.log(error)
+      }),
     ])
       .then((value) => {
         //@ts-ignore
@@ -159,8 +184,11 @@ const ActivityRewardPage = () => {
         setItemArray(cfArray)//给标题赋值
         //@ts-ignore
         const applyWinLog = value[1]?.data?.data?.list
+        //@ts-ignore
+        const imgCaptcha = value[2]?.data
         setWinApplyList(winApplyList)
         setApplyWinLog(applyWinLog)
+        setImgCaptcha(imgCaptcha)
       })
       .finally(() => {
         setLoading(false)
@@ -184,7 +212,7 @@ const ActivityRewardPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
-        <MineHeader title={'活动彩金'} showBackBtn onPressBackBtn={pop} />
+        <MineHeader title={'活动彩金(RN)'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
       <View style={{ flex: 1 }}>
         {loading ? (
@@ -247,14 +275,63 @@ const ActivityRewardPage = () => {
               <UGText style={{ marginBottom: 10 }}>{'活动说明'}</UGText>
               <UGText>{removeHTMLTag(activityContent)}</UGText>
             </View>
-            <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 30, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5, marginBottom: 10 }} placeholder={'申请金额'} />
-            <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }} placeholder={'申请说明'} numberOfLines={5} />
+            <View style={styles.title}>
+              <Text>{'快捷金额'}</Text>
+            </View>
+            <View style={[styles.title, { flexDirection: 'row' }]}>
+              {quickAmounts?.map((ele, index) => {
+                if (ele == '0') {
+                  return null
+                } else {
+                  return (
+                    <TouchableWithoutFeedback
+                      key={index}
+                      onPress={() => {
+                        setApplyMoney(ele)
+                      }}>
+                      <View style={{ width: 25, aspectRatio: 1, backgroundColor: '#02C874', justifyContent: 'center', alignItems: 'center', marginRight: 5, borderRadius: 5 }}>
+                        <Text style={{ color: '#ffffff' }}>{ele}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  )
+                }
+              })}
+            </View>
+            <TextInput
+              style={{ borderColor: '#d9d9d9', width: '90%', height: 30, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5, marginBottom: 10 }}
+              placeholder={'申请金额'}
+              value={applyMoney}
+              onChangeText={(text) => {
+                setApplyMoney(text?.replace(/[^0-9]/g, ''))
+              }}
+            />
+            <TextInput
+              style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }}
+              placeholder={'申请说明'}
+              numberOfLines={5}
+              onChangeText={(text) => {
+                setApplyDescription(text)
+              }}
+            />
+            <View style={{ flexDirection: 'row', marginTop: 10, width: '90%' }}>
+              <TextInput
+                placeholder={'请输入验证码'}
+                style={{ width: 150, borderColor: '#d9d9d9', borderWidth: AppDefine.onePx, borderRadius: 5, height: 30, paddingHorizontal: 3 }}
+                onChangeText={(text) => {
+                  setApplyImgCaptcha(text)
+                }}
+              />
+              <Image source={{ uri: imgCaptcha }} style={{ width: 170, height: 30 }} resizeMode={'contain'} />
+            </View>
             <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', justifyContent: 'space-around', width: '100%', paddingBottom: 20 }}>
               <Button
                 title={'关闭'}
                 containerStyle={{ width: '25%', borderWidth: 1, borderColor: '#8E8E8E', borderRadius: 5, height: 30 }}
                 onPress={() => {
                   setApplyVisible(false)
+                  setApplyMoney(null)
+                  setApplyDescription(null)
+                  setApplyImgCaptcha(null)
                 }}
               />
               <Button
@@ -262,7 +339,31 @@ const ActivityRewardPage = () => {
                 containerStyle={{ width: '25%', borderWidth: 1, borderColor: 'transparent', borderRadius: 5, height: 30, backgroundColor: Skin1.themeColor }}
                 titleStyle={{ color: '#ffffff' }}
                 onPress={() => {
-                  setApplyVisible(false)
+                  if (!applyMoney) {
+                    Toast('申请金额不能为空')
+                  } else if (!applyDescription) {
+                    Toast('申请说明不能为空')
+                  } else if (!applyImgCaptcha) {
+                    Toast('验证码不能为空')
+                  } else {
+                    showLoading('申请中...')
+                    APIRouter.activity_applyWin({ amount: applyMoney, userComment: applyDescription, imgCode: applyImgCaptcha, id: id })
+                      .then((value) => {
+                        const code = value?.data?.code
+                        const msg = value?.data?.msg
+                        if (code) {
+                          showError(msg?.toString())
+                        } else {
+                          showSuccess(msg?.toString())
+                        }
+                      })
+                      .finally(() => {
+                        setApplyVisible(false)
+                        setApplyMoney(null)
+                        setApplyDescription(null)
+                        setApplyImgCaptcha(null)
+                      })
+                  }
                 }}
               />
             </View>
@@ -272,5 +373,9 @@ const ActivityRewardPage = () => {
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  title: { width: '100%', marginVertical: 10, paddingHorizontal: 20 },
+})
 
 export default ActivityRewardPage

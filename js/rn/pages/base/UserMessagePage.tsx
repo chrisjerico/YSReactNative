@@ -8,7 +8,6 @@ import { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import BottomGap from '../../public/views/temp/BottomGap'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 import { UGText } from '../../../doy/publicComponent/Button之类的基础组件/DoyButton'
 import { JDMessagePopCP } from '../经典/cp/JDMessagePopCP'
@@ -26,7 +25,11 @@ const UserMessagePage = () => {
 
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
-
+  const [alertBlock, setAlertBlock] = useState({
+    visible: false,
+    title: '',
+    content: '',
+  })
   const spinValue = useRef(new Animated.Value(1)).current
   const translateY = useRef(new Animated.Value(140)).current
   const spinDeg = spinValue.interpolate({
@@ -63,7 +66,7 @@ const UserMessagePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
-        <MineHeader title={'站內信'} showBackBtn onPressBackBtn={pop} />
+        <MineHeader title={'站內信(RN)'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
         <PullToRefreshListComponent
           onReleaseToRefresh={async () => {

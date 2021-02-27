@@ -66,7 +66,7 @@ export default class UGSkinManagers {
         if (Object.keys(obj).filter((v) => v == UGSkinType1.默认)?.length) {
           target[k] = obj[skit] ?? obj.默认
         } else {
-          addParams(target[k] = {}, obj)
+          addParams((target[k] = {}), obj)
         }
       }
     }
@@ -97,13 +97,11 @@ export default class UGSkinManagers {
   }
 }
 
-
 // 当前皮肤信息
 type UGCurrentSkinValue = UGSkinColor<string, string[]> & UGSkinConf<string, number, boolean> & UGSkinStyle<ViewStyle | TextStyle | ImageStyle>
 const tmp: any = {}
 export let skin1: UGCurrentSkinValue = tmp
 export let Skin1 = skin1
-
 
 // 初始化所有皮肤的配置信息
 if (!UGSkinManagers.once) {

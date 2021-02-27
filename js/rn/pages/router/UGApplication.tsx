@@ -9,7 +9,10 @@ import { AlipayView } from '../../public/components/alipay/AlipayView'
 import { FeedbackRecordView } from '../../public/components/FeedbackRecordView'
 import { FeedbackSubmitView } from '../../public/components/FeedbackSubmitView'
 import { FeedbackView } from '../../public/components/FeedbackView'
+import { OnlineService } from '../../public/components/OnlineService'
+import OtherRecord from '../../public/components/OtherRecord'
 import { SupFeedbackSubmitView } from '../../public/components/SupFeedbackSubmitView'
+import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 import { TransferRecordView } from '../../public/components/transfer/TransferRecordView'
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import { TransferView } from '../../public/components/transfer/TransferView'
@@ -27,12 +30,15 @@ import ManageBankListPage from '../bank/list/ManageBankListPage'
 import ActivityRewardPage from '../base/ActivityRewardPage'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import PromotionPage from '../base/PromotionPage'
+import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
+import SetPasswordPage from '../base/pwd/SetPasswordPage'
 import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
 import UserMessagePage from '../base/UserMessagePage'
+import BetLotteryPage from '../bet/BetLotteryPage'
 import BYHomePage from '../BY/BYHomePage'
 import BYMinePage from '../BY/BYMinePage'
 import BYSignInPage from '../BY/BYSignInPage'
@@ -42,15 +48,18 @@ import BZHHomePage from '../BZH/BZHHomePage'
 import BZHMinePage from '../BZH/BZHMinePage'
 import BZHSignInPage from '../BZH/BZHSignInPage'
 import BZHSignUpPage from '../BZH/BZHSignUpPage'
+import EmptyPage from '../common/ep/EmptyPage'
 import LottoBetting from '../common/LottoBetting'
 import PromotionListPage from '../common/PromotionListPage'
 import CapitalPage from '../cpt/list/CapitalPage'
+import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
+import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import GameLobbyPage from '../hall/GameLobbyPage'
-import TwoLevelGames from '../hall/TwoLevelGames'
 import GameHallPage from '../hall/new/GameHallPage'
+import TwoLevelGames from '../hall/TwoLevelGames'
 import JXHHomePage from '../JXH/JXHHomePage'
 import JXHMinePage from '../JXH/JXHMinePage'
 import JXHSignInPage from '../JXH/JXHSignInPage'
@@ -86,7 +95,16 @@ import ZLMinePage from '../尊龙/ZLMinePage'
 import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
 import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
+import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
+import JDAgentPage from '../经典/申请代理/JDAgentPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
+import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
+import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
+import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
+import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
+import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
+import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
+import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePage'
 import { XBJLoginPage } from '../香槟金/XBJLoginPage'
 import { XBJMinePage } from '../香槟金/XBJMinePage'
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage'
@@ -96,27 +114,6 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
-import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
-import JDAgentPage from '../经典/申请代理/JDAgentPage'
-import SetPasswordPage from '../base/pwd/SetPasswordPage'
-import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
-
-import { TransferLineView } from '../../public/components/transfer/TransferLineView'
-import BtcTutorialPage from '../cpt/list/record/tt/BtcTutorialPage'
-import BetLotteryPage from '../bet/BetLotteryPage'
-import JDPromotionCodeListPage from '../经典/邀请码/JDPromotionCodeListPage'
-import JDRecommendedIncomePage from '../经典/推荐收益/JDRecommendedIncomePage'
-import JDSegmentPage from '../经典/邀请码/JDSegmentPage'
-import EmptyPage from '../common/ep/EmptyPage'
-import { OnlineService } from '../../public/components/OnlineService'
-import JDChangLongPage from '../经典/长龙助手/JDChangLongPage'
-import JDBetRecordDetailPage from '../经典/长龙助手/JDBetRecordDetailPage'
-import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
-import JDHomePage from '../经典/首页、我的页、登录、注册/JDHomePage'
-
-import OtherRecord from '../../public/components/OtherRecord'
-import JDLotterySecondPage from '../经典/系列界面/JDLotterySecondPage'
 import JDDayDetailPage from '../经典/下注明细/下注明细(已结算)/JDDayDetailPage'
 import { DoyLoginPage } from '../../../doy/pages/启动页/DoyLoginPage'
 import { DoyRegisterPage1 } from '../../../doy/pages/启动页/DoyRegisterPage1'
@@ -157,16 +154,14 @@ import { DoyWalletRecordListPage } from '../../../doy/pages/首页/钱包记录/
 import { DoyWalletRecordSearchPage } from '../../../doy/pages/首页/钱包记录/DoyWalletRecordSearchPage'
 import { DoyPaymentEditPage } from '../../../doy/pages/我的/收付款方式/DoyPaymentEditPage'
 import { DoyRegisterPage2 } from '../../../doy/pages/启动页/DoyRegisterPage2'
-import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
 import JDPromoteDetailPage from '../经典/优惠详情/JDPromoteDetailPage'
 import WebPage from '../common/web/WebPage'
 import { Platform } from 'react-native'
-import { ANHelper } from '../../public/define/ANHelper/ANHelper'
-import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import { H5WebPage } from '../base/H5页面/H5WebPage'
 import { JSLuzhuPage } from '../base/H5页面/JSLuzhuPage'
 import PromotionDetailPage from '../../pages/base/PromotionDetailPage'
-
+import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
+import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
 
 /**
  * 所有界面
@@ -220,26 +215,26 @@ const pageComponents: { [key in PageName]?: Function } = {
   FeedbackRecordView, //反馈记录
   SupFeedbackSubmitView, //建议反馈记录反馈
   TransferRecordView, //额度转页记录
-  JDAgentPage,//申请代理
-  JDRedEnveloperPage,//红包扫雷
+  JDAgentPage, //申请代理
+  JDRedEnveloperPage, //红包扫雷
   TransferView, //额度转页-经典版
   TransferLineView, //额度转页-天空蓝版
   TransferTKLMainView, //额度转页-新版
-  JDRecommendedIncomePage,//推荐收益
-  JDPromotionCodeListPage,//邀请码
-  JDChangLongPage,//长龙主页
-  JDBetRecordDetailPage,//长龙注单详情
-  JDBetDetailPage,//下注明细
-  OnlineService,//在线客服
-  JDLotterySecondPage,//2级系列游戏
-  JDDayDetailPage,//下注明细明细
-  JDPromoteDetailPage,//优惠列表详情
-  H5WebPage,  // H5页面
+  JDRecommendedIncomePage, //推荐收益
+  JDPromotionCodeListPage, //邀请码
+  JDChangLongPage, //长龙主页
+  JDBetRecordDetailPage, //长龙注单详情
+  JDBetDetailPage, //下注明细
+  OnlineService, //在线客服
+  JDLotterySecondPage, //2级系列游戏
+  JDDayDetailPage, //下注明细明细
+  JDPromoteDetailPage, //优惠列表详情
+  H5WebPage, // H5页面
   JSLuzhuPage, // 路珠
 
   // ———————————— 模板页面 —————————————
 
-  JDHomePage,// 经典-首页
+  JDHomePage, // 经典-首页
 
   LCMinePage, //乐橙-我的页
   LCHomePage, //乐橙-首页
@@ -304,45 +299,45 @@ const pageComponents: { [key in PageName]?: Function } = {
   LLRegisterPage, //利来-注册
 
   // Doy钱包
-  DoyLaunchPage,  // doy启动页
-  DoyLoginPage,//doy登录页
-  DoyRegisterPage1,//doy注册步骤1
-  DoyRegisterPage2,//doy注册步骤2
-  DoyNickNamePage,//doy修改昵称
-  DoyPhoneNumberPage1,//doy修改手机号1
-  DoyPhoneNumberPage2,//doy修改手机号2
-  DoySelfIntroductionPage,//doy
-  DoyUserInfoEditPage,//doy编辑个人资料
-  DoyUserInfoPage,//doy个人资料
-  DoyChangeLoginPwdPage,//doy修改登录密码
-  DoyChangePayPwdPage,//doy修改支付密码
-  DoyMyCommentPage,//doy我的评论
-  DoyPaymentChannlPage,//doy收付款方式
-  DoyPaymentEditPage,//doy编辑收付款方式
-  DoyMinePage,//doy我的页
-  DoyChatDetailPage,//doy聊天页
-  DoyChatListPage,//doy聊天列表
-  DoyNoticeListPage,//doy通知列表
-  DoyNoticeOrderFeedbackPage,//doy通知评价卖方
-  DoyNoticeOrderPage,//doy通知订单页
-  DoyNoticeSentSuccessPage,//doy通知doy支付成功页
-  DoyMyOrderPage,//doy我的订单
-  DoySearchOrderPage,//doy查询订单
-  DoySearchReultPage,//doy订单查询结果
-  DoyNotifySellerPage,//doy告诉卖方
-  DoyPendingPaymentPage,//doy待付款
-  DoySellOrderPage,//doy卖方订单
-  DoyWantBuyPage,//doy我想买
-  DoySellOrderConfirmPage,//doy确认卖单设置
-  DoySetSellOrderPage,//doy设置卖单
-  DoyWantSellPage,//doy我想卖
-  DoyReceiveCurrencyPage,//doy收币
-  DoyTransferCurrencyPage,//doy打币
-  DoyTransferSuccessPage,//doy打币成功
-  DoyScanPage,//doy扫一扫
-  DoyWalletRecordDetailPage,//doy钱包记录详情
-  DoyWalletRecordListPage,//doy钱包记录列表
-  DoyWalletRecordSearchPage,//doy钱包记录查询
+  DoyLaunchPage, // doy启动页
+  DoyLoginPage, //doy登录页
+  DoyRegisterPage1, //doy注册步骤1
+  DoyRegisterPage2, //doy注册步骤2
+  DoyNickNamePage, //doy修改昵称
+  DoyPhoneNumberPage1, //doy修改手机号1
+  DoyPhoneNumberPage2, //doy修改手机号2
+  DoySelfIntroductionPage, //doy
+  DoyUserInfoEditPage, //doy编辑个人资料
+  DoyUserInfoPage, //doy个人资料
+  DoyChangeLoginPwdPage, //doy修改登录密码
+  DoyChangePayPwdPage, //doy修改支付密码
+  DoyMyCommentPage, //doy我的评论
+  DoyPaymentChannlPage, //doy收付款方式
+  DoyPaymentEditPage, //doy编辑收付款方式
+  DoyMinePage, //doy我的页
+  DoyChatDetailPage, //doy聊天页
+  DoyChatListPage, //doy聊天列表
+  DoyNoticeListPage, //doy通知列表
+  DoyNoticeOrderFeedbackPage, //doy通知评价卖方
+  DoyNoticeOrderPage, //doy通知订单页
+  DoyNoticeSentSuccessPage, //doy通知doy支付成功页
+  DoyMyOrderPage, //doy我的订单
+  DoySearchOrderPage, //doy查询订单
+  DoySearchReultPage, //doy订单查询结果
+  DoyNotifySellerPage, //doy告诉卖方
+  DoyPendingPaymentPage, //doy待付款
+  DoySellOrderPage, //doy卖方订单
+  DoyWantBuyPage, //doy我想买
+  DoySellOrderConfirmPage, //doy确认卖单设置
+  DoySetSellOrderPage, //doy设置卖单
+  DoyWantSellPage, //doy我想卖
+  DoyReceiveCurrencyPage, //doy收币
+  DoyTransferCurrencyPage, //doy打币
+  DoyTransferSuccessPage, //doy打币成功
+  DoyScanPage, //doy扫一扫
+  DoyWalletRecordDetailPage, //doy钱包记录详情
+  DoyWalletRecordListPage, //doy钱包记录列表
+  DoyWalletRecordSearchPage, //doy钱包记录查询
   DoyHomePage,
 }
 
@@ -357,11 +352,13 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
   }
   render() {
     let initialName = null
-    switch (Platform.OS) {//暂时保留 兼容旧版本 以后可以删除
+    switch (
+      Platform.OS //暂时保留 兼容旧版本 以后可以删除
+    ) {
       case 'android':
         initialName = ExtUGApplication.tabUI()
         ugLog('tab initialName=', initialName)
-        break;
+        break
     }
 
     return (
@@ -378,11 +375,13 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
 
 const StackScreens = () => {
   let initialName = null
-  switch (Platform.OS) {//暂时保留 兼容旧版本 以后可以删除
+  switch (
+    Platform.OS //暂时保留 兼容旧版本 以后可以删除
+  ) {
     case 'android':
       initialName = ExtUGApplication.stackUI()
       ugLog('stack initialName=', initialName)
-      break;
+      break
   }
 
   return (

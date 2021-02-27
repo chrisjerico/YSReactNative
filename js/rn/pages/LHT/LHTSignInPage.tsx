@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { popToRoot } from '../../public/navigation/RootNavigation'
+import { popToRoot, pop } from '../../public/navigation/RootNavigation'
 import { skinColors } from '../../public/theme/const/UGSkinColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
@@ -49,7 +49,7 @@ const LHTSignInPage = () => {
           />
           <Button title={'马上注册'} containerStyle={styles.button} titleStyle={styles.buttonTitleStyle} onPress={navigateToSignUpPage} />
           <Button title={'免费试玩'} containerStyle={styles.button} titleStyle={styles.buttonTitleStyle} onPress={tryPlay} />
-          <Button title={'返回首页'} containerStyle={styles.button} titleStyle={styles.buttonTitleStyle} onPress={popToRoot} />
+          <Button title={'返回首页'} containerStyle={styles.button} titleStyle={styles.buttonTitleStyle} onPress={pop} />
         </View>
       </ScrollView>
     </>

@@ -18,7 +18,7 @@ import { HomeGamesModel } from './Model/HomeGamesModel'
 import { GameHistoryModel, GameUrlModel, HomeRecommendModel, TwoLevelGame } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
-import { LottoGamesModel, UGNextIssueModel } from './Model/LottoGamesModel'
+import { LottoGamesModel } from './Model/LottoGamesModel'
 import { NormalModel } from './Model/NormalModel'
 import { NoticeModel } from './Model/NoticeModel'
 import { OnlineModel } from './Model/OnlineModel'
@@ -29,8 +29,9 @@ import { RegisterModel } from './Model/RegisterModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { SystemConfigModel } from './Model/SystemConfigModel'
+import { TaskCenterModel } from './Model/TaskCenterModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
-import { TicketHistoryModel } from './Model/TicketHistoryModel'
+import { TaskCreditsLogModel } from './Model/TaskCreditsLogModel'
 import { TurntableListModel } from './Model/TurntableListModel'
 import { UserChangeFundPwdModel } from './Model/UserChangeFundPwdModel'
 import { UserChangeLoginPwdModel } from './Model/UserChangeLoginPwdModel'
@@ -41,7 +42,6 @@ import { DepositRecordModel } from './Model/wd/DepositRecordModel'
 import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
 import { ActivitySettingModel } from './Model/ActivitySettingModel'
-import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
 import { HallGameModel } from './Model/game/HallGameModel'
 import { PayAisleModel } from './Model/wd/PayAisleModel'
@@ -49,11 +49,8 @@ import AppDefine from '../define/AppDefine'
 import { NewRateModel } from './Model/wd/NewRateModel'
 import { NextIssueModel } from './Model/lottery/NextIssueModel'
 import { PlayOddDetailModel } from './Model/lottery/PlayOddDetailModel'
-import PushHelper from '../define/PushHelper'
 import { LotteryHistoryModel } from './Model/lottery/LotteryHistoryModel'
-import { anyEmpty } from '../tools/Ext'
 import { IBetLotteryParams } from './it/bet/IBetLotteryParams'
-import { api } from './NetworkRequest1/NetworkRequest1'
 
 //1
 //api 統一在這邊註冊
@@ -80,6 +77,57 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static activity_applyWin = async ({ amount, userComment, imgCode, id }) => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.post<any>('c=activity&a=applyWin', {
+      amount,
+      userComment,
+      imgCode,
+      id,
+      token: tokenParams,
+    })
+  }
+
+  static task_center = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.get<TaskCenterModel>('c=task&a=center&category=1&rows=1000&token=' + tokenParams + '&page=1')
+  }
+
+  static task_creditsLog = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.get<TaskCreditsLogModel>('c=task&a=creditsLog&time=0&rows=20&token=' + tokenParams)
+  }
+
   static activity_applyWinLog = async () => {
     let tokenParams = ''
     switch (Platform.OS) {
@@ -94,8 +142,6 @@ class APIRouter {
     }
     return httpClient.get<any>('c=activity&a=applyWinLog&token=' + tokenParams)
   }
-
-
 
   static user_changeFundPwd = async ({ oldPwd, newPwd }) => {
     let tokenParams = ''
@@ -173,18 +219,18 @@ class APIRouter {
       id: gameId,
     }
 
-    return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes',{ params: tokenParams })
+    return httpClient.get<TwoLevelGame>('c=game&a=realGameTypes', { params: tokenParams })
   }
 
   //注单讯息
-  static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string,betId?:string ) => {
+  static ticket_history_args = async (page: string, rows: string, category: string, startDate: string, endDate: string, betId?: string) => {
     let parameter = {
       page: page,
       rows: rows,
       category: category,
       startDate: startDate,
       endDate: endDate,
-      betId:betId,
+      betId: betId,
     }
 
     return httpClient.get<GameHistoryModel>('c=ticket&a=history', { params: parameter })
@@ -192,7 +238,7 @@ class APIRouter {
 
   static real_gotoGame = async (id) => {
     let parameter = {
-      id: id
+      id: id,
     }
     return httpClient.get<GameUrlModel>('c=real&a=gotoGame', { params: parameter })
   }
@@ -389,7 +435,6 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_rechargeRecordList = async (params: IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
-
     return httpClient.get<DepositRecordModel>('c=recharge&a=logs', { params: params })
   }
 
@@ -424,7 +469,6 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_withdrawalRecordList = async (params: IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
-
     return httpClient.get<WithdrawalRecordModel>('c=withdraw&a=logs', { params: params })
   }
 
@@ -437,6 +481,7 @@ class APIRouter {
    * group :类型
    */
   static capital_capitalDetailRecordList = async (params: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
+    console.log('params ==', params)
 
     return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&', { params: params })
   }
@@ -470,7 +515,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<TurntableListModel>('c=activity&a=turntableList')//&' + tokenParams)
+    return httpClient.get<TurntableListModel>('c=activity&a=turntableList') //&' + tokenParams)
   }
 
   static activity_goldenEggList = async () => {
@@ -485,7 +530,7 @@ class APIRouter {
         tokenParams = 'token=' + pms?.token
         break
     }
-    return httpClient.get<GoldenEggListModel>('c=activity&a=goldenEggList')//&' + tokenParams)
+    return httpClient.get<GoldenEggListModel>('c=activity&a=goldenEggList') //&' + tokenParams)
   }
 
   static activity_scratchList = async () => {
@@ -500,19 +545,18 @@ class APIRouter {
         tokenParams = 'token=' + pms?.token
         break
     }
-    return httpClient.get<ScratchListModel>('c=activity&a=scratchList')//&' + tokenParams)
+    return httpClient.get<ScratchListModel>('c=activity&a=scratchList') //&' + tokenParams)
   }
 
   /**
    * 实时汇率
    */
   static system_currencyRate = async (params: ICurrencyRateParams): Promise<AxiosResponse<NewRateModel>> => {
-
     return httpClient.get<NewRateModel>('c=system&a=currencyRate', { params: params })
   }
 
   static system_mobileRight = async () => {
-    return httpClient.get<any>('c=system&a=mobileRight') 
+    return httpClient.get<any>('c=system&a=mobileRight')
   }
 
   static system_floatAds = async () => {
@@ -628,7 +672,7 @@ class APIRouter {
         },
         {
           noToken: true,
-        } as any,
+        } as any
       )
     } catch (error) {
       throw error
@@ -656,12 +700,11 @@ class APIRouter {
    * id 游戏 id
    */
   static game_nextIssue = async (id: string): Promise<AxiosResponse<NextIssueModel>> => {
-
     let parameter = {
       id,
     }
 
-    return httpClient.get<NextIssueModel>('c=game&a=nextIssue' , { params: parameter })
+    return httpClient.get<NextIssueModel>('c=game&a=nextIssue', { params: parameter })
   }
 
   /**
@@ -669,19 +712,17 @@ class APIRouter {
    * id 游戏 id
    */
   static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDetailModel>> => {
-
     let parameter = {
       id,
     }
 
-    return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds' , { params: parameter })
+    return httpClient.get<PlayOddDetailModel>('c=game&a=playOdds', { params: parameter })
   }
 
   /**
    * 游戏开奖记录
    */
   static game_lotteryHistory = async (params: IGameHistory): Promise<AxiosResponse<LotteryHistoryModel>> => {
-
     return httpClient.get<LotteryHistoryModel>('c=game&a=lotteryHistory', { params: params })
   }
 
@@ -808,10 +849,10 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        pms = await OCHelper.call('CMNetwork.encryptionCheckSign:', [Object.assign({ checkSign: 1 }, params)]);
+        pms = await OCHelper.call('CMNetwork.encryptionCheckSign:', [Object.assign({ checkSign: 1 }, params)])
         break
       case 'android':
-        pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params, })
+        pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params })
         break
     }
     for (let key in pms) {

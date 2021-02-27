@@ -17,7 +17,7 @@ const UserInfoPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
-        <MineHeader title={'我的资料'} showBackBtn onPressBackBtn={pop} />
+        <MineHeader title={'我的资料(RN)'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
       <View>
         <ImageBackground source={{ uri: 'xiawu' }} style={{ width: '100%', aspectRatio: 2 }}>
@@ -49,7 +49,7 @@ const UserInfoPage = () => {
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
           <UGText style={{ fontSize: 20, marginVertical: 10 }}>{'邮箱 : ' + email}</UGText>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
-          <UGText style={{ fontSize: 20, marginVertical: 10 }}>{'币别 : '}</UGText>
+          <UGText style={{ fontSize: 20, marginVertical: 10 }}>{'币别 : RMB'}</UGText>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <UGText style={{ fontSize: 20, marginVertical: 10 }}>{'Facebook : '}</UGText>
