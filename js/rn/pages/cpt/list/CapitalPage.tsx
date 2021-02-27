@@ -72,11 +72,11 @@ const CapitalPage = ({ navigation, route, setProps }) => {
                 // tabRef?.current?.goToPage(2)
                 setTabIndex(dic[key])
                 setRefreshCount(dic[key] + 1)
-                setChangeTabCount(n => n + 1)
                 //  setRefreshCount(moment().unix())
 
               }
             }
+            setChangeTabCount(n => n + 1)
           }
         })
         break;

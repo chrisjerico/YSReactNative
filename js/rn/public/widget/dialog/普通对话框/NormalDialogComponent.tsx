@@ -88,10 +88,12 @@ const NormalDialogComponent = ({
              animationOut={'fadeOut'}
              backdropOpacity={0.5}>
         <View style={_styles.content}>
-          <Text style={[
-            _styles.title_text,
+          <View style={[
+            _styles.title_text_container,
             { backgroundColor: Skin1.themeColor },
-          ]}>{title ?? '提示'}</Text>
+          ]}>
+            <Text style={_styles.title_text}>{title ?? '提示'}</Text>
+          </View>
           {
             (customView && customView()) ?? <Text style={_styles.content_text}>{content}</Text>
           }
@@ -123,17 +125,19 @@ const _styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  title_text: {
+  title_text_container: {
     width: '100%',
     height: scale(56),
-    color: 'white',
-    fontSize: scale(26),
-    fontWeight: 'bold',
     borderTopLeftRadius: scale(16),
     borderTopRightRadius: scale(16),
     paddingHorizontal: scale(16),
-    textAlign: 'center',
-    textAlignVertical: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title_text: {
+    color: 'white',
+    fontSize: scale(26),
+    fontWeight: 'bold',
   },
   content_text: {
     color: UGColor.TextColor7,
