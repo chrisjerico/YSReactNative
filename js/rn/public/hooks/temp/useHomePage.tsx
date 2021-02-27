@@ -103,6 +103,7 @@ const useHomePage = ({
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []
+  const couponsStyle = couponList?.data?.style
   const midBanners = homeAd?.data ?? []
   const floatAds = floatAd?.data ?? []
   const roulette = turntableList?.data
@@ -152,6 +153,7 @@ const useHomePage = ({
     officialGames,
     customiseGames,
     coupons,
+    couponsStyle,
     rankLists,
     redBag,
     redBagLogo,

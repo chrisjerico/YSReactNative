@@ -18,6 +18,8 @@ import { TransferRecordView } from '../../public/components/transfer/TransferRec
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import { TransferView } from '../../public/components/transfer/TransferView'
 import TrendView from '../../public/components/TrendView'
+import Game3rdView from '../../public/components/Game3rdView'
+import OldLetteyHallPage from '../hall/fd/OldLetteyHall'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { Router } from '../../public/navigation/Router'
@@ -158,8 +160,7 @@ import WebPage from '../common/web/WebPage'
 import { Platform } from 'react-native'
 import { H5WebPage } from '../base/H5页面/H5WebPage'
 import { JSLuzhuPage } from '../base/H5页面/JSLuzhuPage'
-import { DoyLaunchPage } from '../../../doy/pages/启动页/DoyLaunchPage'
-import JDBetDetailPage from '../经典/下注明细/JDBetDetailPage'
+import PromotionDetailPage from '../../pages/base/PromotionDetailPage'
 
 /**
  * 所有界面
@@ -172,14 +173,17 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
-  GameLobbyPage, // 游戏大厅主页-默认
-  TwoLevelGames, //二级游戏分类
-  OtherRecord, //其他投注记录（真人、棋牌、电子、体育、捕鱼、电竞）
-  Game3rdView, //游戏
+  // 彩票大厅-默认
+  GameLobbyPage,
+  TwoLevelGames,
+  OtherRecord,
+  Game3rdView,
+  PromotionDetailPage,
   // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
   SeriesLobbyPage, // 游戏大厅二级页面（xx系列游戏列表）
+  OldLetteyHallPage,//旧版的游戏大厅（暂时不怎么用，只有六合彩模板在用）
   TrendView, //开奖走势
   ManageBankListPage, //银行卡管理（我的提款账户列表）
   CapitalPage, //存款取款资金明细

@@ -1,9 +1,9 @@
-import { StyleSheet, View } from 'react-native'
+import { Platform,StyleSheet, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
-import { skin1, Skin1 } from '../../public/theme/UGSkinManagers'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import EmptyView from '../../public/components/view/empty/EmptyView'
 import { Data } from '../../public/network/Model/HomeRecommendModel'
@@ -18,17 +18,17 @@ import { UGBasePageProps } from '../base/UGPage'
 import { pop } from '../../public/navigation/RootNavigation'
 import LobbyGameListComponent from './new/games/LobbyGameListComponent'
 import { ScrollView } from 'react-native-gesture-handler'
-import LinearGradient from 'react-native-linear-gradient'
 
 /**
  * 游戏大厅
  * @param navigation
  * @constructor
  */
+interface IRouteParams {
+  showBackButton?: boolean //是否显示返回按钮
+}
 const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
-
-  const { showBackButton } = route?.params
-
+  const { showBackButton }: IRouteParams = route?.params
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [isSetData, setIsSetData] = useState(false) //是否存取過數據
   const [gameData, setGameData] = useState<Array<Data>>([])//所有数据
@@ -39,7 +39,6 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
   } = UseGameHall()
 
   useEffect(() => {
-    
     requestGameData()
   }, [])
 
@@ -94,7 +93,7 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
       ?
       anyEmpty(gameData)
         ? <EmptyView style={{ flex: 1 }}/>
-        : <ScrollView style={{ flex: 1 }}>
+        : <ScrollView>
           {renderDataList(gameData)}
         </ScrollView>
       : <View></View>
@@ -102,24 +101,23 @@ const GameLobbyPage = ({ navigation, route, setProps }: UGBasePageProps) => {
   }
 
   return (
-    <View style={[CommStyles.flex]}>
+    <View style={CommStyles.flex}>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader
-          showBackBtn={anyEmpty(showBackButton) ? true : showBackButton == '1'}
+          showBackBtn={Platform.OS == 'ios' || showBackButton}
           onPressBackBtn={() => {
                 pop()
             }
           }
-          title={'游戏大厅'}
+          title={'彩票游戏'}
         />
       </SafeAreaHeader>
-      <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
       {
         renderAllData()
       }
-      </LinearGradient>
     </View>
   )
+
 }
 
 export default GameLobbyPage

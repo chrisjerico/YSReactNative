@@ -245,6 +245,7 @@ const WNZHomePage = () => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
+      couponStyles={couponStyles}
       rankingListType={appConfig.isWNZBottomTabHot() ? RankingListType.不顯示 : rankingListType}
       loading={loading}
       refreshing={refreshing}
@@ -468,6 +469,10 @@ const styles = StyleSheet.create({
     marginTop: scale(10),
     backgroundColor: '#ffffff',
   },
+  couponTitleStyle: {
+    color: 'black',
+    fontSize: scale(25),
+  },
   subTypeButton: {
     width: '20%',
     marginLeft: '2.5%',
@@ -502,11 +507,28 @@ const noticeBlockStyles = StyleSheet.create({
 })
 const couponBlockStyles = StyleSheet.create({
   containerStyle: styles.subComponent,
+  titleStyle: styles.couponTitleStyle,
 })
 
 const animatedRankComponentStyles = StyleSheet.create({
   contentContainerStyle: {
     borderRadius: 0,
+  },
+})
+
+const couponStyles = StyleSheet.create({
+  titleStyle: {
+    alignSelf: 'center',
+    color: 'black',
+    fontSize: scale(22),
+  },
+  containerStyle: {
+    borderColor: '#BF242A',
+    borderWidth: scale(1.5),
+    marginBottom: scale(20),
+    paddingHorizontal: scale(10),
+    paddingBottom: scale(10),
+    borderRadius: scale(5),
   },
 })
 

@@ -106,7 +106,8 @@ export enum PageName {
   GameLobbyPage = 'GameLobbyPage',
   GameHallPage = 'GameHallPage',
   FreedomHallPage = 'FreedomHallPage',
-
+  OldLetteyHallPage  ='OldLetteyHallPage',
+  
   KSHomePage = 'KSHomePage',
   KSSignInPage = 'KSSignInPage',
   KSSignUpPage = 'KSSignUpPage',
@@ -182,5 +183,5 @@ export enum PageName {
   DoyWalletRecordListPage = "DoyWalletRecordListPage",
   DoyWalletRecordSearchPage = "DoyWalletRecordSearchPage",
   DoyHomePage = "DoyHomePage",
-
+  PromotionDetailPage = "PromotionDetailPage"
 }

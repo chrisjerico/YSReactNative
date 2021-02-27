@@ -44,9 +44,9 @@ import PlayChoiceItem from '../../pages/common/LottoBetting/PlayVIew/comm/widget
  */
 const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
 
-  const { game, uriPath } = route?.params
+  const { game, url } = route?.params
 
-  const [path, setPath] = useState("")
+  const [path, setPath] = useState(url)
   const [key, setkey] = useState(1)
   const [isWebViewUrlChanged, setIsWebViewUrlChanged] = useState(false)
 
@@ -58,12 +58,15 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
   } = UseGameHall()
 
   useEffect(() => {
-    if (uriPath) {
-      setPath(uriPath)
+    if (url) {
       return
     }
     updateData()
   }, [])
+
+  useEffect(() => {
+    webViewRef.current.reload()  
+  }, [path])
 
   const updateData = async () => {
     APIRouter.real_gotoGame(game.gameId).then(async ({ data: res }) => {
@@ -85,7 +88,6 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
         ugLog("realGame: " + AppDefine.host + '/wjapp/api.php?c=real&a=gameUrl' + params)
         setPath(AppDefine.host + '/wjapp/api.php?c=real&a=gameUrl' + params )
         // setPath(resData)
-        webViewRef.current.reload()  
       } else {
         Toast(res?.msg)
       }
@@ -127,26 +129,26 @@ const Game3rdView = ({ navigation, route }: UGBasePageProps) => {
 
   return (
     <View style={_styles.container}>
-    <WebView
-      ref={webViewRef}
-      style={_styles.webview}
-      key={ key }
-      source={{ uri: path }}
-      onMessage={(e: WebViewMessageEvent) => {
-        ugLog("onMessage:" + e?.nativeEvent?.data)
-      }}
-      onNavigationStateChange={ setWebViewUrlChanged }
-      // onLoadStart={(e: WebViewNavigationEvent) => {
-      //   ugLog("onLoadStart:" + e.nativeEvent)
-      // }}
-    />
-    <View style={{position: 'absolute', right: 0, top: 0, marginRight: 5, marginTop: 5}}>
-      <TouchableOpacity
-        onPress={onPress}>
-        <Image style={{ width: scale(60), height: scale(70), resizeMode: 'stretch'}} 
-        source={{ uri: Res.back_home }} />
-      </TouchableOpacity>
-    </View>
+      <WebView
+        ref={webViewRef}
+        style={_styles.webview}
+        key={ key }
+        source={{ uri: path }}
+        allowUniversalAccessFromFileURLs={true}
+        mixedContentMode="always"
+        originWhitelist={['*']}
+        onMessage={(e: WebViewMessageEvent) => {
+          ugLog("onMessage:" + e?.nativeEvent?.data)
+        }}
+        onNavigationStateChange={ setWebViewUrlChanged }
+      />
+      <View style={{position: 'absolute', right: 0, top: 0, marginRight: 5, marginTop: 5}}>
+        <TouchableOpacity
+          onPress={onPress}>
+          <Image style={{ width: scale(60), height: scale(70), resizeMode: 'stretch'}} 
+          source={{ uri: Res.back_home }} />
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -156,7 +158,6 @@ const _styles = StyleSheet.create({
     flex: 1,
   },
   webview: {
-    flex: 1,
     width: AppDefine.width,
     height: AppDefine.height,
   }
