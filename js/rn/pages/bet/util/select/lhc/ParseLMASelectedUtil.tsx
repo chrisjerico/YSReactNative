@@ -38,6 +38,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
     //遍历TAB的每一组数据，如特码B里面有 特码数据，两面数据，色波数据
     pageData?.map((groupData, index) => {
 
+      let vieSelectFastly = false //快速选择，越南彩里面有
       //找出选中的球对应的原始数据, 优先使用 自定义数组 exPlays
       let selBalls: PlayData[]
       if (gameType == LCode.cqssc && playOddData?.code == CqsscCode.WX && groupData?.alias == '单式') {//秒秒彩五星单式特殊处理
@@ -48,6 +49,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
           for (const dataArr of groupData?.allHcPlays) {
             selBalls = dataArr?.filter((item) => isSelectedBallOnId(selectedBalls, item))
             if (!arrayEmpty(selBalls)) {//循环直到找到数据
+              vieSelectFastly = true
               break
             }
           }
@@ -73,6 +75,7 @@ const parseLMASelectedData = (playOddData: PlayOddData, selectedBalls: Array<Pla
           plays: selBalls,
           code: playOddData?.code,
           limitCount: limitCount,
+          vieSelectFastly: vieSelectFastly,
         } as SelectedPlayModel //key=取第一组数据的ID作为Tab标识, value=每一组数据，如 特码B里面的 两面, 色波
       )
 

@@ -744,24 +744,34 @@ const combineSelectedData = (selectedData?: Map<string, Map<string, Map<string, 
 
     switch (true) {
       case gameType == LCode.ofclvn_hochiminhvip || gameType == LCode.ofclvn_haboivip: // 越南彩
-        if (arrayLength(pageData) > 1) {
-          const viePlays = pageData?.map((item) => item?.plays) //原来的数据有几组，[[0,4],[7,8]]
-          const newPlays: Array<Array<PlayData>> = combineArr(...viePlays)//重组后的新数据 [[0,7],[0,8],[4,7],[4,8]]
+        if (pageData[0]?.vieSelectFastly) {//快速选择
+          const viePlays = [pageData[0]?.plays] //只有一组数据
+
           const newPage: SelectedPlayModel = {
             ...pageData[0],
             viePlays: viePlays,
-            plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+            plays: viePlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
               ...arr[0],
-              name: arr?.map((item) => item?.name).join('|'),
+              name: arr?.map((item) => item?.name).join(';'),
             } as PlayData)),
           }
-          // ugLog('combineSelectedData newPage = ', gameCode, JSON.stringify(newPage))
           return newPage
+
         }
 
-        //ugLog('combineSelectedData newArr 2 = ', gameCode, JSON.stringify([pageData]))
+        //选择号码
+        const viePlays = pageData?.map((item) => item?.plays) //原来的数据有几组，[[0,4],[7,8]]
+        const newPlays: Array<Array<PlayData>> = combineArr(...viePlays)//重组后的新数据 [[0,7],[0,8],[4,7],[4,8]]
 
-        return [pageData]
+        const newPage: SelectedPlayModel = {
+          ...pageData[0],
+          viePlays: viePlays,
+          plays: newPlays?.map((arr) => ({//只取第一个，其它的串联成名字就可以了
+            ...arr[0],
+            name: arr?.map((item) => item?.name).join('|'),
+          } as PlayData)),
+        }
+        return newPage
 
       case gameCode == LhcCode.LX://连肖
       case gameCode == LhcCode.LW://连尾
